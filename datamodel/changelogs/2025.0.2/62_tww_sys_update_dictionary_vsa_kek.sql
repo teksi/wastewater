@@ -6,7 +6,7 @@
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (3679,'examination') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'examination',
    name_en = 'examination',
    shortcut_en = 'EX',
@@ -23,7 +23,7 @@ WHERE (id = 3679 AND tablename = 'examination');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (3705,'damage') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'damage',
    name_en = 'damage',
    shortcut_en = 'DG',
@@ -40,7 +40,7 @@ WHERE (id = 3705 AND tablename = 'damage');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (3714,'damage_channel') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'damage_channel',
    name_en = 'damage channel',
    shortcut_en = 'DC',
@@ -57,7 +57,7 @@ WHERE (id = 3714 AND tablename = 'damage_channel');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (3728,'damage_manhole') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'damage_manhole',
    name_en = 'damage manhole',
    shortcut_en = 'DM',
@@ -74,7 +74,7 @@ WHERE (id = 3728 AND tablename = 'damage_manhole');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (3754,'file') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'file',
    name_en = 'file',
    shortcut_en = 'FI',
@@ -91,7 +91,7 @@ WHERE (id = 3754 AND tablename = 'file');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (3776,'data_media') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'data_media',
    name_en = 'data media',
    shortcut_en = 'VO',
@@ -1466,7 +1466,7 @@ WHERE (class_id = 3776 AND attribute_id = 3778);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3679,3680,3681) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'examination',
    field_name = 'recording_type',
    value_name = 'other',
@@ -1489,7 +1489,7 @@ WHERE (class_id = 3679 AND attribute_id = 3680 AND attribute_id = 3681);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3679,3680,3682) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'examination',
    field_name = 'recording_type',
    value_name = 'field_visit',
@@ -1512,7 +1512,7 @@ WHERE (class_id = 3679 AND attribute_id = 3680 AND attribute_id = 3682);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3679,3680,3683) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'examination',
    field_name = 'recording_type',
    value_name = 'deformation_measurement',
@@ -1535,7 +1535,7 @@ WHERE (class_id = 3679 AND attribute_id = 3680 AND attribute_id = 3683);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3679,3680,3684) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'examination',
    field_name = 'recording_type',
    value_name = 'leak_test',
@@ -1558,7 +1558,7 @@ WHERE (class_id = 3679 AND attribute_id = 3680 AND attribute_id = 3684);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3679,3680,3685) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'examination',
    field_name = 'recording_type',
    value_name = 'georadar',
@@ -1581,7 +1581,7 @@ WHERE (class_id = 3679 AND attribute_id = 3680 AND attribute_id = 3685);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3679,3680,3686) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'examination',
    field_name = 'recording_type',
    value_name = 'channel_TV',
@@ -1604,7 +1604,7 @@ WHERE (class_id = 3679 AND attribute_id = 3680 AND attribute_id = 3686);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3679,3680,3687) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'examination',
    field_name = 'recording_type',
    value_name = 'unknown',
@@ -1627,7 +1627,7 @@ WHERE (class_id = 3679 AND attribute_id = 3680 AND attribute_id = 3687);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3679,3698,3699) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'examination',
    field_name = 'weather',
    value_name = 'covered_rainy',
@@ -1650,7 +1650,7 @@ WHERE (class_id = 3679 AND attribute_id = 3698 AND attribute_id = 3699);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3679,3698,3700) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'examination',
    field_name = 'weather',
    value_name = 'drizzle',
@@ -1673,7 +1673,7 @@ WHERE (class_id = 3679 AND attribute_id = 3698 AND attribute_id = 3700);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3679,3698,3701) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'examination',
    field_name = 'weather',
    value_name = 'rain',
@@ -1696,7 +1696,7 @@ WHERE (class_id = 3679 AND attribute_id = 3698 AND attribute_id = 3701);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3679,3698,3702) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'examination',
    field_name = 'weather',
    value_name = 'snowfall',
@@ -1719,7 +1719,7 @@ WHERE (class_id = 3679 AND attribute_id = 3698 AND attribute_id = 3702);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3679,3698,3703) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'examination',
    field_name = 'weather',
    value_name = 'nice_dry',
@@ -1742,7 +1742,7 @@ WHERE (class_id = 3679 AND attribute_id = 3698 AND attribute_id = 3703);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3679,3698,3704) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'examination',
    field_name = 'weather',
    value_name = 'unknown',
@@ -1765,7 +1765,7 @@ WHERE (class_id = 3679 AND attribute_id = 3698 AND attribute_id = 3704);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3705,8497,8498) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage',
    field_name = 'connection',
    value_name = 'yes',
@@ -1788,7 +1788,7 @@ WHERE (class_id = 3705 AND attribute_id = 8497 AND attribute_id = 8498);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3705,8497,8499) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage',
    field_name = 'connection',
    value_name = 'no',
@@ -1811,7 +1811,7 @@ WHERE (class_id = 3705 AND attribute_id = 8497 AND attribute_id = 8499);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3705,3706,3707) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage',
    field_name = 'single_damage_class',
    value_name = 'EZ0',
@@ -1834,7 +1834,7 @@ WHERE (class_id = 3705 AND attribute_id = 3706 AND attribute_id = 3707);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3705,3706,3708) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage',
    field_name = 'single_damage_class',
    value_name = 'EZ1',
@@ -1857,7 +1857,7 @@ WHERE (class_id = 3705 AND attribute_id = 3706 AND attribute_id = 3708);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3705,3706,3709) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage',
    field_name = 'single_damage_class',
    value_name = 'EZ2',
@@ -1880,7 +1880,7 @@ WHERE (class_id = 3705 AND attribute_id = 3706 AND attribute_id = 3709);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3705,3706,3710) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage',
    field_name = 'single_damage_class',
    value_name = 'EZ3',
@@ -1903,7 +1903,7 @@ WHERE (class_id = 3705 AND attribute_id = 3706 AND attribute_id = 3710);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3705,3706,3711) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage',
    field_name = 'single_damage_class',
    value_name = 'EZ4',
@@ -1926,7 +1926,7 @@ WHERE (class_id = 3705 AND attribute_id = 3706 AND attribute_id = 3711);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3705,3706,4561) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage',
    field_name = 'single_damage_class',
    value_name = 'unknown',
@@ -1949,7 +1949,7 @@ WHERE (class_id = 3705 AND attribute_id = 3706 AND attribute_id = 4561);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3900) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAAA',
@@ -1972,7 +1972,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3900);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3901) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAAB',
@@ -1995,7 +1995,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3901);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3902) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BABAA',
@@ -2018,7 +2018,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3902);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3903) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BABAB',
@@ -2041,7 +2041,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3903);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3904) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BABAC',
@@ -2064,7 +2064,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3904);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3905) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BABAD',
@@ -2087,7 +2087,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3905);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3906) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BABBA',
@@ -2110,7 +2110,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3906);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3907) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BABBB',
@@ -2133,7 +2133,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3907);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3908) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BABBC',
@@ -2156,7 +2156,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3908);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3909) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BABBD',
@@ -2179,7 +2179,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3909);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3910) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BABCA',
@@ -2202,7 +2202,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3910);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3911) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BABCB',
@@ -2225,7 +2225,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3911);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3912) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BABCC',
@@ -2248,7 +2248,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3912);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3913) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BABCD',
@@ -2271,7 +2271,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3913);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3914) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BACA',
@@ -2294,7 +2294,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3914);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3915) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BACB',
@@ -2317,7 +2317,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3915);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3916) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BACC',
@@ -2340,7 +2340,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3916);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3917) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BADA',
@@ -2363,7 +2363,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3917);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3918) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BADB',
@@ -2386,7 +2386,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3918);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3919) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BADC',
@@ -2409,7 +2409,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3919);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3920) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BADD',
@@ -2432,7 +2432,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3920);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3921) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAE',
@@ -2455,7 +2455,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3921);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3922) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFAA',
@@ -2478,7 +2478,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3922);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3923) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFAB',
@@ -2501,7 +2501,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3923);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3924) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFAC',
@@ -2524,7 +2524,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3924);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3925) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFAD',
@@ -2547,7 +2547,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3925);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3926) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFAE',
@@ -2570,7 +2570,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3926);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3927) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFBA',
@@ -2593,7 +2593,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3927);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3928) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFBE',
@@ -2616,7 +2616,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3928);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3929) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFCA',
@@ -2639,7 +2639,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3929);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3930) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFCB',
@@ -2662,7 +2662,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3930);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3931) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFCC',
@@ -2685,7 +2685,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3931);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3932) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFCD',
@@ -2708,7 +2708,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3932);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3933) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFCE',
@@ -2731,7 +2731,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3933);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3934) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFDA',
@@ -2754,7 +2754,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3934);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3935) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFDB',
@@ -2777,7 +2777,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3935);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3936) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFDC',
@@ -2800,7 +2800,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3936);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3937) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFDD',
@@ -2823,7 +2823,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3937);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3938) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFDE',
@@ -2846,7 +2846,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3938);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3939) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFEA',
@@ -2869,7 +2869,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3939);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3940) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFEB',
@@ -2892,7 +2892,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3940);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3941) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFEC',
@@ -2915,7 +2915,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3941);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3942) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFED',
@@ -2938,7 +2938,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3942);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3943) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFEE',
@@ -2961,7 +2961,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3943);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3944) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFFA',
@@ -2984,7 +2984,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3944);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3945) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFFB',
@@ -3007,7 +3007,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3945);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3946) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFFC',
@@ -3030,7 +3030,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3946);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3947) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFFD',
@@ -3053,7 +3053,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3947);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3948) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFFE',
@@ -3076,7 +3076,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3948);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3949) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFGA',
@@ -3099,7 +3099,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3949);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3950) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFGB',
@@ -3122,7 +3122,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3950);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3951) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFGC',
@@ -3145,7 +3145,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3951);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3952) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFGD',
@@ -3168,7 +3168,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3952);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3953) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFGE',
@@ -3191,7 +3191,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3953);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3954) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFHB',
@@ -3214,7 +3214,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3954);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3955) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFHC',
@@ -3237,7 +3237,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3955);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3956) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFHD',
@@ -3260,7 +3260,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3956);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3957) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFHE',
@@ -3283,7 +3283,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3957);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3958) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFIA',
@@ -3306,7 +3306,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3958);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3959) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFIB',
@@ -3329,7 +3329,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3959);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3960) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFIC',
@@ -3352,7 +3352,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3960);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3961) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFID',
@@ -3375,7 +3375,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3961);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3962) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFIE',
@@ -3398,7 +3398,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3962);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3963) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFJB',
@@ -3421,7 +3421,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3963);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3964) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFJC',
@@ -3444,7 +3444,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3964);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3965) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFJD',
@@ -3467,7 +3467,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3965);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3966) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFJE',
@@ -3490,7 +3490,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3966);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3967) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFZA',
@@ -3513,7 +3513,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3967);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3968) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFZB',
@@ -3536,7 +3536,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3968);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3969) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFZC',
@@ -3559,7 +3559,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3969);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3970) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFZD',
@@ -3582,7 +3582,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3970);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3971) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFZE',
@@ -3605,7 +3605,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3971);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3972) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAGA',
@@ -3628,7 +3628,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3972);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3973) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAHA',
@@ -3651,7 +3651,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3973);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3974) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAHB',
@@ -3674,7 +3674,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3974);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3975) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAHC',
@@ -3697,7 +3697,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3975);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3976) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAHD',
@@ -3720,7 +3720,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3976);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3977) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAHE',
@@ -3743,7 +3743,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3977);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3978) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAHZ',
@@ -3766,7 +3766,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3978);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3979) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAIAA',
@@ -3789,7 +3789,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3979);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3980) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAIAB',
@@ -3812,7 +3812,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3980);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3981) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAIAC',
@@ -3835,7 +3835,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3981);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3982) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAIAD',
@@ -3858,7 +3858,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3982);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3983) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAIZ',
@@ -3881,7 +3881,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3983);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3984) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAJA',
@@ -3904,7 +3904,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3984);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3985) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAJB',
@@ -3927,7 +3927,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3985);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3986) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAJC',
@@ -3950,7 +3950,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3986);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3987) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAKA',
@@ -3973,7 +3973,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3987);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3988) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAKB',
@@ -3996,7 +3996,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3988);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3989) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAKC',
@@ -4019,7 +4019,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3989);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3990) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAKDA',
@@ -4042,7 +4042,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3990);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3991) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAKDB',
@@ -4065,7 +4065,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3991);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3992) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAKDC',
@@ -4088,7 +4088,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3992);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3993) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAKE',
@@ -4111,7 +4111,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3993);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3994) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAKZ',
@@ -4134,7 +4134,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3994);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3995) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BALA',
@@ -4157,7 +4157,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3995);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3996) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BALB',
@@ -4180,7 +4180,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3996);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3997) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BALZ',
@@ -4203,7 +4203,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3997);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3998) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAMA',
@@ -4226,7 +4226,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3998);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,3999) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAMB',
@@ -4249,7 +4249,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 3999);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4000) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAMC',
@@ -4272,7 +4272,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4000);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4001) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAN',
@@ -4295,7 +4295,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4001);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4002) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAO',
@@ -4318,7 +4318,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4002);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4003) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAP',
@@ -4341,7 +4341,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4003);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4004) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBAA',
@@ -4364,7 +4364,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4004);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4005) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBAB',
@@ -4387,7 +4387,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4005);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4006) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBAC',
@@ -4410,7 +4410,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4006);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4007) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBBA',
@@ -4433,7 +4433,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4007);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4008) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBBB',
@@ -4456,7 +4456,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4008);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4009) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBBC',
@@ -4479,7 +4479,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4009);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4010) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBBZ',
@@ -4502,7 +4502,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4010);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4011) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBCA',
@@ -4525,7 +4525,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4011);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4012) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBCB',
@@ -4548,7 +4548,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4012);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4013) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBCC',
@@ -4571,7 +4571,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4013);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4014) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBCZ',
@@ -4594,7 +4594,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4014);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4015) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBDA',
@@ -4617,7 +4617,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4015);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4016) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBDB',
@@ -4640,7 +4640,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4016);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4017) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBDC',
@@ -4663,7 +4663,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4017);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4018) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBDD',
@@ -4686,7 +4686,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4018);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4019) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBDZ',
@@ -4709,7 +4709,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4019);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4020) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBEA',
@@ -4732,7 +4732,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4020);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4021) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBEB',
@@ -4755,7 +4755,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4021);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4022) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBEC',
@@ -4778,7 +4778,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4022);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4023) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBED',
@@ -4801,7 +4801,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4023);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4024) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBEE',
@@ -4824,7 +4824,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4024);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4025) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBEF',
@@ -4847,7 +4847,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4025);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4026) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBEG',
@@ -4870,7 +4870,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4026);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4027) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBEH',
@@ -4893,7 +4893,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4027);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4028) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBEZ',
@@ -4916,7 +4916,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4028);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4029) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBFA',
@@ -4939,7 +4939,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4029);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4030) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBFB',
@@ -4962,7 +4962,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4030);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4031) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBFC',
@@ -4985,7 +4985,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4031);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4032) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBFD',
@@ -5008,7 +5008,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4032);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4033) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBG',
@@ -5031,7 +5031,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4033);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4034) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBHAA',
@@ -5054,7 +5054,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4034);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4035) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBHAB',
@@ -5077,7 +5077,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4035);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4036) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBHAC',
@@ -5100,7 +5100,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4036);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4037) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBHAZ',
@@ -5123,7 +5123,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4037);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4038) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBHBA',
@@ -5146,7 +5146,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4038);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4039) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBHBB',
@@ -5169,7 +5169,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4039);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4040) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBHBC',
@@ -5192,7 +5192,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4040);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4041) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBHBZ',
@@ -5215,7 +5215,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4041);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4042) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBHZA',
@@ -5238,7 +5238,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4042);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4043) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBHZB',
@@ -5261,7 +5261,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4043);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4044) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBHZC',
@@ -5284,7 +5284,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4044);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4045) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BBHZZ',
@@ -5307,7 +5307,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4045);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4046) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCAAA',
@@ -5330,7 +5330,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4046);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4047) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCAAB',
@@ -5353,7 +5353,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4047);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4048) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCABA',
@@ -5376,7 +5376,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4048);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4049) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCABB',
@@ -5399,7 +5399,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4049);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4050) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCACA',
@@ -5422,7 +5422,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4050);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4051) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCACB',
@@ -5445,7 +5445,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4051);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4052) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCADA',
@@ -5468,7 +5468,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4052);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4053) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCADB',
@@ -5491,7 +5491,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4053);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4054) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCAEA',
@@ -5514,7 +5514,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4054);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4055) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCAEB',
@@ -5537,7 +5537,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4055);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4056) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCAFA',
@@ -5560,7 +5560,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4056);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4057) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCAFB',
@@ -5583,7 +5583,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4057);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4058) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCAGA',
@@ -5606,7 +5606,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4058);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4059) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCAGB',
@@ -5629,7 +5629,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4059);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4060) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCAZA',
@@ -5652,7 +5652,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4060);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4061) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCAZB',
@@ -5675,7 +5675,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4061);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4062) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCBA',
@@ -5698,7 +5698,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4062);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4063) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCBB',
@@ -5721,7 +5721,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4063);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4064) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCBC',
@@ -5744,7 +5744,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4064);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4065) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCBD',
@@ -5767,7 +5767,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4065);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4066) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCBE',
@@ -5790,7 +5790,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4066);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4067) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCBZ',
@@ -5813,7 +5813,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4067);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4068) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCCAA',
@@ -5836,7 +5836,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4068);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4069) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCCAB',
@@ -5859,7 +5859,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4069);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4070) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCCAY',
@@ -5882,7 +5882,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4070);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4071) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCCBA',
@@ -5905,7 +5905,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4071);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4072) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCCBB',
@@ -5928,7 +5928,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4072);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4073) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCCBY',
@@ -5951,7 +5951,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4073);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4074) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCCYA',
@@ -5974,7 +5974,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4074);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4075) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCCYB',
@@ -5997,7 +5997,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4075);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4076) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCD',
@@ -6020,7 +6020,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4076);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4077) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCE',
@@ -6043,7 +6043,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4077);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4078) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDA',
@@ -6066,7 +6066,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4078);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4079) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDB',
@@ -6089,7 +6089,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4079);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4084) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDDA',
@@ -6112,7 +6112,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4084);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4086) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDEAA',
@@ -6135,7 +6135,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4086);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4087) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDEAB',
@@ -6158,7 +6158,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4087);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4088) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDEAC',
@@ -6181,7 +6181,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4088);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4092) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDEYA',
@@ -6204,7 +6204,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4092);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4093) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDEYB',
@@ -6227,7 +6227,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4093);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4094) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDEYY',
@@ -6250,7 +6250,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4094);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4095) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDFA',
@@ -6273,7 +6273,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4095);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4096) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDFB',
@@ -6296,7 +6296,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4096);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4097) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDFC',
@@ -6319,7 +6319,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4097);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4098) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDFZ',
@@ -6342,7 +6342,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4098);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4099) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDGA',
@@ -6365,7 +6365,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4099);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4100) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDGB',
@@ -6388,7 +6388,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4100);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4101) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDGC',
@@ -6411,7 +6411,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4101);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4102) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDGZ',
@@ -6434,7 +6434,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4102);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4103) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'AECXA',
@@ -6457,7 +6457,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4103);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4104) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'AECXB',
@@ -6480,7 +6480,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4104);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4105) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'AECXC',
@@ -6503,7 +6503,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4105);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4106) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'AECXD',
@@ -6526,7 +6526,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4106);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4107) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'AECXE',
@@ -6549,7 +6549,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4107);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4108) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'AECXF',
@@ -6572,7 +6572,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4108);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4109) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'AECXG',
@@ -6595,7 +6595,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4109);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4110) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'AECXH',
@@ -6618,7 +6618,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4110);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4111) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'AEDXA',
@@ -6641,7 +6641,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4111);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4112) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'AEDXB',
@@ -6664,7 +6664,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4112);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4113) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'AEDXC',
@@ -6687,7 +6687,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4113);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4114) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'AEDXD',
@@ -6710,7 +6710,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4114);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4115) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'AEDXE',
@@ -6733,7 +6733,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4115);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4116) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'AEDXF',
@@ -6756,7 +6756,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4116);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4117) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'AEDXG',
@@ -6779,7 +6779,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4117);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4118) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'AEDXH',
@@ -6802,7 +6802,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4118);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4119) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'AEDXI',
@@ -6825,7 +6825,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4119);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4120) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'AEDXJ',
@@ -6848,7 +6848,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4120);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4121) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'AEDXK',
@@ -6871,7 +6871,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4121);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4122) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'AEDXL',
@@ -6894,7 +6894,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4122);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4123) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'AEDXM',
@@ -6917,7 +6917,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4123);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4124) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'AEDXN',
@@ -6940,7 +6940,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4124);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4125) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'AEDXO',
@@ -6963,7 +6963,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4125);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4126) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'AEDXP',
@@ -6986,7 +6986,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4126);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4127) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'AEDXQ',
@@ -7009,7 +7009,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4127);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4128) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'AEDXR',
@@ -7032,7 +7032,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4128);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4129) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'AEDXS',
@@ -7055,7 +7055,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4129);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4130) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'AEDXT',
@@ -7078,7 +7078,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4130);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4131) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'AEDXU',
@@ -7101,7 +7101,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4131);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4132) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'AEDXV',
@@ -7124,7 +7124,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4132);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4133) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'AEDXW',
@@ -7147,7 +7147,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4133);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4134) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'AEDXX',
@@ -7170,7 +7170,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4134);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4135) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'AEF',
@@ -7193,7 +7193,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4135);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4136) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDBA',
@@ -7216,7 +7216,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4136);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4137) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDBB',
@@ -7239,7 +7239,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4137);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4138) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDBC',
@@ -7262,7 +7262,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4138);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4141) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDBF',
@@ -7285,7 +7285,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4141);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4142) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDBG',
@@ -7308,7 +7308,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4142);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4143) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDBH',
@@ -7331,7 +7331,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4143);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4144) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDBI',
@@ -7354,7 +7354,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4144);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,4145) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDBJ',
@@ -7377,7 +7377,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 4145);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8834) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BABAE',
@@ -7400,7 +7400,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8834);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8835) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BABBE',
@@ -7423,7 +7423,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8835);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8836) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BABCE',
@@ -7446,7 +7446,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8836);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8837) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFAZ',
@@ -7469,7 +7469,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8837);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8838) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFBZ',
@@ -7492,7 +7492,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8838);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8839) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFCZ',
@@ -7515,7 +7515,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8839);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8840) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFDZ',
@@ -7538,7 +7538,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8840);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8841) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFEZ',
@@ -7561,7 +7561,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8841);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8842) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFFZ',
@@ -7584,7 +7584,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8842);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8843) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFGZ',
@@ -7607,7 +7607,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8843);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8844) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFIZ',
@@ -7630,7 +7630,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8844);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8845) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFJZ',
@@ -7653,7 +7653,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8845);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8846) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFKA',
@@ -7676,7 +7676,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8846);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8847) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFKE',
@@ -7699,7 +7699,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8847);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8848) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFKZ',
@@ -7722,7 +7722,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8848);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8849) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAFZZ',
@@ -7745,7 +7745,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8849);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8850) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAKDD',
@@ -7768,7 +7768,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8850);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8851) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAKF',
@@ -7791,7 +7791,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8851);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8852) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAKG',
@@ -7814,7 +7814,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8852);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8853) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAKH',
@@ -7837,7 +7837,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8853);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8854) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAKI',
@@ -7860,7 +7860,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8854);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8855) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAKJ',
@@ -7883,7 +7883,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8855);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8856) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAKK',
@@ -7906,7 +7906,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8856);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8857) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAKL',
@@ -7929,7 +7929,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8857);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8858) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAKM',
@@ -7952,7 +7952,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8858);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8859) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BAKN',
@@ -7975,7 +7975,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8859);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8860) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BALC',
@@ -7998,7 +7998,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8860);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8861) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BALD',
@@ -8021,7 +8021,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8861);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8862) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BALE',
@@ -8044,7 +8044,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8862);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8863) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BALF',
@@ -8067,7 +8067,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8863);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8864) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BALGA',
@@ -8090,7 +8090,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8864);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8865) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BALGB',
@@ -8113,7 +8113,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8865);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8866) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BALGC',
@@ -8136,7 +8136,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8866);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8867) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BALGD',
@@ -8159,7 +8159,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8867);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8868) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCBF',
@@ -8182,7 +8182,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8868);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8869) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCBG',
@@ -8205,7 +8205,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8869);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8870) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCDXP',
@@ -8228,7 +8228,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8870);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8871) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BCEXP',
@@ -8251,7 +8251,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8871);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8872) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDBM',
@@ -8274,7 +8274,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8872);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8873) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDCAA',
@@ -8297,7 +8297,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8873);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8874) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDCAB',
@@ -8320,7 +8320,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8874);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8875) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDCAC',
@@ -8343,7 +8343,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8875);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8876) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDCAD',
@@ -8366,7 +8366,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8876);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8877) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDCAE',
@@ -8389,7 +8389,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8877);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8878) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDCAZ',
@@ -8412,7 +8412,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8878);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8879) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDCBA',
@@ -8435,7 +8435,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8879);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8880) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDCBB',
@@ -8458,7 +8458,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8880);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8881) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDCBC',
@@ -8481,7 +8481,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8881);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8882) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDCBD',
@@ -8504,7 +8504,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8882);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8883) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDCBE',
@@ -8527,7 +8527,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8883);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8884) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDCBZ',
@@ -8550,7 +8550,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8884);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8885) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDCCA',
@@ -8573,7 +8573,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8885);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8886) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDCCB',
@@ -8596,7 +8596,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8886);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8887) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDCCC',
@@ -8619,7 +8619,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8887);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8888) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDCCD',
@@ -8642,7 +8642,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8888);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8889) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDCCE',
@@ -8665,7 +8665,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8889);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8890) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDCCZ',
@@ -8688,7 +8688,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8890);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8891) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDCZA',
@@ -8711,7 +8711,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8891);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8892) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDCZB',
@@ -8734,7 +8734,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8892);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8893) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDCZC',
@@ -8757,7 +8757,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8893);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8894) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDCZD',
@@ -8780,7 +8780,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8894);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8895) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDCZE',
@@ -8803,7 +8803,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8895);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8896) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDCZZ',
@@ -8826,7 +8826,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8896);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8897) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDDC',
@@ -8849,7 +8849,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8897);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8898) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDDD',
@@ -8872,7 +8872,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8898);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8899) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDDE',
@@ -8895,7 +8895,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8899);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8900) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDECA',
@@ -8918,7 +8918,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8900);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8901) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDECB',
@@ -8941,7 +8941,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8901);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8902) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDECC',
@@ -8964,7 +8964,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8902);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8903) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDEDA',
@@ -8987,7 +8987,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8903);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8904) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDEDB',
@@ -9010,7 +9010,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8904);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8905) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDEDC',
@@ -9033,7 +9033,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8905);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8906) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDEEA',
@@ -9056,7 +9056,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8906);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8907) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDEEB',
@@ -9079,7 +9079,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8907);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3714,3716,8908) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_channel',
    field_name = 'channel_damage_code',
    value_name = 'BDEEC',
@@ -9102,7 +9102,7 @@ WHERE (class_id = 3714 AND attribute_id = 3716 AND attribute_id = 8908);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4148) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAAA',
@@ -9125,7 +9125,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4148);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4149) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAAB',
@@ -9148,7 +9148,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4149);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4150) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DABAA',
@@ -9171,7 +9171,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4150);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4151) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DABAB',
@@ -9194,7 +9194,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4151);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4152) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DABAC',
@@ -9217,7 +9217,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4152);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4153) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DABAD',
@@ -9240,7 +9240,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4153);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4154) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DABBA',
@@ -9263,7 +9263,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4154);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4155) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DABBB',
@@ -9286,7 +9286,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4155);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4156) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DABBC',
@@ -9309,7 +9309,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4156);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4157) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DABBD',
@@ -9332,7 +9332,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4157);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4158) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DABCA',
@@ -9355,7 +9355,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4158);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4159) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DABCB',
@@ -9378,7 +9378,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4159);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4160) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DABCC',
@@ -9401,7 +9401,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4160);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4161) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DABCD',
@@ -9424,7 +9424,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4161);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4162) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DACA',
@@ -9447,7 +9447,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4162);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4163) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DACB',
@@ -9470,7 +9470,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4163);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4164) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DACC',
@@ -9493,7 +9493,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4164);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4165) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DADA',
@@ -9516,7 +9516,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4165);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4166) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DADB',
@@ -9539,7 +9539,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4166);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4167) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DADC',
@@ -9562,7 +9562,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4167);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4168) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAE',
@@ -9585,7 +9585,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4168);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4169) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFAA',
@@ -9608,7 +9608,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4169);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4170) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFAB',
@@ -9631,7 +9631,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4170);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4171) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFAC',
@@ -9654,7 +9654,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4171);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4172) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFAD',
@@ -9677,7 +9677,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4172);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4173) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFAE',
@@ -9700,7 +9700,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4173);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4174) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFBA',
@@ -9723,7 +9723,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4174);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4175) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFBE',
@@ -9746,7 +9746,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4175);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4176) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFCA',
@@ -9769,7 +9769,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4176);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4177) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFCB',
@@ -9792,7 +9792,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4177);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4178) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFCC',
@@ -9815,7 +9815,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4178);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4179) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFCD',
@@ -9838,7 +9838,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4179);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4180) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFCE',
@@ -9861,7 +9861,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4180);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4181) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFDA',
@@ -9884,7 +9884,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4181);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4182) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFDB',
@@ -9907,7 +9907,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4182);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4183) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFDC',
@@ -9930,7 +9930,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4183);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4184) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFDD',
@@ -9953,7 +9953,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4184);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4185) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFDE',
@@ -9976,7 +9976,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4185);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4186) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFEA',
@@ -9999,7 +9999,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4186);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4187) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFEB',
@@ -10022,7 +10022,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4187);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4188) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFEC',
@@ -10045,7 +10045,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4188);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4189) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFED',
@@ -10068,7 +10068,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4189);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4190) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFEE',
@@ -10091,7 +10091,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4190);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4191) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFFA',
@@ -10114,7 +10114,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4191);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4192) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFFB',
@@ -10137,7 +10137,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4192);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4193) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFFC',
@@ -10160,7 +10160,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4193);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4194) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFFD',
@@ -10183,7 +10183,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4194);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4195) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFFE',
@@ -10206,7 +10206,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4195);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4196) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFGA',
@@ -10229,7 +10229,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4196);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4197) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFGB',
@@ -10252,7 +10252,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4197);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4198) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFGC',
@@ -10275,7 +10275,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4198);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4199) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFGD',
@@ -10298,7 +10298,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4199);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4200) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFGE',
@@ -10321,7 +10321,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4200);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4201) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFHB',
@@ -10344,7 +10344,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4201);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4202) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFHC',
@@ -10367,7 +10367,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4202);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4203) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFHD',
@@ -10390,7 +10390,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4203);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4204) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFHE',
@@ -10413,7 +10413,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4204);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4205) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFIA',
@@ -10436,7 +10436,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4205);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4206) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFIB',
@@ -10459,7 +10459,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4206);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4207) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFIC',
@@ -10482,7 +10482,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4207);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4208) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFID',
@@ -10505,7 +10505,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4208);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4209) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFIE',
@@ -10528,7 +10528,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4209);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4210) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFJB',
@@ -10551,7 +10551,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4210);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4211) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFJC',
@@ -10574,7 +10574,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4211);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4212) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFJD',
@@ -10597,7 +10597,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4212);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4213) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFJE',
@@ -10620,7 +10620,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4213);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4214) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFZA',
@@ -10643,7 +10643,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4214);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4215) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFZB',
@@ -10666,7 +10666,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4215);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4216) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFZC',
@@ -10689,7 +10689,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4216);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4217) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFZD',
@@ -10712,7 +10712,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4217);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4218) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFZE',
@@ -10735,7 +10735,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4218);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4219) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAG',
@@ -10758,7 +10758,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4219);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4220) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAHA',
@@ -10781,7 +10781,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4220);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4221) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAHB',
@@ -10804,7 +10804,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4221);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4222) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAHC',
@@ -10827,7 +10827,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4222);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4223) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAHD',
@@ -10850,7 +10850,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4223);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4224) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAHE',
@@ -10873,7 +10873,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4224);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4225) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAHZ',
@@ -10896,7 +10896,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4225);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4226) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAIAA',
@@ -10919,7 +10919,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4226);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4227) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAIAB',
@@ -10942,7 +10942,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4227);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4228) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAIAC',
@@ -10965,7 +10965,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4228);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4229) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAIZ',
@@ -10988,7 +10988,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4229);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4230) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAJA',
@@ -11011,7 +11011,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4230);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4231) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAJB',
@@ -11034,7 +11034,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4231);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4232) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAJC',
@@ -11057,7 +11057,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4232);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4233) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAKA',
@@ -11080,7 +11080,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4233);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4234) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAKB',
@@ -11103,7 +11103,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4234);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4235) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAKC',
@@ -11126,7 +11126,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4235);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4236) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAKDA',
@@ -11149,7 +11149,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4236);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4237) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAKDB',
@@ -11172,7 +11172,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4237);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4238) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAKDC',
@@ -11195,7 +11195,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4238);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4239) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAKE',
@@ -11218,7 +11218,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4239);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4240) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAKZ',
@@ -11241,7 +11241,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4240);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4241) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DALA',
@@ -11264,7 +11264,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4241);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4242) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DALB',
@@ -11287,7 +11287,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4242);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4243) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DALZ',
@@ -11310,7 +11310,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4243);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4244) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAMA',
@@ -11333,7 +11333,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4244);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4245) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAMB',
@@ -11356,7 +11356,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4245);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4246) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAMC',
@@ -11379,7 +11379,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4246);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4247) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAN',
@@ -11402,7 +11402,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4247);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4248) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAO',
@@ -11425,7 +11425,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4248);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4249) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAP',
@@ -11448,7 +11448,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4249);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4250) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAQA',
@@ -11471,7 +11471,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4250);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4251) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAQB',
@@ -11494,7 +11494,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4251);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4252) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAQC',
@@ -11517,7 +11517,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4252);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4253) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAQD',
@@ -11540,7 +11540,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4253);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4254) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAQE',
@@ -11563,7 +11563,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4254);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4255) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAQF',
@@ -11586,7 +11586,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4255);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4256) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAQG',
@@ -11609,7 +11609,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4256);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4257) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAQH',
@@ -11632,7 +11632,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4257);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4258) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAQI',
@@ -11655,7 +11655,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4258);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4259) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAQJ',
@@ -11678,7 +11678,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4259);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4260) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAQK',
@@ -11701,7 +11701,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4260);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4261) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAQZ',
@@ -11724,7 +11724,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4261);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4262) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DARA',
@@ -11747,7 +11747,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4262);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4263) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DARB',
@@ -11770,7 +11770,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4263);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4264) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DARC',
@@ -11793,7 +11793,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4264);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4265) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DARD',
@@ -11816,7 +11816,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4265);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4266) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DARE',
@@ -11839,7 +11839,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4266);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4267) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DARF',
@@ -11862,7 +11862,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4267);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4268) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DARG',
@@ -11885,7 +11885,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4268);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4269) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DARH',
@@ -11908,7 +11908,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4269);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4270) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DARZ',
@@ -11931,7 +11931,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4270);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4271) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBAA',
@@ -11954,7 +11954,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4271);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4272) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBAB',
@@ -11977,7 +11977,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4272);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4273) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBAC',
@@ -12000,7 +12000,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4273);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4274) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBBA',
@@ -12023,7 +12023,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4274);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4275) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBBB',
@@ -12046,7 +12046,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4275);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4276) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBBC',
@@ -12069,7 +12069,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4276);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4277) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBBZ',
@@ -12092,7 +12092,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4277);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4278) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBCA',
@@ -12115,7 +12115,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4278);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4279) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBCB',
@@ -12138,7 +12138,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4279);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4280) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBCC',
@@ -12161,7 +12161,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4280);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4281) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBCZ',
@@ -12184,7 +12184,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4281);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4282) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBD',
@@ -12207,7 +12207,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4282);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4283) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBEA',
@@ -12230,7 +12230,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4283);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4284) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBEB',
@@ -12253,7 +12253,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4284);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4285) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBEC',
@@ -12276,7 +12276,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4285);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4286) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBED',
@@ -12299,7 +12299,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4286);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4287) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBEE',
@@ -12322,7 +12322,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4287);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4288) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBEF',
@@ -12345,7 +12345,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4288);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4289) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBEG',
@@ -12368,7 +12368,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4289);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4290) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBEH',
@@ -12391,7 +12391,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4290);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4291) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBEZ',
@@ -12414,7 +12414,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4291);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4292) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBFAA',
@@ -12437,7 +12437,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4292);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4293) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBFAB',
@@ -12460,7 +12460,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4293);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4294) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBFAC',
@@ -12483,7 +12483,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4294);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4295) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBFBA',
@@ -12506,7 +12506,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4295);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4296) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBFBB',
@@ -12529,7 +12529,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4296);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4297) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBFBC',
@@ -12552,7 +12552,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4297);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4298) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBFCA',
@@ -12575,7 +12575,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4298);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4299) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBFCB',
@@ -12598,7 +12598,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4299);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4300) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBFCC',
@@ -12621,7 +12621,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4300);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4301) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBFDA',
@@ -12644,7 +12644,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4301);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4302) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBFDB',
@@ -12667,7 +12667,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4302);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4303) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBFDC',
@@ -12690,7 +12690,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4303);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4304) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBG',
@@ -12713,7 +12713,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4304);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4305) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBHAA',
@@ -12736,7 +12736,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4305);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4306) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBHAB',
@@ -12759,7 +12759,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4306);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4307) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBHAC',
@@ -12782,7 +12782,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4307);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4308) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBHAZ',
@@ -12805,7 +12805,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4308);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4309) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBHBA',
@@ -12828,7 +12828,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4309);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4310) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBHBB',
@@ -12851,7 +12851,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4310);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4311) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBHBC',
@@ -12874,7 +12874,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4311);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4312) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBHBZ',
@@ -12897,7 +12897,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4312);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4313) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBHZA',
@@ -12920,7 +12920,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4313);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4314) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBHZB',
@@ -12943,7 +12943,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4314);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4315) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBHZC',
@@ -12966,7 +12966,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4315);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4316) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DBHZZ',
@@ -12989,7 +12989,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4316);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4317) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCAA',
@@ -13012,7 +13012,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4317);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4318) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCAB',
@@ -13035,7 +13035,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4318);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4319) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCAC',
@@ -13058,7 +13058,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4319);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4320) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCAD',
@@ -13081,7 +13081,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4320);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4321) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCAE',
@@ -13104,7 +13104,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4321);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4322) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCAF',
@@ -13127,7 +13127,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4322);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4323) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCAZ',
@@ -13150,7 +13150,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4323);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4324) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCBA',
@@ -13173,7 +13173,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4324);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4325) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCBB',
@@ -13196,7 +13196,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4325);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4326) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCBC',
@@ -13219,7 +13219,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4326);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4327) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCBZ',
@@ -13242,7 +13242,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4327);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4328) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCFA',
@@ -13265,7 +13265,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4328);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4329) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCFB',
@@ -13288,7 +13288,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4329);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4330) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCFC',
@@ -13311,7 +13311,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4330);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4331) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCFD',
@@ -13334,7 +13334,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4331);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4332) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCFE',
@@ -13357,7 +13357,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4332);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4333) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCFF',
@@ -13380,7 +13380,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4333);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4334) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCFG',
@@ -13403,7 +13403,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4334);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4335) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCFH',
@@ -13426,7 +13426,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4335);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4336) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCFI',
@@ -13449,7 +13449,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4336);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4337) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCFJ',
@@ -13472,7 +13472,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4337);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4338) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCFK',
@@ -13495,7 +13495,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4338);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4339) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCFL',
@@ -13518,7 +13518,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4339);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4340) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCFM',
@@ -13541,7 +13541,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4340);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4341) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCFN',
@@ -13564,7 +13564,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4341);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4342) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCFO',
@@ -13587,7 +13587,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4342);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4343) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCFP',
@@ -13610,7 +13610,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4343);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4344) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCFQ',
@@ -13633,7 +13633,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4344);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4345) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCFR',
@@ -13656,7 +13656,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4345);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4346) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCFS',
@@ -13679,7 +13679,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4346);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4347) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCFT',
@@ -13702,7 +13702,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4347);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4348) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCFU',
@@ -13725,7 +13725,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4348);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4349) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCFV',
@@ -13748,7 +13748,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4349);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4350) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCFW',
@@ -13771,7 +13771,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4350);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4351) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCFX',
@@ -13794,7 +13794,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4351);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4352) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCGAA',
@@ -13817,7 +13817,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4352);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4353) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCGAB',
@@ -13840,7 +13840,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4353);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4354) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCGAC',
@@ -13863,7 +13863,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4354);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4355) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCGBA',
@@ -13886,7 +13886,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4355);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4356) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCGBB',
@@ -13909,7 +13909,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4356);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4357) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCGBC',
@@ -13932,7 +13932,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4357);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4358) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCGCA',
@@ -13955,7 +13955,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4358);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4359) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCGCB',
@@ -13978,7 +13978,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4359);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4360) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCGCC',
@@ -14001,7 +14001,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4360);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4364) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCGXAA',
@@ -14024,7 +14024,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4364);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4365) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCGXAB',
@@ -14047,7 +14047,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4365);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4366) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCGXAC',
@@ -14070,7 +14070,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4366);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4367) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCGXBA',
@@ -14093,7 +14093,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4367);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4368) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCGXBB',
@@ -14116,7 +14116,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4368);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4369) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCGXBC',
@@ -14139,7 +14139,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4369);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4370) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCGXCA',
@@ -14162,7 +14162,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4370);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4371) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCGXCB',
@@ -14185,7 +14185,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4371);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4372) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCGXCC',
@@ -14208,7 +14208,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4372);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4373) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCGYA',
@@ -14231,7 +14231,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4373);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4374) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCGYB',
@@ -14254,7 +14254,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4374);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4375) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCGYC',
@@ -14277,7 +14277,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4375);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4376) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCGZA',
@@ -14300,7 +14300,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4376);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4377) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCGZB',
@@ -14323,7 +14323,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4377);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4378) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCGZC',
@@ -14346,7 +14346,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4378);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4379) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCHA',
@@ -14369,7 +14369,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4379);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4382) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCHB',
@@ -14392,7 +14392,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4382);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4384) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCIB',
@@ -14415,7 +14415,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4384);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4385) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCLAA',
@@ -14438,7 +14438,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4385);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4386) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCLAB',
@@ -14461,7 +14461,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4386);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4387) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCLBA',
@@ -14484,7 +14484,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4387);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4388) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCLBB',
@@ -14507,7 +14507,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4388);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4389) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCLCA',
@@ -14530,7 +14530,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4389);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4390) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCLCB',
@@ -14553,7 +14553,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4390);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4391) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCMA',
@@ -14576,7 +14576,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4391);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4392) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCMB',
@@ -14599,7 +14599,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4392);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4393) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCMC',
@@ -14622,7 +14622,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4393);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4394) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDA',
@@ -14645,7 +14645,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4394);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4395) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDB',
@@ -14668,7 +14668,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4395);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4401) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDD',
@@ -14691,7 +14691,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4401);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4402) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDEAA',
@@ -14714,7 +14714,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4402);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4403) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDEAB',
@@ -14737,7 +14737,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4403);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4404) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDEAC',
@@ -14760,7 +14760,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4404);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4408) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDEYA',
@@ -14783,7 +14783,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4408);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4409) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDEYB',
@@ -14806,7 +14806,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4409);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4410) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDEYY',
@@ -14829,7 +14829,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4410);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4411) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDFA',
@@ -14852,7 +14852,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4411);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4412) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDFB',
@@ -14875,7 +14875,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4412);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4413) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDFC',
@@ -14898,7 +14898,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4413);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4414) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDFZ',
@@ -14921,7 +14921,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4414);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4416) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDGA',
@@ -14944,7 +14944,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4416);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4417) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDGB',
@@ -14967,7 +14967,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4417);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4418) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDGC',
@@ -14990,7 +14990,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4418);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,4419) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDGZ',
@@ -15013,7 +15013,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 4419);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8909) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DABAE',
@@ -15036,7 +15036,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8909);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8910) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DABBE',
@@ -15059,7 +15059,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8910);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8911) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DABCE',
@@ -15082,7 +15082,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8911);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8912) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFAZ',
@@ -15105,7 +15105,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8912);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8913) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFBZ',
@@ -15128,7 +15128,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8913);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8914) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFCZ',
@@ -15151,7 +15151,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8914);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8915) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFDZ',
@@ -15174,7 +15174,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8915);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8916) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFEZ',
@@ -15197,7 +15197,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8916);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8917) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFFZ',
@@ -15220,7 +15220,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8917);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8918) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFGZ',
@@ -15243,7 +15243,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8918);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8919) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFIZ',
@@ -15266,7 +15266,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8919);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8920) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFJZ',
@@ -15289,7 +15289,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8920);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8921) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFKA',
@@ -15312,7 +15312,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8921);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8922) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFKE',
@@ -15335,7 +15335,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8922);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8923) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFKZ',
@@ -15358,7 +15358,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8923);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8924) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAFZZ',
@@ -15381,7 +15381,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8924);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8925) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAKDD',
@@ -15404,7 +15404,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8925);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8926) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAKF',
@@ -15427,7 +15427,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8926);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8927) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAKG',
@@ -15450,7 +15450,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8927);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8928) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAKH',
@@ -15473,7 +15473,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8928);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8929) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAKI',
@@ -15496,7 +15496,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8929);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8930) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAKJ',
@@ -15519,7 +15519,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8930);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8931) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAKK',
@@ -15542,7 +15542,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8931);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8932) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAKL',
@@ -15565,7 +15565,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8932);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8933) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAKM',
@@ -15588,7 +15588,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8933);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8934) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DAKN',
@@ -15611,7 +15611,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8934);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8935) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DALC',
@@ -15634,7 +15634,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8935);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8936) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DALD',
@@ -15657,7 +15657,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8936);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8937) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DALE',
@@ -15680,7 +15680,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8937);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8938) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DALF',
@@ -15703,7 +15703,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8938);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8939) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DALG',
@@ -15726,7 +15726,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8939);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8940) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCBD',
@@ -15749,7 +15749,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8940);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8941) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCBE',
@@ -15772,7 +15772,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8941);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8942) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCBF',
@@ -15795,7 +15795,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8942);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8943) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCHC',
@@ -15818,7 +15818,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8943);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8944) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCIAA',
@@ -15841,7 +15841,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8944);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8945) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCIAB',
@@ -15864,7 +15864,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8945);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8946) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCIAC',
@@ -15887,7 +15887,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8946);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8947) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCIAD',
@@ -15910,7 +15910,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8947);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8948) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCIAZ',
@@ -15933,7 +15933,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8948);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8949) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCIBY',
@@ -15956,7 +15956,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8949);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8950) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DCICY',
@@ -15979,7 +15979,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8950);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8951) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDCAB',
@@ -16002,7 +16002,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8951);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8952) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDCAZ',
@@ -16025,7 +16025,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8952);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8953) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDCBA',
@@ -16048,7 +16048,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8953);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8954) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDCBB',
@@ -16071,7 +16071,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8954);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8955) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDCBZ',
@@ -16094,7 +16094,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8955);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8956) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDCCA',
@@ -16117,7 +16117,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8956);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8957) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDCCB',
@@ -16140,7 +16140,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8957);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8958) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDCCZ',
@@ -16163,7 +16163,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8958);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8959) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDCDA',
@@ -16186,7 +16186,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8959);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8960) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDCDB',
@@ -16209,7 +16209,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8960);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8961) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDCDZ',
@@ -16232,7 +16232,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8961);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8962) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDCZA',
@@ -16255,7 +16255,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8962);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8963) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDCZB',
@@ -16278,7 +16278,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8963);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8964) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDCZZ',
@@ -16301,7 +16301,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8964);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8965) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDECA',
@@ -16324,7 +16324,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8965);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8966) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDECB',
@@ -16347,7 +16347,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8966);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8967) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDECC',
@@ -16370,7 +16370,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8967);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8968) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDEDA',
@@ -16393,7 +16393,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8968);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8969) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDEDB',
@@ -16416,7 +16416,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8969);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8970) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDEDC',
@@ -16439,7 +16439,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8970);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8971) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDEEA',
@@ -16462,7 +16462,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8971);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8972) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDEEB',
@@ -16485,7 +16485,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8972);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3732,8973) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_damage_code',
    value_name = 'DDEEC',
@@ -16508,7 +16508,7 @@ WHERE (class_id = 3728 AND attribute_id = 3732 AND attribute_id = 8973);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3742,3743) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_shaft_area',
    value_name = 'A',
@@ -16531,7 +16531,7 @@ WHERE (class_id = 3728 AND attribute_id = 3742 AND attribute_id = 3743);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3742,3744) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_shaft_area',
    value_name = 'B',
@@ -16554,7 +16554,7 @@ WHERE (class_id = 3728 AND attribute_id = 3742 AND attribute_id = 3744);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3742,3745) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_shaft_area',
    value_name = 'D',
@@ -16577,7 +16577,7 @@ WHERE (class_id = 3728 AND attribute_id = 3742 AND attribute_id = 3745);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3742,3746) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_shaft_area',
    value_name = 'F',
@@ -16600,7 +16600,7 @@ WHERE (class_id = 3728 AND attribute_id = 3742 AND attribute_id = 3746);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3742,3747) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_shaft_area',
    value_name = 'H',
@@ -16623,7 +16623,7 @@ WHERE (class_id = 3728 AND attribute_id = 3742 AND attribute_id = 3747);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3742,3748) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_shaft_area',
    value_name = 'I',
@@ -16646,7 +16646,7 @@ WHERE (class_id = 3728 AND attribute_id = 3742 AND attribute_id = 3748);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3728,3742,3749) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'damage_manhole',
    field_name = 'manhole_shaft_area',
    value_name = 'J',
@@ -16669,7 +16669,7 @@ WHERE (class_id = 3728 AND attribute_id = 3742 AND attribute_id = 3749);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3800) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'throttle_shut_off_unit',
@@ -16692,7 +16692,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3800);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3801) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'wastewater_structure',
@@ -16715,7 +16715,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3801);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3802) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'waster_water_treatment',
@@ -16738,7 +16738,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3802);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3803) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'wastewater_node',
@@ -16761,7 +16761,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3803);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3804) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'wastewater_networkelement',
@@ -16784,7 +16784,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3804);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3805) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'waste_water_treatment_plant',
@@ -16807,7 +16807,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3805);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3806) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'waste_water_association',
@@ -16830,7 +16830,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3806);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3807) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'administrative_office',
@@ -16853,7 +16853,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3807);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3808) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'connection_object',
@@ -16876,7 +16876,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3808);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3809) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'wwtp_structure',
@@ -16899,7 +16899,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3809);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3810) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'wwtp_energy_use',
@@ -16922,7 +16922,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3810);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3811) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'bathing_area',
@@ -16945,7 +16945,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3811);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3812) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'benching',
@@ -16968,7 +16968,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3812);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3813) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'structure_part',
@@ -16991,7 +16991,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3813);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3814) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'well',
@@ -17014,7 +17014,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3814);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3815) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'file',
@@ -17037,7 +17037,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3815);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3816) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'data_media',
@@ -17060,7 +17060,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3816);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3817) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'cover',
@@ -17083,7 +17083,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3817);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3818) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'passage',
@@ -17106,7 +17106,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3818);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3819) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'access_aid',
@@ -17129,7 +17129,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3819);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3820) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'individual_surface',
@@ -17152,7 +17152,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3820);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3821) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'catchment_area',
@@ -17175,7 +17175,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3821);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3822) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'electric_equipment',
@@ -17198,7 +17198,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3822);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3823) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'electromechanical_equipment',
@@ -17221,7 +17221,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3823);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3824) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'drainage_system',
@@ -17244,7 +17244,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3824);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3825) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'maintenance_event',
@@ -17267,7 +17267,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3825);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3826) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'fish_pass',
@@ -17290,7 +17290,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3826);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3827) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'river',
@@ -17313,7 +17313,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3827);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3828) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'pump',
@@ -17336,7 +17336,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3828);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3829) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'ford',
@@ -17359,7 +17359,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3829);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3830) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'building',
@@ -17382,7 +17382,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3830);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3831) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'hazard_source',
@@ -17405,7 +17405,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3831);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3832) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'municipality',
@@ -17428,7 +17428,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3832);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3833) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'blocking_debris',
@@ -17451,7 +17451,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3833);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3834) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'water_course_segment',
@@ -17474,7 +17474,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3834);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3835) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'chute',
@@ -17497,7 +17497,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3835);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3836) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'water_body_protection_sector',
@@ -17520,7 +17520,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3836);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3837) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'sector_water_body',
@@ -17543,7 +17543,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3837);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3838) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'river_bed',
@@ -17566,7 +17566,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3838);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3839) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'water_control_structure',
@@ -17589,7 +17589,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3839);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3840) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'dam',
@@ -17612,7 +17612,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3840);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3841) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'aquifer',
@@ -17635,7 +17635,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3841);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3842) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'ground_water_protection_perimeter',
@@ -17658,7 +17658,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3842);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3843) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'groundwater_protection_zone',
@@ -17681,7 +17681,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3843);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3844) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'reach',
@@ -17704,7 +17704,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3844);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3845) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'reach_point',
@@ -17727,7 +17727,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3845);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3846) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'hq_relation',
@@ -17750,7 +17750,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3846);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3847) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'hydr_geometry',
@@ -17773,7 +17773,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3847);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3848) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'hydr_geom_relation',
@@ -17796,7 +17796,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3848);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3849) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'channel',
@@ -17819,7 +17819,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3849);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3850) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'damage_channel',
@@ -17842,7 +17842,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3850);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3851) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'canton',
@@ -17865,7 +17865,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3851);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3852) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'leapingweir',
@@ -17888,7 +17888,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3852);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3853) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'mechanical_pretreatment',
@@ -17911,7 +17911,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3853);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3854) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'measurement_device',
@@ -17934,7 +17934,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3854);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3855) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'measurement_series',
@@ -17957,7 +17957,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3855);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3856) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'measurement_result',
@@ -17980,7 +17980,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3856);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3857) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'measuring_point',
@@ -18003,7 +18003,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3857);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3858) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'standard_manhole',
@@ -18026,7 +18026,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3858);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3859) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'damage_manhole',
@@ -18049,7 +18049,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3859);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3861) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'surface_runoff_parameters',
@@ -18072,7 +18072,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3861);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3862) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'surface_water_bodies',
@@ -18095,7 +18095,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3862);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3863) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'organisation',
@@ -18118,7 +18118,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3863);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3864) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'planning_zone',
@@ -18141,7 +18141,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3864);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3865) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'private',
@@ -18164,7 +18164,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3865);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3866) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'cleaning_device',
@@ -18187,7 +18187,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3866);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3867) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'reservoir',
@@ -18210,7 +18210,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3867);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3868) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'retention_body',
@@ -18233,7 +18233,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3868);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3869) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'pipe_profile',
@@ -18256,7 +18256,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3869);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3870) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'profile_geometry',
@@ -18279,7 +18279,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3870);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3871) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'damage',
@@ -18302,7 +18302,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3871);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3872) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'sludge_treatment',
@@ -18325,7 +18325,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3872);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3873) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'lock',
@@ -18348,7 +18348,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3873);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3874) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'lake',
@@ -18371,7 +18371,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3874);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3875) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'rock_ramp',
@@ -18394,7 +18394,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3875);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3876) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'special_structure',
@@ -18417,7 +18417,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3876);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3877) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'control_center',
@@ -18440,7 +18440,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3877);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3878) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'substance',
@@ -18463,7 +18463,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3878);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3879) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'prank_weir',
@@ -18486,7 +18486,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3879);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3880) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'dryweather_downspout',
@@ -18509,7 +18509,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3880);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3881) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'dryweather_flume',
@@ -18532,7 +18532,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3881);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3882) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'overflow',
@@ -18555,7 +18555,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3882);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3883) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'overflow_characteristic',
@@ -18578,7 +18578,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3883);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3884) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'shore',
@@ -18601,7 +18601,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3884);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3885) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'accident',
@@ -18624,7 +18624,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3885);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3886) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'examination',
@@ -18647,7 +18647,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3886);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3887) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'infiltration_installation',
@@ -18670,7 +18670,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3887);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3888) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'infiltration_zone',
@@ -18693,7 +18693,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3888);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3890) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'water_catchment',
@@ -18716,7 +18716,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3890);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,3891) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'zone',
@@ -18739,7 +18739,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 3891);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,5083) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'discharge_point',
@@ -18762,7 +18762,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 5083);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,9026) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'flushing_nozzle',
@@ -18785,7 +18785,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 9026);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,9027) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'bio_ecol_assessment',
@@ -18808,7 +18808,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 9027);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,9028) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'disposal',
@@ -18831,7 +18831,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 9028);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,9029) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'solids_retention',
@@ -18854,7 +18854,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 9029);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,9030) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'building_group',
@@ -18877,7 +18877,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 9030);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,9031) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'building_group_baugwr',
@@ -18900,7 +18900,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 9031);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,9032) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'cooperative',
@@ -18923,7 +18923,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 9032);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,9033) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'hydraulic_char_data',
@@ -18946,7 +18946,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 9033);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,9034) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'small_treatment_plant',
@@ -18969,7 +18969,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 9034);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,9035) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'farm',
@@ -18992,7 +18992,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 9035);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,9036) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'measure',
@@ -19015,7 +19015,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 9036);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,9037) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'log_card',
@@ -19038,7 +19038,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 9037);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,9038) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'tank_emptying',
@@ -19061,7 +19061,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 9038);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,9039) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'tank_cleaning',
@@ -19084,7 +19084,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 9039);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,9040) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'backflow_prevention',
@@ -19107,7 +19107,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 9040);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,9041) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'catchment_area_totals',
@@ -19130,7 +19130,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 9041);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,9042) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'disposal_without_drain',
@@ -19153,7 +19153,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 9042);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,9043) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'disposal_with_drain',
@@ -19176,7 +19176,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 9043);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3764,9044) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'classname',
    value_name = 'drainless_toilet',
@@ -19199,7 +19199,7 @@ WHERE (class_id = 3754 AND attribute_id = 3764 AND attribute_id = 9044);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3769,3770) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'kind',
    value_name = 'other',
@@ -19222,7 +19222,7 @@ WHERE (class_id = 3754 AND attribute_id = 3769 AND attribute_id = 3770);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3769,3772) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'kind',
    value_name = 'photo',
@@ -19245,7 +19245,7 @@ WHERE (class_id = 3754 AND attribute_id = 3769 AND attribute_id = 3772);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3769,3773) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'kind',
    value_name = 'panoramo_film',
@@ -19268,7 +19268,7 @@ WHERE (class_id = 3754 AND attribute_id = 3769 AND attribute_id = 3773);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3769,3774) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'kind',
    value_name = 'textfile',
@@ -19291,7 +19291,7 @@ WHERE (class_id = 3754 AND attribute_id = 3769 AND attribute_id = 3774);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3769,3775) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'kind',
    value_name = 'video',
@@ -19314,7 +19314,7 @@ WHERE (class_id = 3754 AND attribute_id = 3769 AND attribute_id = 3775);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3769,8812) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'kind',
    value_name = 'sketch',
@@ -19337,7 +19337,7 @@ WHERE (class_id = 3754 AND attribute_id = 3769 AND attribute_id = 8812);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3769,9146) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'kind',
    value_name = 'digital_video',
@@ -19360,7 +19360,7 @@ WHERE (class_id = 3754 AND attribute_id = 3769 AND attribute_id = 9146);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3754,3769,9147) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'file',
    field_name = 'kind',
    value_name = 'scan',
@@ -19383,7 +19383,7 @@ WHERE (class_id = 3754 AND attribute_id = 3769 AND attribute_id = 9147);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3776,3783,3784) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'data_media',
    field_name = 'kind',
    value_name = 'other',
@@ -19406,7 +19406,7 @@ WHERE (class_id = 3776 AND attribute_id = 3783 AND attribute_id = 3784);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3776,3783,3785) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'data_media',
    field_name = 'kind',
    value_name = 'CD',
@@ -19429,7 +19429,7 @@ WHERE (class_id = 3776 AND attribute_id = 3783 AND attribute_id = 3785);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3776,3783,3786) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'data_media',
    field_name = 'kind',
    value_name = 'floppy_disc',
@@ -19452,7 +19452,7 @@ WHERE (class_id = 3776 AND attribute_id = 3783 AND attribute_id = 3786);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3776,3783,3787) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'data_media',
    field_name = 'kind',
    value_name = 'dvd',
@@ -19475,7 +19475,7 @@ WHERE (class_id = 3776 AND attribute_id = 3783 AND attribute_id = 3787);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3776,3783,3788) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'data_media',
    field_name = 'kind',
    value_name = 'harddisc',
@@ -19498,7 +19498,7 @@ WHERE (class_id = 3776 AND attribute_id = 3783 AND attribute_id = 3788);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3776,3783,3789) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'data_media',
    field_name = 'kind',
    value_name = 'server',
@@ -19521,7 +19521,7 @@ WHERE (class_id = 3776 AND attribute_id = 3783 AND attribute_id = 3789);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3776,3783,3790) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'data_media',
    field_name = 'kind',
    value_name = 'videotape',
@@ -19544,7 +19544,7 @@ WHERE (class_id = 3776 AND attribute_id = 3783 AND attribute_id = 3790);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3776,3783,9318) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'data_media',
    field_name = 'kind',
    value_name = 'webserver',
@@ -19564,5 +19564,3 @@ UPDATE tww_sys.dictionary_od_values SET
    value_description_it = 'Server web con URI (https://de.wikipedia.org/wiki/Uniform_Resource_Identifier)',
    value_description_ro = 'Server web cu URI (https://de.wikipedia.org/wiki/Uniform_Resource_Identifier)'
 WHERE (class_id = 3776 AND attribute_id = 3783 AND attribute_id = 9318);
-
-

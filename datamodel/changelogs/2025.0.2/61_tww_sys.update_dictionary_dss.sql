@@ -6,7 +6,7 @@
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (1001,'dryweather_downspout') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'dryweather_downspout',
    name_en = 'dryweather downspout',
    shortcut_en = 'DD',
@@ -23,7 +23,7 @@ WHERE (id = 1001 AND tablename = 'dryweather_downspout');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (1022,'param_ca_mouse1') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'param_ca_mouse1',
    name_en = 'param ca mouse1',
    shortcut_en = 'PM',
@@ -40,7 +40,7 @@ WHERE (id = 1022 AND tablename = 'param_ca_mouse1');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (1033,'fountain') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'fountain',
    name_en = 'fountain',
    shortcut_en = 'FO',
@@ -57,7 +57,7 @@ WHERE (id = 1033 AND tablename = 'fountain');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (1034,'reservoir') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'reservoir',
    name_en = 'reservoir',
    shortcut_en = 'RV',
@@ -74,7 +74,7 @@ WHERE (id = 1034 AND tablename = 'reservoir');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (1035,'building') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'building',
    name_en = 'building',
    shortcut_en = 'BU',
@@ -91,7 +91,7 @@ WHERE (id = 1035 AND tablename = 'building');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (1036,'individual_surface') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'individual_surface',
    name_en = 'individual surface',
    shortcut_en = 'IE',
@@ -108,7 +108,7 @@ WHERE (id = 1036 AND tablename = 'individual_surface');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (105,'zone') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'zone',
    name_en = 'zone',
    shortcut_en = 'ZO',
@@ -125,7 +125,7 @@ WHERE (id = 105 AND tablename = 'zone');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (106,'infiltration_zone') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'infiltration_zone',
    name_en = 'infiltration zone',
    shortcut_en = 'IZ',
@@ -142,7 +142,7 @@ WHERE (id = 106 AND tablename = 'infiltration_zone');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (107,'benching') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'benching',
    name_en = 'benching',
    shortcut_en = 'BE',
@@ -159,7 +159,7 @@ WHERE (id = 107 AND tablename = 'benching');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (108,'wwtp_energy_use') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'wwtp_energy_use',
    name_en = 'wwtp energy use',
    shortcut_en = 'EU',
@@ -176,7 +176,7 @@ WHERE (id = 108 AND tablename = 'wwtp_energy_use');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (109,'electric_equipment') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'electric_equipment',
    name_en = 'electric equipment',
    shortcut_en = 'EE',
@@ -193,7 +193,7 @@ WHERE (id = 109 AND tablename = 'electric_equipment');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (110,'electromechanical_equipment') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'electromechanical_equipment',
    name_en = 'electromechanical equipment',
    shortcut_en = 'EQ',
@@ -210,7 +210,7 @@ WHERE (id = 110 AND tablename = 'electromechanical_equipment');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (111,'maintenance_event') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'maintenance_event',
    name_en = 'maintenance event',
    shortcut_en = 'ME',
@@ -227,7 +227,7 @@ WHERE (id = 111 AND tablename = 'maintenance_event');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (13,'structure_part') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'structure_part',
    name_en = 'structure part',
    shortcut_en = 'SP',
@@ -244,7 +244,7 @@ WHERE (id = 13 AND tablename = 'structure_part');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (15,'cover') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'cover',
    name_en = 'cover',
    shortcut_en = 'CO',
@@ -261,7 +261,7 @@ WHERE (id = 15 AND tablename = 'cover');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (16,'throttle_shut_off_unit') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'throttle_shut_off_unit',
    name_en = 'throttle shut off unit',
    shortcut_en = 'TS',
@@ -278,7 +278,7 @@ WHERE (id = 16 AND tablename = 'throttle_shut_off_unit');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (18,'access_aid') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'access_aid',
    name_en = 'access aid',
    shortcut_en = 'AA',
@@ -295,7 +295,7 @@ WHERE (id = 18 AND tablename = 'access_aid');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (19,'catchment_area') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'catchment_area',
    name_en = 'catchment area',
    shortcut_en = 'CA',
@@ -312,7 +312,7 @@ WHERE (id = 19 AND tablename = 'catchment_area');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (2,'wastewater_structure') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'wastewater_structure',
    name_en = 'wastewater structure',
    shortcut_en = 'WS',
@@ -329,7 +329,7 @@ WHERE (id = 2 AND tablename = 'wastewater_structure');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (2721,'drainage_system') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'drainage_system',
    name_en = 'drainage system',
    shortcut_en = 'DS',
@@ -346,7 +346,7 @@ WHERE (id = 2721 AND tablename = 'drainage_system');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (2723,'control_center') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'control_center',
    name_en = 'control center',
    shortcut_en = 'CC',
@@ -363,7 +363,7 @@ WHERE (id = 2723 AND tablename = 'control_center');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (2964,'profile_geometry') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'profile_geometry',
    name_en = 'profile geometry',
    shortcut_en = 'PG',
@@ -380,7 +380,7 @@ WHERE (id = 2964 AND tablename = 'profile_geometry');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (3,'waste_water_treatment') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'waste_water_treatment',
    name_en = 'waste water treatment',
    shortcut_en = 'TR',
@@ -397,7 +397,7 @@ WHERE (id = 3 AND tablename = 'waste_water_treatment');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (31,'reach') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'reach',
    name_en = 'reach',
    shortcut_en = 'RE',
@@ -414,7 +414,7 @@ WHERE (id = 31 AND tablename = 'reach');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (3189,'param_ca_general') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'param_ca_general',
    name_en = 'param ca general',
    shortcut_en = 'PC',
@@ -431,7 +431,7 @@ WHERE (id = 3189 AND tablename = 'param_ca_general');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (32,'reach_point') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'reach_point',
    name_en = 'reach point',
    shortcut_en = 'RP',
@@ -448,7 +448,7 @@ WHERE (id = 32 AND tablename = 'reach_point');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (33,'hq_relation') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'hq_relation',
    name_en = 'hq relation',
    shortcut_en = 'HQ',
@@ -465,7 +465,7 @@ WHERE (id = 33 AND tablename = 'hq_relation');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (36,'hydr_geometry') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'hydr_geometry',
    name_en = 'hydraulic geometry',
    shortcut_en = 'HG',
@@ -482,7 +482,7 @@ WHERE (id = 36 AND tablename = 'hydr_geometry');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (37,'hydr_geom_relation') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'hydr_geom_relation',
    name_en = 'hydr geom relation',
    shortcut_en = 'HR',
@@ -499,7 +499,7 @@ WHERE (id = 37 AND tablename = 'hydr_geom_relation');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (38,'channel') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'channel',
    name_en = 'channel',
    shortcut_en = 'CH',
@@ -516,7 +516,7 @@ WHERE (id = 38 AND tablename = 'channel');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (4,'wastewater_node') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'wastewater_node',
    name_en = 'wastewater node',
    shortcut_en = 'WN',
@@ -533,7 +533,7 @@ WHERE (id = 4 AND tablename = 'wastewater_node');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (41,'leapingweir') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'leapingweir',
    name_en = 'leapingweir',
    shortcut_en = 'LW',
@@ -550,7 +550,7 @@ WHERE (id = 41 AND tablename = 'leapingweir');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (42,'measurement_series') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'measurement_series',
    name_en = 'measurement series',
    shortcut_en = 'MS',
@@ -567,7 +567,7 @@ WHERE (id = 42 AND tablename = 'measurement_series');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (43,'measurement_result') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'measurement_result',
    name_en = 'measurement result',
    shortcut_en = 'MR',
@@ -584,7 +584,7 @@ WHERE (id = 43 AND tablename = 'measurement_result');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (44,'measuring_point') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'measuring_point',
    name_en = 'measuring point',
    shortcut_en = 'MP',
@@ -601,7 +601,7 @@ WHERE (id = 44 AND tablename = 'measuring_point');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (45,'manhole') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'manhole',
    name_en = 'manhole',
    shortcut_en = 'MA',
@@ -618,7 +618,7 @@ WHERE (id = 45 AND tablename = 'manhole');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (46,'surface_runoff_parameters') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'surface_runoff_parameters',
    name_en = 'surface runoff parameters',
    shortcut_en = 'SR',
@@ -635,7 +635,7 @@ WHERE (id = 46 AND tablename = 'surface_runoff_parameters');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (47,'organisation') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'organisation',
    name_en = 'organisation',
    shortcut_en = 'OG',
@@ -652,7 +652,7 @@ WHERE (id = 47 AND tablename = 'organisation');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (49,'pipe_profile') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'pipe_profile',
    name_en = 'pipe profile',
    shortcut_en = 'PP',
@@ -669,7 +669,7 @@ WHERE (id = 49 AND tablename = 'pipe_profile');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (5,'wastewater_networkelement') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'wastewater_networkelement',
    name_en = 'wastewater networkelement',
    shortcut_en = 'WE',
@@ -686,7 +686,7 @@ WHERE (id = 5 AND tablename = 'wastewater_networkelement');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (50,'pump') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'pump',
    name_en = 'pump',
    shortcut_en = 'PU',
@@ -703,7 +703,7 @@ WHERE (id = 50 AND tablename = 'pump');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (5100,'log_card') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'log_card',
    name_en = 'log card',
    shortcut_en = 'LC',
@@ -720,7 +720,7 @@ WHERE (id = 5100 AND tablename = 'log_card');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (5101,'tank_emptying') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'tank_emptying',
    name_en = 'tank emptying',
    shortcut_en = 'TE',
@@ -737,7 +737,7 @@ WHERE (id = 5101 AND tablename = 'tank_emptying');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (5102,'tank_cleaning') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'tank_cleaning',
    name_en = 'tank cleaning',
    shortcut_en = 'TC',
@@ -754,7 +754,7 @@ WHERE (id = 5102 AND tablename = 'tank_cleaning');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (5103,'solids_retention') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'solids_retention',
    name_en = 'solids retention',
    shortcut_en = 'SO',
@@ -771,7 +771,7 @@ WHERE (id = 5103 AND tablename = 'solids_retention');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (5104,'backflow_prevention') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'backflow_prevention',
    name_en = 'backflow prevention',
    shortcut_en = 'BP',
@@ -788,7 +788,7 @@ WHERE (id = 5104 AND tablename = 'backflow_prevention');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (5105,'catchment_area_totals') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'catchment_area_totals',
    name_en = 'catchment area totals',
    shortcut_en = 'CM',
@@ -805,7 +805,7 @@ WHERE (id = 5105 AND tablename = 'catchment_area_totals');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (5106,'bio_ecol_assessment') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'bio_ecol_assessment',
    name_en = 'biological and ecological overall assessment',
    shortcut_en = 'BO',
@@ -822,7 +822,7 @@ WHERE (id = 5106 AND tablename = 'bio_ecol_assessment');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (5107,'hydraulic_char_data') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'hydraulic_char_data',
    name_en = 'hydraulic characteristic data',
    shortcut_en = 'HC',
@@ -839,7 +839,7 @@ WHERE (id = 5107 AND tablename = 'hydraulic_char_data');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (53,'retention_body') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'retention_body',
    name_en = 'retention body',
    shortcut_en = 'RB',
@@ -856,7 +856,7 @@ WHERE (id = 53 AND tablename = 'retention_body');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (55,'sludge_treatment') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'sludge_treatment',
    name_en = 'sludge treatment',
    shortcut_en = 'ST',
@@ -873,7 +873,7 @@ WHERE (id = 55 AND tablename = 'sludge_treatment');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (57,'special_structure') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'special_structure',
    name_en = 'special structure',
    shortcut_en = 'SS',
@@ -890,7 +890,7 @@ WHERE (id = 57 AND tablename = 'special_structure');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (60,'prank_weir') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'prank_weir',
    name_en = 'prank weir',
    shortcut_en = 'PW',
@@ -907,7 +907,7 @@ WHERE (id = 60 AND tablename = 'prank_weir');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (6100,'building_group') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'building_group',
    name_en = 'building group',
    shortcut_en = 'BG',
@@ -924,7 +924,7 @@ WHERE (id = 6100 AND tablename = 'building_group');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (6101,'farm') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'farm',
    name_en = 'farm',
    shortcut_en = 'FA',
@@ -941,7 +941,7 @@ WHERE (id = 6101 AND tablename = 'farm');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (6103,'small_treatment_plant') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'small_treatment_plant',
    name_en = 'small treatment plant',
    shortcut_en = 'SM',
@@ -958,7 +958,7 @@ WHERE (id = 6103 AND tablename = 'small_treatment_plant');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (6105,'building_group_baugwr') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'building_group_baugwr',
    name_en = 'building group baugwr',
    shortcut_en = 'BW',
@@ -975,7 +975,7 @@ WHERE (id = 6105 AND tablename = 'building_group_baugwr');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (6106,'disposal') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'disposal',
    name_en = 'disposal',
    shortcut_en = 'DI',
@@ -992,7 +992,7 @@ WHERE (id = 6106 AND tablename = 'disposal');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (6107,'drainless_toilet') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'drainless_toilet',
    name_en = 'toilet',
    shortcut_en = 'DT',
@@ -1009,7 +1009,7 @@ WHERE (id = 6107 AND tablename = 'drainless_toilet');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (62,'dryweather_flume') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'dryweather_flume',
    name_en = 'dryweather flume',
    shortcut_en = 'DF',
@@ -1026,7 +1026,7 @@ WHERE (id = 62 AND tablename = 'dryweather_flume');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (63,'overflow') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'overflow',
    name_en = 'overflow',
    shortcut_en = 'OV',
@@ -1043,7 +1043,7 @@ WHERE (id = 63 AND tablename = 'overflow');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (64,'overflow_char') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'overflow_char',
    name_en = 'overflow characteristic',
    shortcut_en = 'OC',
@@ -1060,7 +1060,7 @@ WHERE (id = 64 AND tablename = 'overflow_char');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (68,'infiltration_installation') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'infiltration_installation',
    name_en = 'infiltration installation',
    shortcut_en = 'II',
@@ -1077,7 +1077,7 @@ WHERE (id = 68 AND tablename = 'infiltration_installation');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (69,'discharge_point') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'discharge_point',
    name_en = 'discharge point',
    shortcut_en = 'DP',
@@ -1094,7 +1094,7 @@ WHERE (id = 69 AND tablename = 'discharge_point');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (70,'mechanical_pretreatment') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'mechanical_pretreatment',
    name_en = 'mechanical pretreatment',
    shortcut_en = 'MT',
@@ -1111,7 +1111,7 @@ WHERE (id = 70 AND tablename = 'mechanical_pretreatment');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (74,'measure') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'measure',
    name_en = 'mesure',
    shortcut_en = 'MM',
@@ -1128,7 +1128,7 @@ WHERE (id = 74 AND tablename = 'measure');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (76,'flushing_nozzle') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'flushing_nozzle',
    name_en = 'Flushing nozzle',
    shortcut_en = 'FN',
@@ -1145,7 +1145,7 @@ WHERE (id = 76 AND tablename = 'flushing_nozzle');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (8,'connection_object') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'connection_object',
    name_en = 'connection object',
    shortcut_en = 'CN',
@@ -1162,7 +1162,7 @@ WHERE (id = 8 AND tablename = 'connection_object');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (83,'maintenance') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'maintenance',
    name_en = 'maintencance',
    shortcut_en = 'MN',
@@ -1179,7 +1179,7 @@ WHERE (id = 83 AND tablename = 'maintenance');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (9,'waste_water_treatment_plant') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'waste_water_treatment_plant',
    name_en = 'waste water treatment plant',
    shortcut_en = 'TP',
@@ -1196,7 +1196,7 @@ WHERE (id = 9 AND tablename = 'waste_water_treatment_plant');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (97,'wwtp_structure') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'wwtp_structure',
    name_en = 'wwtp structure',
    shortcut_en = 'WT',
@@ -1213,7 +1213,7 @@ WHERE (id = 97 AND tablename = 'wwtp_structure');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (99,'measuring_device') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'measuring_device',
    name_en = 'measuring device',
    shortcut_en = 'MV',
@@ -1230,7 +1230,7 @@ WHERE (id = 99 AND tablename = 'measuring_device');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (99700,'wastewater_structure_symbol') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'wastewater_structure_symbol',
    name_en = 'wastewater structure symbol',
    shortcut_en = 'BX',
@@ -1247,7 +1247,7 @@ WHERE (id = 99700 AND tablename = 'wastewater_structure_symbol');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (99800,'reach_progression_alternative') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'reach_progression_alternative',
    name_en = 'reach progression alternative',
    shortcut_en = 'PX',
@@ -1264,7 +1264,7 @@ WHERE (id = 99800 AND tablename = 'reach_progression_alternative');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (99900,'wastewater_structure_text') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'wastewater_structure_text',
    name_en = 'wastewater structure text',
    shortcut_en = 'WX',
@@ -1281,7 +1281,7 @@ WHERE (id = 99900 AND tablename = 'wastewater_structure_text');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (99901,'reach_text') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'reach_text',
    name_en = 'reach text',
    shortcut_en = 'RX',
@@ -1298,7 +1298,7 @@ WHERE (id = 99901 AND tablename = 'reach_text');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (99902,'catchment_area_text') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'catchment_area_text',
    name_en = 'catchment area text',
    shortcut_en = 'CX',
@@ -1315,7 +1315,7 @@ WHERE (id = 99902 AND tablename = 'catchment_area_text');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (9998,'mutation') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'mutation',
    name_en = 'mutation',
    shortcut_en = 'MD',
@@ -1332,7 +1332,7 @@ WHERE (id = 9998 AND tablename = 'mutation');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (99982,'re_maintenance_event_wastewater_structure') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 're_maintenance_event_wastewater_structure',
    name_en = 'maintenance event wastewater structure',
    shortcut_en = 'MW',
@@ -1349,7 +1349,7 @@ WHERE (id = 99982 AND tablename = 're_maintenance_event_wastewater_structure');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (99985,'re_building_group_disposal') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 're_building_group_disposal',
    name_en = 'building group disposal',
    shortcut_en = 'ZZ',
@@ -20249,7 +20249,7 @@ WHERE (class_id = 9998 AND attribute_id = 9297);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (1036,2020,2979) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'individual_surface',
    field_name = 'function',
    value_name = 'other',
@@ -20272,7 +20272,7 @@ WHERE (class_id = 1036 AND attribute_id = 2020 AND attribute_id = 2979);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (1036,2020,3029) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'individual_surface',
    field_name = 'function',
    value_name = 'unknown',
@@ -20295,7 +20295,7 @@ WHERE (class_id = 1036 AND attribute_id = 2020 AND attribute_id = 3029);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (1036,2020,3460) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'individual_surface',
    field_name = 'function',
    value_name = 'roof_residential_or_office_building',
@@ -20318,7 +20318,7 @@ WHERE (class_id = 1036 AND attribute_id = 2020 AND attribute_id = 3460);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (1036,2020,3461) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'individual_surface',
    field_name = 'function',
    value_name = 'roof_industrial_or_commercial_building',
@@ -20341,7 +20341,7 @@ WHERE (class_id = 1036 AND attribute_id = 2020 AND attribute_id = 3461);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (1036,2020,3462) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'individual_surface',
    field_name = 'function',
    value_name = 'transfer_site_or_stockyard',
@@ -20364,7 +20364,7 @@ WHERE (class_id = 1036 AND attribute_id = 2020 AND attribute_id = 3462);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (1036,2020,3463) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'individual_surface',
    field_name = 'function',
    value_name = 'forecourt_and_access_road',
@@ -20387,7 +20387,7 @@ WHERE (class_id = 1036 AND attribute_id = 2020 AND attribute_id = 3463);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (1036,2020,3464) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'individual_surface',
    field_name = 'function',
    value_name = 'access_or_collecting_road',
@@ -20410,7 +20410,7 @@ WHERE (class_id = 1036 AND attribute_id = 2020 AND attribute_id = 3464);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (1036,2020,3465) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'individual_surface',
    field_name = 'function',
    value_name = 'connecting_or_principal_or_major_road',
@@ -20433,7 +20433,7 @@ WHERE (class_id = 1036 AND attribute_id = 2020 AND attribute_id = 3465);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (1036,2020,3466) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'individual_surface',
    field_name = 'function',
    value_name = 'railway_site',
@@ -20456,7 +20456,7 @@ WHERE (class_id = 1036 AND attribute_id = 2020 AND attribute_id = 3466);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (1036,2020,3467) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'individual_surface',
    field_name = 'function',
    value_name = 'parking_lot',
@@ -20479,7 +20479,7 @@ WHERE (class_id = 1036 AND attribute_id = 2020 AND attribute_id = 3467);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (1036,2026,2031) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'individual_surface',
    field_name = 'pavement',
    value_name = 'paved',
@@ -20502,7 +20502,7 @@ WHERE (class_id = 1036 AND attribute_id = 2026 AND attribute_id = 2031);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (1036,2026,2032) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'individual_surface',
    field_name = 'pavement',
    value_name = 'forested',
@@ -20525,7 +20525,7 @@ WHERE (class_id = 1036 AND attribute_id = 2026 AND attribute_id = 2032);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (1036,2026,2033) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'individual_surface',
    field_name = 'pavement',
    value_name = 'soil_covered',
@@ -20548,7 +20548,7 @@ WHERE (class_id = 1036 AND attribute_id = 2026 AND attribute_id = 2033);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (1036,2026,2034) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'individual_surface',
    field_name = 'pavement',
    value_name = 'barren',
@@ -20571,7 +20571,7 @@ WHERE (class_id = 1036 AND attribute_id = 2026 AND attribute_id = 2034);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (1036,2026,2978) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'individual_surface',
    field_name = 'pavement',
    value_name = 'other',
@@ -20594,7 +20594,7 @@ WHERE (class_id = 1036 AND attribute_id = 2026 AND attribute_id = 2978);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (1036,2026,3030) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'individual_surface',
    field_name = 'pavement',
    value_name = 'unknown',
@@ -20617,7 +20617,7 @@ WHERE (class_id = 1036 AND attribute_id = 2026 AND attribute_id = 3030);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (106,309,2996) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_zone',
    field_name = 'infiltration_capacity',
    value_name = 'not_allowed',
@@ -20640,7 +20640,7 @@ WHERE (class_id = 106 AND attribute_id = 309 AND attribute_id = 2996);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (106,309,3073) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_zone',
    field_name = 'infiltration_capacity',
    value_name = 'unknown',
@@ -20663,7 +20663,7 @@ WHERE (class_id = 106 AND attribute_id = 309 AND attribute_id = 3073);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (106,309,371) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_zone',
    field_name = 'infiltration_capacity',
    value_name = 'good',
@@ -20686,7 +20686,7 @@ WHERE (class_id = 106 AND attribute_id = 309 AND attribute_id = 371);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (106,309,372) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_zone',
    field_name = 'infiltration_capacity',
    value_name = 'moderate',
@@ -20709,7 +20709,7 @@ WHERE (class_id = 106 AND attribute_id = 309 AND attribute_id = 372);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (106,309,373) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_zone',
    field_name = 'infiltration_capacity',
    value_name = 'bad',
@@ -20732,7 +20732,7 @@ WHERE (class_id = 106 AND attribute_id = 309 AND attribute_id = 373);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (106,309,374) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_zone',
    field_name = 'infiltration_capacity',
    value_name = 'none',
@@ -20755,7 +20755,7 @@ WHERE (class_id = 106 AND attribute_id = 309 AND attribute_id = 374);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (107,21,3033) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'benching',
    field_name = 'kind',
    value_name = 'unknown',
@@ -20778,7 +20778,7 @@ WHERE (class_id = 107 AND attribute_id = 21 AND attribute_id = 3033);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (107,21,3231) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'benching',
    field_name = 'kind',
    value_name = 'none',
@@ -20801,7 +20801,7 @@ WHERE (class_id = 107 AND attribute_id = 21 AND attribute_id = 3231);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (107,21,5319) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'benching',
    field_name = 'kind',
    value_name = 'other',
@@ -20824,7 +20824,7 @@ WHERE (class_id = 107 AND attribute_id = 21 AND attribute_id = 5319);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (107,21,93) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'benching',
    field_name = 'kind',
    value_name = 'one_sided',
@@ -20847,7 +20847,7 @@ WHERE (class_id = 107 AND attribute_id = 21 AND attribute_id = 93);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (107,21,94) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'benching',
    field_name = 'kind',
    value_name = 'double_sided',
@@ -20870,7 +20870,7 @@ WHERE (class_id = 107 AND attribute_id = 21 AND attribute_id = 94);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (109,230,2980) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'electric_equipment',
    field_name = 'kind',
    value_name = 'other',
@@ -20893,7 +20893,7 @@ WHERE (class_id = 109 AND attribute_id = 230 AND attribute_id = 2980);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (109,230,3038) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'electric_equipment',
    field_name = 'kind',
    value_name = 'unknown',
@@ -20916,7 +20916,7 @@ WHERE (class_id = 109 AND attribute_id = 230 AND attribute_id = 3038);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (109,230,3255) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'electric_equipment',
    field_name = 'kind',
    value_name = 'remote_control_system',
@@ -20939,7 +20939,7 @@ WHERE (class_id = 109 AND attribute_id = 230 AND attribute_id = 3255);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (109,230,376) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'electric_equipment',
    field_name = 'kind',
    value_name = 'illumination',
@@ -20962,7 +20962,7 @@ WHERE (class_id = 109 AND attribute_id = 230 AND attribute_id = 376);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (109,230,377) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'electric_equipment',
    field_name = 'kind',
    value_name = 'phone',
@@ -20985,7 +20985,7 @@ WHERE (class_id = 109 AND attribute_id = 230 AND attribute_id = 377);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (109,230,378) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'electric_equipment',
    field_name = 'kind',
    value_name = 'radio_unit',
@@ -21008,7 +21008,7 @@ WHERE (class_id = 109 AND attribute_id = 230 AND attribute_id = 378);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (110,303,2981) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'electromechanical_equipment',
    field_name = 'kind',
    value_name = 'other',
@@ -21031,7 +21031,7 @@ WHERE (class_id = 110 AND attribute_id = 303 AND attribute_id = 2981);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (110,303,3072) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'electromechanical_equipment',
    field_name = 'kind',
    value_name = 'unknown',
@@ -21054,7 +21054,7 @@ WHERE (class_id = 110 AND attribute_id = 303 AND attribute_id = 3072);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (110,303,337) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'electromechanical_equipment',
    field_name = 'kind',
    value_name = 'air_dehumidifier',
@@ -21077,7 +21077,7 @@ WHERE (class_id = 110 AND attribute_id = 303 AND attribute_id = 337);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (110,303,380) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'electromechanical_equipment',
    field_name = 'kind',
    value_name = 'leakage_water_pump',
@@ -21100,7 +21100,7 @@ WHERE (class_id = 110 AND attribute_id = 303 AND attribute_id = 380);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (111,2548,2549) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'maintenance_event',
    field_name = 'status',
    value_name = 'planned',
@@ -21123,7 +21123,7 @@ WHERE (class_id = 111 AND attribute_id = 2548 AND attribute_id = 2549);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (111,2548,2550) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'maintenance_event',
    field_name = 'status',
    value_name = 'accomplished',
@@ -21146,7 +21146,7 @@ WHERE (class_id = 111 AND attribute_id = 2548 AND attribute_id = 2550);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (111,2548,3047) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'maintenance_event',
    field_name = 'status',
    value_name = 'unknown',
@@ -21169,7 +21169,7 @@ WHERE (class_id = 111 AND attribute_id = 2548 AND attribute_id = 3047);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (111,2548,3678) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'maintenance_event',
    field_name = 'status',
    value_name = 'not_possible',
@@ -21192,7 +21192,7 @@ WHERE (class_id = 111 AND attribute_id = 2548 AND attribute_id = 3678);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (13,237,137) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'structure_part',
    field_name = 'renovation_demand',
    value_name = 'necessary',
@@ -21215,7 +21215,7 @@ WHERE (class_id = 13 AND attribute_id = 237 AND attribute_id = 137);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (13,237,138) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'structure_part',
    field_name = 'renovation_demand',
    value_name = 'not_necessary',
@@ -21238,7 +21238,7 @@ WHERE (class_id = 13 AND attribute_id = 237 AND attribute_id = 138);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (13,237,5358) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'structure_part',
    field_name = 'renovation_demand',
    value_name = 'unknown',
@@ -21261,7 +21261,7 @@ WHERE (class_id = 13 AND attribute_id = 237 AND attribute_id = 5358);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (15,3497,3498) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'cover',
    field_name = 'cover_shape',
    value_name = 'round',
@@ -21284,7 +21284,7 @@ WHERE (class_id = 15 AND attribute_id = 3497 AND attribute_id = 3498);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (15,3497,3499) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'cover',
    field_name = 'cover_shape',
    value_name = 'rectangular',
@@ -21307,7 +21307,7 @@ WHERE (class_id = 15 AND attribute_id = 3497 AND attribute_id = 3499);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (15,3497,5353) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'cover',
    field_name = 'cover_shape',
    value_name = 'other',
@@ -21330,7 +21330,7 @@ WHERE (class_id = 15 AND attribute_id = 3497 AND attribute_id = 5353);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (15,3497,5354) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'cover',
    field_name = 'cover_shape',
    value_name = 'unknown',
@@ -21353,7 +21353,7 @@ WHERE (class_id = 15 AND attribute_id = 3497 AND attribute_id = 5354);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (15,82,5350) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'cover',
    field_name = 'fastening',
    value_name = 'not_bolted',
@@ -21376,7 +21376,7 @@ WHERE (class_id = 15 AND attribute_id = 82 AND attribute_id = 5350);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (15,82,5351) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'cover',
    field_name = 'fastening',
    value_name = 'unknown',
@@ -21399,7 +21399,7 @@ WHERE (class_id = 15 AND attribute_id = 82 AND attribute_id = 5351);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (15,82,5352) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'cover',
    field_name = 'fastening',
    value_name = 'bolted',
@@ -21422,7 +21422,7 @@ WHERE (class_id = 15 AND attribute_id = 82 AND attribute_id = 5352);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (15,155,233) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'cover',
    field_name = 'material',
    value_name = 'cast_iron',
@@ -21445,7 +21445,7 @@ WHERE (class_id = 15 AND attribute_id = 155 AND attribute_id = 233);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (15,155,234) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'cover',
    field_name = 'material',
    value_name = 'concrete',
@@ -21468,7 +21468,7 @@ WHERE (class_id = 15 AND attribute_id = 155 AND attribute_id = 234);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (15,155,235) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'cover',
    field_name = 'material',
    value_name = 'cast_iron_with_concrete_filling',
@@ -21491,7 +21491,7 @@ WHERE (class_id = 15 AND attribute_id = 155 AND attribute_id = 235);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (15,155,3015) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'cover',
    field_name = 'material',
    value_name = 'unknown',
@@ -21514,7 +21514,7 @@ WHERE (class_id = 15 AND attribute_id = 155 AND attribute_id = 3015);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (15,155,5355) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'cover',
    field_name = 'material',
    value_name = 'other',
@@ -21537,7 +21537,7 @@ WHERE (class_id = 15 AND attribute_id = 155 AND attribute_id = 5355);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (15,155,5547) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'cover',
    field_name = 'material',
    value_name = 'cast_iron_with_pavement_filling',
@@ -21560,7 +21560,7 @@ WHERE (class_id = 15 AND attribute_id = 155 AND attribute_id = 5547);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (15,3235,3236) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'cover',
    field_name = 'positional_accuracy',
    value_name = 'plusminus_3cm',
@@ -21583,7 +21583,7 @@ WHERE (class_id = 15 AND attribute_id = 3235 AND attribute_id = 3236);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (15,3235,3241) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'cover',
    field_name = 'positional_accuracy',
    value_name = 'plusminus_10cm',
@@ -21606,7 +21606,7 @@ WHERE (class_id = 15 AND attribute_id = 3235 AND attribute_id = 3241);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (15,3235,3242) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'cover',
    field_name = 'positional_accuracy',
    value_name = 'plusminus_50cm',
@@ -21629,7 +21629,7 @@ WHERE (class_id = 15 AND attribute_id = 3235 AND attribute_id = 3242);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (15,3235,3243) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'cover',
    field_name = 'positional_accuracy',
    value_name = 'more_than_50cm',
@@ -21652,7 +21652,7 @@ WHERE (class_id = 15 AND attribute_id = 3235 AND attribute_id = 3243);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (15,3235,5349) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'cover',
    field_name = 'positional_accuracy',
    value_name = 'unknown',
@@ -21675,7 +21675,7 @@ WHERE (class_id = 15 AND attribute_id = 3235 AND attribute_id = 5349);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (15,278,3066) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'cover',
    field_name = 'sludge_bucket',
    value_name = 'unknown',
@@ -21698,7 +21698,7 @@ WHERE (class_id = 15 AND attribute_id = 278 AND attribute_id = 3066);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (15,278,422) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'cover',
    field_name = 'sludge_bucket',
    value_name = 'existent',
@@ -21721,7 +21721,7 @@ WHERE (class_id = 15 AND attribute_id = 278 AND attribute_id = 422);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (15,278,423) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'cover',
    field_name = 'sludge_bucket',
    value_name = 'inexistent',
@@ -21744,7 +21744,7 @@ WHERE (class_id = 15 AND attribute_id = 278 AND attribute_id = 423);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (15,88,229) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'cover',
    field_name = 'venting',
    value_name = 'vented',
@@ -21767,7 +21767,7 @@ WHERE (class_id = 15 AND attribute_id = 88 AND attribute_id = 229);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (15,88,230) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'cover',
    field_name = 'venting',
    value_name = 'not_vented',
@@ -21790,7 +21790,7 @@ WHERE (class_id = 15 AND attribute_id = 88 AND attribute_id = 230);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (15,88,5348) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'cover',
    field_name = 'venting',
    value_name = 'unknown',
@@ -21813,7 +21813,7 @@ WHERE (class_id = 15 AND attribute_id = 88 AND attribute_id = 5348);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,3101,3151) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'actuation',
    value_name = 'unknown',
@@ -21836,7 +21836,7 @@ WHERE (class_id = 16 AND attribute_id = 3101 AND attribute_id = 3151);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,3101,3152) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'actuation',
    value_name = 'hydraulic',
@@ -21859,7 +21859,7 @@ WHERE (class_id = 16 AND attribute_id = 3101 AND attribute_id = 3152);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,3101,3153) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'actuation',
    value_name = 'none',
@@ -21882,7 +21882,7 @@ WHERE (class_id = 16 AND attribute_id = 3101 AND attribute_id = 3153);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,3101,3154) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'actuation',
    value_name = 'gaz_engine',
@@ -21905,7 +21905,7 @@ WHERE (class_id = 16 AND attribute_id = 3101 AND attribute_id = 3154);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,3101,3155) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'actuation',
    value_name = 'diesel_engine',
@@ -21928,7 +21928,7 @@ WHERE (class_id = 16 AND attribute_id = 3101 AND attribute_id = 3155);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,3101,3156) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'actuation',
    value_name = 'electric_engine',
@@ -21951,7 +21951,7 @@ WHERE (class_id = 16 AND attribute_id = 3101 AND attribute_id = 3156);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,3101,3157) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'actuation',
    value_name = 'manual',
@@ -21974,7 +21974,7 @@ WHERE (class_id = 16 AND attribute_id = 3101 AND attribute_id = 3157);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,3101,3158) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'actuation',
    value_name = 'pneumatic',
@@ -21997,7 +21997,7 @@ WHERE (class_id = 16 AND attribute_id = 3101 AND attribute_id = 3158);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,3101,3213) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'actuation',
    value_name = 'other',
@@ -22020,7 +22020,7 @@ WHERE (class_id = 16 AND attribute_id = 3101 AND attribute_id = 3213);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,3656,3159) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'adjustability',
    value_name = 'fixed',
@@ -22043,7 +22043,7 @@ WHERE (class_id = 16 AND attribute_id = 3656 AND attribute_id = 3159);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,3656,3160) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'adjustability',
    value_name = 'adjustable',
@@ -22066,7 +22066,7 @@ WHERE (class_id = 16 AND attribute_id = 3656 AND attribute_id = 3160);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,3656,3161) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'adjustability',
    value_name = 'unknown',
@@ -22089,7 +22089,7 @@ WHERE (class_id = 16 AND attribute_id = 3656 AND attribute_id = 3161);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,3112,3162) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'control',
    value_name = 'closed_loop_control',
@@ -22112,7 +22112,7 @@ WHERE (class_id = 16 AND attribute_id = 3112 AND attribute_id = 3162);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,3112,3163) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'control',
    value_name = 'open_loop_control',
@@ -22135,7 +22135,7 @@ WHERE (class_id = 16 AND attribute_id = 3112 AND attribute_id = 3163);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,3112,3164) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'control',
    value_name = 'unknown',
@@ -22158,7 +22158,7 @@ WHERE (class_id = 16 AND attribute_id = 3112 AND attribute_id = 3164);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,3112,3165) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'control',
    value_name = 'none',
@@ -22181,7 +22181,7 @@ WHERE (class_id = 16 AND attribute_id = 3112 AND attribute_id = 3165);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,25,133) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'kind',
    value_name = 'whirl_throttle',
@@ -22204,7 +22204,7 @@ WHERE (class_id = 16 AND attribute_id = 25 AND attribute_id = 133);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,25,134) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'kind',
    value_name = 'tube_throttle',
@@ -22227,7 +22227,7 @@ WHERE (class_id = 16 AND attribute_id = 25 AND attribute_id = 134);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,25,135) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'kind',
    value_name = 'throttle_valve',
@@ -22250,7 +22250,7 @@ WHERE (class_id = 16 AND attribute_id = 25 AND attribute_id = 135);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,25,252) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'kind',
    value_name = 'throttle_flap',
@@ -22273,7 +22273,7 @@ WHERE (class_id = 16 AND attribute_id = 25 AND attribute_id = 252);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,25,2688) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'kind',
    value_name = 'gate_valve',
@@ -22296,7 +22296,7 @@ WHERE (class_id = 16 AND attribute_id = 25 AND attribute_id = 2688);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,25,2689) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'kind',
    value_name = 'sliding_valve',
@@ -22319,7 +22319,7 @@ WHERE (class_id = 16 AND attribute_id = 25 AND attribute_id = 2689);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,25,2690) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'kind',
    value_name = 'backflow_flap',
@@ -22342,7 +22342,7 @@ WHERE (class_id = 16 AND attribute_id = 25 AND attribute_id = 2690);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,25,2691) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'kind',
    value_name = 'stop_log',
@@ -22365,7 +22365,7 @@ WHERE (class_id = 16 AND attribute_id = 25 AND attribute_id = 2691);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,25,2746) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'kind',
    value_name = 'orifice',
@@ -22388,7 +22388,7 @@ WHERE (class_id = 16 AND attribute_id = 25 AND attribute_id = 2746);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,25,2973) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'kind',
    value_name = 'other',
@@ -22411,7 +22411,7 @@ WHERE (class_id = 16 AND attribute_id = 25 AND attribute_id = 2973);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,25,3046) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'kind',
    value_name = 'unknown',
@@ -22434,7 +22434,7 @@ WHERE (class_id = 16 AND attribute_id = 25 AND attribute_id = 3046);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,25,5755) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'kind',
    value_name = 'gate_shield',
@@ -22457,7 +22457,7 @@ WHERE (class_id = 16 AND attribute_id = 25 AND attribute_id = 5755);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,25,6490) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'kind',
    value_name = 'throttle_section',
@@ -22480,7 +22480,7 @@ WHERE (class_id = 16 AND attribute_id = 25 AND attribute_id = 6490);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,25,6491) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'kind',
    value_name = 'leapingweir',
@@ -22503,7 +22503,7 @@ WHERE (class_id = 16 AND attribute_id = 25 AND attribute_id = 6491);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,25,6492) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'kind',
    value_name = 'pomp',
@@ -22526,7 +22526,7 @@ WHERE (class_id = 16 AND attribute_id = 25 AND attribute_id = 6492);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,3119,3169) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'signal_transmission',
    value_name = 'sending_receiving',
@@ -22549,7 +22549,7 @@ WHERE (class_id = 16 AND attribute_id = 3119 AND attribute_id = 3169);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,3119,3170) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'signal_transmission',
    value_name = 'unknown',
@@ -22572,7 +22572,7 @@ WHERE (class_id = 16 AND attribute_id = 3119 AND attribute_id = 3170);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,3119,3171) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'signal_transmission',
    value_name = 'receiving',
@@ -22595,7 +22595,7 @@ WHERE (class_id = 16 AND attribute_id = 3119 AND attribute_id = 3171);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (16,3119,3172) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'throttle_shut_off_unit',
    field_name = 'signal_transmission',
    value_name = 'sending',
@@ -22618,7 +22618,7 @@ WHERE (class_id = 16 AND attribute_id = 3119 AND attribute_id = 3172);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (18,26,240) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'access_aid',
    field_name = 'kind',
    value_name = 'ladder',
@@ -22641,7 +22641,7 @@ WHERE (class_id = 18 AND attribute_id = 26 AND attribute_id = 240);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (18,26,241) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'access_aid',
    field_name = 'kind',
    value_name = 'step_iron',
@@ -22664,7 +22664,7 @@ WHERE (class_id = 18 AND attribute_id = 26 AND attribute_id = 241);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (18,26,243) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'access_aid',
    field_name = 'kind',
    value_name = 'pressurized_door',
@@ -22687,7 +22687,7 @@ WHERE (class_id = 18 AND attribute_id = 26 AND attribute_id = 243);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (18,26,3048) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'access_aid',
    field_name = 'kind',
    value_name = 'unknown',
@@ -22710,7 +22710,7 @@ WHERE (class_id = 18 AND attribute_id = 26 AND attribute_id = 3048);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (18,26,3230) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'access_aid',
    field_name = 'kind',
    value_name = 'door',
@@ -22733,7 +22733,7 @@ WHERE (class_id = 18 AND attribute_id = 26 AND attribute_id = 3230);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (18,26,3473) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'access_aid',
    field_name = 'kind',
    value_name = 'staircase',
@@ -22756,7 +22756,7 @@ WHERE (class_id = 18 AND attribute_id = 26 AND attribute_id = 3473);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (18,26,5357) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'access_aid',
    field_name = 'kind',
    value_name = 'other',
@@ -22779,7 +22779,7 @@ WHERE (class_id = 18 AND attribute_id = 26 AND attribute_id = 5357);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (18,26,91) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'access_aid',
    field_name = 'kind',
    value_name = 'footstep_niches',
@@ -22802,7 +22802,7 @@ WHERE (class_id = 18 AND attribute_id = 26 AND attribute_id = 91);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (18,26,92) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'access_aid',
    field_name = 'kind',
    value_name = 'none',
@@ -22825,7 +22825,7 @@ WHERE (class_id = 18 AND attribute_id = 26 AND attribute_id = 92);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (19,5454,5457) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area',
    field_name = 'direct_discharge_current',
    value_name = 'yes',
@@ -22848,7 +22848,7 @@ WHERE (class_id = 19 AND attribute_id = 5454 AND attribute_id = 5457);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (19,5454,5458) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area',
    field_name = 'direct_discharge_current',
    value_name = 'no',
@@ -22871,7 +22871,7 @@ WHERE (class_id = 19 AND attribute_id = 5454 AND attribute_id = 5458);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (19,5454,5463) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area',
    field_name = 'direct_discharge_current',
    value_name = 'unknown',
@@ -22894,7 +22894,7 @@ WHERE (class_id = 19 AND attribute_id = 5454 AND attribute_id = 5463);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (19,5456,5459) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area',
    field_name = 'direct_discharge_planned',
    value_name = 'yes',
@@ -22917,7 +22917,7 @@ WHERE (class_id = 19 AND attribute_id = 5456 AND attribute_id = 5459);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (19,5456,5460) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area',
    field_name = 'direct_discharge_planned',
    value_name = 'no',
@@ -22940,7 +22940,7 @@ WHERE (class_id = 19 AND attribute_id = 5456 AND attribute_id = 5460);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (19,5456,5464) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area',
    field_name = 'direct_discharge_planned',
    value_name = 'unknown',
@@ -22963,7 +22963,7 @@ WHERE (class_id = 19 AND attribute_id = 5456 AND attribute_id = 5464);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (19,5184,5185) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area',
    field_name = 'drainage_system_current',
    value_name = 'not_connected',
@@ -22986,7 +22986,7 @@ WHERE (class_id = 19 AND attribute_id = 5184 AND attribute_id = 5185);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (19,5184,5186) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area',
    field_name = 'drainage_system_current',
    value_name = 'mixed_system',
@@ -23009,7 +23009,7 @@ WHERE (class_id = 19 AND attribute_id = 5184 AND attribute_id = 5186);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (19,5184,5187) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area',
    field_name = 'drainage_system_current',
    value_name = 'separated_system',
@@ -23032,7 +23032,7 @@ WHERE (class_id = 19 AND attribute_id = 5184 AND attribute_id = 5187);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (19,5184,5188) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area',
    field_name = 'drainage_system_current',
    value_name = 'modified_system',
@@ -23055,7 +23055,7 @@ WHERE (class_id = 19 AND attribute_id = 5184 AND attribute_id = 5188);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (19,5184,5189) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area',
    field_name = 'drainage_system_current',
    value_name = 'unknown',
@@ -23078,7 +23078,7 @@ WHERE (class_id = 19 AND attribute_id = 5184 AND attribute_id = 5189);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (19,5184,5537) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area',
    field_name = 'drainage_system_current',
    value_name = 'not_drained',
@@ -23101,7 +23101,7 @@ WHERE (class_id = 19 AND attribute_id = 5184 AND attribute_id = 5537);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (19,5184,8693) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area',
    field_name = 'drainage_system_current',
    value_name = 'separated_system_in_preparation',
@@ -23124,7 +23124,7 @@ WHERE (class_id = 19 AND attribute_id = 5184 AND attribute_id = 8693);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (19,5184,9068) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area',
    field_name = 'drainage_system_current',
    value_name = 'drainage_system',
@@ -23147,7 +23147,7 @@ WHERE (class_id = 19 AND attribute_id = 5184 AND attribute_id = 9068);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (19,5190,5191) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area',
    field_name = 'drainage_system_planned',
    value_name = 'mixed_system',
@@ -23170,7 +23170,7 @@ WHERE (class_id = 19 AND attribute_id = 5190 AND attribute_id = 5191);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (19,5190,5192) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area',
    field_name = 'drainage_system_planned',
    value_name = 'separated_system',
@@ -23193,7 +23193,7 @@ WHERE (class_id = 19 AND attribute_id = 5190 AND attribute_id = 5192);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (19,5190,5193) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area',
    field_name = 'drainage_system_planned',
    value_name = 'modified_system',
@@ -23216,7 +23216,7 @@ WHERE (class_id = 19 AND attribute_id = 5190 AND attribute_id = 5193);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (19,5190,5194) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area',
    field_name = 'drainage_system_planned',
    value_name = 'not_connected',
@@ -23239,7 +23239,7 @@ WHERE (class_id = 19 AND attribute_id = 5190 AND attribute_id = 5194);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (19,5190,5195) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area',
    field_name = 'drainage_system_planned',
    value_name = 'unknown',
@@ -23262,7 +23262,7 @@ WHERE (class_id = 19 AND attribute_id = 5190 AND attribute_id = 5195);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (19,5190,5536) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area',
    field_name = 'drainage_system_planned',
    value_name = 'not_drained',
@@ -23285,7 +23285,7 @@ WHERE (class_id = 19 AND attribute_id = 5190 AND attribute_id = 5536);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (19,5190,8692) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area',
    field_name = 'drainage_system_planned',
    value_name = 'separated_system_in_preparation',
@@ -23308,7 +23308,7 @@ WHERE (class_id = 19 AND attribute_id = 5190 AND attribute_id = 8692);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (19,5190,9067) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area',
    field_name = 'drainage_system_planned',
    value_name = 'drainage_system',
@@ -23331,7 +23331,7 @@ WHERE (class_id = 19 AND attribute_id = 5190 AND attribute_id = 9067);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (19,5162,5165) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area',
    field_name = 'infiltration_current',
    value_name = 'unknown',
@@ -23354,7 +23354,7 @@ WHERE (class_id = 19 AND attribute_id = 5162 AND attribute_id = 5165);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (19,5162,5452) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area',
    field_name = 'infiltration_current',
    value_name = 'yes',
@@ -23377,7 +23377,7 @@ WHERE (class_id = 19 AND attribute_id = 5162 AND attribute_id = 5452);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (19,5162,5453) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area',
    field_name = 'infiltration_current',
    value_name = 'no',
@@ -23400,7 +23400,7 @@ WHERE (class_id = 19 AND attribute_id = 5162 AND attribute_id = 5453);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (19,5167,5170) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area',
    field_name = 'infiltration_planned',
    value_name = 'unknown',
@@ -23423,7 +23423,7 @@ WHERE (class_id = 19 AND attribute_id = 5167 AND attribute_id = 5170);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (19,5167,5461) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area',
    field_name = 'infiltration_planned',
    value_name = 'yes',
@@ -23446,7 +23446,7 @@ WHERE (class_id = 19 AND attribute_id = 5167 AND attribute_id = 5461);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (19,5167,5462) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area',
    field_name = 'infiltration_planned',
    value_name = 'no',
@@ -23469,7 +23469,7 @@ WHERE (class_id = 19 AND attribute_id = 5167 AND attribute_id = 5462);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (19,5465,5467) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area',
    field_name = 'retention_current',
    value_name = 'yes',
@@ -23492,7 +23492,7 @@ WHERE (class_id = 19 AND attribute_id = 5465 AND attribute_id = 5467);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (19,5465,5468) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area',
    field_name = 'retention_current',
    value_name = 'no',
@@ -23515,7 +23515,7 @@ WHERE (class_id = 19 AND attribute_id = 5465 AND attribute_id = 5468);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (19,5465,5469) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area',
    field_name = 'retention_current',
    value_name = 'unknown',
@@ -23538,7 +23538,7 @@ WHERE (class_id = 19 AND attribute_id = 5465 AND attribute_id = 5469);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (19,5466,5470) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area',
    field_name = 'retention_planned',
    value_name = 'yes',
@@ -23561,7 +23561,7 @@ WHERE (class_id = 19 AND attribute_id = 5466 AND attribute_id = 5470);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (19,5466,5471) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area',
    field_name = 'retention_planned',
    value_name = 'no',
@@ -23584,7 +23584,7 @@ WHERE (class_id = 19 AND attribute_id = 5466 AND attribute_id = 5471);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (19,5466,5472) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area',
    field_name = 'retention_planned',
    value_name = 'unknown',
@@ -23607,7 +23607,7 @@ WHERE (class_id = 19 AND attribute_id = 5466 AND attribute_id = 5472);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,3443,3444) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'accessibility',
    value_name = 'covered',
@@ -23630,7 +23630,7 @@ WHERE (class_id = 2 AND attribute_id = 3443 AND attribute_id = 3444);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,3443,3445) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'accessibility',
    value_name = 'accessible',
@@ -23653,7 +23653,7 @@ WHERE (class_id = 2 AND attribute_id = 3443 AND attribute_id = 3445);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,3443,3446) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'accessibility',
    value_name = 'inaccessible',
@@ -23676,7 +23676,7 @@ WHERE (class_id = 2 AND attribute_id = 3443 AND attribute_id = 3446);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,3443,3447) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'accessibility',
    value_name = 'unknown',
@@ -23699,7 +23699,7 @@ WHERE (class_id = 2 AND attribute_id = 3443 AND attribute_id = 3447);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,9320,9321) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'elevation_determination',
    value_name = 'accurate',
@@ -23722,7 +23722,7 @@ WHERE (class_id = 2 AND attribute_id = 9320 AND attribute_id = 9321);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,9320,9322) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'elevation_determination',
    value_name = 'inaccurate',
@@ -23745,7 +23745,7 @@ WHERE (class_id = 2 AND attribute_id = 9320 AND attribute_id = 9322);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,9320,9323) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'elevation_determination',
    value_name = 'unknown',
@@ -23768,7 +23768,7 @@ WHERE (class_id = 2 AND attribute_id = 9320 AND attribute_id = 9323);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,5509,5510) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'financing',
    value_name = 'public',
@@ -23791,7 +23791,7 @@ WHERE (class_id = 2 AND attribute_id = 5509 AND attribute_id = 5510);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,5509,5511) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'financing',
    value_name = 'private',
@@ -23814,7 +23814,7 @@ WHERE (class_id = 2 AND attribute_id = 5509 AND attribute_id = 5511);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,5509,5512) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'financing',
    value_name = 'unknown',
@@ -23837,7 +23837,7 @@ WHERE (class_id = 2 AND attribute_id = 5509 AND attribute_id = 5512);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,181,2) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'renovation_necessity',
    value_name = 'short_term',
@@ -23860,7 +23860,7 @@ WHERE (class_id = 2 AND attribute_id = 181 AND attribute_id = 2);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,181,3) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'renovation_necessity',
    value_name = 'medium_term',
@@ -23883,7 +23883,7 @@ WHERE (class_id = 2 AND attribute_id = 181 AND attribute_id = 3);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,181,5368) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'renovation_necessity',
    value_name = 'none',
@@ -23906,7 +23906,7 @@ WHERE (class_id = 2 AND attribute_id = 181 AND attribute_id = 5368);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,181,5369) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'renovation_necessity',
    value_name = 'unknown',
@@ -23929,7 +23929,7 @@ WHERE (class_id = 2 AND attribute_id = 181 AND attribute_id = 5369);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,181,5370) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'renovation_necessity',
    value_name = 'urgent',
@@ -23952,7 +23952,7 @@ WHERE (class_id = 2 AND attribute_id = 181 AND attribute_id = 5370);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,181,9295) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'renovation_necessity',
    value_name = 'long_term',
@@ -23975,7 +23975,7 @@ WHERE (class_id = 2 AND attribute_id = 181 AND attribute_id = 9295);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,4600,4601) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'rv_construction_type',
    value_name = 'unknown',
@@ -23998,7 +23998,7 @@ WHERE (class_id = 2 AND attribute_id = 4600 AND attribute_id = 4601);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,4600,4602) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'rv_construction_type',
    value_name = 'other',
@@ -24021,7 +24021,7 @@ WHERE (class_id = 2 AND attribute_id = 4600 AND attribute_id = 4602);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,4600,4603) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'rv_construction_type',
    value_name = 'field',
@@ -24044,7 +24044,7 @@ WHERE (class_id = 2 AND attribute_id = 4600 AND attribute_id = 4603);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,4600,4604) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'rv_construction_type',
    value_name = 'road',
@@ -24067,7 +24067,7 @@ WHERE (class_id = 2 AND attribute_id = 4600 AND attribute_id = 4604);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,4600,4605) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'rv_construction_type',
    value_name = 'renovation_conduction_ditch_cutter',
@@ -24090,7 +24090,7 @@ WHERE (class_id = 2 AND attribute_id = 4600 AND attribute_id = 4605);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,4600,4606) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'rv_construction_type',
    value_name = 'renovation_conduction_excavator',
@@ -24113,7 +24113,7 @@ WHERE (class_id = 2 AND attribute_id = 4600 AND attribute_id = 4606);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,198,3027) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'status',
    value_name = 'unknown',
@@ -24136,7 +24136,7 @@ WHERE (class_id = 2 AND attribute_id = 198 AND attribute_id = 3027);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,198,3633) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'status',
    value_name = 'inoperative',
@@ -24159,7 +24159,7 @@ WHERE (class_id = 2 AND attribute_id = 198 AND attribute_id = 3633);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,198,6523) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'status',
    value_name = 'abanndoned.suspended_not_filled',
@@ -24182,7 +24182,7 @@ WHERE (class_id = 2 AND attribute_id = 198 AND attribute_id = 6523);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,198,6524) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'status',
    value_name = 'abanndoned.suspended_unknown',
@@ -24205,7 +24205,7 @@ WHERE (class_id = 2 AND attribute_id = 198 AND attribute_id = 6524);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,198,6526) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'status',
    value_name = 'other.calculation_alternative',
@@ -24228,7 +24228,7 @@ WHERE (class_id = 2 AND attribute_id = 198 AND attribute_id = 6526);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,198,6529) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'status',
    value_name = 'other.project',
@@ -24251,7 +24251,7 @@ WHERE (class_id = 2 AND attribute_id = 198 AND attribute_id = 6529);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,198,6530) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'status',
    value_name = 'operational.tentative',
@@ -24274,7 +24274,7 @@ WHERE (class_id = 2 AND attribute_id = 198 AND attribute_id = 6530);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,198,6532) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'status',
    value_name = 'abanndoned.filled',
@@ -24297,7 +24297,7 @@ WHERE (class_id = 2 AND attribute_id = 198 AND attribute_id = 6532);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,198,6533) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'status',
    value_name = 'operational.will_be_suspended',
@@ -24320,7 +24320,7 @@ WHERE (class_id = 2 AND attribute_id = 198 AND attribute_id = 6533);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,198,7959) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'status',
    value_name = 'other.planned',
@@ -24343,7 +24343,7 @@ WHERE (class_id = 2 AND attribute_id = 198 AND attribute_id = 7959);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,198,8493) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'status',
    value_name = 'operational',
@@ -24366,7 +24366,7 @@ WHERE (class_id = 2 AND attribute_id = 198 AND attribute_id = 8493);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,2261,3037) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'structure_condition',
    value_name = 'unknown',
@@ -24389,7 +24389,7 @@ WHERE (class_id = 2 AND attribute_id = 2261 AND attribute_id = 3037);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,2261,3359) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'structure_condition',
    value_name = 'Z1',
@@ -24412,7 +24412,7 @@ WHERE (class_id = 2 AND attribute_id = 2261 AND attribute_id = 3359);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,2261,3360) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'structure_condition',
    value_name = 'Z2',
@@ -24435,7 +24435,7 @@ WHERE (class_id = 2 AND attribute_id = 2261 AND attribute_id = 3360);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,2261,3361) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'structure_condition',
    value_name = 'Z3',
@@ -24458,7 +24458,7 @@ WHERE (class_id = 2 AND attribute_id = 2261 AND attribute_id = 3361);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,2261,3362) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'structure_condition',
    value_name = 'Z4',
@@ -24481,7 +24481,7 @@ WHERE (class_id = 2 AND attribute_id = 2261 AND attribute_id = 3362);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2,2261,3363) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure',
    field_name = 'structure_condition',
    value_name = 'Z0',
@@ -24504,7 +24504,7 @@ WHERE (class_id = 2 AND attribute_id = 2261 AND attribute_id = 3363);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2721,2721,2722) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'drainage_system',
    field_name = 'kind',
    value_name = 'mixed_system',
@@ -24527,7 +24527,7 @@ WHERE (class_id = 2721 AND attribute_id = 2721 AND attribute_id = 2722);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2721,2721,2723) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'drainage_system',
    field_name = 'kind',
    value_name = 'separated_system',
@@ -24550,7 +24550,7 @@ WHERE (class_id = 2721 AND attribute_id = 2721 AND attribute_id = 2723);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2721,2721,2724) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'drainage_system',
    field_name = 'kind',
    value_name = 'modified_system',
@@ -24573,7 +24573,7 @@ WHERE (class_id = 2721 AND attribute_id = 2721 AND attribute_id = 2724);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2721,2721,3060) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'drainage_system',
    field_name = 'kind',
    value_name = 'unknown',
@@ -24596,7 +24596,7 @@ WHERE (class_id = 2721 AND attribute_id = 2721 AND attribute_id = 3060);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2721,2721,4544) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'drainage_system',
    field_name = 'kind',
    value_name = 'not_connected',
@@ -24619,7 +24619,7 @@ WHERE (class_id = 2721 AND attribute_id = 2721 AND attribute_id = 4544);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (2721,2721,4783) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'drainage_system',
    field_name = 'kind',
    value_name = 'amelioration',
@@ -24642,7 +24642,7 @@ WHERE (class_id = 2721 AND attribute_id = 2721 AND attribute_id = 4783);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3,311,3076) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'waste_water_treatment',
    field_name = 'kind',
    value_name = 'unknown',
@@ -24665,7 +24665,7 @@ WHERE (class_id = 3 AND attribute_id = 311 AND attribute_id = 3076);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3,311,3210) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'waste_water_treatment',
    field_name = 'kind',
    value_name = 'other',
@@ -24688,7 +24688,7 @@ WHERE (class_id = 3 AND attribute_id = 311 AND attribute_id = 3210);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3,311,366) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'waste_water_treatment',
    field_name = 'kind',
    value_name = 'mechanical',
@@ -24711,7 +24711,7 @@ WHERE (class_id = 3 AND attribute_id = 311 AND attribute_id = 366);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3,311,387) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'waste_water_treatment',
    field_name = 'kind',
    value_name = 'biological',
@@ -24734,7 +24734,7 @@ WHERE (class_id = 3 AND attribute_id = 311 AND attribute_id = 387);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3,311,388) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'waste_water_treatment',
    field_name = 'kind',
    value_name = 'chemical',
@@ -24757,7 +24757,7 @@ WHERE (class_id = 3 AND attribute_id = 311 AND attribute_id = 388);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (3,311,389) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'waste_water_treatment',
    field_name = 'kind',
    value_name = 'filtration',
@@ -24780,7 +24780,7 @@ WHERE (class_id = 3 AND attribute_id = 311 AND attribute_id = 389);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,4777,4778) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'elevation_determination',
    value_name = 'unknown',
@@ -24803,7 +24803,7 @@ WHERE (class_id = 31 AND attribute_id = 4777 AND attribute_id = 4778);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,4777,4779) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'elevation_determination',
    value_name = 'inaccurate',
@@ -24826,7 +24826,7 @@ WHERE (class_id = 31 AND attribute_id = 4777 AND attribute_id = 4779);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,4777,4780) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'elevation_determination',
    value_name = 'accurate',
@@ -24849,7 +24849,7 @@ WHERE (class_id = 31 AND attribute_id = 4777 AND attribute_id = 4780);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,3629,5378) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'horizontal_positioning',
    value_name = 'accurate',
@@ -24872,7 +24872,7 @@ WHERE (class_id = 31 AND attribute_id = 3629 AND attribute_id = 5378);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,3629,5379) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'horizontal_positioning',
    value_name = 'unknown',
@@ -24895,7 +24895,7 @@ WHERE (class_id = 31 AND attribute_id = 3629 AND attribute_id = 5379);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,3629,5380) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'horizontal_positioning',
    value_name = 'inaccurate',
@@ -24918,7 +24918,7 @@ WHERE (class_id = 31 AND attribute_id = 3629 AND attribute_id = 5380);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,239,248) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'inside_coating',
    value_name = 'coating',
@@ -24941,7 +24941,7 @@ WHERE (class_id = 31 AND attribute_id = 239 AND attribute_id = 248);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,239,249) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'inside_coating',
    value_name = 'cement_mortar_lining',
@@ -24964,7 +24964,7 @@ WHERE (class_id = 31 AND attribute_id = 239 AND attribute_id = 249);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,239,250) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'inside_coating',
    value_name = 'brick_lining',
@@ -24987,7 +24987,7 @@ WHERE (class_id = 31 AND attribute_id = 239 AND attribute_id = 250);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,239,251) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'inside_coating',
    value_name = 'stoneware_lining',
@@ -25010,7 +25010,7 @@ WHERE (class_id = 31 AND attribute_id = 239 AND attribute_id = 251);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,239,5383) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'inside_coating',
    value_name = 'other',
@@ -25033,7 +25033,7 @@ WHERE (class_id = 31 AND attribute_id = 239 AND attribute_id = 5383);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,239,5384) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'inside_coating',
    value_name = 'unknown',
@@ -25056,7 +25056,7 @@ WHERE (class_id = 31 AND attribute_id = 239 AND attribute_id = 5384);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,8708,8709) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'leak_protection',
    value_name = 'existent',
@@ -25079,7 +25079,7 @@ WHERE (class_id = 31 AND attribute_id = 8708 AND attribute_id = 8709);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,8708,8710) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'leak_protection',
    value_name = 'inexistent',
@@ -25102,7 +25102,7 @@ WHERE (class_id = 31 AND attribute_id = 8708 AND attribute_id = 8710);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,8708,8711) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'leak_protection',
    value_name = 'unknown',
@@ -25125,7 +25125,7 @@ WHERE (class_id = 31 AND attribute_id = 8708 AND attribute_id = 8711);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,156,147) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'material',
    value_name = 'fiber_cement',
@@ -25148,7 +25148,7 @@ WHERE (class_id = 31 AND attribute_id = 156 AND attribute_id = 147);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,156,148) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'material',
    value_name = 'cast_ductile_iron',
@@ -25171,7 +25171,7 @@ WHERE (class_id = 31 AND attribute_id = 156 AND attribute_id = 148);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,156,153) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'material',
    value_name = 'steel',
@@ -25194,7 +25194,7 @@ WHERE (class_id = 31 AND attribute_id = 156 AND attribute_id = 153);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,156,154) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'material',
    value_name = 'stoneware',
@@ -25217,7 +25217,7 @@ WHERE (class_id = 31 AND attribute_id = 156 AND attribute_id = 154);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,156,2754) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'material',
    value_name = 'asbestos_cement',
@@ -25240,7 +25240,7 @@ WHERE (class_id = 31 AND attribute_id = 156 AND attribute_id = 2754);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,156,2755) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'material',
    value_name = 'bricks',
@@ -25263,7 +25263,7 @@ WHERE (class_id = 31 AND attribute_id = 156 AND attribute_id = 2755);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,156,2761) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'material',
    value_name = 'clay',
@@ -25286,7 +25286,7 @@ WHERE (class_id = 31 AND attribute_id = 156 AND attribute_id = 2761);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,156,2762) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'material',
    value_name = 'cement',
@@ -25309,7 +25309,7 @@ WHERE (class_id = 31 AND attribute_id = 156 AND attribute_id = 2762);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,156,3016) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'material',
    value_name = 'unknown',
@@ -25332,7 +25332,7 @@ WHERE (class_id = 31 AND attribute_id = 156 AND attribute_id = 3016);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,156,3256) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'material',
    value_name = 'concrete_unknown',
@@ -25355,7 +25355,7 @@ WHERE (class_id = 31 AND attribute_id = 156 AND attribute_id = 3256);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,156,3638) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'material',
    value_name = 'concrete_normal',
@@ -25378,7 +25378,7 @@ WHERE (class_id = 31 AND attribute_id = 156 AND attribute_id = 3638);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,156,3639) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'material',
    value_name = 'concrete_insitu',
@@ -25401,7 +25401,7 @@ WHERE (class_id = 31 AND attribute_id = 156 AND attribute_id = 3639);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,156,3640) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'material',
    value_name = 'concrete_presspipe',
@@ -25424,7 +25424,7 @@ WHERE (class_id = 31 AND attribute_id = 156 AND attribute_id = 3640);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,156,3641) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'material',
    value_name = 'concrete_special',
@@ -25447,7 +25447,7 @@ WHERE (class_id = 31 AND attribute_id = 156 AND attribute_id = 3641);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,156,3648) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'material',
    value_name = 'cast_gray_iron',
@@ -25470,7 +25470,7 @@ WHERE (class_id = 31 AND attribute_id = 156 AND attribute_id = 3648);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,156,3654) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'material',
    value_name = 'steel_stainless',
@@ -25493,7 +25493,7 @@ WHERE (class_id = 31 AND attribute_id = 156 AND attribute_id = 3654);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,156,5076) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'material',
    value_name = 'plastic_epoxy_resin',
@@ -25516,7 +25516,7 @@ WHERE (class_id = 31 AND attribute_id = 156 AND attribute_id = 5076);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,156,5077) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'material',
    value_name = 'plastic_highdensity_polyethylene',
@@ -25539,7 +25539,7 @@ WHERE (class_id = 31 AND attribute_id = 156 AND attribute_id = 5077);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,156,5078) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'material',
    value_name = 'plastic_polyester_GUP',
@@ -25562,7 +25562,7 @@ WHERE (class_id = 31 AND attribute_id = 156 AND attribute_id = 5078);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,156,5079) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'material',
    value_name = 'plastic_polyethylene',
@@ -25585,7 +25585,7 @@ WHERE (class_id = 31 AND attribute_id = 156 AND attribute_id = 5079);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,156,5080) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'material',
    value_name = 'plastic_polypropylene',
@@ -25608,7 +25608,7 @@ WHERE (class_id = 31 AND attribute_id = 156 AND attribute_id = 5080);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,156,5081) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'material',
    value_name = 'plastic_PVC',
@@ -25631,7 +25631,7 @@ WHERE (class_id = 31 AND attribute_id = 156 AND attribute_id = 5081);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,156,5381) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'material',
    value_name = 'other',
@@ -25654,7 +25654,7 @@ WHERE (class_id = 31 AND attribute_id = 156 AND attribute_id = 5381);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,156,5382) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'material',
    value_name = 'plastic_unknown',
@@ -25677,7 +25677,7 @@ WHERE (class_id = 31 AND attribute_id = 156 AND attribute_id = 5382);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,6458,6459) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'reliner_material',
    value_name = 'other',
@@ -25700,7 +25700,7 @@ WHERE (class_id = 31 AND attribute_id = 6458 AND attribute_id = 6459);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,6458,6460) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'reliner_material',
    value_name = 'epoxy_resin_plastic_felt',
@@ -25723,7 +25723,7 @@ WHERE (class_id = 31 AND attribute_id = 6458 AND attribute_id = 6460);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,6458,6461) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'reliner_material',
    value_name = 'epoxy_resin_glass_fibre_laminate',
@@ -25746,7 +25746,7 @@ WHERE (class_id = 31 AND attribute_id = 6458 AND attribute_id = 6461);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,6458,6462) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'reliner_material',
    value_name = 'HDPE',
@@ -25769,7 +25769,7 @@ WHERE (class_id = 31 AND attribute_id = 6458 AND attribute_id = 6462);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,6458,6463) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'reliner_material',
    value_name = 'polyester_resin_plastic_felt',
@@ -25792,7 +25792,7 @@ WHERE (class_id = 31 AND attribute_id = 6458 AND attribute_id = 6463);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,6458,6464) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'reliner_material',
    value_name = 'polyester_resin_glass_fibre_laminate',
@@ -25815,7 +25815,7 @@ WHERE (class_id = 31 AND attribute_id = 6458 AND attribute_id = 6464);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,6458,6465) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'reliner_material',
    value_name = 'PVC',
@@ -25838,7 +25838,7 @@ WHERE (class_id = 31 AND attribute_id = 6458 AND attribute_id = 6465);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,6458,6466) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'reliner_material',
    value_name = 'bottom_with_polyester_concret_shell',
@@ -25861,7 +25861,7 @@ WHERE (class_id = 31 AND attribute_id = 6458 AND attribute_id = 6466);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,6458,6467) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'reliner_material',
    value_name = 'unknown',
@@ -25884,7 +25884,7 @@ WHERE (class_id = 31 AND attribute_id = 6458 AND attribute_id = 6467);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,6458,6468) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'reliner_material',
    value_name = 'vinyl_ester_resin_glass_fibre_laminate',
@@ -25907,7 +25907,7 @@ WHERE (class_id = 31 AND attribute_id = 6458 AND attribute_id = 6468);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,6458,6469) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'reliner_material',
    value_name = 'vinyl_ester_resin_plastic_felt',
@@ -25930,7 +25930,7 @@ WHERE (class_id = 31 AND attribute_id = 6458 AND attribute_id = 6469);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,6458,6482) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'reliner_material',
    value_name = 'polypropylene',
@@ -25953,7 +25953,7 @@ WHERE (class_id = 31 AND attribute_id = 6458 AND attribute_id = 6482);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,6458,6483) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'reliner_material',
    value_name = 'GUP_pipe',
@@ -25976,7 +25976,7 @@ WHERE (class_id = 31 AND attribute_id = 6458 AND attribute_id = 6483);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,6458,6484) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'reliner_material',
    value_name = 'isocyanate_resin_glass_fibre_laminate',
@@ -25999,7 +25999,7 @@ WHERE (class_id = 31 AND attribute_id = 6458 AND attribute_id = 6484);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,6458,6485) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'reliner_material',
    value_name = 'isocyanate_resin_plastic_felt',
@@ -26022,7 +26022,7 @@ WHERE (class_id = 31 AND attribute_id = 6458 AND attribute_id = 6485);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,6458,6486) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'reliner_material',
    value_name = 'UP_resin_LED_synthetic_fibre_liner',
@@ -26045,7 +26045,7 @@ WHERE (class_id = 31 AND attribute_id = 6458 AND attribute_id = 6486);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,6447,6448) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'relining_construction',
    value_name = 'other',
@@ -26068,7 +26068,7 @@ WHERE (class_id = 31 AND attribute_id = 6447 AND attribute_id = 6448);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,6447,6449) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'relining_construction',
    value_name = 'relining_short_tube',
@@ -26091,7 +26091,7 @@ WHERE (class_id = 31 AND attribute_id = 6447 AND attribute_id = 6449);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,6447,6450) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'relining_construction',
    value_name = 'pipe_string_relining',
@@ -26114,7 +26114,7 @@ WHERE (class_id = 31 AND attribute_id = 6447 AND attribute_id = 6450);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,6447,6451) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'relining_construction',
    value_name = 'hose_relining',
@@ -26137,7 +26137,7 @@ WHERE (class_id = 31 AND attribute_id = 6447 AND attribute_id = 6451);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,6447,6452) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'relining_construction',
    value_name = 'partial_liner',
@@ -26160,7 +26160,7 @@ WHERE (class_id = 31 AND attribute_id = 6447 AND attribute_id = 6452);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,6447,6453) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'relining_construction',
    value_name = 'unknown',
@@ -26183,7 +26183,7 @@ WHERE (class_id = 31 AND attribute_id = 6447 AND attribute_id = 6453);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,6447,6479) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'relining_construction',
    value_name = 'close_fit_relining',
@@ -26206,7 +26206,7 @@ WHERE (class_id = 31 AND attribute_id = 6447 AND attribute_id = 6479);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,6447,6480) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'relining_construction',
    value_name = 'spiral_lining',
@@ -26229,7 +26229,7 @@ WHERE (class_id = 31 AND attribute_id = 6447 AND attribute_id = 6480);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,6447,6481) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'relining_construction',
    value_name = 'grouted_in_place_lining',
@@ -26252,7 +26252,7 @@ WHERE (class_id = 31 AND attribute_id = 6447 AND attribute_id = 6481);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,6454,6455) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'relining_kind',
    value_name = 'full_reach',
@@ -26275,7 +26275,7 @@ WHERE (class_id = 31 AND attribute_id = 6454 AND attribute_id = 6455);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,6454,6456) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'relining_kind',
    value_name = 'partial',
@@ -26298,7 +26298,7 @@ WHERE (class_id = 31 AND attribute_id = 6454 AND attribute_id = 6456);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (31,6454,6457) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach',
    field_name = 'relining_kind',
    value_name = 'unknown',
@@ -26321,7 +26321,7 @@ WHERE (class_id = 31 AND attribute_id = 6454 AND attribute_id = 6457);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (32,3244,3245) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach_point',
    field_name = 'elevation_accuracy',
    value_name = 'plusminus_1cm',
@@ -26344,7 +26344,7 @@ WHERE (class_id = 32 AND attribute_id = 3244 AND attribute_id = 3245);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (32,3244,3246) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach_point',
    field_name = 'elevation_accuracy',
    value_name = 'plusminus_3cm',
@@ -26367,7 +26367,7 @@ WHERE (class_id = 32 AND attribute_id = 3244 AND attribute_id = 3246);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (32,3244,3247) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach_point',
    field_name = 'elevation_accuracy',
    value_name = 'plusminus_6cm',
@@ -26390,7 +26390,7 @@ WHERE (class_id = 32 AND attribute_id = 3244 AND attribute_id = 3247);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (32,3244,3248) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach_point',
    field_name = 'elevation_accuracy',
    value_name = 'more_than_6cm',
@@ -26413,7 +26413,7 @@ WHERE (class_id = 32 AND attribute_id = 3244 AND attribute_id = 3248);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (32,3244,5376) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach_point',
    field_name = 'elevation_accuracy',
    value_name = 'unknown',
@@ -26436,7 +26436,7 @@ WHERE (class_id = 32 AND attribute_id = 3244 AND attribute_id = 5376);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (32,31,286) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach_point',
    field_name = 'outlet_shape',
    value_name = 'sharp_edged',
@@ -26459,7 +26459,7 @@ WHERE (class_id = 32 AND attribute_id = 31 AND attribute_id = 286);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (32,31,298) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach_point',
    field_name = 'outlet_shape',
    value_name = 'orifice',
@@ -26482,7 +26482,7 @@ WHERE (class_id = 32 AND attribute_id = 31 AND attribute_id = 298);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (32,31,3358) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach_point',
    field_name = 'outlet_shape',
    value_name = 'no_cross_section_change',
@@ -26505,7 +26505,7 @@ WHERE (class_id = 32 AND attribute_id = 31 AND attribute_id = 3358);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (32,31,5374) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach_point',
    field_name = 'outlet_shape',
    value_name = 'round_edged',
@@ -26528,7 +26528,7 @@ WHERE (class_id = 32 AND attribute_id = 31 AND attribute_id = 5374);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (32,31,5375) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach_point',
    field_name = 'outlet_shape',
    value_name = 'unknown',
@@ -26551,7 +26551,7 @@ WHERE (class_id = 32 AND attribute_id = 31 AND attribute_id = 5375);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (32,8998,8999) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach_point',
    field_name = 'pipe_closure',
    value_name = 'yes',
@@ -26574,7 +26574,7 @@ WHERE (class_id = 32 AND attribute_id = 8998 AND attribute_id = 8999);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (32,8998,9000) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach_point',
    field_name = 'pipe_closure',
    value_name = 'no',
@@ -26597,7 +26597,7 @@ WHERE (class_id = 32 AND attribute_id = 8998 AND attribute_id = 9000);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (32,8998,9001) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach_point',
    field_name = 'pipe_closure',
    value_name = 'unknown',
@@ -26620,7 +26620,7 @@ WHERE (class_id = 32 AND attribute_id = 8998 AND attribute_id = 9001);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,5324,5325) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'bedding_encasement',
    value_name = 'other',
@@ -26643,7 +26643,7 @@ WHERE (class_id = 38 AND attribute_id = 5324 AND attribute_id = 5325);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,5324,5327) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'bedding_encasement',
    value_name = 'bed_plank',
@@ -26666,7 +26666,7 @@ WHERE (class_id = 38 AND attribute_id = 5324 AND attribute_id = 5327);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,5324,5328) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'bedding_encasement',
    value_name = 'in_channel_suspended',
@@ -26689,7 +26689,7 @@ WHERE (class_id = 38 AND attribute_id = 5324 AND attribute_id = 5328);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,5324,5329) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'bedding_encasement',
    value_name = 'unknown',
@@ -26712,7 +26712,7 @@ WHERE (class_id = 38 AND attribute_id = 5324 AND attribute_id = 5329);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,5324,5330) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'bedding_encasement',
    value_name = 'sia_type_2',
@@ -26735,7 +26735,7 @@ WHERE (class_id = 38 AND attribute_id = 5324 AND attribute_id = 5330);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,5324,5331) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'bedding_encasement',
    value_name = 'in_walk_in_passage',
@@ -26758,7 +26758,7 @@ WHERE (class_id = 38 AND attribute_id = 5324 AND attribute_id = 5331);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,5324,5332) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'bedding_encasement',
    value_name = 'in_soil',
@@ -26781,7 +26781,7 @@ WHERE (class_id = 38 AND attribute_id = 5324 AND attribute_id = 5332);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,5324,5333) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'bedding_encasement',
    value_name = 'sia_type_1',
@@ -26804,7 +26804,7 @@ WHERE (class_id = 38 AND attribute_id = 5324 AND attribute_id = 5333);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,5324,5334) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'bedding_encasement',
    value_name = 'sia_type_3',
@@ -26827,7 +26827,7 @@ WHERE (class_id = 38 AND attribute_id = 5324 AND attribute_id = 5334);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,5324,5335) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'bedding_encasement',
    value_name = 'sand',
@@ -26850,7 +26850,7 @@ WHERE (class_id = 38 AND attribute_id = 5324 AND attribute_id = 5335);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,5324,5336) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'bedding_encasement',
    value_name = 'in_jacking_pipe_steel',
@@ -26873,7 +26873,7 @@ WHERE (class_id = 38 AND attribute_id = 5324 AND attribute_id = 5336);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,5324,5337) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'bedding_encasement',
    value_name = 'in_jacking_pipe_concrete',
@@ -26896,7 +26896,7 @@ WHERE (class_id = 38 AND attribute_id = 5324 AND attribute_id = 5337);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,5324,5339) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'bedding_encasement',
    value_name = 'in_channel_concrete_casted',
@@ -26919,7 +26919,7 @@ WHERE (class_id = 38 AND attribute_id = 5324 AND attribute_id = 5339);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,5324,5340) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'bedding_encasement',
    value_name = 'sia_type_4',
@@ -26942,7 +26942,7 @@ WHERE (class_id = 38 AND attribute_id = 5324 AND attribute_id = 5340);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,223,185) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'connection_type',
    value_name = 'bell_shaped_sleeves',
@@ -26965,7 +26965,7 @@ WHERE (class_id = 38 AND attribute_id = 223 AND attribute_id = 185);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,223,186) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'connection_type',
    value_name = 'beaked_sleeves',
@@ -26988,7 +26988,7 @@ WHERE (class_id = 38 AND attribute_id = 223 AND attribute_id = 186);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,223,187) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'connection_type',
    value_name = 'flat_sleeves',
@@ -27011,7 +27011,7 @@ WHERE (class_id = 38 AND attribute_id = 223 AND attribute_id = 187);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,223,188) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'connection_type',
    value_name = 'slip_on_sleeves',
@@ -27034,7 +27034,7 @@ WHERE (class_id = 38 AND attribute_id = 223 AND attribute_id = 188);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,223,189) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'connection_type',
    value_name = 'butt_welded',
@@ -27057,7 +27057,7 @@ WHERE (class_id = 38 AND attribute_id = 223 AND attribute_id = 189);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,223,190) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'connection_type',
    value_name = 'electric_welded_sleeves',
@@ -27080,7 +27080,7 @@ WHERE (class_id = 38 AND attribute_id = 223 AND attribute_id = 190);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,223,191) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'connection_type',
    value_name = 'push_fit_sleeves',
@@ -27103,7 +27103,7 @@ WHERE (class_id = 38 AND attribute_id = 223 AND attribute_id = 191);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,223,192) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'connection_type',
    value_name = 'coupling',
@@ -27126,7 +27126,7 @@ WHERE (class_id = 38 AND attribute_id = 223 AND attribute_id = 192);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,223,193) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'connection_type',
    value_name = 'flange',
@@ -27149,7 +27149,7 @@ WHERE (class_id = 38 AND attribute_id = 223 AND attribute_id = 193);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,223,194) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'connection_type',
    value_name = 'screwed_sleeves',
@@ -27172,7 +27172,7 @@ WHERE (class_id = 38 AND attribute_id = 223 AND attribute_id = 194);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,223,3036) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'connection_type',
    value_name = 'unknown',
@@ -27195,7 +27195,7 @@ WHERE (class_id = 38 AND attribute_id = 223 AND attribute_id = 3036);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,223,3666) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'connection_type',
    value_name = 'jacking_pipe_coupling',
@@ -27218,7 +27218,7 @@ WHERE (class_id = 38 AND attribute_id = 223 AND attribute_id = 3666);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,223,5341) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'connection_type',
    value_name = 'other',
@@ -27241,7 +27241,7 @@ WHERE (class_id = 38 AND attribute_id = 223 AND attribute_id = 5341);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,4581,4582) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'function_amelioration',
    value_name = 'main_sewer',
@@ -27264,7 +27264,7 @@ WHERE (class_id = 38 AND attribute_id = 4581 AND attribute_id = 4582);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,4581,4583) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'function_amelioration',
    value_name = 'collector_sewer',
@@ -27287,7 +27287,7 @@ WHERE (class_id = 38 AND attribute_id = 4581 AND attribute_id = 4583);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,4581,4584) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'function_amelioration',
    value_name = 'suction_pipe',
@@ -27310,7 +27310,7 @@ WHERE (class_id = 38 AND attribute_id = 4581 AND attribute_id = 4584);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,4581,4585) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'function_amelioration',
    value_name = 'unknown',
@@ -27333,7 +27333,7 @@ WHERE (class_id = 38 AND attribute_id = 4581 AND attribute_id = 4585);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,103,5062) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'function_hierarchic',
    value_name = 'pwwf.renovation_conduction',
@@ -27356,7 +27356,7 @@ WHERE (class_id = 38 AND attribute_id = 103 AND attribute_id = 5062);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,103,5063) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'function_hierarchic',
    value_name = 'swwf.renovation_conduction',
@@ -27379,7 +27379,7 @@ WHERE (class_id = 38 AND attribute_id = 103 AND attribute_id = 5063);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,103,5064) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'function_hierarchic',
    value_name = 'pwwf.residential_drainage',
@@ -27402,7 +27402,7 @@ WHERE (class_id = 38 AND attribute_id = 103 AND attribute_id = 5064);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,103,5065) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'function_hierarchic',
    value_name = 'swwf.residential_drainage',
@@ -27425,7 +27425,7 @@ WHERE (class_id = 38 AND attribute_id = 103 AND attribute_id = 5065);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,103,5066) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'function_hierarchic',
    value_name = 'pwwf.other',
@@ -27448,7 +27448,7 @@ WHERE (class_id = 38 AND attribute_id = 103 AND attribute_id = 5066);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,103,5067) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'function_hierarchic',
    value_name = 'swwf.other',
@@ -27471,7 +27471,7 @@ WHERE (class_id = 38 AND attribute_id = 103 AND attribute_id = 5067);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,103,5068) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'function_hierarchic',
    value_name = 'pwwf.water_bodies',
@@ -27494,7 +27494,7 @@ WHERE (class_id = 38 AND attribute_id = 103 AND attribute_id = 5068);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,103,5069) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'function_hierarchic',
    value_name = 'pwwf.main_drain',
@@ -27517,7 +27517,7 @@ WHERE (class_id = 38 AND attribute_id = 103 AND attribute_id = 5069);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,103,5070) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'function_hierarchic',
    value_name = 'pwwf.main_drain_regional',
@@ -27540,7 +27540,7 @@ WHERE (class_id = 38 AND attribute_id = 103 AND attribute_id = 5070);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,103,5071) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'function_hierarchic',
    value_name = 'pwwf.collector_sewer',
@@ -27563,7 +27563,7 @@ WHERE (class_id = 38 AND attribute_id = 103 AND attribute_id = 5071);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,103,5072) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'function_hierarchic',
    value_name = 'pwwf.road_drainage',
@@ -27586,7 +27586,7 @@ WHERE (class_id = 38 AND attribute_id = 103 AND attribute_id = 5072);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,103,5073) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'function_hierarchic',
    value_name = 'swwf.road_drainage',
@@ -27609,7 +27609,7 @@ WHERE (class_id = 38 AND attribute_id = 103 AND attribute_id = 5073);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,103,5074) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'function_hierarchic',
    value_name = 'pwwf.unknown',
@@ -27632,7 +27632,7 @@ WHERE (class_id = 38 AND attribute_id = 103 AND attribute_id = 5074);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,103,5075) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'function_hierarchic',
    value_name = 'swwf.unknown',
@@ -27655,7 +27655,7 @@ WHERE (class_id = 38 AND attribute_id = 103 AND attribute_id = 5075);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,104,144) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'function_hydraulic',
    value_name = 'jetting_pipe',
@@ -27678,7 +27678,7 @@ WHERE (class_id = 38 AND attribute_id = 104 AND attribute_id = 144);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,104,145) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'function_hydraulic',
    value_name = 'seepage_water_drain',
@@ -27701,7 +27701,7 @@ WHERE (class_id = 38 AND attribute_id = 104 AND attribute_id = 145);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,104,21) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'function_hydraulic',
    value_name = 'retention_pipe',
@@ -27724,7 +27724,7 @@ WHERE (class_id = 38 AND attribute_id = 104 AND attribute_id = 21);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,104,22) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'function_hydraulic',
    value_name = 'restriction_pipe',
@@ -27747,7 +27747,7 @@ WHERE (class_id = 38 AND attribute_id = 104 AND attribute_id = 22);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,104,23) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'function_hydraulic',
    value_name = 'pump_pressure_pipe',
@@ -27770,7 +27770,7 @@ WHERE (class_id = 38 AND attribute_id = 104 AND attribute_id = 23);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,104,2546) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'function_hydraulic',
    value_name = 'drainage_transportation_pipe',
@@ -27793,7 +27793,7 @@ WHERE (class_id = 38 AND attribute_id = 104 AND attribute_id = 2546);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,104,3610) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'function_hydraulic',
    value_name = 'inverted_syphon',
@@ -27816,7 +27816,7 @@ WHERE (class_id = 38 AND attribute_id = 104 AND attribute_id = 3610);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,104,3655) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'function_hydraulic',
    value_name = 'vacuum_pipe',
@@ -27839,7 +27839,7 @@ WHERE (class_id = 38 AND attribute_id = 104 AND attribute_id = 3655);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,104,367) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'function_hydraulic',
    value_name = 'gravity_pipe',
@@ -27862,7 +27862,7 @@ WHERE (class_id = 38 AND attribute_id = 104 AND attribute_id = 367);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,104,5320) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'function_hydraulic',
    value_name = 'other',
@@ -27885,7 +27885,7 @@ WHERE (class_id = 38 AND attribute_id = 104 AND attribute_id = 5320);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,104,5321) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'function_hydraulic',
    value_name = 'unknown',
@@ -27908,7 +27908,7 @@ WHERE (class_id = 38 AND attribute_id = 104 AND attribute_id = 5321);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,104,8662) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'function_hydraulic',
    value_name = 'infiltration_pipe',
@@ -27931,7 +27931,7 @@ WHERE (class_id = 38 AND attribute_id = 104 AND attribute_id = 8662);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,4792,4793) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'seepage',
    value_name = 'other',
@@ -27954,7 +27954,7 @@ WHERE (class_id = 38 AND attribute_id = 4792 AND attribute_id = 4793);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,4792,4794) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'seepage',
    value_name = 'wood_chips',
@@ -27977,7 +27977,7 @@ WHERE (class_id = 38 AND attribute_id = 4792 AND attribute_id = 4794);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,4792,4795) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'seepage',
    value_name = 'soakaway_gravel',
@@ -28000,7 +28000,7 @@ WHERE (class_id = 38 AND attribute_id = 4792 AND attribute_id = 4795);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,4792,4796) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'seepage',
    value_name = 'unknown',
@@ -28023,7 +28023,7 @@ WHERE (class_id = 38 AND attribute_id = 4792 AND attribute_id = 4796);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,4510,4514) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'usage_current',
    value_name = 'clean_wastewater',
@@ -28046,7 +28046,7 @@ WHERE (class_id = 38 AND attribute_id = 4510 AND attribute_id = 4514);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,4510,4516) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'usage_current',
    value_name = 'discharged_combined_wastewater',
@@ -28069,7 +28069,7 @@ WHERE (class_id = 38 AND attribute_id = 4510 AND attribute_id = 4516);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,4510,4518) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'usage_current',
    value_name = 'creek_water',
@@ -28092,7 +28092,7 @@ WHERE (class_id = 38 AND attribute_id = 4510 AND attribute_id = 4518);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,4510,4522) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'usage_current',
    value_name = 'combined_wastewater',
@@ -28115,7 +28115,7 @@ WHERE (class_id = 38 AND attribute_id = 4510 AND attribute_id = 4522);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,4510,4524) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'usage_current',
    value_name = 'industrial_wastewater',
@@ -28138,7 +28138,7 @@ WHERE (class_id = 38 AND attribute_id = 4510 AND attribute_id = 4524);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,4510,4526) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'usage_current',
    value_name = 'wastewater',
@@ -28161,7 +28161,7 @@ WHERE (class_id = 38 AND attribute_id = 4510 AND attribute_id = 4526);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,4510,4571) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'usage_current',
    value_name = 'unknown',
@@ -28184,7 +28184,7 @@ WHERE (class_id = 38 AND attribute_id = 4510 AND attribute_id = 4571);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,4510,5322) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'usage_current',
    value_name = 'other',
@@ -28207,7 +28207,7 @@ WHERE (class_id = 38 AND attribute_id = 4510 AND attribute_id = 5322);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,4510,9023) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'usage_current',
    value_name = 'surface_water',
@@ -28230,7 +28230,7 @@ WHERE (class_id = 38 AND attribute_id = 4510 AND attribute_id = 9023);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,4512,4515) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'usage_planned',
    value_name = 'clean_wastewater',
@@ -28253,7 +28253,7 @@ WHERE (class_id = 38 AND attribute_id = 4512 AND attribute_id = 4515);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,4512,4517) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'usage_planned',
    value_name = 'discharged_combined_wastewater',
@@ -28276,7 +28276,7 @@ WHERE (class_id = 38 AND attribute_id = 4512 AND attribute_id = 4517);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,4512,4519) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'usage_planned',
    value_name = 'creek_water',
@@ -28299,7 +28299,7 @@ WHERE (class_id = 38 AND attribute_id = 4512 AND attribute_id = 4519);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,4512,4523) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'usage_planned',
    value_name = 'combined_wastewater',
@@ -28322,7 +28322,7 @@ WHERE (class_id = 38 AND attribute_id = 4512 AND attribute_id = 4523);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,4512,4525) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'usage_planned',
    value_name = 'industrial_wastewater',
@@ -28345,7 +28345,7 @@ WHERE (class_id = 38 AND attribute_id = 4512 AND attribute_id = 4525);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,4512,4527) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'usage_planned',
    value_name = 'wastewater',
@@ -28368,7 +28368,7 @@ WHERE (class_id = 38 AND attribute_id = 4512 AND attribute_id = 4527);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,4512,4569) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'usage_planned',
    value_name = 'unknown',
@@ -28391,7 +28391,7 @@ WHERE (class_id = 38 AND attribute_id = 4512 AND attribute_id = 4569);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,4512,5323) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'usage_planned',
    value_name = 'other',
@@ -28414,7 +28414,7 @@ WHERE (class_id = 38 AND attribute_id = 4512 AND attribute_id = 5323);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (38,4512,9022) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'channel',
    field_name = 'usage_planned',
    value_name = 'surface_water',
@@ -28437,7 +28437,7 @@ WHERE (class_id = 38 AND attribute_id = 4512 AND attribute_id = 9022);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (4,9059,9060) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_node',
    field_name = 'elevation_accuracy',
    value_name = 'unknown',
@@ -28460,7 +28460,7 @@ WHERE (class_id = 4 AND attribute_id = 9059 AND attribute_id = 9060);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (4,9059,9061) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_node',
    field_name = 'elevation_accuracy',
    value_name = 'more_than_6cm',
@@ -28483,7 +28483,7 @@ WHERE (class_id = 4 AND attribute_id = 9059 AND attribute_id = 9061);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (4,9059,9062) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_node',
    field_name = 'elevation_accuracy',
    value_name = 'plusminus_1cm',
@@ -28506,7 +28506,7 @@ WHERE (class_id = 4 AND attribute_id = 9059 AND attribute_id = 9062);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (4,9059,9063) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_node',
    field_name = 'elevation_accuracy',
    value_name = 'plusminus_3cm',
@@ -28529,7 +28529,7 @@ WHERE (class_id = 4 AND attribute_id = 9059 AND attribute_id = 9063);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (4,9059,9064) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_node',
    field_name = 'elevation_accuracy',
    value_name = 'plusminus_6cm',
@@ -28552,7 +28552,7 @@ WHERE (class_id = 4 AND attribute_id = 9059 AND attribute_id = 9064);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (4,4619,4620) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_node',
    field_name = 'function_node_amelioration',
    value_name = 'unknown',
@@ -28575,7 +28575,7 @@ WHERE (class_id = 4 AND attribute_id = 4619 AND attribute_id = 4620);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (4,4619,4621) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_node',
    field_name = 'function_node_amelioration',
    value_name = 'slope_change',
@@ -28598,7 +28598,7 @@ WHERE (class_id = 4 AND attribute_id = 4619 AND attribute_id = 4621);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (4,4619,4622) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_node',
    field_name = 'function_node_amelioration',
    value_name = 'standard_manhole',
@@ -28621,7 +28621,7 @@ WHERE (class_id = 4 AND attribute_id = 4619 AND attribute_id = 4622);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (4,4619,4623) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_node',
    field_name = 'function_node_amelioration',
    value_name = 'change_of_diameter',
@@ -28644,7 +28644,7 @@ WHERE (class_id = 4 AND attribute_id = 4619 AND attribute_id = 4623);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (4,4619,9083) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_node',
    field_name = 'function_node_amelioration',
    value_name = 'slope_caliber_change',
@@ -28667,7 +28667,7 @@ WHERE (class_id = 4 AND attribute_id = 4619 AND attribute_id = 9083);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (4,4619,9084) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_node',
    field_name = 'function_node_amelioration',
    value_name = 'standard_manhole_slope_change',
@@ -28690,7 +28690,7 @@ WHERE (class_id = 4 AND attribute_id = 4619 AND attribute_id = 9084);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (4,4619,9085) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_node',
    field_name = 'function_node_amelioration',
    value_name = 'standard_manhole_caliber_change',
@@ -28713,7 +28713,7 @@ WHERE (class_id = 4 AND attribute_id = 4619 AND attribute_id = 9085);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (4,4619,9086) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_node',
    field_name = 'function_node_amelioration',
    value_name = 'standard_manhole_slope_caliber_change',
@@ -28736,7 +28736,7 @@ WHERE (class_id = 4 AND attribute_id = 4619 AND attribute_id = 9086);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (41,3580,3581) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'leapingweir',
    field_name = 'opening_shape',
    value_name = 'other',
@@ -28759,7 +28759,7 @@ WHERE (class_id = 41 AND attribute_id = 3580 AND attribute_id = 3581);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (41,3580,3582) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'leapingweir',
    field_name = 'opening_shape',
    value_name = 'circle',
@@ -28782,7 +28782,7 @@ WHERE (class_id = 41 AND attribute_id = 3580 AND attribute_id = 3582);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (41,3580,3583) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'leapingweir',
    field_name = 'opening_shape',
    value_name = 'rectangular',
@@ -28805,7 +28805,7 @@ WHERE (class_id = 41 AND attribute_id = 3580 AND attribute_id = 3583);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (41,3580,3584) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'leapingweir',
    field_name = 'opening_shape',
    value_name = 'unknown',
@@ -28828,7 +28828,7 @@ WHERE (class_id = 41 AND attribute_id = 3580 AND attribute_id = 3584);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (41,3580,3585) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'leapingweir',
    field_name = 'opening_shape',
    value_name = 'parable',
@@ -28851,7 +28851,7 @@ WHERE (class_id = 41 AND attribute_id = 3580 AND attribute_id = 3585);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (42,2645,2646) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measurement_series',
    field_name = 'kind',
    value_name = 'continuous',
@@ -28874,7 +28874,7 @@ WHERE (class_id = 42 AND attribute_id = 2645 AND attribute_id = 2646);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (42,2645,2647) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measurement_series',
    field_name = 'kind',
    value_name = 'rain_weather',
@@ -28897,7 +28897,7 @@ WHERE (class_id = 42 AND attribute_id = 2645 AND attribute_id = 2647);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (42,2645,3053) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measurement_series',
    field_name = 'kind',
    value_name = 'unknown',
@@ -28920,7 +28920,7 @@ WHERE (class_id = 42 AND attribute_id = 2645 AND attribute_id = 3053);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (42,2645,3217) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measurement_series',
    field_name = 'kind',
    value_name = 'other',
@@ -28943,7 +28943,7 @@ WHERE (class_id = 42 AND attribute_id = 2645 AND attribute_id = 3217);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (42,2645,8778) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measurement_series',
    field_name = 'kind',
    value_name = 'simulation',
@@ -28966,7 +28966,7 @@ WHERE (class_id = 42 AND attribute_id = 2645 AND attribute_id = 8778);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (43,5731,5732) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measurement_result',
    field_name = 'measurement_type',
    value_name = 'other',
@@ -28989,7 +28989,7 @@ WHERE (class_id = 43 AND attribute_id = 5731 AND attribute_id = 5732);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (43,5731,5733) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measurement_result',
    field_name = 'measurement_type',
    value_name = 'flow',
@@ -29012,7 +29012,7 @@ WHERE (class_id = 43 AND attribute_id = 5731 AND attribute_id = 5733);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (43,5731,5734) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measurement_result',
    field_name = 'measurement_type',
    value_name = 'level',
@@ -29035,7 +29035,7 @@ WHERE (class_id = 43 AND attribute_id = 5731 AND attribute_id = 5734);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (43,5731,5735) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measurement_result',
    field_name = 'measurement_type',
    value_name = 'unknown',
@@ -29058,7 +29058,7 @@ WHERE (class_id = 43 AND attribute_id = 5731 AND attribute_id = 5735);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (44,5719,5720) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measuring_point',
    field_name = 'damming_device',
    value_name = 'other',
@@ -29081,7 +29081,7 @@ WHERE (class_id = 44 AND attribute_id = 5719 AND attribute_id = 5720);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (44,5719,5721) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measuring_point',
    field_name = 'damming_device',
    value_name = 'none',
@@ -29104,7 +29104,7 @@ WHERE (class_id = 44 AND attribute_id = 5719 AND attribute_id = 5721);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (44,5719,5722) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measuring_point',
    field_name = 'damming_device',
    value_name = 'overflow_weir',
@@ -29127,7 +29127,7 @@ WHERE (class_id = 44 AND attribute_id = 5719 AND attribute_id = 5722);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (44,5719,5723) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measuring_point',
    field_name = 'damming_device',
    value_name = 'venturi_necking',
@@ -29150,7 +29150,7 @@ WHERE (class_id = 44 AND attribute_id = 5719 AND attribute_id = 5723);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (44,5719,5724) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measuring_point',
    field_name = 'damming_device',
    value_name = 'unknown',
@@ -29173,7 +29173,7 @@ WHERE (class_id = 44 AND attribute_id = 5719 AND attribute_id = 5724);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (44,4591,4592) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measuring_point',
    field_name = 'purpose',
    value_name = 'unknown',
@@ -29196,7 +29196,7 @@ WHERE (class_id = 44 AND attribute_id = 4591 AND attribute_id = 4592);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (44,4591,4593) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measuring_point',
    field_name = 'purpose',
    value_name = 'cost_sharing',
@@ -29219,7 +29219,7 @@ WHERE (class_id = 44 AND attribute_id = 4591 AND attribute_id = 4593);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (44,4591,4594) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measuring_point',
    field_name = 'purpose',
    value_name = 'technical_purpose',
@@ -29242,7 +29242,7 @@ WHERE (class_id = 44 AND attribute_id = 4591 AND attribute_id = 4594);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (44,4591,4595) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measuring_point',
    field_name = 'purpose',
    value_name = 'both',
@@ -29265,7 +29265,7 @@ WHERE (class_id = 44 AND attribute_id = 4591 AND attribute_id = 4595);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,9051,9052) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'amphibian_exit',
    value_name = 'yes',
@@ -29288,7 +29288,7 @@ WHERE (class_id = 45 AND attribute_id = 9051 AND attribute_id = 9052);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,9051,9053) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'amphibian_exit',
    value_name = 'no',
@@ -29311,7 +29311,7 @@ WHERE (class_id = 45 AND attribute_id = 9051 AND attribute_id = 9053);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,9051,9054) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'amphibian_exit',
    value_name = 'unknown',
@@ -29334,7 +29334,7 @@ WHERE (class_id = 45 AND attribute_id = 9051 AND attribute_id = 9054);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,100,1008) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'function',
    value_name = 'oil_separator',
@@ -29357,7 +29357,7 @@ WHERE (class_id = 45 AND attribute_id = 100 AND attribute_id = 1008);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,100,228) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'function',
    value_name = 'rail_track_gully',
@@ -29380,7 +29380,7 @@ WHERE (class_id = 45 AND attribute_id = 100 AND attribute_id = 228);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,100,2742) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'function',
    value_name = 'slurry_collector',
@@ -29403,7 +29403,7 @@ WHERE (class_id = 45 AND attribute_id = 100 AND attribute_id = 2742);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,100,3266) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'function',
    value_name = 'gully',
@@ -29426,7 +29426,7 @@ WHERE (class_id = 45 AND attribute_id = 100 AND attribute_id = 3266);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,100,3267) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'function',
    value_name = 'rain_water_manhole',
@@ -29449,7 +29449,7 @@ WHERE (class_id = 45 AND attribute_id = 100 AND attribute_id = 3267);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,100,3472) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'function',
    value_name = 'drainage_channel',
@@ -29472,7 +29472,7 @@ WHERE (class_id = 45 AND attribute_id = 100 AND attribute_id = 3472);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,100,4532) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'function',
    value_name = 'drop_structure',
@@ -29495,7 +29495,7 @@ WHERE (class_id = 45 AND attribute_id = 100 AND attribute_id = 4532);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,100,4533) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'function',
    value_name = 'venting',
@@ -29518,7 +29518,7 @@ WHERE (class_id = 45 AND attribute_id = 100 AND attribute_id = 4533);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,100,4536) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'function',
    value_name = 'pump_station',
@@ -29541,7 +29541,7 @@ WHERE (class_id = 45 AND attribute_id = 100 AND attribute_id = 4536);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,100,4537) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'function',
    value_name = 'jetting_manhole',
@@ -29564,7 +29564,7 @@ WHERE (class_id = 45 AND attribute_id = 100 AND attribute_id = 4537);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,100,4798) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'function',
    value_name = 'separating_structure',
@@ -29587,7 +29587,7 @@ WHERE (class_id = 45 AND attribute_id = 100 AND attribute_id = 4798);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,100,5344) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'function',
    value_name = 'other',
@@ -29610,7 +29610,7 @@ WHERE (class_id = 45 AND attribute_id = 100 AND attribute_id = 5344);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,100,5345) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'function',
    value_name = 'unknown',
@@ -29633,7 +29633,7 @@ WHERE (class_id = 45 AND attribute_id = 100 AND attribute_id = 5345);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,100,5346) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'function',
    value_name = 'stormwater_overflow',
@@ -29656,7 +29656,7 @@ WHERE (class_id = 45 AND attribute_id = 100 AND attribute_id = 5346);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,100,5347) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'function',
    value_name = 'floating_material_separator',
@@ -29679,7 +29679,7 @@ WHERE (class_id = 45 AND attribute_id = 100 AND attribute_id = 5347);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,100,8601) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'function',
    value_name = 'grease_separator',
@@ -29702,7 +29702,7 @@ WHERE (class_id = 45 AND attribute_id = 100 AND attribute_id = 8601);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,100,8654) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'function',
    value_name = 'combined_manhole',
@@ -29725,7 +29725,7 @@ WHERE (class_id = 45 AND attribute_id = 100 AND attribute_id = 8654);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,100,8702) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'function',
    value_name = 'treatment_plant',
@@ -29748,7 +29748,7 @@ WHERE (class_id = 45 AND attribute_id = 100 AND attribute_id = 8702);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,100,8703) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'function',
    value_name = 'pretreatment_plant',
@@ -29771,7 +29771,7 @@ WHERE (class_id = 45 AND attribute_id = 100 AND attribute_id = 8703);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,100,8736) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'function',
    value_name = 'manhole',
@@ -29794,7 +29794,7 @@ WHERE (class_id = 45 AND attribute_id = 100 AND attribute_id = 8736);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,100,8828) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'function',
    value_name = 'drainage_channel_with_mud_bag',
@@ -29817,7 +29817,7 @@ WHERE (class_id = 45 AND attribute_id = 100 AND attribute_id = 8828);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,100,8995) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'function',
    value_name = 'floor_drain',
@@ -29840,7 +29840,7 @@ WHERE (class_id = 45 AND attribute_id = 100 AND attribute_id = 8995);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,4539,4540) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'material',
    value_name = 'other',
@@ -29863,7 +29863,7 @@ WHERE (class_id = 45 AND attribute_id = 4539 AND attribute_id = 4540);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,4539,4541) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'material',
    value_name = 'concrete',
@@ -29886,7 +29886,7 @@ WHERE (class_id = 45 AND attribute_id = 4539 AND attribute_id = 4541);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,4539,4542) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'material',
    value_name = 'plastic',
@@ -29909,7 +29909,7 @@ WHERE (class_id = 45 AND attribute_id = 4539 AND attribute_id = 4542);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,4539,4543) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'material',
    value_name = 'unknown',
@@ -29932,7 +29932,7 @@ WHERE (class_id = 45 AND attribute_id = 4539 AND attribute_id = 4543);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,9055,9056) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'possibility_intervention',
    value_name = 'yes',
@@ -29955,7 +29955,7 @@ WHERE (class_id = 45 AND attribute_id = 9055 AND attribute_id = 9056);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,9055,9057) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'possibility_intervention',
    value_name = 'no',
@@ -29978,7 +29978,7 @@ WHERE (class_id = 45 AND attribute_id = 9055 AND attribute_id = 9057);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,9055,9058) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'possibility_intervention',
    value_name = 'unknown',
@@ -30001,7 +30001,7 @@ WHERE (class_id = 45 AND attribute_id = 9055 AND attribute_id = 9058);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,2738,2739) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'surface_inflow',
    value_name = 'grid',
@@ -30024,7 +30024,7 @@ WHERE (class_id = 45 AND attribute_id = 2738 AND attribute_id = 2739);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,2738,2740) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'surface_inflow',
    value_name = 'intake_from_side',
@@ -30047,7 +30047,7 @@ WHERE (class_id = 45 AND attribute_id = 2738 AND attribute_id = 2740);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,2738,2741) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'surface_inflow',
    value_name = 'none',
@@ -30070,7 +30070,7 @@ WHERE (class_id = 45 AND attribute_id = 2738 AND attribute_id = 2741);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,2738,5342) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'surface_inflow',
    value_name = 'other',
@@ -30093,7 +30093,7 @@ WHERE (class_id = 45 AND attribute_id = 2738 AND attribute_id = 5342);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (45,2738,5343) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'manhole',
    field_name = 'surface_inflow',
    value_name = 'unknown',
@@ -30116,7 +30116,7 @@ WHERE (class_id = 45 AND attribute_id = 2738 AND attribute_id = 5343);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (47,8603,8604) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'organisation',
    field_name = 'organisation_type',
    value_name = 'municipality',
@@ -30139,7 +30139,7 @@ WHERE (class_id = 47 AND attribute_id = 8603 AND attribute_id = 8604);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (47,8603,8605) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'organisation',
    field_name = 'organisation_type',
    value_name = 'canton',
@@ -30162,7 +30162,7 @@ WHERE (class_id = 47 AND attribute_id = 8603 AND attribute_id = 8605);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (47,8603,8606) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'organisation',
    field_name = 'organisation_type',
    value_name = 'private',
@@ -30185,7 +30185,7 @@ WHERE (class_id = 47 AND attribute_id = 8603 AND attribute_id = 8606);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (47,8603,8608) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'organisation',
    field_name = 'organisation_type',
    value_name = 'waste_water_association',
@@ -30208,7 +30208,7 @@ WHERE (class_id = 47 AND attribute_id = 8603 AND attribute_id = 8608);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (47,8603,8610) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'organisation',
    field_name = 'organisation_type',
    value_name = 'cooperative',
@@ -30231,7 +30231,7 @@ WHERE (class_id = 47 AND attribute_id = 8603 AND attribute_id = 8610);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (47,8603,8715) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'organisation',
    field_name = 'organisation_type',
    value_name = 'federation',
@@ -30254,7 +30254,7 @@ WHERE (class_id = 47 AND attribute_id = 8603 AND attribute_id = 8715);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (47,8603,9319) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'organisation',
    field_name = 'organisation_type',
    value_name = 'municipal_department',
@@ -30277,7 +30277,7 @@ WHERE (class_id = 47 AND attribute_id = 8603 AND attribute_id = 9319);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (47,9046,9047) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'organisation',
    field_name = 'status',
    value_name = 'activ',
@@ -30300,7 +30300,7 @@ WHERE (class_id = 47 AND attribute_id = 9046 AND attribute_id = 9047);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (47,9046,9048) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'organisation',
    field_name = 'status',
    value_name = 'gone',
@@ -30323,7 +30323,7 @@ WHERE (class_id = 47 AND attribute_id = 9046 AND attribute_id = 9048);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (49,3232,3350) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'pipe_profile',
    field_name = 'profile_type',
    value_name = 'circle',
@@ -30346,7 +30346,7 @@ WHERE (class_id = 49 AND attribute_id = 3232 AND attribute_id = 3350);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (49,3232,3351) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'pipe_profile',
    field_name = 'profile_type',
    value_name = 'egg',
@@ -30369,7 +30369,7 @@ WHERE (class_id = 49 AND attribute_id = 3232 AND attribute_id = 3351);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (49,3232,3352) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'pipe_profile',
    field_name = 'profile_type',
    value_name = 'mouth',
@@ -30392,7 +30392,7 @@ WHERE (class_id = 49 AND attribute_id = 3232 AND attribute_id = 3352);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (49,3232,3353) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'pipe_profile',
    field_name = 'profile_type',
    value_name = 'rectangular',
@@ -30415,7 +30415,7 @@ WHERE (class_id = 49 AND attribute_id = 3232 AND attribute_id = 3353);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (49,3232,3354) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'pipe_profile',
    field_name = 'profile_type',
    value_name = 'open',
@@ -30438,7 +30438,7 @@ WHERE (class_id = 49 AND attribute_id = 3232 AND attribute_id = 3354);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (49,3232,3355) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'pipe_profile',
    field_name = 'profile_type',
    value_name = 'special',
@@ -30461,7 +30461,7 @@ WHERE (class_id = 49 AND attribute_id = 3232 AND attribute_id = 3355);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (49,3232,3357) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'pipe_profile',
    field_name = 'profile_type',
    value_name = 'unknown',
@@ -30484,7 +30484,7 @@ WHERE (class_id = 49 AND attribute_id = 3232 AND attribute_id = 3357);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (50,33,2661) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'pump',
    field_name = 'construction_type',
    value_name = 'vacuum_system',
@@ -30507,7 +30507,7 @@ WHERE (class_id = 50 AND attribute_id = 33 AND attribute_id = 2661);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (50,33,2662) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'pump',
    field_name = 'construction_type',
    value_name = 'compressed_air_system',
@@ -30530,7 +30530,7 @@ WHERE (class_id = 50 AND attribute_id = 33 AND attribute_id = 2662);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (50,33,2983) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'pump',
    field_name = 'construction_type',
    value_name = 'other',
@@ -30553,7 +30553,7 @@ WHERE (class_id = 50 AND attribute_id = 33 AND attribute_id = 2983);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (50,33,3082) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'pump',
    field_name = 'construction_type',
    value_name = 'unknown',
@@ -30576,7 +30576,7 @@ WHERE (class_id = 50 AND attribute_id = 33 AND attribute_id = 3082);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (50,33,309) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'pump',
    field_name = 'construction_type',
    value_name = 'centrifugal_pump',
@@ -30599,7 +30599,7 @@ WHERE (class_id = 50 AND attribute_id = 33 AND attribute_id = 309);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (50,33,310) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'pump',
    field_name = 'construction_type',
    value_name = 'screw_pump',
@@ -30622,7 +30622,7 @@ WHERE (class_id = 50 AND attribute_id = 33 AND attribute_id = 310);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (50,33,314) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'pump',
    field_name = 'construction_type',
    value_name = 'piston_pump',
@@ -30645,7 +30645,7 @@ WHERE (class_id = 50 AND attribute_id = 33 AND attribute_id = 314);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (50,29,3070) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'pump',
    field_name = 'placement_of_actuation',
    value_name = 'unknown',
@@ -30668,7 +30668,7 @@ WHERE (class_id = 50 AND attribute_id = 29 AND attribute_id = 3070);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (50,29,311) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'pump',
    field_name = 'placement_of_actuation',
    value_name = 'dry',
@@ -30691,7 +30691,7 @@ WHERE (class_id = 50 AND attribute_id = 29 AND attribute_id = 311);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (50,29,318) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'pump',
    field_name = 'placement_of_actuation',
    value_name = 'wet',
@@ -30714,7 +30714,7 @@ WHERE (class_id = 50 AND attribute_id = 29 AND attribute_id = 318);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (50,30,3071) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'pump',
    field_name = 'placement_of_pump',
    value_name = 'unknown',
@@ -30737,7 +30737,7 @@ WHERE (class_id = 50 AND attribute_id = 30 AND attribute_id = 3071);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (50,30,362) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'pump',
    field_name = 'placement_of_pump',
    value_name = 'horizontal',
@@ -30760,7 +30760,7 @@ WHERE (class_id = 50 AND attribute_id = 30 AND attribute_id = 362);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (50,30,363) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'pump',
    field_name = 'placement_of_pump',
    value_name = 'vertical',
@@ -30783,7 +30783,7 @@ WHERE (class_id = 50 AND attribute_id = 30 AND attribute_id = 363);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5100,8526,8527) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'log_card',
    field_name = 'control_remote_control',
    value_name = 'no_control',
@@ -30806,7 +30806,7 @@ WHERE (class_id = 5100 AND attribute_id = 8526 AND attribute_id = 8527);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5100,8526,8528) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'log_card',
    field_name = 'control_remote_control',
    value_name = 'local_control',
@@ -30829,7 +30829,7 @@ WHERE (class_id = 5100 AND attribute_id = 8526 AND attribute_id = 8528);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5100,8526,8529) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'log_card',
    field_name = 'control_remote_control',
    value_name = 'transmission_alarm',
@@ -30852,7 +30852,7 @@ WHERE (class_id = 5100 AND attribute_id = 8526 AND attribute_id = 8529);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5100,8526,8530) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'log_card',
    field_name = 'control_remote_control',
    value_name = 'transmission_measuring_signals',
@@ -30875,7 +30875,7 @@ WHERE (class_id = 5100 AND attribute_id = 8526 AND attribute_id = 8530);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5100,8526,8531) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'log_card',
    field_name = 'control_remote_control',
    value_name = 'interconnection_control',
@@ -30898,7 +30898,7 @@ WHERE (class_id = 5100 AND attribute_id = 8526 AND attribute_id = 8531);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5100,8526,8532) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'log_card',
    field_name = 'control_remote_control',
    value_name = 'other',
@@ -30921,7 +30921,7 @@ WHERE (class_id = 5100 AND attribute_id = 8526 AND attribute_id = 8532);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5100,8526,8533) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'log_card',
    field_name = 'control_remote_control',
    value_name = 'unknown',
@@ -30944,7 +30944,7 @@ WHERE (class_id = 5100 AND attribute_id = 8526 AND attribute_id = 8533);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5100,5600,5601) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'log_card',
    field_name = 'information_source',
    value_name = 'other',
@@ -30967,7 +30967,7 @@ WHERE (class_id = 5100 AND attribute_id = 5600 AND attribute_id = 5601);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5100,5600,5602) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'log_card',
    field_name = 'information_source',
    value_name = 'gwdp_responsible_body',
@@ -30990,7 +30990,7 @@ WHERE (class_id = 5100 AND attribute_id = 5600 AND attribute_id = 5602);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5100,5600,5603) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'log_card',
    field_name = 'information_source',
    value_name = 'unknown',
@@ -31013,7 +31013,7 @@ WHERE (class_id = 5100 AND attribute_id = 5600 AND attribute_id = 5603);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5100,5600,5604) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'log_card',
    field_name = 'information_source',
    value_name = 'gwdp_wwtp_catchment_area',
@@ -31036,7 +31036,7 @@ WHERE (class_id = 5100 AND attribute_id = 5600 AND attribute_id = 5604);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5101,5625,5626) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'tank_emptying',
    field_name = 'kind',
    value_name = 'other',
@@ -31059,7 +31059,7 @@ WHERE (class_id = 5101 AND attribute_id = 5625 AND attribute_id = 5626);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5101,5625,5628) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'tank_emptying',
    field_name = 'kind',
    value_name = 'pump',
@@ -31082,7 +31082,7 @@ WHERE (class_id = 5101 AND attribute_id = 5625 AND attribute_id = 5628);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5101,5625,5629) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'tank_emptying',
    field_name = 'kind',
    value_name = 'gate_valve',
@@ -31105,7 +31105,7 @@ WHERE (class_id = 5101 AND attribute_id = 5625 AND attribute_id = 5629);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5101,5625,8637) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'tank_emptying',
    field_name = 'kind',
    value_name = 'unknown',
@@ -31128,7 +31128,7 @@ WHERE (class_id = 5101 AND attribute_id = 5625 AND attribute_id = 8637);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5101,5625,8638) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'tank_emptying',
    field_name = 'kind',
    value_name = 'gravitation',
@@ -31151,7 +31151,7 @@ WHERE (class_id = 5101 AND attribute_id = 5625 AND attribute_id = 8638);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5102,5619,5620) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'tank_cleaning',
    field_name = 'kind',
    value_name = 'other',
@@ -31174,7 +31174,7 @@ WHERE (class_id = 5102 AND attribute_id = 5619 AND attribute_id = 5620);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5102,5619,5621) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'tank_cleaning',
    field_name = 'kind',
    value_name = 'airjet',
@@ -31197,7 +31197,7 @@ WHERE (class_id = 5102 AND attribute_id = 5619 AND attribute_id = 5621);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5102,5619,5623) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'tank_cleaning',
    field_name = 'kind',
    value_name = 'surge_flushing',
@@ -31220,7 +31220,7 @@ WHERE (class_id = 5102 AND attribute_id = 5619 AND attribute_id = 5623);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5102,5619,5624) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'tank_cleaning',
    field_name = 'kind',
    value_name = 'tipping_bucket',
@@ -31243,7 +31243,7 @@ WHERE (class_id = 5102 AND attribute_id = 5619 AND attribute_id = 5624);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5102,5619,8621) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'tank_cleaning',
    field_name = 'kind',
    value_name = 'scraper_installation',
@@ -31266,7 +31266,7 @@ WHERE (class_id = 5102 AND attribute_id = 5619 AND attribute_id = 8621);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5102,5619,8622) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'tank_cleaning',
    field_name = 'kind',
    value_name = 'agitator',
@@ -31289,7 +31289,7 @@ WHERE (class_id = 5102 AND attribute_id = 5619 AND attribute_id = 8622);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5102,5619,8623) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'tank_cleaning',
    field_name = 'kind',
    value_name = 'meandered_gutter',
@@ -31312,7 +31312,7 @@ WHERE (class_id = 5102 AND attribute_id = 5619 AND attribute_id = 8623);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5102,5619,8626) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'tank_cleaning',
    field_name = 'kind',
    value_name = 'unknown',
@@ -31335,7 +31335,7 @@ WHERE (class_id = 5102 AND attribute_id = 5619 AND attribute_id = 8626);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5103,5663,5664) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'solids_retention',
    field_name = 'kind',
    value_name = 'other',
@@ -31358,7 +31358,7 @@ WHERE (class_id = 5103 AND attribute_id = 5663 AND attribute_id = 5664);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5103,5663,5665) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'solids_retention',
    field_name = 'kind',
    value_name = 'fine_screen',
@@ -31381,7 +31381,7 @@ WHERE (class_id = 5103 AND attribute_id = 5663 AND attribute_id = 5665);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5103,5663,5666) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'solids_retention',
    field_name = 'kind',
    value_name = 'coarse_screen',
@@ -31404,7 +31404,7 @@ WHERE (class_id = 5103 AND attribute_id = 5663 AND attribute_id = 5666);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5103,5663,5667) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'solids_retention',
    field_name = 'kind',
    value_name = 'sieve',
@@ -31427,7 +31427,7 @@ WHERE (class_id = 5103 AND attribute_id = 5663 AND attribute_id = 5667);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5103,5663,5668) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'solids_retention',
    field_name = 'kind',
    value_name = 'scumboard',
@@ -31450,7 +31450,7 @@ WHERE (class_id = 5103 AND attribute_id = 5663 AND attribute_id = 5668);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5103,5663,5669) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'solids_retention',
    field_name = 'kind',
    value_name = 'unknown',
@@ -31473,7 +31473,7 @@ WHERE (class_id = 5103 AND attribute_id = 5663 AND attribute_id = 5669);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5103,5663,8624) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'solids_retention',
    field_name = 'kind',
    value_name = 'brush_rakes',
@@ -31496,7 +31496,7 @@ WHERE (class_id = 5103 AND attribute_id = 5663 AND attribute_id = 8624);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5103,5663,8625) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'solids_retention',
    field_name = 'kind',
    value_name = 'gate_shield',
@@ -31519,7 +31519,7 @@ WHERE (class_id = 5103 AND attribute_id = 5663 AND attribute_id = 8625);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5104,5756,5757) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'backflow_prevention',
    field_name = 'kind',
    value_name = 'backflow_flap',
@@ -31542,7 +31542,7 @@ WHERE (class_id = 5104 AND attribute_id = 5756 AND attribute_id = 5757);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5104,5756,5758) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'backflow_prevention',
    field_name = 'kind',
    value_name = 'gate_shield',
@@ -31565,7 +31565,7 @@ WHERE (class_id = 5104 AND attribute_id = 5756 AND attribute_id = 5758);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5104,5756,5759) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'backflow_prevention',
    field_name = 'kind',
    value_name = 'pump',
@@ -31588,7 +31588,7 @@ WHERE (class_id = 5104 AND attribute_id = 5756 AND attribute_id = 5759);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5104,5756,5760) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'backflow_prevention',
    field_name = 'kind',
    value_name = 'other',
@@ -31611,7 +31611,7 @@ WHERE (class_id = 5104 AND attribute_id = 5756 AND attribute_id = 5760);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5104,5756,8636) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'backflow_prevention',
    field_name = 'kind',
    value_name = 'unknown',
@@ -31634,7 +31634,7 @@ WHERE (class_id = 5104 AND attribute_id = 5756 AND attribute_id = 8636);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,5895,5896) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'comparison_last',
    value_name = 'equal',
@@ -31657,7 +31657,7 @@ WHERE (class_id = 5106 AND attribute_id = 5895 AND attribute_id = 5896);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,5895,6269) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'comparison_last',
    value_name = 'improvement',
@@ -31680,7 +31680,7 @@ WHERE (class_id = 5106 AND attribute_id = 5895 AND attribute_id = 6269);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,5895,6270) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'comparison_last',
    value_name = 'worsening',
@@ -31703,7 +31703,7 @@ WHERE (class_id = 5106 AND attribute_id = 5895 AND attribute_id = 6270);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,5895,6271) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'comparison_last',
    value_name = 'unclear',
@@ -31726,7 +31726,7 @@ WHERE (class_id = 5106 AND attribute_id = 5895 AND attribute_id = 6271);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,5895,6328) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'comparison_last',
    value_name = 'no_comparison_possible',
@@ -31749,7 +31749,7 @@ WHERE (class_id = 5106 AND attribute_id = 5895 AND attribute_id = 6328);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,5895,8572) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'comparison_last',
    value_name = 'unknown',
@@ -31772,7 +31772,7 @@ WHERE (class_id = 5106 AND attribute_id = 5895 AND attribute_id = 8572);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,8684,8685) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'impact_auxiliary_indic',
    value_name = 'none_or_small',
@@ -31795,7 +31795,7 @@ WHERE (class_id = 5106 AND attribute_id = 8684 AND attribute_id = 8685);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,8684,8686) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'impact_auxiliary_indic',
    value_name = 'moderate',
@@ -31818,7 +31818,7 @@ WHERE (class_id = 5106 AND attribute_id = 8684 AND attribute_id = 8686);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,8684,8687) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'impact_auxiliary_indic',
    value_name = 'big',
@@ -31841,7 +31841,7 @@ WHERE (class_id = 5106 AND attribute_id = 8684 AND attribute_id = 8687);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,8684,8688) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'impact_auxiliary_indic',
    value_name = 'unclear',
@@ -31864,7 +31864,7 @@ WHERE (class_id = 5106 AND attribute_id = 8684 AND attribute_id = 8688);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,8684,8689) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'impact_auxiliary_indic',
    value_name = 'no_conclusion_possible',
@@ -31887,7 +31887,7 @@ WHERE (class_id = 5106 AND attribute_id = 8684 AND attribute_id = 8689);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,8684,8690) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'impact_auxiliary_indic',
    value_name = 'unknown',
@@ -31910,7 +31910,7 @@ WHERE (class_id = 5106 AND attribute_id = 8684 AND attribute_id = 8690);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,8663,8664) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'impact_external_aspect',
    value_name = 'none',
@@ -31933,7 +31933,7 @@ WHERE (class_id = 5106 AND attribute_id = 8663 AND attribute_id = 8664);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,8663,8665) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'impact_external_aspect',
    value_name = 'small_medium',
@@ -31956,7 +31956,7 @@ WHERE (class_id = 5106 AND attribute_id = 8663 AND attribute_id = 8665);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,8663,8666) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'impact_external_aspect',
    value_name = 'big',
@@ -31979,7 +31979,7 @@ WHERE (class_id = 5106 AND attribute_id = 8663 AND attribute_id = 8666);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,8663,8667) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'impact_external_aspect',
    value_name = 'unclear',
@@ -32002,7 +32002,7 @@ WHERE (class_id = 5106 AND attribute_id = 8663 AND attribute_id = 8667);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,8663,8668) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'impact_external_aspect',
    value_name = 'no_conclusion_possible',
@@ -32025,7 +32025,7 @@ WHERE (class_id = 5106 AND attribute_id = 8663 AND attribute_id = 8668);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,8663,8669) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'impact_external_aspect',
    value_name = 'unknown',
@@ -32048,7 +32048,7 @@ WHERE (class_id = 5106 AND attribute_id = 8663 AND attribute_id = 8669);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,8670,8671) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'impact_macroinvertebrates',
    value_name = 'none_or_small',
@@ -32071,7 +32071,7 @@ WHERE (class_id = 5106 AND attribute_id = 8670 AND attribute_id = 8671);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,8670,8672) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'impact_macroinvertebrates',
    value_name = 'moderate',
@@ -32094,7 +32094,7 @@ WHERE (class_id = 5106 AND attribute_id = 8670 AND attribute_id = 8672);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,8670,8673) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'impact_macroinvertebrates',
    value_name = 'big',
@@ -32117,7 +32117,7 @@ WHERE (class_id = 5106 AND attribute_id = 8670 AND attribute_id = 8673);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,8670,8674) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'impact_macroinvertebrates',
    value_name = 'unclear',
@@ -32140,7 +32140,7 @@ WHERE (class_id = 5106 AND attribute_id = 8670 AND attribute_id = 8674);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,8670,8675) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'impact_macroinvertebrates',
    value_name = 'no_conclusion_possible',
@@ -32163,7 +32163,7 @@ WHERE (class_id = 5106 AND attribute_id = 8670 AND attribute_id = 8675);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,8670,8676) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'impact_macroinvertebrates',
    value_name = 'unknown',
@@ -32186,7 +32186,7 @@ WHERE (class_id = 5106 AND attribute_id = 8670 AND attribute_id = 8676);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,8677,8678) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'impact_water_plants',
    value_name = 'none_or_small',
@@ -32209,7 +32209,7 @@ WHERE (class_id = 5106 AND attribute_id = 8677 AND attribute_id = 8678);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,8677,8679) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'impact_water_plants',
    value_name = 'moderate',
@@ -32232,7 +32232,7 @@ WHERE (class_id = 5106 AND attribute_id = 8677 AND attribute_id = 8679);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,8677,8680) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'impact_water_plants',
    value_name = 'big',
@@ -32255,7 +32255,7 @@ WHERE (class_id = 5106 AND attribute_id = 8677 AND attribute_id = 8680);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,8677,8681) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'impact_water_plants',
    value_name = 'unclear',
@@ -32278,7 +32278,7 @@ WHERE (class_id = 5106 AND attribute_id = 8677 AND attribute_id = 8681);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,8677,8682) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'impact_water_plants',
    value_name = 'no_conclusion_possible',
@@ -32301,7 +32301,7 @@ WHERE (class_id = 5106 AND attribute_id = 8677 AND attribute_id = 8682);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,8677,8683) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'impact_water_plants',
    value_name = 'unknown',
@@ -32324,7 +32324,7 @@ WHERE (class_id = 5106 AND attribute_id = 8677 AND attribute_id = 8683);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,5943,5944) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'intervention_demand',
    value_name = 'no',
@@ -32347,7 +32347,7 @@ WHERE (class_id = 5106 AND attribute_id = 5943 AND attribute_id = 5944);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,5943,5945) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'intervention_demand',
    value_name = 'yes_short_term',
@@ -32370,7 +32370,7 @@ WHERE (class_id = 5106 AND attribute_id = 5943 AND attribute_id = 5945);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,5943,6272) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'intervention_demand',
    value_name = 'yes_long_term',
@@ -32393,7 +32393,7 @@ WHERE (class_id = 5106 AND attribute_id = 5943 AND attribute_id = 6272);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,5943,8695) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'intervention_demand',
    value_name = 'no_conclusion_possible',
@@ -32416,7 +32416,7 @@ WHERE (class_id = 5106 AND attribute_id = 5943 AND attribute_id = 8695);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,5943,9093) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'intervention_demand',
    value_name = 'clarify_status',
@@ -32439,7 +32439,7 @@ WHERE (class_id = 5106 AND attribute_id = 5943 AND attribute_id = 9093);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,5951,5952) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'io_calculation',
    value_name = 'no',
@@ -32462,7 +32462,7 @@ WHERE (class_id = 5106 AND attribute_id = 5951 AND attribute_id = 5952);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,5951,5953) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'io_calculation',
    value_name = 'yes',
@@ -32485,7 +32485,7 @@ WHERE (class_id = 5106 AND attribute_id = 5951 AND attribute_id = 5953);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,5951,5954) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'io_calculation',
    value_name = 'unknown',
@@ -32508,7 +32508,7 @@ WHERE (class_id = 5106 AND attribute_id = 5951 AND attribute_id = 5954);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,5880,5883) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'kind_water_body',
    value_name = 'large_midland_creek',
@@ -32531,7 +32531,7 @@ WHERE (class_id = 5106 AND attribute_id = 5880 AND attribute_id = 5883);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,5880,5884) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'kind_water_body',
    value_name = 'large_river',
@@ -32554,7 +32554,7 @@ WHERE (class_id = 5106 AND attribute_id = 5880 AND attribute_id = 5884);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,5880,5885) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'kind_water_body',
    value_name = 'large_prealps_creek',
@@ -32577,7 +32577,7 @@ WHERE (class_id = 5106 AND attribute_id = 5880 AND attribute_id = 5885);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,5880,5886) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'kind_water_body',
    value_name = 'small_midland_creek',
@@ -32600,7 +32600,7 @@ WHERE (class_id = 5106 AND attribute_id = 5880 AND attribute_id = 5886);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,5880,5887) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'kind_water_body',
    value_name = 'small_prealps_creek',
@@ -32623,7 +32623,7 @@ WHERE (class_id = 5106 AND attribute_id = 5880 AND attribute_id = 5887);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,5880,5888) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'kind_water_body',
    value_name = 'spring_waters',
@@ -32646,7 +32646,7 @@ WHERE (class_id = 5106 AND attribute_id = 5880 AND attribute_id = 5888);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,5880,5890) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'kind_water_body',
    value_name = 'unknown',
@@ -32669,7 +32669,7 @@ WHERE (class_id = 5106 AND attribute_id = 5880 AND attribute_id = 5890);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,5880,8491) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'kind_water_body',
    value_name = 'very_large_river',
@@ -32692,7 +32692,7 @@ WHERE (class_id = 5106 AND attribute_id = 5880 AND attribute_id = 8491);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,5880,8492) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'kind_water_body',
    value_name = 'river_backwater',
@@ -32715,7 +32715,7 @@ WHERE (class_id = 5106 AND attribute_id = 5880 AND attribute_id = 8492);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,5880,9149) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'kind_water_body',
    value_name = 'lake',
@@ -32738,7 +32738,7 @@ WHERE (class_id = 5106 AND attribute_id = 5880 AND attribute_id = 9149);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,5947,5948) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'relevance_matrix',
    value_name = 'no',
@@ -32761,7 +32761,7 @@ WHERE (class_id = 5106 AND attribute_id = 5947 AND attribute_id = 5948);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,5947,5949) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'relevance_matrix',
    value_name = 'yes',
@@ -32784,7 +32784,7 @@ WHERE (class_id = 5106 AND attribute_id = 5947 AND attribute_id = 5949);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5106,5947,5950) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'bio_ecol_assessment',
    field_name = 'relevance_matrix',
    value_name = 'unknown',
@@ -32807,7 +32807,7 @@ WHERE (class_id = 5106 AND attribute_id = 5947 AND attribute_id = 5950);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5107,5773,5774) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'hydraulic_char_data',
    field_name = 'is_overflowing',
    value_name = 'yes',
@@ -32830,7 +32830,7 @@ WHERE (class_id = 5107 AND attribute_id = 5773 AND attribute_id = 5774);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5107,5773,5775) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'hydraulic_char_data',
    field_name = 'is_overflowing',
    value_name = 'no',
@@ -32853,7 +32853,7 @@ WHERE (class_id = 5107 AND attribute_id = 5773 AND attribute_id = 5775);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5107,5773,5778) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'hydraulic_char_data',
    field_name = 'is_overflowing',
    value_name = 'unknown',
@@ -32876,7 +32876,7 @@ WHERE (class_id = 5107 AND attribute_id = 5773 AND attribute_id = 5778);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5107,6419,6420) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'hydraulic_char_data',
    field_name = 'main_weir_kind',
    value_name = 'prank_weir_raised',
@@ -32899,7 +32899,7 @@ WHERE (class_id = 5107 AND attribute_id = 6419 AND attribute_id = 6420);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5107,6419,6421) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'hydraulic_char_data',
    field_name = 'main_weir_kind',
    value_name = 'prank_weir_low',
@@ -32922,7 +32922,7 @@ WHERE (class_id = 5107 AND attribute_id = 6419 AND attribute_id = 6421);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5107,6419,6422) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'hydraulic_char_data',
    field_name = 'main_weir_kind',
    value_name = 'leapingweir',
@@ -32945,7 +32945,7 @@ WHERE (class_id = 5107 AND attribute_id = 6419 AND attribute_id = 6422);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5107,6358,6374) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'hydraulic_char_data',
    field_name = 'pump_characteristics',
    value_name = 'alternating',
@@ -32968,7 +32968,7 @@ WHERE (class_id = 5107 AND attribute_id = 6358 AND attribute_id = 6374);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5107,6358,6375) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'hydraulic_char_data',
    field_name = 'pump_characteristics',
    value_name = 'other',
@@ -32991,7 +32991,7 @@ WHERE (class_id = 5107 AND attribute_id = 6358 AND attribute_id = 6375);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5107,6358,6376) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'hydraulic_char_data',
    field_name = 'pump_characteristics',
    value_name = 'single',
@@ -33014,7 +33014,7 @@ WHERE (class_id = 5107 AND attribute_id = 6358 AND attribute_id = 6376);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5107,6358,6377) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'hydraulic_char_data',
    field_name = 'pump_characteristics',
    value_name = 'parallel',
@@ -33037,7 +33037,7 @@ WHERE (class_id = 5107 AND attribute_id = 6358 AND attribute_id = 6377);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5107,6358,6378) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'hydraulic_char_data',
    field_name = 'pump_characteristics',
    value_name = 'unknown',
@@ -33060,7 +33060,7 @@ WHERE (class_id = 5107 AND attribute_id = 6358 AND attribute_id = 6378);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5107,6359,6371) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'hydraulic_char_data',
    field_name = 'status',
    value_name = 'planned',
@@ -33083,7 +33083,7 @@ WHERE (class_id = 5107 AND attribute_id = 6359 AND attribute_id = 6371);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5107,6359,6372) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'hydraulic_char_data',
    field_name = 'status',
    value_name = 'current',
@@ -33106,7 +33106,7 @@ WHERE (class_id = 5107 AND attribute_id = 6359 AND attribute_id = 6372);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (5107,6359,6373) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'hydraulic_char_data',
    field_name = 'status',
    value_name = 'current_optimized',
@@ -33129,7 +33129,7 @@ WHERE (class_id = 5107 AND attribute_id = 6359 AND attribute_id = 6373);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (53,207,2992) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'retention_body',
    field_name = 'kind',
    value_name = 'other',
@@ -33152,7 +33152,7 @@ WHERE (class_id = 53 AND attribute_id = 207 AND attribute_id = 2992);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (53,207,3031) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'retention_body',
    field_name = 'kind',
    value_name = 'unknown',
@@ -33175,7 +33175,7 @@ WHERE (class_id = 53 AND attribute_id = 207 AND attribute_id = 3031);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (53,207,345) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'retention_body',
    field_name = 'kind',
    value_name = 'roof_retention',
@@ -33198,7 +33198,7 @@ WHERE (class_id = 53 AND attribute_id = 207 AND attribute_id = 345);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (53,207,346) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'retention_body',
    field_name = 'kind',
    value_name = 'retention_in_habitat',
@@ -33221,7 +33221,7 @@ WHERE (class_id = 53 AND attribute_id = 207 AND attribute_id = 346);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (53,207,347) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'retention_body',
    field_name = 'kind',
    value_name = 'accumulation_channel',
@@ -33244,7 +33244,7 @@ WHERE (class_id = 53 AND attribute_id = 207 AND attribute_id = 347);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (53,207,348) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'retention_body',
    field_name = 'kind',
    value_name = 'parking_lot',
@@ -33267,7 +33267,7 @@ WHERE (class_id = 53 AND attribute_id = 207 AND attribute_id = 348);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (55,11,141) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sludge_treatment',
    field_name = 'stabilisation',
    value_name = 'aerob_cold',
@@ -33290,7 +33290,7 @@ WHERE (class_id = 55 AND attribute_id = 11 AND attribute_id = 141);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (55,11,2994) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sludge_treatment',
    field_name = 'stabilisation',
    value_name = 'other',
@@ -33313,7 +33313,7 @@ WHERE (class_id = 55 AND attribute_id = 11 AND attribute_id = 2994);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (55,11,3004) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sludge_treatment',
    field_name = 'stabilisation',
    value_name = 'unknown',
@@ -33336,7 +33336,7 @@ WHERE (class_id = 55 AND attribute_id = 11 AND attribute_id = 3004);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (55,11,332) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sludge_treatment',
    field_name = 'stabilisation',
    value_name = 'aerobthermophil',
@@ -33359,7 +33359,7 @@ WHERE (class_id = 55 AND attribute_id = 11 AND attribute_id = 332);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (55,11,333) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sludge_treatment',
    field_name = 'stabilisation',
    value_name = 'anaerob_cold',
@@ -33382,7 +33382,7 @@ WHERE (class_id = 55 AND attribute_id = 11 AND attribute_id = 333);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (55,11,334) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sludge_treatment',
    field_name = 'stabilisation',
    value_name = 'anaerob_mesophil',
@@ -33405,7 +33405,7 @@ WHERE (class_id = 55 AND attribute_id = 11 AND attribute_id = 334);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (55,11,335) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sludge_treatment',
    field_name = 'stabilisation',
    value_name = 'anaerob_thermophil',
@@ -33428,7 +33428,7 @@ WHERE (class_id = 55 AND attribute_id = 11 AND attribute_id = 335);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,9051,9052) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'amphibian_exit',
    value_name = 'yes',
@@ -33451,7 +33451,7 @@ WHERE (class_id = 57 AND attribute_id = 9051 AND attribute_id = 9052);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,9051,9053) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'amphibian_exit',
    value_name = 'no',
@@ -33474,7 +33474,7 @@ WHERE (class_id = 57 AND attribute_id = 9051 AND attribute_id = 9053);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,9051,9054) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'amphibian_exit',
    value_name = 'unknown',
@@ -33497,7 +33497,7 @@ WHERE (class_id = 57 AND attribute_id = 9051 AND attribute_id = 9054);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,2680,2681) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'bypass',
    value_name = 'existent',
@@ -33520,7 +33520,7 @@ WHERE (class_id = 57 AND attribute_id = 2680 AND attribute_id = 2681);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,2680,2682) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'bypass',
    value_name = 'inexistent',
@@ -33543,7 +33543,7 @@ WHERE (class_id = 57 AND attribute_id = 2680 AND attribute_id = 2682);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,2680,3055) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'bypass',
    value_name = 'unknown',
@@ -33566,7 +33566,7 @@ WHERE (class_id = 57 AND attribute_id = 2680 AND attribute_id = 3055);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,5862,5866) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'emergency_overflow',
    value_name = 'other',
@@ -33589,7 +33589,7 @@ WHERE (class_id = 57 AND attribute_id = 5862 AND attribute_id = 5866);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,5862,5867) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'emergency_overflow',
    value_name = 'unknown',
@@ -33612,7 +33612,7 @@ WHERE (class_id = 57 AND attribute_id = 5862 AND attribute_id = 5867);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,5862,5878) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'emergency_overflow',
    value_name = 'none',
@@ -33635,7 +33635,7 @@ WHERE (class_id = 57 AND attribute_id = 5862 AND attribute_id = 5878);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,5862,9075) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'emergency_overflow',
    value_name = 'in_water_body',
@@ -33658,7 +33658,7 @@ WHERE (class_id = 57 AND attribute_id = 5862 AND attribute_id = 9075);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,5862,9076) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'emergency_overflow',
    value_name = 'surface_discharge',
@@ -33681,7 +33681,7 @@ WHERE (class_id = 57 AND attribute_id = 5862 AND attribute_id = 9076);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,5862,9077) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'emergency_overflow',
    value_name = 'in_combined_waste_water_drain',
@@ -33704,7 +33704,7 @@ WHERE (class_id = 57 AND attribute_id = 5862 AND attribute_id = 9077);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,5862,9078) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'emergency_overflow',
    value_name = 'in_rain_waste_water_drain',
@@ -33727,7 +33727,7 @@ WHERE (class_id = 57 AND attribute_id = 5862 AND attribute_id = 9078);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,5862,9079) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'emergency_overflow',
    value_name = 'in_waste_water_drain',
@@ -33750,7 +33750,7 @@ WHERE (class_id = 57 AND attribute_id = 5862 AND attribute_id = 9079);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,227) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'jetting_manhole',
@@ -33773,7 +33773,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 227);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,245) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'drop_structure',
@@ -33796,7 +33796,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 245);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,246) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'pump_station',
@@ -33819,7 +33819,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 246);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,2745) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'vortex_manhole',
@@ -33842,7 +33842,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 2745);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,2768) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'oil_separator',
@@ -33865,7 +33865,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 2768);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,3008) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'unknown',
@@ -33888,7 +33888,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 3008);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,3234) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'inverse_syphon_chamber',
@@ -33911,7 +33911,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 3234);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,3348) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'terrain_depression',
@@ -33934,7 +33934,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 3348);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,336) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'bedload_trap',
@@ -33957,7 +33957,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 336);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,3673) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'stormwater_tank_with_overflow',
@@ -33980,7 +33980,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 3673);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,3674) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'stormwater_tank_retaining_first_flush',
@@ -34003,7 +34003,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 3674);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,3675) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'stormwater_sedimentation_tank',
@@ -34026,7 +34026,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 3675);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,3676) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'stormwater_retention_tank',
@@ -34049,7 +34049,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 3676);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,3677) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'stormwater_composite_tank',
@@ -34072,7 +34072,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 3677);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,383) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'side_access',
@@ -34095,7 +34095,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 383);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,386) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'venting',
@@ -34118,7 +34118,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 386);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,4799) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'separating_structure',
@@ -34141,7 +34141,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 4799);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,5091) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'syphon_head',
@@ -34164,7 +34164,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 5091);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,5371) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'other',
@@ -34187,7 +34187,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 5371);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,5372) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'stormwater_overflow',
@@ -34210,7 +34210,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 5372);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,5373) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'floating_material_separator',
@@ -34233,7 +34233,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 5373);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,5494) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'cesspit',
@@ -34256,7 +34256,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 5494);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,5574) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'stormwater_retaining_channel',
@@ -34279,7 +34279,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 5574);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,5575) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'stormwater_retention_channel',
@@ -34302,7 +34302,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 5575);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,5576) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'stormwater_storage_channel',
@@ -34325,7 +34325,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 5576);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,6397) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'pit_without_drain',
@@ -34348,7 +34348,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 6397);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,6398) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'hydrolizing_tank',
@@ -34371,7 +34371,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 6398);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,6399) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'septic_tank_two_chambers',
@@ -34394,7 +34394,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 6399);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,6478) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'septic_tank',
@@ -34417,7 +34417,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 6478);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,8600) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'grease_separator',
@@ -34440,7 +34440,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 8600);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,8657) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'emergency_basin',
@@ -34463,7 +34463,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 8657);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,8704) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'treatment_plant',
@@ -34486,7 +34486,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 8704);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,8739) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'manhole',
@@ -34509,7 +34509,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 8739);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,9089) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'pretreatment_plant',
@@ -34532,7 +34532,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 9089);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,101,9302) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'function',
    value_name = 'combined_manhole',
@@ -34555,7 +34555,7 @@ WHERE (class_id = 57 AND attribute_id = 101 AND attribute_id = 9302);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,9055,9056) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'possibility_intervention',
    value_name = 'yes',
@@ -34578,7 +34578,7 @@ WHERE (class_id = 57 AND attribute_id = 9055 AND attribute_id = 9056);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,9055,9057) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'possibility_intervention',
    value_name = 'no',
@@ -34601,7 +34601,7 @@ WHERE (class_id = 57 AND attribute_id = 9055 AND attribute_id = 9057);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,9055,9058) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'possibility_intervention',
    value_name = 'unknown',
@@ -34624,7 +34624,7 @@ WHERE (class_id = 57 AND attribute_id = 9055 AND attribute_id = 9058);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,4607,4608) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'stormwater_tank_arrangement',
    value_name = 'main_connection',
@@ -34647,7 +34647,7 @@ WHERE (class_id = 57 AND attribute_id = 4607 AND attribute_id = 4608);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,4607,4609) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'stormwater_tank_arrangement',
    value_name = 'side_connection',
@@ -34670,7 +34670,7 @@ WHERE (class_id = 57 AND attribute_id = 4607 AND attribute_id = 4609);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (57,4607,4610) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'special_structure',
    field_name = 'stormwater_tank_arrangement',
    value_name = 'unknown',
@@ -34693,7 +34693,7 @@ WHERE (class_id = 57 AND attribute_id = 4607 AND attribute_id = 4610);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (60,124,2995) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'prank_weir',
    field_name = 'weir_edge',
    value_name = 'other',
@@ -34716,7 +34716,7 @@ WHERE (class_id = 60 AND attribute_id = 124 AND attribute_id = 2995);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (60,124,3014) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'prank_weir',
    field_name = 'weir_edge',
    value_name = 'unknown',
@@ -34739,7 +34739,7 @@ WHERE (class_id = 60 AND attribute_id = 124 AND attribute_id = 3014);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (60,124,349) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'prank_weir',
    field_name = 'weir_edge',
    value_name = 'sharp_edged',
@@ -34762,7 +34762,7 @@ WHERE (class_id = 60 AND attribute_id = 124 AND attribute_id = 349);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (60,124,350) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'prank_weir',
    field_name = 'weir_edge',
    value_name = 'round',
@@ -34785,7 +34785,7 @@ WHERE (class_id = 60 AND attribute_id = 124 AND attribute_id = 350);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (60,124,351) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'prank_weir',
    field_name = 'weir_edge',
    value_name = 'rectangular',
@@ -34808,7 +34808,7 @@ WHERE (class_id = 60 AND attribute_id = 124 AND attribute_id = 351);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (60,5770,5771) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'prank_weir',
    field_name = 'weir_kind',
    value_name = 'low',
@@ -34831,7 +34831,7 @@ WHERE (class_id = 60 AND attribute_id = 5770 AND attribute_id = 5771);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (60,5770,5772) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'prank_weir',
    field_name = 'weir_kind',
    value_name = 'raised',
@@ -34854,7 +34854,7 @@ WHERE (class_id = 60 AND attribute_id = 5770 AND attribute_id = 5772);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6100,5483,5484) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'building_group',
    field_name = 'connecting_obligation',
    value_name = 'yes',
@@ -34877,7 +34877,7 @@ WHERE (class_id = 6100 AND attribute_id = 5483 AND attribute_id = 5484);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6100,5483,5485) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'building_group',
    field_name = 'connecting_obligation',
    value_name = 'no',
@@ -34900,7 +34900,7 @@ WHERE (class_id = 6100 AND attribute_id = 5483 AND attribute_id = 5485);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6100,5483,5486) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'building_group',
    field_name = 'connecting_obligation',
    value_name = 'unknown',
@@ -34923,7 +34923,7 @@ WHERE (class_id = 6100 AND attribute_id = 5483 AND attribute_id = 5486);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6100,5094,5095) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'building_group',
    field_name = 'connection_wwtp',
    value_name = 'connected',
@@ -34946,7 +34946,7 @@ WHERE (class_id = 6100 AND attribute_id = 5094 AND attribute_id = 5095);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6100,5094,5096) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'building_group',
    field_name = 'connection_wwtp',
    value_name = 'not_connected',
@@ -34969,7 +34969,7 @@ WHERE (class_id = 6100 AND attribute_id = 5094 AND attribute_id = 5096);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6100,5094,5097) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'building_group',
    field_name = 'connection_wwtp',
    value_name = 'unknown',
@@ -34992,7 +34992,7 @@ WHERE (class_id = 6100 AND attribute_id = 5094 AND attribute_id = 5097);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6100,4838,4839) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'building_group',
    field_name = 'drainage_map',
    value_name = 'unknown',
@@ -35015,7 +35015,7 @@ WHERE (class_id = 6100 AND attribute_id = 4838 AND attribute_id = 4839);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6100,4838,4840) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'building_group',
    field_name = 'drainage_map',
    value_name = 'yes',
@@ -35038,7 +35038,7 @@ WHERE (class_id = 6100 AND attribute_id = 4838 AND attribute_id = 4840);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6100,4838,4841) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'building_group',
    field_name = 'drainage_map',
    value_name = 'no',
@@ -35061,7 +35061,7 @@ WHERE (class_id = 6100 AND attribute_id = 4838 AND attribute_id = 4841);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6100,4824,4825) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'building_group',
    field_name = 'drinking_water_network',
    value_name = 'unknown',
@@ -35084,7 +35084,7 @@ WHERE (class_id = 6100 AND attribute_id = 4824 AND attribute_id = 4825);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6100,4824,4826) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'building_group',
    field_name = 'drinking_water_network',
    value_name = 'connected',
@@ -35107,7 +35107,7 @@ WHERE (class_id = 6100 AND attribute_id = 4824 AND attribute_id = 4826);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6100,4824,4827) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'building_group',
    field_name = 'drinking_water_network',
    value_name = 'not_connected',
@@ -35130,7 +35130,7 @@ WHERE (class_id = 6100 AND attribute_id = 4824 AND attribute_id = 4827);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6100,4828,4829) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'building_group',
    field_name = 'drinking_water_others',
    value_name = 'unknown',
@@ -35153,7 +35153,7 @@ WHERE (class_id = 6100 AND attribute_id = 4828 AND attribute_id = 4829);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6100,4828,4830) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'building_group',
    field_name = 'drinking_water_others',
    value_name = 'none',
@@ -35176,7 +35176,7 @@ WHERE (class_id = 6100 AND attribute_id = 4828 AND attribute_id = 4830);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6100,4828,4831) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'building_group',
    field_name = 'drinking_water_others',
    value_name = 'source',
@@ -35199,7 +35199,7 @@ WHERE (class_id = 6100 AND attribute_id = 4828 AND attribute_id = 4831);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6100,4828,4832) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'building_group',
    field_name = 'drinking_water_others',
    value_name = 'cistern',
@@ -35222,7 +35222,7 @@ WHERE (class_id = 6100 AND attribute_id = 4828 AND attribute_id = 4832);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6100,4828,4833) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'building_group',
    field_name = 'drinking_water_others',
    value_name = 'other',
@@ -35245,7 +35245,7 @@ WHERE (class_id = 6100 AND attribute_id = 4828 AND attribute_id = 4833);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6100,4834,4835) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'building_group',
    field_name = 'electric_connection',
    value_name = 'unknown',
@@ -35268,7 +35268,7 @@ WHERE (class_id = 6100 AND attribute_id = 4834 AND attribute_id = 4835);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6100,4834,4836) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'building_group',
    field_name = 'electric_connection',
    value_name = 'connected',
@@ -35291,7 +35291,7 @@ WHERE (class_id = 6100 AND attribute_id = 4834 AND attribute_id = 4836);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6100,4834,4837) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'building_group',
    field_name = 'electric_connection',
    value_name = 'not_connected',
@@ -35314,7 +35314,7 @@ WHERE (class_id = 6100 AND attribute_id = 4834 AND attribute_id = 4837);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6100,4817,4818) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'building_group',
    field_name = 'function',
    value_name = 'unknown',
@@ -35337,7 +35337,7 @@ WHERE (class_id = 6100 AND attribute_id = 4817 AND attribute_id = 4818);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6100,4817,4819) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'building_group',
    field_name = 'function',
    value_name = 'residential_building',
@@ -35360,7 +35360,7 @@ WHERE (class_id = 6100 AND attribute_id = 4817 AND attribute_id = 4819);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6100,4817,4820) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'building_group',
    field_name = 'function',
    value_name = 'holiday_building',
@@ -35383,7 +35383,7 @@ WHERE (class_id = 6100 AND attribute_id = 4817 AND attribute_id = 4820);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6100,4817,4821) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'building_group',
    field_name = 'function',
    value_name = 'industry_craft',
@@ -35406,7 +35406,7 @@ WHERE (class_id = 6100 AND attribute_id = 4817 AND attribute_id = 4821);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6100,4817,4822) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'building_group',
    field_name = 'function',
    value_name = 'farm',
@@ -35429,7 +35429,7 @@ WHERE (class_id = 6100 AND attribute_id = 4817 AND attribute_id = 4822);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6100,4817,4823) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'building_group',
    field_name = 'function',
    value_name = 'other',
@@ -35452,7 +35452,7 @@ WHERE (class_id = 6100 AND attribute_id = 4817 AND attribute_id = 4823);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6100,8796,8797) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'building_group',
    field_name = 'renovation_necessity',
    value_name = 'yes',
@@ -35475,7 +35475,7 @@ WHERE (class_id = 6100 AND attribute_id = 8796 AND attribute_id = 8797);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6100,8796,8798) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'building_group',
    field_name = 'renovation_necessity',
    value_name = 'no',
@@ -35498,7 +35498,7 @@ WHERE (class_id = 6100 AND attribute_id = 8796 AND attribute_id = 8798);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6100,8796,8799) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'building_group',
    field_name = 'renovation_necessity',
    value_name = 'unknown',
@@ -35521,7 +35521,7 @@ WHERE (class_id = 6100 AND attribute_id = 8796 AND attribute_id = 8799);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6101,5487,5488) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'farm',
    field_name = 'cesspit_volume',
    value_name = 'own_operation',
@@ -35544,7 +35544,7 @@ WHERE (class_id = 6101 AND attribute_id = 5487 AND attribute_id = 5488);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6101,5487,5489) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'farm',
    field_name = 'cesspit_volume',
    value_name = 'third_party_operation',
@@ -35567,7 +35567,7 @@ WHERE (class_id = 6101 AND attribute_id = 5487 AND attribute_id = 5489);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6101,5487,5490) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'farm',
    field_name = 'cesspit_volume',
    value_name = 'own_and_third_part_operation',
@@ -35590,7 +35590,7 @@ WHERE (class_id = 6101 AND attribute_id = 5487 AND attribute_id = 5490);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6101,5487,5491) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'farm',
    field_name = 'cesspit_volume',
    value_name = 'unknown',
@@ -35613,7 +35613,7 @@ WHERE (class_id = 6101 AND attribute_id = 5487 AND attribute_id = 5491);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6101,4894,4895) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'farm',
    field_name = 'conformity',
    value_name = 'unknown',
@@ -35636,7 +35636,7 @@ WHERE (class_id = 6101 AND attribute_id = 4894 AND attribute_id = 4895);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6101,4894,4896) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'farm',
    field_name = 'conformity',
    value_name = 'conform',
@@ -35659,7 +35659,7 @@ WHERE (class_id = 6101 AND attribute_id = 4894 AND attribute_id = 4896);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6101,4894,4897) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'farm',
    field_name = 'conformity',
    value_name = 'restoration_pending',
@@ -35682,7 +35682,7 @@ WHERE (class_id = 6101 AND attribute_id = 4894 AND attribute_id = 4897);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6101,4894,4898) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'farm',
    field_name = 'conformity',
    value_name = 'restoration_postponed',
@@ -35705,7 +35705,7 @@ WHERE (class_id = 6101 AND attribute_id = 4894 AND attribute_id = 4898);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6101,4889,4890) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'farm',
    field_name = 'continuance',
    value_name = 'not_defined',
@@ -35728,7 +35728,7 @@ WHERE (class_id = 6101 AND attribute_id = 4889 AND attribute_id = 4890);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6101,4889,4891) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'farm',
    field_name = 'continuance',
    value_name = 'probable',
@@ -35751,7 +35751,7 @@ WHERE (class_id = 6101 AND attribute_id = 4889 AND attribute_id = 4891);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6101,4889,4892) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'farm',
    field_name = 'continuance',
    value_name = 'improble',
@@ -35774,7 +35774,7 @@ WHERE (class_id = 6101 AND attribute_id = 4889 AND attribute_id = 4892);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6101,4868,4869) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'farm',
    field_name = 'shepherds_hut_wastewater',
    value_name = 'yes',
@@ -35797,7 +35797,7 @@ WHERE (class_id = 6101 AND attribute_id = 4868 AND attribute_id = 4869);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6101,4868,4870) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'farm',
    field_name = 'shepherds_hut_wastewater',
    value_name = 'no',
@@ -35820,7 +35820,7 @@ WHERE (class_id = 6101 AND attribute_id = 4868 AND attribute_id = 4870);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6101,4868,4871) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'farm',
    field_name = 'shepherds_hut_wastewater',
    value_name = 'unknown',
@@ -35843,7 +35843,7 @@ WHERE (class_id = 6101 AND attribute_id = 4868 AND attribute_id = 4871);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6101,4874,4875) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'farm',
    field_name = 'stable_cattle',
    value_name = 'yes',
@@ -35866,7 +35866,7 @@ WHERE (class_id = 6101 AND attribute_id = 4874 AND attribute_id = 4875);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6101,4874,4876) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'farm',
    field_name = 'stable_cattle',
    value_name = 'no',
@@ -35889,7 +35889,7 @@ WHERE (class_id = 6101 AND attribute_id = 4874 AND attribute_id = 4876);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6101,4874,4877) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'farm',
    field_name = 'stable_cattle',
    value_name = 'unknown',
@@ -35912,7 +35912,7 @@ WHERE (class_id = 6101 AND attribute_id = 4874 AND attribute_id = 4877);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6103,4990,5013) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'small_treatment_plant',
    field_name = 'function',
    value_name = 'other',
@@ -35935,7 +35935,7 @@ WHERE (class_id = 6103 AND attribute_id = 4990 AND attribute_id = 5013);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6103,4990,5014) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'small_treatment_plant',
    field_name = 'function',
    value_name = 'activated_sludge_process',
@@ -35958,7 +35958,7 @@ WHERE (class_id = 6103 AND attribute_id = 4990 AND attribute_id = 5014);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6103,4990,5015) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'small_treatment_plant',
    field_name = 'function',
    value_name = 'sequencing_batch_reactor',
@@ -35981,7 +35981,7 @@ WHERE (class_id = 6103 AND attribute_id = 4990 AND attribute_id = 5015);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6103,4990,5016) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'small_treatment_plant',
    field_name = 'function',
    value_name = 'immersion_trickle_filter',
@@ -36004,7 +36004,7 @@ WHERE (class_id = 6103 AND attribute_id = 4990 AND attribute_id = 5016);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6103,4990,5019) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'small_treatment_plant',
    field_name = 'function',
    value_name = 'sandfilter',
@@ -36027,7 +36027,7 @@ WHERE (class_id = 6103 AND attribute_id = 4990 AND attribute_id = 5019);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6103,4990,5020) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'small_treatment_plant',
    field_name = 'function',
    value_name = 'constructed_wetland',
@@ -36050,7 +36050,7 @@ WHERE (class_id = 6103 AND attribute_id = 4990 AND attribute_id = 5020);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6103,4990,5021) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'small_treatment_plant',
    field_name = 'function',
    value_name = 'unknown',
@@ -36073,7 +36073,7 @@ WHERE (class_id = 6103 AND attribute_id = 4990 AND attribute_id = 5021);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6103,4990,5022) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'small_treatment_plant',
    field_name = 'function',
    value_name = 'bed_process',
@@ -36096,7 +36096,7 @@ WHERE (class_id = 6103 AND attribute_id = 4990 AND attribute_id = 5022);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6103,4990,5023) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'small_treatment_plant',
    field_name = 'function',
    value_name = 'membran_bioreactor',
@@ -36119,7 +36119,7 @@ WHERE (class_id = 6103 AND attribute_id = 4990 AND attribute_id = 5023);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6103,6413,6414) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'small_treatment_plant',
    field_name = 'remote_monitoring',
    value_name = 'yes',
@@ -36142,7 +36142,7 @@ WHERE (class_id = 6103 AND attribute_id = 6413 AND attribute_id = 6414);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6103,6413,6415) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'small_treatment_plant',
    field_name = 'remote_monitoring',
    value_name = 'no',
@@ -36165,7 +36165,7 @@ WHERE (class_id = 6103 AND attribute_id = 6413 AND attribute_id = 6415);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6103,6413,6416) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'small_treatment_plant',
    field_name = 'remote_monitoring',
    value_name = 'unknown',
@@ -36188,7 +36188,7 @@ WHERE (class_id = 6103 AND attribute_id = 6413 AND attribute_id = 6416);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6106,4942,4945) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'disposal',
    field_name = 'disposal_place_current',
    value_name = 'unknown',
@@ -36211,7 +36211,7 @@ WHERE (class_id = 6106 AND attribute_id = 4942 AND attribute_id = 4945);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6106,4942,4946) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'disposal',
    field_name = 'disposal_place_current',
    value_name = 'liquid_manure_application',
@@ -36234,7 +36234,7 @@ WHERE (class_id = 6106 AND attribute_id = 4942 AND attribute_id = 4946);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6106,4942,4947) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'disposal',
    field_name = 'disposal_place_current',
    value_name = 'public_sewer',
@@ -36257,7 +36257,7 @@ WHERE (class_id = 6106 AND attribute_id = 4942 AND attribute_id = 4947);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6106,4942,4948) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'disposal',
    field_name = 'disposal_place_current',
    value_name = 'central_WWTP',
@@ -36280,7 +36280,7 @@ WHERE (class_id = 6106 AND attribute_id = 4942 AND attribute_id = 4948);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6106,4942,4949) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'disposal',
    field_name = 'disposal_place_current',
    value_name = 'other',
@@ -36303,7 +36303,7 @@ WHERE (class_id = 6106 AND attribute_id = 4942 AND attribute_id = 4949);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6106,4942,6474) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'disposal',
    field_name = 'disposal_place_current',
    value_name = 'none',
@@ -36326,7 +36326,7 @@ WHERE (class_id = 6106 AND attribute_id = 4942 AND attribute_id = 6474);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6106,4944,4950) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'disposal',
    field_name = 'disposal_place_planned',
    value_name = 'unknown',
@@ -36349,7 +36349,7 @@ WHERE (class_id = 6106 AND attribute_id = 4944 AND attribute_id = 4950);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6106,4944,4951) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'disposal',
    field_name = 'disposal_place_planned',
    value_name = 'liquid_manure_application',
@@ -36372,7 +36372,7 @@ WHERE (class_id = 6106 AND attribute_id = 4944 AND attribute_id = 4951);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6106,4944,4952) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'disposal',
    field_name = 'disposal_place_planned',
    value_name = 'public_sewer',
@@ -36395,7 +36395,7 @@ WHERE (class_id = 6106 AND attribute_id = 4944 AND attribute_id = 4952);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6106,4944,4953) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'disposal',
    field_name = 'disposal_place_planned',
    value_name = 'central_WWTP',
@@ -36418,7 +36418,7 @@ WHERE (class_id = 6106 AND attribute_id = 4944 AND attribute_id = 4953);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6106,4944,4954) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'disposal',
    field_name = 'disposal_place_planned',
    value_name = 'other',
@@ -36441,7 +36441,7 @@ WHERE (class_id = 6106 AND attribute_id = 4944 AND attribute_id = 4954);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6106,4944,6400) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'disposal',
    field_name = 'disposal_place_planned',
    value_name = 'none',
@@ -36464,7 +36464,7 @@ WHERE (class_id = 6106 AND attribute_id = 4944 AND attribute_id = 6400);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6107,6407,6408) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'drainless_toilet',
    field_name = 'kind',
    value_name = 'chemical_toilet',
@@ -36487,7 +36487,7 @@ WHERE (class_id = 6107 AND attribute_id = 6407 AND attribute_id = 6408);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6107,6407,6409) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'drainless_toilet',
    field_name = 'kind',
    value_name = 'incinerating_toilet',
@@ -36510,7 +36510,7 @@ WHERE (class_id = 6107 AND attribute_id = 6407 AND attribute_id = 6409);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6107,6407,6410) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'drainless_toilet',
    field_name = 'kind',
    value_name = 'compost_toilet',
@@ -36533,7 +36533,7 @@ WHERE (class_id = 6107 AND attribute_id = 6407 AND attribute_id = 6410);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6107,6407,6411) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'drainless_toilet',
    field_name = 'kind',
    value_name = 'other',
@@ -36556,7 +36556,7 @@ WHERE (class_id = 6107 AND attribute_id = 6407 AND attribute_id = 6411);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (6107,6407,6412) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'drainless_toilet',
    field_name = 'kind',
    value_name = 'unknown',
@@ -36579,7 +36579,7 @@ WHERE (class_id = 6107 AND attribute_id = 6407 AND attribute_id = 6412);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (62,157,237) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'dryweather_flume',
    field_name = 'material',
    value_name = 'cement_mortar',
@@ -36602,7 +36602,7 @@ WHERE (class_id = 62 AND attribute_id = 157 AND attribute_id = 237);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (62,157,238) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'dryweather_flume',
    field_name = 'material',
    value_name = 'stoneware',
@@ -36625,7 +36625,7 @@ WHERE (class_id = 62 AND attribute_id = 157 AND attribute_id = 238);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (62,157,3017) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'dryweather_flume',
    field_name = 'material',
    value_name = 'unknown',
@@ -36648,7 +36648,7 @@ WHERE (class_id = 62 AND attribute_id = 157 AND attribute_id = 3017);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (62,157,3221) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'dryweather_flume',
    field_name = 'material',
    value_name = 'other',
@@ -36671,7 +36671,7 @@ WHERE (class_id = 62 AND attribute_id = 157 AND attribute_id = 3221);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (62,157,354) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'dryweather_flume',
    field_name = 'material',
    value_name = 'combined',
@@ -36694,7 +36694,7 @@ WHERE (class_id = 62 AND attribute_id = 157 AND attribute_id = 354);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (62,157,5356) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'dryweather_flume',
    field_name = 'material',
    value_name = 'plastic',
@@ -36717,7 +36717,7 @@ WHERE (class_id = 62 AND attribute_id = 157 AND attribute_id = 5356);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (63,10,300) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'overflow',
    field_name = 'actuation',
    value_name = 'none',
@@ -36740,7 +36740,7 @@ WHERE (class_id = 63 AND attribute_id = 10 AND attribute_id = 300);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (63,10,3005) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'overflow',
    field_name = 'actuation',
    value_name = 'unknown',
@@ -36763,7 +36763,7 @@ WHERE (class_id = 63 AND attribute_id = 10 AND attribute_id = 3005);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (63,10,301) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'overflow',
    field_name = 'actuation',
    value_name = 'gaz_engine',
@@ -36786,7 +36786,7 @@ WHERE (class_id = 63 AND attribute_id = 10 AND attribute_id = 301);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (63,10,302) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'overflow',
    field_name = 'actuation',
    value_name = 'diesel_engine',
@@ -36809,7 +36809,7 @@ WHERE (class_id = 63 AND attribute_id = 10 AND attribute_id = 302);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (63,10,303) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'overflow',
    field_name = 'actuation',
    value_name = 'electric_engine',
@@ -36832,7 +36832,7 @@ WHERE (class_id = 63 AND attribute_id = 10 AND attribute_id = 303);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (63,10,304) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'overflow',
    field_name = 'actuation',
    value_name = 'pneumatic',
@@ -36855,7 +36855,7 @@ WHERE (class_id = 63 AND attribute_id = 10 AND attribute_id = 304);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (63,10,305) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'overflow',
    field_name = 'actuation',
    value_name = 'manual',
@@ -36878,7 +36878,7 @@ WHERE (class_id = 63 AND attribute_id = 10 AND attribute_id = 305);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (63,10,3667) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'overflow',
    field_name = 'actuation',
    value_name = 'other',
@@ -36901,7 +36901,7 @@ WHERE (class_id = 63 AND attribute_id = 10 AND attribute_id = 3667);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (63,10,433) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'overflow',
    field_name = 'actuation',
    value_name = 'hydraulic',
@@ -36924,7 +36924,7 @@ WHERE (class_id = 63 AND attribute_id = 10 AND attribute_id = 433);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (63,178,3021) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'overflow',
    field_name = 'adjustability',
    value_name = 'unknown',
@@ -36947,7 +36947,7 @@ WHERE (class_id = 63 AND attribute_id = 178 AND attribute_id = 3021);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (63,178,355) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'overflow',
    field_name = 'adjustability',
    value_name = 'fixed',
@@ -36970,7 +36970,7 @@ WHERE (class_id = 63 AND attribute_id = 178 AND attribute_id = 355);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (63,178,356) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'overflow',
    field_name = 'adjustability',
    value_name = 'adjustable',
@@ -36993,7 +36993,7 @@ WHERE (class_id = 63 AND attribute_id = 178 AND attribute_id = 356);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (63,199,3028) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'overflow',
    field_name = 'control',
    value_name = 'unknown',
@@ -37016,7 +37016,7 @@ WHERE (class_id = 63 AND attribute_id = 199 AND attribute_id = 3028);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (63,199,306) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'overflow',
    field_name = 'control',
    value_name = 'none',
@@ -37039,7 +37039,7 @@ WHERE (class_id = 63 AND attribute_id = 199 AND attribute_id = 306);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (63,199,307) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'overflow',
    field_name = 'control',
    value_name = 'open_loop_control',
@@ -37062,7 +37062,7 @@ WHERE (class_id = 63 AND attribute_id = 199 AND attribute_id = 307);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (63,199,308) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'overflow',
    field_name = 'control',
    value_name = 'closed_loop_control',
@@ -37085,7 +37085,7 @@ WHERE (class_id = 63 AND attribute_id = 199 AND attribute_id = 308);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (63,102,217) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'overflow',
    field_name = 'function',
    value_name = 'emergency_overflow',
@@ -37108,7 +37108,7 @@ WHERE (class_id = 63 AND attribute_id = 102 AND attribute_id = 217);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (63,102,3010) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'overflow',
    field_name = 'function',
    value_name = 'unknown',
@@ -37131,7 +37131,7 @@ WHERE (class_id = 63 AND attribute_id = 102 AND attribute_id = 3010);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (63,102,3228) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'overflow',
    field_name = 'function',
    value_name = 'other',
@@ -37154,7 +37154,7 @@ WHERE (class_id = 63 AND attribute_id = 102 AND attribute_id = 3228);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (63,102,3384) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'overflow',
    field_name = 'function',
    value_name = 'internal',
@@ -37177,7 +37177,7 @@ WHERE (class_id = 63 AND attribute_id = 102 AND attribute_id = 3384);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (63,102,5544) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'overflow',
    field_name = 'function',
    value_name = 'stormwater_overflow',
@@ -37200,7 +37200,7 @@ WHERE (class_id = 63 AND attribute_id = 102 AND attribute_id = 5544);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (63,102,5546) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'overflow',
    field_name = 'function',
    value_name = 'internal_overflow',
@@ -37223,7 +37223,7 @@ WHERE (class_id = 63 AND attribute_id = 102 AND attribute_id = 5546);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (63,2692,2693) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'overflow',
    field_name = 'signal_transmission',
    value_name = 'sending',
@@ -37246,7 +37246,7 @@ WHERE (class_id = 63 AND attribute_id = 2692 AND attribute_id = 2693);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (63,2692,2694) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'overflow',
    field_name = 'signal_transmission',
    value_name = 'receiving',
@@ -37269,7 +37269,7 @@ WHERE (class_id = 63 AND attribute_id = 2692 AND attribute_id = 2694);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (63,2692,2695) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'overflow',
    field_name = 'signal_transmission',
    value_name = 'sending_receiving',
@@ -37292,7 +37292,7 @@ WHERE (class_id = 63 AND attribute_id = 2692 AND attribute_id = 2695);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (63,2692,3056) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'overflow',
    field_name = 'signal_transmission',
    value_name = 'unknown',
@@ -37315,7 +37315,7 @@ WHERE (class_id = 63 AND attribute_id = 2692 AND attribute_id = 3056);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (64,6219,6220) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'overflow_char',
    field_name = 'kind_overflow_char',
    value_name = 'hq',
@@ -37338,7 +37338,7 @@ WHERE (class_id = 64 AND attribute_id = 6219 AND attribute_id = 6220);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (64,6219,6221) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'overflow_char',
    field_name = 'kind_overflow_char',
    value_name = 'qq',
@@ -37361,7 +37361,7 @@ WHERE (class_id = 64 AND attribute_id = 6219 AND attribute_id = 6221);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (64,6219,6228) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'overflow_char',
    field_name = 'kind_overflow_char',
    value_name = 'unknown',
@@ -37384,7 +37384,7 @@ WHERE (class_id = 64 AND attribute_id = 6219 AND attribute_id = 6228);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,3273,3275) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'defects',
    value_name = 'substantial',
@@ -37407,7 +37407,7 @@ WHERE (class_id = 68 AND attribute_id = 3273 AND attribute_id = 3275);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,3273,3276) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'defects',
    value_name = 'marginal',
@@ -37430,7 +37430,7 @@ WHERE (class_id = 68 AND attribute_id = 3273 AND attribute_id = 3276);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,3273,5361) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'defects',
    value_name = 'none',
@@ -37453,7 +37453,7 @@ WHERE (class_id = 68 AND attribute_id = 3273 AND attribute_id = 5361);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,3302,3303) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'emergency_overflow',
    value_name = 'none',
@@ -37476,7 +37476,7 @@ WHERE (class_id = 68 AND attribute_id = 3302 AND attribute_id = 3303);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,3302,3308) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'emergency_overflow',
    value_name = 'unknown',
@@ -37499,7 +37499,7 @@ WHERE (class_id = 68 AND attribute_id = 3302 AND attribute_id = 3308);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,3302,9069) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'emergency_overflow',
    value_name = 'other',
@@ -37522,7 +37522,7 @@ WHERE (class_id = 68 AND attribute_id = 3302 AND attribute_id = 9069);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,3302,9070) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'emergency_overflow',
    value_name = 'in_combined_waste_water_drain',
@@ -37545,7 +37545,7 @@ WHERE (class_id = 68 AND attribute_id = 3302 AND attribute_id = 9070);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,3302,9071) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'emergency_overflow',
    value_name = 'surface_discharge',
@@ -37568,7 +37568,7 @@ WHERE (class_id = 68 AND attribute_id = 3302 AND attribute_id = 9071);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,3302,9072) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'emergency_overflow',
    value_name = 'in_rain_waste_water_drain',
@@ -37591,7 +37591,7 @@ WHERE (class_id = 68 AND attribute_id = 3302 AND attribute_id = 9072);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,3302,9073) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'emergency_overflow',
    value_name = 'in_waste_water_drain',
@@ -37614,7 +37614,7 @@ WHERE (class_id = 68 AND attribute_id = 3302 AND attribute_id = 9073);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,3302,9074) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'emergency_overflow',
    value_name = 'in_water_body',
@@ -37637,7 +37637,7 @@ WHERE (class_id = 68 AND attribute_id = 3302 AND attribute_id = 9074);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,4784,4785) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'filling_material',
    value_name = 'other',
@@ -37660,7 +37660,7 @@ WHERE (class_id = 68 AND attribute_id = 4784 AND attribute_id = 4785);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,4784,4786) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'filling_material',
    value_name = 'wood_chips',
@@ -37683,7 +37683,7 @@ WHERE (class_id = 68 AND attribute_id = 4784 AND attribute_id = 4786);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,4784,4787) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'filling_material',
    value_name = 'soakaway_gravel',
@@ -37706,7 +37706,7 @@ WHERE (class_id = 68 AND attribute_id = 4784 AND attribute_id = 4787);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,4784,4788) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'filling_material',
    value_name = 'unknown',
@@ -37729,7 +37729,7 @@ WHERE (class_id = 68 AND attribute_id = 4784 AND attribute_id = 4788);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,78,276) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'kind',
    value_name = 'infiltration_basin',
@@ -37752,7 +37752,7 @@ WHERE (class_id = 68 AND attribute_id = 78 AND attribute_id = 276);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,78,277) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'kind',
    value_name = 'gravel_formation',
@@ -37775,7 +37775,7 @@ WHERE (class_id = 68 AND attribute_id = 78 AND attribute_id = 277);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,78,278) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'kind',
    value_name = 'adsorbing_well',
@@ -37798,7 +37798,7 @@ WHERE (class_id = 68 AND attribute_id = 78 AND attribute_id = 278);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,78,3087) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'kind',
    value_name = 'unknown',
@@ -37821,7 +37821,7 @@ WHERE (class_id = 68 AND attribute_id = 78 AND attribute_id = 3087);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,78,3279) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'kind',
    value_name = 'surface_infiltration',
@@ -37844,7 +37844,7 @@ WHERE (class_id = 68 AND attribute_id = 78 AND attribute_id = 3279);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,78,3280) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'kind',
    value_name = 'percolation_over_the_shoulder',
@@ -37867,7 +37867,7 @@ WHERE (class_id = 68 AND attribute_id = 78 AND attribute_id = 3280);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,78,3281) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'kind',
    value_name = 'swale_french_drain_infiltration',
@@ -37890,7 +37890,7 @@ WHERE (class_id = 68 AND attribute_id = 78 AND attribute_id = 3281);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,78,3282) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'kind',
    value_name = 'with_soil_passage',
@@ -37913,7 +37913,7 @@ WHERE (class_id = 68 AND attribute_id = 78 AND attribute_id = 3282);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,78,3283) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'kind',
    value_name = 'infiltration_pipe_sections_gallery',
@@ -37936,7 +37936,7 @@ WHERE (class_id = 68 AND attribute_id = 78 AND attribute_id = 3283);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,78,3284) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'kind',
    value_name = 'combination_manhole_pipe',
@@ -37959,7 +37959,7 @@ WHERE (class_id = 68 AND attribute_id = 78 AND attribute_id = 3284);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,78,3285) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'kind',
    value_name = 'without_soil_passage',
@@ -37982,7 +37982,7 @@ WHERE (class_id = 68 AND attribute_id = 78 AND attribute_id = 3285);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,3292,5362) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'labeling',
    value_name = 'labeled',
@@ -38005,7 +38005,7 @@ WHERE (class_id = 68 AND attribute_id = 3292 AND attribute_id = 5362);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,3292,5363) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'labeling',
    value_name = 'not_labeled',
@@ -38028,7 +38028,7 @@ WHERE (class_id = 68 AND attribute_id = 3292 AND attribute_id = 5363);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,3292,5364) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'labeling',
    value_name = 'unknown',
@@ -38051,7 +38051,7 @@ WHERE (class_id = 68 AND attribute_id = 3292 AND attribute_id = 5364);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,77,273) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'seepage_utilization',
    value_name = 'clean_water',
@@ -38074,7 +38074,7 @@ WHERE (class_id = 68 AND attribute_id = 77 AND attribute_id = 273);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,77,5359) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'seepage_utilization',
    value_name = 'unknown',
@@ -38097,7 +38097,7 @@ WHERE (class_id = 68 AND attribute_id = 77 AND attribute_id = 5359);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,77,9024) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'seepage_utilization',
    value_name = 'surface_water',
@@ -38120,7 +38120,7 @@ WHERE (class_id = 68 AND attribute_id = 77 AND attribute_id = 9024);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,3286,3287) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'vehicle_access',
    value_name = 'accessible',
@@ -38143,7 +38143,7 @@ WHERE (class_id = 68 AND attribute_id = 3286 AND attribute_id = 3287);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,3286,3288) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'vehicle_access',
    value_name = 'inaccessible',
@@ -38166,7 +38166,7 @@ WHERE (class_id = 68 AND attribute_id = 3286 AND attribute_id = 3288);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,3286,3289) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'vehicle_access',
    value_name = 'unknown',
@@ -38189,7 +38189,7 @@ WHERE (class_id = 68 AND attribute_id = 3286 AND attribute_id = 3289);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,3293,3294) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'watertightness',
    value_name = 'watertight',
@@ -38212,7 +38212,7 @@ WHERE (class_id = 68 AND attribute_id = 3293 AND attribute_id = 3294);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,3293,3295) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'watertightness',
    value_name = 'not_watertight',
@@ -38235,7 +38235,7 @@ WHERE (class_id = 68 AND attribute_id = 3293 AND attribute_id = 3295);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (68,3293,5360) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'infiltration_installation',
    field_name = 'watertightness',
    value_name = 'unknown',
@@ -38258,7 +38258,7 @@ WHERE (class_id = 68 AND attribute_id = 3293 AND attribute_id = 5360);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (69,5579,5580) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'discharge_point',
    field_name = 'relevance',
    value_name = 'relevant_for_water_course',
@@ -38281,7 +38281,7 @@ WHERE (class_id = 69 AND attribute_id = 5579 AND attribute_id = 5580);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (69,5579,5581) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'discharge_point',
    field_name = 'relevance',
    value_name = 'non_relevant_for_water_course',
@@ -38304,7 +38304,7 @@ WHERE (class_id = 69 AND attribute_id = 5579 AND attribute_id = 5581);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (70,3315,3317) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'mechanical_pretreatment',
    field_name = 'kind',
    value_name = 'filter_bag',
@@ -38327,7 +38327,7 @@ WHERE (class_id = 70 AND attribute_id = 3315 AND attribute_id = 3317);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (70,3315,3318) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'mechanical_pretreatment',
    field_name = 'kind',
    value_name = 'swale_french_drain_system',
@@ -38350,7 +38350,7 @@ WHERE (class_id = 70 AND attribute_id = 3315 AND attribute_id = 3318);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (70,3315,3319) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'mechanical_pretreatment',
    field_name = 'kind',
    value_name = 'artificial_adsorber',
@@ -38373,7 +38373,7 @@ WHERE (class_id = 70 AND attribute_id = 3315 AND attribute_id = 3319);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (70,3315,3320) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'mechanical_pretreatment',
    field_name = 'kind',
    value_name = 'slurry_collector',
@@ -38396,7 +38396,7 @@ WHERE (class_id = 70 AND attribute_id = 3315 AND attribute_id = 3320);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (70,3315,3321) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'mechanical_pretreatment',
    field_name = 'kind',
    value_name = 'floating_matter_separator',
@@ -38419,7 +38419,7 @@ WHERE (class_id = 70 AND attribute_id = 3315 AND attribute_id = 3321);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (70,3315,3322) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'mechanical_pretreatment',
    field_name = 'kind',
    value_name = 'unknown',
@@ -38442,7 +38442,7 @@ WHERE (class_id = 70 AND attribute_id = 3315 AND attribute_id = 3322);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (74,4630,4652) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measure',
    field_name = 'category',
    value_name = 'unknown',
@@ -38465,7 +38465,7 @@ WHERE (class_id = 74 AND attribute_id = 4630 AND attribute_id = 4652);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (74,4630,4653) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measure',
    field_name = 'category',
    value_name = 'administrative_mesure',
@@ -38488,7 +38488,7 @@ WHERE (class_id = 74 AND attribute_id = 4630 AND attribute_id = 4653);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (74,4630,4654) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measure',
    field_name = 'category',
    value_name = 'abolishment',
@@ -38511,7 +38511,7 @@ WHERE (class_id = 74 AND attribute_id = 4630 AND attribute_id = 4654);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (74,4630,4657) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measure',
    field_name = 'category',
    value_name = 'datamanagement',
@@ -38534,7 +38534,7 @@ WHERE (class_id = 74 AND attribute_id = 4630 AND attribute_id = 4657);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (74,4630,4659) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measure',
    field_name = 'category',
    value_name = 'sewer_infiltration_water_reduction',
@@ -38557,7 +38557,7 @@ WHERE (class_id = 74 AND attribute_id = 4630 AND attribute_id = 4659);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (74,4630,4660) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measure',
    field_name = 'category',
    value_name = 'gwdp_elaboration',
@@ -38580,7 +38580,7 @@ WHERE (class_id = 74 AND attribute_id = 4630 AND attribute_id = 4660);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (74,4630,4662) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measure',
    field_name = 'category',
    value_name = 'control_and_surveillance',
@@ -38603,7 +38603,7 @@ WHERE (class_id = 74 AND attribute_id = 4630 AND attribute_id = 4662);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (74,4630,4666) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measure',
    field_name = 'category',
    value_name = 'network_extension',
@@ -38626,7 +38626,7 @@ WHERE (class_id = 74 AND attribute_id = 4630 AND attribute_id = 4666);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (74,4630,5036) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measure',
    field_name = 'category',
    value_name = 'other',
@@ -38649,7 +38649,7 @@ WHERE (class_id = 74 AND attribute_id = 4630 AND attribute_id = 5036);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (74,4630,8639) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measure',
    field_name = 'category',
    value_name = 'measures_in_water_body',
@@ -38672,7 +38672,7 @@ WHERE (class_id = 74 AND attribute_id = 4630 AND attribute_id = 8639);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (74,4630,8645) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measure',
    field_name = 'category',
    value_name = 'function_change',
@@ -38695,7 +38695,7 @@ WHERE (class_id = 74 AND attribute_id = 4630 AND attribute_id = 8645);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (74,4630,8646) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measure',
    field_name = 'category',
    value_name = 'maintenance_renovation_repair',
@@ -38718,7 +38718,7 @@ WHERE (class_id = 74 AND attribute_id = 4630 AND attribute_id = 8646);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (74,4630,8647) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measure',
    field_name = 'category',
    value_name = 'maintenance_unknown',
@@ -38741,7 +38741,7 @@ WHERE (class_id = 74 AND attribute_id = 4630 AND attribute_id = 8647);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (74,4630,8648) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measure',
    field_name = 'category',
    value_name = 'maintenance_cleaning',
@@ -38764,7 +38764,7 @@ WHERE (class_id = 74 AND attribute_id = 4630 AND attribute_id = 8648);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (74,4630,8649) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measure',
    field_name = 'category',
    value_name = 'runoff_prevention_retention_infiltration',
@@ -38787,7 +38787,7 @@ WHERE (class_id = 74 AND attribute_id = 4630 AND attribute_id = 8649);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (74,4630,8650) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measure',
    field_name = 'category',
    value_name = 'incident_prevention',
@@ -38810,7 +38810,7 @@ WHERE (class_id = 74 AND attribute_id = 4630 AND attribute_id = 8650);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (74,4630,8705) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measure',
    field_name = 'category',
    value_name = 'special_construction_new_buildung',
@@ -38833,7 +38833,7 @@ WHERE (class_id = 74 AND attribute_id = 4630 AND attribute_id = 8705);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (74,4630,8706) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measure',
    field_name = 'category',
    value_name = 'maintenance_replacement',
@@ -38856,7 +38856,7 @@ WHERE (class_id = 74 AND attribute_id = 4630 AND attribute_id = 8706);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (74,4630,8707) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measure',
    field_name = 'category',
    value_name = 'special_construction_customization',
@@ -38879,7 +38879,7 @@ WHERE (class_id = 74 AND attribute_id = 4630 AND attribute_id = 8707);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (74,4630,9144) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measure',
    field_name = 'category',
    value_name = 'WWDRA',
@@ -38902,7 +38902,7 @@ WHERE (class_id = 74 AND attribute_id = 4630 AND attribute_id = 9144);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (74,4631,4759) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measure',
    field_name = 'priority',
    value_name = 'M0',
@@ -38925,7 +38925,7 @@ WHERE (class_id = 74 AND attribute_id = 4631 AND attribute_id = 4759);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (74,4631,4760) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measure',
    field_name = 'priority',
    value_name = 'M1',
@@ -38948,7 +38948,7 @@ WHERE (class_id = 74 AND attribute_id = 4631 AND attribute_id = 4760);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (74,4631,4761) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measure',
    field_name = 'priority',
    value_name = 'M2',
@@ -38971,7 +38971,7 @@ WHERE (class_id = 74 AND attribute_id = 4631 AND attribute_id = 4761);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (74,4631,4762) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measure',
    field_name = 'priority',
    value_name = 'M3',
@@ -38994,7 +38994,7 @@ WHERE (class_id = 74 AND attribute_id = 4631 AND attribute_id = 4762);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (74,4631,4763) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measure',
    field_name = 'priority',
    value_name = 'M4',
@@ -39017,7 +39017,7 @@ WHERE (class_id = 74 AND attribute_id = 4631 AND attribute_id = 4763);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (74,4631,5584) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measure',
    field_name = 'priority',
    value_name = 'unknown',
@@ -39040,7 +39040,7 @@ WHERE (class_id = 74 AND attribute_id = 4631 AND attribute_id = 5584);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (74,4632,4764) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measure',
    field_name = 'status',
    value_name = 'completed',
@@ -39063,7 +39063,7 @@ WHERE (class_id = 74 AND attribute_id = 4632 AND attribute_id = 4764);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (74,4632,4765) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measure',
    field_name = 'status',
    value_name = 'in_preparation',
@@ -39086,7 +39086,7 @@ WHERE (class_id = 74 AND attribute_id = 4632 AND attribute_id = 4765);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (74,4632,4766) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measure',
    field_name = 'status',
    value_name = 'pending',
@@ -39109,7 +39109,7 @@ WHERE (class_id = 74 AND attribute_id = 4632 AND attribute_id = 4766);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (74,4632,4767) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measure',
    field_name = 'status',
    value_name = 'suspended',
@@ -39132,7 +39132,7 @@ WHERE (class_id = 74 AND attribute_id = 4632 AND attribute_id = 4767);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (74,4632,4768) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measure',
    field_name = 'status',
    value_name = 'unknown',
@@ -39155,7 +39155,7 @@ WHERE (class_id = 74 AND attribute_id = 4632 AND attribute_id = 4768);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (83,9307,9308) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'maintenance',
    field_name = 'kind',
    value_name = 'other',
@@ -39178,7 +39178,7 @@ WHERE (class_id = 83 AND attribute_id = 9307 AND attribute_id = 9308);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (83,9307,9309) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'maintenance',
    field_name = 'kind',
    value_name = 'cleaning',
@@ -39201,7 +39201,7 @@ WHERE (class_id = 83 AND attribute_id = 9307 AND attribute_id = 9309);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (83,9307,9310) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'maintenance',
    field_name = 'kind',
    value_name = 'restoration_replacement',
@@ -39224,7 +39224,7 @@ WHERE (class_id = 83 AND attribute_id = 9307 AND attribute_id = 9310);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (83,9307,9311) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'maintenance',
    field_name = 'kind',
    value_name = 'restoration_renovation',
@@ -39247,7 +39247,7 @@ WHERE (class_id = 83 AND attribute_id = 9307 AND attribute_id = 9311);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (83,9307,9312) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'maintenance',
    field_name = 'kind',
    value_name = 'restoration_repair',
@@ -39270,7 +39270,7 @@ WHERE (class_id = 83 AND attribute_id = 9307 AND attribute_id = 9312);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (83,9307,9313) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'maintenance',
    field_name = 'kind',
    value_name = 'restoration_unknown',
@@ -39293,7 +39293,7 @@ WHERE (class_id = 83 AND attribute_id = 9307 AND attribute_id = 9313);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (83,9307,9314) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'maintenance',
    field_name = 'kind',
    value_name = 'unknown',
@@ -39316,7 +39316,7 @@ WHERE (class_id = 83 AND attribute_id = 9307 AND attribute_id = 9314);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (83,9307,9315) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'maintenance',
    field_name = 'kind',
    value_name = 'examination',
@@ -39339,7 +39339,7 @@ WHERE (class_id = 83 AND attribute_id = 9307 AND attribute_id = 9315);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (9,8977,8978) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'waste_water_treatment_plant',
    field_name = 'operator_type',
    value_name = 'idividual_municipality',
@@ -39362,7 +39362,7 @@ WHERE (class_id = 9 AND attribute_id = 8977 AND attribute_id = 8978);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (9,8977,8979) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'waste_water_treatment_plant',
    field_name = 'operator_type',
    value_name = 'special_purpose_association',
@@ -39385,7 +39385,7 @@ WHERE (class_id = 9 AND attribute_id = 8977 AND attribute_id = 8979);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (9,8977,8980) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'waste_water_treatment_plant',
    field_name = 'operator_type',
    value_name = 'domicile_municipality',
@@ -39408,7 +39408,7 @@ WHERE (class_id = 9 AND attribute_id = 8977 AND attribute_id = 8980);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (9,8977,8981) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'waste_water_treatment_plant',
    field_name = 'operator_type',
    value_name = 'intermunicipal_agency',
@@ -39431,7 +39431,7 @@ WHERE (class_id = 9 AND attribute_id = 8977 AND attribute_id = 8981);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (9,8977,8982) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'waste_water_treatment_plant',
    field_name = 'operator_type',
    value_name = 'public_law_stock_company',
@@ -39454,7 +39454,7 @@ WHERE (class_id = 9 AND attribute_id = 8977 AND attribute_id = 8982);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (9,8977,8983) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'waste_water_treatment_plant',
    field_name = 'operator_type',
    value_name = 'public_private_partnership',
@@ -39477,7 +39477,7 @@ WHERE (class_id = 9 AND attribute_id = 8977 AND attribute_id = 8983);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (9,8977,8984) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'waste_water_treatment_plant',
    field_name = 'operator_type',
    value_name = 'private_company',
@@ -39500,7 +39500,7 @@ WHERE (class_id = 9 AND attribute_id = 8977 AND attribute_id = 8984);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (9,8977,8985) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'waste_water_treatment_plant',
    field_name = 'operator_type',
    value_name = 'cantonal_administration',
@@ -39523,7 +39523,7 @@ WHERE (class_id = 9 AND attribute_id = 8977 AND attribute_id = 8985);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (9,8977,8986) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'waste_water_treatment_plant',
    field_name = 'operator_type',
    value_name = 'other',
@@ -39546,7 +39546,7 @@ WHERE (class_id = 9 AND attribute_id = 8977 AND attribute_id = 8986);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (97,208,2974) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wwtp_structure',
    field_name = 'kind',
    value_name = 'other',
@@ -39569,7 +39569,7 @@ WHERE (class_id = 97 AND attribute_id = 208 AND attribute_id = 2974);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (97,208,3032) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wwtp_structure',
    field_name = 'kind',
    value_name = 'unknown',
@@ -39592,7 +39592,7 @@ WHERE (class_id = 97 AND attribute_id = 208 AND attribute_id = 3032);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (97,208,326) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wwtp_structure',
    field_name = 'kind',
    value_name = 'primary_clarifier',
@@ -39615,7 +39615,7 @@ WHERE (class_id = 97 AND attribute_id = 208 AND attribute_id = 326);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (97,208,327) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wwtp_structure',
    field_name = 'kind',
    value_name = 'aeration_tank',
@@ -39638,7 +39638,7 @@ WHERE (class_id = 97 AND attribute_id = 208 AND attribute_id = 327);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (97,208,328) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wwtp_structure',
    field_name = 'kind',
    value_name = 'trickling_filter',
@@ -39661,7 +39661,7 @@ WHERE (class_id = 97 AND attribute_id = 208 AND attribute_id = 328);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (97,208,329) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wwtp_structure',
    field_name = 'kind',
    value_name = 'fixed_bed_reactor',
@@ -39684,7 +39684,7 @@ WHERE (class_id = 97 AND attribute_id = 208 AND attribute_id = 329);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (97,208,330) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wwtp_structure',
    field_name = 'kind',
    value_name = 'submerged_trickling_filter',
@@ -39707,7 +39707,7 @@ WHERE (class_id = 97 AND attribute_id = 208 AND attribute_id = 330);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (97,208,331) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wwtp_structure',
    field_name = 'kind',
    value_name = 'sedimentation_basin',
@@ -39730,7 +39730,7 @@ WHERE (class_id = 97 AND attribute_id = 208 AND attribute_id = 331);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99,5701,5702) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measuring_device',
    field_name = 'kind',
    value_name = 'other',
@@ -39753,7 +39753,7 @@ WHERE (class_id = 99 AND attribute_id = 5701 AND attribute_id = 5702);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99,5701,5703) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measuring_device',
    field_name = 'kind',
    value_name = 'static_sounding_stick',
@@ -39776,7 +39776,7 @@ WHERE (class_id = 99 AND attribute_id = 5701 AND attribute_id = 5703);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99,5701,5704) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measuring_device',
    field_name = 'kind',
    value_name = 'bubbler_system',
@@ -39799,7 +39799,7 @@ WHERE (class_id = 99 AND attribute_id = 5701 AND attribute_id = 5704);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99,5701,5705) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measuring_device',
    field_name = 'kind',
    value_name = 'EMF_partly_filled',
@@ -39822,7 +39822,7 @@ WHERE (class_id = 99 AND attribute_id = 5701 AND attribute_id = 5705);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99,5701,5706) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measuring_device',
    field_name = 'kind',
    value_name = 'EMF_filled',
@@ -39845,7 +39845,7 @@ WHERE (class_id = 99 AND attribute_id = 5701 AND attribute_id = 5706);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99,5701,5707) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measuring_device',
    field_name = 'kind',
    value_name = 'radar',
@@ -39868,7 +39868,7 @@ WHERE (class_id = 99 AND attribute_id = 5701 AND attribute_id = 5707);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99,5701,5708) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measuring_device',
    field_name = 'kind',
    value_name = 'float',
@@ -39891,7 +39891,7 @@ WHERE (class_id = 99 AND attribute_id = 5701 AND attribute_id = 5708);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99,5701,5709) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measuring_device',
    field_name = 'kind',
    value_name = 'unknown',
@@ -39914,7 +39914,7 @@ WHERE (class_id = 99 AND attribute_id = 5701 AND attribute_id = 5709);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99,5701,6322) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'measuring_device',
    field_name = 'kind',
    value_name = 'ultrasound',
@@ -39937,7 +39937,7 @@ WHERE (class_id = 99 AND attribute_id = 5701 AND attribute_id = 6322);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99700,7867,7874) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure_symbol',
    field_name = 'plantype',
    value_name = 'pipeline_registry',
@@ -39960,7 +39960,7 @@ WHERE (class_id = 99700 AND attribute_id = 7867 AND attribute_id = 7874);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99700,7867,7875) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure_symbol',
    field_name = 'plantype',
    value_name = 'network_plan',
@@ -39983,7 +39983,7 @@ WHERE (class_id = 99700 AND attribute_id = 7867 AND attribute_id = 7875);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99700,7867,7876) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure_symbol',
    field_name = 'plantype',
    value_name = 'overviewmap.om10',
@@ -40006,7 +40006,7 @@ WHERE (class_id = 99700 AND attribute_id = 7867 AND attribute_id = 7876);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99700,7867,7877) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure_symbol',
    field_name = 'plantype',
    value_name = 'overviewmap.om2',
@@ -40029,7 +40029,7 @@ WHERE (class_id = 99700 AND attribute_id = 7867 AND attribute_id = 7877);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99700,7867,7878) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure_symbol',
    field_name = 'plantype',
    value_name = 'overviewmap.om5',
@@ -40052,7 +40052,7 @@ WHERE (class_id = 99700 AND attribute_id = 7867 AND attribute_id = 7878);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99800,9280,9282) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach_progression_alternative',
    field_name = 'plantype',
    value_name = 'pipeline_registry',
@@ -40075,7 +40075,7 @@ WHERE (class_id = 99800 AND attribute_id = 9280 AND attribute_id = 9282);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99800,9280,9284) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach_progression_alternative',
    field_name = 'plantype',
    value_name = 'network_plan',
@@ -40098,7 +40098,7 @@ WHERE (class_id = 99800 AND attribute_id = 9280 AND attribute_id = 9284);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99800,9280,9285) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach_progression_alternative',
    field_name = 'plantype',
    value_name = 'overviewmap.om10',
@@ -40121,7 +40121,7 @@ WHERE (class_id = 99800 AND attribute_id = 9280 AND attribute_id = 9285);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99800,9280,9286) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach_progression_alternative',
    field_name = 'plantype',
    value_name = 'overviewmap.om2',
@@ -40144,7 +40144,7 @@ WHERE (class_id = 99800 AND attribute_id = 9280 AND attribute_id = 9286);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99800,9280,9287) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach_progression_alternative',
    field_name = 'plantype',
    value_name = 'overviewmap.om5',
@@ -40167,7 +40167,7 @@ WHERE (class_id = 99800 AND attribute_id = 9280 AND attribute_id = 9287);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99900,7839,7844) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure_text',
    field_name = 'plantype',
    value_name = 'pipeline_registry',
@@ -40190,7 +40190,7 @@ WHERE (class_id = 99900 AND attribute_id = 7839 AND attribute_id = 7844);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99900,7839,7845) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure_text',
    field_name = 'plantype',
    value_name = 'network_plan',
@@ -40213,7 +40213,7 @@ WHERE (class_id = 99900 AND attribute_id = 7839 AND attribute_id = 7845);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99900,7839,7846) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure_text',
    field_name = 'plantype',
    value_name = 'overviewmap.om10',
@@ -40236,7 +40236,7 @@ WHERE (class_id = 99900 AND attribute_id = 7839 AND attribute_id = 7846);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99900,7839,7847) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure_text',
    field_name = 'plantype',
    value_name = 'overviewmap.om2',
@@ -40259,7 +40259,7 @@ WHERE (class_id = 99900 AND attribute_id = 7839 AND attribute_id = 7847);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99900,7839,7848) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure_text',
    field_name = 'plantype',
    value_name = 'overviewmap.om5',
@@ -40282,7 +40282,7 @@ WHERE (class_id = 99900 AND attribute_id = 7839 AND attribute_id = 7848);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99900,7837,7850) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure_text',
    field_name = 'texthali',
    value_name = '0',
@@ -40305,7 +40305,7 @@ WHERE (class_id = 99900 AND attribute_id = 7837 AND attribute_id = 7850);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99900,7837,7851) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure_text',
    field_name = 'texthali',
    value_name = '1',
@@ -40328,7 +40328,7 @@ WHERE (class_id = 99900 AND attribute_id = 7837 AND attribute_id = 7851);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99900,7837,7852) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure_text',
    field_name = 'texthali',
    value_name = '2',
@@ -40351,7 +40351,7 @@ WHERE (class_id = 99900 AND attribute_id = 7837 AND attribute_id = 7852);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99900,7838,7853) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure_text',
    field_name = 'textvali',
    value_name = '0',
@@ -40374,7 +40374,7 @@ WHERE (class_id = 99900 AND attribute_id = 7838 AND attribute_id = 7853);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99900,7838,7854) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure_text',
    field_name = 'textvali',
    value_name = '1',
@@ -40397,7 +40397,7 @@ WHERE (class_id = 99900 AND attribute_id = 7838 AND attribute_id = 7854);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99900,7838,7855) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure_text',
    field_name = 'textvali',
    value_name = '2',
@@ -40420,7 +40420,7 @@ WHERE (class_id = 99900 AND attribute_id = 7838 AND attribute_id = 7855);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99900,7838,7856) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure_text',
    field_name = 'textvali',
    value_name = '3',
@@ -40443,7 +40443,7 @@ WHERE (class_id = 99900 AND attribute_id = 7838 AND attribute_id = 7856);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99900,7838,7857) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'wastewater_structure_text',
    field_name = 'textvali',
    value_name = '4',
@@ -40466,7 +40466,7 @@ WHERE (class_id = 99900 AND attribute_id = 7838 AND attribute_id = 7857);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99901,7839,7844) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach_text',
    field_name = 'plantype',
    value_name = 'pipeline_registry',
@@ -40489,7 +40489,7 @@ WHERE (class_id = 99901 AND attribute_id = 7839 AND attribute_id = 7844);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99901,7839,7845) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach_text',
    field_name = 'plantype',
    value_name = 'network_plan',
@@ -40512,7 +40512,7 @@ WHERE (class_id = 99901 AND attribute_id = 7839 AND attribute_id = 7845);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99901,7839,7846) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach_text',
    field_name = 'plantype',
    value_name = 'overviewmap.om10',
@@ -40535,7 +40535,7 @@ WHERE (class_id = 99901 AND attribute_id = 7839 AND attribute_id = 7846);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99901,7839,7847) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach_text',
    field_name = 'plantype',
    value_name = 'overviewmap.om2',
@@ -40558,7 +40558,7 @@ WHERE (class_id = 99901 AND attribute_id = 7839 AND attribute_id = 7847);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99901,7839,7848) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach_text',
    field_name = 'plantype',
    value_name = 'overviewmap.om5',
@@ -40581,7 +40581,7 @@ WHERE (class_id = 99901 AND attribute_id = 7839 AND attribute_id = 7848);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99901,7837,7850) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach_text',
    field_name = 'texthali',
    value_name = '0',
@@ -40604,7 +40604,7 @@ WHERE (class_id = 99901 AND attribute_id = 7837 AND attribute_id = 7850);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99901,7837,7851) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach_text',
    field_name = 'texthali',
    value_name = '1',
@@ -40627,7 +40627,7 @@ WHERE (class_id = 99901 AND attribute_id = 7837 AND attribute_id = 7851);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99901,7837,7852) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach_text',
    field_name = 'texthali',
    value_name = '2',
@@ -40650,7 +40650,7 @@ WHERE (class_id = 99901 AND attribute_id = 7837 AND attribute_id = 7852);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99901,7838,7853) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach_text',
    field_name = 'textvali',
    value_name = '0',
@@ -40673,7 +40673,7 @@ WHERE (class_id = 99901 AND attribute_id = 7838 AND attribute_id = 7853);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99901,7838,7854) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach_text',
    field_name = 'textvali',
    value_name = '1',
@@ -40696,7 +40696,7 @@ WHERE (class_id = 99901 AND attribute_id = 7838 AND attribute_id = 7854);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99901,7838,7855) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach_text',
    field_name = 'textvali',
    value_name = '2',
@@ -40719,7 +40719,7 @@ WHERE (class_id = 99901 AND attribute_id = 7838 AND attribute_id = 7855);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99901,7838,7856) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach_text',
    field_name = 'textvali',
    value_name = '3',
@@ -40742,7 +40742,7 @@ WHERE (class_id = 99901 AND attribute_id = 7838 AND attribute_id = 7856);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99901,7838,7857) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'reach_text',
    field_name = 'textvali',
    value_name = '4',
@@ -40765,7 +40765,7 @@ WHERE (class_id = 99901 AND attribute_id = 7838 AND attribute_id = 7857);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99902,7839,7844) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area_text',
    field_name = 'plantype',
    value_name = 'pipeline_registry',
@@ -40788,7 +40788,7 @@ WHERE (class_id = 99902 AND attribute_id = 7839 AND attribute_id = 7844);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99902,7839,7845) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area_text',
    field_name = 'plantype',
    value_name = 'network_plan',
@@ -40811,7 +40811,7 @@ WHERE (class_id = 99902 AND attribute_id = 7839 AND attribute_id = 7845);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99902,7839,7846) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area_text',
    field_name = 'plantype',
    value_name = 'overviewmap.om10',
@@ -40834,7 +40834,7 @@ WHERE (class_id = 99902 AND attribute_id = 7839 AND attribute_id = 7846);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99902,7839,7847) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area_text',
    field_name = 'plantype',
    value_name = 'overviewmap.om2',
@@ -40857,7 +40857,7 @@ WHERE (class_id = 99902 AND attribute_id = 7839 AND attribute_id = 7847);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99902,7839,7848) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area_text',
    field_name = 'plantype',
    value_name = 'overviewmap.om5',
@@ -40880,7 +40880,7 @@ WHERE (class_id = 99902 AND attribute_id = 7839 AND attribute_id = 7848);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99902,7837,7850) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area_text',
    field_name = 'texthali',
    value_name = '0',
@@ -40903,7 +40903,7 @@ WHERE (class_id = 99902 AND attribute_id = 7837 AND attribute_id = 7850);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99902,7837,7851) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area_text',
    field_name = 'texthali',
    value_name = '1',
@@ -40926,7 +40926,7 @@ WHERE (class_id = 99902 AND attribute_id = 7837 AND attribute_id = 7851);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99902,7837,7852) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area_text',
    field_name = 'texthali',
    value_name = '2',
@@ -40949,7 +40949,7 @@ WHERE (class_id = 99902 AND attribute_id = 7837 AND attribute_id = 7852);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99902,7838,7853) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area_text',
    field_name = 'textvali',
    value_name = '0',
@@ -40972,7 +40972,7 @@ WHERE (class_id = 99902 AND attribute_id = 7838 AND attribute_id = 7853);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99902,7838,7854) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area_text',
    field_name = 'textvali',
    value_name = '1',
@@ -40995,7 +40995,7 @@ WHERE (class_id = 99902 AND attribute_id = 7838 AND attribute_id = 7854);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99902,7838,7855) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area_text',
    field_name = 'textvali',
    value_name = '2',
@@ -41018,7 +41018,7 @@ WHERE (class_id = 99902 AND attribute_id = 7838 AND attribute_id = 7855);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99902,7838,7856) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area_text',
    field_name = 'textvali',
    value_name = '3',
@@ -41041,7 +41041,7 @@ WHERE (class_id = 99902 AND attribute_id = 7838 AND attribute_id = 7856);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (99902,7838,7857) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'catchment_area_text',
    field_name = 'textvali',
    value_name = '4',
@@ -41064,7 +41064,7 @@ WHERE (class_id = 99902 AND attribute_id = 7838 AND attribute_id = 7857);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (9998,5522,5523) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'mutation',
    field_name = 'kind',
    value_name = 'created',
@@ -41087,7 +41087,7 @@ WHERE (class_id = 9998 AND attribute_id = 5522 AND attribute_id = 5523);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (9998,5522,5582) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'mutation',
    field_name = 'kind',
    value_name = 'changed',
@@ -41110,7 +41110,7 @@ WHERE (class_id = 9998 AND attribute_id = 5522 AND attribute_id = 5582);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (9998,5522,5583) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'mutation',
    field_name = 'kind',
    value_name = 'deleted',
@@ -41130,5 +41130,3 @@ UPDATE tww_sys.dictionary_od_values SET
    value_description_it = '',
    value_description_ro = ''
 WHERE (class_id = 9998 AND attribute_id = 5522 AND attribute_id = 5583);
-
-
