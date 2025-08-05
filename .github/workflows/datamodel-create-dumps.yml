@@ -50,7 +50,7 @@ jobs:
             sleep 2
           done
           docker compose exec db createdb -U postgres tww
-          docker compose exec db pum -vvv -s pg_tww -d datamodel install -p SRID 2056 --roles --grant
+          docker compose exec db pum -vvv -s pg_tww -d datamodel install -p SRID 2056 -p modification_agxx ${{ matrix.extension != '' && 'true' || 'false' }} --roles --grant
 
       - name: Create dumps
         run: docker compose exec db /src/datamodel/scripts/create-dumps.py --extension_name=${{ matrix.extension }}
