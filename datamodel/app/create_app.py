@@ -143,7 +143,7 @@ Running modification {modification.get('id')}
 
         for key, value in self.extra_definitions.items():
             if value:
-                self.extra_definitions[key].update(self.abspath / value)
+                self.extra_definitions[key] = self.abspath / value
 
         vw_wastewater_structure(
             connection=self.connection,
