@@ -81,13 +81,13 @@ jobs:
           docker compose exec db pum -s pg_tww -d datamodel install -p SRID 2056
 
       - name: Test command line import orgs
-        run: docker compose run qgis sh -c 'xvfb-run /usr/src/plugin/tww_cmd.py interlis_import --xtf_file /usr/src/plugin/teksi_wastewater/tests/data/minimal-dataset-organisation-arbon-only.xtf --pghost db --pgdatabase tww --pguser postgres --pgpass postgres --pgport 5432'
+        run: docker compose up qgis sh -c 'xvfb-run /usr/src/plugin/tww_cmd.py interlis_import --xtf_file /usr/src/plugin/teksi_wastewater/tests/data/minimal-dataset-organisation-arbon-only.xtf --pghost db --pgdatabase tww --pguser postgres --pgpass postgres --pgport 5432'
 
       - name: Test command line import minimal sia405
-        run: docker compose run qgis sh -c 'xvfb-run /usr/src/plugin/tww_cmd.py interlis_import --xtf_file /usr/src/plugin/teksi_wastewater/tests/data/minimal-dataset-SIA405-ABWASSER.xtf --pghost db --pgdatabase tww --pguser postgres --pgpass postgres --pgport 5432'
+        run: docker compose up qgis sh -c 'xvfb-run /usr/src/plugin/tww_cmd.py interlis_import --xtf_file /usr/src/plugin/teksi_wastewater/tests/data/minimal-dataset-SIA405-ABWASSER.xtf --pghost db --pgdatabase tww --pguser postgres --pgpass postgres --pgport 5432'
 
       - name: Test command line minimal export
-        run: docker compose run qgis sh -c 'xvfb-run /usr/src/plugin/tww_cmd.py interlis_export --xtf_file "output.xtf" --pghost db --pgdatabase tww --pguser postgres --pgpass postgres --pgport 5432'
+        run: docker compose up qgis sh -c 'xvfb-run /usr/src/plugin/tww_cmd.py interlis_export --xtf_file "output.xtf" --pghost db --pgdatabase tww --pguser postgres --pgpass postgres --pgport 5432'
 
       - name: docker logs
         run: docker compose logs db
