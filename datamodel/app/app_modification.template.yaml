@@ -12,6 +12,7 @@ extra_definitions:
   vw_tww_damage_channel: null
   vw_tww_additional_ws: null
   vw_tww_measurement_series: null
+  vw_tww_log_card: null
 
 multiple_inherintances:
   vw_maintenance: "view/multipleinheritance/vw_maintenance_event.yaml"
