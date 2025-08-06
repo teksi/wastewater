@@ -5,7 +5,7 @@
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (8500,'sia405cc_cable') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'sia405cc_cable',
    name_en = 'cable',
    shortcut_en = 'CB',
@@ -22,7 +22,7 @@ WHERE (id = 8500 AND tablename = 'sia405cc_cable');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (8501,'sia405cc_cable_point') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'sia405cc_cable_point',
    name_en = 'cable point',
    shortcut_en = 'CI',
@@ -1067,7 +1067,7 @@ WHERE (class_id = 8501 AND attribute_id = 9472);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8500,9329,9338) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable',
    field_name = 'function',
    value_name = 'unknown',
@@ -1090,7 +1090,7 @@ WHERE (class_id = 8500 AND attribute_id = 9329 AND attribute_id = 9338);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8500,9329,9339) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable',
    field_name = 'function',
    value_name = 'signal_cable',
@@ -1113,7 +1113,7 @@ WHERE (class_id = 8500 AND attribute_id = 9329 AND attribute_id = 9339);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8500,9329,9340) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable',
    field_name = 'function',
    value_name = 'control_cable',
@@ -1136,7 +1136,7 @@ WHERE (class_id = 8500 AND attribute_id = 9329 AND attribute_id = 9340);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8500,9329,9341) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable',
    field_name = 'function',
    value_name = 'power_cable',
@@ -1159,7 +1159,7 @@ WHERE (class_id = 8500 AND attribute_id = 9329 AND attribute_id = 9341);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8500,9329,9342) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable',
    field_name = 'function',
    value_name = 'others',
@@ -1182,7 +1182,7 @@ WHERE (class_id = 8500 AND attribute_id = 9329 AND attribute_id = 9342);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8500,9330,9343) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable',
    field_name = 'cable_type',
    value_name = 'unknown',
@@ -1205,7 +1205,7 @@ WHERE (class_id = 8500 AND attribute_id = 9330 AND attribute_id = 9343);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8500,9330,9344) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable',
    field_name = 'cable_type',
    value_name = 'copper',
@@ -1228,7 +1228,7 @@ WHERE (class_id = 8500 AND attribute_id = 9330 AND attribute_id = 9344);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8500,9330,9345) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable',
    field_name = 'cable_type',
    value_name = 'coaxial',
@@ -1251,7 +1251,7 @@ WHERE (class_id = 8500 AND attribute_id = 9330 AND attribute_id = 9345);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8500,9330,9346) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable',
    field_name = 'cable_type',
    value_name = 'fiber_optic',
@@ -1274,7 +1274,7 @@ WHERE (class_id = 8500 AND attribute_id = 9330 AND attribute_id = 9346);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8500,9331,9347) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable',
    field_name = 'horizontal_positioning',
    value_name = 'accurate',
@@ -1297,7 +1297,7 @@ WHERE (class_id = 8500 AND attribute_id = 9331 AND attribute_id = 9347);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8500,9331,9348) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable',
    field_name = 'horizontal_positioning',
    value_name = 'unknown',
@@ -1320,7 +1320,7 @@ WHERE (class_id = 8500 AND attribute_id = 9331 AND attribute_id = 9348);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8500,9331,9349) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable',
    field_name = 'horizontal_positioning',
    value_name = 'inaccurate',
@@ -1343,7 +1343,7 @@ WHERE (class_id = 8500 AND attribute_id = 9331 AND attribute_id = 9349);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8500,9332,9363) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable',
    field_name = 'status',
    value_name = 'inoperative',
@@ -1366,7 +1366,7 @@ WHERE (class_id = 8500 AND attribute_id = 9332 AND attribute_id = 9363);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8500,9332,9364) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable',
    field_name = 'status',
    value_name = 'inoperative.reserve',
@@ -1389,7 +1389,7 @@ WHERE (class_id = 8500 AND attribute_id = 9332 AND attribute_id = 9364);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8500,9332,9365) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable',
    field_name = 'status',
    value_name = 'operational',
@@ -1412,7 +1412,7 @@ WHERE (class_id = 8500 AND attribute_id = 9332 AND attribute_id = 9365);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8500,9332,9366) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable',
    field_name = 'status',
    value_name = 'operational.tentative',
@@ -1435,7 +1435,7 @@ WHERE (class_id = 8500 AND attribute_id = 9332 AND attribute_id = 9366);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8500,9332,9367) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable',
    field_name = 'status',
    value_name = 'others',
@@ -1458,7 +1458,7 @@ WHERE (class_id = 8500 AND attribute_id = 9332 AND attribute_id = 9367);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8500,9332,9368) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable',
    field_name = 'status',
    value_name = 'other.calculation_alternative',
@@ -1481,7 +1481,7 @@ WHERE (class_id = 8500 AND attribute_id = 9332 AND attribute_id = 9368);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8500,9332,9369) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable',
    field_name = 'status',
    value_name = 'other.planned',
@@ -1504,7 +1504,7 @@ WHERE (class_id = 8500 AND attribute_id = 9332 AND attribute_id = 9369);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8500,9332,9370) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable',
    field_name = 'status',
    value_name = 'other.project',
@@ -1527,7 +1527,7 @@ WHERE (class_id = 8500 AND attribute_id = 9332 AND attribute_id = 9370);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8500,9356,9359) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable',
    field_name = 'elevation_determination',
    value_name = 'accurate',
@@ -1550,7 +1550,7 @@ WHERE (class_id = 8500 AND attribute_id = 9356 AND attribute_id = 9359);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8500,9356,9360) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable',
    field_name = 'elevation_determination',
    value_name = 'unknown',
@@ -1573,7 +1573,7 @@ WHERE (class_id = 8500 AND attribute_id = 9356 AND attribute_id = 9360);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8500,9356,9361) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable',
    field_name = 'elevation_determination',
    value_name = 'inaccurate',
@@ -1596,7 +1596,7 @@ WHERE (class_id = 8500 AND attribute_id = 9356 AND attribute_id = 9361);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8501,9373,9384) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable_point',
    field_name = 'kind',
    value_name = 'unknown',
@@ -1619,7 +1619,7 @@ WHERE (class_id = 8501 AND attribute_id = 9373 AND attribute_id = 9384);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8501,9373,9385) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable_point',
    field_name = 'kind',
    value_name = 'cable_sleeve',
@@ -1642,7 +1642,7 @@ WHERE (class_id = 8501 AND attribute_id = 9373 AND attribute_id = 9385);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8501,9373,9386) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable_point',
    field_name = 'kind',
    value_name = 'cable_manhole',
@@ -1665,7 +1665,7 @@ WHERE (class_id = 8501 AND attribute_id = 9373 AND attribute_id = 9386);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8501,9373,9387) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable_point',
    field_name = 'kind',
    value_name = 'cabine',
@@ -1688,7 +1688,7 @@ WHERE (class_id = 8501 AND attribute_id = 9373 AND attribute_id = 9387);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8501,9373,9388) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable_point',
    field_name = 'kind',
    value_name = 'cable_point',
@@ -1711,7 +1711,7 @@ WHERE (class_id = 8501 AND attribute_id = 9373 AND attribute_id = 9388);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8501,9373,9389) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable_point',
    field_name = 'kind',
    value_name = 'others',
@@ -1734,7 +1734,7 @@ WHERE (class_id = 8501 AND attribute_id = 9373 AND attribute_id = 9389);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8501,9374,9390) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable_point',
    field_name = 'horizontal_positioning',
    value_name = 'unknown',
@@ -1757,7 +1757,7 @@ WHERE (class_id = 8501 AND attribute_id = 9374 AND attribute_id = 9390);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8501,9374,9391) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable_point',
    field_name = 'horizontal_positioning',
    value_name = 'inaccurate',
@@ -1780,7 +1780,7 @@ WHERE (class_id = 8501 AND attribute_id = 9374 AND attribute_id = 9391);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8501,9374,9392) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable_point',
    field_name = 'horizontal_positioning',
    value_name = 'accurate',
@@ -1803,7 +1803,7 @@ WHERE (class_id = 8501 AND attribute_id = 9374 AND attribute_id = 9392);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8501,9376,9394) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable_point',
    field_name = 'elevation_determination',
    value_name = 'accurate',
@@ -1826,7 +1826,7 @@ WHERE (class_id = 8501 AND attribute_id = 9376 AND attribute_id = 9394);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8501,9376,9395) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable_point',
    field_name = 'elevation_determination',
    value_name = 'unknown',
@@ -1849,7 +1849,7 @@ WHERE (class_id = 8501 AND attribute_id = 9376 AND attribute_id = 9395);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8501,9376,9396) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable_point',
    field_name = 'elevation_determination',
    value_name = 'inaccurate',
@@ -1872,7 +1872,7 @@ WHERE (class_id = 8501 AND attribute_id = 9376 AND attribute_id = 9396);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8501,9377,9397) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable_point',
    field_name = 'status',
    value_name = 'inoperative',
@@ -1895,7 +1895,7 @@ WHERE (class_id = 8501 AND attribute_id = 9377 AND attribute_id = 9397);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8501,9377,9398) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable_point',
    field_name = 'status',
    value_name = 'inoperative.reserve',
@@ -1918,7 +1918,7 @@ WHERE (class_id = 8501 AND attribute_id = 9377 AND attribute_id = 9398);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8501,9377,9399) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable_point',
    field_name = 'status',
    value_name = 'operational',
@@ -1941,7 +1941,7 @@ WHERE (class_id = 8501 AND attribute_id = 9377 AND attribute_id = 9399);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8501,9377,9400) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable_point',
    field_name = 'status',
    value_name = 'operational.tentative',
@@ -1964,7 +1964,7 @@ WHERE (class_id = 8501 AND attribute_id = 9377 AND attribute_id = 9400);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8501,9377,9401) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable_point',
    field_name = 'status',
    value_name = 'others',
@@ -1987,7 +1987,7 @@ WHERE (class_id = 8501 AND attribute_id = 9377 AND attribute_id = 9401);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8501,9377,9402) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable_point',
    field_name = 'status',
    value_name = 'other.calculation_alternative',
@@ -2010,7 +2010,7 @@ WHERE (class_id = 8501 AND attribute_id = 9377 AND attribute_id = 9402);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8501,9377,9403) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable_point',
    field_name = 'status',
    value_name = 'other.planned',
@@ -2033,7 +2033,7 @@ WHERE (class_id = 8501 AND attribute_id = 9377 AND attribute_id = 9403);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8501,9377,9404) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405cc_cable_point',
    field_name = 'status',
    value_name = 'other.project',
@@ -2053,5 +2053,3 @@ UPDATE tww_sys.dictionary_od_values SET
    value_description_it = '',
    value_description_ro = ''
 WHERE (class_id = 8501 AND attribute_id = 9377 AND attribute_id = 9404);
-
-

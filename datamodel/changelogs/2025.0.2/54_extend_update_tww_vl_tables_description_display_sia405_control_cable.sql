@@ -1118,4 +1118,3 @@ WHERE code = 9360;
    display_it = '',
    display_ro = 'imprecisa'
 WHERE code = 9361;
-
