@@ -48,3 +48,4 @@ services:
     user: "${UID}:${GID}"
     profiles:
       - schemaspy
+    command: ["sleep", "infinity"]
