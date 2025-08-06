@@ -87,10 +87,10 @@ jobs:
         if: ${{ inputs.release_tag != '' }}
         run: |
           if [ -z "${{ matrix.extension }}" ]; then
-            gh release upload "${{ inputs.release_tag }}" datamodel-dumps.zip#oqtopus.datamodel --repo "$GITHUB_REPOSITORY"
+            gh release upload "${{ inputs.release_tag }}" datamodel-dumps.zip --repo "$GITHUB_REPOSITORY"
             gh release upload "${{ inputs.release_tag }}" datamodel-schemaspy.zip --repo "$GITHUB_REPOSITORY"
           else
-            gh release upload "${{ inputs.release_tag }}" datamodel-dumps_${{ matrix.extension }}.zip#oqtopus.datamodel --repo "$GITHUB_REPOSITORY"
+            gh release upload "${{ inputs.release_tag }}" datamodel-dumps_${{ matrix.extension }}.zip --repo "$GITHUB_REPOSITORY"
           fi
 
         env:
