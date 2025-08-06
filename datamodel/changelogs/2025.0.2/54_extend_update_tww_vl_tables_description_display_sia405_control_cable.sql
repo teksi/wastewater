@@ -1,10 +1,10 @@
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
 ------ version 06.08.2025 14:49:08
 
---- Adapt tdh_vl.sia405cc_cable_point_kind
- INSERT INTO tdh_vl.sia405cc_cable_point_kind (code, vsacode) VALUES (9385,9385) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_point_kind
+ INSERT INTO tww_vl.sia405cc_cable_point_kind (code, vsacode) VALUES (9385,9385) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_point_kind SET
+ UPDATE tww_vl.sia405cc_cable_point_kind SET
    value_en = 'cable_sleeve',
    value_de = 'Kabelmuffe',
    value_fr = 'manchon_cable',
@@ -27,10 +27,10 @@
    display_ro = 'Man?on de cablu'
 WHERE code = 9385;
 
---- Adapt tdh_vl.sia405cc_cable_point_kind
- INSERT INTO tdh_vl.sia405cc_cable_point_kind (code, vsacode) VALUES (9388,9388) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_point_kind
+ INSERT INTO tww_vl.sia405cc_cable_point_kind (code, vsacode) VALUES (9388,9388) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_point_kind SET
+ UPDATE tww_vl.sia405cc_cable_point_kind SET
    value_en = 'cable_point',
    value_de = 'Kabelpunkt',
    value_fr = 'point_de_cable',
@@ -53,10 +53,10 @@ WHERE code = 9385;
    display_ro = ''
 WHERE code = 9388;
 
---- Adapt tdh_vl.sia405cc_cable_point_kind
- INSERT INTO tdh_vl.sia405cc_cable_point_kind (code, vsacode) VALUES (9386,9386) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_point_kind
+ INSERT INTO tww_vl.sia405cc_cable_point_kind (code, vsacode) VALUES (9386,9386) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_point_kind SET
+ UPDATE tww_vl.sia405cc_cable_point_kind SET
    value_en = 'cable_manhole',
    value_de = 'Kabelschacht',
    value_fr = 'chambre_cable',
@@ -79,10 +79,10 @@ WHERE code = 9388;
    display_ro = ''
 WHERE code = 9386;
 
---- Adapt tdh_vl.sia405cc_cable_point_kind
- INSERT INTO tdh_vl.sia405cc_cable_point_kind (code, vsacode) VALUES (9387,9387) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_point_kind
+ INSERT INTO tww_vl.sia405cc_cable_point_kind (code, vsacode) VALUES (9387,9387) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_point_kind SET
+ UPDATE tww_vl.sia405cc_cable_point_kind SET
    value_en = 'cabine',
    value_de = 'Kabine',
    value_fr = 'cabine',
@@ -105,10 +105,10 @@ WHERE code = 9386;
    display_ro = 'Cabina'
 WHERE code = 9387;
 
---- Adapt tdh_vl.sia405cc_cable_point_kind
- INSERT INTO tdh_vl.sia405cc_cable_point_kind (code, vsacode) VALUES (9384,9384) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_point_kind
+ INSERT INTO tww_vl.sia405cc_cable_point_kind (code, vsacode) VALUES (9384,9384) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_point_kind SET
+ UPDATE tww_vl.sia405cc_cable_point_kind SET
    value_en = 'unknown',
    value_de = 'unbekannt',
    value_fr = 'inconnue',
@@ -131,10 +131,10 @@ WHERE code = 9387;
    display_ro = ''
 WHERE code = 9384;
 
---- Adapt tdh_vl.sia405cc_cable_point_kind
- INSERT INTO tdh_vl.sia405cc_cable_point_kind (code, vsacode) VALUES (9389,9389) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_point_kind
+ INSERT INTO tww_vl.sia405cc_cable_point_kind (code, vsacode) VALUES (9389,9389) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_point_kind SET
+ UPDATE tww_vl.sia405cc_cable_point_kind SET
    value_en = 'others',
    value_de = 'weitere',
    value_fr = 'autre',
@@ -157,10 +157,10 @@ WHERE code = 9384;
    display_ro = ''
 WHERE code = 9389;
 
---- Adapt tdh_vl.sia405cc_cable_point_horizontal_positioning
- INSERT INTO tdh_vl.sia405cc_cable_point_horizontal_positioning (code, vsacode) VALUES (9392,9392) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_point_horizontal_positioning
+ INSERT INTO tww_vl.sia405cc_cable_point_horizontal_positioning (code, vsacode) VALUES (9392,9392) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_point_horizontal_positioning SET
+ UPDATE tww_vl.sia405cc_cable_point_horizontal_positioning SET
    value_en = 'accurate',
    value_de = 'genau',
    value_fr = 'precis',
@@ -183,10 +183,10 @@ WHERE code = 9389;
    display_ro = ''
 WHERE code = 9392;
 
---- Adapt tdh_vl.sia405cc_cable_point_horizontal_positioning
- INSERT INTO tdh_vl.sia405cc_cable_point_horizontal_positioning (code, vsacode) VALUES (9390,9390) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_point_horizontal_positioning
+ INSERT INTO tww_vl.sia405cc_cable_point_horizontal_positioning (code, vsacode) VALUES (9390,9390) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_point_horizontal_positioning SET
+ UPDATE tww_vl.sia405cc_cable_point_horizontal_positioning SET
    value_en = 'unknown',
    value_de = 'unbekannt',
    value_fr = 'inconnue',
@@ -209,10 +209,10 @@ WHERE code = 9392;
    display_ro = ''
 WHERE code = 9390;
 
---- Adapt tdh_vl.sia405cc_cable_point_horizontal_positioning
- INSERT INTO tdh_vl.sia405cc_cable_point_horizontal_positioning (code, vsacode) VALUES (9391,9391) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_point_horizontal_positioning
+ INSERT INTO tww_vl.sia405cc_cable_point_horizontal_positioning (code, vsacode) VALUES (9391,9391) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_point_horizontal_positioning SET
+ UPDATE tww_vl.sia405cc_cable_point_horizontal_positioning SET
    value_en = 'inaccurate',
    value_de = 'ungenau',
    value_fr = 'imprecis',
@@ -235,10 +235,10 @@ WHERE code = 9390;
    display_ro = 'imprecisa'
 WHERE code = 9391;
 
---- Adapt tdh_vl.sia405cc_cable_point_elevation_determination
- INSERT INTO tdh_vl.sia405cc_cable_point_elevation_determination (code, vsacode) VALUES (9394,9394) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_point_elevation_determination
+ INSERT INTO tww_vl.sia405cc_cable_point_elevation_determination (code, vsacode) VALUES (9394,9394) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_point_elevation_determination SET
+ UPDATE tww_vl.sia405cc_cable_point_elevation_determination SET
    value_en = 'accurate',
    value_de = 'genau',
    value_fr = 'precis',
@@ -261,10 +261,10 @@ WHERE code = 9391;
    display_ro = ''
 WHERE code = 9394;
 
---- Adapt tdh_vl.sia405cc_cable_point_elevation_determination
- INSERT INTO tdh_vl.sia405cc_cable_point_elevation_determination (code, vsacode) VALUES (9395,9395) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_point_elevation_determination
+ INSERT INTO tww_vl.sia405cc_cable_point_elevation_determination (code, vsacode) VALUES (9395,9395) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_point_elevation_determination SET
+ UPDATE tww_vl.sia405cc_cable_point_elevation_determination SET
    value_en = 'unknown',
    value_de = 'unbekannt',
    value_fr = 'inconnue',
@@ -287,10 +287,10 @@ WHERE code = 9394;
    display_ro = ''
 WHERE code = 9395;
 
---- Adapt tdh_vl.sia405cc_cable_point_elevation_determination
- INSERT INTO tdh_vl.sia405cc_cable_point_elevation_determination (code, vsacode) VALUES (9396,9396) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_point_elevation_determination
+ INSERT INTO tww_vl.sia405cc_cable_point_elevation_determination (code, vsacode) VALUES (9396,9396) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_point_elevation_determination SET
+ UPDATE tww_vl.sia405cc_cable_point_elevation_determination SET
    value_en = 'inaccurate',
    value_de = 'ungenau',
    value_fr = 'imprecis',
@@ -313,10 +313,10 @@ WHERE code = 9395;
    display_ro = 'imprecisa'
 WHERE code = 9396;
 
---- Adapt tdh_vl.sia405cc_cable_point_status
- INSERT INTO tdh_vl.sia405cc_cable_point_status (code, vsacode) VALUES (9397,9397) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_point_status
+ INSERT INTO tww_vl.sia405cc_cable_point_status (code, vsacode) VALUES (9397,9397) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_point_status SET
+ UPDATE tww_vl.sia405cc_cable_point_status SET
    value_en = 'inoperative',
    value_de = 'ausser_Betrieb',
    value_fr = 'hors_service',
@@ -339,10 +339,10 @@ WHERE code = 9396;
    display_ro = ''
 WHERE code = 9397;
 
---- Adapt tdh_vl.sia405cc_cable_point_status
- INSERT INTO tdh_vl.sia405cc_cable_point_status (code, vsacode) VALUES (9398,9398) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_point_status
+ INSERT INTO tww_vl.sia405cc_cable_point_status (code, vsacode) VALUES (9398,9398) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_point_status SET
+ UPDATE tww_vl.sia405cc_cable_point_status SET
    value_en = 'inoperative.reserve',
    value_de = 'ausser_Betrieb.Reserve',
    value_fr = 'hors_service.en_reserve',
@@ -365,10 +365,10 @@ WHERE code = 9397;
    display_ro = ''
 WHERE code = 9398;
 
---- Adapt tdh_vl.sia405cc_cable_point_status
- INSERT INTO tdh_vl.sia405cc_cable_point_status (code, vsacode) VALUES (9399,9399) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_point_status
+ INSERT INTO tww_vl.sia405cc_cable_point_status (code, vsacode) VALUES (9399,9399) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_point_status SET
+ UPDATE tww_vl.sia405cc_cable_point_status SET
    value_en = 'operational',
    value_de = 'in_Betrieb',
    value_fr = 'en_service',
@@ -391,10 +391,10 @@ WHERE code = 9398;
    display_ro = ''
 WHERE code = 9399;
 
---- Adapt tdh_vl.sia405cc_cable_point_status
- INSERT INTO tdh_vl.sia405cc_cable_point_status (code, vsacode) VALUES (9400,9400) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_point_status
+ INSERT INTO tww_vl.sia405cc_cable_point_status (code, vsacode) VALUES (9400,9400) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_point_status SET
+ UPDATE tww_vl.sia405cc_cable_point_status SET
    value_en = 'operational.tentative',
    value_de = 'in_Betrieb.provisorisch',
    value_fr = 'en_service.provisoire',
@@ -417,10 +417,10 @@ WHERE code = 9399;
    display_ro = 'functionala.provizoriu'
 WHERE code = 9400;
 
---- Adapt tdh_vl.sia405cc_cable_point_status
- INSERT INTO tdh_vl.sia405cc_cable_point_status (code, vsacode) VALUES (9401,9401) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_point_status
+ INSERT INTO tww_vl.sia405cc_cable_point_status (code, vsacode) VALUES (9401,9401) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_point_status SET
+ UPDATE tww_vl.sia405cc_cable_point_status SET
    value_en = 'others',
    value_de = 'weitere',
    value_fr = 'autre',
@@ -443,10 +443,10 @@ WHERE code = 9400;
    display_ro = ''
 WHERE code = 9401;
 
---- Adapt tdh_vl.sia405cc_cable_point_status
- INSERT INTO tdh_vl.sia405cc_cable_point_status (code, vsacode) VALUES (9402,9402) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_point_status
+ INSERT INTO tww_vl.sia405cc_cable_point_status (code, vsacode) VALUES (9402,9402) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_point_status SET
+ UPDATE tww_vl.sia405cc_cable_point_status SET
    value_en = 'other.calculation_alternative',
    value_de = 'weitere.Berechnungsvariante',
    value_fr = 'autre.variante_de_calcule',
@@ -469,10 +469,10 @@ WHERE code = 9401;
    display_ro = 'alta.varianta_calcul'
 WHERE code = 9402;
 
---- Adapt tdh_vl.sia405cc_cable_point_status
- INSERT INTO tdh_vl.sia405cc_cable_point_status (code, vsacode) VALUES (9403,9403) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_point_status
+ INSERT INTO tww_vl.sia405cc_cable_point_status (code, vsacode) VALUES (9403,9403) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_point_status SET
+ UPDATE tww_vl.sia405cc_cable_point_status SET
    value_en = 'other.planned',
    value_de = 'weitere.geplant',
    value_fr = 'autre.planifie',
@@ -495,10 +495,10 @@ WHERE code = 9402;
    display_ro = ''
 WHERE code = 9403;
 
---- Adapt tdh_vl.sia405cc_cable_point_status
- INSERT INTO tdh_vl.sia405cc_cable_point_status (code, vsacode) VALUES (9404,9404) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_point_status
+ INSERT INTO tww_vl.sia405cc_cable_point_status (code, vsacode) VALUES (9404,9404) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_point_status SET
+ UPDATE tww_vl.sia405cc_cable_point_status SET
    value_en = 'other.project',
    value_de = 'weitere.Projekt',
    value_fr = 'autre.projet',
@@ -521,10 +521,10 @@ WHERE code = 9403;
    display_ro = 'alta.proiect'
 WHERE code = 9404;
 
---- Adapt tdh_vl.sia405cc_cable_function
- INSERT INTO tdh_vl.sia405cc_cable_function (code, vsacode) VALUES (9339,9339) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_function
+ INSERT INTO tww_vl.sia405cc_cable_function (code, vsacode) VALUES (9339,9339) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_function SET
+ UPDATE tww_vl.sia405cc_cable_function SET
    value_en = 'signal_cable',
    value_de = 'Signalkabel',
    value_fr = 'cable_de_signal',
@@ -547,10 +547,10 @@ WHERE code = 9404;
    display_ro = 'Cablu de semnal'
 WHERE code = 9339;
 
---- Adapt tdh_vl.sia405cc_cable_function
- INSERT INTO tdh_vl.sia405cc_cable_function (code, vsacode) VALUES (9340,9340) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_function
+ INSERT INTO tww_vl.sia405cc_cable_function (code, vsacode) VALUES (9340,9340) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_function SET
+ UPDATE tww_vl.sia405cc_cable_function SET
    value_en = 'control_cable',
    value_de = 'Steuerkabel',
    value_fr = 'cable_de_conduite',
@@ -573,10 +573,10 @@ WHERE code = 9339;
    display_ro = 'Cablu de control'
 WHERE code = 9340;
 
---- Adapt tdh_vl.sia405cc_cable_function
- INSERT INTO tdh_vl.sia405cc_cable_function (code, vsacode) VALUES (9341,9341) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_function
+ INSERT INTO tww_vl.sia405cc_cable_function (code, vsacode) VALUES (9341,9341) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_function SET
+ UPDATE tww_vl.sia405cc_cable_function SET
    value_en = 'power_cable',
    value_de = 'Stromkabel',
    value_fr = 'cable_de_courant',
@@ -599,10 +599,10 @@ WHERE code = 9340;
    display_ro = 'Cablu de alimentare'
 WHERE code = 9341;
 
---- Adapt tdh_vl.sia405cc_cable_function
- INSERT INTO tdh_vl.sia405cc_cable_function (code, vsacode) VALUES (9338,9338) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_function
+ INSERT INTO tww_vl.sia405cc_cable_function (code, vsacode) VALUES (9338,9338) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_function SET
+ UPDATE tww_vl.sia405cc_cable_function SET
    value_en = 'unknown',
    value_de = 'unbekannt',
    value_fr = 'inconnue',
@@ -625,10 +625,10 @@ WHERE code = 9341;
    display_ro = ''
 WHERE code = 9338;
 
---- Adapt tdh_vl.sia405cc_cable_function
- INSERT INTO tdh_vl.sia405cc_cable_function (code, vsacode) VALUES (9342,9342) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_function
+ INSERT INTO tww_vl.sia405cc_cable_function (code, vsacode) VALUES (9342,9342) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_function SET
+ UPDATE tww_vl.sia405cc_cable_function SET
    value_en = 'others',
    value_de = 'weitere',
    value_fr = 'autres',
@@ -651,10 +651,10 @@ WHERE code = 9338;
    display_ro = ''
 WHERE code = 9342;
 
---- Adapt tdh_vl.sia405cc_cable_cable_type
- INSERT INTO tdh_vl.sia405cc_cable_cable_type (code, vsacode) VALUES (9345,9345) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_cable_type
+ INSERT INTO tww_vl.sia405cc_cable_cable_type (code, vsacode) VALUES (9345,9345) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_cable_type SET
+ UPDATE tww_vl.sia405cc_cable_cable_type SET
    value_en = 'coaxial',
    value_de = 'koaxial',
    value_fr = 'coaxial',
@@ -677,10 +677,10 @@ WHERE code = 9342;
    display_ro = ''
 WHERE code = 9345;
 
---- Adapt tdh_vl.sia405cc_cable_cable_type
- INSERT INTO tdh_vl.sia405cc_cable_cable_type (code, vsacode) VALUES (9344,9344) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_cable_type
+ INSERT INTO tww_vl.sia405cc_cable_cable_type (code, vsacode) VALUES (9344,9344) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_cable_type SET
+ UPDATE tww_vl.sia405cc_cable_cable_type SET
    value_en = 'copper',
    value_de = 'Kupfer',
    value_fr = 'cuivre',
@@ -703,10 +703,10 @@ WHERE code = 9345;
    display_ro = ''
 WHERE code = 9344;
 
---- Adapt tdh_vl.sia405cc_cable_cable_type
- INSERT INTO tdh_vl.sia405cc_cable_cable_type (code, vsacode) VALUES (9346,9346) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_cable_type
+ INSERT INTO tww_vl.sia405cc_cable_cable_type (code, vsacode) VALUES (9346,9346) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_cable_type SET
+ UPDATE tww_vl.sia405cc_cable_cable_type SET
    value_en = 'fiber_optic',
    value_de = 'Lichtwellenleiter',
    value_fr = 'optique',
@@ -729,10 +729,10 @@ WHERE code = 9344;
    display_ro = ''
 WHERE code = 9346;
 
---- Adapt tdh_vl.sia405cc_cable_cable_type
- INSERT INTO tdh_vl.sia405cc_cable_cable_type (code, vsacode) VALUES (9343,9343) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_cable_type
+ INSERT INTO tww_vl.sia405cc_cable_cable_type (code, vsacode) VALUES (9343,9343) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_cable_type SET
+ UPDATE tww_vl.sia405cc_cable_cable_type SET
    value_en = 'unknown',
    value_de = 'unbekannt',
    value_fr = 'inconnue',
@@ -755,10 +755,10 @@ WHERE code = 9346;
    display_ro = ''
 WHERE code = 9343;
 
---- Adapt tdh_vl.sia405cc_cable_horizontal_positioning
- INSERT INTO tdh_vl.sia405cc_cable_horizontal_positioning (code, vsacode) VALUES (9347,9347) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_horizontal_positioning
+ INSERT INTO tww_vl.sia405cc_cable_horizontal_positioning (code, vsacode) VALUES (9347,9347) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_horizontal_positioning SET
+ UPDATE tww_vl.sia405cc_cable_horizontal_positioning SET
    value_en = 'accurate',
    value_de = 'genau',
    value_fr = 'precis',
@@ -781,10 +781,10 @@ WHERE code = 9343;
    display_ro = ''
 WHERE code = 9347;
 
---- Adapt tdh_vl.sia405cc_cable_horizontal_positioning
- INSERT INTO tdh_vl.sia405cc_cable_horizontal_positioning (code, vsacode) VALUES (9348,9348) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_horizontal_positioning
+ INSERT INTO tww_vl.sia405cc_cable_horizontal_positioning (code, vsacode) VALUES (9348,9348) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_horizontal_positioning SET
+ UPDATE tww_vl.sia405cc_cable_horizontal_positioning SET
    value_en = 'unknown',
    value_de = 'unbekannt',
    value_fr = 'inconnue',
@@ -807,10 +807,10 @@ WHERE code = 9347;
    display_ro = ''
 WHERE code = 9348;
 
---- Adapt tdh_vl.sia405cc_cable_horizontal_positioning
- INSERT INTO tdh_vl.sia405cc_cable_horizontal_positioning (code, vsacode) VALUES (9349,9349) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_horizontal_positioning
+ INSERT INTO tww_vl.sia405cc_cable_horizontal_positioning (code, vsacode) VALUES (9349,9349) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_horizontal_positioning SET
+ UPDATE tww_vl.sia405cc_cable_horizontal_positioning SET
    value_en = 'inaccurate',
    value_de = 'ungenau',
    value_fr = 'imprecis',
@@ -833,10 +833,10 @@ WHERE code = 9348;
    display_ro = 'imprecisa'
 WHERE code = 9349;
 
---- Adapt tdh_vl.sia405cc_cable_status
- INSERT INTO tdh_vl.sia405cc_cable_status (code, vsacode) VALUES (9363,9363) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_status
+ INSERT INTO tww_vl.sia405cc_cable_status (code, vsacode) VALUES (9363,9363) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_status SET
+ UPDATE tww_vl.sia405cc_cable_status SET
    value_en = 'inoperative',
    value_de = 'ausser_Betrieb',
    value_fr = 'hors_service',
@@ -859,10 +859,10 @@ WHERE code = 9349;
    display_ro = ''
 WHERE code = 9363;
 
---- Adapt tdh_vl.sia405cc_cable_status
- INSERT INTO tdh_vl.sia405cc_cable_status (code, vsacode) VALUES (9364,9364) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_status
+ INSERT INTO tww_vl.sia405cc_cable_status (code, vsacode) VALUES (9364,9364) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_status SET
+ UPDATE tww_vl.sia405cc_cable_status SET
    value_en = 'inoperative.reserve',
    value_de = 'ausser_Betrieb.Reserve',
    value_fr = 'hors_service.en_reserve',
@@ -885,10 +885,10 @@ WHERE code = 9363;
    display_ro = ''
 WHERE code = 9364;
 
---- Adapt tdh_vl.sia405cc_cable_status
- INSERT INTO tdh_vl.sia405cc_cable_status (code, vsacode) VALUES (9365,9365) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_status
+ INSERT INTO tww_vl.sia405cc_cable_status (code, vsacode) VALUES (9365,9365) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_status SET
+ UPDATE tww_vl.sia405cc_cable_status SET
    value_en = 'operational',
    value_de = 'in_Betrieb',
    value_fr = 'en_service',
@@ -911,10 +911,10 @@ WHERE code = 9364;
    display_ro = ''
 WHERE code = 9365;
 
---- Adapt tdh_vl.sia405cc_cable_status
- INSERT INTO tdh_vl.sia405cc_cable_status (code, vsacode) VALUES (9366,9366) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_status
+ INSERT INTO tww_vl.sia405cc_cable_status (code, vsacode) VALUES (9366,9366) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_status SET
+ UPDATE tww_vl.sia405cc_cable_status SET
    value_en = 'operational.tentative',
    value_de = 'in_Betrieb.provisorisch',
    value_fr = 'en_service.provisoire',
@@ -937,10 +937,10 @@ WHERE code = 9365;
    display_ro = 'functionala.provizoriu'
 WHERE code = 9366;
 
---- Adapt tdh_vl.sia405cc_cable_status
- INSERT INTO tdh_vl.sia405cc_cable_status (code, vsacode) VALUES (9367,9367) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_status
+ INSERT INTO tww_vl.sia405cc_cable_status (code, vsacode) VALUES (9367,9367) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_status SET
+ UPDATE tww_vl.sia405cc_cable_status SET
    value_en = 'others',
    value_de = 'weitere',
    value_fr = 'autre',
@@ -963,10 +963,10 @@ WHERE code = 9366;
    display_ro = ''
 WHERE code = 9367;
 
---- Adapt tdh_vl.sia405cc_cable_status
- INSERT INTO tdh_vl.sia405cc_cable_status (code, vsacode) VALUES (9368,9368) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_status
+ INSERT INTO tww_vl.sia405cc_cable_status (code, vsacode) VALUES (9368,9368) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_status SET
+ UPDATE tww_vl.sia405cc_cable_status SET
    value_en = 'other.calculation_alternative',
    value_de = 'weitere.Berechnungsvariante',
    value_fr = 'autre.variante_de_calcule',
@@ -989,10 +989,10 @@ WHERE code = 9367;
    display_ro = 'alta.varianta_calcul'
 WHERE code = 9368;
 
---- Adapt tdh_vl.sia405cc_cable_status
- INSERT INTO tdh_vl.sia405cc_cable_status (code, vsacode) VALUES (9369,9369) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_status
+ INSERT INTO tww_vl.sia405cc_cable_status (code, vsacode) VALUES (9369,9369) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_status SET
+ UPDATE tww_vl.sia405cc_cable_status SET
    value_en = 'other.planned',
    value_de = 'weitere.geplant',
    value_fr = 'autre.planifie',
@@ -1015,10 +1015,10 @@ WHERE code = 9368;
    display_ro = ''
 WHERE code = 9369;
 
---- Adapt tdh_vl.sia405cc_cable_status
- INSERT INTO tdh_vl.sia405cc_cable_status (code, vsacode) VALUES (9370,9370) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_status
+ INSERT INTO tww_vl.sia405cc_cable_status (code, vsacode) VALUES (9370,9370) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_status SET
+ UPDATE tww_vl.sia405cc_cable_status SET
    value_en = 'other.project',
    value_de = 'weitere.Projekt',
    value_fr = 'autre.projet',
@@ -1041,10 +1041,10 @@ WHERE code = 9369;
    display_ro = 'alta.proiect'
 WHERE code = 9370;
 
---- Adapt tdh_vl.sia405cc_cable_elevation_determination
- INSERT INTO tdh_vl.sia405cc_cable_elevation_determination (code, vsacode) VALUES (9359,9359) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_elevation_determination
+ INSERT INTO tww_vl.sia405cc_cable_elevation_determination (code, vsacode) VALUES (9359,9359) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_elevation_determination SET
+ UPDATE tww_vl.sia405cc_cable_elevation_determination SET
    value_en = 'accurate',
    value_de = 'genau',
    value_fr = 'precis',
@@ -1067,10 +1067,10 @@ WHERE code = 9370;
    display_ro = ''
 WHERE code = 9359;
 
---- Adapt tdh_vl.sia405cc_cable_elevation_determination
- INSERT INTO tdh_vl.sia405cc_cable_elevation_determination (code, vsacode) VALUES (9360,9360) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_elevation_determination
+ INSERT INTO tww_vl.sia405cc_cable_elevation_determination (code, vsacode) VALUES (9360,9360) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_elevation_determination SET
+ UPDATE tww_vl.sia405cc_cable_elevation_determination SET
    value_en = 'unknown',
    value_de = 'unbekannt',
    value_fr = 'inconnue',
@@ -1093,10 +1093,10 @@ WHERE code = 9359;
    display_ro = ''
 WHERE code = 9360;
 
---- Adapt tdh_vl.sia405cc_cable_elevation_determination
- INSERT INTO tdh_vl.sia405cc_cable_elevation_determination (code, vsacode) VALUES (9361,9361) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.sia405cc_cable_elevation_determination
+ INSERT INTO tww_vl.sia405cc_cable_elevation_determination (code, vsacode) VALUES (9361,9361) ON CONFLICT DO NOTHING;
 
- UPDATE tdh_vl.sia405cc_cable_elevation_determination SET
+ UPDATE tww_vl.sia405cc_cable_elevation_determination SET
    value_en = 'inaccurate',
    value_de = 'ungenau',
    value_fr = 'imprecis',
