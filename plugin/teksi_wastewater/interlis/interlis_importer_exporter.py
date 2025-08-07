@@ -1076,8 +1076,8 @@ class InterlisImporterExporter:
             # add classes to be checked
             for notsubclass in [
                 # VSA-KEK
-                ("file"),
                 ("data_media"),
+                ("file"),
                 ("maintenance_event"),
                 # SIA405 Abwasser
                 ("organisation"),
@@ -1087,6 +1087,9 @@ class InterlisImporterExporter:
                 ("reach_point"),
                 ("pipe_profile"),
                 # VSA-DSS
+                # new 2020
+                ("building_group"),
+                ("building_group_baugwr"),
                 ("catchment_area"),
                 ("connection_object"),
                 ("control_center"),
@@ -1108,11 +1111,13 @@ class InterlisImporterExporter:
                 # ("river_bank"),
                 # ("river_bed"),
                 # ("sector_water_body"),
+                ("sludge_treatment")
                 # ("substance"),
                 ("surface_runoff_parameters"),
                 # ("surface_water_bodies"),
                 ("throttle_shut_off_unit"),
                 ("waste_water_treatment"),
+                ("waste_water_treatment_plant"),
                 # only VSA-DSS 2015
                 # ("water_catchment"),
                 # ("water_control_structure"),
@@ -1301,7 +1306,8 @@ class InterlisImporterExporter:
                 ("connection_object"),
                 ("control_center"),
                 # new 2020
-                ("disposal")("farm")
+                ("disposal"),
+                ("farm"),
                 # only VSA-DSS 2015
                 # ("hazard_source"),
                 ("hq_relation"),
