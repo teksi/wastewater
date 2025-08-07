@@ -126,6 +126,7 @@ class InterlisImporterExporterGui(QObject):
                 xtf_file_output=file_name,
                 export_models=export_dialog.selected_models(),
                 logs_next_to_file=export_dialog.logs_next_to_file,
+                user_interaction=True,
                 limit_to_selection=export_dialog.limit_to_selection,
                 export_orientation=export_dialog.labels_orientation_offset,
                 selected_labels_scales_indices=export_dialog.selected_labels_scales_indices,

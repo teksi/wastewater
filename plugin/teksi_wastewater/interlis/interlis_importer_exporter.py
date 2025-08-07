@@ -187,7 +187,7 @@ class InterlisImporterExporter:
         xtf_file_output,
         export_models,
         logs_next_to_file=True,
-        user_interaction=False,
+        user_interaction,
         limit_to_selection=False,
         export_orientation=90.0,
         labels_file=None,
