@@ -1089,7 +1089,6 @@ class InterlisImporterExporter:
                 # VSA-DSS
                 # new 2020
                 ("building_group"),
-                ("building_group_baugwr"),
                 ("catchment_area"),
                 ("connection_object"),
                 ("control_center"),
