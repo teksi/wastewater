@@ -2,10 +2,10 @@
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
 ------ version 07.08.2025 14:05:32
 
---- Adapt tww_vl.planning_zone_kind
- INSERT INTO tww_vl.planning_zone_kind (code, vsacode) VALUES (2990,2990) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.dss15_planning_zone_kind
+ INSERT INTO tww_vl.dss15_planning_zone_kind (code, vsacode) VALUES (2990,2990) ON CONFLICT DO NOTHING;
 
- UPDATE tww_vl.planning_zone_kind SET
+ UPDATE tww_vl.dss15_planning_zone_kind SET
    value_en = 'other',
    value_de = 'andere',
    value_fr = 'autres',
@@ -28,10 +28,10 @@
    display_ro = ''
 WHERE code = 2990;
 
---- Adapt tww_vl.planning_zone_kind
- INSERT INTO tww_vl.planning_zone_kind (code, vsacode) VALUES (31,31) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.dss15_planning_zone_kind
+ INSERT INTO tww_vl.dss15_planning_zone_kind (code, vsacode) VALUES (31,31) ON CONFLICT DO NOTHING;
 
- UPDATE tww_vl.planning_zone_kind SET
+ UPDATE tww_vl.dss15_planning_zone_kind SET
    value_en = 'commercial_zone',
    value_de = 'Gewerbezone',
    value_fr = 'zone_artisanale',
@@ -54,10 +54,10 @@ WHERE code = 2990;
    display_ro = ''
 WHERE code = 31;
 
---- Adapt tww_vl.planning_zone_kind
- INSERT INTO tww_vl.planning_zone_kind (code, vsacode) VALUES (32,32) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.dss15_planning_zone_kind
+ INSERT INTO tww_vl.dss15_planning_zone_kind (code, vsacode) VALUES (32,32) ON CONFLICT DO NOTHING;
 
- UPDATE tww_vl.planning_zone_kind SET
+ UPDATE tww_vl.dss15_planning_zone_kind SET
    value_en = 'industrial_zone',
    value_de = 'Industriezone',
    value_fr = 'zone_industrielle',
@@ -80,10 +80,10 @@ WHERE code = 31;
    display_ro = ''
 WHERE code = 32;
 
---- Adapt tww_vl.planning_zone_kind
- INSERT INTO tww_vl.planning_zone_kind (code, vsacode) VALUES (30,30) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.dss15_planning_zone_kind
+ INSERT INTO tww_vl.dss15_planning_zone_kind (code, vsacode) VALUES (30,30) ON CONFLICT DO NOTHING;
 
- UPDATE tww_vl.planning_zone_kind SET
+ UPDATE tww_vl.dss15_planning_zone_kind SET
    value_en = 'agricultural_zone',
    value_de = 'Landwirtschaftszone',
    value_fr = 'zone_agricole',
@@ -106,10 +106,10 @@ WHERE code = 32;
    display_ro = ''
 WHERE code = 30;
 
---- Adapt tww_vl.planning_zone_kind
- INSERT INTO tww_vl.planning_zone_kind (code, vsacode) VALUES (3077,3077) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.dss15_planning_zone_kind
+ INSERT INTO tww_vl.dss15_planning_zone_kind (code, vsacode) VALUES (3077,3077) ON CONFLICT DO NOTHING;
 
- UPDATE tww_vl.planning_zone_kind SET
+ UPDATE tww_vl.dss15_planning_zone_kind SET
    value_en = 'unknown',
    value_de = 'unbekannt',
    value_fr = 'inconnu',
@@ -132,10 +132,10 @@ WHERE code = 30;
    display_ro = ''
 WHERE code = 3077;
 
---- Adapt tww_vl.planning_zone_kind
- INSERT INTO tww_vl.planning_zone_kind (code, vsacode) VALUES (29,29) ON CONFLICT DO NOTHING;
+--- Adapt tww_vl.dss15_planning_zone_kind
+ INSERT INTO tww_vl.dss15_planning_zone_kind (code, vsacode) VALUES (29,29) ON CONFLICT DO NOTHING;
 
- UPDATE tww_vl.planning_zone_kind SET
+ UPDATE tww_vl.dss15_planning_zone_kind SET
    value_en = 'residential_zone',
    value_de = 'Wohnzone',
    value_fr = 'zone_d_habitations',

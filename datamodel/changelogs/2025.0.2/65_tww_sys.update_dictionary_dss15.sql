@@ -7,7 +7,7 @@
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (30,'aquifer') ON CONFLICT DO NOTHING;
 
 UPDATE tww_sys.dictionary_od_table SET 
-   tablename = 'aquifer',
+   tablename = 'dss15_aquifer',
    name_en = 'aquifier',
    shortcut_en = 'AQ',
    name_de = 'Grundwasserleiter',
@@ -18,7 +18,7 @@ UPDATE tww_sys.dictionary_od_table SET
    shortcut_it = '',
    name_ro = 'acvifer',
    shortcut_ro = ''
-WHERE (id = 30 AND tablename = 'aquifer');
+WHERE (id = 30 AND tablename = 'dss15_aquifer');
 
 
 
@@ -27,7 +27,7 @@ WHERE (id = 30 AND tablename = 'aquifer');
 INSERT INTO tww_sys.dictionary_od_field (class_id, attribute_id) VALUES (30,283) ON CONFLICT DO NOTHING;
 
 UPDATE tww_sys.dictionary_od_field  SET
-   table_name = 'aquifer',
+   table_name = 'dss15_aquifer',
    field_name = 'average_groundwater_level',
    field_name_en = 'average_groundwater_level',
    field_name_de = 'MittlererGWSpiegel',
@@ -39,7 +39,7 @@ UPDATE tww_sys.dictionary_od_field  SET
    field_description_fr = 'Niveau moyen de la nappe',
    field_description_it = 'zzz_Höhe des mittleren Grundwasserspiegels',
    field_description_ro = '',
-   field_mandatory = ARRAY['kein_Plantyp_definiert']::.plantype[],
+   field_mandatory = ARRAY['kein_Plantyp_definiert']::tww_od.plantype[],
    field_visible = 'true',
    field_datatype = 'decimal(7,3)',
    field_unit_en = '[m.a.sl.]',
@@ -60,7 +60,7 @@ WHERE (class_id = 30 AND attribute_id = 283);
 INSERT INTO tww_sys.dictionary_od_field (class_id, attribute_id) VALUES (30,2519) ON CONFLICT DO NOTHING;
 
 UPDATE tww_sys.dictionary_od_field  SET
-   table_name = 'aquifer',
+   table_name = 'dss15_aquifer',
    field_name = 'identifier',
    field_name_en = 'identifier',
    field_name_de = 'Bezeichnung',
@@ -72,7 +72,7 @@ UPDATE tww_sys.dictionary_od_field  SET
    field_description_fr = '',
    field_description_it = '',
    field_description_ro = '',
-   field_mandatory = ARRAY['kein_Plantyp_definiert']::.plantype[],
+   field_mandatory = ARRAY['kein_Plantyp_definiert']::tww_od.plantype[],
    field_visible = 'true',
    field_datatype = 'varchar(20)',
    field_unit_en = '',
@@ -93,7 +93,7 @@ WHERE (class_id = 30 AND attribute_id = 2519);
 INSERT INTO tww_sys.dictionary_od_field (class_id, attribute_id) VALUES (30,284) ON CONFLICT DO NOTHING;
 
 UPDATE tww_sys.dictionary_od_field  SET
-   table_name = 'aquifer',
+   table_name = 'dss15_aquifer',
    field_name = 'maximal_groundwater_level',
    field_name_en = 'maximal_groundwater_level',
    field_name_de = 'MaxGWSpiegel',
@@ -105,7 +105,7 @@ UPDATE tww_sys.dictionary_od_field  SET
    field_description_fr = 'Niveau maximal de la nappe',
    field_description_it = 'zzz_Maximale Lage des Grundwasserspiegels',
    field_description_ro = '',
-   field_mandatory = ARRAY['kein_Plantyp_definiert']::.plantype[],
+   field_mandatory = ARRAY['kein_Plantyp_definiert']::tww_od.plantype[],
    field_visible = 'true',
    field_datatype = 'decimal(7,3)',
    field_unit_en = '[m.a.sl.]',
@@ -126,7 +126,7 @@ WHERE (class_id = 30 AND attribute_id = 284);
 INSERT INTO tww_sys.dictionary_od_field (class_id, attribute_id) VALUES (30,285) ON CONFLICT DO NOTHING;
 
 UPDATE tww_sys.dictionary_od_field  SET
-   table_name = 'aquifer',
+   table_name = 'dss15_aquifer',
    field_name = 'minimal_groundwater_level',
    field_name_en = 'minimal_groundwater_level',
    field_name_de = 'MinGWSpiegel',
@@ -138,7 +138,7 @@ UPDATE tww_sys.dictionary_od_field  SET
    field_description_fr = 'Niveau minimal de la nappe',
    field_description_it = 'zzz_Minimale Lage des Grundwasserspiegels',
    field_description_ro = '',
-   field_mandatory = ARRAY['kein_Plantyp_definiert']::.plantype[],
+   field_mandatory = ARRAY['kein_Plantyp_definiert']::tww_od.plantype[],
    field_visible = 'true',
    field_datatype = 'decimal(7,3)',
    field_unit_en = '[m.a.sl.]',
@@ -159,7 +159,7 @@ WHERE (class_id = 30 AND attribute_id = 285);
 INSERT INTO tww_sys.dictionary_od_field (class_id, attribute_id) VALUES (30,9210) ON CONFLICT DO NOTHING;
 
 UPDATE tww_sys.dictionary_od_field  SET
-   table_name = 'aquifer',
+   table_name = 'dss15_aquifer',
    field_name = 'oid',
    field_name_en = 'oid',
    field_name_de = 'OID',
@@ -170,8 +170,8 @@ UPDATE tww_sys.dictionary_od_field  SET
    field_description_de = 'Stabile eindeutige Objektidentifikation für alle Objekte und Klassen',
    field_description_fr = 'Identification d''objet unique stable pour tous les objets et toutes les classes',
    field_description_it = 'Identificazione univoca e stabile per tutti gli oggetti e le classi',
-   field_description_ro = 'Identificare unica stabila a obiectelor pentru toate obiectele ?i clasele',
-   field_mandatory = ARRAY['GEP_Verband','PAA','SAA']::.plantype[],
+   field_description_ro = 'Identificare unica stabila a obiectelor pentru toate obiectele ți clasele',
+   field_mandatory = ARRAY['GEP_Verband','PAA','SAA']::tww_od.plantype[],
    field_visible = 'true',
    field_datatype = 'varchar(16)',
    field_unit_en = '',
@@ -192,7 +192,7 @@ WHERE (class_id = 30 AND attribute_id = 9210);
 INSERT INTO tww_sys.dictionary_od_field (class_id, attribute_id) VALUES (30,2246) ON CONFLICT DO NOTHING;
 
 UPDATE tww_sys.dictionary_od_field  SET
-   table_name = 'aquifer',
+   table_name = 'dss15_aquifer',
    field_name = 'perimeter',
    field_name_en = 'perimeter',
    field_name_de = 'Perimeter',
@@ -204,7 +204,7 @@ UPDATE tww_sys.dictionary_od_field  SET
    field_description_fr = 'Points de délimitation de la surface',
    field_description_it = 'zzz_Begrenzungspunkte der Fläche',
    field_description_ro = '',
-   field_mandatory = ARRAY['kein_Plantyp_definiert']::.plantype[],
+   field_mandatory = ARRAY['kein_Plantyp_definiert']::tww_od.plantype[],
    field_visible = 'true',
    field_datatype = 'geometry',
    field_unit_en = '[LKoord]',
@@ -225,7 +225,7 @@ WHERE (class_id = 30 AND attribute_id = 2246);
 INSERT INTO tww_sys.dictionary_od_field (class_id, attribute_id) VALUES (30,2577) ON CONFLICT DO NOTHING;
 
 UPDATE tww_sys.dictionary_od_field  SET
-   table_name = 'aquifer',
+   table_name = 'dss15_aquifer',
    field_name = 'remark',
    field_name_en = 'remark',
    field_name_de = 'Bemerkung',
@@ -237,7 +237,7 @@ UPDATE tww_sys.dictionary_od_field  SET
    field_description_fr = 'Remarques générales',
    field_description_it = 'Osservazioni generali',
    field_description_ro = '',
-   field_mandatory = ARRAY['kein_Plantyp_definiert']::.plantype[],
+   field_mandatory = ARRAY['kein_Plantyp_definiert']::tww_od.plantype[],
    field_visible = 'true',
    field_datatype = 'varchar(80)',
    field_unit_en = '',
@@ -260,7 +260,7 @@ WHERE (class_id = 30 AND attribute_id = 2577);
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (104,'planning_zone') ON CONFLICT DO NOTHING;
 
 UPDATE tww_sys.dictionary_od_table SET 
-   tablename = 'planning_zone',
+   tablename = 'dss15_planning_zone',
    name_en = 'planning zone',
    shortcut_en = 'PL',
    name_de = 'Planungszone',
@@ -271,7 +271,7 @@ UPDATE tww_sys.dictionary_od_table SET
    shortcut_it = '',
    name_ro = 'rrr_Planungszone',
    shortcut_ro = ''
-WHERE (id = 104 AND tablename = 'planning_zone');
+WHERE (id = 104 AND tablename = 'dss15_planning_zone');
 
 
 
@@ -280,7 +280,7 @@ WHERE (id = 104 AND tablename = 'planning_zone');
 INSERT INTO tww_sys.dictionary_od_field (class_id, attribute_id) VALUES (104,313) ON CONFLICT DO NOTHING;
 
 UPDATE tww_sys.dictionary_od_field  SET
-   table_name = 'planning_zone',
+   table_name = 'dss15_planning_zone',
    field_name = 'kind',
    field_name_en = 'kind',
    field_name_de = 'Art',
@@ -291,8 +291,8 @@ UPDATE tww_sys.dictionary_od_field  SET
    field_description_de = 'Art der Bauzone',
    field_description_fr = 'Genre de zones à bâtir',
    field_description_it = 'Tipo di zona_di_pianificazione',
-   field_description_ro = 'Tipul zonei de construc?ie',
-   field_mandatory = ARRAY['kein_Plantyp_definiert']::.plantype[],
+   field_description_ro = 'Tipul zonei de construcție',
+   field_mandatory = ARRAY['kein_Plantyp_definiert']::tww_od.plantype[],
    field_visible = 'true',
    field_datatype = 'integer',
    field_unit_en = '',
@@ -313,7 +313,7 @@ WHERE (class_id = 104 AND attribute_id = 313);
 INSERT INTO tww_sys.dictionary_od_field (class_id, attribute_id) VALUES (104,3623) ON CONFLICT DO NOTHING;
 
 UPDATE tww_sys.dictionary_od_field  SET
-   table_name = 'planning_zone',
+   table_name = 'dss15_planning_zone',
    field_name = 'perimeter',
    field_name_en = 'perimeter',
    field_name_de = 'Perimeter',
@@ -325,7 +325,7 @@ UPDATE tww_sys.dictionary_od_field  SET
    field_description_fr = 'Points de délimitation de la surface',
    field_description_it = 'zzz_Begrenzungspunkte der Fläche',
    field_description_ro = '',
-   field_mandatory = ARRAY['kein_Plantyp_definiert']::.plantype[],
+   field_mandatory = ARRAY['kein_Plantyp_definiert']::tww_od.plantype[],
    field_visible = 'true',
    field_datatype = 'geometry',
    field_unit_en = '[LKoord]',
@@ -348,7 +348,7 @@ WHERE (class_id = 104 AND attribute_id = 3623);
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (104,313,29) ON CONFLICT DO NOTHING;
 UPDATE tww_sys.dictionary_od_values SET 
-   table_name = 'planning_zone',
+   table_name = 'dss15_planning_zone',
    field_name = 'kind',
    value_name = 'residential_zone',
    value_name_en = 'residential_zone',
@@ -371,7 +371,7 @@ WHERE (class_id = 104 AND attribute_id = 313 AND attribute_id = 29);
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (104,313,2990) ON CONFLICT DO NOTHING;
 UPDATE tww_sys.dictionary_od_values SET 
-   table_name = 'planning_zone',
+   table_name = 'dss15_planning_zone',
    field_name = 'kind',
    value_name = 'other',
    value_name_en = 'other',
@@ -394,7 +394,7 @@ WHERE (class_id = 104 AND attribute_id = 313 AND attribute_id = 2990);
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (104,313,30) ON CONFLICT DO NOTHING;
 UPDATE tww_sys.dictionary_od_values SET 
-   table_name = 'planning_zone',
+   table_name = 'dss15_planning_zone',
    field_name = 'kind',
    value_name = 'agricultural_zone',
    value_name_en = 'agricultural_zone',
@@ -417,7 +417,7 @@ WHERE (class_id = 104 AND attribute_id = 313 AND attribute_id = 30);
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (104,313,3077) ON CONFLICT DO NOTHING;
 UPDATE tww_sys.dictionary_od_values SET 
-   table_name = 'planning_zone',
+   table_name = 'dss15_planning_zone',
    field_name = 'kind',
    value_name = 'unknown',
    value_name_en = 'unknown',
@@ -440,7 +440,7 @@ WHERE (class_id = 104 AND attribute_id = 313 AND attribute_id = 3077);
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (104,313,31) ON CONFLICT DO NOTHING;
 UPDATE tww_sys.dictionary_od_values SET 
-   table_name = 'planning_zone',
+   table_name = 'dss15_planning_zone',
    field_name = 'kind',
    value_name = 'commercial_zone',
    value_name_en = 'commercial_zone',
@@ -463,7 +463,7 @@ WHERE (class_id = 104 AND attribute_id = 313 AND attribute_id = 31);
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (104,313,32) ON CONFLICT DO NOTHING;
 UPDATE tww_sys.dictionary_od_values SET 
-   table_name = 'planning_zone',
+   table_name = 'dss15_planning_zone',
    field_name = 'kind',
    value_name = 'industrial_zone',
    value_name_en = 'industrial_zone',
