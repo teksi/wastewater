@@ -1285,7 +1285,6 @@ class InterlisImporterExporter:
                 ("data_media"),
                 ("file"),
                 ("maintenance_event"),
-
                 # SIA405 Abwasser
                 # take out for DSS 2020
                 # ("organisation"),
@@ -1294,21 +1293,16 @@ class InterlisImporterExporter:
                 ("structure_part"),
                 ("reach_point"),
                 ("pipe_profile"),
-
                 # VSA-DSS
                 # new 2020
-                ("building_group")
-                ("building_group_baugwr")
-                ("catchment_area"),
+                ("building_group")("building_group_baugwr")("catchment_area"),
                 ("connection_object"),
                 ("control_center"),
                 # new 2020
-                ("disposal")
-                ("farm")
+                ("disposal")("farm")
                 # only VSA-DSS 2015
                 # ("hazard_source"),
-                ("hq_relation")
-                ("hydraulic_char_data"),
+                ("hq_relation")("hydraulic_char_data"),
                 ("hydr_geometry"),
                 ("hydr_geom_relation")
                 # new 2020
@@ -1321,11 +1315,9 @@ class InterlisImporterExporter:
                 ("measuring_device"),
                 ("measuring_point"),
                 ("mechanical_pretreatment"),
-                ("mutation")
-                ("overflow"),
+                ("mutation")("overflow"),
                 ("overflow_char"),
-                ("profile_geometry")
-                ("retention_body"),
+                ("profile_geometry")("retention_body"),
                 # only VSA-DSS 2015
                 # ("river_bank"),
                 # ("river_bed"),
@@ -1344,7 +1336,6 @@ class InterlisImporterExporter:
                 # ("water_course_segment"),
                 ("wwtp_energy_use"),
                 ("zone"),
-
                 # sia405cc
                 ("sia405cc_cable"),
                 ("sia405cc_cable_point"),
@@ -1415,18 +1406,14 @@ class InterlisImporterExporter:
                 ("pipe_profile"),
                 # VSA-DSS
                 # new 2020
-                ("building_group")
-                ("building_group_baugwr")
-                ("catchment_area"),
+                ("building_group")("building_group_baugwr")("catchment_area"),
                 ("connection_object"),
                 ("control_center"),
                 # new 2020
-                ("disposal")
-                ("farm")
+                ("disposal")("farm")
                 # only VSA-DSS 2015
                 # ("hazard_source"),
-                ("hq_relation")
-                ("hydraulic_char_data"),
+                ("hq_relation")("hydraulic_char_data"),
                 ("hydr_geometry"),
                 ("hydr_geom_relation")
                 # new 2020
@@ -1439,11 +1426,9 @@ class InterlisImporterExporter:
                 ("measuring_device"),
                 ("measuring_point"),
                 ("mechanical_pretreatment"),
-                ("mutation")
-                ("overflow"),
+                ("mutation")("overflow"),
                 ("overflow_char"),
-                ("profile_geometry")
-                ("retention_body"),
+                ("profile_geometry")("retention_body"),
                 # only VSA-DSS 2015
                 # ("river_bank"),
                 # ("river_bed"),
@@ -1461,7 +1446,6 @@ class InterlisImporterExporter:
                 # ("water_course_segment"),
                 ("wwtp_energy_use"),
                 ("zone"),
-
                 # sia405cc
                 ("sia405cc_cable"),
                 ("sia405cc_cable_point"),
