@@ -1111,7 +1111,7 @@ class InterlisImporterExporter:
                 # ("river_bank"),
                 # ("river_bed"),
                 # ("sector_water_body"),
-                ("sludge_treatment")
+                ("sludge_treatment"),
                 # ("substance"),
                 ("surface_runoff_parameters"),
                 # ("surface_water_bodies"),
@@ -1332,7 +1332,7 @@ class InterlisImporterExporter:
                 # ("river_bank"),
                 # ("river_bed"),
                 # ("sector_water_body"),
-                ("sludge_treatment")
+                ("sludge_treatment"),
                 # ("substance"),
                 ("surface_runoff_parameters"),
                 # only VSA-DSS 2015
@@ -1447,7 +1447,7 @@ class InterlisImporterExporter:
                 # ("river_bank"),
                 # ("river_bed"),
                 # ("sector_water_body"),
-                ("sludge_treatment")
+                ("sludge_treatment"),
                 # ("substance"),
                 ("surface_runoff_parameters"),
                 # ("surface_water_bodies"),
