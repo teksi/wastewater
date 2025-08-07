@@ -18,6 +18,7 @@ class InterlisImporterToIntermediateSchema:
         model_classes_tww_vl,
         model_classes_tww_app=None,
         callback_progress_done=None,
+        filter_nulls=False,
     ):
         self.model = model
         self.callback_progress_done = callback_progress_done
@@ -29,6 +30,8 @@ class InterlisImporterToIntermediateSchema:
 
         self.session_interlis = None
         self.session_tww = None
+
+        self.filter_nulls = filter_nulls
 
     def tww_import(self, skip_closing_tww_session=False):
         try:
@@ -486,6 +489,9 @@ class InterlisImporterToIntermediateSchema:
         with given kwargs, and returns it.
         """
         instance = None
+
+        if self.filter_nulls:
+            kwargs = {key: val for key, val in kwargs.items() if val is not None}
 
         # We try to get the instance from the session/database
         obj_id = kwargs.get("obj_id", None)
