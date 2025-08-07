@@ -368,6 +368,19 @@ class InterlisImporterExporter:
                 f" _check_fk_building_group_null: flag_export_check_failed {flag_export_check_failed}"
             )
 
+            # new in TEKSI
+            # Check if MANDATORY fk_reach is Null before export
+            # flag_export_check_failed = flag_export_check_failed and self._check_fk_reach_null(limit_to_selection)
+            if self._check_fk_reach_null(limit_to_selection):
+                flag_export_check_failed = True
+                failed_check_list = failed_check_list + "check_fk_reach_null, "
+                number_tests_failed = number_tests_failed + 1
+            else:
+                number_tests_ok = number_tests_ok + 1
+            logger.debug(
+                f" _check_fk_reach_null: flag_export_check_failed {flag_export_check_failed}"
+            )
+
         logger.debug(f"After checks: flag_export_check_failed {flag_export_check_failed}")
         total_checks = number_tests_failed + number_tests_ok
 
@@ -1779,6 +1792,64 @@ class InterlisImporterExporter:
             else:
                 logger.error(
                     f"ERROR: Missing mandatory fk_building_group in tww_od: {missing_fk_building_group_count}"
+                )
+                # Return statement added
+                return True
+
+    def _check_fk_reach_null(self, limit_to_selection=False):
+        """
+        Check if MAMDATORY fk_reach is Null
+        """
+        with DatabaseUtils.PsycopgConnection() as connection:
+            logger.info("-----")
+            logger.info(
+                "INTEGRITY CHECK missing reach references fk_reach..."
+            )
+
+            cursor = connection.cursor()
+
+            missing_fk_reach_count = 0
+            # add MANDATORY classes to be checked
+            for notsubclass in [
+                # VSA-KEK
+                # SIA405 Abwasser
+                ("reach_progression_alternative"),
+                # VSA-DSS
+            ]:
+                cursor.execute(
+                    f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_reach is null or fk_reach ='';"
+                )
+                # use cursor.fetchone()[0] instead of cursor.rowcount
+                # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
+                class_fk_reach_count = int(cursor.fetchone()[0])
+                # logger.info(
+                #    f"Number of datasets in class '{notsubclass}' without fk_reach : {cursor.fetchone()[0]}"
+                # )
+                logger.info(
+                    f"Number of datasets in class '{notsubclass}' without fk_reach : {class_fk_reach_count}"
+                )
+
+                # if cursor.fetchone() is None:
+                if class_fk_reach_count == 0:
+                    missing_fk_reach_count = missing_fk_reach_count
+                else:
+                    # missing_fk_reach_count = missing_fk_reach_count + int(cursor.fetchone()[0])
+                    missing_fk_reach_count = (
+                        missing_fk_reach_count + class_fk_reach_count
+                    )
+
+                # add for testing
+                logger.info(
+                    f"missing_fk_reach_count : {missing_fk_reach_count}"
+                )
+
+            if missing_fk_reach_count == 0:
+                logger.info("OK: all mandatory fk_reach set in tww_od!")
+                # Return statement added
+                return False
+            else:
+                logger.error(
+                    f"ERROR: Missing mandatory fk_reach in tww_od: {missing_fk_reach_count}"
                 )
                 # Return statement added
                 return True
