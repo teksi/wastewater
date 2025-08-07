@@ -381,6 +381,32 @@ class InterlisImporterExporter:
                 f" _check_fk_reach_null: flag_export_check_failed {flag_export_check_failed}"
             )
 
+            # new in TEKSI
+            # Check if MANDATORY fk_reach_point_from is Null before export
+            # flag_export_check_failed = flag_export_check_failed and self._check_fk_reach_point_from_null(limit_to_selection)
+            if self._check_fk_reach_point_from_null(limit_to_selection):
+                flag_export_check_failed = True
+                failed_check_list = failed_check_list + "check_fk_reach_point_from_null, "
+                number_tests_failed = number_tests_failed + 1
+            else:
+                number_tests_ok = number_tests_ok + 1
+            logger.debug(
+                f" _check_fk_reach_point_from_null: flag_export_check_failed {flag_export_check_failed}"
+            )
+
+            # new in TEKSI
+            # Check if MANDATORY fk_reach_point_to is Null before export
+            # flag_export_check_failed = flag_export_check_failed and self._check_fk_reach_point_to_null(limit_to_selection)
+            if self._check_fk_reach_point_to_null(limit_to_selection):
+                flag_export_check_failed = True
+                failed_check_list = failed_check_list + "check_fk_reach_point_to_null, "
+                number_tests_failed = number_tests_failed + 1
+            else:
+                number_tests_ok = number_tests_ok + 1
+            logger.debug(
+                f" _check_fk_reach_point_to_null: flag_export_check_failed {flag_export_check_failed}"
+            )
+
         logger.debug(f"After checks: flag_export_check_failed {flag_export_check_failed}")
         total_checks = number_tests_failed + number_tests_ok
 
@@ -1853,6 +1879,123 @@ class InterlisImporterExporter:
                 )
                 # Return statement added
                 return True
+
+    def _check_fk_reach_point_from_null(self, limit_to_selection=False):
+        """
+        Check if MAMDATORY fk_reach_point_from is Null
+        """
+        with DatabaseUtils.PsycopgConnection() as connection:
+            logger.info("-----")
+            logger.info(
+                "INTEGRITY CHECK missing reach_point_from references fk_reach_point_from..."
+            )
+
+            cursor = connection.cursor()
+
+            missing_fk_reach_point_from_count = 0
+            # add MANDATORY classes to be checked
+            for notsubclass in [
+                # VSA-KEK
+                # SIA405 Abwasser
+                ("reach"),
+                # VSA-DSS
+            ]:
+                cursor.execute(
+                    f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_reach_point_from is null or fk_reach_point_from ='';"
+                )
+                # use cursor.fetchone()[0] instead of cursor.rowcount
+                # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
+                class_fk_reach_point_from_count = int(cursor.fetchone()[0])
+                # logger.info(
+                #    f"Number of datasets in class '{notsubclass}' without fk_reach_point_from : {cursor.fetchone()[0]}"
+                # )
+                logger.info(
+                    f"Number of datasets in class '{notsubclass}' without fk_reach_point_from : {class_fk_reach_point_from_count}"
+                )
+
+                # if cursor.fetchone() is None:
+                if class_fk_reach_point_from_count == 0:
+                    missing_fk_reach_point_from_count = missing_fk_reach_point_from_count
+                else:
+                    # missing_fk_reach_point_from_count = missing_fk_reach_point_from_count + int(cursor.fetchone()[0])
+                    missing_fk_reach_point_from_count = (
+                        missing_fk_reach_point_from_count + class_fk_reach_point_from_count
+                    )
+
+                # add for testing
+                logger.info(
+                    f"missing_fk_reach_point_from_count : {missing_fk_reach_point_from_count}"
+                )
+
+            if missing_fk_reach_point_from_count == 0:
+                logger.info("OK: all mandatory fk_reach_point_from set in tww_od!")
+                # Return statement added
+                return False
+            else:
+                logger.error(
+                    f"ERROR: Missing mandatory fk_reach_point_from in tww_od: {missing_fk_reach_point_from_count}"
+                )
+                # Return statement added
+                return True
+
+    def _check_fk_reach_point_to_null(self, limit_to_selection=False):
+        """
+        Check if MAMDATORY fk_reach_point_to is Null
+        """
+        with DatabaseUtils.PsycopgConnection() as connection:
+            logger.info("-----")
+            logger.info(
+                "INTEGRITY CHECK missing reach_point_to references fk_reach_point_to..."
+            )
+
+            cursor = connection.cursor()
+
+            missing_fk_reach_point_to_count = 0
+            # add MANDATORY classes to be checked
+            for notsubclass in [
+                # VSA-KEK
+                # SIA405 Abwasser
+                ("reach"),
+                # VSA-DSS
+            ]:
+                cursor.execute(
+                    f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_reach_point_to is null or fk_reach_point_to ='';"
+                )
+                # use cursor.fetchone()[0] instead of cursor.rowcount
+                # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
+                class_fk_reach_point_to_count = int(cursor.fetchone()[0])
+                # logger.info(
+                #    f"Number of datasets in class '{notsubclass}' without fk_reach_point_to : {cursor.fetchone()[0]}"
+                # )
+                logger.info(
+                    f"Number of datasets in class '{notsubclass}' without fk_reach_point_to : {class_fk_reach_point_to_count}"
+                )
+
+                # if cursor.fetchone() is None:
+                if class_fk_reach_point_to_count == 0:
+                    missing_fk_reach_point_to_count = missing_fk_reach_point_to_count
+                else:
+                    # missing_fk_reach_point_to_count = missing_fk_reach_point_to_count + int(cursor.fetchone()[0])
+                    missing_fk_reach_point_to_count = (
+                        missing_fk_reach_point_to_count + class_fk_reach_point_to_count
+                    )
+
+                # add for testing
+                logger.info(
+                    f"missing_fk_reach_point_to_count : {missing_fk_reach_point_to_count}"
+                )
+
+            if missing_fk_reach_point_to_count == 0:
+                logger.info("OK: all mandatory fk_reach_point_to set in tww_od!")
+                # Return statement added
+                return False
+            else:
+                logger.error(
+                    f"ERROR: Missing mandatory fk_reach_point_to in tww_od: {missing_fk_reach_point_to_count}"
+                )
+                # Return statement added
+                return True
+
 
     def _init_model_classes(self, model):
         ModelInterlis = None
