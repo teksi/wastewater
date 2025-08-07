@@ -1147,11 +1147,11 @@ class InterlisImporterExporter:
                 logger.info(f"missing_identifier_count : {missing_identifier_count}")
 
             if missing_identifier_count == 0:
-                logger.info("OK: all identifiers set in tww_od!")
+                logger.info(f"OK: all identifiers set in tww_od.{notsubclass}!")
                 return False
             else:
                 pass
-                # logger.info(f"ERROR: Missing identifiers in tww_od: {missing_identifier_count}")
+                # logger.info(f"ERROR: Missing identifiers in tww_od.{notsubclass}: {missing_identifier_count}")
                 errormsg = f"Missing identifiers in schema tww_od: {missing_identifier_count}"
                 if limit_to_selection:
                     logger.warning(
@@ -1210,11 +1210,11 @@ class InterlisImporterExporter:
 
             if missing_fk_owner_count == 0:
                 check_fk_owner_null = False
-                logger.info("OK: all mandatory fk_owner set in tww_od!")
+                logger.info(f"OK: all mandatory fk_owner set in tww_od.{notsubclass}!")
             else:
                 check_fk_owner_null = True
                 logger.info(
-                    f"ERROR: Missing mandatory fk_owner in tww_od: {missing_fk_owner_count}"
+                    f"ERROR: Missing mandatory fk_owner in tww_od.{notsubclass}: {missing_fk_owner_count}"
                 )
             # Return statement added
             logger.debug(f"missing_fk_owner_count : {missing_fk_owner_count}")
@@ -1255,12 +1255,12 @@ class InterlisImporterExporter:
                 logger.info(f"missing_fk_operator_count : {missing_fk_operator_count}")
 
             if missing_fk_operator_count == 0:
-                logger.info("OK: all mandatory fk_operator set in tww_od!")
+                logger.info(f"OK: all mandatory fk_operator set in tww_od.{notsubclass}!")
                 # Return statement added
                 return False
             else:
                 logger.error(
-                    f"ERROR: Missing mandatory fk_operator in tww_od: {missing_fk_operator_count}"
+                    f"ERROR: Missing mandatory fk_operator in tww_od.{notsubclass}: {missing_fk_operator_count}"
                 )
                 # Return statement added
                 return True
@@ -1349,12 +1349,12 @@ class InterlisImporterExporter:
                 logger.info(f"missing_fk_dataowner_count : {missing_fk_dataowner_count}")
 
             if missing_fk_dataowner_count == 0:
-                logger.info("OK: all mandatory fk_dataowner set in tww_od!")
+                logger.info(f"OK: all mandatory fk_dataowner set in tww_od.{notsubclass}!")
                 # Return statement added
                 return False
             else:
                 logger.error(
-                    f"ERROR: Missing mandatory fk_dataowner in tww_od: {missing_fk_dataowner_count}"
+                    f"ERROR: Missing mandatory fk_dataowner in tww_od.{notsubclass}: {missing_fk_dataowner_count}"
                 )
                 # Return statement added
                 return True
@@ -1440,12 +1440,12 @@ class InterlisImporterExporter:
                 logger.info(f"missing_fk_provider_count : {missing_fk_provider_count}")
 
             if missing_fk_provider_count == 0:
-                logger.info("OK: all mandatory fk_provider set in tww_od!")
+                logger.info(f"OK: all mandatory fk_provider set in tww_od.{notsubclass}!")
                 # Return statement added
                 return False
             else:
                 logger.error(
-                    f"ERROR: Missing mandatory fk_provider in tww_od: {missing_fk_provider_count}"
+                    f"ERROR: Missing mandatory fk_provider in tww_od.{notsubclass}: {missing_fk_provider_count}"
                 )
                 # Return statement added
                 return True
@@ -1498,12 +1498,12 @@ class InterlisImporterExporter:
                 )
 
             if missing_fk_wastewater_structure_count == 0:
-                logger.info("OK: all mandatory fk_wastewater_structure set in tww_od!")
+                logger.info(f"OK: all mandatory fk_wastewater_structure set in tww_od.{notsubclass}!")
                 # Return statement added
                 return False
             else:
                 logger.error(
-                    f"ERROR: Missing mandatory fk_wastewater_structure in tww_od: {missing_fk_wastewater_structure_count}"
+                    f"ERROR: Missing mandatory fk_wastewater_structure in tww_od.{notsubclass}: {missing_fk_wastewater_structure_count}"
                 )
                 # Return statement added
                 return True
@@ -1556,12 +1556,12 @@ class InterlisImporterExporter:
                 )
 
             if missing_fk_wastewater_node_count == 0:
-                logger.info("OK: all mandatory fk_wastewater_node set in tww_od!")
+                logger.info(f"OK: all mandatory fk_wastewater_node set in tww_od.{notsubclass}!")
                 # Return statement added
                 return False
             else:
                 logger.error(
-                    f"ERROR: Missing mandatory fk_wastewater_node in tww_od: {missing_fk_wastewater_node_count}"
+                    f"ERROR: Missing mandatory fk_wastewater_node in tww_od.{notsubclass}: {missing_fk_wastewater_node_count}"
                 )
                 # Return statement added
                 return True
@@ -1614,12 +1614,12 @@ class InterlisImporterExporter:
                 )
 
             if missing_fk_responsible_entity_count == 0:
-                logger.info("OK: all mandatory fk_responsible_entity set in tww_od!")
+                logger.info(f"OK: all mandatory fk_responsible_entity set in tww_od.{notsubclass}!")
                 # Return statement added
                 return False
             else:
                 logger.error(
-                    f"ERROR: Missing mandatory fk_responsible_entity in tww_od: {missing_fk_responsible_entity_count}"
+                    f"ERROR: Missing mandatory fk_responsible_entity in tww_od.{notsubclass}: {missing_fk_responsible_entity_count}"
                 )
                 # Return statement added
                 return True
@@ -1672,12 +1672,12 @@ class InterlisImporterExporter:
                 )
 
             if missing_fk_responsible_start_count == 0:
-                logger.info("OK: all mandatory fk_responsible_start set in tww_od!")
+                logger.info(f"OK: all mandatory fk_responsible_start set in tww_od.{notsubclass}!")
                 # Return statement added
                 return False
             else:
                 logger.error(
-                    f"ERROR: Missing mandatory fk_responsible_start in tww_od: {missing_fk_responsible_start_count}"
+                    f"ERROR: Missing mandatory fk_responsible_start in tww_od.{notsubclass}: {missing_fk_responsible_start_count}"
                 )
                 # Return statement added
                 return True
@@ -1728,12 +1728,12 @@ class InterlisImporterExporter:
                 )
 
             if missing_fk_discharge_point_count == 0:
-                logger.info("OK: all mandatory fk_discharge_point set in tww_od!")
+                logger.info(f"OK: all mandatory fk_discharge_point set in tww_od.{notsubclass}!")
                 # Return statement added
                 return False
             else:
                 logger.error(
-                    f"ERROR: Missing mandatory fk_discharge_point in tww_od: {missing_fk_discharge_point_count}"
+                    f"ERROR: Missing mandatory fk_discharge_point in tww_od.{notsubclass}: {missing_fk_discharge_point_count}"
                 )
                 # Return statement added
                 return True
@@ -1786,12 +1786,12 @@ class InterlisImporterExporter:
                 )
 
             if missing_fk_hydraulic_char_data_count == 0:
-                logger.info("OK: all mandatory fk_hydraulic_char_data set in tww_od!")
+                logger.info(f"OK: all mandatory fk_hydraulic_char_data set in tww_od.{notsubclass}!")
                 # Return statement added
                 return False
             else:
                 logger.error(
-                    f"ERROR: Missing mandatory fk_hydraulic_char_data in tww_od: {missing_fk_hydraulic_char_data_count}"
+                    f"ERROR: Missing mandatory fk_hydraulic_char_data in tww_od.{notsubclass}: {missing_fk_hydraulic_char_data_count}"
                 )
                 # Return statement added
                 return True
@@ -1840,12 +1840,12 @@ class InterlisImporterExporter:
                 logger.info(f"missing_fk_building_group_count : {missing_fk_building_group_count}")
 
             if missing_fk_building_group_count == 0:
-                logger.info("OK: all mandatory fk_building_group set in tww_od!")
+                logger.info(f"OK: all mandatory fk_building_group set in tww_od.{notsubclass}!")
                 # Return statement added
                 return False
             else:
                 logger.error(
-                    f"ERROR: Missing mandatory fk_building_group in tww_od: {missing_fk_building_group_count}"
+                    f"ERROR: Missing mandatory fk_building_group in tww_od.{notsubclass}: {missing_fk_building_group_count}"
                 )
                 # Return statement added
                 return True
@@ -1892,12 +1892,12 @@ class InterlisImporterExporter:
                 logger.info(f"missing_fk_reach_count : {missing_fk_reach_count}")
 
             if missing_fk_reach_count == 0:
-                logger.info("OK: all mandatory fk_reach set in tww_od!")
+                logger.info(f"OK: all mandatory fk_reach set in tww_od.{notsubclass}!")
                 # Return statement added
                 return False
             else:
                 logger.error(
-                    f"ERROR: Missing mandatory fk_reach in tww_od: {missing_fk_reach_count}"
+                    f"ERROR: Missing mandatory fk_reach in tww_od.{notsubclass}: {missing_fk_reach_count}"
                 )
                 # Return statement added
                 return True
@@ -1950,12 +1950,12 @@ class InterlisImporterExporter:
                 )
 
             if missing_fk_reach_point_from_count == 0:
-                logger.info("OK: all mandatory fk_reach_point_from set in tww_od!")
+                logger.info(f"OK: all mandatory fk_reach_point_from set in tww_od.{notsubclass}!")
                 # Return statement added
                 return False
             else:
                 logger.error(
-                    f"ERROR: Missing mandatory fk_reach_point_from in tww_od: {missing_fk_reach_point_from_count}"
+                    f"ERROR: Missing mandatory fk_reach_point_from in tww_od.{notsubclass}: {missing_fk_reach_point_from_count}"
                 )
                 # Return statement added
                 return True
@@ -2004,12 +2004,12 @@ class InterlisImporterExporter:
                 logger.info(f"missing_fk_reach_point_to_count : {missing_fk_reach_point_to_count}")
 
             if missing_fk_reach_point_to_count == 0:
-                logger.info("OK: all mandatory fk_reach_point_to set in tww_od!")
+                logger.info(f"OK: all mandatory fk_reach_point_to set in tww_od.{notsubclass}!")
                 # Return statement added
                 return False
             else:
                 logger.error(
-                    f"ERROR: Missing mandatory fk_reach_point_to in tww_od: {missing_fk_reach_point_to_count}"
+                    f"ERROR: Missing mandatory fk_reach_point_to in tww_od.{notsubclass}: {missing_fk_reach_point_to_count}"
                 )
                 # Return statement added
                 return True
@@ -2062,12 +2062,12 @@ class InterlisImporterExporter:
                 )
 
             if missing_fk_pwwf_wastewater_node_count == 0:
-                logger.info("OK: all mandatory fk_pwwf_wastewater_node set in tww_od!")
+                logger.info(f"OK: all mandatory fk_pwwf_wastewater_node set in tww_od.{notsubclass}!")
                 # Return statement added
                 return False
             else:
                 logger.error(
-                    f"ERROR: Missing mandatory fk_pwwf_wastewater_node in tww_od: {missing_fk_pwwf_wastewater_node_count}"
+                    f"ERROR: Missing mandatory fk_pwwf_wastewater_node in tww_od.{notsubclass}: {missing_fk_pwwf_wastewater_node_count}"
                 )
                 # Return statement added
                 return True
@@ -2116,12 +2116,12 @@ class InterlisImporterExporter:
                 logger.info(f"missing_fk_catchment_area_count : {missing_fk_catchment_area_count}")
 
             if missing_fk_catchment_area_count == 0:
-                logger.info("OK: all mandatory fk_catchment_area set in tww_od!")
+                logger.info(f"OK: all mandatory fk_catchment_area set in tww_od.{notsubclass}!")
                 # Return statement added
                 return False
             else:
                 logger.error(
-                    f"ERROR: Missing mandatory fk_catchment_area in tww_od: {missing_fk_catchment_area_count}"
+                    f"ERROR: Missing mandatory fk_catchment_area in tww_od.{notsubclass}: {missing_fk_catchment_area_count}"
                 )
                 # Return statement added
                 return True
