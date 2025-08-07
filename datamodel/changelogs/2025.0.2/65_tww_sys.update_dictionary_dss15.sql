@@ -6,7 +6,7 @@
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (30,'aquifer') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'dss15_aquifer',
    name_en = 'aquifier',
    shortcut_en = 'AQ',
@@ -259,7 +259,7 @@ WHERE (class_id = 30 AND attribute_id = 2577);
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (104,'planning_zone') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'dss15_planning_zone',
    name_en = 'planning zone',
    shortcut_en = 'PL',
@@ -348,7 +348,7 @@ WHERE (class_id = 104 AND attribute_id = 3623);
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (104,313,29) ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'dss15_planning_zone',
    field_name = 'kind',
    value_name = 'residential_zone',
@@ -372,7 +372,7 @@ WHERE (class_id = 104 AND attribute_id = 313 AND attribute_id = 29);
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (104,313,2990) ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'dss15_planning_zone',
    field_name = 'kind',
    value_name = 'other',
@@ -396,7 +396,7 @@ WHERE (class_id = 104 AND attribute_id = 313 AND attribute_id = 2990);
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (104,313,30) ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'dss15_planning_zone',
    field_name = 'kind',
    value_name = 'agricultural_zone',
@@ -420,7 +420,7 @@ WHERE (class_id = 104 AND attribute_id = 313 AND attribute_id = 30);
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (104,313,3077) ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'dss15_planning_zone',
    field_name = 'kind',
    value_name = 'unknown',
@@ -444,7 +444,7 @@ WHERE (class_id = 104 AND attribute_id = 313 AND attribute_id = 3077);
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (104,313,31) ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'dss15_planning_zone',
    field_name = 'kind',
    value_name = 'commercial_zone',
@@ -468,7 +468,7 @@ WHERE (class_id = 104 AND attribute_id = 313 AND attribute_id = 31);
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (104,313,32) ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'dss15_planning_zone',
    field_name = 'kind',
    value_name = 'industrial_zone',
