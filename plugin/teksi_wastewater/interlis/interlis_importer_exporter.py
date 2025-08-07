@@ -1312,9 +1312,9 @@ class InterlisImporterExporter:
                 ("hq_relation"),
                 ("hydraulic_char_data"),
                 ("hydr_geometry"),
-                ("hydr_geom_relation")
+                ("hydr_geom_relation"),
                 # new 2020
-                ("log_card")
+                ("log_card"),
                 # maintenance_event see VSA-KEK
                 # new 2020
                 ("measure"),
@@ -1421,15 +1421,16 @@ class InterlisImporterExporter:
                 ("connection_object"),
                 ("control_center"),
                 # new 2020
-                ("disposal")("farm")
+                ("disposal"),
+                ("farm"),
                 # only VSA-DSS 2015
                 # ("hazard_source"),
                 ("hq_relation"),
                 ("hydraulic_char_data"),
                 ("hydr_geometry"),
-                ("hydr_geom_relation")
+                ("hydr_geom_relation"),
                 # new 2020
-                ("log_card")
+                ("log_card"),
                 # maintenance_event see VSA-KEK
                 # new 2020
                 ("measure"),
@@ -1438,7 +1439,8 @@ class InterlisImporterExporter:
                 ("measuring_device"),
                 ("measuring_point"),
                 ("mechanical_pretreatment"),
-                ("mutation")("overflow"),
+                ("mutation"),
+                ("overflow"),
                 ("overflow_char"),
                 ("profile_geometry"),
                 ("retention_body"),
