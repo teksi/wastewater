@@ -290,6 +290,19 @@ class InterlisImporterExporter:
                 f" _check_fk_wastewater_structure_null: flag_export_check_failed {flag_export_check_failed}"
             )
 
+            # new in TEKSI
+            # Check if MANDATORY fk_wastewater_node is Null before export
+            # flag_export_check_failed = flag_export_check_failed and self._check_fk_wastewater_node_null(limit_to_selection)
+            if self._check_fk_wastewater_node_null(limit_to_selection):
+                flag_export_check_failed = True
+                failed_check_list = failed_check_list + "check_fk_wastewater_node_null, "
+                number_tests_failed = number_tests_failed + 1
+            else:
+                number_tests_ok = number_tests_ok + 1
+            logger.debug(
+                f" _check_fk_wastewater_node_null: flag_export_check_failed {flag_export_check_failed}"
+            )
+
         logger.debug(f"After checks: flag_export_check_failed {flag_export_check_failed}")
         total_checks = number_tests_failed + number_tests_ok
 
@@ -1351,6 +1364,66 @@ class InterlisImporterExporter:
             else:
                 logger.error(
                     f"ERROR: Missing mandatory fk_wastewater_structure in tww_od: {missing_fk_wastewater_structure_count}"
+                )
+                # Return statement added
+                return True
+
+    def _check_fk_wastewater_node_null(self, limit_to_selection=False):
+        """
+        Check if MAMDATORY fk_wastewater_node is Null
+        """
+        with DatabaseUtils.PsycopgConnection() as connection:
+            logger.info("-----")
+            logger.info(
+                "INTEGRITY CHECK missing wastewater_structure references fk_wastewater_node..."
+            )
+
+            cursor = connection.cursor()
+
+            missing_fk_wastewater_node_count = 0
+            # add MANDATORY classes to be checked
+            for notsubclass in [
+                # VSA-KEK
+                # SIA405 Abwasser
+                # VSA-DSS
+                ("hydraulic_char_data"),
+                ("overflow"),
+                ("throttle_shut_off_unit"),
+            ]:
+                cursor.execute(
+                    f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_wastewater_node is null or fk_wastewater_node ='';"
+                )
+                # use cursor.fetchone()[0] instead of cursor.rowcount
+                # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
+                class_fk_wastewater_node_count = int(cursor.fetchone()[0])
+                # logger.info(
+                #    f"Number of datasets in class '{notsubclass}' without fk_wastewater_node : {cursor.fetchone()[0]}"
+                # )
+                logger.info(
+                    f"Number of datasets in class '{notsubclass}' without fk_wastewater_node : {class_fk_wastewater_node_count}"
+                )
+
+                # if cursor.fetchone() is None:
+                if class_fk_wastewater_node_count == 0:
+                    missing_fk_wastewater_node_count = missing_fk_wastewater_node_count
+                else:
+                    # missing_fk_wastewater_node_count = missing_fk_wastewater_node_count + int(cursor.fetchone()[0])
+                    missing_fk_wastewater_node_count = (
+                        missing_fk_wastewater_node_count + class_fk_wastewater_node_count
+                    )
+
+                # add for testing
+                logger.info(
+                    f"missing_fk_wastewater_node_count : {missing_fk_wastewater_node_count}"
+                )
+
+            if missing_fk_wastewater_node_count == 0:
+                logger.info("OK: all mandatory fk_wastewater_node set in tww_od!")
+                # Return statement added
+                return False
+            else:
+                logger.error(
+                    f"ERROR: Missing mandatory fk_wastewater_node in tww_od: {missing_fk_wastewater_node_count}"
                 )
                 # Return statement added
                 return True
