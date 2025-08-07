@@ -347,6 +347,7 @@ WHERE (class_id = 104 AND attribute_id = 3623);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (104,313,29) ON CONFLICT DO NOTHING;
+
 UPDATE tww_sys.dictionary_od_values SET 
    table_name = 'dss15_planning_zone',
    field_name = 'kind',
@@ -370,6 +371,7 @@ WHERE (class_id = 104 AND attribute_id = 313 AND attribute_id = 29);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (104,313,2990) ON CONFLICT DO NOTHING;
+
 UPDATE tww_sys.dictionary_od_values SET 
    table_name = 'dss15_planning_zone',
    field_name = 'kind',
@@ -393,6 +395,7 @@ WHERE (class_id = 104 AND attribute_id = 313 AND attribute_id = 2990);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (104,313,30) ON CONFLICT DO NOTHING;
+
 UPDATE tww_sys.dictionary_od_values SET 
    table_name = 'dss15_planning_zone',
    field_name = 'kind',
@@ -416,6 +419,7 @@ WHERE (class_id = 104 AND attribute_id = 313 AND attribute_id = 30);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (104,313,3077) ON CONFLICT DO NOTHING;
+
 UPDATE tww_sys.dictionary_od_values SET 
    table_name = 'dss15_planning_zone',
    field_name = 'kind',
@@ -439,6 +443,7 @@ WHERE (class_id = 104 AND attribute_id = 313 AND attribute_id = 3077);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (104,313,31) ON CONFLICT DO NOTHING;
+
 UPDATE tww_sys.dictionary_od_values SET 
    table_name = 'dss15_planning_zone',
    field_name = 'kind',
@@ -462,6 +467,7 @@ WHERE (class_id = 104 AND attribute_id = 313 AND attribute_id = 31);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (104,313,32) ON CONFLICT DO NOTHING;
+
 UPDATE tww_sys.dictionary_od_values SET 
    table_name = 'dss15_planning_zone',
    field_name = 'kind',
@@ -482,6 +488,3 @@ UPDATE tww_sys.dictionary_od_values SET
    value_description_it = '',
    value_description_ro = ''
 WHERE (class_id = 104 AND attribute_id = 313 AND attribute_id = 32);
-
-
-
