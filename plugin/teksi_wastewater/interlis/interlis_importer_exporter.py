@@ -1095,8 +1095,7 @@ class InterlisImporterExporter:
                 ("hydr_geometry"),
                 ("hydraulic_char_data"),
                 # new 2020
-                ("measure")
-                ("measurement_result"),
+                ("measure")("measurement_result"),
                 ("measurement_series"),
                 ("measuring_device"),
                 ("measuring_point"),
@@ -1315,8 +1314,7 @@ class InterlisImporterExporter:
                 ("log_card")
                 # maintenance_event see VSA-KEK
                 # new 2020
-                ("measure")
-                ("measurement_result"),
+                ("measure")("measurement_result"),
                 ("measurement_series"),
                 ("measuring_device"),
                 ("measuring_point"),
@@ -1433,8 +1431,7 @@ class InterlisImporterExporter:
                 ("log_card")
                 # maintenance_event see VSA-KEK
                 # new 2020
-                ("measure")
-                ("measurement_result"),
+                ("measure")("measurement_result"),
                 ("measurement_series"),
                 ("measuring_device"),
                 ("measuring_point"),
