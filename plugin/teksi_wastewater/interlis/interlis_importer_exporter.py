@@ -1498,7 +1498,9 @@ class InterlisImporterExporter:
                 )
 
             if missing_fk_wastewater_structure_count == 0:
-                logger.info(f"OK: all mandatory fk_wastewater_structure set in tww_od.{notsubclass}!")
+                logger.info(
+                    f"OK: all mandatory fk_wastewater_structure set in tww_od.{notsubclass}!"
+                )
                 # Return statement added
                 return False
             else:
@@ -1614,7 +1616,9 @@ class InterlisImporterExporter:
                 )
 
             if missing_fk_responsible_entity_count == 0:
-                logger.info(f"OK: all mandatory fk_responsible_entity set in tww_od.{notsubclass}!")
+                logger.info(
+                    f"OK: all mandatory fk_responsible_entity set in tww_od.{notsubclass}!"
+                )
                 # Return statement added
                 return False
             else:
@@ -1786,7 +1790,9 @@ class InterlisImporterExporter:
                 )
 
             if missing_fk_hydraulic_char_data_count == 0:
-                logger.info(f"OK: all mandatory fk_hydraulic_char_data set in tww_od.{notsubclass}!")
+                logger.info(
+                    f"OK: all mandatory fk_hydraulic_char_data set in tww_od.{notsubclass}!"
+                )
                 # Return statement added
                 return False
             else:
@@ -2062,7 +2068,9 @@ class InterlisImporterExporter:
                 )
 
             if missing_fk_pwwf_wastewater_node_count == 0:
-                logger.info(f"OK: all mandatory fk_pwwf_wastewater_node set in tww_od.{notsubclass}!")
+                logger.info(
+                    f"OK: all mandatory fk_pwwf_wastewater_node set in tww_od.{notsubclass}!"
+                )
                 # Return statement added
                 return False
             else:
