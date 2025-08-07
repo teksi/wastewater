@@ -1295,14 +1295,17 @@ class InterlisImporterExporter:
                 ("pipe_profile"),
                 # VSA-DSS
                 # new 2020
-                ("building_group")("building_group_baugwr")("catchment_area"),
+                ("building_group"),
+                ("building_group_baugwr"),
+                ("catchment_area"),
                 ("connection_object"),
                 ("control_center"),
                 # new 2020
                 ("disposal")("farm")
                 # only VSA-DSS 2015
                 # ("hazard_source"),
-                ("hq_relation")("hydraulic_char_data"),
+                ("hq_relation"),
+                ("hydraulic_char_data"),
                 ("hydr_geometry"),
                 ("hydr_geom_relation")
                 # new 2020
@@ -1317,7 +1320,8 @@ class InterlisImporterExporter:
                 ("mechanical_pretreatment"),
                 ("mutation")("overflow"),
                 ("overflow_char"),
-                ("profile_geometry")("retention_body"),
+                ("profile_geometry"),
+                ("retention_body"),
                 # only VSA-DSS 2015
                 # ("river_bank"),
                 # ("river_bed"),
@@ -1406,14 +1410,17 @@ class InterlisImporterExporter:
                 ("pipe_profile"),
                 # VSA-DSS
                 # new 2020
-                ("building_group")("building_group_baugwr")("catchment_area"),
+                ("building_group"),
+                ("building_group_baugwr"),
+                ("catchment_area"),
                 ("connection_object"),
                 ("control_center"),
                 # new 2020
                 ("disposal")("farm")
                 # only VSA-DSS 2015
                 # ("hazard_source"),
-                ("hq_relation")("hydraulic_char_data"),
+                ("hq_relation"),
+                ("hydraulic_char_data"),
                 ("hydr_geometry"),
                 ("hydr_geom_relation")
                 # new 2020
@@ -1428,7 +1435,8 @@ class InterlisImporterExporter:
                 ("mechanical_pretreatment"),
                 ("mutation")("overflow"),
                 ("overflow_char"),
-                ("profile_geometry")("retention_body"),
+                ("profile_geometry"),
+                ("retention_body"),
                 # only VSA-DSS 2015
                 # ("river_bank"),
                 # ("river_bed"),
