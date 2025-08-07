@@ -1504,9 +1504,7 @@ class InterlisImporterExporter:
         """
         with DatabaseUtils.PsycopgConnection() as connection:
             logger.info("-----")
-            logger.info(
-                "INTEGRITY CHECK missing wastewater_node references fk_wastewater_node..."
-            )
+            logger.info("INTEGRITY CHECK missing wastewater_node references fk_wastewater_node...")
 
             cursor = connection.cursor()
 
@@ -1680,9 +1678,7 @@ class InterlisImporterExporter:
         """
         with DatabaseUtils.PsycopgConnection() as connection:
             logger.info("-----")
-            logger.info(
-                "INTEGRITY CHECK missing discharge_point references fk_discharge_point..."
-            )
+            logger.info("INTEGRITY CHECK missing discharge_point references fk_discharge_point...")
 
             cursor = connection.cursor()
 
@@ -1796,9 +1792,7 @@ class InterlisImporterExporter:
         """
         with DatabaseUtils.PsycopgConnection() as connection:
             logger.info("-----")
-            logger.info(
-                "INTEGRITY CHECK missing building_group references fk_building_group..."
-            )
+            logger.info("INTEGRITY CHECK missing building_group references fk_building_group...")
 
             cursor = connection.cursor()
 
@@ -1833,9 +1827,7 @@ class InterlisImporterExporter:
                     )
 
                 # add for testing
-                logger.info(
-                    f"missing_fk_building_group_count : {missing_fk_building_group_count}"
-                )
+                logger.info(f"missing_fk_building_group_count : {missing_fk_building_group_count}")
 
             if missing_fk_building_group_count == 0:
                 logger.info("OK: all mandatory fk_building_group set in tww_od!")
@@ -1854,9 +1846,7 @@ class InterlisImporterExporter:
         """
         with DatabaseUtils.PsycopgConnection() as connection:
             logger.info("-----")
-            logger.info(
-                "INTEGRITY CHECK missing reach references fk_reach..."
-            )
+            logger.info("INTEGRITY CHECK missing reach references fk_reach...")
 
             cursor = connection.cursor()
 
@@ -1886,14 +1876,10 @@ class InterlisImporterExporter:
                     missing_fk_reach_count = missing_fk_reach_count
                 else:
                     # missing_fk_reach_count = missing_fk_reach_count + int(cursor.fetchone()[0])
-                    missing_fk_reach_count = (
-                        missing_fk_reach_count + class_fk_reach_count
-                    )
+                    missing_fk_reach_count = missing_fk_reach_count + class_fk_reach_count
 
                 # add for testing
-                logger.info(
-                    f"missing_fk_reach_count : {missing_fk_reach_count}"
-                )
+                logger.info(f"missing_fk_reach_count : {missing_fk_reach_count}")
 
             if missing_fk_reach_count == 0:
                 logger.info("OK: all mandatory fk_reach set in tww_od!")
@@ -1970,9 +1956,7 @@ class InterlisImporterExporter:
         """
         with DatabaseUtils.PsycopgConnection() as connection:
             logger.info("-----")
-            logger.info(
-                "INTEGRITY CHECK missing reach_point_to references fk_reach_point_to..."
-            )
+            logger.info("INTEGRITY CHECK missing reach_point_to references fk_reach_point_to...")
 
             cursor = connection.cursor()
 
@@ -2007,9 +1991,7 @@ class InterlisImporterExporter:
                     )
 
                 # add for testing
-                logger.info(
-                    f"missing_fk_reach_point_to_count : {missing_fk_reach_point_to_count}"
-                )
+                logger.info(f"missing_fk_reach_point_to_count : {missing_fk_reach_point_to_count}")
 
             if missing_fk_reach_point_to_count == 0:
                 logger.info("OK: all mandatory fk_reach_point_to set in tww_od!")
@@ -2086,9 +2068,7 @@ class InterlisImporterExporter:
         """
         with DatabaseUtils.PsycopgConnection() as connection:
             logger.info("-----")
-            logger.info(
-                "INTEGRITY CHECK missing catchment_area references fk_catchment_area..."
-            )
+            logger.info("INTEGRITY CHECK missing catchment_area references fk_catchment_area...")
 
             cursor = connection.cursor()
 
@@ -2123,9 +2103,7 @@ class InterlisImporterExporter:
                     )
 
                 # add for testing
-                logger.info(
-                    f"missing_fk_catchment_area_count : {missing_fk_catchment_area_count}"
-                )
+                logger.info(f"missing_fk_catchment_area_count : {missing_fk_catchment_area_count}")
 
             if missing_fk_catchment_area_count == 0:
                 logger.info("OK: all mandatory fk_catchment_area set in tww_od!")
