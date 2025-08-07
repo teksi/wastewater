@@ -408,6 +408,10 @@
 <section id="infrastrukturhaltung-gephaltung">
 <h2><span class="section-number">5.2.2.3. </span>Infrastrukturhaltung/GEPHaltung<a class="headerlink" href="#infrastrukturhaltung-gephaltung" title="Link to this heading"></a></h2>
 <p>Abgesehen von Strassen- und Platzwasser werden die NutzungsartAG-Werte nicht als Wertelistenerweiterungen modelliert. Nutzen Sie stattdessen die Rückwärtsbeziehungen.</p>
+<section id="handling-of-reach-reach-connections">
+<h3><span class="section-number">5.2.2.3.1. </span>Handling of reach-reach connections<a class="headerlink" href="#handling-of-reach-reach-connections" title="Link to this heading"></a></h3>
+<p>AG-64/96 does not support reach-reach connections. If needed, the DSS topology is overridden on AG-64/96 export by a foreign key on <code class="docutils literal notranslate"><span class="pre">tww_od.agxx_reach_point.ag64_fk_wastewater_node</span></code> that points to <code class="docutils literal notranslate"><span class="pre">tww_od.agxx_unconnected_node_bwrel</span></code>.  are defined in the datamodel as Infrastrukturknoten/GEPKnoten with funktionag „Anschluss“. When this foreign key is not set, reach-reach connections throw an error on export.</p>
+</section>
 </section>
 <section id="ueberlauf-foerderaggregat">
 <h2><span class="section-number">5.2.2.4. </span>Ueberlauf_Foerderaggregat<a class="headerlink" href="#ueberlauf-foerderaggregat" title="Link to this heading"></a></h2>

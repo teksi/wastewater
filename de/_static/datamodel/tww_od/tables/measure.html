@@ -118,6 +118,16 @@
                                     <td>
                                         <table border='0' cellspacing='0' cellpadding='0'>
                                             <tr>
+                                                <td title="agxx_measure_text.fk_measure references measure.obj_id via rel_measure_text_measure"><a href='agxx_measure_text.html'>agxx_measure_text</a><span class='relatedKey'>.fk_measure</span></td>
+                                                <td class="constraint detail">rel_measure_text_measure</td>
+                                                <td class="constraint detail"><span title='Cascade on delete:&#10;Deletion of parent deletes child'>C</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td title="agxx_wastewater_structure.ag96_fk_measure references measure.obj_id via ag96_rel_wastewater_structure_measure"><a href='agxx_wastewater_structure.html'>agxx_wastewater_structure</a><span class='relatedKey'>.ag96_fk_measure</span></td>
+                                                <td class="constraint detail">ag96_rel_wastewater_structure_measure</td>
+                                                <td class="constraint detail"><span title='Null on delete:&#10;Foreign key to parent set to NULL when parent deleted'>N</span></td>
+                                            </tr>
+                                            <tr>
                                                 <td title="building_group.fk_measure references measure.obj_id via rel_building_group_measure"><a href='building_group.html'>building_group</a><span class='relatedKey'>.fk_measure</span></td>
                                                 <td class="constraint detail">rel_building_group_measure</td>
                                                 <td class="constraint detail"><span title='Null on delete:&#10;Foreign key to parent set to NULL when parent deleted'>N</span></td>
@@ -603,20 +613,20 @@
                                     <td>((char_length(identifier) &lt;&#61; 50))</td>
                                 </tr>
                                 <tr>
-                                    <td>mm_remark_length_max_80</td>
-                                    <td>((char_length(remark) &lt;&#61; 80))</td>
-                                </tr>
-                                <tr>
                                     <td>mm_description_length_max_100</td>
                                     <td>((char_length(description) &lt;&#61; 100))</td>
+                                </tr>
+                                <tr>
+                                    <td>mm_link_length_max_255</td>
+                                    <td>((char_length(link) &lt;&#61; 255))</td>
                                 </tr>
                                 <tr>
                                     <td>mm_intervention_demand_length_max_255</td>
                                     <td>((char_length(intervention_demand) &lt;&#61; 255))</td>
                                 </tr>
                                 <tr>
-                                    <td>mm_link_length_max_255</td>
-                                    <td>((char_length(link) &lt;&#61; 255))</td>
+                                    <td>mm_remark_length_max_80</td>
+                                    <td>((char_length(remark) &lt;&#61; 80))</td>
                                 </tr>
                                 </tbody>
                             </table>

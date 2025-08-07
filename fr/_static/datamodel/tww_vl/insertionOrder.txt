@@ -1,3 +1,4 @@
+building_group_ag96_disposal_type
 access_aid_kind
 backflow_prevention_kind
 benching_kind
@@ -18,6 +19,9 @@ building_group_drinking_water_others
 building_group_electric_connection
 building_group_function
 building_group_renovation_necessity
+building_group_text_plantype
+building_group_text_texthali
+building_group_text_textvali
 catchment_area_direct_discharge_current
 catchment_area_direct_discharge_planned
 catchment_area_drainage_system_current
@@ -95,6 +99,9 @@ manhole_surface_inflow
 measure_category
 measure_priority
 measure_status
+measure_text_plantype
+measure_text_texthali
+measure_text_textvali
 measurement_result_measurement_type
 measurement_series_kind
 measuring_device_kind
@@ -164,6 +171,8 @@ throttle_shut_off_unit_kind
 throttle_shut_off_unit_signal_transmission
 waste_water_treatment_kind
 waste_water_treatment_plant_operator_type
+wastewater_node_ag64_function
+wastewater_node_ag96_is_gateway
 wastewater_node_elevation_accuracy
 wastewater_node_function_node_amelioration
 wastewater_structure_accessibility

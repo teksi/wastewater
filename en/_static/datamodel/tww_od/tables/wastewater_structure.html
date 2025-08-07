@@ -118,6 +118,11 @@
                                     <td>
                                         <table border='0' cellspacing='0' cellpadding='0'>
                                             <tr>
+                                                <td title="agxx_wastewater_structure.fk_wastewater_structure references wastewater_structure.obj_id via oorel_od_agxx_wastewater_structure"><a href='agxx_wastewater_structure.html'>agxx_wastewater_structure</a><span class='relatedKey'>.fk_wastewater_structure</span></td>
+                                                <td class="constraint detail">oorel_od_agxx_wastewater_structure</td>
+                                                <td class="constraint detail"><span title='Cascade on delete:&#10;Deletion of parent deletes child'>C</span></td>
+                                            </tr>
+                                            <tr>
                                                 <td title="channel.obj_id references wastewater_structure.obj_id via oorel_od_channel_wastewater_structure"><a href='channel.html'>channel</a><span class='relatedKey'>.obj_id</span></td>
                                                 <td class="constraint detail">oorel_od_channel_wastewater_structure</td>
                                                 <td class="constraint detail"><span title='Cascade on delete:&#10;Deletion of parent deletes child'>C</span></td>
@@ -963,20 +968,20 @@
                                     <td>((char_length(identifier) &lt;&#61; 41))</td>
                                 </tr>
                                 <tr>
-                                    <td>ws_records_length_max_255</td>
-                                    <td>((char_length(records) &lt;&#61; 255))</td>
+                                    <td>ws_remark_length_max_80</td>
+                                    <td>((char_length(remark) &lt;&#61; 80))</td>
                                 </tr>
                                 <tr>
-                                    <td>ws_contract_section_length_max_50</td>
-                                    <td>((char_length(contract_section) &lt;&#61; 50))</td>
+                                    <td>ws_records_length_max_255</td>
+                                    <td>((char_length(records) &lt;&#61; 255))</td>
                                 </tr>
                                 <tr>
                                     <td>ws_location_name_length_max_50</td>
                                     <td>((char_length(location_name) &lt;&#61; 50))</td>
                                 </tr>
                                 <tr>
-                                    <td>ws_remark_length_max_80</td>
-                                    <td>((char_length(remark) &lt;&#61; 80))</td>
+                                    <td>ws_contract_section_length_max_50</td>
+                                    <td>((char_length(contract_section) &lt;&#61; 50))</td>
                                 </tr>
                                 </tbody>
                             </table>

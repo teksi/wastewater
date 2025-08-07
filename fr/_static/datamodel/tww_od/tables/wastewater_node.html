@@ -118,6 +118,16 @@
                                     <td>
                                         <table border='0' cellspacing='0' cellpadding='0'>
                                             <tr>
+                                                <td title="agxx_cover.ag64_fk_wastewater_node references wastewater_node.obj_id via rel_cover_wastewater_node"><a href='agxx_cover.html'>agxx_cover</a><span class='relatedKey'>.ag64_fk_wastewater_node</span></td>
+                                                <td class="constraint detail">rel_cover_wastewater_node</td>
+                                                <td class="constraint detail"><span title='Null on delete:&#10;Foreign key to parent set to NULL when parent deleted'>N</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td title="agxx_wastewater_node.fk_wastewater_node references wastewater_node.obj_id via oorel_od_agxx_wastewater_node"><a href='agxx_wastewater_node.html'>agxx_wastewater_node</a><span class='relatedKey'>.fk_wastewater_node</span></td>
+                                                <td class="constraint detail">oorel_od_agxx_wastewater_node</td>
+                                                <td class="constraint detail"><span title='Cascade on delete:&#10;Deletion of parent deletes child'>C</span></td>
+                                            </tr>
+                                            <tr>
                                                 <td title="hydraulic_char_data.fk_primary_direction references wastewater_node.obj_id via rel_hydraulic_char_data_primary_direction"><a href='hydraulic_char_data.html'>hydraulic_char_data</a><span class='relatedKey'>.fk_primary_direction</span></td>
                                                 <td class="constraint detail">rel_hydraulic_char_data_primary_direction</td>
                                                 <td class="constraint detail"><span title='Null on delete:&#10;Foreign key to parent set to NULL when parent deleted'>N</span></td>

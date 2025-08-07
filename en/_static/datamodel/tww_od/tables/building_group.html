@@ -118,6 +118,16 @@
                                     <td>
                                         <table border='0' cellspacing='0' cellpadding='0'>
                                             <tr>
+                                                <td title="agxx_building_group.fk_building_group references building_group.obj_id via oorel_od_agxx_building_group"><a href='agxx_building_group.html'>agxx_building_group</a><span class='relatedKey'>.fk_building_group</span></td>
+                                                <td class="constraint detail">oorel_od_agxx_building_group</td>
+                                                <td class="constraint detail"><span title='Cascade on delete:&#10;Deletion of parent deletes child'>C</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td title="agxx_building_group_text.fk_building_group references building_group.obj_id via rel_building_group_text_building_group"><a href='agxx_building_group_text.html'>agxx_building_group_text</a><span class='relatedKey'>.fk_building_group</span></td>
+                                                <td class="constraint detail">rel_building_group_text_building_group</td>
+                                                <td class="constraint detail"><span title='Cascade on delete:&#10;Deletion of parent deletes child'>C</span></td>
+                                            </tr>
+                                            <tr>
                                                 <td title="building_group_baugwr.fk_building_group references building_group.obj_id via rel_building_group_baugwr_building_group"><a href='building_group_baugwr.html'>building_group_baugwr</a><span class='relatedKey'>.fk_building_group</span></td>
                                                 <td class="constraint detail">rel_building_group_baugwr_building_group</td>
                                                 <td class="constraint detail"><span title='Null on delete:&#10;Foreign key to parent set to NULL when parent deleted'>N</span></td>
@@ -923,20 +933,20 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td>bg_other_usage_type_length_max_50</td>
-                                    <td>((char_length(other_usage_type) &lt;&#61; 50))</td>
-                                </tr>
-                                <tr>
-                                    <td>bg_identifier_length_max_20</td>
-                                    <td>((char_length(identifier) &lt;&#61; 20))</td>
-                                </tr>
-                                <tr>
                                     <td>bg_restructuring_concept_length_max_255</td>
                                     <td>((char_length(restructuring_concept) &lt;&#61; 255))</td>
                                 </tr>
                                 <tr>
                                     <td>bg_remark_length_max_80</td>
                                     <td>((char_length(remark) &lt;&#61; 80))</td>
+                                </tr>
+                                <tr>
+                                    <td>bg_identifier_length_max_20</td>
+                                    <td>((char_length(identifier) &lt;&#61; 20))</td>
+                                </tr>
+                                <tr>
+                                    <td>bg_other_usage_type_length_max_50</td>
+                                    <td>((char_length(other_usage_type) &lt;&#61; 50))</td>
                                 </tr>
                                 </tbody>
                             </table>

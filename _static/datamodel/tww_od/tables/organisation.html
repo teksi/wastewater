@@ -118,6 +118,26 @@
                                     <td>
                                         <table border='0' cellspacing='0' cellpadding='0'>
                                             <tr>
+                                                <td title="agxx_overflow.ag64_fk_provider references organisation.obj_id via ag64_rel_overflow_provider"><a href='agxx_overflow.html'>agxx_overflow</a><span class='relatedKey'>.ag64_fk_provider</span></td>
+                                                <td class="constraint detail">ag64_rel_overflow_provider</td>
+                                                <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td title="agxx_overflow.ag96_fk_provider references organisation.obj_id via ag96_rel_overflow_provider"><a href='agxx_overflow.html'>agxx_overflow</a><span class='relatedKey'>.ag96_fk_provider</span></td>
+                                                <td class="constraint detail">ag96_rel_overflow_provider</td>
+                                                <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td title="agxx_wastewater_networkelement.ag64_fk_provider references organisation.obj_id via ag64_rel_wastewater_networkelement_provider"><a href='agxx_wastewater_networkelement.html'>agxx_wastewater_networkelement</a><span class='relatedKey'>.ag64_fk_provider</span></td>
+                                                <td class="constraint detail">ag64_rel_wastewater_networkelement_provider</td>
+                                                <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td title="agxx_wastewater_networkelement.ag96_fk_provider references organisation.obj_id via ag96_rel_wastewater_networkelement_provider"><a href='agxx_wastewater_networkelement.html'>agxx_wastewater_networkelement</a><span class='relatedKey'>.ag96_fk_provider</span></td>
+                                                <td class="constraint detail">ag96_rel_wastewater_networkelement_provider</td>
+                                                <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
+                                            </tr>
+                                            <tr>
                                                 <td title="building_group.fk_dataowner references organisation.obj_id via rel_od_building_group_fk_dataowner"><a href='building_group.html'>building_group</a><span class='relatedKey'>.fk_dataowner</span></td>
                                                 <td class="constraint detail">rel_od_building_group_fk_dataowner</td>
                                                 <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
@@ -925,20 +945,20 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td>og_identifier_short_length_max_12</td>
-                                    <td>((char_length(identifier_short) &lt;&#61; 12))</td>
-                                </tr>
-                                <tr>
                                     <td>og_uid_length_max_12</td>
                                     <td>((char_length(uid) &lt;&#61; 12))</td>
                                 </tr>
                                 <tr>
-                                    <td>og_identifier_length_max_255</td>
-                                    <td>((char_length(identifier) &lt;&#61; 255))</td>
+                                    <td>og_identifier_short_length_max_12</td>
+                                    <td>((char_length(identifier_short) &lt;&#61; 12))</td>
                                 </tr>
                                 <tr>
                                     <td>og_remark_length_max_255</td>
                                     <td>((char_length(remark) &lt;&#61; 255))</td>
+                                </tr>
+                                <tr>
+                                    <td>og_identifier_length_max_255</td>
+                                    <td>((char_length(identifier) &lt;&#61; 255))</td>
                                 </tr>
                                 </tbody>
                             </table>

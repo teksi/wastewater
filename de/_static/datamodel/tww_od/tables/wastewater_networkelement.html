@@ -118,6 +118,11 @@
                                     <td>
                                         <table border='0' cellspacing='0' cellpadding='0'>
                                             <tr>
+                                                <td title="agxx_wastewater_networkelement.fk_wastewater_networkelement references wastewater_networkelement.obj_id via oorel_od_agxx_wastewater_networkelement"><a href='agxx_wastewater_networkelement.html'>agxx_wastewater_networkelement</a><span class='relatedKey'>.fk_wastewater_networkelement</span></td>
+                                                <td class="constraint detail">oorel_od_agxx_wastewater_networkelement</td>
+                                                <td class="constraint detail"><span title='Cascade on delete:&#10;Deletion of parent deletes child'>C</span></td>
+                                            </tr>
+                                            <tr>
                                                 <td title="catchment_area.fk_wastewater_networkelement_rw_current references wastewater_networkelement.obj_id via rel_catchment_area_wastewater_networkelement_rw_current"><a href='catchment_area.html'>catchment_area</a><span class='relatedKey'>.fk_wastewater_networkelement_rw_current</span></td>
                                                 <td class="constraint detail">rel_catchment_area_wastewater_networkelement_rw_current</td>
                                                 <td class="constraint detail"><span title='Null on delete:&#10;Foreign key to parent set to NULL when parent deleted'>N</span></td>
@@ -368,12 +373,12 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td>we_identifier_length_max_41</td>
-                                    <td>((char_length(identifier) &lt;&#61; 41))</td>
-                                </tr>
-                                <tr>
                                     <td>we_remark_length_max_80</td>
                                     <td>((char_length(remark) &lt;&#61; 80))</td>
+                                </tr>
+                                <tr>
+                                    <td>we_identifier_length_max_41</td>
+                                    <td>((char_length(identifier) &lt;&#61; 41))</td>
                                 </tr>
                                 </tbody>
                             </table>

@@ -108,6 +108,268 @@
             <column ascending="true" name="obj_id"/>
          </index>
       </table>
+      <table name="agxx_building_group" remarks="" schema="tww_od" type="TABLE">
+         <column autoUpdated="false" defaultValue="uuid_generate_v4()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="fk_building_group" nullable="false" remarks="" size="16" type="varchar" typeCode="12">
+            <parent column="obj_id" foreignKey="oorel_od_agxx_building_group" implied="false" onDeleteCascade="true" schema="tww_od" table="building_group"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="ag96_owner_address" nullable="true" remarks="" size="80" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="ag96_owner_name" nullable="true" remarks="" size="40" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="ag96_label_number" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="ag96_disposal_wastewater" nullable="true" remarks="" size="19" type="int8" typeCode="-5">
+            <parent column="code" foreignKey="fkey_vl_building_group_ag96_disposal_wastewater" implied="false" onDeleteCascade="false" schema="tww_vl" table="building_group_ag96_disposal_type"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="ag96_disposal_industrial_wastewater" nullable="true" remarks="" size="19" type="int8" typeCode="-5">
+            <parent column="code" foreignKey="fkey_vl_building_group_ag96_disposal_industrial_wastewater" implied="false" onDeleteCascade="false" schema="tww_vl" table="building_group_ag96_disposal_type"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="ag96_disposal_square_water" nullable="true" remarks="" size="19" type="int8" typeCode="-5">
+            <parent column="code" foreignKey="fkey_vl_building_group_ag96_disposal_square_water" implied="false" onDeleteCascade="false" schema="tww_vl" table="building_group_ag96_disposal_type"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="ag96_disposal_roof_water" nullable="true" remarks="" size="19" type="int8" typeCode="-5">
+            <parent column="code" foreignKey="fkey_vl_building_group_ag96_disposal_roof_water" implied="false" onDeleteCascade="false" schema="tww_vl" table="building_group_ag96_disposal_type"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="ag96_population" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <primaryKey column="uuid" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_od_agxx_building_group_uuid" unique="true">
+            <column ascending="true" name="uuid"/>
+         </index>
+      </table>
+      <table name="agxx_building_group_text" remarks="Extension for AG-96/ Erweiterung für AG-96 / Extension pour AG-96" schema="tww_od" type="TABLE">
+         <column autoUpdated="false" defaultValue="tww_app.generate_oid('tww_od'::text, 'agxx_building_group_text'::text)" digits="0" id="0" name="obj_id" nullable="false" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="classname" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="plantype" nullable="true" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="code" foreignKey="fkey_vl_building_group_text_plantype" implied="false" onDeleteCascade="false" schema="tww_vl" table="building_group_text_plantype"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="remark" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="text" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="texthali" nullable="true" remarks="" size="5" type="int2" typeCode="5">
+            <parent column="code" foreignKey="fkey_vl_building_group_text_texthali" implied="false" onDeleteCascade="false" schema="tww_vl" table="building_group_text_texthali"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="1" id="6" name="textori" nullable="true" remarks="" size="4" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="textpos_geometry" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="textvali" nullable="true" remarks="" size="5" type="int2" typeCode="5">
+            <parent column="code" foreignKey="fkey_vl_building_group_text_textvali" implied="false" onDeleteCascade="false" schema="tww_vl" table="building_group_text_textvali"/>
+         </column>
+         <column autoUpdated="false" defaultValue="now()" digits="6" id="9" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="fk_building_group" nullable="true" remarks="" size="16" type="varchar" typeCode="12">
+            <parent column="obj_id" foreignKey="rel_building_group_text_building_group" implied="false" onDeleteCascade="true" schema="tww_od" table="building_group"/>
+         </column>
+         <primaryKey column="obj_id" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_od_building_group_text_obj_id" unique="true">
+            <column ascending="true" name="obj_id"/>
+         </index>
+         <checkConstraint constraint="((char_length(classname) &lt;= 50))" name="gx_classname_length_max_50"/>
+         <checkConstraint constraint="((char_length(remark) &lt;= 80))" name="gx_remark_length_max_80"/>
+      </table>
+      <table name="agxx_catchment_area_totals" remarks="" schema="tww_od" type="TABLE">
+         <column autoUpdated="false" defaultValue="uuid_generate_v4()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="fk_catchment_area_totals" nullable="false" remarks="" size="16" type="varchar" typeCode="12">
+            <parent column="obj_id" foreignKey="oorel_od_agxx_catchment_area_totals" implied="false" onDeleteCascade="true" schema="tww_od" table="catchment_area_totals"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="2" name="ag96_sewer_infiltration_water_dim" nullable="true" remarks="Extension for AG-96/ Erweiterung aus AG-96 /xxx_fr" size="9" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="3" name="ag96_waste_water_production_dim" nullable="true" remarks="Extension for AG-96/ Erweiterung aus AG-96 /xxx_fr" size="9" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="ag96_perimeter_geometry" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
+         <primaryKey column="uuid" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_od_agxx_catchment_area_totals_uuid" unique="true">
+            <column ascending="true" name="uuid"/>
+         </index>
+      </table>
+      <table name="agxx_cover" remarks="" schema="tww_od" type="TABLE">
+         <column autoUpdated="false" defaultValue="uuid_generate_v4()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="fk_cover" nullable="false" remarks="" size="16" type="varchar" typeCode="12">
+            <parent column="obj_id" foreignKey="oorel_od_agxx_cover" implied="false" onDeleteCascade="true" schema="tww_od" table="cover"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="ag64_fk_wastewater_node" nullable="true" remarks="" size="16" type="varchar" typeCode="12">
+            <parent column="obj_id" foreignKey="rel_cover_wastewater_node" implied="false" onDeleteCascade="false" schema="tww_od" table="wastewater_node"/>
+         </column>
+         <primaryKey column="uuid" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_od_agxx_cover_uuid" unique="true">
+            <column ascending="true" name="uuid"/>
+         </index>
+      </table>
+      <table name="agxx_infiltration_zone" remarks="" schema="tww_od" type="TABLE">
+         <column autoUpdated="false" defaultValue="uuid_generate_v4()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="fk_infiltration_zone" nullable="false" remarks="" size="16" type="varchar" typeCode="12">
+            <parent column="obj_id" foreignKey="oorel_od_agxx_infiltration_zone" implied="false" onDeleteCascade="true" schema="tww_od" table="infiltration_zone"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="ag96_permeability" nullable="true" remarks="" size="50" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="ag96_limitation" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="ag96_thickness" nullable="true" remarks="" size="50" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="ag96_q_check" nullable="true" remarks="" size="50" type="varchar" typeCode="12"/>
+         <primaryKey column="uuid" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_od_agxx_infiltration_zone" unique="true">
+            <column ascending="true" name="uuid"/>
+         </index>
+      </table>
+      <table name="agxx_last_modification" remarks="" schema="tww_od" type="TABLE">
+         <column autoUpdated="false" defaultValue="uuid_generate_v4()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="fk_element" nullable="false" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="now()" digits="6" id="2" name="ag96_last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="now()" digits="6" id="3" name="ag64_last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <primaryKey column="uuid" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_od_agxx_last_modification" unique="true">
+            <column ascending="true" name="uuid"/>
+         </index>
+      </table>
+      <table name="agxx_last_modification_updater" remarks="" schema="tww_od" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="username" nullable="false" remarks="" size="200" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="ag_update_type" nullable="false" remarks="" size="4" type="varchar" typeCode="12"/>
+         <primaryKey column="username" sequenceNumberInPK="1"/>
+         <index name="agxx_last_modification_updater_pkey" unique="true">
+            <column ascending="true" name="username"/>
+         </index>
+         <checkConstraint constraint="(((ag_update_type)::text = ANY (ARRAY['None'::text, 'WI'::text, 'GEP'::text, 'Both'::text])))" name="ag_update_type_valid"/>
+      </table>
+      <table name="agxx_measure_text" remarks="Extension for AG-96/ Erweiterung für AG-96 / Extension pour AG-96" schema="tww_od" type="TABLE">
+         <column autoUpdated="false" defaultValue="tww_app.generate_oid('tww_od'::text, 'agxx_measure_text'::text)" digits="0" id="0" name="obj_id" nullable="false" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="classname" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="plantype" nullable="true" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="code" foreignKey="fkey_vl_measure_text_plantype" implied="false" onDeleteCascade="false" schema="tww_vl" table="measure_text_plantype"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="remark" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="text" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="texthali" nullable="true" remarks="" size="5" type="int2" typeCode="5">
+            <parent column="code" foreignKey="fkey_vl_measure_text_texthali" implied="false" onDeleteCascade="false" schema="tww_vl" table="measure_text_texthali"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="1" id="6" name="textori" nullable="true" remarks="" size="4" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="textpos_geometry" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="textvali" nullable="true" remarks="" size="5" type="int2" typeCode="5">
+            <parent column="code" foreignKey="fkey_vl_measure_text_textvali" implied="false" onDeleteCascade="false" schema="tww_vl" table="measure_text_textvali"/>
+         </column>
+         <column autoUpdated="false" defaultValue="now()" digits="6" id="9" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="fk_measure" nullable="true" remarks="" size="16" type="varchar" typeCode="12">
+            <parent column="obj_id" foreignKey="rel_measure_text_measure" implied="false" onDeleteCascade="true" schema="tww_od" table="measure"/>
+         </column>
+         <primaryKey column="obj_id" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_od_measure_text_obj_id" unique="true">
+            <column ascending="true" name="obj_id"/>
+         </index>
+         <checkConstraint constraint="((char_length(classname) &lt;= 50))" name="mx_classname_length_max_50"/>
+         <checkConstraint constraint="((char_length(remark) &lt;= 80))" name="mx_remark_length_max_80"/>
+      </table>
+      <table name="agxx_overflow" remarks="" schema="tww_od" type="TABLE">
+         <column autoUpdated="false" defaultValue="uuid_generate_v4()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="fk_overflow" nullable="false" remarks="" size="16" type="varchar" typeCode="12">
+            <parent column="obj_id" foreignKey="oorel_od_agxx_overflow" implied="false" onDeleteCascade="true" schema="tww_od" table="overflow"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="ag96_fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12">
+            <parent column="obj_id" foreignKey="ag96_rel_overflow_provider" implied="false" onDeleteCascade="false" schema="tww_od" table="organisation"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="ag96_remark" nullable="true" remarks="" size="80" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="ag64_fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12">
+            <parent column="obj_id" foreignKey="ag64_rel_overflow_provider" implied="false" onDeleteCascade="false" schema="tww_od" table="organisation"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="ag64_remark" nullable="true" remarks="" size="80" type="varchar" typeCode="12"/>
+         <primaryKey column="uuid" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_od_agxx_overflow" unique="true">
+            <column ascending="true" name="uuid"/>
+         </index>
+      </table>
+      <table name="agxx_reach" remarks="" schema="tww_od" type="TABLE">
+         <column autoUpdated="false" defaultValue="uuid_generate_v4()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="fk_reach" nullable="false" remarks="" size="16" type="varchar" typeCode="12">
+            <parent column="obj_id" foreignKey="oorel_od_agxx_reach" implied="false" onDeleteCascade="true" schema="tww_od" table="reach"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="ag96_clear_height_planned" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="ag96_clear_width_planned" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <primaryKey column="uuid" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_od_agxx_reach_uuid" unique="true">
+            <column ascending="true" name="uuid"/>
+         </index>
+      </table>
+      <table name="agxx_reach_point" remarks="" schema="tww_od" type="TABLE">
+         <column autoUpdated="false" defaultValue="uuid_generate_v4()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="fk_reach_point" nullable="false" remarks="" size="16" type="varchar" typeCode="12">
+            <parent column="obj_id" foreignKey="oorel_od_agxx_reach_point" implied="false" onDeleteCascade="true" schema="tww_od" table="reach_point"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="ag64_fk_wastewater_node" nullable="true" remarks="Extension for AG-64/ Erweiterung aus AG-64, Pseudoknoten Übergang SAA-PAA /xxx_fr" size="16" type="varchar" typeCode="12">
+            <parent column="obj_id" foreignKey="ag64_rel_reach_point_fk_wastewater_node" implied="false" onDeleteCascade="false" schema="tww_od" table="agxx_unconnected_node_bwrel"/>
+         </column>
+         <primaryKey column="uuid" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_od_agxx_reach_point_uuid" unique="true">
+            <column ascending="true" name="uuid"/>
+         </index>
+      </table>
+      <table name="agxx_unconnected_node_bwrel" remarks="" schema="tww_od" type="TABLE">
+         <column autoUpdated="false" defaultValue="tww_app.generate_oid('tww_od'::text, 'agxx_unconnected_node_bwrel'::text)" digits="0" id="0" name="obj_id" nullable="false" remarks="" size="16" type="varchar" typeCode="12">
+            <child column="ag64_fk_wastewater_node" foreignKey="ag64_rel_reach_point_fk_wastewater_node" implied="false" onDeleteCascade="false" schema="tww_od" table="agxx_reach_point"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="year_of_construction" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="structure_condition" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="status" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="4" name="co_level" nullable="true" remarks="" size="7" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="detail_geometry3d_geometry" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="financing" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="ch_function_hierarchic" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="status_survey_year" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="co_positional_accuracy" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="renovation_necessity" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="accessibility" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="fk_operator" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="fk_owner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="ag96_fk_measure" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="wwtp_number" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="16" name="situation3d_geometry" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="17" name="backflow_level_current" nullable="true" remarks="" size="7" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="18" name="bottom_level" nullable="true" remarks="" size="7" type="numeric" typeCode="2"/>
+         <primaryKey column="obj_id" sequenceNumberInPK="1"/>
+         <index name="pkey_od_agxx_unconnected_node_bwrel_obj_id" unique="true">
+            <column ascending="true" name="obj_id"/>
+         </index>
+         <index name="in_od_agxx_unconnected_node_bwrel_detail_geometry3d_geometry" unique="false">
+            <column ascending="true" name="detail_geometry3d_geometry"/>
+         </index>
+         <index name="in_od_agxx_unconnected_node_bwrel_situation3d_geometry" unique="false">
+            <column ascending="true" name="situation3d_geometry"/>
+         </index>
+      </table>
+      <table name="agxx_wastewater_networkelement" remarks="" schema="tww_od" type="TABLE">
+         <column autoUpdated="false" defaultValue="uuid_generate_v4()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="fk_wastewater_networkelement" nullable="false" remarks="" size="16" type="varchar" typeCode="12">
+            <parent column="obj_id" foreignKey="oorel_od_agxx_wastewater_networkelement" implied="false" onDeleteCascade="true" schema="tww_od" table="wastewater_networkelement"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="ag96_fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12">
+            <parent column="obj_id" foreignKey="ag96_rel_wastewater_networkelement_provider" implied="false" onDeleteCascade="false" schema="tww_od" table="organisation"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="ag96_remark" nullable="true" remarks="" size="80" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="ag64_fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12">
+            <parent column="obj_id" foreignKey="ag64_rel_wastewater_networkelement_provider" implied="false" onDeleteCascade="false" schema="tww_od" table="organisation"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="ag64_remark" nullable="true" remarks="" size="80" type="varchar" typeCode="12"/>
+         <primaryKey column="uuid" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_od_agxx_wastewater_networkelement" unique="true">
+            <column ascending="true" name="uuid"/>
+         </index>
+      </table>
+      <table name="agxx_wastewater_node" remarks="" schema="tww_od" type="TABLE">
+         <column autoUpdated="false" defaultValue="uuid_generate_v4()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="fk_wastewater_node" nullable="false" remarks="" size="16" type="varchar" typeCode="12">
+            <parent column="obj_id" foreignKey="oorel_od_agxx_wastewater_node" implied="false" onDeleteCascade="true" schema="tww_od" table="wastewater_node"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="ag96_is_gateway" nullable="true" remarks="Extension for AG-96/ Erweiterung aus AG-96, IstSchnittstelle /xxx_fr" size="19" type="int8" typeCode="-5">
+            <parent column="code" foreignKey="fkey_vl_wastewater_node_ag96_is_gateway" implied="false" onDeleteCascade="false" schema="tww_vl" table="wastewater_node_ag96_is_gateway"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="ag64_function" nullable="true" remarks="Extension for AG-96/ Erweiterung aus AG-96 zur Erfassung der Funktionag Anschluss /xxx_fr" size="19" type="int8" typeCode="-5">
+            <parent column="code" foreignKey="fkey_vl_wastewater_node_ag64_function" implied="false" onDeleteCascade="false" schema="tww_vl" table="wastewater_node_ag64_function"/>
+         </column>
+         <primaryKey column="uuid" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_od_agxx_wastewater_node_uuid" unique="true">
+            <column ascending="true" name="uuid"/>
+         </index>
+      </table>
+      <table name="agxx_wastewater_structure" remarks="" schema="tww_od" type="TABLE">
+         <column autoUpdated="false" defaultValue="uuid_generate_v4()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="fk_wastewater_structure" nullable="false" remarks="" size="16" type="varchar" typeCode="12">
+            <parent column="obj_id" foreignKey="oorel_od_agxx_wastewater_structure" implied="false" onDeleteCascade="true" schema="tww_od" table="wastewater_structure"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="ag96_fk_measure" nullable="true" remarks="Extension for AG-96/ Erweiterung aus AG-96, 1:n-Beziehung /xxx_fr" size="16" type="varchar" typeCode="12">
+            <parent column="obj_id" foreignKey="ag96_rel_wastewater_structure_measure" implied="false" onDeleteCascade="false" schema="tww_od" table="measure"/>
+         </column>
+         <primaryKey column="uuid" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_od_agxx_wastewater_structure_uuid" unique="true">
+            <column ascending="true" name="uuid"/>
+         </index>
+      </table>
       <table name="backflow_prevention" remarks="" schema="tww_od" type="TABLE">
          <column autoUpdated="false" defaultValue="tww_app.generate_oid('tww_od'::text, 'backflow_prevention'::text)" digits="0" id="0" name="obj_id" nullable="false" remarks="INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch" size="16" type="varchar" typeCode="12">
             <parent column="obj_id" foreignKey="oorel_od_backflow_prevention_structure_part" implied="false" onDeleteCascade="true" schema="tww_od" table="structure_part"/>
@@ -208,6 +470,8 @@
       </table>
       <table name="building_group" remarks="" schema="tww_od" type="TABLE">
          <column autoUpdated="false" defaultValue="tww_app.generate_oid('tww_od'::text, 'building_group'::text)" digits="0" id="0" name="obj_id" nullable="false" remarks="INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch" size="16" type="varchar" typeCode="12">
+            <child column="fk_building_group" foreignKey="oorel_od_agxx_building_group" implied="false" onDeleteCascade="true" schema="tww_od" table="agxx_building_group"/>
+            <child column="fk_building_group" foreignKey="rel_building_group_text_building_group" implied="false" onDeleteCascade="true" schema="tww_od" table="agxx_building_group_text"/>
             <child column="fk_building_group" foreignKey="rel_building_group_baugwr_building_group" implied="false" onDeleteCascade="false" schema="tww_od" table="building_group_baugwr"/>
             <child column="fk_building_group" foreignKey="rel_farm_building_group" implied="false" onDeleteCascade="true" schema="tww_od" table="farm"/>
             <child column="fk_building_group" foreignKey="rel_building_group_disposal_building_group" implied="false" onDeleteCascade="true" schema="tww_od" table="re_building_group_disposal"/>
@@ -433,7 +697,9 @@
          <checkConstraint constraint="((char_length(remark) &lt;= 80))" name="cx_remark_length_max_80"/>
       </table>
       <table name="catchment_area_totals" remarks="" schema="tww_od" type="TABLE">
-         <column autoUpdated="false" defaultValue="tww_app.generate_oid('tww_od'::text, 'catchment_area_totals'::text)" digits="0" id="0" name="obj_id" nullable="false" remarks="INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="tww_app.generate_oid('tww_od'::text, 'catchment_area_totals'::text)" digits="0" id="0" name="obj_id" nullable="false" remarks="INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch" size="16" type="varchar" typeCode="12">
+            <child column="fk_catchment_area_totals" foreignKey="oorel_od_agxx_catchment_area_totals" implied="false" onDeleteCascade="true" schema="tww_od" table="agxx_catchment_area_totals"/>
+         </column>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="discharge_freight_nh4_n" nullable="true" remarks="based on base module chapter 8.5. of directive &quot;Abwasserbewirtschaftung bei Regenwetter&quot; of VSA (2019)&quot; / Gemäss Basismodul Kapitel 8.5 der Richtlinie &quot;Abwasserentsorgung bei Regenwetter&quot; des VSA (2019) / Selon module de base chapitre 8.5 directive &quot;Gestion des eaux urbaines par temps de pluie&quot; du VSA (2019)" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="2" id="2" name="discharge_proportion_nh4_n" nullable="true" remarks="based on base module chapter 8.5. of directive &quot;Abwasserbewirtschaftung bei Regenwetter&quot; of VSA (2019)&quot; / Gemäss Basismodul Kapitel 8.5 der Richtlinie &quot;Abwasserentsorgung bei Regenwetter&quot; des VSA (2019) / Selon module de base chapitre 8.5 directive &quot;Gestion des eaux urbaines par temps de pluie&quot; du VSA (2019)" size="5" type="numeric" typeCode="2"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
@@ -570,6 +836,7 @@
       </table>
       <table name="cover" remarks="" schema="tww_od" type="TABLE">
          <column autoUpdated="false" defaultValue="tww_app.generate_oid('tww_od'::text, 'cover'::text)" digits="0" id="0" name="obj_id" nullable="false" remarks="INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch" size="16" type="varchar" typeCode="12">
+            <child column="fk_cover" foreignKey="oorel_od_agxx_cover" implied="false" onDeleteCascade="true" schema="tww_od" table="agxx_cover"/>
             <child column="fk_main_cover" foreignKey="rel_wastewater_structure_main_cover" implied="false" onDeleteCascade="false" schema="tww_od" table="wastewater_structure"/>
             <parent column="obj_id" foreignKey="oorel_od_cover_structure_part" implied="false" onDeleteCascade="true" schema="tww_od" table="structure_part"/>
          </column>
@@ -1287,6 +1554,7 @@
       </table>
       <table name="infiltration_zone" remarks="" schema="tww_od" type="TABLE">
          <column autoUpdated="false" defaultValue="tww_app.generate_oid('tww_od'::text, 'infiltration_zone'::text)" digits="0" id="0" name="obj_id" nullable="false" remarks="INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch" size="16" type="varchar" typeCode="12">
+            <child column="fk_infiltration_zone" foreignKey="oorel_od_agxx_infiltration_zone" implied="false" onDeleteCascade="true" schema="tww_od" table="agxx_infiltration_zone"/>
             <parent column="obj_id" foreignKey="oorel_od_infiltration_zone_zone" implied="false" onDeleteCascade="true" schema="tww_od" table="zone"/>
          </column>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="infiltration_capacity" nullable="true" remarks="yyy_Versickerungsmöglichkeit im Bereich / Versickerungsmöglichkeit im Bereich / Potentiel d'infiltration de la zone" size="10" type="int4" typeCode="4">
@@ -1454,6 +1722,8 @@
       </table>
       <table name="measure" remarks="" schema="tww_od" type="TABLE">
          <column autoUpdated="false" defaultValue="tww_app.generate_oid('tww_od'::text, 'measure'::text)" digits="0" id="0" name="obj_id" nullable="false" remarks="INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch" size="16" type="varchar" typeCode="12">
+            <child column="fk_measure" foreignKey="rel_measure_text_measure" implied="false" onDeleteCascade="true" schema="tww_od" table="agxx_measure_text"/>
+            <child column="ag96_fk_measure" foreignKey="ag96_rel_wastewater_structure_measure" implied="false" onDeleteCascade="false" schema="tww_od" table="agxx_wastewater_structure"/>
             <child column="fk_measure" foreignKey="rel_building_group_measure" implied="false" onDeleteCascade="false" schema="tww_od" table="building_group"/>
             <child column="fk_measure" foreignKey="rel_maintenance_event_measure" implied="false" onDeleteCascade="false" schema="tww_od" table="maintenance_event"/>
          </column>
@@ -1766,6 +2036,10 @@
       </table>
       <table name="organisation" remarks="" schema="tww_od" type="TABLE">
          <column autoUpdated="false" defaultValue="tww_app.generate_oid('tww_od'::text, 'organisation'::text)" digits="0" id="0" name="obj_id" nullable="false" remarks="INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch" size="16" type="varchar" typeCode="12">
+            <child column="ag64_fk_provider" foreignKey="ag64_rel_overflow_provider" implied="false" onDeleteCascade="false" schema="tww_od" table="agxx_overflow"/>
+            <child column="ag96_fk_provider" foreignKey="ag96_rel_overflow_provider" implied="false" onDeleteCascade="false" schema="tww_od" table="agxx_overflow"/>
+            <child column="ag64_fk_provider" foreignKey="ag64_rel_wastewater_networkelement_provider" implied="false" onDeleteCascade="false" schema="tww_od" table="agxx_wastewater_networkelement"/>
+            <child column="ag96_fk_provider" foreignKey="ag96_rel_wastewater_networkelement_provider" implied="false" onDeleteCascade="false" schema="tww_od" table="agxx_wastewater_networkelement"/>
             <child column="fk_dataowner" foreignKey="rel_od_building_group_fk_dataowner" implied="false" onDeleteCascade="false" schema="tww_od" table="building_group"/>
             <child column="fk_provider" foreignKey="rel_od_building_group_fk_dataprovider" implied="false" onDeleteCascade="false" schema="tww_od" table="building_group"/>
             <child column="fk_dataowner" foreignKey="rel_od_building_group_baugwr_fk_dataowner" implied="false" onDeleteCascade="false" schema="tww_od" table="building_group_baugwr"/>
@@ -1904,6 +2178,7 @@
       </table>
       <table name="overflow" remarks="" schema="tww_od" type="TABLE">
          <column autoUpdated="false" defaultValue="tww_app.generate_oid('tww_od'::text, 'overflow'::text)" digits="0" id="0" name="obj_id" nullable="false" remarks="INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch" size="16" type="varchar" typeCode="12">
+            <child column="fk_overflow" foreignKey="oorel_od_agxx_overflow" implied="false" onDeleteCascade="true" schema="tww_od" table="agxx_overflow"/>
             <child column="obj_id" foreignKey="oorel_od_leapingweir_overflow" implied="false" onDeleteCascade="true" schema="tww_od" table="leapingweir"/>
             <child column="obj_id" foreignKey="oorel_od_prank_weir_overflow" implied="false" onDeleteCascade="true" schema="tww_od" table="prank_weir"/>
             <child column="obj_id" foreignKey="oorel_od_pump_overflow" implied="false" onDeleteCascade="true" schema="tww_od" table="pump"/>
@@ -2156,6 +2431,7 @@
       </table>
       <table name="reach" remarks="" schema="tww_od" type="TABLE">
          <column autoUpdated="false" defaultValue="tww_app.generate_oid('tww_od'::text, 'reach'::text)" digits="0" id="0" name="obj_id" nullable="false" remarks="INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch" size="16" type="varchar" typeCode="12">
+            <child column="fk_reach" foreignKey="oorel_od_agxx_reach" implied="false" onDeleteCascade="true" schema="tww_od" table="agxx_reach"/>
             <child column="fk_reach" foreignKey="rel_reach_progression_alternative_reach" implied="false" onDeleteCascade="true" schema="tww_od" table="reach_progression_alternative"/>
             <child column="fk_reach" foreignKey="rel_reach_text_reach" implied="false" onDeleteCascade="true" schema="tww_od" table="reach_text"/>
             <parent column="obj_id" foreignKey="oorel_od_reach_wastewater_networkelement" implied="false" onDeleteCascade="true" schema="tww_od" table="wastewater_networkelement"/>
@@ -2214,6 +2490,7 @@
       </table>
       <table name="reach_point" remarks="" schema="tww_od" type="TABLE">
          <column autoUpdated="false" defaultValue="tww_app.generate_oid('tww_od'::text, 'reach_point'::text)" digits="0" id="0" name="obj_id" nullable="false" remarks="INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch" size="16" type="varchar" typeCode="12">
+            <child column="fk_reach_point" foreignKey="oorel_od_agxx_reach_point" implied="false" onDeleteCascade="true" schema="tww_od" table="agxx_reach_point"/>
             <child column="fk_reach_point" foreignKey="rel_examination_reach_point" implied="false" onDeleteCascade="false" schema="tww_od" table="examination"/>
             <child column="rp_id" foreignKey="network_node_rp_id_fkey" implied="false" onDeleteCascade="true" schema="tww_od" table="network_node"/>
             <child column="fk_reach_point_from" foreignKey="rel_reach_reach_point_from" implied="false" onDeleteCascade="true" schema="tww_od" table="reach"/>
@@ -2850,6 +3127,7 @@
       </table>
       <table name="wastewater_networkelement" remarks="" schema="tww_od" type="TABLE">
          <column autoUpdated="false" defaultValue="tww_app.generate_oid('tww_od'::text, 'wastewater_networkelement'::text)" digits="0" id="0" name="obj_id" nullable="false" remarks="INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch" size="16" type="varchar" typeCode="12">
+            <child column="fk_wastewater_networkelement" foreignKey="oorel_od_agxx_wastewater_networkelement" implied="false" onDeleteCascade="true" schema="tww_od" table="agxx_wastewater_networkelement"/>
             <child column="fk_wastewater_networkelement_rw_current" foreignKey="rel_catchment_area_wastewater_networkelement_rw_current" implied="false" onDeleteCascade="false" schema="tww_od" table="catchment_area"/>
             <child column="fk_wastewater_networkelement_rw_planned" foreignKey="rel_catchment_area_wastewater_networkelement_rw_planned" implied="false" onDeleteCascade="false" schema="tww_od" table="catchment_area"/>
             <child column="fk_wastewater_networkelement_ww_current" foreignKey="rel_catchment_area_wastewater_networkelement_ww_current" implied="false" onDeleteCascade="false" schema="tww_od" table="catchment_area"/>
@@ -2887,6 +3165,8 @@
       </table>
       <table name="wastewater_node" remarks="" schema="tww_od" type="TABLE">
          <column autoUpdated="false" defaultValue="tww_app.generate_oid('tww_od'::text, 'wastewater_node'::text)" digits="0" id="0" name="obj_id" nullable="false" remarks="INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch" size="16" type="varchar" typeCode="12">
+            <child column="ag64_fk_wastewater_node" foreignKey="rel_cover_wastewater_node" implied="false" onDeleteCascade="false" schema="tww_od" table="agxx_cover"/>
+            <child column="fk_wastewater_node" foreignKey="oorel_od_agxx_wastewater_node" implied="false" onDeleteCascade="true" schema="tww_od" table="agxx_wastewater_node"/>
             <child column="fk_primary_direction" foreignKey="rel_hydraulic_char_data_primary_direction" implied="false" onDeleteCascade="false" schema="tww_od" table="hydraulic_char_data"/>
             <child column="fk_wastewater_node" foreignKey="rel_hydraulic_char_data_wastewater_node" implied="false" onDeleteCascade="false" schema="tww_od" table="hydraulic_char_data"/>
             <child column="fk_pwwf_wastewater_node" foreignKey="rel_log_card_pwwf_wastewater_node" implied="false" onDeleteCascade="false" schema="tww_od" table="log_card"/>
@@ -2922,6 +3202,7 @@
       </table>
       <table name="wastewater_structure" remarks="" schema="tww_od" type="TABLE">
          <column autoUpdated="false" defaultValue="tww_app.generate_oid('tww_od'::text, 'wastewater_structure'::text)" digits="0" id="0" name="obj_id" nullable="false" remarks="INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch" size="16" type="varchar" typeCode="12">
+            <child column="fk_wastewater_structure" foreignKey="oorel_od_agxx_wastewater_structure" implied="false" onDeleteCascade="true" schema="tww_od" table="agxx_wastewater_structure"/>
             <child column="obj_id" foreignKey="oorel_od_channel_wastewater_structure" implied="false" onDeleteCascade="true" schema="tww_od" table="channel"/>
             <child column="obj_id" foreignKey="oorel_od_discharge_point_wastewater_structure" implied="false" onDeleteCascade="true" schema="tww_od" table="discharge_point"/>
             <child column="fk_wastewater_structure" foreignKey="rel_disposal_wastewater_structure" implied="false" onDeleteCascade="false" schema="tww_od" table="disposal"/>
