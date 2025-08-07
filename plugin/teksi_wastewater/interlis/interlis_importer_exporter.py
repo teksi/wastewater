@@ -1273,7 +1273,7 @@ class InterlisImporterExporter:
                 #    f"Number of datasets in class '{notsubclass}' without fk_provider : {cursor.fetchone()[0]}"
                 # )
                 logger.info(
-                    f"Number of datasets in class '{notsubclass}' without fk_dataowner : {class_fk_provider_count}"
+                    f"Number of datasets in class '{notsubclass}' without fk_provider : {class_fk_provider_count}"
                 )
 
                 # if cursor.fetchone() is None:
@@ -1327,7 +1327,7 @@ class InterlisImporterExporter:
                 #    f"Number of datasets in class '{notsubclass}' without fk_wastewater_structure : {cursor.fetchone()[0]}"
                 # )
                 logger.info(
-                    f"Number of datasets in class '{notsubclass}' without fk_dataowner : {class_fk_wastewater_structure_count}"
+                    f"Number of datasets in class '{notsubclass}' without fk_wastewater_structure : {class_fk_wastewater_structure_count}"
                 )
 
                 # if cursor.fetchone() is None:
