@@ -1281,9 +1281,11 @@ class InterlisImporterExporter:
             # add MANDATORY classes to be checked
             for notsubclass in [
                 # VSA-KEK
-                ("file"),
+                ("damage"),
                 ("data_media"),
+                ("file"),
                 ("maintenance_event"),
+
                 # SIA405 Abwasser
                 # take out for DSS 2020
                 # ("organisation"),
@@ -1292,14 +1294,26 @@ class InterlisImporterExporter:
                 ("structure_part"),
                 ("reach_point"),
                 ("pipe_profile"),
+
                 # VSA-DSS
+                # new 2020
+                ("building_group")
+                ("building_group_baugwr")
                 ("catchment_area"),
                 ("connection_object"),
                 ("control_center"),
+                # new 2020
+                ("disposal")
+                ("farm")
                 # only VSA-DSS 2015
                 # ("hazard_source"),
-                ("hydr_geometry"),
+                ("hq_relation")
                 ("hydraulic_char_data"),
+                ("hydr_geometry"),
+                ("hydr_geom_relation")
+                # new 2020
+                ("log_card")
+                # maintenance_event see VSA-KEK
                 # new 2020
                 ("measure")
                 ("measurement_result"),
@@ -1307,24 +1321,34 @@ class InterlisImporterExporter:
                 ("measuring_device"),
                 ("measuring_point"),
                 ("mechanical_pretreatment"),
+                ("mutation")
                 ("overflow"),
                 ("overflow_char"),
+                ("profile_geometry")
                 ("retention_body"),
                 # only VSA-DSS 2015
                 # ("river_bank"),
                 # ("river_bed"),
                 # ("sector_water_body"),
+                ("sludge_treatment")
                 # ("substance"),
                 ("surface_runoff_parameters"),
+                # only VSA-DSS 2015
                 # ("surface_water_bodies"),
                 ("throttle_shut_off_unit"),
                 ("waste_water_treatment"),
+                ("waste_water_treatment_plant"),
                 # only VSA-DSS 2015
                 # ("water_catchment"),
                 # ("water_control_structure"),
                 # ("water_course_segment"),
                 ("wwtp_energy_use"),
                 ("zone"),
+
+                # sia405cc
+                ("sia405cc_cable"),
+                ("sia405cc_cable_point"),
+                ("sia405pt_protection_tube"),
             ]:
                 cursor.execute(
                     f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_dataowner is null or fk_dataowner ='';"
@@ -1377,8 +1401,9 @@ class InterlisImporterExporter:
             # add MANDATORY classes to be checked
             for notsubclass in [
                 # VSA-KEK
-                ("file"),
+                ("damage"),
                 ("data_media"),
+                ("file"),
                 ("maintenance_event"),
                 # SIA405 Abwasser
                 # take out for DSS 2020
@@ -1389,13 +1414,24 @@ class InterlisImporterExporter:
                 ("reach_point"),
                 ("pipe_profile"),
                 # VSA-DSS
+                # new 2020
+                ("building_group")
+                ("building_group_baugwr")
                 ("catchment_area"),
                 ("connection_object"),
                 ("control_center"),
+                # new 2020
+                ("disposal")
+                ("farm")
                 # only VSA-DSS 2015
                 # ("hazard_source"),
-                ("hydr_geometry"),
+                ("hq_relation")
                 ("hydraulic_char_data"),
+                ("hydr_geometry"),
+                ("hydr_geom_relation")
+                # new 2020
+                ("log_card")
+                # maintenance_event see VSA-KEK
                 # new 2020
                 ("measure")
                 ("measurement_result"),
@@ -1403,24 +1439,33 @@ class InterlisImporterExporter:
                 ("measuring_device"),
                 ("measuring_point"),
                 ("mechanical_pretreatment"),
+                ("mutation")
                 ("overflow"),
                 ("overflow_char"),
+                ("profile_geometry")
                 ("retention_body"),
                 # only VSA-DSS 2015
                 # ("river_bank"),
                 # ("river_bed"),
                 # ("sector_water_body"),
+                ("sludge_treatment")
                 # ("substance"),
                 ("surface_runoff_parameters"),
                 # ("surface_water_bodies"),
                 ("throttle_shut_off_unit"),
                 ("waste_water_treatment"),
+                ("waste_water_treatment_plant"),
                 # only VSA-DSS 2015
                 # ("water_catchment"),
                 # ("water_control_structure"),
                 # ("water_course_segment"),
                 ("wwtp_energy_use"),
                 ("zone"),
+
+                # sia405cc
+                ("sia405cc_cable"),
+                ("sia405cc_cable_point"),
+                ("sia405pt_protection_tube"),
             ]:
                 cursor.execute(
                     f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_provider is null or fk_provider ='';"
