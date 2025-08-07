@@ -56,6 +56,11 @@ class TeksiWastewaterCmd:
             help="Put log files next to XTF import file",
             action="store_true",
         )
+        subparser.add_argument(
+            "--filter_nulls",
+            help="Filter out NULL values from import",
+            action="store_true",
+        )
 
         self._add_postgres_connection_args(subparser)
 
@@ -182,6 +187,7 @@ class TeksiWastewaterCmd:
                 xtf_file_input=self.args.xtf_file,
                 show_selection_dialog=self.args.show_selection_dialog,
                 logs_next_to_file=self.args.logs_next_to_file,
+                filter_nulls=self.args.filter_nulls,
             )
 
             print(f"\nData successfully imported from {self.args.xtf_file}")

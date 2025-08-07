@@ -247,7 +247,7 @@ CREATE VIEW tww_app.vw_agxx_gepknoten
 AS
 SELECT
 	  wn.obj_id AS obj_id
-	, wn.wwtp_number AS ara_nr
+	, COALESCE(wn.wwtp_number,unc.wwtp_number) AS ara_nr
 	, COALESCE(ws.year_of_construction,1800) AS baujahr
 	, COALESCE(sc.value_de,'unbekannt') AS baulicherzustand
 	, CASE WHEN st.value_de = 'in_Betrieb' THEN 'in_Betrieb.in_Betrieb' ELSE COALESCE(st.value_de,'unbekannt') END AS bauwerkstatus
@@ -274,7 +274,8 @@ SELECT
 		,'Einleitstelle_'||dp_rel.value_de
 		,'Versickerungsanlage.'||ii_ki_rev.value_de --Versickerungsanlage.andere wird auf unbekannt gemappt
 		,'Versickerungsanlage.'||ii_ki.value_de --Versickerungsanlage.andere wird auf unbekannt gemappt
-		, 'Leitungsknoten') AS funktionag
+		, 'Leitungsknoten'
+		) AS funktionag
 	, COALESCE(left(fhi.value_de,3),'SAA')  AS funktionhierarchisch
 	, COALESCE(isgate.value_de,'unbekannt') AS istschnittstelle
 	, COALESCE(ws.status_survey_year,1800) AS jahr_zustandserhebung
@@ -303,7 +304,17 @@ SELECT
     END AS ws_type
 
 
-FROM tww_od.wastewater_node wn
+FROM (
+	SELECT obj_id, wwtp_number, situation3d_geometry, backflow_level_current, bottom_level,_function_hierarchic FROM tww_od.wastewater_node wn
+	UNION (
+		SELECT obj_id, wwtp_number, situation3d_geometry, backflow_level_current, bottom_level, ch_function_hierarchic as _function_hierarchic
+		FROM tww_od.agxx_unconnected_node_bwrel un
+		EXCEPT
+		SELECT obj_id, wwtp_number, situation3d_geometry, backflow_level_current, bottom_level,ch_function_hierarchic as _function_hierarchic
+		FROM tww_od.agxx_unconnected_node_bwrel un
+		WHERE un.obj_id IN (SELECT obj_id FROM tww_od.wastewater_node wn)
+	)
+) wn
 LEFT JOIN tww_od.wastewater_networkelement ne ON wn.obj_id = ne.obj_id
 LEFT JOIN tww_app.vw_agxx_knoten_bauwerksattribute ws ON wn.obj_id=ws.obj_id
 LEFT JOIN tww_od.wastewater_structure main_ws ON wn.obj_id=main_ws.fk_main_wastewater_node
@@ -312,10 +323,7 @@ LEFT JOIN tww_od.agxx_wastewater_node wn_agxx ON wn_agxx.fk_wastewater_node = wn
 LEFT JOIN tww_od.agxx_wastewater_networkelement ne_agxx ON ne_agxx.fk_wastewater_networkelement = ne.obj_id
 LEFT JOIN tww_od.agxx_last_modification ne_agxx_lm ON ne_agxx_lm.fk_element = ne.obj_id
 LEFT JOIN tww_od.agxx_wastewater_structure ws_agxx ON ws_agxx.fk_wastewater_structure = ws.obj_id
-
 LEFT JOIN tww_od.measuring_point meas_pt ON main_ws.obj_id=meas_pt.fk_wastewater_structure
-LEFT JOIN tww_od.connection_object conn_obj ON ne.obj_id=conn_obj.fk_wastewater_networkelement
-LEFT JOIN tww_od.building build ON build.obj_id=conn_obj.obj_id
 LEFT JOIN tww_od.wwtp_structure wwtp ON main_ws.obj_id=wwtp.obj_id --tbd: Filtern, dass nur ARA-Zulauf gemappt wird
 
 LEFT JOIN tww_vl.wastewater_node_ag96_is_gateway isgate ON wn_agxx.ag96_is_gateway=isgate.code
@@ -323,7 +331,8 @@ LEFT JOIN (SELECT
 		   obj_id,
 		   co_level,
 		   detail_geometry3d_geometry,
-		   co_positional_accuracy
+		   co_positional_accuracy,
+		   wwtp_number
 		   FROM
 		   tww_od.agxx_unconnected_node_bwrel) unc ON unc.obj_id=wn.obj_id
 
@@ -401,8 +410,8 @@ SELECT
 	, concat_ws('','ch113jqg0000',right(COALESCE(ws.fk_operator,'00000107'),8)) AS betreiber
 	, concat_ws('','ch113jqg0000',right(COALESCE(ne_agxx.ag64_fk_provider,'00000107'),8)) AS datenbewirtschafter_wi
 	, concat_ws('','ch113jqg0000',right(COALESCE(ws.fk_owner,'00000107'),8)) AS eigentuemer
-	, rp_to.fk_wastewater_networkelement  AS endknoten
-	, rp_from.fk_wastewater_networkelement AS startknoten
+	, coalesce(agxx_rp_to.ag64_fk_wastewater_node, rp_to.fk_wastewater_networkelement)  AS endknoten
+	, coalesce(agxx_rp_from.ag64_fk_wastewater_node,rp_from.fk_wastewater_networkelement) AS startknoten
 	, ws_agxx.ag96_fk_measure AS gepmassnahmeref
 	, concat_ws('','ch113jqg0000',right(COALESCE(ne_agxx.ag96_fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
 	, ne_agxx.ag96_remark AS bemerkung_gep
@@ -411,7 +420,9 @@ SELECT
 FROM tww_od.reach re
 	LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = re.obj_id
     LEFT JOIN tww_od.reach_point rp_from ON rp_from.obj_id = re.fk_reach_point_from
+    LEFT JOIN tww_od.agxx_reach_point agxx_rp_from ON rp_from.obj_id = agxx_rp_from.fk_reach_point
     LEFT JOIN tww_od.reach_point rp_to ON rp_to.obj_id = re.fk_reach_point_to
+    LEFT JOIN tww_od.agxx_reach_point agxx_rp_to ON rp_to.obj_id = agxx_rp_to.fk_reach_point
     LEFT JOIN tww_od.wastewater_structure ws ON ne.fk_wastewater_structure = ws.obj_id
     LEFT JOIN tww_od.channel ch ON ch.obj_id = ws.obj_id
     LEFT JOIN tww_od.pipe_profile pp ON re.fk_pipe_profile = pp.obj_id
