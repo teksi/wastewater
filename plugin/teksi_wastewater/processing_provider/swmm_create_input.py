@@ -69,7 +69,9 @@ class SwmmCreateInputAlgorithm(TwwAlgorithm):
         )
 
     def helpUrl(self):
-        return "https://teksi.github.io/wastewater/tww_swmm/Generate-SWMM-File.html#swmm-create-input"
+        return (
+            "https://teksi.github.io/wastewater/tww_swmm/Generate-SWMM-File.html#swmm-create-input"
+        )
 
     def initAlgorithm(self, config=None):
         """Here we define the inputs and output of the algorithm, along
