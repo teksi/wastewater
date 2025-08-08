@@ -1125,13 +1125,17 @@ class InterlisImporterExporter:
                 ("zone"),
             ]:
                 cursor.execute(
-                    f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE identifier is null or identifier ='';"
+                    f"SELECT COUNT(obj_id) as _count, array_agg(obj_id) as _obj_ids FROM tww_od.{notsubclass} WHERE identifier is null or identifier ='';"
                 )
+                
                 # use cursor.fetchone()[0] instead of cursor.rowcount
                 # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
 
                 try:
-                    class_identifier_count = int(cursor.fetchone()[0])
+                    # class_identifier_count = int(cursor.fetchone()[0])
+                    result = cursor.fetchone()
+                    class_identifier_count = int(result[0])  # _count
+                    obj_ids_without_identifier = result[1] 
                 except Exception:
                     class_identifier_count = 0
                     logger.debug(
@@ -1139,7 +1143,8 @@ class InterlisImporterExporter:
                     )
                 else:
                     logger.info(
-                        f"Number of datasets in class '{notsubclass}' without identifier : {class_identifier_count}"
+                        # f"Number of datasets in class '{notsubclass}' without identifier : {class_identifier_count}"
+                        f"{'No' if class_identifier_count else class_identifier_count} row{'s' if class_identifier_count != 1 else ''} in class '{notsubclass}' without identifier{': '+ obj_ids_without_identifier if obj_ids_without_identifier else ''}"
                     )
 
                 # if cursor.fetchone() is None:
