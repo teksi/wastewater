@@ -1144,7 +1144,7 @@ class InterlisImporterExporter:
                 else:
                     logger.info(
                         # f"Number of datasets in class '{notsubclass}' without identifier : {class_identifier_count}"
-                        f"{'No' if class_identifier_count else class_identifier_count} row{'s' if class_identifier_count != 1 else ''} in class '{notsubclass}' without identifier{': '+ obj_ids_without_identifier if obj_ids_without_identifier else ''}"
+                        f"{'No' if class_identifier_count else class_identifier_count} row{'s' if class_identifier_count != 1 else ''} in class '{notsubclass}' without identifier{': ' + obj_ids_without_identifier if obj_ids_without_identifier else ''}"
                     )
 
                 # if cursor.fetchone() is None:
