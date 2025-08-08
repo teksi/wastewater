@@ -231,7 +231,7 @@ class InterlisImporterExporter:
                 f" _check_identifier_null: flag_export_check_failed {flag_export_check_failed}"
             )
 
-            # Check if MAMDATORY fk_owner is Null  before export
+            # Check if MANDATORY fk_owner is Null  before export
             # flag_export_check_failed = flag_export_check_failed and self._check_fk_owner_null(limit_to_selection)
             if self._check_fk_owner_null(limit_to_selection):
                 flag_export_check_failed = True
@@ -244,7 +244,7 @@ class InterlisImporterExporter:
                 f" _check_fk_owner_null: flag_export_check_failed {flag_export_check_failed}"
             )
 
-            # Check if MAMDATORY fk_operator is Null  before export
+            # Check if MANDATORY fk_operator is Null  before export
             # flag_export_check_failed = flag_export_check_failed and self._check_fk_operator_null(limit_to_selection)
             if self._check_fk_operator_null(limit_to_selection):
                 flag_export_check_failed = True
@@ -257,7 +257,7 @@ class InterlisImporterExporter:
                 f" _check_fk_operator_null: flag_export_check_failed {flag_export_check_failed}"
             )
 
-            # Check if MAMDATORY fk_dataowner is Null  before export
+            # Check if MANDATORY fk_dataowner is Null  before export
             # flag_export_check_failed = flag_export_check_failed and self._check_fk_dataowner_null(limit_to_selection)
             if self._check_fk_dataowner_null(limit_to_selection):
                 flag_export_check_failed = True
@@ -273,7 +273,7 @@ class InterlisImporterExporter:
             # take out again
             # flag_export_check_failed = True
 
-            # Check if MAMDATORY fk_provider is Null  before export
+            # Check if MANDATORY fk_provider is Null  before export
             # flag_export_check_failed = flag_export_check_failed and self._check_fk_provider_null(limit_to_selection)
             if self._check_fk_provider_null(limit_to_selection):
                 flag_export_check_failed = True
@@ -1177,11 +1177,11 @@ class InterlisImporterExporter:
 
     def _check_fk_owner_null(self, limit_to_selection=False):
         """
-        Check if MAMDATORY fk_owner is Null
+        Check if MANDATORY fk_owner is Null
         """
         with DatabaseUtils.PsycopgConnection() as connection:
             logger.info("-----")
-            logger.info("INTEGRITY CHECK missing MAMDATORY owner references fk_owner...")
+            logger.info("INTEGRITY CHECK missing MANDATORY owner references fk_owner...")
 
             cursor = connection.cursor()
 
@@ -1228,11 +1228,11 @@ class InterlisImporterExporter:
 
     def _check_fk_operator_null(self, limit_to_selection=False):
         """
-        Check if MAMDATORY fk_operator is Null
+        Check if MANDATORY fk_operator is Null
         """
         with DatabaseUtils.PsycopgConnection() as connection:
             logger.info("-----")
-            logger.info("INTEGRITY CHECK missing MAMDATORY operator references fk_operator...")
+            logger.info("INTEGRITY CHECK missing MANDATORY operator references fk_operator...")
 
             cursor = connection.cursor()
 
@@ -1273,7 +1273,7 @@ class InterlisImporterExporter:
 
     def _check_fk_dataowner_null(self, limit_to_selection=False):
         """
-        Check if MAMDATORY fk_dataowner is Null
+        Check if MANDATORY fk_dataowner is Null
         """
         with DatabaseUtils.PsycopgConnection() as connection:
             logger.info("-----")
@@ -1390,7 +1390,7 @@ class InterlisImporterExporter:
 
     def _check_fk_provider_null(self, limit_to_selection=False):
         """
-        Check if MAMDATORY fk_provider is Null
+        Check if MANDATORY fk_provider is Null
         """
         with DatabaseUtils.PsycopgConnection() as connection:
             logger.info("-----")
@@ -1503,7 +1503,7 @@ class InterlisImporterExporter:
 
     def _check_fk_wastewater_structure_null(self, limit_to_selection=False):
         """
-        Check if MAMDATORY fk_wastewater_structure is Null
+        Check if MANDATORY fk_wastewater_structure is Null
         """
         with DatabaseUtils.PsycopgConnection() as connection:
             logger.info("-----")
@@ -1563,7 +1563,7 @@ class InterlisImporterExporter:
 
     def _check_fk_wastewater_node_null(self, limit_to_selection=False):
         """
-        Check if MAMDATORY fk_wastewater_node is Null
+        Check if MANDATORY fk_wastewater_node is Null
         """
         with DatabaseUtils.PsycopgConnection() as connection:
             logger.info("-----")
@@ -1621,7 +1621,7 @@ class InterlisImporterExporter:
 
     def _check_fk_responsible_entity_null(self, limit_to_selection=False):
         """
-        Check if MAMDATORY fk_responsible_entity is Null
+        Check if MANDATORY fk_responsible_entity is Null
         """
         with DatabaseUtils.PsycopgConnection() as connection:
             logger.info("-----")
@@ -1681,7 +1681,7 @@ class InterlisImporterExporter:
 
     def _check_fk_responsible_start_null(self, limit_to_selection=False):
         """
-        Check if MAMDATORY fk_responsible_start is Null
+        Check if MANDATORY fk_responsible_start is Null
         """
         with DatabaseUtils.PsycopgConnection() as connection:
             logger.info("-----")
@@ -1739,7 +1739,7 @@ class InterlisImporterExporter:
 
     def _check_fk_discharge_point_null(self, limit_to_selection=False):
         """
-        Check if MAMDATORY fk_discharge_point is Null
+        Check if MANDATORY fk_discharge_point is Null
         """
         with DatabaseUtils.PsycopgConnection() as connection:
             logger.info("-----")
@@ -1795,7 +1795,7 @@ class InterlisImporterExporter:
 
     def _check_fk_hydraulic_char_data_null(self, limit_to_selection=False):
         """
-        Check if MAMDATORY fk_hydraulic_char_data is Null
+        Check if MANDATORY fk_hydraulic_char_data is Null
         """
         with DatabaseUtils.PsycopgConnection() as connection:
             logger.info("-----")
@@ -1855,7 +1855,7 @@ class InterlisImporterExporter:
 
     def _check_fk_building_group_null(self, limit_to_selection=False):
         """
-        Check if MAMDATORY fk_building_group is Null
+        Check if MANDATORY fk_building_group is Null
         """
         with DatabaseUtils.PsycopgConnection() as connection:
             logger.info("-----")
@@ -1909,7 +1909,7 @@ class InterlisImporterExporter:
 
     def _check_fk_reach_null(self, limit_to_selection=False):
         """
-        Check if MAMDATORY fk_reach is Null
+        Check if MANDATORY fk_reach is Null
         """
         with DatabaseUtils.PsycopgConnection() as connection:
             logger.info("-----")
@@ -1961,7 +1961,7 @@ class InterlisImporterExporter:
 
     def _check_fk_reach_point_from_null(self, limit_to_selection=False):
         """
-        Check if MAMDATORY fk_reach_point_from is Null
+        Check if MANDATORY fk_reach_point_from is Null
         """
         with DatabaseUtils.PsycopgConnection() as connection:
             logger.info("-----")
@@ -2019,7 +2019,7 @@ class InterlisImporterExporter:
 
     def _check_fk_reach_point_to_null(self, limit_to_selection=False):
         """
-        Check if MAMDATORY fk_reach_point_to is Null
+        Check if MANDATORY fk_reach_point_to is Null
         """
         with DatabaseUtils.PsycopgConnection() as connection:
             logger.info("-----")
@@ -2073,7 +2073,7 @@ class InterlisImporterExporter:
 
     def _check_fk_pwwf_wastewater_node_null(self, limit_to_selection=False):
         """
-        Check if MAMDATORY fk_pwwf_wastewater_node is Null
+        Check if MANDATORY fk_pwwf_wastewater_node is Null
         """
         with DatabaseUtils.PsycopgConnection() as connection:
             logger.info("-----")
@@ -2133,7 +2133,7 @@ class InterlisImporterExporter:
 
     def _check_fk_catchment_area_null(self, limit_to_selection=False):
         """
-        Check if MAMDATORY fk_catchment_area is Null
+        Check if MANDATORY fk_catchment_area is Null
         """
         with DatabaseUtils.PsycopgConnection() as connection:
             logger.info("-----")
