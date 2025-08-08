@@ -58,12 +58,12 @@ class SwmmImportResultsAlgorithm(TwwAlgorithm):
         return self.tr(
             """
             Import SWMM results in TWW database.
-            See: https://teksi.github.io/wastewater/de/tww_swmm/Process-Results.html#import-results
+            See: https://teksi.github.io/wastewater/tww_swmm/Process-Results.html#import-results
             """
         )
 
     def helpUrl(self):
-        return "https://teksi.github.io/wastewater/de/tww_swmm/Process-Results.html#import-results"
+        return "https://teksi.github.io/wastewater/tww_swmm/Process-Results.html#import-results"
 
     def initAlgorithm(self, config=None):
         """Here we define the inputs and output of the algorithm, along

@@ -58,12 +58,12 @@ class SwmmExecuteAlgorithm(TwwAlgorithm):
             """
         Launch a swmm simulation.
          Note that usually a .inp file exported with TWW is not directly launchable. It must be checked and edited with a SWMM interface.
-         See: https://teksi.github.io/wastewater/de/tww_swmm/Run-SWMM-Simulation.html#run-a-simulation-with-tww-swmm
+         See: https://teksi.github.io/wastewater/tww_swmm/Run-SWMM-Simulation.html#run-a-simulation-with-tww-swmm
          """
         )
 
     def helpUrl(self):
-        return "https://teksi.github.io/wastewater/de/tww_swmm/Run-SWMM-Simulation.html#run-a-simulation-with-tww-swmm"
+        return "https://teksi.github.io/wastewater/tww_swmm/Run-SWMM-Simulation.html#run-a-simulation-with-tww-swmm"
 
     def initAlgorithm(self, config=None):
         """Here we define the inputs and output of the algorithm, along
