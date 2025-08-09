@@ -7,7 +7,7 @@
       <sequence increment="1" name="oid_prefixes_id_seq" startValue="1"/>
    </sequences>
    <tables>
-      <table name="dictionary_od_field" numRows="859" remarks="" schema="tww_sys" type="TABLE">
+      <table name="dictionary_od_field" numRows="860" remarks="" schema="tww_sys" type="TABLE">
          <column autoUpdated="true" defaultValue="nextval('tww_sys.dictionary_od_field_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="class_id" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="attribute_id" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
