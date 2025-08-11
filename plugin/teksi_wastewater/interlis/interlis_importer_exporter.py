@@ -1,6 +1,7 @@
 import logging
 import os
 import tempfile
+from pathlib import Path
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication
@@ -15,6 +16,8 @@ from .interlis_model_mapping.interlis_exporter_to_intermediate_schema import (
 from .interlis_model_mapping.interlis_importer_to_intermediate_schema import (
     InterlisImporterToIntermediateSchema,
 )
+from .interlis_model_mapping.model_interlis_ag64 import ModelInterlisAG64
+from .interlis_model_mapping.model_interlis_ag96 import ModelInterlisAG96
 from .interlis_model_mapping.model_interlis_dss import ModelInterlisDss
 from .interlis_model_mapping.model_interlis_sia405_abwasser import (
     ModelInterlisSia405Abwasser,
@@ -24,6 +27,7 @@ from .interlis_model_mapping.model_interlis_sia405_base_abwasser import (
 )
 from .interlis_model_mapping.model_interlis_vsa_kek import ModelInterlisVsaKek
 from .interlis_model_mapping.model_tww import ModelTwwSys, ModelTwwVl
+from .interlis_model_mapping.model_tww_ag6496 import ModelTwwAG6496
 from .interlis_model_mapping.model_tww_od import ModelTwwOd
 from .utils.ili2db import InterlisTools
 from .utils.various import CmdException, LoggingHandlerContext, logger, make_log_path
@@ -50,15 +54,25 @@ class InterlisImporterExporter:
         self.model_classes_tww_od = None
         self.model_classes_tww_vl = None
         self.model_classes_tww_sys = None
+        self.model_classes_tww_app = None
 
+        self.filter_nulls = None
         self.current_progress = 0
 
-    def interlis_import(self, xtf_file_input, show_selection_dialog=False, logs_next_to_file=True):
+    def interlis_import(
+        self,
+        xtf_file_input,
+        show_selection_dialog=False,
+        logs_next_to_file=True,
+        filter_nulls=True,
+    ):
         # Configure logging
         if logs_next_to_file:
             self.base_log_path = xtf_file_input
         else:
             self.base_log_path = None
+
+        self.filter_nulls = filter_nulls
 
         # Validating the input file
         self._progress_done(5, "Validating the input file...")
@@ -79,6 +93,13 @@ class InterlisImporterExporter:
             import_model = config.MODEL_NAME_SIA405_ABWASSER
         elif config.MODEL_NAME_DSS in import_models:
             import_model = config.MODEL_NAME_DSS
+
+        elif config.MODEL_NAME_SIA405_BASE_ABWASSER in import_models:
+            import_model = config.MODEL_NAME_SIA405_ABWASSER
+        elif config.MODEL_NAME_AG96 in import_models:
+            import_model = config.MODEL_NAME_AG96
+        elif config.MODEL_NAME_AG64 in import_models:
+            import_model = config.MODEL_NAME_AG64
 
         if not import_model:
             error_text = f"No supported model was found among '{import_models}'."
@@ -202,7 +223,20 @@ class InterlisImporterExporter:
                     limit_to_selection=limit_to_selection,
                     selected_labels_scales_indices=selected_labels_scales_indices,
                     labels_file_path=labels_file,
+                    export_model=export_models[0],
+                    export_orientation=export_orientation,
                 )
+
+        if export_models[0] == config.MODEL_NAME_AG96:
+            file_path = "data/Organisationstabelle_AG96.xtf"
+            abs_file_path = Path(__file__).parent.resolve() / file_path
+            logger.info("Importing AG-96 organisation to intermediate schema")
+            self._import_xtf_file(abs_file_path)
+        elif export_models[0] == config.MODEL_NAME_AG64:
+            file_path = "data/Organisationstabelle_AG64.xtf"
+            abs_file_path = Path(__file__).parent.resolve() / file_path
+            logger.info("Importing AG-64 organisation to intermediate schema")
+            self._import_xtf_file(abs_file_path)
 
         # Export to the temporary ili2pg model
         self._progress_done(35, "Converting from TEKSI Wastewater...")
@@ -265,7 +299,9 @@ class InterlisImporterExporter:
             model_classes_interlis=self.model_classes_interlis,
             model_classes_tww_od=self.model_classes_tww_od,
             model_classes_tww_vl=self.model_classes_tww_vl,
+            model_classes_tww_app=self.model_classes_tww_app,
             callback_progress_done=self._progress_done_intermediate_schema,
+            filter_nulls=self.filter_nulls,
         )
 
         with LoggingHandlerContext(log_handler):
@@ -310,6 +346,8 @@ class InterlisImporterExporter:
         limit_to_selection,
         selected_labels_scales_indices,
         labels_file_path,
+        export_model,
+        export_orientation=90.0,
     ):
         self._progress_done(self.current_progress, "Extracting labels...")
 
@@ -335,16 +373,67 @@ class InterlisImporterExporter:
             )
 
         self._progress_done(self.current_progress + 5)
-        processing.run(
-            "tww:extractlabels_interlis",
-            {
-                "OUTPUT": labels_file_path,
-                "RESTRICT_TO_SELECTION": limit_to_selection,
-                "STRUCTURE_VIEW_LAYER": structures_lyr,
-                "REACH_VIEW_LAYER": reaches_lyr,
-                "SCALES": selected_labels_scales_indices,
-            },
-        )
+        if export_model == config.MODEL_NAME_AG96:
+            catch_lyr = TwwLayerManager.layer("catchment_area")
+            meas_pt_lyr = TwwLayerManager.layer("measure_point")
+            meas_lin_lyr = TwwLayerManager.layer("measure_line")
+            meas_ply_lyr = TwwLayerManager.layer("measure_polygon")
+            building_group_lyr = TwwLayerManager.layer("building_group")
+
+            processing.run(
+                "tww:extractlabels_interlis",
+                {
+                    "OUTPUT": labels_file_path,
+                    "RESTRICT_TO_SELECTION": limit_to_selection,
+                    "STRUCTURE_VIEW_LAYER": structures_lyr,
+                    "REACH_VIEW_LAYER": reaches_lyr,
+                    "CATCHMENT_LAYER": catch_lyr,
+                    "MEASURE_POINT_LAYER": meas_pt_lyr,
+                    "MEASURE_LINE_LAYER": meas_lin_lyr,
+                    "MEASURE_POLYGON_LAYER": meas_ply_lyr,
+                    "BUILDING_GROUP_LAYER": building_group_lyr,
+                    "SCALES": selected_labels_scales_indices,
+                    "REPLACE_WS_WITH_WN": True,
+                },
+            )
+        elif export_model == config.MODEL_NAME_DSS:
+            catch_lyr = TwwLayerManager.layer("catchment_area")
+
+            processing.run(
+                "tww:extractlabels_interlis",
+                {
+                    "OUTPUT": labels_file_path,
+                    "RESTRICT_TO_SELECTION": limit_to_selection,
+                    "STRUCTURE_VIEW_LAYER": structures_lyr,
+                    "REACH_VIEW_LAYER": reaches_lyr,
+                    "CATCHMENT_LAYER": catch_lyr,
+                    "SCALES": selected_labels_scales_indices,
+                },
+            )
+        elif export_model == config.MODEL_NAME_AG64:
+            processing.run(
+                "tww:extractlabels_interlis",
+                {
+                    "OUTPUT": labels_file_path,
+                    "RESTRICT_TO_SELECTION": limit_to_selection,
+                    "STRUCTURE_VIEW_LAYER": structures_lyr,
+                    "REACH_VIEW_LAYER": reaches_lyr,
+                    "SCALES": selected_labels_scales_indices,
+                    "REPLACE_WS_WITH_WN": True,
+                },
+            )
+        else:
+            processing.run(
+                "tww:extractlabels_interlis",
+                {
+                    "OUTPUT": labels_file_path,
+                    "RESTRICT_TO_SELECTION": limit_to_selection,
+                    "EXPORT_ORIENTATION": export_orientation,
+                    "STRUCTURE_VIEW_LAYER": structures_lyr,
+                    "REACH_VIEW_LAYER": reaches_lyr,
+                    "SCALES": selected_labels_scales_indices,
+                },
+            )
 
     def _export_to_intermediate_schema(
         self,
@@ -369,6 +458,7 @@ class InterlisImporterExporter:
             model_classes_tww_od=self.model_classes_tww_od,
             model_classes_tww_vl=self.model_classes_tww_vl,
             model_classes_tww_sys=self.model_classes_tww_sys,
+            model_classes_tww_app=self.model_classes_tww_app,
             labels_orientation_offset=export_orientation,
             selection=selected_ids,
             labels_file=labels_file_path,
@@ -599,7 +689,12 @@ class InterlisImporterExporter:
                         )
 
     def _init_model_classes(self, model):
-        if model == config.MODEL_NAME_SIA405_BASE_ABWASSER:
+        ModelInterlis = None
+        if model == config.MODEL_NAME_AG96:
+            ModelInterlis = ModelInterlisAG96
+        elif model == config.MODEL_NAME_AG64:
+            ModelInterlis = ModelInterlisAG64
+        elif model == config.MODEL_NAME_SIA405_BASE_ABWASSER:
             ModelInterlis = ModelInterlisSia405BaseAbwasser
         elif model == config.MODEL_NAME_SIA405_ABWASSER:
             ModelInterlis = ModelInterlisSia405Abwasser
@@ -620,6 +715,12 @@ class InterlisImporterExporter:
 
         if self.model_classes_tww_sys is None:
             self.model_classes_tww_sys = ModelTwwSys().classes()
+            self._progress_done(self.current_progress + 1)
+
+        if (
+            model == config.MODEL_NAME_AG96 or model == config.MODEL_NAME_AG64
+        ) and self.model_classes_tww_app is None:
+            self.model_classes_tww_app = ModelTwwAG6496().classes()
             self._progress_done(self.current_progress + 1)
 
     def _progress_done_intermediate_schema(self):

@@ -18,6 +18,7 @@ from view.maintenance_views import (
 from view.vw_tww_additional_ws import vw_tww_additional_ws
 from view.vw_tww_damage_channel import vw_tww_damage_channel
 from view.vw_tww_infiltration_installation import vw_tww_infiltration_installation
+from view.vw_tww_log_card import vw_tww_log_card
 from view.vw_tww_measurement_series import vw_tww_measurement_series
 from view.vw_tww_overflow import vw_tww_overflow
 from view.vw_tww_reach import vw_tww_reach
@@ -56,19 +57,19 @@ class Hook(HookBase):
             self.parameters = self.load_yaml(self.cwd / "app_modification.template.yaml")
             if "modification_repositories" in self.parameters:
                 for entry in self.parameters["modification_repositories"]:
-                    if modification_ci and entry[id] == "ci":
+                    if modification_ci and entry["id"] == "ci":
                         entry["active"] = True
-                    if modification_agxx and entry[id] == "agxx":
+                    if modification_agxx and entry["id"] == "agxx":
                         entry["active"] = True
 
-        abspath = self.cwd if not modification_yaml else ""
+        self.abspath = self.cwd if not modification_yaml else ""
 
         variables_pirogue = {
             "SRID": psycopg.sql.SQL(f"{SRID}")
         }  # when dropping psycopg2 support, we can use the SRID var directly
         self.variables_sql = {
             "SRID": {
-                "value": f"{SRID}",
+                "value": SRID,
                 "type": "number",
             },
             "value_lang": {
@@ -111,7 +112,7 @@ Running modification {modification.get('id')}
                 """
                 )
                 self.load_modification(
-                    modification=modification,
+                    modification_config=modification,
                 )
         for entry in self.parameters.get("modification_repositories"):
             if entry.get("reset_vl", False):
@@ -136,20 +137,20 @@ Running modification {modification.get('id')}
         for key in self.multiple_inherintances:
             MultipleInheritance(
                 connection=self.connection,
-                definition=self.load_yaml(abspath / self.multiple_inherintances[key]),
+                definition=self.load_yaml(self.abspath / self.multiple_inherintances[key]),
                 drop=True,
                 variables=variables_pirogue,
             ).create()
 
         for key, value in self.extra_definitions.items():
             if value:
-                self.extra_definitions[key].update(abspath / value)
+                self.extra_definitions[key] = self.abspath / value
 
         vw_wastewater_structure(
             connection=self.connection,
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_wastewater_structure"])
-                if self.extra_definitions["vw_wastewater_structure"]
+                if self.extra_definitions.get("vw_wastewater_structure")
                 else {}
             ),
         )
@@ -158,7 +159,7 @@ Running modification {modification.get('id')}
             srid=SRID,
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_wastewater_structure"])
-                if self.extra_definitions["vw_tww_wastewater_structure"]
+                if self.extra_definitions.get("vw_tww_wastewater_structure")
                 else {}
             ),
         )
@@ -167,7 +168,7 @@ Running modification {modification.get('id')}
             srid=SRID,
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_infiltration_installation"])
-                if self.extra_definitions["vw_tww_infiltration_installation"]
+                if self.extra_definitions.get("vw_tww_infiltration_installation")
                 else {}
             ),
         )
@@ -175,7 +176,7 @@ Running modification {modification.get('id')}
             connection=self.connection,
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_reach"])
-                if self.extra_definitions["vw_tww_reach"]
+                if self.extra_definitions.get("vw_tww_reach")
                 else {}
             ),
         )
@@ -184,7 +185,23 @@ Running modification {modification.get('id')}
             srid=SRID,
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_channel"])
-                if self.extra_definitions["vw_tww_channel"]
+                if self.extra_definitions.get("vw_tww_channel")
+                else {}
+            ),
+        )
+        vw_tww_channel_maintenance(
+            connection=self.connection,
+            extra_definition=(
+                self.load_yaml(self.extra_definitions["vw_tww_channel_maintenance"])
+                if self.extra_definitions.get("vw_tww_channel_maintenance")
+                else {}
+            ),
+        )
+        vw_tww_ws_maintenance(
+            connection=self.connection,
+            extra_definition=(
+                self.load_yaml(self.extra_definitions["vw_tww_ws_maintenance"])
+                if self.extra_definitions.get("vw_tww_ws_maintenance")
                 else {}
             ),
         )
@@ -208,7 +225,7 @@ Running modification {modification.get('id')}
             connection=self.connection,
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_damage_channel"])
-                if self.extra_definitions["vw_tww_damage_channel"]
+                if self.extra_definitions.get("vw_tww_damage_channel")
                 else {}
             ),
         )
@@ -217,7 +234,7 @@ Running modification {modification.get('id')}
             connection=self.connection,
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_additional_ws"])
-                if self.extra_definitions["vw_tww_additional_ws"]
+                if self.extra_definitions.get("vw_tww_additional_ws")
                 else {}
             ),
         )
@@ -225,7 +242,7 @@ Running modification {modification.get('id')}
             connection=self.connection,
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_measurement_series"])
-                if self.extra_definitions["vw_tww_measurement_series"]
+                if self.extra_definitions.get("vw_tww_measurement_series")
                 else {}
             ),
         )
@@ -233,15 +250,23 @@ Running modification {modification.get('id')}
             connection=self.connection,
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_overflow"])
-                if self.extra_definitions["vw_tww_overflow"]
+                if self.extra_definitions.get("vw_tww_overflow")
+                else {}
+            ),
+        )
+        vw_tww_log_card(
+            srid=SRID,
+            connection=self.connection,
+            extra_definition=(
+                self.load_yaml(self.extra_definitions["vw_tww_log_card"])
+                if self.extra_definitions.get("vw_tww_log_card")
                 else None
             ),
         )
-
         # TODO: Are these export views necessary? cymed 13.03.25
         for _, yaml_path in self.simple_joins_yaml.items():
             SimpleJoins(
-                definition=self.load_yaml(abspath / yaml_path), connection=self.connection
+                definition=self.load_yaml(self.abspath / yaml_path), connection=self.connection
             ).create()
 
         sql_directories = [
@@ -284,8 +309,8 @@ Running modification {modification.get('id')}
         # load definitions from config
         template_path = modification_config.get("template", None)
         if template_path:
-            curr_dir = os.path.dirname(template_path)
-            modification_config = self.load_yaml(template_path)
+            curr_dir = self.abspath / os.path.dirname(template_path)
+            modification_config = self.load_yaml(self.abspath / template_path)
         else:
             curr_dir = ""
 
@@ -372,9 +397,10 @@ Running modification {modification.get('id')}
                 value, var_type = meta["value"], meta["type"].lower()
 
                 if var_type == "number":  # Directly insert SQL without escaping
-                    if not re.match(r"^[\d.]*$", value):  # avoid injection
-                        raise ValueError(f"Number '{value}' contains invalid characters.")
-                    formatted_vars[key] = psycopg.sql.SQL(value)
+                    if isinstance(value, float) or isinstance(value, int):
+                        formatted_vars[key] = psycopg.sql.SQL(f"{value}")
+                    else:  # avoid injection
+                        raise ValueError(f"Value '{value}' is not float or int.")
                 elif var_type == "identifier":  # Table/Column names
                     if not re.match(r"^[a-zA-Z_][a-zA-Z0-9_]*$", value):  # avoid injection
                         raise ValueError(f"Identifier '{value}' contains invalid characters.")

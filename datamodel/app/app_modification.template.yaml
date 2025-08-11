@@ -14,6 +14,7 @@ extra_definitions:
   vw_tww_damage_channel: null
   vw_tww_additional_ws: null
   vw_tww_measurement_series: null
+  vw_tww_log_card: null
 
 multiple_inherintances:
   vw_maintenance: "view/multipleinheritance/vw_maintenance_event.yaml"
@@ -26,11 +27,11 @@ simple_joins_yaml:
 modification_repositories:
   - id: ci
     active: false
-    template: modification_repos\ci-extension\config.yaml
+    template: modification_repos/ci-extension/config.yaml
   - id: agxx
     active: false
     reset_vl: false
-    template: modification_repos\tww2ag6496\config.yaml
+    template: modification_repos/tww2ag6496/config.yaml
   - id: demo
     active: false
     reset_vl: false
@@ -42,6 +43,6 @@ modification_repositories:
         value: 0
         type: number
     sql_files:
-      - file: \datamodel\app\modification_repos\dummy\000_demo.sql
+      - file: /datamodel/app/modification_repos/dummy/000_demo.sql
     reset_vl_files:
-      - file: \datamodel\app\modification_repos\dummy\vl_management.sql
+      - file: /datamodel/app/modification_repos/dummy/vl_management.sql
