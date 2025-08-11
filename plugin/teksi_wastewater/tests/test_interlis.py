@@ -260,7 +260,8 @@ class TestInterlis(unittest.TestCase):
             "Rohrprofil",
             "ch000000PP000003",
         )
-        xml_height_width_ratio = interlis_object.get("HoehenBreitenverhaeltnis", None)
+        # xml_height_width_ratio = interlis_object.get("HoehenBreitenverhaeltnis", None)
+        xml_height_width_ratio = interlis_object.find("HoehenBreitenverhaeltnis").text
         self.assertEqual(xml_height_width_ratio, 1.13)
 
         # # add debug output
