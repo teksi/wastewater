@@ -98,7 +98,9 @@ class TestInterlis(unittest.TestCase):
                 # testing with fixed attribute name
                 # xml_attribute = interlis_object.attrib.get("HoehenBreitenverhaeltnis", None)
                 # Attributname has to be German, as xtf is German
-                xml_attribute = interlis_object.get("HoehenBreitenverhaeltnis", None)
+                # xml_attribute = interlis_object.get("HoehenBreitenverhaeltnis", None)
+                # https://www.plus2net.com/python/xml-reading.php
+                xml_attribute = interlis_object.find("HoehenBreitenverhaeltnis").text
                 return xml_attribute
 
         return None
