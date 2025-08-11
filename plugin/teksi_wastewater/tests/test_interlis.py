@@ -263,7 +263,8 @@ class TestInterlis(unittest.TestCase):
         # xml_height_width_ratio = interlis_object.get("HoehenBreitenverhaeltnis", None)
         # debug - print to find out how interlis_object looks like
         print(interlis_object)
-        xml_height_width_ratio = interlis_object.find("HoehenBreitenverhaeltnis").text
+        #xml_height_width_ratio = interlis_object.find("HoehenBreitenverhaeltnis").text
+        xml_height_width_ratio = interlis_object.find("HoehenBreitenverhaeltnis")
         self.assertEqual(xml_height_width_ratio, 1.13)
 
         # # add debug output
