@@ -246,7 +246,7 @@ class TestInterlis(unittest.TestCase):
 
         # Check exported TID and height_width_ratio pipe_profile
         interlis_object = self._get_xtf_object(
-            exported_xtf_filename, config.TOPIC_NAME_DSS, "Rohrprofil", "ch000000PP000003"
+            exported_xtf_filename, config.TOPIC_NAME_SIA405_ABWASSER, "Rohrprofil", "ch000000PP000003"
         )
         self.assertIsNone(interlis_object)
         # xml_tid = interlis_object.attrib.get("TID", None)
@@ -254,7 +254,7 @@ class TestInterlis(unittest.TestCase):
         # old
         xml_height_width_ratio = self._get_xtf_object_attribute(
         exported_xtf_filename,
-         config.TOPIC_NAME_DSS,
+         config.TOPIC_NAME_SIA405_ABWASSER,
          "Rohrprofil",
          "ch000000PP000003",
          "HoehenBreitenverhaeltnis",
