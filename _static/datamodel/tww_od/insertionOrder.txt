@@ -108,3 +108,4 @@ agxx_last_modification
 agxx_last_modification_updater
 default_values
 import_manhole_quarantine
+reach_coefficient_of_friction

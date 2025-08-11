@@ -98,7 +98,6 @@ There are now 6 `schemas <https://teksi.github.io/wastewater/en/user-guide/layer
 
 + public
 + tww_app
-+ tww_cfg
 + tww_od
 + tww_sys
 + tww_vl

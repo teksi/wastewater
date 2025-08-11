@@ -2488,6 +2488,14 @@
             <column ascending="true" name="progression3d_geometry"/>
          </index>
       </table>
+      <table name="reach_coefficient_of_friction" remarks="" schema="tww_od" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="fk_material" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="coefficient_of_friction" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
+         <primaryKey column="fk_material" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_vl_reach_coefficient_of_friction_id" unique="true">
+            <column ascending="true" name="fk_material"/>
+         </index>
+      </table>
       <table name="reach_point" remarks="" schema="tww_od" type="TABLE">
          <column autoUpdated="false" defaultValue="tww_app.generate_oid('tww_od'::text, 'reach_point'::text)" digits="0" id="0" name="obj_id" nullable="false" remarks="INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch" size="16" type="varchar" typeCode="12">
             <child column="fk_reach_point" foreignKey="oorel_od_agxx_reach_point" implied="false" onDeleteCascade="true" schema="tww_od" table="agxx_reach_point"/>
