@@ -288,7 +288,7 @@ class TestInterlis(unittest.TestCase):
         # xml_height_width_ratio = interlis_object.find("HoehenBreitenverhaeltnis")
 
         # rank = country.find('rank').text
-        xml_height_width_ratio = interlis_object.findall("HoehenBreitenverhaeltnis").text
+        xml_height_width_ratio = interlis_object.findall("HoehenBreitenverhaeltnis")
         self.assertEqual(xml_height_width_ratio, 1.13)
 
         # # add debug output
