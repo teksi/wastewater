@@ -96,14 +96,19 @@ class TestInterlis(unittest.TestCase):
             if xml_tid == tid:
 
                 # xml_attribute = interlis_object.findall(attributename, namespace)
+                # namespace does not work - needs "" : ahead of it - why?
                 xmlns = {"": "http://www.interlis.ch/INTERLIS2.3"}  # kein namespace Prefix
-                xml_attribute = interlis_object.findall(attributename, xmlns)
-                if len(xml_attribute) > 0:
-                    xml_attribute_value = xml_attribute[0].text
-                else:
-                    # No tag with attributename found!
-                    xml_attribute_value = None
+                # xml_attribute = interlis_object.findall(attributename, xmlns)
+                # if len(xml_attribute) > 0:
+                    # xml_attribute_value = xml_attribute[0].text
+                # else:
+                    # # No tag with attributename found!
+                    # xml_attribute_value = None
 
+                # directly with findtext as there should be only one attribute
+                xml_attribute_value = interlis_object.findtext(
+                   "HoehenBreitenverhaeltnis", None, xmlns
+                )
                 return xml_attribute_value
 
         return None
@@ -240,7 +245,6 @@ class TestInterlis(unittest.TestCase):
         )
         self.assertIsNotNone(interlis_object)
 
-        # test option 1
         # Check exported TID and height_width_ratio pipe_profile
         interlis_object = self._get_xtf_object(
             exported_xtf_filename,
@@ -263,33 +267,8 @@ class TestInterlis(unittest.TestCase):
 
         self.assertEqual(xml_attribute_value, "1.13")
 
-        # Test option 2
-        # Check exported TID and height_width_ratio pipe_profile
-        interlis_object = self._get_xtf_object(
-            exported_xtf_filename,
-            config.TOPIC_NAME_SIA405_ABWASSER,
-            "Rohrprofil",
-            "ch000000PP000003",
-        )
-
-        # Direct check with namespace specified here
-        xmlns = {"": "http://www.interlis.ch/INTERLIS2.3"}  # kein namespace Prefix
-        xml_height_width_ratio = interlis_object.findall("HoehenBreitenverhaeltnis", xmlns)
-
-        if len(xml_height_width_ratio) > 0:
-            xml_height_width_ratio_value = xml_height_width_ratio[0].text
-        else:
-            # No HoehenBreitenverhaeltnis found!
-            xml_height_width_ratio_value = None
-
-        # directly with findtext as there should be only one attribute
-        xml_height_width_ratio_value = interlis_object.findtext(
-            "HoehenBreitenverhaeltnis", None, xmlns
-        )
-        self.assertEqual(xml_height_width_ratio_value, "1.13")
-
         # in future if VSA-DSS / SIA405 INTERLIS is also patched  change to:
-        # self.assertEqual(xml_height_width_ratio_value, "1.12857")
+        # self.assertEqual(xml_attribute_value, "1.12857")
 
         # Export minimal dss
         export_xtf_file = self._get_output_filename("export_minimal_dataset_dss")
