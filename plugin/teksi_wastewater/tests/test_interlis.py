@@ -290,7 +290,7 @@ class TestInterlis(unittest.TestCase):
         # rank = country.find('rank').text
         # xml_height_width_ratio = interlis_object.findall("HoehenBreitenverhaeltnis")
         xmlns = {"": "http://www.interlis.ch/INTERLIS2.3"}  # kein namespace Prefix
-        interlis_object.findtext("HoehenBreitenverhaeltnis", xmlns)
+        xml_height_width_ratio = interlis_object.findtext("HoehenBreitenverhaeltnis", xmlns)
 
         # if len(xml_height_width_ratio) > 0:
         # xml_height_width_ratio_value = xml_height_width_ratio[0].text
@@ -298,7 +298,7 @@ class TestInterlis(unittest.TestCase):
         # print("No HoehenBreitenverhaeltnis found!")
         # xml_height_width_ratio_value = 0
 
-        self.assertEqual(xml_height_width_ratio_value, "1.13")
+        self.assertEqual(xml_height_width_ratio, "1.13")
 
         # # add debug output
         # logger.debug(f"xml_height_width_ratio =  {xml_height_width_ratio}")
