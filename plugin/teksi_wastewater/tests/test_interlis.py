@@ -95,8 +95,9 @@ class TestInterlis(unittest.TestCase):
 
             if xml_tid == tid:
 
-                xml_attribute = interlis_object.findall(attributename, namespace)
-
+                # xml_attribute = interlis_object.findall(attributename, namespace)
+                xmlns = {"": "http://www.interlis.ch/INTERLIS2.3"}  # kein namespace Prefix
+                xml_attribute = interlis_object.findall(attributename, xmlns)
                 if len(xml_attribute) > 0:
                     xml_attribute_value = xml_attribute[0].text
                 else:
