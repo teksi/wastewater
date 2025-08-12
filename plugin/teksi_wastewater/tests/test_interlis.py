@@ -95,7 +95,7 @@ class TestInterlis(unittest.TestCase):
 
             if xml_tid == tid:
 
-                xml_attribute = root.findallinterlis_object.findall(attributename, namespace)
+                xml_attribute = interlis_object.findall(attributename, namespace)
 
                 if len(xml_attribute) > 0:
                     xml_attribute_value = xml_attribute[0].text
