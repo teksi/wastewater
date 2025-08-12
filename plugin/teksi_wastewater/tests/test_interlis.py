@@ -255,9 +255,9 @@ class TestInterlis(unittest.TestCase):
         xml_attribute_value = self._get_xtf_object_attribute(
             exported_xtf_filename,
             config.TOPIC_NAME_SIA405_ABWASSER,
-            "Rohrprofil", # classname
-            "ch000000PP000003", # tid
-            "HoehenBreitenverhaeltnis", #attributename
+            "Rohrprofil",  # classname
+            "ch000000PP000003",  # tid
+            "HoehenBreitenverhaeltnis",  # attributename
         )
 
         self.assertEqual(xml_attribute_value, "1.13")
@@ -285,7 +285,6 @@ class TestInterlis(unittest.TestCase):
 
         # in future if VSA-DSS / SIA405 INTERLIS is also patched  change to:
         # self.assertEqual(xml_height_width_ratio_value, "1.12857")
-
 
         # Export minimal dss
         export_xtf_file = self._get_output_filename("export_minimal_dataset_dss")
