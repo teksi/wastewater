@@ -293,7 +293,7 @@ class TestInterlis(unittest.TestCase):
             xml_height_width_ratio_value = xml_height_width_ratio[0]
         else:
             print ("No HoehenBreitenverhaeltnis found!")
-        
+
         self.assertEqual(xml_height_width_ratio_value, 1.13)
 
         # # add debug output
