@@ -255,7 +255,7 @@ class TestInterlis(unittest.TestCase):
             "Rohrprofil",
             "ch000000PP000003",
         )
-        #self.assertIsNone(interlis_object)
+        # self.assertIsNone(interlis_object)
         self.assertIsNotNone(interlis_object)
         # xml_tid = interlis_object.attrib.get("TID", None)
         # xml_height_width_ratio = interlis_object.attrib.get("height_width_ratio", None)
