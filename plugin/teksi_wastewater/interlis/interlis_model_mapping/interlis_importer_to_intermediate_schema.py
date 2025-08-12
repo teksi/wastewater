@@ -1821,8 +1821,8 @@ class InterlisImporterToIntermediateSchema:
                 ),
                 measuring_duration=row.messdauer,
                 remark=row.bemerkung,
-                time=row.zeit,
-                value=row.wert,
+                time_point=row.zeit,
+                measurement_value=row.wert,
                 fk_measuring_device=self.get_pk(row.messgeraetref__REL),
                 fk_measurement_series=self.get_pk(row.messreiheref__REL),
             )

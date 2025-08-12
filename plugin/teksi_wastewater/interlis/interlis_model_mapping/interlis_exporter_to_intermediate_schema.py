@@ -2318,8 +2318,8 @@ class InterlisExporterToIntermediateSchema:
                 messart=self.get_vl(row.measurement_type__REL),
                 messdauer=row.measuring_duration,
                 bemerkung=row.remark,
-                zeit=row.time,
-                wert=row.value,
+                zeit=row.time_point,
+                wert=row.measurement_value,
                 messgeraetref=self.get_tid(row.fk_measuring_device__REL),
                 messreiheref=self.get_tid(row.fk_measurement_series__REL),
             )
