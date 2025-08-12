@@ -16,7 +16,10 @@ from .utils.extra_definition_utils import (
 
 
 def vw_tww_channel(
-    connection: psycopg.Connection, srid: psycopg.sql.Literal, extra_definition: dict = None, lang_code: str = 'en'
+    connection: psycopg.Connection,
+    srid: psycopg.sql.Literal,
+    extra_definition: dict = None,
+    lang_code: str = "en",
 ):
     """
     Creates tww_channel view
@@ -51,8 +54,8 @@ def vw_tww_channel(
         , {ws_cols_grp}
         , vl_fh.tww_is_primary
     """.format(
-        lang_code=lang_code
-        ,ch_cols=select_columns(
+        lang_code=lang_code,
+        ch_cols=select_columns(
             connection=connection,
             table_schema="tww_od",
             table_name="channel",
