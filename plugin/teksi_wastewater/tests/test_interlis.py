@@ -266,19 +266,19 @@ class TestInterlis(unittest.TestCase):
         # xml_height_width_ratio = interlis_object.attrib.get("height_width_ratio", None)
         # old
         # xml_height_width_ratio = self._get_xtf_object_attribute(
-            # exported_xtf_filename,
-            # config.TOPIC_NAME_SIA405_ABWASSER,
-            # "Rohrprofil",
-            # "ch000000PP000003",
-            # "HoehenBreitenverhaeltnis",
+        # exported_xtf_filename,
+        # config.TOPIC_NAME_SIA405_ABWASSER,
+        # "Rohrprofil",
+        # "ch000000PP000003",
+        # "HoehenBreitenverhaeltnis",
         # )
 
         # Check exported TID and height_width_ratio pipe_profile
         interlis_object = self._get_xtf_object(
-         exported_xtf_filename,
-         config.TOPIC_NAME_SIA405_ABWASSER,
-         "Rohrprofil",
-         "ch000000PP000003",
+            exported_xtf_filename,
+            config.TOPIC_NAME_SIA405_ABWASSER,
+            "Rohrprofil",
+            "ch000000PP000003",
         )
         # xml_height_width_ratio = interlis_object.get("HoehenBreitenverhaeltnis", None)
         # debug - print to find out how interlis_object looks like
@@ -286,9 +286,9 @@ class TestInterlis(unittest.TestCase):
         print(interlis_object)
         # xml_height_width_ratio = interlis_object.find("HoehenBreitenverhaeltnis").text
         # xml_height_width_ratio = interlis_object.find("HoehenBreitenverhaeltnis")
-        
+
         # rank = country.find('rank').text
-        xml_height_width_ratio = interlis_object.find('HoehenBreitenverhaeltnis').text
+        xml_height_width_ratio = interlis_object.find("HoehenBreitenverhaeltnis").text
         self.assertEqual(xml_height_width_ratio, 1.13)
 
         # # add debug output
