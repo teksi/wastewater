@@ -260,8 +260,9 @@ class TestInterlis(unittest.TestCase):
             "Rohrprofil",
             "ch000000PP000003",
         )
-        # self.assertIsNone(interlis_object)
+
         self.assertIsNotNone(interlis_object)
+
         # xml_tid = interlis_object.attrib.get("TID", None)
         # xml_height_width_ratio = interlis_object.attrib.get("height_width_ratio", None)
         # old
@@ -280,23 +281,16 @@ class TestInterlis(unittest.TestCase):
             "Rohrprofil",
             "ch000000PP000003",
         )
-        # xml_height_width_ratio = interlis_object.get("HoehenBreitenverhaeltnis", None)
-        # debug - print to find out how interlis_object looks like
 
-        print(interlis_object)
-        # xml_height_width_ratio = interlis_object.find("HoehenBreitenverhaeltnis").text
-        # xml_height_width_ratio = interlis_object.find("HoehenBreitenverhaeltnis")
-
-        # rank = country.find('rank').text
         # xml_height_width_ratio = interlis_object.findall("HoehenBreitenverhaeltnis")
         xmlns = {"": "http://www.interlis.ch/INTERLIS2.3"}  # kein namespace Prefix
-        xml_height_width_ratio = interlis_object.findtext("HoehenBreitenverhaeltnis", xmlns)
+        xml_height_width_ratio = interlis_object.findall("HoehenBreitenverhaeltnis", xmlns)
 
-        # if len(xml_height_width_ratio) > 0:
-        # xml_height_width_ratio_value = xml_height_width_ratio[0].text
-        # else:
-        # print("No HoehenBreitenverhaeltnis found!")
-        # xml_height_width_ratio_value = 0
+        if len(xml_height_width_ratio) > 0:
+            xml_height_width_ratio_value = xml_height_width_ratio[0].text
+        else:
+            print("No HoehenBreitenverhaeltnis found!")
+            xml_height_width_ratio_value = None
 
         self.assertEqual(xml_height_width_ratio, "1.13")
 
