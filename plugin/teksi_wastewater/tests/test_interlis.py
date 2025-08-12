@@ -283,7 +283,9 @@ class TestInterlis(unittest.TestCase):
             xml_height_width_ratio_value = None
 
         # directly with findtext as there should be only one attribute
-        xml_height_width_ratio_value = interlis_object.findtext("HoehenBreitenverhaeltnis", None, xmlns)
+        xml_height_width_ratio_value = interlis_object.findtext(
+            "HoehenBreitenverhaeltnis", None, xmlns
+        )
         self.assertEqual(xml_height_width_ratio_value, "1.13")
 
         # in future if VSA-DSS / SIA405 INTERLIS is also patched  change to:
