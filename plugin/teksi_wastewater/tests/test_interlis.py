@@ -110,8 +110,9 @@ class TestInterlis(unittest.TestCase):
                 # 12.8.2025 try adding .format(namespace, topicname, classname)
                 # only use namespace as {0}
                 # take out TRANSFER
+                # add {0} to HoehenBreitenverhaeltnis also
                 xml_attribute = root.findall(
-                    "./{0}DATASECTION/{0}SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser/{0}SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Rohrprofil[@TID='ch000000PP000003']/HoehenBreitenverhaeltnis/text()".format(
+                    "./{0}DATASECTION/{0}SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser/{0}SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Rohrprofil[@TID='ch000000PP000003']/{0}HoehenBreitenverhaeltnis/text()".format(
                         namespace
                     )
                 )
