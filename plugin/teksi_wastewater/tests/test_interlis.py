@@ -100,14 +100,14 @@ class TestInterlis(unittest.TestCase):
                 xmlns = {"": "http://www.interlis.ch/INTERLIS2.3"}  # kein namespace Prefix
                 # xml_attribute = interlis_object.findall(attributename, xmlns)
                 # if len(xml_attribute) > 0:
-                    # xml_attribute_value = xml_attribute[0].text
+                # xml_attribute_value = xml_attribute[0].text
                 # else:
-                    # # No tag with attributename found!
-                    # xml_attribute_value = None
+                # # No tag with attributename found!
+                # xml_attribute_value = None
 
                 # directly with findtext as there should be only one attribute
                 xml_attribute_value = interlis_object.findtext(
-                   "HoehenBreitenverhaeltnis", None, xmlns
+                    "HoehenBreitenverhaeltnis", None, xmlns
                 )
                 return xml_attribute_value
 
