@@ -287,11 +287,12 @@ class TestInterlis(unittest.TestCase):
         xml_height_width_ratio = interlis_object.findall("HoehenBreitenverhaeltnis", xmlns)
 
         if len(xml_height_width_ratio) > 0:
-            xml_height_width_ratio[0].text
+            xml_height_width_ratio_value = xml_height_width_ratio[0].text
         else:
-            print("No HoehenBreitenverhaeltnis found!")
+            # No HoehenBreitenverhaeltnis found!
+            xml_height_width_ratio_value = None
 
-        self.assertEqual(xml_height_width_ratio, "1.13")
+        self.assertEqual(xml_height_width_ratio_value, "1.13")
 
         # # add debug output
         # logger.debug(f"xml_height_width_ratio =  {xml_height_width_ratio}")
