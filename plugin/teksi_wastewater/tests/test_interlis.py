@@ -75,7 +75,7 @@ class TestInterlis(unittest.TestCase):
         return None
 
     @staticmethod
-    def _get_xtf_object_attribute(xtf_file, topicname, classname, tid, attribute):
+    def _get_xtf_object_attribute(xtf_file, topicname, classname, tid, attributename):
         # from xml file
         tree = ET.parse(xtf_file)
         root = tree.getroot()
@@ -94,30 +94,16 @@ class TestInterlis(unittest.TestCase):
             xml_tid = interlis_object.attrib.get("TID", None)
 
             if xml_tid == tid:
-                # xml_attribute = interlis_object.attrib.get(attribute, None)
-                # testing with fixed attribute name
-                # xml_attribute = interlis_object.attrib.get("HoehenBreitenverhaeltnis", None)
-                # Attributname has to be German, as xtf is German
-                # xml_attribute = interlis_object.get("HoehenBreitenverhaeltnis", None)
-                # https://www.plus2net.com/python/xml-reading.php
-                # /TRANSFER/DATASECTION/SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser/SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Rohrprofil/@TID
-                # /TRANSFER/DATASECTION/SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser/SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Rohrprofil/HoehenBreitenverhaeltnis
-                #  /TRANSFER/DATASECTION/SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser/SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Rohrprofil[@TID='ch000000PP000003']/HoehenBreitenverhaeltnis/text()
 
-                # xml_attribute = interlis_object.find("HoehenBreitenverhaeltnis").text
-                # https://xpath.playground.fontoxml.com/?state=H4sIABhLmmgAA%2B2abXPiNhCA%2F4rKl7ubCX6LHULG9dUJ5sJAILW5ZDpNhzEgsIqRqS3ydnP%2FvWuDY5lAXpykd0cvHwKSdlfS6vFqJfOlNA2GuHQg7ZQu3ZC4fR9HpYPSl6%2BlndL11Iev%2Bkf4RJc4jEhAf70oyYJ0UUKYDoIhoWOo%2BNytl%2Feh6qNxQfWubbadumUjUKIRtHqMzQ5E8erqSiCU4dAnkTDwxEa7a9mthqMIuxclUERIP7bMmmU71lG30WmjM%2FgKn2AhEUGO1YbWuLt2s905by%2B1QO%2BkU7NazrKUllHbPLFA2mmYqqT1zMNz03Esu6dIitSTe62zqgZGP9uN1SGOgnFIZvEYoT0bBBTEtEMx16Nuthom173V7toNy0H1TjzaB%2FvPlMSl1l0XvFH9qHNyAgJ34kOXuRFmaIwpDl2Gh6h%2Fg67ZKJizdKGQLGg76P3gA4qn9CmeEvo07R8jRZK0MoxCSXvijetibhEWdTWza%2FIVUPXArIS0rX%2FlRhEO0WGjBn44NJ2m1ZX5OT%2FDiNB0qeujbmJq4EnJ31Er%2BeBtgtUWZrcM90xMhzic07EBZlVJllRdvNfEqdXAjdTDYWjjEbKtetKPIs12%2F1GTTtRqBfrRRV7unr5P8AgWhLKnGOGFeUuH7vxv1wuTcetiWuIF8C0mA4%2FGM0h9YVsLX4AC18opOcxl88ggtHeIWUhwXxeXVTnLLMSkjx9zAi%2FH61sEiGRzPH3UQl6St1Gf0wkDgI8JOCcceCQaeMapaQqOO51ifxKDoItrpdZZuRmG7hxiDjTXYczRjOAx9n1MGDiIs8PJZQ%2FlswktBnc7CKfQsTvw2Ari585PxLs4YlvAdY1MMY0js2zsSRI4KCuvk1KM%2FZyUso5uoxlQFga%2B37MIjRgm4yVGGdgFaeaQLMa0M8O3xPX77vwKh5P1WCv%2Fd6yVHx%2Frt0cxT1IxGu3AC2dhMCKrOcTp6XYGWI6qZrLtJZPfiNtxgD1MD0ESjEIG6bnYZ5REBiT7EIU2NnMmTpMe2M0s32FWXWz1s5WLTxe%2FlMvIHQ4h4R0FIRp4eDBBkOtuGh8SkQckMq93RYbwH3JlEqBymRv3q6OUHmceQEmTKvL%2Bj4iSjeGBBp%2BDb2RlX6ts3pYfACrRfC5Tac9vglUBCo5dP04go1kc21ZAsBcgbN3utpqTlZMtrL6RgWbAsKGq%2B4Icx5CkxPvDHfPl5JTbsWuGfiQbSkXV9iuqoKoanE9lqFMMWdmrqFVV0PZg14RyfHCN5TmT4opNPV0uCg7GPuxeeQ8sk5H23RYAx%2B61GgUhy0HyZpw9IeBsA2fdxzirCJpcgLPqriZUd2OmMs40uSrsyhCk3oCzOCx8f5ylXyYU3EdX0%2FXsCdlq0DYSlnpnmYOuWdvsnJ6tbSb9X8c9J%2FB8TCdp%2FIWRAVBZXTHK8oi8HWbbvm9uPvQ9FbN8CCmG2WuEvRxmy%2FD7XWC2DIir%2B%2BXyjnTr%2BIJT%2BSQeXjjrjcJg2vPxJfYX56SYtbT58T22OJncXfzjZGI6xtZohOFW4NLY2xOUasxWrpaXh%2FHAKiTnBWM3DmW5Gk7yBNwEr7B8ozmHK4iIBaNR7zTwby4JJf7A84OQgEPupDjNM3gv5c75Ycanj07rj1ajba2eFl8ar1%2FlaYwfqzUD1MX7U9Gzw879heMuQHQxJ8hboHCTk8sy7hvislFdXCfP27uEG%2FcnmVuEujXiL0uVioWVGhxA4cFaeQvV2dKo8i2So0Uqr8W3Tt%2FiyPg8lhY4vD5KPxOg10iAlihJglYEpRenRy9A6VmqiQ4sQO4dvS6mP8OAQvxDjt%2FnOLyB33KguwZe4zn9Fbxl%2B%2FO3GPV3q3el7%2F7aeA8oMnzN3n%2BA0Q%2FgzQJ8T%2BdQ%2BvovLvN4bbQiAAA%3D
+                xml_attribute = root.findallinterlis_object.findall(attributename, namespace)
 
-                # 12.8.2025 try adding .format(namespace, topicname, classname)
-                # only use namespace as {0}
-                # take out TRANSFER
-                # add {0} to HoehenBreitenverhaeltnis also
-                xml_attribute = root.findall(
-                    "./{0}DATASECTION/{0}SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser/{0}SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Rohrprofil[@TID='ch000000PP000003']/{0}{1}.HoehenBreitenverhaeltnis/text()".format(
-                        namespace, topicname
-                    )
-                )
+                if len(xml_attribute) > 0:
+                    xml_attribute_value = xml_attribute[0].text
+                else:
+                    # No tag with attributename found!
+                    xml_attribute_value = None
 
-                return xml_attribute
+                return xml_attribute_value
 
         return None
 
@@ -253,6 +239,7 @@ class TestInterlis(unittest.TestCase):
         )
         self.assertIsNotNone(interlis_object)
 
+        # test option 1
         # Check exported TID and height_width_ratio pipe_profile
         interlis_object = self._get_xtf_object(
             exported_xtf_filename,
@@ -263,17 +250,19 @@ class TestInterlis(unittest.TestCase):
 
         self.assertIsNotNone(interlis_object)
 
-        # xml_tid = interlis_object.attrib.get("TID", None)
-        # xml_height_width_ratio = interlis_object.attrib.get("height_width_ratio", None)
-        # old
-        # xml_height_width_ratio = self._get_xtf_object_attribute(
-        # exported_xtf_filename,
-        # config.TOPIC_NAME_SIA405_ABWASSER,
-        # "Rohrprofil",
-        # "ch000000PP000003",
-        # "HoehenBreitenverhaeltnis",
-        # )
+        # Option with _get_xtf_object_attribute (for any attribute of  passed classname
 
+        xml_attribute_value = self._get_xtf_object_attribute(
+            exported_xtf_filename,
+            config.TOPIC_NAME_SIA405_ABWASSER,
+            "Rohrprofil", # classname
+            "ch000000PP000003", # tid
+            "HoehenBreitenverhaeltnis", #attributename
+        )
+
+        self.assertEqual(xml_attribute_value, "1.13")
+
+        # Test option 2
         # Check exported TID and height_width_ratio pipe_profile
         interlis_object = self._get_xtf_object(
             exported_xtf_filename,
@@ -282,7 +271,7 @@ class TestInterlis(unittest.TestCase):
             "ch000000PP000003",
         )
 
-        # xml_height_width_ratio = interlis_object.findall("HoehenBreitenverhaeltnis")
+        # Direct check with namespace specified here
         xmlns = {"": "http://www.interlis.ch/INTERLIS2.3"}  # kein namespace Prefix
         xml_height_width_ratio = interlis_object.findall("HoehenBreitenverhaeltnis", xmlns)
 
@@ -294,16 +283,9 @@ class TestInterlis(unittest.TestCase):
 
         self.assertEqual(xml_height_width_ratio_value, "1.13")
 
-        # # add debug output
-        # logger.debug(f"xml_height_width_ratio =  {xml_height_width_ratio}")
+        # in future if VSA-DSS / SIA405 INTERLIS is also patched  change to:
+        # self.assertEqual(xml_height_width_ratio_value, "1.12857")
 
-        # if xml_height_width_ratio is not None:
-        # # self.assertIsNotNone(xml_height_width_ratio, xml_height_width_ratio)
-        # self.assertEqual(xml_height_width_ratio, 1.130)
-        # # in future if VSA-DSS / SIA405 INTERLIS is also patched  change to:
-        # # self.assertEqual(xml_height_width_ratio, 1.12857)
-        # else:
-        # self.assertEqual(1, 2)
 
         # Export minimal dss
         export_xtf_file = self._get_output_filename("export_minimal_dataset_dss")
