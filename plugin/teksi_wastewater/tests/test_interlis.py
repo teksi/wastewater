@@ -75,43 +75,24 @@ class TestInterlis(unittest.TestCase):
         return None
 
     @staticmethod
-    def _get_xtf_object_attribute(xtf_file, topicname, classname, tid, attributename):
-        # from xml file
-        tree = ET.parse(xtf_file)
-        root = tree.getroot()
+    def _get_xtf_object_node_text(xtf_file, topicname: str, classname: str, tid: str, attributename: str) -> str:
 
-        def get_namespace(element):
-            m = re.match(r"\{.*\}", element.tag)
+        # from xml file
+        tree: ElementTree = et.parse(xtf_file)
+        root: Element = tree.getroot()
+
+        def get_namespace(element: Element) -> str:
+            m: Match[str] | None = re.match(r"\{.*\}", element.tag)
             return m.group(0) if m else ""
 
-        namespace = get_namespace(root)
+        namespace: str = get_namespace(root)
 
-        interlis_objects = root.findall(
-            "./{0}DATASECTION/{0}{1}/{0}{1}.{2}".format(namespace, topicname, classname)
+        # findtext with Clark Notation: https://de.wikipedia.org/wiki/Namensraum_(XML)#Namensraum-Notation_nach_James_Clark
+        return root.findtext(
+            f"./{namespace}DATASECTION/{namespace}{topicname}"
+            f"/{namespace}{topicname}.{classname}[@TID='{tid}']"
+            f"/{namespace}{attributename}"
         )
-
-        for interlis_object in interlis_objects:
-            xml_tid = interlis_object.attrib.get("TID", None)
-
-            if xml_tid == tid:
-
-                # xml_attribute = interlis_object.findall(attributename, namespace)
-                # namespace does not work - needs "" : ahead of it - why?
-                xmlns = {"": "http://www.interlis.ch/INTERLIS2.3"}  # kein namespace Prefix
-                # xml_attribute = interlis_object.findall(attributename, xmlns)
-                # if len(xml_attribute) > 0:
-                # xml_attribute_value = xml_attribute[0].text
-                # else:
-                # # No tag with attributename found!
-                # xml_attribute_value = None
-
-                # directly with findtext as there should be only one attribute
-                xml_attribute_value = interlis_object.findtext(
-                    "HoehenBreitenverhaeltnis", None, xmlns
-                )
-                return xml_attribute_value
-
-        return None
 
     def setUp(self):
         DatabaseUtils.databaseConfig.PGHOST = "db"
@@ -245,7 +226,9 @@ class TestInterlis(unittest.TestCase):
         )
         self.assertIsNotNone(interlis_object)
 
-        # Check exported TID and height_width_ratio pipe_profile
+
+        # Check pipe_profile.height_width_ratio of specific TID in exported xtf file
+        # Check if object exists
         interlis_object = self._get_xtf_object(
             exported_xtf_filename,
             config.TOPIC_NAME_SIA405_ABWASSER,
@@ -255,9 +238,10 @@ class TestInterlis(unittest.TestCase):
 
         self.assertIsNotNone(interlis_object)
 
-        # Option with _get_xtf_object_attribute (for any attribute of  passed classname
+        # Check value (as text) of HoehenBreitenverhaeltnis
+        # use of _get_xtf_object_node_text (can be used for any attribute of passed classname and TID)
 
-        xml_attribute_value = self._get_xtf_object_attribute(
+        HoehenBreitenverhaeltnis_Text = self._get_xtf_object_node_text(
             exported_xtf_filename,
             config.TOPIC_NAME_SIA405_ABWASSER,
             "Rohrprofil",  # classname
@@ -265,10 +249,10 @@ class TestInterlis(unittest.TestCase):
             "HoehenBreitenverhaeltnis",  # attributename
         )
 
-        self.assertEqual(xml_attribute_value, "1.13")
-
+        self.assertEqual(HoehenBreitenverhaeltnis_Text, "1.13")
         # in future if VSA-DSS / SIA405 INTERLIS is also patched  change to:
-        # self.assertEqual(xml_attribute_value, "1.12857")
+        # self.assertEqual(HoehenBreitenverhaeltnis_Text, "1.12857")
+
 
         # Export minimal dss
         export_xtf_file = self._get_output_filename("export_minimal_dataset_dss")
