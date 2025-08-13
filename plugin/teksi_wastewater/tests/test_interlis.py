@@ -77,10 +77,10 @@ class TestInterlis(unittest.TestCase):
     @staticmethod
     def _get_xtf_object_node_text(
         xtf_file, topicname: str, classname: str, tid: str, attributename: str
-    ) -> str:
+        ) -> str:
 
         # from xml file
-        tree: ElementTree = et.parse(xtf_file)
+        tree: ElementTree = ET.parse(xtf_file)
         root: Element = tree.getroot()
 
         def get_namespace(element: Element) -> str:
