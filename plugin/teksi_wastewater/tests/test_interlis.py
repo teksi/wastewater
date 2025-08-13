@@ -80,11 +80,11 @@ class TestInterlis(unittest.TestCase):
         ) -> str:
 
         # from xml file
-        tree: ElementTree = ET.parse(xtf_file)
-        root: Element = tree.getroot()
+        tree = ET.parse(xtf_file)
+        roott = tree.getroot()
 
-        def get_namespace(element: Element) -> str:
-            m: Match[str] | None = re.match(r"\{.*\}", element.tag)
+        def get_namespace(element):
+            m = re.match(r"\{.*\}", element.tag)
             return m.group(0) if m else ""
 
         namespace: str = get_namespace(root)
