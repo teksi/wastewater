@@ -77,7 +77,7 @@ class TestInterlis(unittest.TestCase):
     @staticmethod
     def _get_xtf_object_node_text(
         xtf_file, topicname: str, classname: str, tid: str, attributename: str
-        ) -> str:
+    ) -> str:
 
         # from xml file
         tree = ET.parse(xtf_file)
