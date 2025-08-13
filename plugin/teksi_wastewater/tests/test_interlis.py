@@ -75,7 +75,9 @@ class TestInterlis(unittest.TestCase):
         return None
 
     @staticmethod
-    def _get_xtf_object_node_text(xtf_file, topicname: str, classname: str, tid: str, attributename: str) -> str:
+    def _get_xtf_object_node_text(
+        xtf_file, topicname: str, classname: str, tid: str, attributename: str
+    ) -> str:
 
         # from xml file
         tree: ElementTree = et.parse(xtf_file)
@@ -226,7 +228,6 @@ class TestInterlis(unittest.TestCase):
         )
         self.assertIsNotNone(interlis_object)
 
-
         # Check pipe_profile.height_width_ratio of specific TID in exported xtf file
         # Check if object exists
         interlis_object = self._get_xtf_object(
@@ -252,7 +253,6 @@ class TestInterlis(unittest.TestCase):
         self.assertEqual(HoehenBreitenverhaeltnis_Text, "1.13")
         # in future if VSA-DSS / SIA405 INTERLIS is also patched  change to:
         # self.assertEqual(HoehenBreitenverhaeltnis_Text, "1.12857")
-
 
         # Export minimal dss
         export_xtf_file = self._get_output_filename("export_minimal_dataset_dss")
