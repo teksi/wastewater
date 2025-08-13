@@ -31,7 +31,8 @@ def vw_tww_measurement_series(connection: psycopg.Connection, extra_definition: 
     CREATE OR REPLACE VIEW tww_app.vw_tww_measurement_series AS
      SELECT
         {ms_cols}
-        , array_agg(mr.value) AS mr_values
+        , array_agg(mr.time_point) AS mr_times
+        , array_agg(mr.measurement_value) AS mr_values
 
         {extra_cols}
         FROM tww_od.measurement_series ms
