@@ -16,7 +16,10 @@ from .utils.extra_definition_utils import (
 
 
 def vw_tww_channel(
-    connection: psycopg.Connection, srid: psycopg.sql.Literal, extra_definition: dict = None
+    connection: psycopg.Connection,
+    srid: psycopg.sql.Literal,
+    extra_definition: dict = None,
+    lang_code: str = "en",
 ):
     """
     Creates tww_channel view
@@ -38,18 +41,20 @@ def vw_tww_channel(
         , min(re.clear_height) AS _min_height
         , max(re.clear_height) AS _max_height
         , sum(length_effective) as _length_effective
-        , array_agg(DISTINCT re.material) as _materials
+        , array_agg(DISTINCT vl_mat.value_{lang_code}) as _materials
         , vl_fh.tww_is_primary
       FROM tww_od.channel ch
          LEFT JOIN tww_od.wastewater_structure ws ON ch.obj_id = ws.obj_id
          LEFT JOIN tww_od.wastewater_networkelement ne ON ne.fk_wastewater_structure = ws.obj_id
          LEFT JOIN tww_od.reach re ON ne.obj_id = re.obj_id
          LEFT JOIN tww_vl.channel_function_hierarchic vl_fh ON vl_fh.code = ch.function_hierarchic
+         LEFT JOIN tww_vl.reach_material vl_mat on vl_mat.code = re.material
        GROUP BY
          {ch_cols_grp}
         , {ws_cols_grp}
         , vl_fh.tww_is_primary
     """.format(
+        lang_code=lang_code,
         ch_cols=select_columns(
             connection=connection,
             table_schema="tww_od",
@@ -203,7 +208,7 @@ def vw_tww_channel_maintenance(connection: psycopg.Connection, extra_definition:
             prefix="mn_",
             remove_pkey=True,
             indent=6,
-            remap_columns={"obj_id": "me_obj_id"},
+            remap_columns={"obj_id": "mn_obj_id"},
         ),
         update_me=update_command(
             connection=connection,
