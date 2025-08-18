@@ -3,11 +3,7 @@ import decimal
 import os
 import unittest
 
-try:
-    import psycopg
-except ImportError:
-    import psycopg2 as psycopg
-    import psycopg2.extras as psycopg_extras
+import psycopg
 
 from .utils import DEFAULT_PG_SERVICE, DbTestBase
 
@@ -96,12 +92,7 @@ class TestViews(unittest.TestCase, DbTestBase):
 
         self.update_check("vw_tww_wastewater_structure", row, obj_id)
 
-        try:
-            cur = self.cursor(row_factory=psycopg.rows.dict_row)
-        except AttributeError:
-            # remove when dropping psycopg2 support
-            cur = self.cursor(cursor_factory=psycopg_extras.DictCursor)
-
+        cur = self.cursor(row_factory=psycopg.rows.dict_row)
         cur.execute(
             "SELECT * FROM tww_od.wastewater_networkelement NE LEFT JOIN tww_od.wastewater_node NO ON NO.obj_id = NE.obj_id WHERE fk_wastewater_structure='{obj_id}' ".format(
                 obj_id=obj_id
@@ -138,11 +129,7 @@ class TestViews(unittest.TestCase, DbTestBase):
 
         self.update_check("vw_tww_additional_ws", row, obj_id)
 
-        try:
-            cur = self.cursor(row_factory=psycopg.rows.dict_row)
-        except AttributeError:
-            # remove when dropping psycopg2 support
-            cur = self.cursor(cursor_factory=psycopg_extras.DictCursor)
+        cur = self.cursor(row_factory=psycopg.rows.dict_row)
 
         cur.execute(
             "SELECT * FROM tww_od.wastewater_networkelement NE LEFT JOIN tww_od.wastewater_node NO ON NO.obj_id = NE.obj_id WHERE fk_wastewater_structure='{obj_id}' ".format(

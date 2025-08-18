@@ -1,4 +1,3 @@
-version: '3'
 
 services:
   db:
@@ -6,9 +5,14 @@ services:
       context: .
       dockerfile: datamodel/.docker/Dockerfile
       args:
-        POSTGIS_IMAGE: ${POSTGIS_IMAGE:-postgis/postgis:14-3.4}
+        POSTGIS_IMAGE: ${POSTGIS_IMAGE:-postgis/postgis:16-3.5-alpine}
     image: teksi/tww:${DOCKER_TAG:-unstable}
     working_dir: /src
+    environment:
+      - EXTENSION_CI
+      - EXTENSION_AGXX
+      - EXTENSION_ZIP
+      - LANG_CODE
     volumes:
       - .:/src
     ports:
@@ -24,7 +28,7 @@ services:
     tty: true
     volumes:
       - .:/usr/src
-    links:
+    depends_on:
       - db
     profiles:
       - qgis
@@ -36,7 +40,6 @@ services:
       - ./datamodel/schemaspy.properties:/schemaspy.properties
     depends_on:
       - db
-    network_mode: "service:db"
     command: [
       "-configFile",
       "/schemaspy.properties"

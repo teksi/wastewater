@@ -1,0 +1,72 @@
+
+pum:
+  migration_table_schema: tww_sys
+  minimum_version: 1.1.13
+
+roles:
+  - name: tww_viewer
+    description: Role for users who can view the TWW data.
+    permissions:
+      - type: read
+        schemas: [tww_od, tww_vl, tww_sys, tww_app]
+
+  - name: tww_user
+    description: Role for users who can view and edit the TWW data.
+    inherit: tww_viewer
+    permissions:
+      - type: write
+        schemas: [tww_od]
+
+  - name: tww_manager
+    description: Role for users who can view and edit the TWW data, and manage the TWW application.
+    inherit: tww_user
+    permissions:
+      - type: write
+        schemas: [tww_vl]
+
+  - name: tww_sysadmin
+    description: Role for system administrators who can manage the TWW application and its configuration.
+    inherit: tww_manager
+    permissions:
+      - type: write
+        schemas: [tww_sys]
+
+
+parameters:
+  - name: SRID
+    type: integer
+    default: 2056
+    description: Coordinate Reference System (CRS) to use for the data. This is used for the geometry column in the database. Default is 2056 (CH1903+ / LV95).
+
+  - name: modification_ci
+    type: boolean
+    default: false
+    description: load ci modification
+
+  - name: modification_agxx
+    type: boolean
+    default: false
+    description: enable AG-64/96 app modification
+
+  - name: modification_yaml
+    type: path
+    description: yaml file with app modification definitions
+
+  - name: lang_code
+    type: text
+    default: en
+    description: language code for the creation of custom views
+
+dependencies:
+  - name: pirogue
+    minimum_version: 3.0.0
+
+migration_hooks:
+  pre:
+    - code: DROP SCHEMA IF EXISTS tww_app CASCADE;
+  post:
+    - file: app/create_app.py
+
+demo_data:
+  - name: Aletsch
+    file: demo_data/demo_data_aletsch.sql

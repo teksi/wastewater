@@ -2,7 +2,7 @@ name: 📦 Datamodel | Create dumps
 
 concurrency:
   group: dumps-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name != 'workflow_call' }}
 
 on:
   push:
@@ -15,7 +15,13 @@ on:
       - datamodel/**
       - '.github/workflows/datamodel-create-dumps.yml'
   workflow_dispatch:
-  workflow_call:
+  workflow_call: # Allows this workflow to be called by other workflows
+      inputs:
+        release_tag:
+          required: false
+          description: 'Release tag to upload dumps as GitHub Release asset'
+          default: ''
+          type: string
 
 
 jobs:
@@ -24,6 +30,12 @@ jobs:
     runs-on: ubuntu-24.04
     env:
       COMPOSE_PROFILES: schemaspy
+      COMPOSE_PROJECT_NAME: wastewater-${{ matrix.extension }}
+
+    strategy:
+      matrix:
+        extension: ["", "agxx"]
+      fail-fast: false
 
     steps:
       - uses: actions/checkout@v4
@@ -32,13 +44,20 @@ jobs:
         run: docker compose up -d --build
 
       - name: Initialize container
-        run: docker compose exec db init_db.sh wait
+        run: |
+          until docker compose exec db pg_isready -U postgres; do
+            echo "Waiting for PostgreSQL to be ready..."
+            sleep 2
+          done
+          docker compose exec db createdb -U postgres tww
+          docker compose exec db pum -vvv -s pg_tww -d datamodel install -p SRID 2056 -p modification_agxx ${{ matrix.extension != '' && 'true' || 'false' }} --roles --grant
 
       - name: Create dumps
-        run: docker compose exec db /src/datamodel/scripts/create-dumps.py
+        run: docker compose exec db /src/datamodel/scripts/create-dumps.py --extension_name=${{ matrix.extension }}
 
       - name: Schemaspy
-        run:  docker compose run schemaspy
+        if: ${{ matrix.extension == '' }}
+        run:  docker compose up schemaspy
 
       - name: Docker logs
         if: failure()
@@ -46,12 +65,34 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: datamodel-dumps
+          name: datamodel-dumps${{ matrix.extension != '' && format('_{0}', matrix.extension) || matrix.extension }}
           path: datamodel/artifacts/
           if-no-files-found: error
 
       - uses: actions/upload-artifact@v4
+        if: ${{ matrix.extension == '' }}
         with:
           name: datamodel-schemaspy
           path: datamodel/schemaspy/
           if-no-files-found: error
+
+      - name: Zip datamodel dumps
+        run: |
+           zip -r datamodel-dumps${{ matrix.extension != '' && format('_{0}', matrix.extension) || matrix.extension }}.zip datamodel/artifacts
+
+      - name: Zip schemaspy output
+        run: zip -r datamodel-schemaspy${{ matrix.extension != '' && format('_{0}', matrix.extension) || matrix.extension }}.zip datamodel/schemaspy
+
+      - name: Upload datamodel dumps as GitHub Release asset
+        if: ${{ inputs.release_tag != '' }}
+        run: |
+          if [ -z "${{ matrix.extension }}" ]; then
+            gh release upload "${{ inputs.release_tag }}" datamodel-dumps.zip --repo "$GITHUB_REPOSITORY"
+            gh release upload "${{ inputs.release_tag }}" datamodel-schemaspy.zip --repo "$GITHUB_REPOSITORY"
+          else
+            gh release upload "${{ inputs.release_tag }}" datamodel-dumps_${{ matrix.extension }}.zip --repo "$GITHUB_REPOSITORY"
+          fi
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.ref_name }}
