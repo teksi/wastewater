@@ -213,9 +213,9 @@ class InterlisImporterExporter:
             else:
                 number_tests_ok = number_tests_ok + 1
 
-            logger.debug(
-                f" _check_subclass_counts: flag_export_check_failed {flag_export_check_failed}"
-            )
+            # logger.debug(
+                # f" _check_subclass_counts: flag_export_check_failed {flag_export_check_failed}"
+            # )
 
             # Check if attribute identifier is Null before export
             # flag_export_check_failed added
@@ -227,9 +227,9 @@ class InterlisImporterExporter:
             else:
                 number_tests_ok = number_tests_ok + 1
 
-            logger.debug(
-                f" _check_identifier_null: flag_export_check_failed {flag_export_check_failed}"
-            )
+            # logger.debug(
+                # f" _check_identifier_null: flag_export_check_failed {flag_export_check_failed}"
+            # )
 
             # Check if MANDATORY fk_owner is Null  before export
             # flag_export_check_failed = flag_export_check_failed and self._check_fk_owner_null(limit_to_selection)
@@ -240,9 +240,9 @@ class InterlisImporterExporter:
             else:
                 number_tests_ok = number_tests_ok + 1
 
-            logger.debug(
-                f" _check_fk_owner_null: flag_export_check_failed {flag_export_check_failed}"
-            )
+            # logger.debug(
+                # f" _check_fk_owner_null: flag_export_check_failed {flag_export_check_failed}"
+            # )
 
             # Check if MANDATORY fk_operator is Null  before export
             # flag_export_check_failed = flag_export_check_failed and self._check_fk_operator_null(limit_to_selection)
@@ -253,9 +253,9 @@ class InterlisImporterExporter:
             else:
                 number_tests_ok = number_tests_ok + 1
 
-            logger.debug(
-                f" _check_fk_operator_null: flag_export_check_failed {flag_export_check_failed}"
-            )
+            # logger.debug(
+                # f" _check_fk_operator_null: flag_export_check_failed {flag_export_check_failed}"
+            # )
 
             # Check if MANDATORY fk_dataowner is Null  before export
             # flag_export_check_failed = flag_export_check_failed and self._check_fk_dataowner_null(limit_to_selection)
@@ -266,9 +266,9 @@ class InterlisImporterExporter:
             else:
                 number_tests_ok = number_tests_ok + 1
 
-            logger.debug(
-                f" _check_fk_dataowner_null: flag_export_check_failed {flag_export_check_failed}"
-            )
+            # logger.debug(
+                # f" _check_fk_dataowner_null: flag_export_check_failed {flag_export_check_failed}"
+            # )
 
             # take out again
             # flag_export_check_failed = True
@@ -282,9 +282,9 @@ class InterlisImporterExporter:
             else:
                 number_tests_ok = number_tests_ok + 1
 
-            logger.debug(
-                f" _check_fk_provider_null: flag_export_check_failed {flag_export_check_failed}"
-            )
+            # logger.debug(
+                # f" _check_fk_provider_null: flag_export_check_failed {flag_export_check_failed}"
+            # )
 
             # new in TEKSI
             # Check if MANDATORY fk_wastewater_structure is Null before export
@@ -295,9 +295,9 @@ class InterlisImporterExporter:
                 number_tests_failed = number_tests_failed + 1
             else:
                 number_tests_ok = number_tests_ok + 1
-            logger.debug(
-                f" _check_fk_wastewater_structure_null: flag_export_check_failed {flag_export_check_failed}"
-            )
+            # logger.debug(
+                # f" _check_fk_wastewater_structure_null: flag_export_check_failed {flag_export_check_failed}"
+            # )
 
             # new in TEKSI
             # Check if MANDATORY fk_wastewater_node is Null before export
@@ -308,9 +308,9 @@ class InterlisImporterExporter:
                 number_tests_failed = number_tests_failed + 1
             else:
                 number_tests_ok = number_tests_ok + 1
-            logger.debug(
-                f" _check_fk_wastewater_node_null: flag_export_check_failed {flag_export_check_failed}"
-            )
+            # logger.debug(
+                # f" _check_fk_wastewater_node_null: flag_export_check_failed {flag_export_check_failed}"
+            # )
 
             # new in TEKSI
             # Check if MANDATORY fk_responsible_entity is Null before export
@@ -321,9 +321,9 @@ class InterlisImporterExporter:
                 number_tests_failed = number_tests_failed + 1
             else:
                 number_tests_ok = number_tests_ok + 1
-            logger.debug(
-                f" _check_fk_responsible_entity_null: flag_export_check_failed {flag_export_check_failed}"
-            )
+            # logger.debug(
+                # f" _check_fk_responsible_entity_null: flag_export_check_failed {flag_export_check_failed}"
+            # )
 
             # new in TEKSI
             # Check if MANDATORY fk_responsible_start is Null before export
@@ -334,9 +334,9 @@ class InterlisImporterExporter:
                 number_tests_failed = number_tests_failed + 1
             else:
                 number_tests_ok = number_tests_ok + 1
-            logger.debug(
-                f" _check_fk_responsible_start_null: flag_export_check_failed {flag_export_check_failed}"
-            )
+            # logger.debug(
+                # f" _check_fk_responsible_start_null: flag_export_check_failed {flag_export_check_failed}"
+            # )
 
             # new in TEKSI
             # Check if MANDATORY fk_discharge_point is Null before export
@@ -347,9 +347,9 @@ class InterlisImporterExporter:
                 number_tests_failed = number_tests_failed + 1
             else:
                 number_tests_ok = number_tests_ok + 1
-            logger.debug(
-                f" _check_fk_discharge_point_null: flag_export_check_failed {flag_export_check_failed}"
-            )
+            # logger.debug(
+                # f" _check_fk_discharge_point_null: flag_export_check_failed {flag_export_check_failed}"
+            # )
 
             # new in TEKSI
             # Check if MANDATORY fk_hydraulic_char_data is Null before export
@@ -360,9 +360,9 @@ class InterlisImporterExporter:
                 number_tests_failed = number_tests_failed + 1
             else:
                 number_tests_ok = number_tests_ok + 1
-            logger.debug(
-                f" _check_fk_hydraulic_char_data_null: flag_export_check_failed {flag_export_check_failed}"
-            )
+            # logger.debug(
+                # f" _check_fk_hydraulic_char_data_null: flag_export_check_failed {flag_export_check_failed}"
+            # )
 
             # new in TEKSI
             # Check if MANDATORY fk_building_group is Null before export
@@ -373,9 +373,9 @@ class InterlisImporterExporter:
                 number_tests_failed = number_tests_failed + 1
             else:
                 number_tests_ok = number_tests_ok + 1
-            logger.debug(
-                f" _check_fk_building_group_null: flag_export_check_failed {flag_export_check_failed}"
-            )
+            # logger.debug(
+                # f" _check_fk_building_group_null: flag_export_check_failed {flag_export_check_failed}"
+            # )
 
             # new in TEKSI
             # Check if MANDATORY fk_reach is Null before export
@@ -386,9 +386,9 @@ class InterlisImporterExporter:
                 number_tests_failed = number_tests_failed + 1
             else:
                 number_tests_ok = number_tests_ok + 1
-            logger.debug(
-                f" _check_fk_reach_null: flag_export_check_failed {flag_export_check_failed}"
-            )
+            # logger.debug(
+                # f" _check_fk_reach_null: flag_export_check_failed {flag_export_check_failed}"
+            # )
 
             # new in TEKSI
             # Check if MANDATORY fk_reach_point_from is Null before export
@@ -399,9 +399,9 @@ class InterlisImporterExporter:
                 number_tests_failed = number_tests_failed + 1
             else:
                 number_tests_ok = number_tests_ok + 1
-            logger.debug(
-                f" _check_fk_reach_point_from_null: flag_export_check_failed {flag_export_check_failed}"
-            )
+            # logger.debug(
+                # f" _check_fk_reach_point_from_null: flag_export_check_failed {flag_export_check_failed}"
+            # )
 
             # new in TEKSI
             # Check if MANDATORY fk_reach_point_to is Null before export
@@ -412,9 +412,9 @@ class InterlisImporterExporter:
                 number_tests_failed = number_tests_failed + 1
             else:
                 number_tests_ok = number_tests_ok + 1
-            logger.debug(
-                f" _check_fk_reach_point_to_null: flag_export_check_failed {flag_export_check_failed}"
-            )
+            # logger.debug(
+                # f" _check_fk_reach_point_to_null: flag_export_check_failed {flag_export_check_failed}"
+            # )
 
             # new in TEKSI
             # Check if MANDATORY fk_pwwf_wastewater_node is Null before export
@@ -425,9 +425,9 @@ class InterlisImporterExporter:
                 number_tests_failed = number_tests_failed + 1
             else:
                 number_tests_ok = number_tests_ok + 1
-            logger.debug(
-                f" _check_fk_pwwf_wastewater_node_null: flag_export_check_failed {flag_export_check_failed}"
-            )
+            # logger.debug(
+                # f" _check_fk_pwwf_wastewater_node_null: flag_export_check_failed {flag_export_check_failed}"
+            # )
 
             # new in TEKSI
             # Check if MANDATORY fk_catchment_area is Null before export
@@ -438,16 +438,16 @@ class InterlisImporterExporter:
                 number_tests_failed = number_tests_failed + 1
             else:
                 number_tests_ok = number_tests_ok + 1
-            logger.debug(
-                f" _check_fk_catchment_area_null: flag_export_check_failed {flag_export_check_failed}"
-            )
+            # logger.debug(
+                # f" _check_fk_catchment_area_null: flag_export_check_failed {flag_export_check_failed}"
+            # )
 
-        logger.debug(f"After checks: flag_export_check_failed {flag_export_check_failed}")
+        # logger.debug(f"After checks: flag_export_check_failed {flag_export_check_failed}")
         total_checks = number_tests_failed + number_tests_ok
 
         if flag_export_check_failed:
             if user_interaction:
-                logger.info("Adding QMessageBox ...")
+                logger.debug("Adding QMessageBox ...")
                 # Add Message box to ask if export should still be continued or not
 
                 mb = QMessageBox()
@@ -948,7 +948,7 @@ class InterlisImporterExporter:
             ["reach", "wastewater_node"],
             limit_to_selection,
         )
-        logger.debug(f"check_subclass_counts_failed: {check_subclass_counts_failed} 1")
+        # logger.debug(f"check_subclass_counts_failed: {check_subclass_counts_failed} 1")
         check_subclass_counts_failed = check_subclass_counts_failed and self._check_subclass_count(
             config.TWW_OD_SCHEMA,
             "wastewater_structure",
@@ -964,7 +964,7 @@ class InterlisImporterExporter:
             ],
             limit_to_selection,
         )
-        logger.debug(f"check_subclass_counts_failed: {check_subclass_counts_failed} 2")
+        # logger.debug(f"check_subclass_counts_failed: {check_subclass_counts_failed} 2")
         check_subclass_counts_failed = check_subclass_counts_failed and self._check_subclass_count(
             config.TWW_OD_SCHEMA,
             "structure_part",
@@ -1014,7 +1014,7 @@ class InterlisImporterExporter:
             ["infiltration_zone", "drainage_system"],
             limit_to_selection,
         )
-        logger.debug(f"check_subclass_counts_failed: {check_subclass_counts_failed} last")
+        # logger.debug(f"check_subclass_counts_failed: {check_subclass_counts_failed} last")
         return check_subclass_counts_failed
 
     def _check_subclass_count(self, schema_name, parent_name, child_list, limit_to_selection):
@@ -1144,6 +1144,7 @@ class InterlisImporterExporter:
                 else:
                     logger.info(
                         # f"Number of datasets in class '{notsubclass}' without identifier : {class_identifier_count}"
+                        # f"{'No' if class_identifier_count else class_identifier_count} row{'s' if class_identifier_count != 1 else ''} in class '{notsubclass}' without identifier{': ' + obj_ids_without_identifier if obj_ids_without_identifier else ''}"
                         f"{'No' if class_identifier_count == 0 else class_identifier_count} row{'s' if class_identifier_count != 1 else ''} in class '{notsubclass}' without identifier{': ' + ','.join(obj_ids_without_identifier) if obj_ids_without_identifier else ''}"
                     )
 
@@ -1155,7 +1156,7 @@ class InterlisImporterExporter:
                     missing_identifier_count = missing_identifier_count + class_identifier_count
 
                 # add for testing
-                logger.info(f"missing_identifier_count : {missing_identifier_count}")
+                logger.debug(f"missing_identifier_count : {missing_identifier_count}")
 
             if missing_identifier_count == 0:
                 logger.info(f"OK: all identifiers set in tww_od.{notsubclass}!")
@@ -1177,7 +1178,7 @@ class InterlisImporterExporter:
                     # )
                 # added check_fail 30.6.2025
                 check_fail = True
-                logger.error(f"check_fail: {check_fail}")
+                # logger.error(f"check_fail: {check_fail}")
                 return True
 
     def _check_fk_owner_null(self, limit_to_selection=False):
@@ -1217,7 +1218,7 @@ class InterlisImporterExporter:
                     missing_fk_owner_count = missing_fk_owner_count + class_fk_owner_count
 
                 # add for testing
-                logger.info(f"missing_fk_owner_count : {missing_fk_owner_count}")
+                logger.debug(f"missing_fk_owner_count : {missing_fk_owner_count}")
 
             if missing_fk_owner_count == 0:
                 check_fk_owner_null = False
@@ -1225,7 +1226,8 @@ class InterlisImporterExporter:
             else:
                 check_fk_owner_null = True
                 logger.info(
-                    f"ERROR: Missing mandatory fk_owner in tww_od.{notsubclass}: {missing_fk_owner_count}"
+                    # f"ERROR: Missing mandatory fk_owner in tww_od.{notsubclass}: {missing_fk_owner_count}"
+                    f"ERROR: {missing_fk_owner_count} missing mandatory fk_operator in tww_od classes"
                 )
             # Return statement added
             logger.debug(f"missing_fk_owner_count : {missing_fk_owner_count}")
@@ -1263,7 +1265,7 @@ class InterlisImporterExporter:
                         cursor.fetchone()[0]
                     )
                 # add for testing
-                logger.info(f"missing_fk_operator_count : {missing_fk_operator_count}")
+                logger.debug(f"missing_fk_operator_count : {missing_fk_operator_count}")
 
             if missing_fk_operator_count == 0:
                 logger.info(f"OK: all mandatory fk_operator set in tww_od.{notsubclass}!")
@@ -1271,7 +1273,8 @@ class InterlisImporterExporter:
                 return False
             else:
                 logger.error(
-                    f"ERROR: Missing mandatory fk_operator in tww_od.{notsubclass}: {missing_fk_operator_count}"
+                    # f"ERROR: Missing mandatory fk_operator in tww_od.{notsubclass}: {missing_fk_operator_count}"
+                    f"ERROR: {missing_fk_operator_count} missing mandatory fk_operator in tww_od classes"
                 )
                 # Return statement added
                 return True
@@ -1380,7 +1383,7 @@ class InterlisImporterExporter:
                     )
 
                 # add for testing
-                logger.info(f"missing_fk_dataowner_count : {missing_fk_dataowner_count}")
+                logger.debug(f"missing_fk_dataowner_count : {missing_fk_dataowner_count}")
 
             if missing_fk_dataowner_count == 0:
                 logger.info(f"OK: all mandatory fk_dataowner set in tww_od.{notsubclass}!")
@@ -1388,7 +1391,8 @@ class InterlisImporterExporter:
                 return False
             else:
                 logger.error(
-                    f"ERROR: Missing mandatory fk_dataowner in tww_od.{notsubclass}: {missing_fk_dataowner_count}"
+                    # f"ERROR: Missing mandatory fk_dataowner in tww_od.{notsubclass}: {missing_fk_dataowner_count}"
+                    f"ERROR: {missing_fk_dataowner_count} missing mandatory fk_dataowner in tww_od classes"
                 )
                 # Return statement added
                 return True
@@ -1493,7 +1497,7 @@ class InterlisImporterExporter:
                     missing_fk_provider_count = missing_fk_provider_count + class_fk_provider_count
 
                 # add for testing
-                logger.info(f"missing_fk_provider_count : {missing_fk_provider_count}")
+                logger.debug(f"missing_fk_provider_count : {missing_fk_provider_count}")
 
             if missing_fk_provider_count == 0:
                 logger.info(f"OK: all mandatory fk_provider set in tww_od.{notsubclass}!")
@@ -1501,7 +1505,8 @@ class InterlisImporterExporter:
                 return False
             else:
                 logger.error(
-                    f"ERROR: Missing mandatory fk_provider in tww_od.{notsubclass}: {missing_fk_provider_count}"
+                    #f"ERROR: Missing mandatory fk_provider in tww_od.{notsubclass}: {missing_fk_provider_count}"
+                    f"ERROR: {missing_fk_provider_count} missing mandatory fk_provider in tww_od classes"
                 )
                 # Return statement added
                 return True
@@ -1549,7 +1554,7 @@ class InterlisImporterExporter:
                     )
 
                 # add for testing
-                logger.info(
+                logger.debug(
                     f"missing_fk_wastewater_structure_count : {missing_fk_wastewater_structure_count}"
                 )
 
@@ -1609,7 +1614,7 @@ class InterlisImporterExporter:
                     )
 
                 # add for testing
-                logger.info(
+                logger.debug(
                     f"missing_fk_wastewater_node_count : {missing_fk_wastewater_node_count}"
                 )
 
@@ -1619,7 +1624,8 @@ class InterlisImporterExporter:
                 return False
             else:
                 logger.error(
-                    f"ERROR: Missing mandatory fk_wastewater_node in tww_od.{notsubclass}: {missing_fk_wastewater_node_count}"
+                    # f"ERROR: Missing mandatory fk_wastewater_node in tww_od.{notsubclass}: {missing_fk_wastewater_node_count}"
+                    f"ERROR: {missing_fk_wastewater_node_count} missing mandatory fk_wastewater_node in tww_od classes"
                 )
                 # Return statement added
                 return True
@@ -1667,7 +1673,7 @@ class InterlisImporterExporter:
                     )
 
                 # add for testing
-                logger.info(
+                logger.debug(
                     f"missing_fk_responsible_entity_count : {missing_fk_responsible_entity_count}"
                 )
 
@@ -1679,7 +1685,9 @@ class InterlisImporterExporter:
                 return False
             else:
                 logger.error(
-                    f"ERROR: Missing mandatory fk_responsible_entity in tww_od.{notsubclass}: {missing_fk_responsible_entity_count}"
+                    #f"ERROR: Missing mandatory fk_responsible_entity in tww_od.{notsubclass}: {missing_fk_responsible_entity_count}"
+                    f"ERROR: {missing_fk_responsible_entity_count} missing mandatory fk_responsible_entity in tww_od classes"
+                    
                 )
                 # Return statement added
                 return True
@@ -1727,7 +1735,7 @@ class InterlisImporterExporter:
                     )
 
                 # add for testing
-                logger.info(
+                logger.debug(
                     f"missing_fk_responsible_start_count : {missing_fk_responsible_start_count}"
                 )
 
@@ -1737,7 +1745,8 @@ class InterlisImporterExporter:
                 return False
             else:
                 logger.error(
-                    f"ERROR: Missing mandatory fk_responsible_start in tww_od.{notsubclass}: {missing_fk_responsible_start_count}"
+                    # f"ERROR: Missing mandatory fk_responsible_start in tww_od.{notsubclass}: {missing_fk_responsible_start_count}"
+                    f"ERROR: {missing_fk_responsible_start_count} missing mandatory fk_responsible_start in tww_od classes"
                 )
                 # Return statement added
                 return True
@@ -1783,7 +1792,7 @@ class InterlisImporterExporter:
                     )
 
                 # add for testing
-                logger.info(
+                logger.debug(
                     f"missing_fk_discharge_point_count : {missing_fk_discharge_point_count}"
                 )
 
@@ -1793,8 +1802,9 @@ class InterlisImporterExporter:
                 return False
             else:
                 logger.error(
-                    f"ERROR: Missing mandatory fk_discharge_point in tww_od.{notsubclass}: {missing_fk_discharge_point_count}"
-                )
+                    # f"ERROR: Missing mandatory fk_discharge_point in tww_od.{notsubclass}: {missing_fk_discharge_point_count}"
+                    f"ERROR: {missing_fk_discharge_point_count} missing mandatory fk_discharge_point in tww_od classes"
+                    )
                 # Return statement added
                 return True
 
@@ -1841,7 +1851,7 @@ class InterlisImporterExporter:
                     )
 
                 # add for testing
-                logger.info(
+                logger.debug(
                     f"missing_fk_hydraulic_char_data_count : {missing_fk_hydraulic_char_data_count}"
                 )
 
@@ -1853,8 +1863,9 @@ class InterlisImporterExporter:
                 return False
             else:
                 logger.error(
-                    f"ERROR: Missing mandatory fk_hydraulic_char_data in tww_od.{notsubclass}: {missing_fk_hydraulic_char_data_count}"
-                )
+                    #f"ERROR: Missing mandatory fk_hydraulic_char_data in tww_od.{notsubclass}: {missing_fk_hydraulic_char_data_count}"
+                    f"ERROR: {missing_fk_hydraulic_char_data_count} missing mandatory fk_hydraulic_char_data in tww_od classes"
+                    )
                 # Return statement added
                 return True
 
@@ -1899,7 +1910,7 @@ class InterlisImporterExporter:
                     )
 
                 # add for testing
-                logger.info(f"missing_fk_building_group_count : {missing_fk_building_group_count}")
+                logger.debug(f"missing_fk_building_group_count : {missing_fk_building_group_count}")
 
             if missing_fk_building_group_count == 0:
                 logger.info(f"OK: all mandatory fk_building_group set in tww_od.{notsubclass}!")
@@ -1907,8 +1918,9 @@ class InterlisImporterExporter:
                 return False
             else:
                 logger.error(
-                    f"ERROR: Missing mandatory fk_building_group in tww_od.{notsubclass}: {missing_fk_building_group_count}"
-                )
+                    #f"ERROR: Missing mandatory fk_building_group in tww_od.{notsubclass}: {missing_fk_building_group_count}"
+                    f"ERROR: {missing_fk_building_group_count} missing mandatory fk_building_group in tww_od classes"
+                    )
                 # Return statement added
                 return True
 
@@ -1951,7 +1963,7 @@ class InterlisImporterExporter:
                     missing_fk_reach_count = missing_fk_reach_count + class_fk_reach_count
 
                 # add for testing
-                logger.info(f"missing_fk_reach_count : {missing_fk_reach_count}")
+                logger.debug(f"missing_fk_reach_count : {missing_fk_reach_count}")
 
             if missing_fk_reach_count == 0:
                 logger.info(f"OK: all mandatory fk_reach set in tww_od.{notsubclass}!")
@@ -1959,8 +1971,9 @@ class InterlisImporterExporter:
                 return False
             else:
                 logger.error(
-                    f"ERROR: Missing mandatory fk_reach in tww_od.{notsubclass}: {missing_fk_reach_count}"
-                )
+                    #f"ERROR: Missing mandatory fk_reach in tww_od.{notsubclass}: {missing_fk_reach_count}"
+                    f"ERROR: {missing_fk_reach_count} missing mandatory fk_reach in tww_od classes"
+                    )
                 # Return statement added
                 return True
 
@@ -2007,7 +2020,7 @@ class InterlisImporterExporter:
                     )
 
                 # add for testing
-                logger.info(
+                logger.debug(
                     f"missing_fk_reach_point_from_count : {missing_fk_reach_point_from_count}"
                 )
 
@@ -2017,8 +2030,9 @@ class InterlisImporterExporter:
                 return False
             else:
                 logger.error(
-                    f"ERROR: Missing mandatory fk_reach_point_from in tww_od.{notsubclass}: {missing_fk_reach_point_from_count}"
-                )
+                    #f"ERROR: Missing mandatory fk_reach_point_from in tww_od.{notsubclass}: {missing_fk_reach_point_from_count}"
+                    f"ERROR: {missing_fk_reach_point_from_count} missing mandatory fk_reach_point_from in tww_od classes"
+                    )
                 # Return statement added
                 return True
 
@@ -2063,7 +2077,7 @@ class InterlisImporterExporter:
                     )
 
                 # add for testing
-                logger.info(f"missing_fk_reach_point_to_count : {missing_fk_reach_point_to_count}")
+                logger.debug(f"missing_fk_reach_point_to_count : {missing_fk_reach_point_to_count}")
 
             if missing_fk_reach_point_to_count == 0:
                 logger.info(f"OK: all mandatory fk_reach_point_to set in tww_od.{notsubclass}!")
@@ -2071,8 +2085,9 @@ class InterlisImporterExporter:
                 return False
             else:
                 logger.error(
-                    f"ERROR: Missing mandatory fk_reach_point_to in tww_od.{notsubclass}: {missing_fk_reach_point_to_count}"
-                )
+                    #f"ERROR: Missing mandatory fk_reach_point_to in tww_od.{notsubclass}: {missing_fk_reach_point_to_count}"
+                    f"ERROR: {missing_fk_reach_point_to_count} missing mandatory fk_reach_point_to in tww_od classes"
+                    )
                 # Return statement added
                 return True
 
@@ -2119,7 +2134,7 @@ class InterlisImporterExporter:
                     )
 
                 # add for testing
-                logger.info(
+                logger.debug(
                     f"missing_fk_pwwf_wastewater_node_count : {missing_fk_pwwf_wastewater_node_count}"
                 )
 
@@ -2131,7 +2146,8 @@ class InterlisImporterExporter:
                 return False
             else:
                 logger.error(
-                    f"ERROR: Missing mandatory fk_pwwf_wastewater_node in tww_od.{notsubclass}: {missing_fk_pwwf_wastewater_node_count}"
+                    # f"ERROR: Missing mandatory fk_pwwf_wastewater_node in tww_od.{notsubclass}: {missing_fk_pwwf_wastewater_node_count}"
+                    f"ERROR: {missing_fk_pwwf_wastewater_node_count} missing mandatory fk_pwwf_wastewater_node in tww_od classes"
                 )
                 # Return statement added
                 return True
@@ -2177,7 +2193,7 @@ class InterlisImporterExporter:
                     )
 
                 # add for testing
-                logger.info(f"missing_fk_catchment_area_count : {missing_fk_catchment_area_count}")
+                logger.debug(f"missing_fk_catchment_area_count : {missing_fk_catchment_area_count}")
 
             if missing_fk_catchment_area_count == 0:
                 logger.info(f"OK: all mandatory fk_catchment_area set in tww_od.{notsubclass}!")
@@ -2185,8 +2201,9 @@ class InterlisImporterExporter:
                 return False
             else:
                 logger.error(
-                    f"ERROR: Missing mandatory fk_catchment_area in tww_od.{notsubclass}: {missing_fk_catchment_area_count}"
-                )
+                    # f"ERROR: Missing mandatory fk_catchment_area in tww_od.{notsubclass}: {missing_fk_catchment_area_count}"
+                    f"ERROR: {missing_fk_catchment_area_count} missing mandatory fk_catchment_area in tww_od classes"
+                    )
                 # Return statement added
                 return True
 
