@@ -740,8 +740,8 @@ class InterlisExporterToIntermediateSchema:
                 # --- rohrprofil ---
                 bemerkung=self.truncate(self.emptystr_to_null(row.remark), 80),
                 bezeichnung=self.null_to_emptystr(row.identifier),
-                # added round as long as INTERLIS 2020.1 is used
-                hoehenbreitenverhaeltnis=self.round(row.height_width_ratio, 3),
+                # added round as long as INTERLIS 2020.1 is used Verhaeltnis_H_B = 0.01 .. 100.00;
+                hoehenbreitenverhaeltnis=self.round(row.height_width_ratio, 2),
                 profiltyp=self.get_vl(row.profile_type__REL),
             )
             self.abwasser_session.add(rohrprofil)
@@ -2975,7 +2975,7 @@ class InterlisExporterToIntermediateSchema:
 
     def round(self, val, digits):
         """
-        Rounds val to the provided digits
+        Rounds val to the provided digits (extra function that can deal also with None)
         """
         if val is None:
             return None
