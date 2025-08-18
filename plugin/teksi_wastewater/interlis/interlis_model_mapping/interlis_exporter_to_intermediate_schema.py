@@ -716,6 +716,11 @@ class InterlisExporterToIntermediateSchema:
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
             logger.info(f"Selection query: {query.statement}")
+
+        logger.info(
+            "height_width_ration rounded to 3 decimals! Change if adapted in INTERLIS VSA-DSS / SIA405 Abwasser > 2020.1"
+        )
+
         for row in query:
             # AVAILABLE FIELDS IN TWW.pipe_profile
 
@@ -735,7 +740,8 @@ class InterlisExporterToIntermediateSchema:
                 # --- rohrprofil ---
                 bemerkung=self.truncate(self.emptystr_to_null(row.remark), 80),
                 bezeichnung=self.null_to_emptystr(row.identifier),
-                hoehenbreitenverhaeltnis=row.height_width_ratio,
+                # added round as long as INTERLIS 2020.1 is used Verhaeltnis_H_B = 0.01 .. 100.00;
+                hoehenbreitenverhaeltnis=self.round(row.height_width_ratio, 2),
                 profiltyp=self.get_vl(row.profile_type__REL),
             )
             self.abwasser_session.add(rohrprofil)
@@ -2966,6 +2972,18 @@ class InterlisExporterToIntermediateSchema:
         if len(val) > max_length:
             logger.warning(f"Value '{val}' exceeds expected length ({max_length})", stacklevel=2)
         return val[0:max_length]
+
+    def round(self, val, digits):
+        """
+        Rounds val to the provided digits (extra function that can deal also with None)
+        """
+        if val is None:
+            return None
+        else:
+            if digits is None:
+                return round(val)
+            else:
+                return round(val, digits)
 
     def _modulo_angle(self, val):
         """
