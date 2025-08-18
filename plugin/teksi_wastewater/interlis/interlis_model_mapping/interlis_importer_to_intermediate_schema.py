@@ -1821,8 +1821,8 @@ class InterlisImporterToIntermediateSchema:
                 ),
                 measuring_duration=row.messdauer,
                 remark=row.bemerkung,
-                time=row.zeit,
-                value=row.wert,
+                time_point=row.zeit,  # renamed 20250812 as time is a reserved SQL:2023 keyword
+                measurement_value=row.wert,  # renamed 20250812 as value is a reserved SQL:2023 keyword
                 fk_measuring_device=self.get_pk(row.messgeraetref__REL),
                 fk_measurement_series=self.get_pk(row.messreiheref__REL),
             )

@@ -2318,8 +2318,8 @@ class InterlisExporterToIntermediateSchema:
                 messart=self.get_vl(row.measurement_type__REL),
                 messdauer=row.measuring_duration,
                 bemerkung=row.remark,
-                zeit=row.time,
-                wert=row.value,
+                zeit=row.time_point,  # renamed 20250812 as time is a reserved SQL:2023 keyword
+                wert=row.measurement_value,  # renamed 20250812 as value is a reserved SQL:2023 keyword
                 messgeraetref=self.get_tid(row.fk_measuring_device__REL),
                 messreiheref=self.get_tid(row.fk_measurement_series__REL),
             )
