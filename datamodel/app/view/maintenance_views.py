@@ -73,7 +73,7 @@ def vw_tww_channel(
           ) AS _to_node
         , vl_fh.tww_is_primary
       FROM tww_od.channel ch
-         INNER JOIN _topology on _topology.obj_id=channel.obj_id
+         INNER JOIN _topology on _topology.obj_id=ch.obj_id
          LEFT JOIN tww_od.wastewater_structure ws ON ch.obj_id = ws.obj_id
          LEFT JOIN tww_od.wastewater_networkelement ne ON ne.fk_wastewater_structure = ws.obj_id
          LEFT JOIN tww_od.reach re ON ne.obj_id = re.obj_id
