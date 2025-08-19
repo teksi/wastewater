@@ -34,19 +34,53 @@ def vw_tww_channel(
     DROP MATERIALIZED VIEW IF EXISTS tww_app.vw_tww_channel;
 
     CREATE MATERIALIZED VIEW tww_app.vw_tww_channel AS
+    WITH _topology AS
+        (
         SELECT
-          {ws_cols}
-        , {ch_cols}
-        , ST_Multi(ST_Force2D(ST_ForceCurve(ST_LineMerge(ST_Collect(ST_CurveToLine(re.progression3d_geometry))))))::geometry(MultiCurve, {{srid}})  as progression2d_geometry
-        , min(re.clear_height) AS _min_height
-        , max(re.clear_height) AS _max_height
-        , sum(length_effective) as _length_effective
-        , array_agg(DISTINCT vl_mat.value_{lang_code}) as _materials
-        , vl_fh.tww_is_primary
+		  ch.obj_id
+        , array_agg(wn_from.obj_id) AS _from_nodes
+		, array_agg(wn_to.obj_id) as _to_nodes
       FROM tww_od.channel ch
          LEFT JOIN tww_od.wastewater_structure ws ON ch.obj_id = ws.obj_id
          LEFT JOIN tww_od.wastewater_networkelement ne ON ne.fk_wastewater_structure = ws.obj_id
          LEFT JOIN tww_od.reach re ON ne.obj_id = re.obj_id
+         LEFT JOIN tww_od.reach_point rp_to ON re.fk_reach_point_to=rp_to.obj_id
+		 LEFT JOIN tww_od.wastewater_node wn_to on wn_to.obj_id=rp_to.fk_wastewater_networkelement
+         LEFT JOIN tww_od.reach_point rp_from ON re.fk_reach_point_from=rp_from.obj_id
+		 LEFT JOIN tww_od.wastewater_node wn_from on wn_from.obj_id=rp_from.fk_wastewater_networkelement
+	      GROUP BY
+         ch.obj_id
+        )
+        SELECT
+          {ws_cols}
+        , {ch_cols}
+        , ST_Multi(ST_Force2D(ST_ForceCurve(ST_LineMerge(ST_Collect(ST_CurveToLine(re.progression3d_geometry))))))::geometry(MultiCurve, {{srid}})  as progression2d_geometry
+        , min(re.clear_height) AS _re_min_height
+        , max(re.clear_height) AS _re_max_height
+        , sum(length_effective) as _re_length_effective
+        , array_agg(DISTINCT vl_mat.value_{lang_code}) as _re_materials
+        , (
+            SELECT unnest(_topology._from_nodes)
+            EXCEPT ALL
+            SELECT unnest(_topology._to_nodes)
+            LIMIT 1
+          ) AS _from_node
+        , (
+            SELECT unnest(_topology._to_nodes)
+            EXCEPT ALL
+            SELECT unnest(_topology._from_nodes)
+            LIMIT 1
+          ) AS _to_node
+        , vl_fh.tww_is_primary
+      FROM tww_od.channel ch
+         INNER JOIN _topology on _topology.obj_id=channel.obj_id
+         LEFT JOIN tww_od.wastewater_structure ws ON ch.obj_id = ws.obj_id
+         LEFT JOIN tww_od.wastewater_networkelement ne ON ne.fk_wastewater_structure = ws.obj_id
+         LEFT JOIN tww_od.reach re ON ne.obj_id = re.obj_id
+         LEFT JOIN tww_od.reach_point rp_from ON rp_from.obj_id=re.fk_reach_point_from
+         LEFT JOIN tww_od.wastewater_node wn_from ON wn_from.obj_id=rp_from.fk_wastewater_networkelement
+         LEFT JOIN tww_od.reach_point rp_to ON rp_to=re.fk_reach_point_to
+         LEFT JOIN tww_od.wastewater_node wn_to ON wn_to.obj_id=rp_to.fk_wastewater_networkelement
          LEFT JOIN tww_vl.channel_function_hierarchic vl_fh ON vl_fh.code = ch.function_hierarchic
          LEFT JOIN tww_vl.reach_material vl_mat on vl_mat.code = re.material
        GROUP BY
@@ -60,7 +94,6 @@ def vw_tww_channel(
             table_schema="tww_od",
             table_name="channel",
             table_alias="ch",
-            prefix="ch_",
             remove_pkey=True,
             indent=4,
             skip_columns=[],
@@ -70,6 +103,7 @@ def vw_tww_channel(
             table_schema="tww_od",
             table_name="wastewater_structure",
             table_alias="ws",
+            prefix="ws_",
             remove_pkey=False,
             indent=4,
             skip_columns=[
@@ -78,6 +112,10 @@ def vw_tww_channel(
                 "fk_dataowner",
                 "fk_provider",
                 "_label",
+                "_cover_label",
+                "_bottom_label",
+                "_input_label",
+                "_output_label",
                 "_depth",
                 "fk_main_cover",
             ],
@@ -104,6 +142,10 @@ def vw_tww_channel(
                 "fk_dataowner",
                 "fk_provider",
                 "_label",
+                "_cover_label",
+                "_bottom_label",
+                "_input_label",
+                "_output_label",
                 "_depth",
                 "fk_main_cover",
             ],
@@ -147,7 +189,6 @@ def vw_tww_channel_maintenance(connection: psycopg.Connection, extra_definition:
             table_schema="tww_app",
             table_name="vw_tww_channel",
             table_alias="ch",
-            prefix="ch_",
             remove_pkey=False,
             indent=4,
             skip_columns=[],
