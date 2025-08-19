@@ -123,7 +123,7 @@ def vw_tww_channel(
             table_schema="tww_od",
             table_name="channel",
             table_alias="ch",
-            remove_pkey=True,
+            remove_pkey=False,
             indent=4,
             skip_columns=[],
         ),
@@ -132,7 +132,7 @@ def vw_tww_channel(
             table_schema="tww_od",
             table_name="wastewater_structure",
             table_alias="ws",
-            remove_pkey=False,
+            remove_pkey=True,
             indent=4,
             skip_columns=[
                 "detail_geometry3d_geometry",
