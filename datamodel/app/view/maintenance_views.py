@@ -82,6 +82,8 @@ def vw_tww_channel(
        GROUP BY
          {ch_cols_grp}
         , {ws_cols_grp}
+        , _topology._from_nodes
+        , _topology._to_nodes
         , vl_fh.tww_is_primary
     """.format(
         lang_code=lang_code,
