@@ -27,7 +27,7 @@
 <polygon fill="none" stroke="black" points="340.5,-364 340.5,-386 497.5,-386 497.5,-364 340.5,-364"/>
 <text text-anchor="start" x="360.5" y="-372.2" font-family="Helvetica,sans-Serif" font-size="11.00">height_width_ratio</text>
 <polygon fill="none" stroke="black" points="497.5,-364 497.5,-386 603.5,-386 603.5,-364 497.5,-364"/>
-<text text-anchor="start" x="500.5" y="-372.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[5,2]</text>
+<text text-anchor="start" x="500.5" y="-372.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[8,5]</text>
 <polygon fill="#ffffff" stroke="transparent" points="340.5,-342 340.5,-364 497.5,-364 497.5,-342 340.5,-342"/>
 <polygon fill="none" stroke="black" points="340.5,-342 340.5,-364 497.5,-364 497.5,-342 340.5,-342"/>
 <text text-anchor="start" x="360.5" y="-350.2" font-family="Helvetica,sans-Serif" font-size="11.00">identifier</text>

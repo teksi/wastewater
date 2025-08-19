@@ -296,7 +296,7 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td><span id="time">time</span></td>
+                                    <td><span id="time_point">time_point</span></td>
                                     <td>timestamp</td>
                                     <td>29,6</td>
                                     <td title='nullable'>√</td>
@@ -313,7 +313,7 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td><span id="value">value</span></td>
+                                    <td><span id="measurement_value">measurement_value</span></td>
                                     <td>float4</td>
                                     <td>8,8</td>
                                     <td title='nullable'>√</td>
@@ -384,7 +384,7 @@
                             </div>
                         </div>
                         <div class="box-body">
-                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">SELECT ws.obj_id AS ws_obj_id,&#10;    mf.vsacode AS ma_function,&#10;    ssf.vsacode AS ss_function,&#10;    mp.obj_id AS mp_obj_id,&#10;    mp.remark AS swmm_simulation_name,&#10;    md.obj_id AS md_obj_id,&#10;    ms.obj_id AS ms_obj_id,&#10;    ms.dimension,&#10;    ms.remark AS swmm_parameter,&#10;    mr.obj_id AS mr_obj_id,&#10;    mr.measuring_duration,&#10;    mr.&quot;time&quot;,&#10;    mr.value,&#10;    wn.situation3d_geometry AS geom&#10;   FROM (((((((((tww_od.wastewater_structure ws&#10;     JOIN tww_od.wastewater_node wn ON (((wn.obj_id)::text &#61; (ws.fk_main_wastewater_node)::text)))&#10;     LEFT JOIN tww_od.manhole ma ON (((ma.obj_id)::text &#61; (ws.obj_id)::text)))&#10;     LEFT JOIN tww_vl.manhole_function mf ON ((mf.code &#61; ma.function)))&#10;     LEFT JOIN tww_od.special_structure ss ON (((ss.obj_id)::text &#61; (ws.obj_id)::text)))&#10;     LEFT JOIN tww_vl.special_structure_function ssf ON ((ssf.code &#61; ss.function)))&#10;     LEFT JOIN tww_od.measuring_point mp ON (((mp.fk_wastewater_structure)::text &#61; (ws.obj_id)::text)))&#10;     LEFT JOIN tww_od.measuring_device md ON (((md.fk_measuring_point)::text &#61; (mp.obj_id)::text)))&#10;     LEFT JOIN tww_od.measurement_series ms ON (((ms.fk_measuring_point)::text &#61; (mp.obj_id)::text)))&#10;     LEFT JOIN tww_od.measurement_result mr ON (((mr.fk_measurement_series)::text &#61; (ms.obj_id)::text)))&#10;  WHERE (md.remark &#61; &#39;SWMM Simulation&#39;::text)&#10;  ORDER BY mp.obj_id, mr.&quot;time&quot;;</textarea>
+                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">SELECT ws.obj_id AS ws_obj_id,&#10;    mf.vsacode AS ma_function,&#10;    ssf.vsacode AS ss_function,&#10;    mp.obj_id AS mp_obj_id,&#10;    mp.remark AS swmm_simulation_name,&#10;    md.obj_id AS md_obj_id,&#10;    ms.obj_id AS ms_obj_id,&#10;    ms.dimension,&#10;    ms.remark AS swmm_parameter,&#10;    mr.obj_id AS mr_obj_id,&#10;    mr.measuring_duration,&#10;    mr.time_point,&#10;    mr.measurement_value,&#10;    wn.situation3d_geometry AS geom&#10;   FROM (((((((((tww_od.wastewater_structure ws&#10;     JOIN tww_od.wastewater_node wn ON (((wn.obj_id)::text &#61; (ws.fk_main_wastewater_node)::text)))&#10;     LEFT JOIN tww_od.manhole ma ON (((ma.obj_id)::text &#61; (ws.obj_id)::text)))&#10;     LEFT JOIN tww_vl.manhole_function mf ON ((mf.code &#61; ma.function)))&#10;     LEFT JOIN tww_od.special_structure ss ON (((ss.obj_id)::text &#61; (ws.obj_id)::text)))&#10;     LEFT JOIN tww_vl.special_structure_function ssf ON ((ssf.code &#61; ss.function)))&#10;     LEFT JOIN tww_od.measuring_point mp ON (((mp.fk_wastewater_structure)::text &#61; (ws.obj_id)::text)))&#10;     LEFT JOIN tww_od.measuring_device md ON (((md.fk_measuring_point)::text &#61; (mp.obj_id)::text)))&#10;     LEFT JOIN tww_od.measurement_series ms ON (((ms.fk_measuring_point)::text &#61; (mp.obj_id)::text)))&#10;     LEFT JOIN tww_od.measurement_result mr ON (((mr.fk_measurement_series)::text &#61; (ms.obj_id)::text)))&#10;  WHERE (md.remark &#61; &#39;SWMM Simulation&#39;::text)&#10;  ORDER BY mp.obj_id, mr.time_point;</textarea>
                             <div style="padding-top: 5px;"><hr></div>
                             <div class="box box-solid">
                                 <div class="box-header with-border">

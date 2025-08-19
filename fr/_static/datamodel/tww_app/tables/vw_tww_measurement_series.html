@@ -279,6 +279,23 @@
                                     <td></td>
                                 </tr>
                                 <tr>
+                                    <td><span id="mr_times">mr_times</span></td>
+                                    <td>_timestamp</td>
+                                    <td>29,6</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
                                     <td><span id="mr_values">mr_values</span></td>
                                     <td>_float4</td>
                                     <td>8,8</td>
@@ -333,7 +350,7 @@
                             </div>
                         </div>
                         <div class="box-body">
-                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">SELECT ms.obj_id,&#10;    ms.dimension,&#10;    ms.fk_dataowner,&#10;    ms.fk_measuring_point,&#10;    ms.fk_provider,&#10;    ms.fk_wastewater_networkelement,&#10;    ms.identifier,&#10;    ms.kind,&#10;    ms.last_modification,&#10;    ms.remark,&#10;    array_agg(mr.value) AS mr_values&#10;   FROM (tww_od.measurement_series ms&#10;     LEFT JOIN tww_od.measurement_result mr ON (((ms.obj_id)::text &#61; (mr.fk_measurement_series)::text)))&#10;  GROUP BY ms.obj_id, ms.dimension, ms.fk_dataowner, ms.fk_measuring_point, ms.fk_provider, ms.fk_wastewater_networkelement, ms.identifier, ms.kind, ms.last_modification, ms.remark;</textarea>
+                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">SELECT ms.obj_id,&#10;    ms.dimension,&#10;    ms.fk_dataowner,&#10;    ms.fk_measuring_point,&#10;    ms.fk_provider,&#10;    ms.fk_wastewater_networkelement,&#10;    ms.identifier,&#10;    ms.kind,&#10;    ms.last_modification,&#10;    ms.remark,&#10;    array_agg(mr.time_point) AS mr_times,&#10;    array_agg(mr.measurement_value) AS mr_values&#10;   FROM (tww_od.measurement_series ms&#10;     LEFT JOIN tww_od.measurement_result mr ON (((ms.obj_id)::text &#61; (mr.fk_measurement_series)::text)))&#10;  GROUP BY ms.obj_id, ms.dimension, ms.fk_dataowner, ms.fk_measuring_point, ms.fk_provider, ms.fk_wastewater_networkelement, ms.identifier, ms.kind, ms.last_modification, ms.remark;</textarea>
                             <div style="padding-top: 5px;"><hr></div>
                             <div class="box box-solid">
                                 <div class="box-header with-border">

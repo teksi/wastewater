@@ -1054,7 +1054,7 @@
 <polygon fill="none" stroke="black" points="10,-6375 10,-6397 344,-6397 344,-6375 10,-6375"/>
 <text text-anchor="start" x="30" y="-6383.2" font-family="Helvetica,sans-Serif" font-size="11.00">profile_height_width_ratio</text>
 <polygon fill="none" stroke="black" points="344,-6375 344,-6397 480,-6397 480,-6375 344,-6375"/>
-<text text-anchor="start" x="347" y="-6383.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[5,2]</text>
+<text text-anchor="start" x="347" y="-6383.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[8,5]</text>
 <polygon fill="none" stroke="black" points="10,-6353 10,-6375 344,-6375 344,-6353 10,-6353"/>
 <text text-anchor="start" x="30" y="-6361.2" font-family="Helvetica,sans-Serif" font-size="11.00">profile_identifier</text>
 <polygon fill="none" stroke="black" points="344,-6353 344,-6375 480,-6375 480,-6353 344,-6353"/>

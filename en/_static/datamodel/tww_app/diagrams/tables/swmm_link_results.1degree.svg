@@ -68,11 +68,11 @@
 <polygon fill="none" stroke="black" points="208,-105 208,-127 344,-127 344,-105 208,-105"/>
 <text text-anchor="start" x="211" y="-113.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[7]</text>
 <polygon fill="none" stroke="black" points="10,-83 10,-105 208,-105 208,-83 10,-83"/>
-<text text-anchor="start" x="30" y="-91.2" font-family="Helvetica,sans-Serif" font-size="11.00">time</text>
+<text text-anchor="start" x="30" y="-91.2" font-family="Helvetica,sans-Serif" font-size="11.00">time_point</text>
 <polygon fill="none" stroke="black" points="208,-83 208,-105 344,-105 344,-83 208,-83"/>
 <text text-anchor="start" x="211" y="-91.2" font-family="Helvetica,sans-Serif" font-size="11.00">timestamp[29,6]</text>
 <polygon fill="none" stroke="black" points="10,-61 10,-83 208,-83 208,-61 10,-61"/>
-<text text-anchor="start" x="30" y="-69.2" font-family="Helvetica,sans-Serif" font-size="11.00">value</text>
+<text text-anchor="start" x="30" y="-69.2" font-family="Helvetica,sans-Serif" font-size="11.00">measurement_value</text>
 <polygon fill="none" stroke="black" points="208,-61 208,-83 344,-83 344,-61 208,-61"/>
 <text text-anchor="start" x="211" y="-69.2" font-family="Helvetica,sans-Serif" font-size="11.00">float4[8,8]</text>
 <polygon fill="none" stroke="black" points="10,-39 10,-61 208,-61 208,-39 10,-39"/>

@@ -1792,8 +1792,8 @@
          </column>
          <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="measuring_duration" nullable="true" remarks="Duration of measurment in seconds / Dauer der Messung in Sekunden / Durée de la mesure" size="7" type="numeric" typeCode="2"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="remark" nullable="true" remarks="General remarks / Allgemeine Bemerkungen / Remarques générales" size="2147483647" type="text" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="null" digits="6" id="5" name="time" nullable="true" remarks="Date and time at beginning of measurment / Zeitpunkt des Messbeginns / Date et heure du début de la mesure" size="29" type="timestamp" typeCode="93"/>
-         <column autoUpdated="false" defaultValue="null" digits="8" id="6" name="value" nullable="true" remarks="yyy_Gemessene Grösse / Gemessene Grösse / Valeur mesurée" size="8" type="float4" typeCode="7"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="5" name="time_point" nullable="true" remarks="Date and time at beginning of measurment / Zeitpunkt des Messbeginns / Date et heure du début de la mesure" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="8" id="6" name="measurement_value" nullable="true" remarks="yyy_Gemessene Grösse / Gemessene Grösse / Valeur mesurée" size="8" type="float4" typeCode="7"/>
          <column autoUpdated="false" defaultValue="now()" digits="6" id="7" name="last_modification" nullable="true" remarks="Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE" size="29" type="timestamp" typeCode="93"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="fk_dataowner" nullable="true" remarks="Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l'organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe" size="16" type="varchar" typeCode="12">
             <parent column="obj_id" foreignKey="rel_od_measurement_result_fk_dataowner" implied="false" onDeleteCascade="false" schema="tww_od" table="organisation"/>
@@ -2302,7 +2302,7 @@
             <child column="fk_pipe_profile" foreignKey="rel_profile_geometry_pipe_profile" implied="false" onDeleteCascade="true" schema="tww_od" table="profile_geometry"/>
             <child column="fk_pipe_profile" foreignKey="rel_reach_pipe_profile" implied="false" onDeleteCascade="false" schema="tww_od" table="reach"/>
          </column>
-         <column autoUpdated="false" defaultValue="null" digits="2" id="1" name="height_width_ratio" nullable="true" remarks="height-width ratio / Verhältnis der Höhe zur Breite / Rapport entre la hauteur et la largeur" size="5" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="5" id="1" name="height_width_ratio" nullable="true" remarks="height-width ratio / Verhältnis der Höhe zur Breite / Rapport entre la hauteur et la largeur" size="8" type="numeric" typeCode="2"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="profile_type" nullable="true" remarks="Type of profile / Typ des Profils / Type du profil" size="10" type="int4" typeCode="4">
             <parent column="code" foreignKey="fkey_vl_pipe_profile_profile_type" implied="false" onDeleteCascade="false" schema="tww_vl" table="pipe_profile_profile_type"/>
