@@ -77,10 +77,6 @@ def vw_tww_channel(
          LEFT JOIN tww_od.wastewater_structure ws ON ch.obj_id = ws.obj_id
          LEFT JOIN tww_od.wastewater_networkelement ne ON ne.fk_wastewater_structure = ws.obj_id
          LEFT JOIN tww_od.reach re ON ne.obj_id = re.obj_id
-         LEFT JOIN tww_od.reach_point rp_from ON rp_from.obj_id=re.fk_reach_point_from
-         LEFT JOIN tww_od.wastewater_node wn_from ON wn_from.obj_id=rp_from.fk_wastewater_networkelement
-         LEFT JOIN tww_od.reach_point rp_to ON rp_to=re.fk_reach_point_to
-         LEFT JOIN tww_od.wastewater_node wn_to ON wn_to.obj_id=rp_to.fk_wastewater_networkelement
          LEFT JOIN tww_vl.channel_function_hierarchic vl_fh ON vl_fh.code = ch.function_hierarchic
          LEFT JOIN tww_vl.reach_material vl_mat on vl_mat.code = re.material
        GROUP BY
