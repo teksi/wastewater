@@ -37,18 +37,18 @@ def vw_tww_channel(
     WITH _topology AS
         (
         SELECT
-		  ch.obj_id
+          ch.obj_id
         , array_agg(wn_from.obj_id) AS _from_nodes
-		, array_agg(wn_to.obj_id) as _to_nodes
+        , array_agg(wn_to.obj_id) as _to_nodes
       FROM tww_od.channel ch
          LEFT JOIN tww_od.wastewater_structure ws ON ch.obj_id = ws.obj_id
          LEFT JOIN tww_od.wastewater_networkelement ne ON ne.fk_wastewater_structure = ws.obj_id
          LEFT JOIN tww_od.reach re ON ne.obj_id = re.obj_id
          LEFT JOIN tww_od.reach_point rp_to ON re.fk_reach_point_to=rp_to.obj_id
-		 LEFT JOIN tww_od.wastewater_node wn_to on wn_to.obj_id=rp_to.fk_wastewater_networkelement
+         LEFT JOIN tww_od.wastewater_node wn_to on wn_to.obj_id=rp_to.fk_wastewater_networkelement
          LEFT JOIN tww_od.reach_point rp_from ON re.fk_reach_point_from=rp_from.obj_id
-		 LEFT JOIN tww_od.wastewater_node wn_from on wn_from.obj_id=rp_from.fk_wastewater_networkelement
-	      GROUP BY
+         LEFT JOIN tww_od.wastewater_node wn_from on wn_from.obj_id=rp_from.fk_wastewater_networkelement
+       GROUP BY
          ch.obj_id
         )
         SELECT
