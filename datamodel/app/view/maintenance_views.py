@@ -92,6 +92,7 @@ def vw_tww_channel(
             table_schema="tww_od",
             table_name="channel",
             table_alias="ch",
+            prefix="ch_",
             remove_pkey=False,
             indent=4,
             skip_columns=[],
