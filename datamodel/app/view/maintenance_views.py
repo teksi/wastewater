@@ -52,8 +52,8 @@ def vw_tww_channel(
          ch.obj_id
         )
         SELECT
-          {ws_cols}
-        , {ch_cols}
+          {ch_cols}
+        , {ws_cols}
         , ST_Multi(ST_Force2D(ST_ForceCurve(ST_LineMerge(ST_Collect(ST_CurveToLine(re.progression3d_geometry))))))::geometry(MultiCurve, {{srid}})  as progression2d_geometry
         , min(re.clear_height) AS _re_min_height
         , max(re.clear_height) AS _re_max_height
@@ -92,7 +92,7 @@ def vw_tww_channel(
             table_schema="tww_od",
             table_name="channel",
             table_alias="ch",
-            remove_pkey=True,
+            remove_pkey=False,
             indent=4,
             skip_columns=[],
         ),
@@ -102,7 +102,7 @@ def vw_tww_channel(
             table_name="wastewater_structure",
             table_alias="ws",
             prefix="ws_",
-            remove_pkey=False,
+            remove_pkey=True,
             indent=4,
             skip_columns=[
                 "detail_geometry3d_geometry",
