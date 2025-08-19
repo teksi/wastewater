@@ -177,7 +177,7 @@ def vw_tww_channel_maintenance(connection: psycopg.Connection, extra_definition:
         , {ch_cols}
         {extra_cols}
       FROM tww_od.re_maintenance_event_wastewater_structure mw
-         INNER JOIN tww_app.vw_tww_channel ch ON ch.obj_id = mw.fk_wastewater_structure
+         INNER JOIN tww_app.vw_tww_channel ch ON ch.ch_obj_id = mw.fk_wastewater_structure
          LEFT JOIN tww_od.maintenance_event me ON me.obj_id = mw.fk_maintenance_event
          LEFT JOIN tww_od.maintenance mn ON me.obj_id = mn.obj_id
          {extra_joins}
