@@ -74,7 +74,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         self.update("import_vw_manhole", row, obj_id)
 
         # it should be calculated correctly in the live table tww_od.wastewater_structure
-        row = self.select("wastewater_structure", obj_id, "tww_od")
+        row = self.select("wastewater_structure", obj_id, schema="tww_od")
         self.assertNotEqual(row["_depth"], decimal.Decimal("12.220"))
 
         # it should be visible in the import_vw_manhole view

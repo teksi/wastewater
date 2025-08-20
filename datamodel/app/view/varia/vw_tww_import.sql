@@ -175,6 +175,8 @@ BEGIN
       NEW.outlet_2_depth_m
       );
     END IF;
+  ELSE 
+    NULL; 
   END IF;
   RETURN NEW;
 END; $BODY$
@@ -193,9 +195,7 @@ CREATE TRIGGER on_mutation_make_insert_or_delete
 
 -- create trigger functions and triggers for quarantine table
 -- SELECT set_config('tww.srid', {SRID}::text, false);
-DO $DO$
-BEGIN
-EXECUTE format($TRIGGER$
+
 CREATE OR REPLACE FUNCTION tww_app.import_manhole_quarantine_try_structure_update() RETURNS trigger AS $BODY$
 BEGIN
 
@@ -330,9 +330,7 @@ BEGIN
     RETURN NEW;
 END; $BODY$
 LANGUAGE plpgsql;
-$TRIGGER$, {SRID});
-END
-$DO$;
+
 
 DROP TRIGGER IF EXISTS after_update_try_structure_update ON tww_od.import_manhole_quarantine;
 
