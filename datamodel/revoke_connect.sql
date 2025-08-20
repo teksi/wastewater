@@ -1,0 +1,1 @@
+DO $$ BEGIN EXECUTE 'REVOKE CONNECT ON DATABASE ' || (SELECT current_database()) || ' FROM PUBLIC'; END $$; 
