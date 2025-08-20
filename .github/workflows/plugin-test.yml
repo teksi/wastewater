@@ -71,6 +71,7 @@ jobs:
           docker compose exec db sh -c 'dropdb tww'
           docker compose exec db sh -c 'createdb tww'
           docker compose exec db pum -s pg_tww -d datamodel install -p SRID 2056
+          docker compose exec db sh -c 'psql -U postgres -c "GRANT tww_user TO postgres;"'
 
       - name: Test on QGIS DSS dataset
         run: docker compose exec qgis /usr/src/plugin/.docker/run-docker-tests.sh teksi_wastewater/tests/test_interlis.py::TestInterlis::test_dss_dataset_import_export
@@ -80,6 +81,7 @@ jobs:
           docker compose exec db sh -c 'dropdb tww'
           docker compose exec db sh -c 'createdb tww'
           docker compose exec db pum -s pg_tww -d datamodel install -p SRID 2056
+          docker compose exec db sh -c 'psql -U postgres -c "GRANT tww_user TO postgres;"'
 
       - name: Test command line import orgs
         run: docker compose exec qgis sh -c 'xvfb-run /usr/src/plugin/tww_cmd.py interlis_import --xtf_file /usr/src/plugin/teksi_wastewater/tests/data/minimal-dataset-organisation-arbon-only.xtf --pghost db --pgdatabase tww --pguser postgres --pgpass postgres --pgport 5432'
