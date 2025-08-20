@@ -175,8 +175,8 @@ BEGIN
       NEW.outlet_2_depth_m
       );
     END IF;
-  ELSE 
-    NULL; 
+  ELSE
+    NULL;
   END IF;
   RETURN NEW;
 END; $BODY$
