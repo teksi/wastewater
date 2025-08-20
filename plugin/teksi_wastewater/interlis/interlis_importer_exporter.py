@@ -613,7 +613,7 @@ class InterlisImporterExporter:
             )
             tempdir.cleanup()  # Cleanup
 
-            self._progress_done(70)
+            self._progress_done(75)
             self._export_xtf_files(file_name_base, export_models)
 
             self._progress_done(100)
