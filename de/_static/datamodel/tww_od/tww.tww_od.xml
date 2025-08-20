@@ -2015,6 +2015,9 @@
          <index name="network_node_pkey" unique="true">
             <column ascending="true" name="id"/>
          </index>
+         <index name="in_network_node_geom" unique="false">
+            <column ascending="true" name="geom"/>
+         </index>
       </table>
       <table name="network_segment" remarks="" schema="tww_od" type="TABLE">
          <column autoUpdated="true" defaultValue="nextval('tww_od.network_segment_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4"/>
@@ -2032,6 +2035,9 @@
          <primaryKey column="id" sequenceNumberInPK="1"/>
          <index name="network_segment_pkey" unique="true">
             <column ascending="true" name="id"/>
+         </index>
+         <index name="in_network_segment_geom" unique="false">
+            <column ascending="true" name="geom"/>
          </index>
       </table>
       <table name="organisation" remarks="" schema="tww_od" type="TABLE">

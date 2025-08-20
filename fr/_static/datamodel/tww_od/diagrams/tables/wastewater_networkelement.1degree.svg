@@ -526,20 +526,23 @@
 <g id="node7" class="node">
 <title>network_node</title>
 <g id="a_node7"><a xlink:href="../../tables/network_node.html" xlink:title="network_node" target="_top">
-<polygon fill="#ffffff" stroke="transparent" points="1430.35,-790 1430.35,-914 1580.35,-914 1580.35,-790 1430.35,-790"/>
-<polygon fill="#f5f5f5" stroke="transparent" points="1430.35,-892 1430.35,-914 1580.35,-914 1580.35,-892 1430.35,-892"/>
+<polygon fill="#ffffff" stroke="transparent" points="1430.35,-790 1430.35,-936 1580.35,-936 1580.35,-790 1430.35,-790"/>
+<polygon fill="#f5f5f5" stroke="transparent" points="1430.35,-914 1430.35,-936 1580.35,-936 1580.35,-914 1430.35,-914"/>
+<polygon fill="none" stroke="black" points="1430.35,-914 1430.35,-936 1580.35,-936 1580.35,-914 1430.35,-914"/>
+<text text-anchor="start" x="1435.35" y="-923.2" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00">network_node</text>
+<text text-anchor="start" x="1538.35" y="-922.2" font-family="Helvetica,sans-Serif" font-size="11.00">[table]</text>
 <polygon fill="none" stroke="black" points="1430.35,-892 1430.35,-914 1580.35,-914 1580.35,-892 1430.35,-892"/>
-<text text-anchor="start" x="1435.35" y="-901.2" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00">network_node</text>
-<text text-anchor="start" x="1538.35" y="-900.2" font-family="Helvetica,sans-Serif" font-size="11.00">[table]</text>
+<image xlink:href="../../images/primaryKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="1435.35" y="-909"/>
+<text text-anchor="start" x="1463.35" y="-900.2" font-family="Helvetica,sans-Serif" font-size="11.00">id</text>
 <polygon fill="none" stroke="black" points="1430.35,-870 1430.35,-892 1580.35,-892 1580.35,-870 1430.35,-870"/>
-<image xlink:href="../../images/primaryKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="1435.35" y="-887"/>
-<text text-anchor="start" x="1463.35" y="-878.2" font-family="Helvetica,sans-Serif" font-size="11.00">id</text>
+<image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="1435.35" y="-887"/>
+<text text-anchor="start" x="1463.35" y="-878.2" font-family="Helvetica,sans-Serif" font-size="11.00">ne_id</text>
 <polygon fill="none" stroke="black" points="1430.35,-848 1430.35,-870 1580.35,-870 1580.35,-848 1430.35,-848"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="1435.35" y="-865"/>
-<text text-anchor="start" x="1463.35" y="-856.2" font-family="Helvetica,sans-Serif" font-size="11.00">ne_id</text>
+<text text-anchor="start" x="1463.35" y="-856.2" font-family="Helvetica,sans-Serif" font-size="11.00">rp_id</text>
+<polygon fill="#ffffff" stroke="transparent" points="1430.35,-826 1430.35,-848 1580.35,-848 1580.35,-826 1430.35,-826"/>
 <polygon fill="none" stroke="black" points="1430.35,-826 1430.35,-848 1580.35,-848 1580.35,-826 1430.35,-826"/>
-<image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="1435.35" y="-843"/>
-<text text-anchor="start" x="1463.35" y="-834.2" font-family="Helvetica,sans-Serif" font-size="11.00">rp_id</text>
+<text text-anchor="start" x="1463.35" y="-834.2" font-family="Helvetica,sans-Serif" font-size="11.00">geom</text>
 <polygon fill="none" stroke="black" points="1430.35,-808 1430.35,-826 1580.35,-826 1580.35,-808 1430.35,-808"/>
 <text text-anchor="start" x="1433.35" y="-814.2" font-family="Helvetica,sans-Serif" font-size="11.00">...</text>
 <polygon fill="#ffffff" stroke="transparent" points="1430.35,-790 1430.35,-808 1580.35,-808 1580.35,-790 1430.35,-790"/>
@@ -558,9 +561,9 @@
 <!-- network_node&#45;&gt;wastewater_networkelement -->
 <g id="edge16" class="edge">
 <title>network_node:w&#45;&gt;wastewater_networkelement:e</title>
-<path fill="none" stroke="black" d="M1414.82,-857.91C1373.97,-851.43 1366.65,-817.68 1318.85,-807 1239.48,-789.26 1017.8,-758.04 952.85,-807 899.33,-847.35 978.39,-952 911.35,-952"/>
-<polygon fill="black" stroke="black" points="1421.38,-858.4 1429.09,-862.59 1425.37,-858.7 1429.35,-859 1429.35,-859 1429.35,-859 1425.37,-858.7 1429.62,-855.41 1421.38,-858.4 1421.38,-858.4"/>
-<ellipse fill="none" stroke="black" cx="1418.19" cy="-858.17" rx="3.2" ry="3.2"/>
+<path fill="none" stroke="black" d="M1414.89,-879.69C1370.68,-871.11 1370.33,-822.64 1318.85,-807 1241.04,-783.35 1017.8,-758.04 952.85,-807 899.33,-847.35 978.39,-952 911.35,-952"/>
+<polygon fill="black" stroke="black" points="1421.39,-880.28 1429.03,-884.59 1425.37,-880.64 1429.35,-881 1429.35,-881 1429.35,-881 1425.37,-880.64 1429.68,-877.41 1421.39,-880.28 1421.39,-880.28"/>
+<ellipse fill="none" stroke="black" cx="1418.2" cy="-879.99" rx="3.2" ry="3.2"/>
 </g>
 <!-- reach_point -->
 <g id="node8" class="node">
@@ -617,9 +620,9 @@
 <!-- network_node&#45;&gt;reach_point -->
 <g id="edge17" class="edge">
 <title>network_node:w&#45;&gt;reach_point:e</title>
-<path fill="none" stroke="black" d="M1415.08,-834.79C1313.91,-801.55 1376.68,-403.67 1318.85,-303 1303.4,-276.09 1294.88,-260 1263.85,-260"/>
-<polygon fill="black" stroke="black" points="1421.45,-835.77 1428.8,-840.56 1425.4,-836.39 1429.35,-837 1429.35,-837 1429.35,-837 1425.4,-836.39 1429.91,-833.44 1421.45,-835.77 1421.45,-835.77"/>
-<ellipse fill="none" stroke="black" cx="1418.29" cy="-835.28" rx="3.2" ry="3.2"/>
+<path fill="none" stroke="black" d="M1414.86,-856.8C1309.56,-822.92 1379.03,-407.75 1318.85,-303 1303.4,-276.09 1294.88,-260 1263.85,-260"/>
+<polygon fill="black" stroke="black" points="1421.45,-857.8 1428.81,-862.56 1425.4,-858.4 1429.35,-859 1429.35,-859 1429.35,-859 1425.4,-858.4 1429.9,-855.44 1421.45,-857.8 1421.45,-857.8"/>
+<ellipse fill="none" stroke="black" cx="1418.28" cy="-857.32" rx="3.2" ry="3.2"/>
 </g>
 <!-- reach_point&#45;&gt;organisation -->
 <g id="edge24" class="edge">
@@ -646,23 +649,26 @@
 <g id="node9" class="node">
 <title>network_segment</title>
 <g id="a_node9"><a xlink:href="../../tables/network_segment.html" xlink:title="network_segment" target="_top">
-<polygon fill="#ffffff" stroke="transparent" points="1699.85,-790 1699.85,-936 1876.85,-936 1876.85,-790 1699.85,-790"/>
-<polygon fill="#f5f5f5" stroke="transparent" points="1700.35,-914 1700.35,-936 1877.35,-936 1877.35,-914 1700.35,-914"/>
+<polygon fill="#ffffff" stroke="transparent" points="1699.85,-790 1699.85,-958 1876.85,-958 1876.85,-790 1699.85,-790"/>
+<polygon fill="#f5f5f5" stroke="transparent" points="1700.35,-936 1700.35,-958 1877.35,-958 1877.35,-936 1700.35,-936"/>
+<polygon fill="none" stroke="black" points="1700.35,-936 1700.35,-958 1877.35,-958 1877.35,-936 1700.35,-936"/>
+<text text-anchor="start" x="1705.35" y="-945.2" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00">network_segment</text>
+<text text-anchor="start" x="1835.35" y="-944.2" font-family="Helvetica,sans-Serif" font-size="11.00">[table]</text>
 <polygon fill="none" stroke="black" points="1700.35,-914 1700.35,-936 1877.35,-936 1877.35,-914 1700.35,-914"/>
-<text text-anchor="start" x="1705.35" y="-923.2" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00">network_segment</text>
-<text text-anchor="start" x="1835.35" y="-922.2" font-family="Helvetica,sans-Serif" font-size="11.00">[table]</text>
+<image xlink:href="../../images/primaryKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="1705.35" y="-931"/>
+<text text-anchor="start" x="1733.35" y="-922.2" font-family="Helvetica,sans-Serif" font-size="11.00">id</text>
 <polygon fill="none" stroke="black" points="1700.35,-892 1700.35,-914 1877.35,-914 1877.35,-892 1700.35,-892"/>
-<image xlink:href="../../images/primaryKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="1705.35" y="-909"/>
-<text text-anchor="start" x="1733.35" y="-900.2" font-family="Helvetica,sans-Serif" font-size="11.00">id</text>
+<image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="1705.35" y="-909"/>
+<text text-anchor="start" x="1733.35" y="-900.2" font-family="Helvetica,sans-Serif" font-size="11.00">from_node</text>
 <polygon fill="none" stroke="black" points="1700.35,-870 1700.35,-892 1877.35,-892 1877.35,-870 1700.35,-870"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="1705.35" y="-887"/>
-<text text-anchor="start" x="1733.35" y="-878.2" font-family="Helvetica,sans-Serif" font-size="11.00">from_node</text>
+<text text-anchor="start" x="1733.35" y="-878.2" font-family="Helvetica,sans-Serif" font-size="11.00">to_node</text>
 <polygon fill="none" stroke="black" points="1700.35,-848 1700.35,-870 1877.35,-870 1877.35,-848 1700.35,-848"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="1705.35" y="-865"/>
-<text text-anchor="start" x="1733.35" y="-856.2" font-family="Helvetica,sans-Serif" font-size="11.00">to_node</text>
+<text text-anchor="start" x="1733.35" y="-856.2" font-family="Helvetica,sans-Serif" font-size="11.00">ne_id</text>
+<polygon fill="#ffffff" stroke="transparent" points="1700.35,-826 1700.35,-848 1877.35,-848 1877.35,-826 1700.35,-826"/>
 <polygon fill="none" stroke="black" points="1700.35,-826 1700.35,-848 1877.35,-848 1877.35,-826 1700.35,-826"/>
-<image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="1705.35" y="-843"/>
-<text text-anchor="start" x="1733.35" y="-834.2" font-family="Helvetica,sans-Serif" font-size="11.00">ne_id</text>
+<text text-anchor="start" x="1733.35" y="-834.2" font-family="Helvetica,sans-Serif" font-size="11.00">geom</text>
 <polygon fill="none" stroke="black" points="1700.35,-808 1700.35,-826 1877.35,-826 1877.35,-808 1700.35,-808"/>
 <text text-anchor="start" x="1703.35" y="-814.2" font-family="Helvetica,sans-Serif" font-size="11.00">...</text>
 <polygon fill="#ffffff" stroke="transparent" points="1700.35,-790 1700.35,-808 1877.35,-808 1877.35,-790 1700.35,-790"/>
@@ -681,23 +687,23 @@
 <!-- network_segment&#45;&gt;wastewater_networkelement -->
 <g id="edge19" class="edge">
 <title>network_segment:w&#45;&gt;wastewater_networkelement:e</title>
-<path fill="none" stroke="black" d="M1685.71,-832.32C1673.76,-820.85 1680.81,-791.46 1658.85,-780 1641.31,-770.84 957.92,-772.99 952.85,-777 890.15,-826.57 991.29,-952 911.35,-952"/>
-<polygon fill="black" stroke="black" points="1691.79,-834.4 1698.19,-840.41 1695.57,-835.7 1699.35,-837 1699.35,-837 1699.35,-837 1695.57,-835.7 1700.52,-833.59 1691.79,-834.4 1691.79,-834.4"/>
-<ellipse fill="none" stroke="black" cx="1688.76" cy="-833.36" rx="3.2" ry="3.2"/>
+<path fill="none" stroke="black" d="M1685.14,-854.72C1668.79,-840.89 1686.92,-797.32 1658.85,-780 1642.5,-769.9 959.2,-771.98 952.85,-777 890.15,-826.57 991.29,-952 911.35,-952"/>
+<polygon fill="black" stroke="black" points="1691.69,-856.69 1698.32,-862.45 1695.52,-857.85 1699.35,-859 1699.35,-859 1699.35,-859 1695.52,-857.85 1700.39,-855.55 1691.69,-856.69 1691.69,-856.69"/>
+<ellipse fill="none" stroke="black" cx="1688.63" cy="-855.77" rx="3.2" ry="3.2"/>
 </g>
 <!-- network_segment&#45;&gt;network_node -->
 <g id="edge18" class="edge">
 <title>network_segment:w&#45;&gt;network_node:e</title>
-<path fill="none" stroke="black" d="M1684.78,-881C1643.91,-881 1628.58,-881 1581.35,-881"/>
-<polygon fill="black" stroke="black" points="1691.35,-881 1699.35,-884.6 1695.35,-881 1699.35,-881 1699.35,-881 1699.35,-881 1695.35,-881 1699.35,-877.4 1691.35,-881 1691.35,-881"/>
-<ellipse fill="none" stroke="black" cx="1688.15" cy="-881" rx="3.2" ry="3.2"/>
+<path fill="none" stroke="black" d="M1684.78,-903C1643.91,-903 1628.58,-903 1581.35,-903"/>
+<polygon fill="black" stroke="black" points="1691.35,-903 1699.35,-906.6 1695.35,-903 1699.35,-903 1699.35,-903 1699.35,-903 1695.35,-903 1699.35,-899.4 1691.35,-903 1691.35,-903"/>
+<ellipse fill="none" stroke="black" cx="1688.15" cy="-903" rx="3.2" ry="3.2"/>
 </g>
 <!-- network_segment&#45;&gt;network_node -->
 <g id="edge20" class="edge">
 <title>network_segment:w&#45;&gt;network_node:e</title>
-<path fill="none" stroke="black" d="M1684.85,-859.59C1643.4,-863.09 1629.49,-881 1581.35,-881"/>
-<polygon fill="black" stroke="black" points="1691.36,-859.32 1699.5,-862.6 1695.36,-859.16 1699.35,-859 1699.35,-859 1699.35,-859 1695.36,-859.16 1699.21,-855.4 1691.36,-859.32 1691.36,-859.32"/>
-<ellipse fill="none" stroke="black" cx="1688.16" cy="-859.45" rx="3.2" ry="3.2"/>
+<path fill="none" stroke="black" d="M1684.85,-881.59C1643.4,-885.09 1629.49,-903 1581.35,-903"/>
+<polygon fill="black" stroke="black" points="1691.36,-881.32 1699.5,-884.6 1695.36,-881.16 1699.35,-881 1699.35,-881 1699.35,-881 1695.36,-881.16 1699.21,-877.4 1691.36,-881.32 1691.36,-881.32"/>
+<ellipse fill="none" stroke="black" cx="1688.16" cy="-881.45" rx="3.2" ry="3.2"/>
 </g>
 <!-- reach -->
 <g id="node10" class="node">
