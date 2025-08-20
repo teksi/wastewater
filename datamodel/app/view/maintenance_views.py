@@ -92,7 +92,6 @@ def vw_tww_channel(
             table_schema="tww_od",
             table_name="channel",
             table_alias="ch",
-            prefix="ch_",
             remove_pkey=False,
             indent=4,
             skip_columns=[],
@@ -177,7 +176,7 @@ def vw_tww_channel_maintenance(connection: psycopg.Connection, extra_definition:
         , {ch_cols}
         {extra_cols}
       FROM tww_od.re_maintenance_event_wastewater_structure mw
-         INNER JOIN tww_app.vw_tww_channel ch ON ch.ch_obj_id = mw.fk_wastewater_structure
+         INNER JOIN tww_app.vw_tww_channel ch ON ch.obj_id = mw.fk_wastewater_structure
          LEFT JOIN tww_od.maintenance_event me ON me.obj_id = mw.fk_maintenance_event
          LEFT JOIN tww_od.maintenance mn ON me.obj_id = mn.obj_id
          {extra_joins}
@@ -191,6 +190,18 @@ def vw_tww_channel_maintenance(connection: psycopg.Connection, extra_definition:
             remove_pkey=False,
             indent=4,
             skip_columns=[],
+            remap_columns={"obj_id": "ch_obj_id",
+                           "bedding_encasement": "ch_bedding_encasement",
+                           "connection_type": "ch_connection_type",
+                           "function_amelioration": "ch_function_amelioration",
+                           "function_hierarchic": "ch_function_hierarchic",
+                           "function_hydraulic": "ch_function_hydraulic",
+                           "jetting_interval": "ch_jetting_interval",
+                           "pipe_length": "ch_pipe_length",
+                           "seepage": "ch_seepage",
+                           "usage_current": "ch_usage_current",
+                           "usage_planned": "ch_usage_planned",
+                           },
         ),
         me_cols=select_columns(
             connection=connection,
