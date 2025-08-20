@@ -1525,7 +1525,7 @@ class InterlisImporterToIntermediateSchema:
                 school_students=row.schuleschueler,
                 situation_geometry=row.lage,
                 # n:m relation - see def _import_gebaeudegruppe_entsorgungassoc
-                # fk_disposal=self.get_pk(row.entsorgungref__REL), 
+                # fk_disposal=self.get_pk(row.entsorgungref__REL),
                 fk_measure=self.get_pk(row.massnahmeref__REL),
             )
             self.session_tww.add(building_group)
