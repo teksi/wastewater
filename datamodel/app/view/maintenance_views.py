@@ -16,7 +16,10 @@ from .utils.extra_definition_utils import (
 
 
 def vw_tww_channel(
-    connection: psycopg.Connection, srid: psycopg.sql.Literal, extra_definition: dict = None
+    connection: psycopg.Connection,
+    srid: psycopg.sql.Literal,
+    extra_definition: dict = None,
+    lang_code: str = "en",
 ):
     """
     Creates tww_channel view
@@ -31,32 +34,65 @@ def vw_tww_channel(
     DROP MATERIALIZED VIEW IF EXISTS tww_app.vw_tww_channel;
 
     CREATE MATERIALIZED VIEW tww_app.vw_tww_channel AS
+    WITH _topology AS
+        (
         SELECT
-          {ws_cols}
-        , {ch_cols}
-        , ST_Multi(ST_Force2D(ST_ForceCurve(ST_LineMerge(ST_Collect(ST_CurveToLine(re.progression3d_geometry))))))::geometry(MultiCurve, {{srid}})  as progression2d_geometry
-        , min(re.clear_height) AS _min_height
-        , max(re.clear_height) AS _max_height
-        , sum(length_effective) as _length_effective
-        , array_agg(DISTINCT re.material) as _materials
-        , vl_fh.tww_is_primary
+          ch.obj_id
+        , array_agg(wn_from.obj_id) AS _from_nodes
+        , array_agg(wn_to.obj_id) as _to_nodes
       FROM tww_od.channel ch
          LEFT JOIN tww_od.wastewater_structure ws ON ch.obj_id = ws.obj_id
          LEFT JOIN tww_od.wastewater_networkelement ne ON ne.fk_wastewater_structure = ws.obj_id
          LEFT JOIN tww_od.reach re ON ne.obj_id = re.obj_id
+         LEFT JOIN tww_od.reach_point rp_to ON re.fk_reach_point_to=rp_to.obj_id
+         LEFT JOIN tww_od.wastewater_node wn_to on wn_to.obj_id=rp_to.fk_wastewater_networkelement
+         LEFT JOIN tww_od.reach_point rp_from ON re.fk_reach_point_from=rp_from.obj_id
+         LEFT JOIN tww_od.wastewater_node wn_from on wn_from.obj_id=rp_from.fk_wastewater_networkelement
+       GROUP BY
+         ch.obj_id
+        )
+        SELECT
+          {ch_cols}
+        , {ws_cols}
+        , ST_Multi(ST_Force2D(ST_ForceCurve(ST_LineMerge(ST_Collect(ST_CurveToLine(re.progression3d_geometry))))))::geometry(MultiCurve, {{srid}})  as progression2d_geometry
+        , min(re.clear_height) AS _re_min_height
+        , max(re.clear_height) AS _re_max_height
+        , sum(length_effective) as _re_length_effective
+        , array_agg(DISTINCT vl_mat.value_{lang_code}) as _re_materials
+        , (
+            SELECT unnest(_topology._from_nodes)
+            EXCEPT ALL
+            SELECT unnest(_topology._to_nodes)
+            LIMIT 1
+          ) AS _from_node
+        , (
+            SELECT unnest(_topology._to_nodes)
+            EXCEPT ALL
+            SELECT unnest(_topology._from_nodes)
+            LIMIT 1
+          ) AS _to_node
+        , vl_fh.tww_is_primary
+      FROM tww_od.channel ch
+         INNER JOIN _topology on _topology.obj_id=ch.obj_id
+         LEFT JOIN tww_od.wastewater_structure ws ON ch.obj_id = ws.obj_id
+         LEFT JOIN tww_od.wastewater_networkelement ne ON ne.fk_wastewater_structure = ws.obj_id
+         LEFT JOIN tww_od.reach re ON ne.obj_id = re.obj_id
          LEFT JOIN tww_vl.channel_function_hierarchic vl_fh ON vl_fh.code = ch.function_hierarchic
+         LEFT JOIN tww_vl.reach_material vl_mat on vl_mat.code = re.material
        GROUP BY
          {ch_cols_grp}
         , {ws_cols_grp}
+        , _topology._from_nodes
+        , _topology._to_nodes
         , vl_fh.tww_is_primary
     """.format(
+        lang_code=lang_code,
         ch_cols=select_columns(
             connection=connection,
             table_schema="tww_od",
             table_name="channel",
             table_alias="ch",
-            prefix="ch_",
-            remove_pkey=True,
+            remove_pkey=False,
             indent=4,
             skip_columns=[],
         ),
@@ -65,7 +101,8 @@ def vw_tww_channel(
             table_schema="tww_od",
             table_name="wastewater_structure",
             table_alias="ws",
-            remove_pkey=False,
+            prefix="ws_",
+            remove_pkey=True,
             indent=4,
             skip_columns=[
                 "detail_geometry3d_geometry",
@@ -73,6 +110,10 @@ def vw_tww_channel(
                 "fk_dataowner",
                 "fk_provider",
                 "_label",
+                "_cover_label",
+                "_bottom_label",
+                "_input_label",
+                "_output_label",
                 "_depth",
                 "fk_main_cover",
             ],
@@ -82,7 +123,7 @@ def vw_tww_channel(
             table_schema="tww_od",
             table_name="channel",
             table_alias="ch",
-            remove_pkey=True,
+            remove_pkey=False,
             indent=4,
             skip_columns=[],
         ),
@@ -91,7 +132,7 @@ def vw_tww_channel(
             table_schema="tww_od",
             table_name="wastewater_structure",
             table_alias="ws",
-            remove_pkey=False,
+            remove_pkey=True,
             indent=4,
             skip_columns=[
                 "detail_geometry3d_geometry",
@@ -99,6 +140,10 @@ def vw_tww_channel(
                 "fk_dataowner",
                 "fk_provider",
                 "_label",
+                "_cover_label",
+                "_bottom_label",
+                "_input_label",
+                "_output_label",
                 "_depth",
                 "fk_main_cover",
             ],
@@ -142,10 +187,22 @@ def vw_tww_channel_maintenance(connection: psycopg.Connection, extra_definition:
             table_schema="tww_app",
             table_name="vw_tww_channel",
             table_alias="ch",
-            prefix="ch_",
             remove_pkey=False,
             indent=4,
             skip_columns=[],
+            remap_columns={
+                "obj_id": "ch_obj_id",
+                "bedding_encasement": "ch_bedding_encasement",
+                "connection_type": "ch_connection_type",
+                "function_amelioration": "ch_function_amelioration",
+                "function_hierarchic": "ch_function_hierarchic",
+                "function_hydraulic": "ch_function_hydraulic",
+                "jetting_interval": "ch_jetting_interval",
+                "pipe_length": "ch_pipe_length",
+                "seepage": "ch_seepage",
+                "usage_current": "ch_usage_current",
+                "usage_planned": "ch_usage_planned",
+            },
         ),
         me_cols=select_columns(
             connection=connection,
@@ -203,7 +260,7 @@ def vw_tww_channel_maintenance(connection: psycopg.Connection, extra_definition:
             prefix="mn_",
             remove_pkey=True,
             indent=6,
-            remap_columns={"obj_id": "me_obj_id"},
+            remap_columns={"obj_id": "mn_obj_id"},
         ),
         update_me=update_command(
             connection=connection,

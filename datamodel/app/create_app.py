@@ -183,6 +183,7 @@ Running modification {modification.get('id')}
         vw_tww_channel(
             connection=self.connection,
             srid=SRID,
+            lang_code=lang_code,
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_channel"])
                 if self.extra_definitions.get("vw_tww_channel")
@@ -202,6 +203,22 @@ Running modification {modification.get('id')}
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_ws_maintenance"])
                 if self.extra_definitions.get("vw_tww_ws_maintenance")
+                else {}
+            ),
+        )
+        vw_tww_channel_maintenance(
+            connection=self.connection,
+            extra_definition=(
+                self.load_yaml(self.extra_definitions["vw_tww_channel_maintenance"])
+                if self.extra_definitions["vw_tww_channel_maintenance"]
+                else {}
+            ),
+        )
+        vw_tww_ws_maintenance(
+            connection=self.connection,
+            extra_definition=(
+                self.load_yaml(self.extra_definitions["vw_tww_ws_maintenance"])
+                if self.extra_definitions["vw_tww_ws_maintenance"]
                 else {}
             ),
         )
