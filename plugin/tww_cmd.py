@@ -56,6 +56,11 @@ class TeksiWastewaterCmd:
             help="Put log files next to XTF import file",
             action="store_true",
         )
+        subparser.add_argument(
+            "--filter_nulls",
+            help="Filter out NULL values from import",
+            action="store_true",
+        )
 
         self._add_postgres_connection_args(subparser)
 
@@ -65,7 +70,7 @@ class TeksiWastewaterCmd:
             help=f"{self.SUBPARSER_NAME_INTERLIS_EXPORT} --help",
         )
 
-        subparser.add_argument("--xtf_file", help="XTF outup file", required=True)
+        subparser.add_argument("--xtf_file", help="XTF output file", required=True)
         subparser.add_argument(
             "--selection",
             help="if provided, limits the export to networkelements that are provided in the selection (comma separated list of ids)",
@@ -78,6 +83,8 @@ class TeksiWastewaterCmd:
                 config.MODEL_NAME_SIA405_BASE_ABWASSER,
                 config.MODEL_NAME_DSS,
                 config.MODEL_NAME_VSA_KEK,
+                config.MODEL_NAME_AG96,
+                config.MODEL_NAME_AG64,
             ],
             help="Model to export (default:  %(default)s)",
         )
@@ -86,7 +93,7 @@ class TeksiWastewaterCmd:
             help="Put log files next to XTF output file",
             action="store_true",
         )
-
+        subparser.add_argument("--labels_file", help="json file containing labeling candidates")
         subparser.add_argument(
             "--label_scale_pipeline_registry_1_1000",
             help="Export labels in scale 1:1'000, can be combined with other scales (Leitungskataster/Cadastre des conduites souterraines)",
@@ -180,6 +187,7 @@ class TeksiWastewaterCmd:
                 xtf_file_input=self.args.xtf_file,
                 show_selection_dialog=self.args.show_selection_dialog,
                 logs_next_to_file=self.args.logs_next_to_file,
+                filter_nulls=self.args.filter_nulls,
             )
 
             print(f"\nData successfully imported from {self.args.xtf_file}")
@@ -234,6 +242,7 @@ class TeksiWastewaterCmd:
                 xtf_file_output=self.args.xtf_file,
                 export_models=[self.args.export_model],
                 logs_next_to_file=self.args.logs_next_to_file,
+                labels_file=self.args.labels_file,
                 selected_labels_scales_indices=label_scales,
                 selected_ids=selected_ids,
             )

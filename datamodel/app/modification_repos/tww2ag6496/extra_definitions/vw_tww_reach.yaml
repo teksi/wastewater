@@ -1,0 +1,61 @@
+joins:
+  agxx_wastewater_networkelement:
+    table: tww_od.agxx_wastewater_networkelement
+    alias: agxx_ne
+    join_on: "agxx_ne.fk_wastewater_networkelement = re.obj_id"
+    skip_columns: ["uuid","fk_wastewater_networkelement"]
+    remap_columns:
+      fk_wastewater_networkelement: obj_id
+    prefix: ne_
+    read_only: false
+    where_clause: "agxx_ne.fk_wastewater_networkelement = OLD.obj_id"
+  agxx_last_modification:
+    table: tww_od.agxx_last_modification
+    alias: agxx_lm
+    join_on: "agxx_lm.fk_element = re.obj_id"
+    skip_columns: ["uuid","fk_element"]
+    remap_columns:
+      fk_element: obj_id
+    prefix: ne_
+    read_only: false
+    where_clause: "agxx_lm.fk_element = OLD.obj_id"
+  agxx_wastewater_structure:
+    table: tww_od.agxx_wastewater_structure
+    alias: agxx_ws
+    join_on: "agxx_ws.fk_wastewater_structure = ws.obj_id"
+    skip_columns: ["uuid","fk_wastewater_structure"]
+    remap_columns:
+      fk_wastewater_structure: ws_obj_id
+    prefix: ws_
+    read_only: false
+    where_clause: "agxx_ws.fk_wastewater_structure = OLD.ws_obj_id"
+  agxx_reach:
+    table: tww_od.agxx_reach
+    alias: agxx_re
+    join_on: "agxx_re.fk_reach = re.obj_id"
+    skip_columns: ["uuid","fk_reach"]
+    remap_columns:
+      fk_reach: obj_id
+    prefix: re_
+    read_only: false
+    where_clause: "agxx_re.fk_reach = OLD.obj_id"
+  agxx_reach_point_from:
+    table: tww_od.agxx_reach_point
+    alias: agxx_rp_from
+    join_on: "agxx_rp_from.fk_reach_point = rp_from.obj_id"
+    skip_columns: ["uuid","fk_reach_point"]
+    remap_columns:
+      fk_reach_point: rp_from_obj_id
+    prefix: rp_from_
+    read_only: false
+    where_clause: "agxx_rp_from.fk_reach_point = OLD.rp_from_obj_id"
+  agxx_reach_point_to:
+    table: tww_od.agxx_reach_point
+    alias: agxx_rp_to
+    join_on: "agxx_rp_to.fk_reach_point = rp_to.obj_id"
+    skip_columns: ["uuid","fk_reach_point"]
+    remap_columns:
+      fk_reach_point: rp_to_obj_id
+    prefix: rp_to_
+    read_only: false
+    where_clause: "agxx_rp_to.fk_reach_point = OLD.rp_to_obj_id"

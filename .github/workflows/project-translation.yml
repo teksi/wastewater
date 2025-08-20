@@ -2,7 +2,7 @@ name: 🌎 Update project translations
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name != 'workflow_call' }}
 
 on:
   push:
@@ -58,7 +58,7 @@ jobs:
           docker compose exec db pum -vvv -s pg_tww -d datamodel install -p SRID 2056 --roles --grant
 
       - name: Translate (create sources)
-        run: docker compose run qgis sh -c 'xvfb-run /usr/src/project/scripts/project-translation-create-source.py /usr/src/project/teksi_wastewater.qgs'
+        run: docker compose exec qgis sh -c 'xvfb-run /usr/src/project/scripts/project-translation-create-source.py /usr/src/project/teksi_wastewater.qgs'
 
       - name: Push to TX
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
@@ -69,7 +69,7 @@ jobs:
         working-directory: project
         run: |
           ./tx pull -a
-          docker compose run qgis sh -c '/usr/src/project/scripts/project-translation-compile.sh /usr/src/project/teksi_wastewater.qgs'
+          docker compose exec qgis sh -c '/usr/src/project/scripts/project-translation-compile.sh /usr/src/project/teksi_wastewater.qgs'
 
       - uses: actions/upload-artifact@v4
         with:

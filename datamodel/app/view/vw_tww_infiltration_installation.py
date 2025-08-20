@@ -61,6 +61,7 @@ def vw_tww_infiltration_installation(
 
         , wn._usage_current AS _channel_usage_current
         , wn._function_hierarchic AS _channel_function_hierarchic
+        , vl_fh.tww_is_primary
 
 
       FROM tww_od.infiltration_installation ii
@@ -71,6 +72,7 @@ def vw_tww_infiltration_installation(
         LEFT JOIN tww_od.retention_body rb ON rb.fk_infiltration_installation = ws.obj_id
         LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = ws.fk_main_wastewater_node
         LEFT JOIN tww_od.wastewater_node wn ON wn.obj_id = ws.fk_main_wastewater_node
+        LEFT JOIN tww_vl.channel_function_hierarchic vl_fh ON vl_fh.code = wn._function_hierarchic
         {extra_joins};
     """.format(
         ws_cols=select_columns(

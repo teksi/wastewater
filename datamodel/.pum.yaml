@@ -1,14 +1,14 @@
 
 pum:
   migration_table_schema: tww_sys
-  minimum_version: 1.1.12
+  minimum_version: 1.1.13
 
 roles:
   - name: tww_viewer
     description: Role for users who can view the TWW data.
     permissions:
       - type: read
-        schemas: [tww_od, tww_vl, tww_sys, tww_app, tww_cfg]
+        schemas: [tww_od, tww_vl, tww_sys, tww_app]
 
   - name: tww_user
     description: Role for users who can view and edit the TWW data.
@@ -22,7 +22,7 @@ roles:
     inherit: tww_user
     permissions:
       - type: write
-        schemas: [tww_vl, tww_cfg]
+        schemas: [tww_vl]
 
   - name: tww_sysadmin
     description: Role for system administrators who can manage the TWW application and its configuration.
@@ -40,10 +40,12 @@ parameters:
 
   - name: modification_ci
     type: boolean
+    default: false
     description: load ci modification
 
   - name: modification_agxx
     type: boolean
+    default: false
     description: enable AG-64/96 app modification
 
   - name: modification_yaml
@@ -52,6 +54,7 @@ parameters:
 
   - name: lang_code
     type: text
+    default: en
     description: language code for the creation of custom views
 
 dependencies:

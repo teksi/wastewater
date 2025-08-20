@@ -29,22 +29,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        qgis_version: [3.34-jammy, latest]
-        test_name: [QGIS, DSS , cmd]
-        include:
-          - test_name: QGIS
-            test_command: "/usr/src/plugin/.docker/run-docker-tests.sh --deselect teksi_wastewater/tests/test_interlis.py::TestInterlis::test_dss_dataset_import_export"
-          - test_name: DSS
-            test_command: "/usr/src/plugin/.docker/run-docker-tests.sh teksi_wastewater/tests/test_interlis.py::TestInterlis::test_dss_dataset_import_export"
-          - test_name: cmd
-            test_command: |
-              sh -c '
-              set -e;
-              xvfb-run /usr/src/plugin/tww_cmd.py interlis_import --xtf_file /usr/src/plugin/teksi_wastewater/tests/data/minimal-dataset-organisation-arbon-only.xtf --pghost db --pgdatabase tww --pguser postgres --pgpass postgres --pgport 5432 &&
-              xvfb-run /usr/src/plugin/tww_cmd.py interlis_import --xtf_file /usr/src/plugin/teksi_wastewater/tests/data/minimal-dataset-SIA405-ABWASSER.xtf --pghost db --pgdatabase tww --pguser postgres --pgpass postgres --pgport 5432 &&
-              xvfb-run /usr/src/plugin/tww_cmd.py interlis_export --xtf_file "output.xtf" --pghost db --pgdatabase tww --pguser postgres --pgpass postgres --pgport 5432
-              '
-
+        qgis_version: [3.40-jammy, latest]
     env:
       QGIS_TEST_VERSION: ${{ matrix.qgis_version }}
       COMPOSE_PROFILES: qgis
@@ -78,8 +63,32 @@ jobs:
           docker compose exec db pum -s pg_tww -d datamodel install -p SRID 2056 --roles --grant
           docker compose exec db sh -c 'psql -U postgres -c "GRANT tww_user TO postgres;"'
 
-      - name: Test on ${{matrix.test_name}}
-        run: docker compose run qgis ${{ matrix.test_command }}
+      - name: Test on QGIS
+        run: docker compose exec qgis /usr/src/plugin/.docker/run-docker-tests.sh --deselect teksi_wastewater/tests/test_interlis.py::TestInterlis::test_dss_dataset_import_export
+
+      - name: Clear Database
+        run: |
+          docker compose exec db sh -c 'dropdb tww'
+          docker compose exec db sh -c 'createdb tww'
+          docker compose exec db pum -s pg_tww -d datamodel install -p SRID 2056
+
+      - name: Test on QGIS DSS dataset
+        run: docker compose exec qgis /usr/src/plugin/.docker/run-docker-tests.sh teksi_wastewater/tests/test_interlis.py::TestInterlis::test_dss_dataset_import_export
+
+      - name: Clear Database
+        run: |
+          docker compose exec db sh -c 'dropdb tww'
+          docker compose exec db sh -c 'createdb tww'
+          docker compose exec db pum -s pg_tww -d datamodel install -p SRID 2056
+
+      - name: Test command line import orgs
+        run: docker compose exec qgis sh -c 'xvfb-run /usr/src/plugin/tww_cmd.py interlis_import --xtf_file /usr/src/plugin/teksi_wastewater/tests/data/minimal-dataset-organisation-arbon-only.xtf --pghost db --pgdatabase tww --pguser postgres --pgpass postgres --pgport 5432'
+
+      - name: Test command line import minimal sia405
+        run: docker compose exec qgis sh -c 'xvfb-run /usr/src/plugin/tww_cmd.py interlis_import --xtf_file /usr/src/plugin/teksi_wastewater/tests/data/minimal-dataset-SIA405-ABWASSER.xtf --pghost db --pgdatabase tww --pguser postgres --pgpass postgres --pgport 5432'
+
+      - name: Test command line minimal export
+        run: docker compose exec qgis sh -c 'xvfb-run /usr/src/plugin/tww_cmd.py interlis_export --xtf_file "output.xtf" --pghost db --pgdatabase tww --pguser postgres --pgpass postgres --pgport 5432'
 
       - name: docker logs
         run: docker compose logs db

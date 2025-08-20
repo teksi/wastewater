@@ -56,6 +56,7 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
         , {ws_cols}
         , {rp_from_cols}
         , {rp_to_cols}
+        , vl_fh.tww_is_primary
       FROM tww_od.reach re
          LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = re.obj_id
          LEFT JOIN tww_od.reach_point rp_from ON rp_from.obj_id = re.fk_reach_point_from
@@ -63,6 +64,7 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
          LEFT JOIN tww_od.wastewater_structure ws ON ne.fk_wastewater_structure = ws.obj_id
          LEFT JOIN tww_od.channel ch ON ch.obj_id = ws.obj_id
          LEFT JOIN tww_od.pipe_profile pp ON re.fk_pipe_profile = pp.obj_id
+        LEFT JOIN tww_vl.channel_function_hierarchic vl_fh ON vl_fh.code = ch.function_hierarchic
          {extra_joins};
     """.format(
         extra_cols=(
