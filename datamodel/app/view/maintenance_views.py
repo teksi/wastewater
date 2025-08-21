@@ -135,7 +135,6 @@ def vw_tww_channel(
             indent=4,
             skip_columns=[
                 "detail_geometry3d_geometry",
-                "fk_owner",
                 "fk_dataowner",
                 "fk_provider",
                 "_label",
