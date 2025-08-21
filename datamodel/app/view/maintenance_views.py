@@ -106,7 +106,6 @@ def vw_tww_channel(
             indent=4,
             skip_columns=[
                 "detail_geometry3d_geometry",
-                "fk_owner",
                 "fk_dataowner",
                 "fk_provider",
                 "_label",
@@ -260,7 +259,7 @@ def vw_tww_channel_maintenance(connection: psycopg.Connection, extra_definition:
             prefix="mn_",
             remove_pkey=True,
             indent=6,
-            remap_columns={"obj_id": "mn_obj_id"},
+            remap_columns={"obj_id": "me_obj_id"},
         ),
         update_me=update_command(
             connection=connection,
