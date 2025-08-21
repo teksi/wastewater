@@ -52,7 +52,6 @@ class InterlisTools:
                     *get_pgconf_as_ili_args(),
                     "--dbschema",
                     f"{schema}",
-                    "--setupPgExt",
                     "--createGeomIdx",
                     f"{sql_ext_refs_cols}",
                     "--createFk",
