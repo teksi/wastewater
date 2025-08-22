@@ -58,7 +58,7 @@ class InterlisImporterExporter:
         self.model_classes_tww_app = None
 
         self.filter_nulls = None
-        self.srid=2056
+        self.srid = 2056
         self.current_progress = 0
 
     def interlis_import(
@@ -67,7 +67,7 @@ class InterlisImporterExporter:
         show_selection_dialog=False,
         logs_next_to_file=True,
         filter_nulls=True,
-        srid: int=None,
+        srid: int = None,
     ):
         # Configure logging
         if logs_next_to_file:
@@ -78,7 +78,7 @@ class InterlisImporterExporter:
         self.filter_nulls = filter_nulls
 
         if srid:
-            self.srid=srid
+            self.srid = srid
 
         # Validating the input file
         self._progress_done(5, "Validating the input file...")
@@ -198,14 +198,14 @@ class InterlisImporterExporter:
         labels_file=None,
         selected_labels_scales_indices=[],
         selected_ids=None,
-        srid: int=None,
+        srid: int = None,
     ):
 
         flag_export_check_failed = False
         flag_test = True
 
         if srid:
-            self.srid=srid
+            self.srid = srid
 
         # go thru all available checks and register if check failed or not.
         if flag_test:

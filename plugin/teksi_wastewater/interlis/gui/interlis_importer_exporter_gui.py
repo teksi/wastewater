@@ -135,7 +135,7 @@ class InterlisImporterExporterGui(QObject):
                 export_orientation=export_dialog.labels_orientation_offset,
                 selected_labels_scales_indices=export_dialog.selected_labels_scales_indices,
                 selected_ids=export_dialog.selected_ids,
-                    srid=srid,
+                srid=srid,
             )
 
             self.show_success(

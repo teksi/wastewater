@@ -31,7 +31,13 @@ class InterlisTools:
         )
 
     def import_ili_schema(
-        self, schema, models, log_path, ext_columns_no_constraints=False, create_basket_col=False, srid=2056
+        self,
+        schema,
+        models,
+        log_path,
+        ext_columns_no_constraints=False,
+        create_basket_col=False,
+        srid=2056,
     ):
         sql_ext_refs_cols = ""
         if ext_columns_no_constraints:
@@ -79,7 +85,7 @@ class InterlisTools:
             f'"{self.java_executable_path}" -jar "{config.ILIVALIDATOR}" --log "{log_path}" "{xtf_file}"'
         )
 
-    def import_xtf_data(self, schema, xtf_file, log_path,srid=2056):
+    def import_xtf_data(self, schema, xtf_file, log_path, srid=2056):
         logger.info("IMPORTING XTF DATA...")
         execute_subprocess(
             " ".join(
@@ -105,7 +111,9 @@ class InterlisTools:
             )
         )
 
-    def export_xtf_data(self, schema, xtf_file, log_path, model_name, export_model_name,srid=2056):
+    def export_xtf_data(
+        self, schema, xtf_file, log_path, model_name, export_model_name, srid=2056
+    ):
         logger.info("EXPORT ILIDB...")
 
         # if optional export_model_name is set, add it to the args
