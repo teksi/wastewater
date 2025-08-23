@@ -41,12 +41,21 @@ def vw_tww_log_card(
           {lc_cols}
         , ne.identifier
         , ST_Force2D(COALESCE(wn.situation3d_geometry, main_co.situation3d_geometry))::geometry(Point, {{srid}}) AS situation3d_geometry
+        , ws.status as ws_status
+        , ma.function as ma_function
+        , ss.function as ss_function
+        , dp.relevance as dp_relevance
+        , ii.kind as ii_kind
         {extra_cols}
 
       FROM tww_od.log_card lc
          LEFT JOIN tww_od.wastewater_networkelement ne ON lc.fk_pwwf_wastewater_node = ne.obj_id
          LEFT JOIN tww_od.wastewater_node wn ON wn.obj_id = ne.obj_id
          LEFT JOIN tww_od.wastewater_structure ws ON ne.fk_wastewater_structure = ws.obj_id
+         LEFT JOIN tww_od.manhole ma ON ma.obj_id = ws.obj_id
+         LEFT JOIN tww_od.special_structure ss ON ss.obj_id = ws.obj_id
+         LEFT JOIN tww_od.discharge_point dp ON dp.obj_id = ws.obj_id
+         LEFT JOIN tww_od.infiltration_installation ii ON ii.obj_id = ws.obj_id
          LEFT JOIN tww_od.cover main_co ON ws.fk_main_cover = main_co.obj_id
          {extra_joins}
          ;
