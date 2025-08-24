@@ -363,6 +363,91 @@
                                     </td>
                                     <td></td>
                                 </tr>
+                                <tr>
+                                    <td><span id="ws_status">ws_status</span></td>
+                                    <td>int4</td>
+                                    <td>10</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="ma_function">ma_function</span></td>
+                                    <td>int4</td>
+                                    <td>10</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="ss_function">ss_function</span></td>
+                                    <td>int4</td>
+                                    <td>10</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="dp_relevance">dp_relevance</span></td>
+                                    <td>int4</td>
+                                    <td>10</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="ii_kind">ii_kind</span></td>
+                                    <td>int4</td>
+                                    <td>10</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -401,7 +486,7 @@
                             </div>
                         </div>
                         <div class="box-body">
-                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">SELECT lc.obj_id,&#10;    lc.control_remote_control,&#10;    lc.fk_agency,&#10;    lc.fk_dataowner,&#10;    lc.fk_location_municipality,&#10;    lc.fk_main_structure,&#10;    lc.fk_next_special_building,&#10;    lc.fk_provider,&#10;    lc.fk_pwwf_wastewater_node,&#10;    lc.information_source,&#10;    lc.last_modification,&#10;    lc.person_in_charge,&#10;    lc.remark,&#10;    ne.identifier,&#10;    (st_force2d(COALESCE(wn.situation3d_geometry, main_co.situation3d_geometry)))::geometry(Point,2056) AS situation3d_geometry&#10;   FROM ((((tww_od.log_card lc&#10;     LEFT JOIN tww_od.wastewater_networkelement ne ON (((lc.fk_pwwf_wastewater_node)::text &#61; (ne.obj_id)::text)))&#10;     LEFT JOIN tww_od.wastewater_node wn ON (((wn.obj_id)::text &#61; (ne.obj_id)::text)))&#10;     LEFT JOIN tww_od.wastewater_structure ws ON (((ne.fk_wastewater_structure)::text &#61; (ws.obj_id)::text)))&#10;     LEFT JOIN tww_od.cover main_co ON (((ws.fk_main_cover)::text &#61; (main_co.obj_id)::text)));</textarea>
+                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">SELECT lc.obj_id,&#10;    lc.control_remote_control,&#10;    lc.fk_agency,&#10;    lc.fk_dataowner,&#10;    lc.fk_location_municipality,&#10;    lc.fk_main_structure,&#10;    lc.fk_next_special_building,&#10;    lc.fk_provider,&#10;    lc.fk_pwwf_wastewater_node,&#10;    lc.information_source,&#10;    lc.last_modification,&#10;    lc.person_in_charge,&#10;    lc.remark,&#10;    ne.identifier,&#10;    (st_force2d(COALESCE(wn.situation3d_geometry, main_co.situation3d_geometry)))::geometry(Point,2056) AS situation3d_geometry,&#10;    ws.status AS ws_status,&#10;    ma.function AS ma_function,&#10;    ss.function AS ss_function,&#10;    dp.relevance AS dp_relevance,&#10;    ii.kind AS ii_kind&#10;   FROM ((((((((tww_od.log_card lc&#10;     LEFT JOIN tww_od.wastewater_networkelement ne ON (((lc.fk_pwwf_wastewater_node)::text &#61; (ne.obj_id)::text)))&#10;     LEFT JOIN tww_od.wastewater_node wn ON (((wn.obj_id)::text &#61; (ne.obj_id)::text)))&#10;     LEFT JOIN tww_od.wastewater_structure ws ON (((ne.fk_wastewater_structure)::text &#61; (ws.obj_id)::text)))&#10;     LEFT JOIN tww_od.manhole ma ON (((ma.obj_id)::text &#61; (ws.obj_id)::text)))&#10;     LEFT JOIN tww_od.special_structure ss ON (((ss.obj_id)::text &#61; (ws.obj_id)::text)))&#10;     LEFT JOIN tww_od.discharge_point dp ON (((dp.obj_id)::text &#61; (ws.obj_id)::text)))&#10;     LEFT JOIN tww_od.infiltration_installation ii ON (((ii.obj_id)::text &#61; (ws.obj_id)::text)))&#10;     LEFT JOIN tww_od.cover main_co ON (((ws.fk_main_cover)::text &#61; (main_co.obj_id)::text)));</textarea>
                             <div style="padding-top: 5px;"><hr></div>
                             <div class="box box-solid">
                                 <div class="box-header with-border">
