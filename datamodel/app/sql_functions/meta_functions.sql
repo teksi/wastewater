@@ -40,13 +40,13 @@ BEGIN
     LOOP
         BEGIN
             EXECUTE format('REFRESH MATERIALIZED VIEW %I.%I',
-                          p_schema_name,
+                          mv_record.schemaname,
                           mv_record.matviewname);
-            RAISE NOTICE 'Refreshed materialized view: %', mv_record.matviewname;
+            RAISE NOTICE format('Refreshed materialized view: %s.%s', mv_record.schemaname, mv_record.matviewname);
         EXCEPTION
             WHEN OTHERS THEN
-                _error_message := format('Error refreshing materialized view %s: %s',
-                                       mv_record.matviewname, SQLERRM);
+                _error_message := format('Error refreshing materialized view %s.%s: %s',
+                                       mv_record.schemaname, mv_record.matviewname, SQLERRM);
                 RAISE EXCEPTION '%', _error_message;
         END;
     END LOOP;
