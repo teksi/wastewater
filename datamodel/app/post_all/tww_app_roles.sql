@@ -15,6 +15,28 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA tww_app GRANT ALL ON SEQUENCES TO {user_role}
 
 
 -- Transfer owner to {user_role} so {user_role} can refresh without security definer
-ALTER MATERIALIZED VIEW tww_app.vw_catchment_area_totals_aggregated OWNER TO {user_role};
-ALTER MATERIALIZED VIEW tww_app.vw_network_node OWNER TO {user_role};
-ALTER MATERIALIZED VIEW tww_app.vw_network_segment OWNER TO {user_role};
+DO
+$$
+DECLARE
+    mv_record record;
+	above_16 bool;
+BEGIN
+	SELECT current_setting('server_version_num')::integer>170000 INTO above_16;
+    FOR mv_record IN
+        SELECT matviewname
+        FROM pg_matviews
+        WHERE schemaname = 'tww_app'
+
+    LOOP
+		IF above_16 THEN
+			EXECUTE format('GRANT MAINTAIN ON tww_app.%I TO %I',
+					  mv_record.matviewname,
+					  {user_role});
+		ELSE
+			EXECUTE format('ALTER MATERIALIZED VIEW tww_app.%I OWNER TO %I',
+					  mv_record.matviewname,
+					  {user_role});
+		END IF;
+    END LOOP;
+END;
+$$;
