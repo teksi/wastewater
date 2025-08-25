@@ -266,7 +266,6 @@ Running modification {modification.get('id')}
             ),
         )
         vw_tww_catchment_area(
-            srid=SRID,
             connection=self.connection,
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_catchment_area"])
