@@ -36,7 +36,7 @@ BEGIN
         FROM pg_matviews
         WHERE schemaname = _schema_name
 		AND (_all OR matviewname = w)
-		
+
     LOOP
         BEGIN
             EXECUTE format('REFRESH MATERIALIZED VIEW %I.%I',
