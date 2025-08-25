@@ -29,7 +29,7 @@ CREATE OR REPLACE FUNCTION tww_app.refresh_materialized_views(_schema_name text,
 RETURNS void AS $$
 DECLARE
     mv_record record;
-    error_message text;
+    _error_message text;
 BEGIN
     FOR mv_record IN
         SELECT matviewname
