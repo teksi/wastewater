@@ -110,7 +110,7 @@ BEGIN
   JOIN tww_od.network_node as n2 ON n2.ne_id = wwne_id
   ORDER BY n1.id, ST_Distance(n1.geom, n2.geom);
 
-  SELECT tww_app.refresh_materialized_views('tww_app',NULL,True);
+  PERFORM tww_app.refresh_materialized_views('tww_app',NULL,True);
 
 END;
 $body$
