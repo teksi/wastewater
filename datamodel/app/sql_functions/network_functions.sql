@@ -113,6 +113,7 @@ BEGIN
   REFRESH MATERIALIZED VIEW tww_app.vw_network_node;
   REFRESH MATERIALIZED VIEW tww_app.vw_network_segment;
   REFRESH MATERIALIZED VIEW tww_app.vw_tww_channel;
+  REFRESH MATERIALIZED VIEW tww_app.vw_catchment_area_totals WITH DATA;
 
 END;
 $body$

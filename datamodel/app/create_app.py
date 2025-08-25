@@ -16,6 +16,7 @@ from view.maintenance_views import (
     vw_tww_ws_maintenance,
 )
 from view.vw_tww_additional_ws import vw_tww_additional_ws
+from view.vw_tww_catchment_area import vw_tww_catchment_area
 from view.vw_tww_damage_channel import vw_tww_damage_channel
 from view.vw_tww_infiltration_installation import vw_tww_infiltration_installation
 from view.vw_tww_log_card import vw_tww_log_card
@@ -261,6 +262,15 @@ Running modification {modification.get('id')}
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_log_card"])
                 if self.extra_definitions.get("vw_tww_log_card")
+                else None
+            ),
+        )
+        vw_tww_catchment_area(
+            srid=SRID,
+            connection=self.connection,
+            extra_definition=(
+                self.load_yaml(self.extra_definitions["vw_tww_catchment_area"])
+                if self.extra_definitions.get("vw_tww_catchment_area")
                 else None
             ),
         )
