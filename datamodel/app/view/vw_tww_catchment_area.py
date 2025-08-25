@@ -31,16 +31,16 @@ def vw_tww_catchment_area(connection: psycopg.Connection, extra_definition: dict
     CREATE OR REPLACE VIEW tww_app.vw_tww_catchment_area AS
      SELECT
         {ca_cols}
-        , ca.population_density_current * ca.area AS _population_current
-        , ca.population_density_planned * ca.area AS _population_planned
-        , ca.discharge_coefficient_ww_current * ca.area AS _fred_ww_current
-        , ca.discharge_coefficient_rw_current * ca.area AS _fred_rw_current
-        , ca.discharge_coefficient_ww_planned * ca.area AS _fred_ww_current
-        , ca.discharge_coefficient_rw_planned * ca.area AS _fred_rw_planned
-        , ca.seal_factor_ww_current * ca.area AS _f_sealed_ww_current
-        , ca.seal_factor_rw_current * ca.area AS _f_sealed_rw_current
-        , ca.seal_factor_ww_planned * ca.area AS _f_sealed_ww_current
-        , ca.seal_factor_rw_planned * ca.area AS _f_sealed_rw_planned
+        , ca.population_density_current * ca.surface_area AS _population_current
+        , ca.population_density_planned * ca.surface_area AS _population_planned
+        , ca.discharge_coefficient_ww_current * ca.surface_area AS _fred_ww_current
+        , ca.discharge_coefficient_rw_current * ca.surface_area AS _fred_rw_current
+        , ca.discharge_coefficient_ww_planned * ca.surface_area AS _fred_ww_current
+        , ca.discharge_coefficient_rw_planned * ca.surface_area AS _fred_rw_planned
+        , ca.seal_factor_ww_current * ca.surface_area AS _f_sealed_ww_current
+        , ca.seal_factor_rw_current * ca.surface_area AS _f_sealed_rw_current
+        , ca.seal_factor_ww_planned * ca.surface_area AS _f_sealed_ww_current
+        , ca.seal_factor_rw_planned * ca.surface_area AS _f_sealed_rw_planned
 
         {extra_cols}
         FROM tww_od.catchment_area ca
