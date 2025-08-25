@@ -35,7 +35,7 @@ def vw_tww_catchment_area(connection: psycopg.Connection, extra_definition: dict
         , ca.population_density_planned * ca.surface_area AS _population_planned
         , ca.discharge_coefficient_ww_current * ca.surface_area AS _fred_ww_current
         , ca.discharge_coefficient_rw_current * ca.surface_area AS _fred_rw_current
-        , ca.discharge_coefficient_ww_planned * ca.surface_area AS _fred_ww_current
+        , ca.discharge_coefficient_ww_planned * ca.surface_area AS _fred_ww_planned
         , ca.discharge_coefficient_rw_planned * ca.surface_area AS _fred_rw_planned
         , ca.seal_factor_ww_current * ca.surface_area AS _f_sealed_ww_current
         , ca.seal_factor_rw_current * ca.surface_area AS _f_sealed_rw_current
