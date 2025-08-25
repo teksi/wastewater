@@ -35,7 +35,7 @@ BEGIN
         SELECT matviewname
         FROM pg_matviews
         WHERE schemaname = _schema_name
-		AND (_all OR matviewname = w)
+		AND (_all OR matviewname = _matview_name)
 
     LOOP
         BEGIN
