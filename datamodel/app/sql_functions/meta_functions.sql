@@ -32,7 +32,7 @@ DECLARE
     _error_message text;
 BEGIN
     FOR mv_record IN
-        SELECT matviewname
+        SELECT schemaname, matviewname
         FROM pg_matviews
         WHERE schemaname = _schema_name
 		AND (_all OR matviewname = _matview_name)
