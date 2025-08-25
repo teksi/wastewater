@@ -23,3 +23,32 @@ AS $BODY$
       RETURN jsonb_strip_nulls(jason)::text = '{{}}' OR jsonb_strip_nulls(jason)::text IS NULL;
 	  END;
 $BODY$;
+
+
+CREATE OR REPLACE FUNCTION tww_app.refresh_materialized_views(_schema_name text, _matview_name text, _all bool DEFAULT False)
+RETURNS void AS $$
+DECLARE
+    mv_record record;
+    error_message text;
+BEGIN
+    FOR mv_record IN
+        SELECT matviewname
+        FROM pg_matviews
+        WHERE schemaname = _schema_name
+		AND (_all OR matviewname = w)
+		
+    LOOP
+        BEGIN
+            EXECUTE format('REFRESH MATERIALIZED VIEW %I.%I',
+                          p_schema_name,
+                          mv_record.matviewname);
+            RAISE NOTICE 'Refreshed materialized view: %', mv_record.matviewname;
+        EXCEPTION
+            WHEN OTHERS THEN
+                _error_message := format('Error refreshing materialized view %s: %s',
+                                       mv_record.matviewname, SQLERRM);
+                RAISE EXCEPTION '%', _error_message;
+        END;
+    END LOOP;
+END;
+$$ LANGUAGE plpgsql;
