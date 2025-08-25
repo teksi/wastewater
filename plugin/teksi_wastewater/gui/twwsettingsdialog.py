@@ -99,6 +99,14 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
         else:
             self.mGbLogToFile.setChecked(False)
 
+        srid = self.settings.value("/TWW/SRID", None)
+
+        if srid is not None:
+            self.mGbOverrideSRID.setChecked(True)
+            self.mSRID.setText(srid)
+        else:
+            self.mGbOverrideSRID.setChecked(False)
+
     def initLayerCombobox(self, combobox, default):
         reg = QgsProject.instance()
         for key, layer in list(reg.mapLayers().items()):
@@ -123,14 +131,14 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
                 pgconf = DatabaseUtils.get_pgconf()
                 table_exists = DatabaseUtils.fetchone(
                     """SELECT EXISTS( SELECT 1 FROM information_schema.tables
-                        WHERE  table_schema = 'tww_cfg'
+                        WHERE  table_schema = 'tww_od'
                         AND table_name   = 'agxx_last_modification_updater');"""
                 )
                 if table_exists[0]:
                     agxx_last_mod_setting = DatabaseUtils.fetchone(
                         f"""
                     SELECT ag_update_type
-                    FROM tww_cfg.agxx_last_modification_updater
+                    FROM tww_od.agxx_last_modification_updater
                     WHERE username='{pgconf["user"]}';
                     """
                     )
@@ -161,28 +169,28 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
             pgconf = DatabaseUtils.get_pgconf()
             table_exists = DatabaseUtils.fetchone(
                 """SELECT EXISTS( SELECT 1 FROM information_schema.tables
-                    WHERE  table_schema = 'tww_cfg'
+                    WHERE  table_schema = 'tww_od'
                     AND table_name   = 'agxx_last_modification_updater');"""
             )
             if table_exists[0]:
                 agxx_last_mod_setting = DatabaseUtils.fetchone(
                     f"""
                 SELECT ag_update_type
-                FROM tww_cfg.agxx_last_modification_updater
+                FROM tww_od.agxx_last_modification_updater
                 WHERE username='{pgconf["user"]}';
                 """
                 )
                 if agxx_last_mod_setting:
                     DatabaseUtils.execute(
                         f"""
-                    UPDATE tww_cfg.agxx_last_modification_updater
+                    UPDATE tww_od.agxx_last_modification_updater
                     SET ag_update_type = '{self.mCbAg6496LastModification.currentText()}'
                     WHERE username ='{pgconf["user"]}';"""
                     )
                 else:
                     DatabaseUtils.execute(
                         f"""
-                    INSERT INTO tww_cfg.agxx_last_modification_updater (username, ag_update_type)
+                    INSERT INTO tww_od.agxx_last_modification_updater (username, ag_update_type)
                     VALUES ('{pgconf["user"]}','{self.mCbAg6496LastModification.currentText()}')
                     ;"""
                     )
@@ -219,6 +227,12 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
             self.settings.setValue("/TWW/LogFile", logfile)
         else:
             self.settings.setValue("/TWW/LogFile", None)
+
+        if self.mGbOverrideSRID.isChecked():
+            srid = str(self.mSRID.text())
+            self.settings.setValue("/TWW/SRID", srid)
+        else:
+            self.settings.setValue("/TWW/SRID", None)
 
         if self.tr("Debug") == self.mCbLogLevel.currentText():
             twwlogger.setLevel(logging.DEBUG)
