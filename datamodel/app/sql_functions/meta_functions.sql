@@ -42,7 +42,7 @@ BEGIN
             EXECUTE format('REFRESH MATERIALIZED VIEW %I.%I',
                           mv_record.schemaname,
                           mv_record.matviewname);
-            RAISE NOTICE format('Refreshed materialized view: %s.%s', mv_record.schemaname, mv_record.matviewname);
+            RAISE NOTICE '%',format('Refreshed materialized view: %s.%s', mv_record.schemaname, mv_record.matviewname);
         EXCEPTION
             WHEN OTHERS THEN
                 _error_message := format('Error refreshing materialized view %s.%s: %s',
