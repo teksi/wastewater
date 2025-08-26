@@ -224,7 +224,7 @@ WITH DATA;
             indent=4,
             skip_columns=[],
         ),
-        cat_cols=select_columns(
+        mv_cat_cols=select_columns(
             connection=connection,
             table_schema="tww_app",
             table_name="mvw_catchment_area_totals",
