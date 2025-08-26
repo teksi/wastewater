@@ -16,7 +16,10 @@ from view.maintenance_views import (
     vw_tww_ws_maintenance,
 )
 from view.vw_tww_additional_ws import vw_tww_additional_ws
-from view.vw_tww_catchment_area import vw_tww_catchment_area, vw_tww_catchment_area_totals
+from view.vw_tww_catchment_area import (
+    vw_tww_catchment_area,
+    vw_tww_catchment_area_totals,
+)
 from view.vw_tww_damage_channel import vw_tww_damage_channel
 from view.vw_tww_infiltration_installation import vw_tww_infiltration_installation
 from view.vw_tww_log_card import vw_tww_log_card

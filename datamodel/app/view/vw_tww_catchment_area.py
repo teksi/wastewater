@@ -164,7 +164,7 @@ def vw_tww_catchment_area_totals(connection: psycopg.Connection, extra_definitio
     """
     cursor = connection.cursor()
 
-    mview_sql="""
+    mview_sql = """
 CREATE MATERIALIZED VIEW tww_app.mvw_catchment_area_totals
  AS
  SELECT cat.obj_id,
@@ -296,7 +296,7 @@ WITH DATA;
             remove_pkey=False,
             indent=2,
             skip_columns=[],
-            remap_columns={"fk_hydraulic_char_data": "hcd_oid"}
+            remap_columns={"fk_hydraulic_char_data": "hcd_oid"},
         ),
         insert_extra=insert_extra(connection=connection, extra_definition=extra_definition),
     )
