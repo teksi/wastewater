@@ -229,9 +229,9 @@ WITH DATA;
             table_schema="tww_app",
             table_name="mvw_catchment_area_totals",
             table_alias="mv_cat",
-            remove_pkey=True,
+            remove_pkey=False,
             indent=4,
-            skip_columns=[],
+            skip_columns=["obj_id"],
         ),
         extra_cols=(
             ""
