@@ -269,7 +269,7 @@ Running modification {modification.get('id')}
             ),
         )
         vw_tww_catchment_area(
-            connection=self.connection,
+            connection=self._connection,
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_catchment_area"])
                 if self.extra_definitions.get("vw_tww_catchment_area")
@@ -277,7 +277,7 @@ Running modification {modification.get('id')}
             ),
         )
         vw_tww_catchment_area_totals(
-            connection=self.connection,
+            connection=self._connection,
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_catchment_area_totals"])
                 if self.extra_definitions.get("vw_tww_catchment_area_totals")
