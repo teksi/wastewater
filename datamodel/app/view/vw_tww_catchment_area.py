@@ -168,7 +168,7 @@ def vw_tww_catchment_area_totals(connection: psycopg.Connection, extra_definitio
 CREATE MATERIALIZED VIEW tww_app.mvw_catchment_area_totals
  AS
  SELECT cat.obj_id,
-	lc.obj_id as fk_log_card,
+    lc.obj_id as fk_log_card,
     ca_agg.perimeter_geometry,
     wn.situation3d_geometry,
     wn.obj_id AS wn_obj_id
