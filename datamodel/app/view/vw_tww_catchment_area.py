@@ -232,7 +232,7 @@ WITH DATA;
             remove_pkey=False,
             indent=4,
             skip_columns=["obj_id"],
-            columns_on_top=["obj_id"],
+            columns_at_end=["fk_log_card"],
         ),
         extra_cols=(
             ""
