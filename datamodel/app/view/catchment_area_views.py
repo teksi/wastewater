@@ -17,12 +17,17 @@ from .utils.extra_definition_utils import (
 )
 
 
-def vw_tww_catchment_area(connection: psycopg.Connection, extra_definition: dict = None):
+def vw_tww_catchment_area(
+        connection: psycopg.Connection, 
+        extra_definition: dict = None
+        ):
     """
     Creates tww_catchment_area view
     :param connection: psycopg Connection
     :param extra_definition: a dictionary for additional columns
     """
+    extra_definition = extra_definition or {}
+
     cursor = connection.cursor()
 
     view_sql = """
@@ -156,12 +161,17 @@ def vw_tww_catchment_area(connection: psycopg.Connection, extra_definition: dict
     cursor.execute(extras)
 
 
-def vw_tww_catchment_area_totals(connection: psycopg.Connection, extra_definition: dict = None):
+def vw_tww_catchment_area_totals(
+        connection: psycopg.Connection, 
+        extra_definition: dict = None
+        ):
     """
     Creates tww_catchment_area view
     :param connection: psycopg Connection
     :param extra_definition: a dictionary for additional columns
     """
+    extra_definition = extra_definition or {}
+
     cursor = connection.cursor()
 
     mview_sql = """
