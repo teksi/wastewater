@@ -20,6 +20,7 @@ $$
 DECLARE
     mv_record record;
 	above_16 bool;
+    user_role_loop text := {user_role};
 BEGIN
 	SELECT current_setting('server_version_num')::integer>170000 INTO above_16;
     FOR mv_record IN
@@ -31,11 +32,11 @@ BEGIN
 		IF above_16 THEN
 			EXECUTE format('GRANT MAINTAIN ON tww_app.%I TO %I',
 					  mv_record.matviewname,
-					  {user_role});
+					  user_role_loop);
 		ELSE
 			EXECUTE format('ALTER MATERIALIZED VIEW tww_app.%I OWNER TO %I',
 					  mv_record.matviewname,
-					  {user_role});
+					  user_role_loop);
 		END IF;
     END LOOP;
 END;
