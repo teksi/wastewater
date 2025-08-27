@@ -406,7 +406,7 @@ if __name__ == "__main__":
     if args.extra_definition_ca:
         with open(args.extra_definition_ca) as f:
             extra_definition_ca = safe_load(f)
-    extra_definition_cat= {}
+    extra_definition_cat = {}
     if args.extra_definition_cat:
         with open(args.extra_definition_cat) as f:
             extra_definition_cat = safe_load(f)
