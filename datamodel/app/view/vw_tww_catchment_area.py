@@ -207,7 +207,7 @@ WITH DATA;
     CREATE OR REPLACE VIEW tww_app.vw_tww_catchment_area_totals AS
      SELECT
         {cat_cols}
-        {mv_cat_cols}
+        , {mv_cat_cols}
 
         {extra_cols}
         FROM tww_od.catchment_area_totals cat
