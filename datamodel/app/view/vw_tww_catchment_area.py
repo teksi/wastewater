@@ -167,7 +167,7 @@ def vw_tww_catchment_area_totals(connection: psycopg.Connection, extra_definitio
     mview_sql = """
 CREATE MATERIALIZED VIEW tww_app.mvw_catchment_area_totals
  AS
- SELECT cat.obj_id,
+ SELECT cat.obj_id as _obj_id, -- underscore necessary for pirogue
     lc.obj_id as fk_log_card,
     ca_agg.perimeter_geometry,
     wn.situation3d_geometry,
@@ -211,7 +211,7 @@ WITH DATA;
 
         {extra_cols}
         FROM tww_od.catchment_area_totals cat
-        LEFT JOIN tww_app.mvw_catchment_area_totals mv_cat on mv_cat.obj_id=cat.obj_id
+        LEFT JOIN tww_app.mvw_catchment_area_totals mv_cat on mv_cat._obj_id=cat.obj_id
         {extra_joins};
 
     """.format(
@@ -231,8 +231,7 @@ WITH DATA;
             table_alias="mv_cat",
             remove_pkey=False,
             indent=4,
-            skip_columns=["obj_id"],
-            columns_at_end=["fk_log_card"],
+            skip_columns=["_obj_id"],
         ),
         extra_cols=(
             ""
