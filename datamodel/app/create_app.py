@@ -16,7 +16,7 @@ from view.maintenance_views import (
     vw_tww_ws_maintenance,
 )
 from view.vw_tww_additional_ws import vw_tww_additional_ws
-from view.vw_tww_catchment_area import (
+from view.catchment_area_views import (
     vw_tww_catchment_area,
     vw_tww_catchment_area_totals,
 )
