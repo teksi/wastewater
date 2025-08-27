@@ -363,7 +363,7 @@ WITH DATA;
     cursor.execute(update_trigger_sql)
 
     trigger_delete_sql = """
-    CREATE OR REPLACE FUNCTION tww_app.ft_vw_tww_catchment_area_DELETE()
+    CREATE OR REPLACE FUNCTION tww_app.ft_vw_tww_catchment_area_totals_DELETE()
       RETURNS trigger AS
     $BODY$
     DECLARE
@@ -393,14 +393,24 @@ if __name__ == "__main__":
     parser.add_argument("-p", "--pg_service", help="the PostgreSQL service name")
     parser.add_argument(
         "-e",
-        "--extra-definition",
-        help="YAML file path for extra additions to the view",
+        "--extra-definition_ca",
+        help="YAML file path for extra additions to the catchment_area view",
+    )
+    parser.add_argument(
+        "-x",
+        "--extra-definition_cat",
+        help="YAML file path for extra additions to the catchment_area_totals view",
     )
     args = parser.parse_args()
-    extra_definition = {}
-    if args.extra_definition:
-        with open(args.extra_definition) as f:
-            extra_definition = safe_load(f)
+    extra_definition_ca = {}
+    if args.extra_definition_ca:
+        with open(args.extra_definition_ca) as f:
+            extra_definition_ca = safe_load(f)
+    extra_definition_cat= {}
+    if args.extra_definition_cat:
+        with open(args.extra_definition_cat) as f:
+            extra_definition_cat = safe_load(f)
     pg_service = args.pg_service or os.getenv("PGSERVICE")
     with psycopg.connect(f"service={pg_service}") as connection:
-        vw_tww_catchment_area(connection=connection, extra_definition=extra_definition)
+        vw_tww_catchment_area(connection=connection, extra_definition=extra_definition_ca)
+        vw_tww_catchment_area_totals(connection=connection, extra_definition=extra_definition_cat)
