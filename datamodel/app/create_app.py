@@ -90,11 +90,11 @@ class Hook(HookBase):
             },
             "user_role": {
                 "value": "tww_user",
-                "type": "literal",
+                "type": "identifier",
             },
             "viewer_role": {
                 "value": "tww_viewer",
-                "type": "literal",
+                "type": "identifier",
             },
         }
         self.execute("CREATE SCHEMA tww_app;")

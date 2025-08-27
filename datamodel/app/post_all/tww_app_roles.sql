@@ -29,11 +29,11 @@ BEGIN
 
     LOOP
 		IF above_16 THEN
-			EXECUTE format('GRANT MAINTAIN ON tww_app.%I TO %I',
+			EXECUTE format('GRANT MAINTAIN ON tww_app.%I TO %s',
 					  mv_record.matviewname,
 					  {user_role});
 		ELSE
-			EXECUTE format('ALTER MATERIALIZED VIEW tww_app.%I OWNER TO %I',
+			EXECUTE format('ALTER MATERIALIZED VIEW tww_app.%I OWNER TO %s',
 					  mv_record.matviewname,
 					  {user_role});
 		END IF;
