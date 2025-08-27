@@ -51,7 +51,7 @@ class Hook(HookBase):
         :param modification_yaml: Path of yaml containing app parametrisation
         """
         self.cwd = Path(__file__).parent.resolve()
-        self.connection = connection
+        self._connection = connection
 
         if modification_yaml:
             self.parameters = self.load_yaml(modification_yaml)
@@ -124,12 +124,12 @@ Running modification {modification.get('id')}
 
         # Defaults and Triggers
         # Has to be fired before view creation otherwise it won't work and will only fail in CI
-        set_defaults_and_triggers(self.connection, self.single_inherintances)
+        set_defaults_and_triggers(self._connection, self.single_inherintances)
 
         for key in self.single_inherintances:
             logger.info(f"creating view vw_{key}")
             SingleInheritance(
-                connection=self.connection,
+                connection=self._connection,
                 parent_table="tww_od." + self.single_inherintances[key],
                 child_table="tww_od." + key,
                 view_name="vw_" + key,
@@ -140,7 +140,7 @@ Running modification {modification.get('id')}
 
         for key in self.multiple_inherintances:
             MultipleInheritance(
-                connection=self.connection,
+                connection=self._connection,
                 definition=self.load_yaml(self.abspath / self.multiple_inherintances[key]),
                 drop=True,
                 variables=variables_pirogue,
@@ -151,7 +151,7 @@ Running modification {modification.get('id')}
                 self.extra_definitions[key] = self.abspath / value
 
         vw_wastewater_structure(
-            connection=self.connection,
+            connection=self._connection,
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_wastewater_structure"])
                 if self.extra_definitions.get("vw_wastewater_structure")
@@ -159,7 +159,7 @@ Running modification {modification.get('id')}
             ),
         )
         vw_tww_wastewater_structure(
-            connection=self.connection,
+            connection=self._connection,
             srid=SRID,
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_wastewater_structure"])
@@ -168,7 +168,7 @@ Running modification {modification.get('id')}
             ),
         )
         vw_tww_infiltration_installation(
-            connection=self.connection,
+            connection=self._connection,
             srid=SRID,
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_infiltration_installation"])
@@ -177,7 +177,7 @@ Running modification {modification.get('id')}
             ),
         )
         vw_tww_reach(
-            connection=self.connection,
+            connection=self._connection,
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_reach"])
                 if self.extra_definitions.get("vw_tww_reach")
@@ -185,7 +185,7 @@ Running modification {modification.get('id')}
             ),
         )
         vw_tww_channel(
-            connection=self.connection,
+            connection=self._connection,
             srid=SRID,
             lang_code=lang_code,
             extra_definition=(
@@ -195,7 +195,7 @@ Running modification {modification.get('id')}
             ),
         )
         vw_tww_channel_maintenance(
-            connection=self.connection,
+            connection=self._connection,
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_channel_maintenance"])
                 if self.extra_definitions.get("vw_tww_channel_maintenance")
@@ -203,7 +203,7 @@ Running modification {modification.get('id')}
             ),
         )
         vw_tww_ws_maintenance(
-            connection=self.connection,
+            connection=self._connection,
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_ws_maintenance"])
                 if self.extra_definitions.get("vw_tww_ws_maintenance")
@@ -211,7 +211,7 @@ Running modification {modification.get('id')}
             ),
         )
         vw_tww_channel_maintenance(
-            connection=self.connection,
+            connection=self._connection,
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_channel_maintenance"])
                 if self.extra_definitions["vw_tww_channel_maintenance"]
@@ -219,7 +219,7 @@ Running modification {modification.get('id')}
             ),
         )
         vw_tww_ws_maintenance(
-            connection=self.connection,
+            connection=self._connection,
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_ws_maintenance"])
                 if self.extra_definitions["vw_tww_ws_maintenance"]
@@ -227,7 +227,7 @@ Running modification {modification.get('id')}
             ),
         )
         vw_tww_damage_channel(
-            connection=self.connection,
+            connection=self._connection,
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_damage_channel"])
                 if self.extra_definitions.get("vw_tww_damage_channel")
@@ -236,7 +236,7 @@ Running modification {modification.get('id')}
         )
         vw_tww_additional_ws(
             srid=SRID,
-            connection=self.connection,
+            connection=self._connection,
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_additional_ws"])
                 if self.extra_definitions.get("vw_tww_additional_ws")
@@ -244,7 +244,7 @@ Running modification {modification.get('id')}
             ),
         )
         vw_tww_measurement_series(
-            connection=self.connection,
+            connection=self._connection,
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_measurement_series"])
                 if self.extra_definitions.get("vw_tww_measurement_series")
@@ -252,7 +252,7 @@ Running modification {modification.get('id')}
             ),
         )
         vw_tww_overflow(
-            connection=self.connection,
+            connection=self._connection,
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_overflow"])
                 if self.extra_definitions.get("vw_tww_overflow")
@@ -261,7 +261,7 @@ Running modification {modification.get('id')}
         )
         vw_tww_log_card(
             srid=SRID,
-            connection=self.connection,
+            connection=self._connection,
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_log_card"])
                 if self.extra_definitions.get("vw_tww_log_card")
@@ -287,7 +287,7 @@ Running modification {modification.get('id')}
         # TODO: Are these export views necessary? cymed 13.03.25
         for _, yaml_path in self.simple_joins_yaml.items():
             SimpleJoins(
-                definition=self.load_yaml(self.abspath / yaml_path), connection=self.connection
+                definition=self.load_yaml(self.abspath / yaml_path), connection=self._connection
             ).create()
 
         sql_directories = [
@@ -392,7 +392,7 @@ Running modification {modification.get('id')}
             re.search(r"\{[A-Za-z-_]+\}", sql) and variables
         ):  # avoid formatting if no variables are present
             try:
-                sql = psycopg.sql.SQL(sql).format(**variables).as_string(self.connection)
+                sql = psycopg.sql.SQL(sql).format(**variables).as_string(self._connection)
 
             except IndexError:
                 logger.critical(sql)
@@ -451,7 +451,6 @@ if __name__ == "__main__":
     parser.add_argument(
         "-a",
         "--modification_agxx",
-        type=bool,
         action="store_true",
         default=False,
         help="load AG-64/96 modification on app schema",
@@ -459,7 +458,6 @@ if __name__ == "__main__":
     parser.add_argument(
         "-c",
         "--modification_ci",
-        type=bool,
         action="store_true",
         default=False,
         help="load ci modification",

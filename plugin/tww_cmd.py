@@ -30,6 +30,12 @@ class TeksiWastewaterCmd:
             help="QGIS Application prefix path",
         )
 
+        self.parser.add_argument(
+            "--srid",
+            default=2056,
+            help="SRID for import/export",
+        )
+
         subparsers = self.parser.add_subparsers(dest="subparser_name", help="sub-command --help")
 
         self._add_subparser_interlis_import(subparsers=subparsers)
@@ -188,6 +194,7 @@ class TeksiWastewaterCmd:
                 show_selection_dialog=self.args.show_selection_dialog,
                 logs_next_to_file=self.args.logs_next_to_file,
                 filter_nulls=self.args.filter_nulls,
+                srid=self.args.srid,
             )
 
             print(f"\nData successfully imported from {self.args.xtf_file}")
@@ -245,6 +252,7 @@ class TeksiWastewaterCmd:
                 labels_file=self.args.labels_file,
                 selected_labels_scales_indices=label_scales,
                 selected_ids=selected_ids,
+                srid=self.args.srid,
             )
             print(f"\nData successfully exported to {self.args.xtf_file}")
 
