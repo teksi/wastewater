@@ -421,6 +421,6 @@ if __name__ == "__main__":
         with open(args.extra_definition_cat) as f:
             extra_definition_cat = safe_load(f)
     pg_service = args.pg_service or os.getenv("PGSERVICE")
-    with psycopg.connect(f"service={pg_service}") as connection:
-        vw_tww_catchment_area(connection=connection, extra_definition=extra_definition_ca)
-        vw_tww_catchment_area_totals(connection=connection, extra_definition=extra_definition_cat)
+    with psycopg.connect(f"service={pg_service}") as conn:
+        vw_tww_catchment_area(connection=conn, extra_definition=extra_definition_ca)
+        vw_tww_catchment_area_totals(connection=conn, extra_definition=extra_definition_cat)
