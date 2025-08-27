@@ -288,7 +288,7 @@ WITH DATA;
     CREATE TRIGGER vw_tww_catchment_area_INSERT INSTEAD OF INSERT ON tww_app.vw_tww_catchment_area
       FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_catchment_area_INSERT();
     """.format(
-        insert_ca=insert_command(
+        insert_cat=insert_command(
             connection=connection,
             table_schema="tww_od",
             table_name="catchment_area_totals",
@@ -348,7 +348,7 @@ WITH DATA;
     CREATE TRIGGER vw_tww_catchment_area_UPDATE INSTEAD OF UPDATE ON tww_app.vw_tww_catchment_area_totals
       FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_catchment_area_totals_UPDATE();
     """.format(
-        update_ca=update_command(
+        update_cat=update_command(
             connection=connection,
             table_schema="tww_od",
             table_name="catchment_area_totals",
