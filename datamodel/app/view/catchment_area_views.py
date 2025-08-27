@@ -17,10 +17,7 @@ from .utils.extra_definition_utils import (
 )
 
 
-def vw_tww_catchment_area(
-        connection: psycopg.Connection, 
-        extra_definition: dict = None
-        ):
+def vw_tww_catchment_area(connection: psycopg.Connection, extra_definition: dict = None):
     """
     Creates tww_catchment_area view
     :param connection: psycopg Connection
@@ -161,10 +158,7 @@ def vw_tww_catchment_area(
     cursor.execute(extras)
 
 
-def vw_tww_catchment_area_totals(
-        connection: psycopg.Connection, 
-        extra_definition: dict = None
-        ):
+def vw_tww_catchment_area_totals(connection: psycopg.Connection, extra_definition: dict = None):
     """
     Creates tww_catchment_area view
     :param connection: psycopg Connection
