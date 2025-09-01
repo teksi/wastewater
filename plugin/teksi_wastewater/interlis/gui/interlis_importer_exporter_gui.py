@@ -57,8 +57,8 @@ class InterlisImporterExporterGui(QObject):
         if not xtf_file_input:
             # Operation canceled
             return
-
-        srid = QSettings.value("/TWW/SRID", 2056, type=int)
+        settings = QSettings()
+        srid = settings.value("/TWW/SRID", 2056, type=int)
 
         QgsSettings().setValue("tww_plugin/last_interlis_path", os.path.dirname(xtf_file_input))
 
@@ -117,7 +117,8 @@ class InterlisImporterExporterGui(QObject):
             # Operation canceled
             return
         QgsSettings().setValue("tww_plugin/last_interlis_path", os.path.dirname(file_name))
-        srid = QSettings.value("/TWW/SRID", 2056, type=int)
+        settings = QSettings()
+        srid = settings.value("/TWW/SRID", 2056, type=int)
 
         self.progress_dialog = QProgressDialog("", "", 0, 100)
         self.progress_dialog.setMinimumWidth(self._PROGRESS_DIALOG_MINIMUM_WIDTH)
