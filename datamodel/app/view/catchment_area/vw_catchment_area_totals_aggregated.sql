@@ -22,7 +22,7 @@ CREATE MATERIALIZED VIEW tww_app.vw_catchment_area_totals_aggregated AS
         SELECT
           obj_id,
           fk_next_special_building,
-          ARRAY[obj_id::varchar]::varchar(16)[] AS log_card_path
+          ARRAY[obj_id::varchar]::varchar[] AS log_card_path
         FROM
           tww_od.log_card
         WHERE
@@ -33,7 +33,7 @@ CREATE MATERIALIZED VIEW tww_app.vw_catchment_area_totals_aggregated AS
         SELECT
           lc.obj_id,
           lc.fk_next_special_building,
-          lt.log_card_path || lc.obj_id
+          (lt.log_card_path || lc.obj_id)::varchar[]
         FROM
           tww_od.log_card lc
         JOIN
