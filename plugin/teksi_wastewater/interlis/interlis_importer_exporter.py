@@ -117,7 +117,7 @@ class InterlisImporterExporter:
         )
 
         # Prepare the temporary ili2pg model
-        self._progress_done(10, "Creating ili schema...")
+        self._progress_done(15, "Creating ili schema...")
         self._clear_ili_schema(recreate_tables=True)
 
         self._progress_done(20)
@@ -622,7 +622,7 @@ class InterlisImporterExporter:
             )
             tempdir.cleanup()  # Cleanup
 
-            self._progress_done(60)
+            self._progress_done(75)
             self._export_xtf_files(file_name_base, export_models)
 
             self._progress_done(100)
