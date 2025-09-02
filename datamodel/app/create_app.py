@@ -10,6 +10,10 @@ import yaml
 from pirogue import MultipleInheritance, SimpleJoins, SingleInheritance
 from pum import HookBase
 from triggers.set_defaults_and_triggers import set_defaults_and_triggers
+from view.catchment_area_views import (
+    vw_tww_catchment_area,
+    vw_tww_catchment_area_totals,
+)
 from view.maintenance_views import (
     vw_tww_channel,
     vw_tww_channel_maintenance,
@@ -261,6 +265,22 @@ Running modification {modification.get('id')}
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_log_card"])
                 if self.extra_definitions.get("vw_tww_log_card")
+                else None
+            ),
+        )
+        vw_tww_catchment_area(
+            connection=self._connection,
+            extra_definition=(
+                self.load_yaml(self.extra_definitions["vw_tww_catchment_area"])
+                if self.extra_definitions.get("vw_tww_catchment_area")
+                else None
+            ),
+        )
+        vw_tww_catchment_area_totals(
+            connection=self._connection,
+            extra_definition=(
+                self.load_yaml(self.extra_definitions["vw_tww_catchment_area_totals"])
+                if self.extra_definitions.get("vw_tww_catchment_area_totals")
                 else None
             ),
         )
