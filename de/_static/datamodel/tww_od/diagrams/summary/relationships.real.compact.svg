@@ -5504,9 +5504,9 @@
 </g>
 </g>
 <!-- connection_object -->
-<g id="node70" class="node">
+<g id="node71" class="node">
 <title>connection_object</title>
-<g id="a_node70"><a xlink:href="../../tables/connection_object.html" xlink:title="connection_object" target="_top">
+<g id="a_node71"><a xlink:href="../../tables/connection_object.html" xlink:title="connection_object" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1454.5,-5449 1454.5,-5617 1738.5,-5617 1738.5,-5449 1454.5,-5449"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1454.5,-5595 1454.5,-5617 1738.5,-5617 1738.5,-5595 1454.5,-5595"/>
 <polygon fill="none" stroke="black" points="1454.5,-5595 1454.5,-5617 1738.5,-5617 1738.5,-5595 1454.5,-5595"/>
@@ -6613,9 +6613,9 @@
 </g>
 </g>
 <!-- damage -->
-<g id="node71" class="node">
+<g id="node70" class="node">
 <title>damage</title>
-<g id="a_node71"><a xlink:href="../../tables/damage.html" xlink:title="damage" target="_top">
+<g id="a_node70"><a xlink:href="../../tables/damage.html" xlink:title="damage" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="2527.5,-4175 2527.5,-4365 2699.5,-4365 2699.5,-4175 2527.5,-4175"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="2527.5,-4343 2527.5,-4365 2699.5,-4365 2699.5,-4343 2527.5,-4343"/>
 <polygon fill="none" stroke="black" points="2527.5,-4343 2527.5,-4365 2699.5,-4365 2699.5,-4343 2527.5,-4343"/>
@@ -8226,27 +8226,6 @@
 <polygon fill="black" stroke="black" points="513,-4423.04 521.02,-4426.6 517,-4423.02 521,-4423 521,-4423 521,-4423 517,-4423.02 520.98,-4419.4 513,-4423.04 513,-4423.04"/>
 <ellipse fill="none" stroke="black" cx="509.8" cy="-4423.06" rx="3.2" ry="3.2"/>
 </g>
-<!-- connection_object&#45;&gt;wastewater_networkelement -->
-<g id="edge103" class="edge">
-<title>connection_object:w&#45;&gt;wastewater_networkelement:e</title>
-<path fill="none" stroke="black" d="M1439.08,-5495.3C1339.21,-5485.26 1337.87,-5371 1228.5,-5371"/>
-<polygon fill="black" stroke="black" points="1445.51,-5495.61 1453.32,-5499.6 1449.5,-5495.81 1453.5,-5496 1453.5,-5496 1453.5,-5496 1449.5,-5495.81 1453.68,-5492.4 1445.51,-5495.61 1445.51,-5495.61"/>
-<ellipse fill="none" stroke="black" cx="1442.31" cy="-5495.45" rx="3.2" ry="3.2"/>
-</g>
-<!-- connection_object&#45;&gt;organisation -->
-<g id="edge101" class="edge">
-<title>connection_object:w&#45;&gt;organisation:e</title>
-<path fill="none" stroke="black" d="M1439.12,-5539.08C1388.21,-5532.18 1382.11,-5488.46 1325,-5472 1227.57,-5443.92 945.25,-5505.96 870,-5438 544.68,-5144.2 1135.35,-4467 697,-4467"/>
-<polygon fill="black" stroke="black" points="1445.52,-5539.49 1453.27,-5543.59 1449.51,-5539.74 1453.5,-5540 1453.5,-5540 1453.5,-5540 1449.51,-5539.74 1453.73,-5536.41 1445.52,-5539.49 1445.52,-5539.49"/>
-<ellipse fill="none" stroke="black" cx="1442.32" cy="-5539.28" rx="3.2" ry="3.2"/>
-</g>
-<!-- connection_object&#45;&gt;organisation -->
-<g id="edge102" class="edge">
-<title>connection_object:w&#45;&gt;organisation:e</title>
-<path fill="none" stroke="black" d="M1439,-5516.97C1386.45,-5509.01 1384.01,-5457.38 1325,-5439 1276.66,-5423.94 908.01,-5448.44 870,-5415 548.43,-5132.11 1125.29,-4467 697,-4467"/>
-<polygon fill="black" stroke="black" points="1445.52,-5517.43 1453.24,-5521.59 1449.51,-5517.72 1453.5,-5518 1453.5,-5518 1453.5,-5518 1449.51,-5517.72 1453.76,-5514.41 1445.52,-5517.43 1445.52,-5517.43"/>
-<ellipse fill="none" stroke="black" cx="1442.33" cy="-5517.2" rx="3.2" ry="3.2"/>
-</g>
 <!-- damage&#45;&gt;examination -->
 <g id="edge115" class="edge">
 <title>damage:w&#45;&gt;examination:e</title>
@@ -8329,6 +8308,27 @@
 <path fill="none" stroke="black" d="M2511.73,-4288C2432.19,-4288 2345.68,-4288 2273.13,-4288"/>
 <polygon fill="black" stroke="black" points="2518.5,-4288 2526.5,-4291.6 2522.5,-4288 2526.5,-4288 2526.5,-4288 2526.5,-4288 2522.5,-4288 2526.5,-4284.4 2518.5,-4288 2518.5,-4288"/>
 <ellipse fill="none" stroke="black" cx="2515.3" cy="-4288" rx="3.2" ry="3.2"/>
+</g>
+<!-- connection_object&#45;&gt;wastewater_networkelement -->
+<g id="edge103" class="edge">
+<title>connection_object:w&#45;&gt;wastewater_networkelement:e</title>
+<path fill="none" stroke="black" d="M1439.08,-5495.3C1339.21,-5485.26 1337.87,-5371 1228.5,-5371"/>
+<polygon fill="black" stroke="black" points="1445.51,-5495.61 1453.32,-5499.6 1449.5,-5495.81 1453.5,-5496 1453.5,-5496 1453.5,-5496 1449.5,-5495.81 1453.68,-5492.4 1445.51,-5495.61 1445.51,-5495.61"/>
+<ellipse fill="none" stroke="black" cx="1442.31" cy="-5495.45" rx="3.2" ry="3.2"/>
+</g>
+<!-- connection_object&#45;&gt;organisation -->
+<g id="edge101" class="edge">
+<title>connection_object:w&#45;&gt;organisation:e</title>
+<path fill="none" stroke="black" d="M1439.12,-5539.08C1388.21,-5532.18 1382.11,-5488.46 1325,-5472 1227.57,-5443.92 945.25,-5505.96 870,-5438 544.68,-5144.2 1135.35,-4467 697,-4467"/>
+<polygon fill="black" stroke="black" points="1445.52,-5539.49 1453.27,-5543.59 1449.51,-5539.74 1453.5,-5540 1453.5,-5540 1453.5,-5540 1449.51,-5539.74 1453.73,-5536.41 1445.52,-5539.49 1445.52,-5539.49"/>
+<ellipse fill="none" stroke="black" cx="1442.32" cy="-5539.28" rx="3.2" ry="3.2"/>
+</g>
+<!-- connection_object&#45;&gt;organisation -->
+<g id="edge102" class="edge">
+<title>connection_object:w&#45;&gt;organisation:e</title>
+<path fill="none" stroke="black" d="M1439,-5516.97C1386.45,-5509.01 1384.01,-5457.38 1325,-5439 1276.66,-5423.94 908.01,-5448.44 870,-5415 548.43,-5132.11 1125.29,-4467 697,-4467"/>
+<polygon fill="black" stroke="black" points="1445.52,-5517.43 1453.24,-5521.59 1449.51,-5517.72 1453.5,-5518 1453.5,-5518 1453.5,-5518 1449.51,-5517.72 1453.76,-5514.41 1445.52,-5517.43 1445.52,-5517.43"/>
+<ellipse fill="none" stroke="black" cx="1442.33" cy="-5517.2" rx="3.2" ry="3.2"/>
 </g>
 <!-- wwtp_structure -->
 <g id="node72" class="node">
