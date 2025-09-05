@@ -106,6 +106,11 @@ class TeksiWastewaterCmd:
             action="store_true",
         )
         subparser.add_argument(
+            "--label_scale_network_plan_1_250",
+            help="Export labels in scale 1:250, can be combined with other scales (Werkplan/Plan de reseau)",
+            action="store_true",
+        )
+        subparser.add_argument(
             "--label_scale_network_plan_1_500",
             help="Export labels in scale 1:500, can be combined with other scales (Werkplan/Plan de reseau)",
             action="store_true",
