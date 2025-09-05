@@ -250,6 +250,8 @@ Full usage
      --logs_next_to_file   Put log files next to XTF output file
      --label_scale_pipeline_registry_1_1000
                            Export labels in scale 1:1'000, can be combined with other scales (Leitungskataster/Cadastre des conduites souterraines)
+     --label_scale_network_plan_1_250
+                           Export labels in scale 1:250, can be combined with other scales (Werkplan/Plan de reseau)
      --label_scale_network_plan_1_500
                            Export labels in scale 1:500, can be combined with other scales (Werkplan/Plan de reseau)
      --label_scale_overviewmap_1_10000
@@ -299,6 +301,8 @@ Full usage
      --logs_next_to_file   Put log files next to XTF output file
      --label_scale_pipeline_registry_1_1000
                            Export labels in scale 1:1'000, can be combined with other scales (Leitungskataster/Cadastre des conduites souterraines)
+     --label_scale_network_plan_1_250
+                           Export labels in scale 1:250, can be combined with other scales (Werkplan/Plan de reseau)
      --label_scale_network_plan_1_500
                            Export labels in scale 1:500, can be combined with other scales (Werkplan/Plan de reseau)
      --label_scale_overviewmap_1_10000
