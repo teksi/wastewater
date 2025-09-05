@@ -230,6 +230,8 @@ class TeksiWastewaterCmd:
             label_scales.append(
                 ExtractlabelsInterlisAlgorithm.AVAILABLE_SCALE_PIPELINE_REGISTRY_1_1000
             )
+        if self.args.label_scale_network_plan_1_250:
+            label_scales.append(ExtractlabelsInterlisAlgorithm.AVAILABLE_SCALE_NETWORK_PLAN_1_250)
         if self.args.label_scale_network_plan_1_500:
             label_scales.append(ExtractlabelsInterlisAlgorithm.AVAILABLE_SCALE_NETWORK_PLAN_1_500)
         if self.args.label_scale_overviewmap_1_10000:
