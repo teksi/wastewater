@@ -522,6 +522,7 @@ class InterlisImporterExporter:
                             limit_to_selection=limit_to_selection,
                             selected_labels_scales_indices=selected_labels_scales_indices,
                             labels_file_path=labels_file_path,
+                            export_model=export_models[0],
                         )
 
                     # Export to the temporary ili2pg model
@@ -577,6 +578,7 @@ class InterlisImporterExporter:
                     limit_to_selection=limit_to_selection,
                     selected_labels_scales_indices=selected_labels_scales_indices,
                     labels_file_path=labels_file_path,
+                    export_model=export_models[0],
                 )
 
             self._progress_done(15, "Creating ili schema...")
