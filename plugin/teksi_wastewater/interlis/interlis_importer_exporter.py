@@ -572,7 +572,7 @@ class InterlisImporterExporter:
             tempdir = tempfile.TemporaryDirectory()
             labels_file_path = None
             if len(selected_labels_scales_indices):
-                self._progress_done(25)
+                self._progress_done(20)
                 labels_file_path = os.path.join(tempdir.name, "labels.geojson")
                 self._export_labels_file(
                     limit_to_selection=limit_to_selection,
@@ -581,7 +581,7 @@ class InterlisImporterExporter:
                     export_model=export_models[0],
                 )
 
-            self._progress_done(15, "Creating ili schema...")
+            self._progress_done(25, "Creating ili schema...")
             create_basket_col = False
             if config.MODEL_NAME_VSA_KEK in export_models:
                 create_basket_col = True
@@ -590,7 +590,7 @@ class InterlisImporterExporter:
             # Export the labels file
             tempdir = tempfile.TemporaryDirectory()
             if len(selected_labels_scales_indices):
-                self._progress_done(25)
+                self._progress_done(30)
                 if not labels_file:
                     labels_file = os.path.join(tempdir.name, "labels.geojson")
                     self._export_labels_file(
@@ -747,7 +747,7 @@ class InterlisImporterExporter:
                 None,
             )
 
-        self._progress_done(self.current_progress + 5)
+        self._progress_done(self.current_progress + 2)
         if export_model == config.MODEL_NAME_AG96:
             catch_lyr = TwwLayerManager.layer("catchment_area")
             meas_pt_lyr = TwwLayerManager.layer("measure_point")
