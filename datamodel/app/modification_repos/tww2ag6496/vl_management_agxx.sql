@@ -64,4 +64,4 @@ UPDATE tww_vl.building_group_renovation_necessity SET active = not({activate})  
   8799 	-- unbekannt
 ]);
 
-UPDATE tww_vl.value_list_base SET active = {activate}  where code < 2000000 AND code < 1999000;
+UPDATE tww_vl.value_list_base SET active = {activate}  where code < 2000000 AND code > 1999000;
