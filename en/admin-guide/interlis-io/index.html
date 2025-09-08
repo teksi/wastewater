@@ -331,7 +331,7 @@ If the export is not successfull you will get either error messages during the e
 <div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3<span class="w"> </span>plugin/tww_cmd.py<span class="w"> </span>interlis_export<span class="w"> </span>--help
 
 <span class="go">usage: tww_cmd.py interlis_export [-h] --xtf_file XTF_FILE [--selection SELECTION] [--export_model {SIA405_ABWASSER_2020_1_LV95,DSS_2020_1_LV95,VSA_KEK_2020_1_LV95}] [--logs_next_to_file]</span>
-<span class="go">                                               [--label_scale_pipeline_registry_1_1000] [--label_scale_network_plan_1_500] [--label_scale_overviewmap_1_10000] [--label_scale_overviewmap_1_5000]</span>
+<span class="go">                                               [--label_scale_pipeline_registry_1_1000] [--label_scale_network_plan_1_250] [--label_scale_network_plan_1_500] [--label_scale_overviewmap_1_10000] [--label_scale_overviewmap_1_5000]</span>
 <span class="go">                                               [--label_scale_overviewmap_1_2000] [--selected_ids SELECTED_IDS] [--pgservice PGSERVICE] [--pghost PGHOST] [--pgport PGPORT] [--pgdatabase PGDATABASE]</span>
 <span class="go">                                               [--pguser PGUSER] [--pgpass PGPASS]</span>
 
@@ -345,6 +345,8 @@ If the export is not successfull you will get either error messages during the e
 <span class="go">  --logs_next_to_file   Put log files next to XTF output file</span>
 <span class="go">  --label_scale_pipeline_registry_1_1000</span>
 <span class="go">                        Export labels in scale 1:1&#39;000, can be combined with other scales (Leitungskataster/Cadastre des conduites souterraines)</span>
+<span class="go">  --label_scale_network_plan_1_250</span>
+<span class="go">                        Export labels in scale 1:250, can be combined with other scales (Werkplan/Plan de reseau)</span>
 <span class="go">  --label_scale_network_plan_1_500</span>
 <span class="go">                        Export labels in scale 1:500, can be combined with other scales (Werkplan/Plan de reseau)</span>
 <span class="go">  --label_scale_overviewmap_1_10000</span>
@@ -376,7 +378,7 @@ If the export is not successfull you will get either error messages during the e
 <div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3<span class="w"> </span>plugin/tww_cmd.py<span class="w"> </span>interlis_export<span class="w"> </span>--help
 
 <span class="go">usage: tww_cmd.py interlis_export [-h] --xtf_file XTF_FILE [--selection SELECTION] [--export_model {SIA405_ABWASSER_2020_1_LV95,DSS_2020_1_LV95,VSA_KEK_2020_1_LV95}] [--logs_next_to_file]</span>
-<span class="go">                                               [--label_scale_pipeline_registry_1_1000] [--label_scale_network_plan_1_500] [--label_scale_overviewmap_1_10000] [--label_scale_overviewmap_1_5000]</span>
+<span class="go">                                               [--label_scale_pipeline_registry_1_1000] [--label_scale_network_plan_1_250] [--label_scale_network_plan_1_500] [--label_scale_overviewmap_1_10000] [--label_scale_overviewmap_1_5000]</span>
 <span class="go">                                               [--label_scale_overviewmap_1_2000] [--selected_ids SELECTED_IDS] [--pgservice PGSERVICE] [--pghost PGHOST] [--pgport PGPORT] [--pgdatabase PGDATABASE]</span>
 <span class="go">                                               [--pguser PGUSER] [--pgpass PGPASS]</span>
 
@@ -390,6 +392,8 @@ If the export is not successfull you will get either error messages during the e
 <span class="go">  --logs_next_to_file   Put log files next to XTF output file</span>
 <span class="go">  --label_scale_pipeline_registry_1_1000</span>
 <span class="go">                        Export labels in scale 1:1&#39;000, can be combined with other scales (Leitungskataster/Cadastre des conduites souterraines)</span>
+<span class="go">  --label_scale_network_plan_1_250</span>
+<span class="go">                        Export labels in scale 1:250, can be combined with other scales (Werkplan/Plan de reseau)</span>
 <span class="go">  --label_scale_network_plan_1_500</span>
 <span class="go">                        Export labels in scale 1:500, can be combined with other scales (Werkplan/Plan de reseau)</span>
 <span class="go">  --label_scale_overviewmap_1_10000</span>
