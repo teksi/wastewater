@@ -2253,11 +2253,7 @@ class InterlisImporterExporter:
 
             organisation_twww_local_extension_count = 0
             cursor.execute(
-<<<<<<< HEAD
                 "SELECT COUNT(obj_id) as _count, array_agg(obj_id) as _obj_ids FROM tww_od.organisation WHERE twww_local_extension = true;"
-=======
-                    "SELECT COUNT(obj_id) as _count, array_agg(obj_id) as _obj_ids FROM tww_od.organisation WHERE twww_local_extension = True;"
->>>>>>> parent of 1213ac58 (Merge branch '202050908-check-tww_local_extension-count' of https://github.com/teksi/wastewater into 202050908-check-tww_local_extension-count)
             )
 
                 # use cursor.fetchone()[0] instead of cursor.rowcount
