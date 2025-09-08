@@ -208,8 +208,8 @@ class InterlisImporterExporter:
             self.srid = srid
 
         if export_models[0] == "SIA405_Base_Abwasser_1_LV95":
-            if _check_organisation_tww_local_extension_count == False:
-                # errormsg = "INTERLIS export has been stopped as there have been no organisations for exporting!"
+            if _check_organisation_tww_local_extension_count is False:
+                errormsg = "INTERLIS export has been stopped as there have been no organisations for exporting!"
                 logger.info(
                     "INTERLIS export has been stopped as there have been no organisations for exporting!"
                 )
@@ -2251,7 +2251,7 @@ class InterlisImporterExporter:
 
             organisation_twww_local_extension_count = 0
             cursor.execute(
-                    f"SELECT COUNT(obj_id) as _count, array_agg(obj_id) as _obj_ids FROM tww_od.organisation WHERE twww_local_extension = true;"
+                    "SELECT COUNT(obj_id) as _count, array_agg(obj_id) as _obj_ids FROM tww_od.organisation WHERE twww_local_extension = True;"
             )
 
                 # use cursor.fetchone()[0] instead of cursor.rowcount
@@ -2264,11 +2264,11 @@ class InterlisImporterExporter:
             except Exception:
                 organisation_twww_local_extension_count = 0
                 logger.debug(
-                    f"Number of datasets in class organisation with tww_local_extension = true could not be identified (TypeError: 'NoneType' object is not subscriptable). Automatically set organisation_twww_local_extension_count = 0"
+                    "Number of datasets in class organisation with tww_local_extension = true could not be identified (TypeError: 'NoneType' object is not subscriptable). Automatically set organisation_twww_local_extension_count = 0"
                 )
             else:
                 logger.info(
-                    f"Number of datasets in class '{notsubclass}' with tww_local_extension = true : {organisation_twww_local_extension_count}"
+                    f"Number of datasets in class organisation with tww_local_extension = true : {organisation_twww_local_extension_count}"
                 )
 
         if organisation_twww_local_extension_count == 0:
