@@ -207,7 +207,7 @@ class InterlisImporterExporter:
         if srid:
             self.srid = srid
 
-        if export_models = "SIA405_Base_Abwasser_1_LV95"
+        if export_models == "SIA405_Base_Abwasser_1_LV95"
             if _check_organisation_tww_local_extension_count = false
                 # errormsg = "INTERLIS export has been stopped as there have been no organisations for exporting!"
                 logger.info(
