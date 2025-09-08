@@ -222,7 +222,6 @@ class InterlisImporterExporter:
                 )
                 exit
 
-
         # go thru all available checks and register if check failed or not.
         if flag_test:
             number_tests_failed = 0
@@ -2256,8 +2255,8 @@ class InterlisImporterExporter:
                 "SELECT COUNT(obj_id) as _count, array_agg(obj_id) as _obj_ids FROM tww_od.organisation WHERE twww_local_extension = true;"
             )
 
-                # use cursor.fetchone()[0] instead of cursor.rowcount
-                # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
+            # use cursor.fetchone()[0] instead of cursor.rowcount
+            # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
 
             try:
                 result = cursor.fetchone()
@@ -2279,8 +2278,6 @@ class InterlisImporterExporter:
             # no organisations for export
             # pass
             return False
-
-
 
     def _init_model_classes(self, model):
         ModelInterlis = None
