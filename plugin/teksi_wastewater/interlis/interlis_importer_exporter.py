@@ -2257,26 +2257,26 @@ class InterlisImporterExporter:
                 # use cursor.fetchone()[0] instead of cursor.rowcount
                 # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
 
-                try:
-                    result = cursor.fetchone()
-                    organisation_twww_local_extension_count = int(result[0])  # _count
-                    # obj_ids_without_identifier = result[1]
-                except Exception:
-                    organisation_twww_local_extension_count = 0
-                    logger.debug(
-                        f"Number of datasets in class organisation with tww_local_extension = true could not be identified (TypeError: 'NoneType' object is not subscriptable). Automatically set organisation_twww_local_extension_count = 0"
-                    )
-                else:
-                    logger.info(
-                        f"Number of datasets in class '{notsubclass}' with tww_local_extension = true : {organisation_twww_local_extension_count}"
-                    )
-
-            if organisation_twww_local_extension_count == 0:
-                return True
+            try:
+                result = cursor.fetchone()
+                organisation_twww_local_extension_count = int(result[0])  # _count
+                # obj_ids_without_identifier = result[1]
+            except Exception:
+                organisation_twww_local_extension_count = 0
+                logger.debug(
+                    f"Number of datasets in class organisation with tww_local_extension = true could not be identified (TypeError: 'NoneType' object is not subscriptable). Automatically set organisation_twww_local_extension_count = 0"
+                )
             else:
-                # no organisations for export
-                # pass
-                return False
+                logger.info(
+                    f"Number of datasets in class '{notsubclass}' with tww_local_extension = true : {organisation_twww_local_extension_count}"
+                )
+
+        if organisation_twww_local_extension_count == 0:
+            return True
+        else:
+            # no organisations for export
+            # pass
+            return False
 
 
 
