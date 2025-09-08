@@ -221,7 +221,7 @@ class InterlisImporterExporter:
                     None,
                 )
                 exit
-                
+
 
         # go thru all available checks and register if check failed or not.
         if flag_test:
