@@ -221,8 +221,15 @@ class InterlisImporterExporter:
                     None,
                 )
                 exit
-
-        # go thru all available checks and register if check failed or not.
+            else:
+                logger.info(
+                    "INTERLIS export continued as organisations are available!"
+                )
+        else:
+            logger.info(
+                f"Debug.print export_model '{export_models[0]}'"
+            )
+    # go thru all available checks and register if check failed or not.
         if flag_test:
             number_tests_failed = 0
             number_tests_ok = 0
