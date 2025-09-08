@@ -222,6 +222,7 @@ class InterlisImporterExporter:
                 )
                 exit
 
+
         # go thru all available checks and register if check failed or not.
         if flag_test:
             number_tests_failed = 0
@@ -537,6 +538,7 @@ class InterlisImporterExporter:
                             limit_to_selection=limit_to_selection,
                             selected_labels_scales_indices=selected_labels_scales_indices,
                             labels_file_path=labels_file_path,
+                            export_model=export_models[0],
                         )
 
                     # Export to the temporary ili2pg model
@@ -586,15 +588,16 @@ class InterlisImporterExporter:
             tempdir = tempfile.TemporaryDirectory()
             labels_file_path = None
             if len(selected_labels_scales_indices):
-                self._progress_done(25)
+                self._progress_done(20)
                 labels_file_path = os.path.join(tempdir.name, "labels.geojson")
                 self._export_labels_file(
                     limit_to_selection=limit_to_selection,
                     selected_labels_scales_indices=selected_labels_scales_indices,
                     labels_file_path=labels_file_path,
+                    export_model=export_models[0],
                 )
 
-            self._progress_done(15, "Creating ili schema...")
+            self._progress_done(25, "Creating ili schema...")
             create_basket_col = False
             if config.MODEL_NAME_VSA_KEK in export_models:
                 create_basket_col = True
@@ -603,7 +606,7 @@ class InterlisImporterExporter:
             # Export the labels file
             tempdir = tempfile.TemporaryDirectory()
             if len(selected_labels_scales_indices):
-                self._progress_done(25)
+                self._progress_done(30)
                 if not labels_file:
                     labels_file = os.path.join(tempdir.name, "labels.geojson")
                     self._export_labels_file(
@@ -760,7 +763,7 @@ class InterlisImporterExporter:
                 None,
             )
 
-        self._progress_done(self.current_progress + 5)
+        self._progress_done(self.current_progress + 2)
         if export_model == config.MODEL_NAME_AG96:
             catch_lyr = TwwLayerManager.layer("catchment_area")
             meas_pt_lyr = TwwLayerManager.layer("measure_point")
@@ -2250,11 +2253,15 @@ class InterlisImporterExporter:
 
             organisation_twww_local_extension_count = 0
             cursor.execute(
+<<<<<<< HEAD
                 "SELECT COUNT(obj_id) as _count, array_agg(obj_id) as _obj_ids FROM tww_od.organisation WHERE twww_local_extension = true;"
+=======
+                    "SELECT COUNT(obj_id) as _count, array_agg(obj_id) as _obj_ids FROM tww_od.organisation WHERE twww_local_extension = True;"
+>>>>>>> parent of 1213ac58 (Merge branch '202050908-check-tww_local_extension-count' of https://github.com/teksi/wastewater into 202050908-check-tww_local_extension-count)
             )
 
-            # use cursor.fetchone()[0] instead of cursor.rowcount
-            # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
+                # use cursor.fetchone()[0] instead of cursor.rowcount
+                # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
 
             try:
                 result = cursor.fetchone()
@@ -2276,6 +2283,8 @@ class InterlisImporterExporter:
             # no organisations for export
             # pass
             return False
+
+
 
     def _init_model_classes(self, model):
         ModelInterlis = None
