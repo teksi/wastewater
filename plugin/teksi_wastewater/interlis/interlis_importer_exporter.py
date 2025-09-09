@@ -2254,7 +2254,7 @@ class InterlisImporterExporter:
 
             cursor = connection.cursor()
 
-            organisation_twww_local_extension_count = 0
+            organisation_tww_local_extension_count = 0
             cursor.execute(
                 "SELECT COUNT(obj_id) as _count, array_agg(obj_id) as _obj_ids FROM tww_od.organisation WHERE organisation.tww_local_extension = true;"
             )
@@ -2264,24 +2264,24 @@ class InterlisImporterExporter:
 
             try:
                 result = cursor.fetchone()
-                organisation_twww_local_extension_count = int(result[0])  # _count
-                # obj_ids_without_identifier = result[1]
+                organisation_tww_local_extension_count = int(result[0])  # _count
+                # obj_ids_tww_local_extension_count = result[1]
             except Exception:
-                organisation_twww_local_extension_count = 0
+                organisation_tww_local_extension_count = 0
                 logger.debug(
                     "Number of datasets in class organisation with tww_local_extension = true could not be identified (TypeError: 'NoneType' object is not subscriptable). Automatically set organisation_twww_local_extension_count = 0"
                 )
             else:
                 logger.info(
-                    f"Number of datasets in class organisation with tww_local_extension = true : {organisation_twww_local_extension_count}"
+                    f"Number of datasets in class organisation with tww_local_extension = true : {organisation_tww_local_extension_count}"
                 )
 
-        if organisation_twww_local_extension_count == 0:
-            return True
-        else:
-            # no organisations for export
-            # pass
-            return False
+            if organisation_tww_local_extension_count == 0:
+                # no organisations for export
+                return False
+            else:
+                # pass
+                return True
 
     def _init_model_classes(self, model):
         ModelInterlis = None
