@@ -225,6 +225,7 @@ class InterlisImporterExporter:
                 logger.info("INTERLIS export continued as organisations are available!")
         else:
             logger.info(f"Debug.print export_model '{export_models[0]}'")
+
         # go thru all available checks and register if check failed or not.
         if flag_test:
             number_tests_failed = 0
@@ -2255,7 +2256,7 @@ class InterlisImporterExporter:
 
             organisation_twww_local_extension_count = 0
             cursor.execute(
-                "SELECT COUNT(obj_id) as _count, array_agg(obj_id) as _obj_ids FROM tww_od.organisation WHERE twww_local_extension = true;"
+                "SELECT COUNT(obj_id) as _count, array_agg(obj_id) as _obj_ids FROM tww_od.organisation WHERE organisation.tww_local_extension = true;"
             )
 
             # use cursor.fetchone()[0] instead of cursor.rowcount
