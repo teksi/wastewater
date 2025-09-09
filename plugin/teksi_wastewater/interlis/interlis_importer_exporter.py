@@ -208,7 +208,7 @@ class InterlisImporterExporter:
             self.srid = srid
 
         if export_models[0] == "SIA405_Base_Abwasser_1_LV95":
-            if self._check_organisation_tww_local_extension_count is False:
+            if self._check_organisation_tww_local_extension_count:
                 errormsg = "INTERLIS export has been stopped as there have been no organisations for exporting!"
                 logger.info(
                     "INTERLIS export has been stopped as there have been no organisations for exporting!"
@@ -223,6 +223,7 @@ class InterlisImporterExporter:
                 exit
             else:
                 logger.info("INTERLIS export continued as organisations are available!")
+                logger.info(f"Debug.print export_model '{export_models[0]}, case False'")
         else:
             logger.info(f"Debug.print export_model '{export_models[0]}'")
 
@@ -2278,10 +2279,10 @@ class InterlisImporterExporter:
 
             if organisation_tww_local_extension_count == 0:
                 # no organisations for export
-                return False
+                return True
             else:
                 # pass
-                return True
+                return False
 
     def _init_model_classes(self, model):
         ModelInterlis = None
