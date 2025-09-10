@@ -1524,7 +1524,8 @@ class InterlisImporterToIntermediateSchema:
                 restructuring_concept=row.sanierungskonzept,
                 school_students=row.schuleschueler,
                 situation_geometry=row.lage,
-                # fk_disposal=self.get_pk(row.entsorgungref__REL), # n:m relation - see def _import_gebaeudegruppe_entsorgungassoc
+                # n:m relation - see def _import_gebaeudegruppe_entsorgungassoc
+                # fk_disposal=self.get_pk(row.entsorgungref__REL),
                 fk_measure=self.get_pk(row.massnahmeref__REL),
             )
             self.session_tww.add(building_group)
@@ -1929,8 +1930,8 @@ class InterlisImporterToIntermediateSchema:
                 gross_costs=row.bruttokosten,
                 kind=self.get_vl_code(self.model_classes_tww_vl.backflow_prevention_kind, row.art),
                 year_of_replacement=row.ersatzjahr,
-                fk_throttle_shut_off_unit=self.get_pk(row.absperr_drosselorganref),
-                fk_pump=self.get_pk(row.foerderaggregatref),
+                fk_throttle_shut_off_unit=self.get_pk(row.absperr_drosselorganref__REL),
+                fk_pump=self.get_pk(row.foerderaggregatref__REL),
             )
             self.session_tww.add(backflow_prevention)
             print(".", end="")

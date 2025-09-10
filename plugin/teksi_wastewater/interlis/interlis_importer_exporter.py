@@ -58,6 +58,7 @@ class InterlisImporterExporter:
         self.model_classes_tww_app = None
 
         self.filter_nulls = None
+        self.srid = 2056
         self.current_progress = 0
 
     def interlis_import(
@@ -66,6 +67,7 @@ class InterlisImporterExporter:
         show_selection_dialog=False,
         logs_next_to_file=True,
         filter_nulls=True,
+        srid: int = None,
     ):
         # Configure logging
         if logs_next_to_file:
@@ -74,6 +76,9 @@ class InterlisImporterExporter:
             self.base_log_path = None
 
         self.filter_nulls = filter_nulls
+
+        if srid:
+            self.srid = srid
 
         # Validating the input file
         self._progress_done(5, "Validating the input file...")
@@ -112,7 +117,7 @@ class InterlisImporterExporter:
         )
 
         # Prepare the temporary ili2pg model
-        self._progress_done(10, "Creating ili schema...")
+        self._progress_done(15, "Creating ili schema...")
         self._clear_ili_schema(recreate_tables=True)
 
         self._progress_done(20)
@@ -193,10 +198,14 @@ class InterlisImporterExporter:
         labels_file=None,
         selected_labels_scales_indices=[],
         selected_ids=None,
+        srid: int = None,
     ):
 
         flag_export_check_failed = False
         flag_test = True
+
+        if srid:
+            self.srid = srid
 
         # go thru all available checks and register if check failed or not.
         if flag_test:
@@ -513,6 +522,7 @@ class InterlisImporterExporter:
                             limit_to_selection=limit_to_selection,
                             selected_labels_scales_indices=selected_labels_scales_indices,
                             labels_file_path=labels_file_path,
+                            export_model=export_models[0],
                         )
 
                     # Export to the temporary ili2pg model
@@ -562,15 +572,16 @@ class InterlisImporterExporter:
             tempdir = tempfile.TemporaryDirectory()
             labels_file_path = None
             if len(selected_labels_scales_indices):
-                self._progress_done(25)
+                self._progress_done(20)
                 labels_file_path = os.path.join(tempdir.name, "labels.geojson")
                 self._export_labels_file(
                     limit_to_selection=limit_to_selection,
                     selected_labels_scales_indices=selected_labels_scales_indices,
                     labels_file_path=labels_file_path,
+                    export_model=export_models[0],
                 )
 
-            self._progress_done(15, "Creating ili schema...")
+            self._progress_done(25, "Creating ili schema...")
             create_basket_col = False
             if config.MODEL_NAME_VSA_KEK in export_models:
                 create_basket_col = True
@@ -579,7 +590,7 @@ class InterlisImporterExporter:
             # Export the labels file
             tempdir = tempfile.TemporaryDirectory()
             if len(selected_labels_scales_indices):
-                self._progress_done(25)
+                self._progress_done(30)
                 if not labels_file:
                     labels_file = os.path.join(tempdir.name, "labels.geojson")
                     self._export_labels_file(
@@ -613,7 +624,7 @@ class InterlisImporterExporter:
             )
             tempdir.cleanup()  # Cleanup
 
-            self._progress_done(60)
+            self._progress_done(75)
             self._export_xtf_files(file_name_base, export_models)
 
             self._progress_done(100)
@@ -640,6 +651,7 @@ class InterlisImporterExporter:
                 config.ABWASSER_SCHEMA,
                 xtf_file_input,
                 log_path,
+                self.srid,
             )
         except CmdException:
             raise InterlisImporterExporterError(
@@ -735,7 +747,7 @@ class InterlisImporterExporter:
                 None,
             )
 
-        self._progress_done(self.current_progress + 5)
+        self._progress_done(self.current_progress + 2)
         if export_model == config.MODEL_NAME_AG96:
             catch_lyr = TwwLayerManager.layer("catchment_area")
             meas_pt_lyr = TwwLayerManager.layer("measure_point")
@@ -859,6 +871,7 @@ class InterlisImporterExporter:
                     log_path=log_path,
                     model_name=export_model_name,
                     export_model_name=export_model_name,
+                    srid=self.srid,
                 )
             except CmdException:
                 xtf_export_errors.append(
@@ -931,6 +944,7 @@ class InterlisImporterExporter:
                 log_path,
                 ext_columns_no_constraints=ext_columns_no_constraints,
                 create_basket_col=create_basket_col,
+                srid=self.srid,
             )
         except CmdException:
             raise InterlisImporterExporterError(

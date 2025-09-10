@@ -110,9 +110,7 @@ BEGIN
   JOIN tww_od.network_node as n2 ON n2.ne_id = wwne_id
   ORDER BY n1.id, ST_Distance(n1.geom, n2.geom);
 
-  REFRESH MATERIALIZED VIEW tww_app.vw_network_node;
-  REFRESH MATERIALIZED VIEW tww_app.vw_network_segment;
-  REFRESH MATERIALIZED VIEW tww_app.vw_tww_channel;
+  PERFORM tww_app.refresh_materialized_views('tww_app',NULL,True);
 
 END;
 $body$

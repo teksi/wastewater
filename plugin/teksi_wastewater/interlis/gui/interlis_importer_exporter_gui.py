@@ -3,7 +3,7 @@ import webbrowser
 
 import sqlalchemy
 from qgis.core import Qgis, QgsProject, QgsSettings
-from qgis.PyQt.QtCore import QFileInfo, QObject, Qt
+from qgis.PyQt.QtCore import QFileInfo, QObject, QSettings, Qt
 from qgis.PyQt.QtWidgets import QApplication, QFileDialog, QProgressDialog, QPushButton
 from qgis.utils import iface
 
@@ -57,6 +57,8 @@ class InterlisImporterExporterGui(QObject):
         if not xtf_file_input:
             # Operation canceled
             return
+        settings = QSettings()
+        srid = settings.value("/TWW/SRID", 2056, type=int)
 
         QgsSettings().setValue("tww_plugin/last_interlis_path", os.path.dirname(xtf_file_input))
 
@@ -73,6 +75,7 @@ class InterlisImporterExporterGui(QObject):
                     show_selection_dialog=True,
                     logs_next_to_file=import_dialog.logs_next_to_file,
                     filter_nulls=import_dialog.filter_nulls,
+                    srid=srid,
                 )
                 iface.mapCanvas().refreshAllLayers()
 
@@ -114,6 +117,8 @@ class InterlisImporterExporterGui(QObject):
             # Operation canceled
             return
         QgsSettings().setValue("tww_plugin/last_interlis_path", os.path.dirname(file_name))
+        settings = QSettings()
+        srid = settings.value("/TWW/SRID", 2056, type=int)
 
         self.progress_dialog = QProgressDialog("", "", 0, 100)
         self.progress_dialog.setMinimumWidth(self._PROGRESS_DIALOG_MINIMUM_WIDTH)
@@ -131,6 +136,7 @@ class InterlisImporterExporterGui(QObject):
                 export_orientation=export_dialog.labels_orientation_offset,
                 selected_labels_scales_indices=export_dialog.selected_labels_scales_indices,
                 selected_ids=export_dialog.selected_ids,
+                srid=srid,
             )
 
             self.show_success(
