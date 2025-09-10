@@ -90,8 +90,8 @@ class InterlisExporterToIntermediateSchema:
             self.abwasser_session.commit()
             self.close_sessions()
         except Exception as e:
-            if hasattr(e, 'pgcode') and e.pgcode == '23503':  # psycopg2/3
-                enhanced_exc=self.parse_fk_violation(e)
+            if hasattr(e, "pgcode") and e.pgcode == "23503":  # psycopg2/3
+                enhanced_exc = self.parse_fk_violation(e)
             self.close_sessions()
             if enhanced_exc:
                 raise enhanced_exc
@@ -3042,7 +3042,6 @@ class InterlisExporterToIntermediateSchema:
             )
             return self.tid_maker.tid_for_row(relation)
 
-
     def get_oid_prefix(self, oid_table):
         instance = self.tww_session.query(oid_table).filter(oid_table.active.is_(True)).first()
         if instance is None:
@@ -4040,43 +4039,41 @@ class InterlisExporterToIntermediateSchema:
         """
 
         result = {
-            'table': None,
-            'column': None,
-            'key': None,
-            'referenced_table': None,
-            'constraint': None,
+            "table": None,
+            "column": None,
+            "key": None,
+            "referenced_table": None,
+            "constraint": None,
         }
 
         error_msg = str(exc)
 
         table_constraint_match = re.search(
             r'insert or update on table "([^"]+)" violates foreign key constraint "([^"]+)"',
-            error_msg
+            error_msg,
         )
         if table_constraint_match:
-            result['table'] = table_constraint_match.group(1)
-            result['constraint'] = table_constraint_match.group(2)
+            result["table"] = table_constraint_match.group(1)
+            result["constraint"] = table_constraint_match.group(2)
 
         detail_match = re.search(
-            r'DETAIL:\s*Key \(([^)]+)\)=\(([^)]+)\) is not present in table "([^"]+)"',
-            error_msg
+            r'DETAIL:\s*Key \(([^)]+)\)=\(([^)]+)\) is not present in table "([^"]+)"', error_msg
         )
         if detail_match:
-            result['column'] = detail_match.group(1)
-            result['key'] = detail_match.group(2)
-            result['referenced_table'] = detail_match.group(3)
+            result["column"] = detail_match.group(1)
+            result["key"] = detail_match.group(2)
+            result["referenced_table"] = detail_match.group(3)
 
         if self.model in [config.MODEL_NAME_AG64, config.MODEL_NAME_AG96]:
             query = text(f"SELECT obj_id from pg2ili_abwasser.:table WHERE t_id= :t_id;")
             table = result[table]
         else:
             query = text(f"SELECT t_ili_tid from pg2ili_abwasser.:table WHERE t_id= :t_id;")
-            table = 'baseclass'
-        oid = self.abwasser_session.execute(query,{"t_id":result['key'],"table":table}).fetchone()
-        enriched_msg = (
-            f"{str(exc)}\n"
-            f"Object-ID: {oid}"
-        )
+            table = "baseclass"
+        oid = self.abwasser_session.execute(
+            query, {"t_id": result["key"], "table": table}
+        ).fetchone()
+        enriched_msg = f"{str(exc)}\n" f"Object-ID: {oid}"
         # Create a new exception of the same type, with the enriched message
         new_exc = type(exc)(enriched_msg)
         return new_exc
