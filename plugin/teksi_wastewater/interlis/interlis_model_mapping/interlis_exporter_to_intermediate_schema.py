@@ -4065,10 +4065,10 @@ class InterlisExporterToIntermediateSchema:
             result["referenced_table"] = detail_match.group(3)
 
         if self.model in [config.MODEL_NAME_AG64, config.MODEL_NAME_AG96]:
-            query = text(f"SELECT obj_id from pg2ili_abwasser.:table WHERE t_id= :t_id;")
-            table = result[table]
+            query = text("SELECT obj_id from pg2ili_abwasser.:table WHERE t_id= :t_id;")
+            table = result["table"]
         else:
-            query = text(f"SELECT t_ili_tid from pg2ili_abwasser.:table WHERE t_id= :t_id;")
+            query = text("SELECT t_ili_tid from pg2ili_abwasser.:table WHERE t_id= :t_id;")
             table = "baseclass"
         oid = self.abwasser_session.execute(
             query, {"t_id": result["key"], "table": table}
