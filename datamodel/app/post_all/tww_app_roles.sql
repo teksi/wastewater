@@ -20,7 +20,7 @@ $$
 DECLARE
     mv_record record;
 	above_16 bool;
-    user_role_loop text := replace({user_role},'"','');
+    user_role_loop text := replace('{user_role}','"','');
 BEGIN
 	SELECT current_setting('server_version_num')::integer>170000 INTO above_16;
     FOR mv_record IN
