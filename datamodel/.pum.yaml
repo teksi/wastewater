@@ -67,7 +67,6 @@ migration_hooks:
     - file: pre_create.sql
   post:
     - file: app/create_app.py
-    - code: SELECT tww_app.refresh_materialized_views('tww_app',NULL,True);
 
 demo_data:
   - name: Aletsch
