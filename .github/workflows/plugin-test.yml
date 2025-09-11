@@ -68,14 +68,14 @@ jobs:
 
       - name: Truncate Database
         run: |
-          docker compose exec db sh -c "DO \$\$ DECLARE r RECORD; BEGIN FOR r IN SELECT tablename FROM pg_tables WHERE schemaname = 'tww_od' LOOP EXECUTE 'TRUNCATE TABLE tww_od.' || quote_ident(r.tablename) || ' CASCADE'; END LOOP; END \$\$;"
+          docker compose exec db sh -c 'psql -U postgres -f /usr/src/plugin/.docker/truncate_od.sql'
 
       - name: Test on QGIS DSS dataset
         run: docker compose exec qgis /usr/src/plugin/.docker/run-docker-tests.sh teksi_wastewater/tests/test_interlis.py::TestInterlis::test_dss_dataset_import_export
 
       - name: Truncate Database
         run: |
-          docker compose exec db sh -c "DO \$\$ DECLARE r RECORD; BEGIN FOR r IN SELECT tablename FROM pg_tables WHERE schemaname = 'tww_od' LOOP EXECUTE 'TRUNCATE TABLE tww_od.' || quote_ident(r.tablename) || ' CASCADE'; END LOOP; END \$\$;"
+          docker compose exec db sh -c 'psql -U postgres -f /usr/src/plugin/.docker/truncate_od.sql'
 
       - name: Test command line import orgs
         run: docker compose exec qgis sh -c 'xvfb-run /usr/src/plugin/tww_cmd.py interlis_import --xtf_file /usr/src/plugin/teksi_wastewater/tests/data/minimal-dataset-organisation-arbon-only.xtf --pghost db --pgdatabase tww --pguser postgres --pgpass postgres --pgport 5432'
