@@ -46,7 +46,12 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">1. TEKSI Assainissement (TWW)</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">2. TWW Installation Guide</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">2.1. Prérequis</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2.1. Prérequis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#provider-side">2.1.1. Provider Side</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#client-side">2.1.2. Client Side</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#postgresql-server-side">2.1.3. PostgreSQL Server side :</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="server.html">2.2. Configuration du serveur de base de données</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database-initialization.html">2.3. Initialisation de la base de données</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workstation.html">2.4. Configuration du poste de travail</a></li>
@@ -88,13 +93,63 @@
 <div></div></blockquote>
 <section id="requirements">
 <span id="id1"></span><h1><span class="section-number">2.1. </span>Prérequis<a class="headerlink" href="#requirements" title="Lien vers cette rubrique"></a></h1>
-<p>Les packages Python suivants (installés via <a class="reference external" href="https://pypi.org/project/pip/">pip</a>) sont requis:</p>
+<section id="provider-side">
+<h2><span class="section-number">2.1.1. </span>Provider Side<a class="headerlink" href="#provider-side" title="Lien vers cette rubrique"></a></h2>
+<p>In order to install the TEKSI Wastewater module, you will need to install :</p>
+<ul class="simple">
+<li><p>A PostgreSQL instance with PostGIS extension (check the <a class="reference external" href="https://github.com/teksi/Home/wiki/TEKSI-modules-releases-and-roadmap">roadmap</a> for supported versions)</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>TEKSI Wastewater uses a PostgreSQL with postgis Extension database, you need to install these on your server :
+Recommended is to use the <a class="reference external" href="https://www.enterprisedb.com/downloads/postgres-postgresql-downloads">EnterpriseDB</a> to make sure your
+postgreSQL version matches your postgis version and is installed at the right place.</p>
+</div>
+<ul class="simple">
+<li><p>Python 3.12+ (installed via OSGEO4W or using <a class="reference external" href="https://www.python.org/downloads/">python.org</a>)</p></li>
+<li><dl class="simple">
+<dt>QGIS installed with the latest LTR version</dt><dd><p>Recommanded is to install it with the OSGEO4W installer directly with all python packages listed.</p>
+</dd>
+</dl>
+</li>
+<li><p>A working pg_service file and a connexion secured to your database server (hosted or local)</p></li>
+<li><p>TEKSI Module Management Tool (<a class="reference external" href="https://plugins.qgis.org/plugins/teksi_module_management_tool">TMMT</a>) plugin installed from the QGIS plugin repository</p></li>
+</ul>
+<p>The following Python packages (installed via OSGEO4W or using <a class="reference external" href="https://pypi.org/project/pip/">pip</a>) are required:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://www.psycopg.org/">Psycopg</a> as database adapter</p></li>
-<li><p><a class="reference external" href="https://github.com/opengisch/pum">pum</a> for model generation and upgrades</p></li>
+<li><p><a class="reference external" href="https://pydantic.dev/">Pydantic</a> for data validation</p></li>
+<li><p><a class="reference external" href="https://github.com/opengisch/pirogue">Pirogue</a> for model generation and upgrades</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>PUM python package is automatically installed with the TMMT plugin.</p>
+</div>
+</section>
+<section id="client-side">
+<h2><span class="section-number">2.1.2. </span>Client Side<a class="headerlink" href="#client-side" title="Lien vers cette rubrique"></a></h2>
+<p>For each client (workstation), you will need :</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>QGIS installed with the latest LTR version</dt><dd><p>Recommanded is to intall it with the OSGEO4W installer directly with all python packages listed.</p>
+</dd>
+</dl>
+</li>
+<li><p>A working pg_service file and a connexion secured to your database server (hosted or local)</p></li>
+<li><p>TEKSI Wastewater <a class="reference external" href="https://github.com/teksi/wastewater/releases/latest/">plugin</a> (.zip file)</p></li>
+<li><p>TEKSI Wastewater <a class="reference external" href="https://github.com/teksi/wastewater/releases/latest/">project</a> (.qgs file)</p></li>
+</ul>
+<p>The following Python packages (installed via OSGEO4W or using <a class="reference external" href="https://pypi.org/project/pip/">pip</a>) are required:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.psycopg.org/">Psycopg</a> as database adapter</p></li>
 <li><p><a class="reference external" href="https://github.com/sqlalchemy/sqlalchemy">sqlalchemy</a> for INTERLIS imports and exports</p></li>
 <li><p><a class="reference external" href="https://github.com/geoalchemy/geoalchemy2">geoalchemy2</a> for INTERLIS imports and exports</p></li>
 </ul>
+</section>
+<section id="postgresql-server-side">
+<h2><span class="section-number">2.1.3. </span>PostgreSQL Server side :<a class="headerlink" href="#postgresql-server-side" title="Lien vers cette rubrique"></a></h2>
+<p>Allow the connexion of your clients through the <cite>postgresql.conf</cite> file and make sure your client
+is allowed to reach the server postgresql port (default is 5432).</p>
 <p>TEKSI Wastewater requires PostGIS functions that did not function properly in a set of releases:</p>
 <ul class="simple">
 <li><p>Versions before PostGIS 3.2 are not affected</p></li>
@@ -103,7 +158,7 @@
 <li><p>When using PostGIS 3.4, the bug is fixed in Version 3.4.2</p></li>
 <li><p>Versions of PostGIS 3.5 or later are not affected</p></li>
 </ul>
-<p>If you need support installing TEKSI Wastewater, contact one of our <a class="reference external" href="https://www.teksi.ch/modules/#prestataires">certified service providers</a></p>
+</section>
 </section>
 
 
