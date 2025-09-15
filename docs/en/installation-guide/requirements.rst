@@ -3,6 +3,33 @@
 Requirements
 =======================
 
+Provider Side
+----------------
+
+In order to install the TEKSI Wastewater module, you will need to install :
+
+* A PostgreSQL instance with PostGIS extension (check the `roadmap <https://github.com/teksi/Home/wiki/TEKSI-modules-releases-and-roadmap>`_ for supported versions)
+
+.. note::
+    TEKSI Wastewater uses a PostgreSQL with postgis Extension database, you need to install these on your server :
+    Recommended is to use the `EnterpriseDB <https://www.enterprisedb.com/downloads/postgres-postgresql-downloads>`_ to make sure your
+    postgreSQL version matches your postgis version and is installed at the right place.
+
+* Python 3.12+ (installed via OSGEO4W or using `python.org <https://www.python.org/downloads/>`_)
+* QGIS installed with the latest LTR version
+    Recommanded is to intall it with the OSGEO4W installer directly with all python packages listed.
+* A working pg_service file and a connexion secured to your database server (hosted or local)
+* TEKSI Module Management Tool (TMMT) plugin installed from the QGIS plugin repository
+
+The following Python packages (installed via OSGEO4W or using `pip <https://pypi.org/project/pip/>`_) are required:
+
+* `Psycopg <https://www.psycopg.org/>`_ as database adapter
+* `Pydantic <https://pydantic.dev/>`_ for data validation
+* `Pirogue <https://github.com/opengisch/pirogue>`_ for model generation and upgrades
+
+.. note::
+    PUM python package is automatically installed with the TMMT plugin.
+
 Client Side
 ----------------
 
@@ -17,18 +44,11 @@ For each client (workstation), you will need :
 The following Python packages (installed via OSGEO4W or using `pip <https://pypi.org/project/pip/>`_) are required:
 
 * `Psycopg <https://www.psycopg.org/>`_ as database adapter
-* `Pirogue <https://github.com/opengisch/pirogue>`_ for model generation and upgrades
 * `sqlalchemy <https://github.com/sqlalchemy/sqlalchemy>`_ for INTERLIS imports and exports
 * `geoalchemy2 <https://github.com/geoalchemy/geoalchemy2>`_ for INTERLIS imports and exports
 
-TODO : Add a screenshot of the OSGEO4W menu and python modules names.
-
-Server side :
+PostgreSQL Server side :
 -------------------
-
-TEKSI Wastewater uses a PostgreSQL with postgis Extension database, you need to install these on your server :
-Recommended is to use the https://www.enterprisedb.com/downloads/postgres-postgresql-downloads to make sure your
-postgreSQL version matches your postgis version and is installed at the right place.
 
 Allow the connexion of your clients through the `postgresql.conf` file and make sure your client
 is allowed to reach the server postgresql port (default is 5432).
