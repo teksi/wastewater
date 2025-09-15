@@ -17,9 +17,9 @@ In order to install the TEKSI Wastewater module, you will need to install :
 
 * Python 3.12+ (installed via OSGEO4W or using `python.org <https://www.python.org/downloads/>`_)
 * QGIS installed with the latest LTR version
-    Recommanded is to intall it with the OSGEO4W installer directly with all python packages listed.
+    Recommanded is to install it with the OSGEO4W installer directly with all python packages listed.
 * A working pg_service file and a connexion secured to your database server (hosted or local)
-* TEKSI Module Management Tool (TMMT) plugin installed from the QGIS plugin repository
+* TEKSI Module Management Tool (`TMMT <https://plugins.qgis.org/plugins/teksi_module_management_tool>`_) plugin installed from the QGIS plugin repository
 
 The following Python packages (installed via OSGEO4W or using `pip <https://pypi.org/project/pip/>`_) are required:
 
@@ -38,8 +38,8 @@ For each client (workstation), you will need :
 * QGIS installed with the latest LTR version
     Recommanded is to intall it with the OSGEO4W installer directly with all python packages listed.
 * A working pg_service file and a connexion secured to your database server (hosted or local)
-* TEKSI Wastewater plugin https://github.com/teksi/wastewater/releases/latest/
-* TEKSI Wastewater project https://github.com/teksi/wastewater/releases/latest/
+* TEKSI Wastewater `plugin <https://github.com/teksi/wastewater/releases/latest/>`_ (.zip file)
+* TEKSI Wastewater `project <https://github.com/teksi/wastewater/releases/latest/>`_ (.qgs file)
 
 The following Python packages (installed via OSGEO4W or using `pip <https://pypi.org/project/pip/>`_) are required:
 
