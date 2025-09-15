@@ -4,9 +4,6 @@ import re
 import subprocess
 import tempfile
 import uuid
-from typing import List
-
-from qgis.core import QgsExpression
 
 from ...utils.database_utils import DatabaseUtils
 from ...utils.plugin_utils import logger
@@ -35,7 +32,7 @@ def execute_subprocess(command, check=True, output_content=False):
     return proc.stdout.decode().strip() if output_content else proc.returncode
 
 
-def get_pgconf_as_ili_args() -> List[str]:
+def get_pgconf_as_ili_args() -> list[str]:
     """Returns the pgconf as a list of ili2db arguments"""
     pgconf = DatabaseUtils.get_pgconf()
     args = []
@@ -62,6 +59,9 @@ def get_pgconf_as_ili_args() -> List[str]:
                 f.write(param + "\n")
         args.extend(["--dbparams", '"' + os.path.join(dbparams_path, "dbparams.txt") + '"'])
     if not pgconf["user"]:
+        # only import now to facilitate imports without QGIS
+        from qgis.core import QgsExpression
+
         # allow loading PGUSER from overriden env variables
         expression = QgsExpression("@PGUSER")
         pguser = expression.evaluate()

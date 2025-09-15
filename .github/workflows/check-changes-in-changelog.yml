@@ -1,0 +1,43 @@
+name: Check for changes in stable datamodel versions
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+    paths:
+      - datamodel/changelogs/**
+      - '.github/workflows/check-changes-in-changelog.yml'
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  check-changes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+
+      - name: get lastest stable release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          LATEST_STABLE_RELEASE=$(gh api repos/teksi/wastewater/releases/latest --jq '.tag_name')
+          echo "LATEST_STABLE_RELEASE=$LATEST_STABLE_RELEASE" >> $GITHUB_ENV
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v46.0.5
+        with:
+          base_sha: ${{ github.event.pull_request.base.sha }}
+          sha: ${{ github.event.pull_request.head.sha }}
+
+      - name: Check for changes in the specified folders
+        working-directory: ./datamodel/scripts
+        run: |
+          python check-changes-in-changelog.py -r $LATEST_STABLE_RELEASE -f ${{ steps.changed-files.outputs.all_changed_files }}

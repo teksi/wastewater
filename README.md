@@ -1,7 +1,7 @@
 ![TEKSI wastewater Module](https://github.com/teksi/Home/blob/master/Ressources/Logos/modules/EN/210910-teksi-waste-logos-en-01_45pp.png?raw=true)
 
 ## Welcome to the TEKSI wastewater Module GitHub Home page 👋
-TEKSI wastewater module (project name: QGEP) is a selection of tools and a database implementation that allows you to:
+TEKSI wastewater module (project name: TWW) is a selection of tools and a database implementation that allows you to:
 
 * manage and map your sewer network data with all its components in compliance with Swiss standards
 * indicate the characteristics of networks objects in the form of attributes such as diameter, material, depth, damages, construction year, etc.
@@ -17,7 +17,7 @@ The project is maintained by the [TEKSI community](https://www.teksi.ch)
 
 ## How to start
 * [TEKSI wastewater features](https://teksi.github.io/wastewater/features-guide/)
-* Quick demo : TO DO
+* [Getting started with TWW](https://github.com/teksi/wastewater/discussions/72)
 * [Installation Guide](https://teksi.github.io/wastewater/installation-guide/)
 * [How to contribute](https://github.com/teksi/Home/wiki/TEKSI-Contributor-Guide)
 
@@ -58,7 +58,7 @@ Migration path from QGEP to TEKSI Wastewater is also established. <!---  // skip
    | APPEND | QGIS_PLUGIN_USE_DEBUGGER | debugpy                 |
 
 4. Install QGIS plugin _Plugin Reloader_. This will allow you to reload the plugin without restarting QGIS.
-5. Follow the _prerequisites_ and _Usage (GUI)_ from https://github.com/wapaAdmin/tww2ag6496/blob/main/docs/en/admin-guide/interlis-io/index.rst
+5. Follow the _prerequisites_ and _Usage (GUI)_ from the [admin guide](docs/en/admin-guide/interlis-io/index.rst).
 
 ### Local development with VS Code
 

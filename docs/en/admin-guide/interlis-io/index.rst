@@ -13,6 +13,7 @@ It is currently capable of importing and exporting the following models:
 * SIA405_ABWASSER_2020_1_LV95
 * DSS_2020_1_LV95
 * VSA_KEK_2020_1_LV95
+* SIA405_Base_Abwasser_1_LV95 (to export your own additional organisations that are not part of the centralized VSA Organisation dataset)
 
 Note that currently, exports are possible in German only. Translated exports are on the roadmap, let us know if you are interested in this feature.
 
@@ -74,8 +75,10 @@ You should now see new `import` and `export` buttons in the TWW toolbar.
 
 .. figure:: images/toolbar.png
 
+.. _interlis_export:
+
 INTERLIS Export
--------------------------------------------------
+^^^^^^^^^^^^^
 
 .. figure:: images/tww_interlis_export_button.png
 
@@ -148,8 +151,24 @@ You can check the protocol window and the text logs for further details.
      - ``*.ilivalidator-MODELNAME.log``
 
 
-INTERLIS Import
+Export extra organisations
 -------------------------------------------------
+
+.. figure:: images/tww_interlis_export_organisation.jpg
+
+Since Release 2025.x you can also export additional organisations that are not maintained as part of the `VSA organisation dataset <https://vsa.ch/models/organisation/vsa_organisationen_2020_1.xtf>`_ and that you are maintaining yourself. For a general introduction on how organisation are maintained by the Verband Schweizer Abwasser & Gewässerschutzfachleute (VSA) `check this documentation <https://vsa.ch/fachbereiche-cc/siedlungsentwaesserung/generelle-entwaesserungsplanung/datenmanagement/#Organisationstabelle>`_.
+
+Extra organisations could be for example bigger private organisations that are ususally summarized as 'Privat' when publishing to others, but they are relevant for you to be distinguised. For an export they need to be flagged as ``tww_local_extension = True``
+
+.. figure:: images/organisation_tww_local_extension.png
+
+
+
+
+.. _interlis_import:
+
+INTERLIS Import
+^^^^^^^^^^^^^
 
 .. figure:: images/tww_interlis_import_button.png
 
@@ -217,7 +236,7 @@ Full usage
    $ python3 plugin/tww_cmd.py interlis_export --help
 
    usage: tww_cmd.py interlis_export [-h] --xtf_file XTF_FILE [--selection SELECTION] [--export_model {SIA405_ABWASSER_2020_1_LV95,DSS_2020_1_LV95,VSA_KEK_2020_1_LV95}] [--logs_next_to_file]
-                                                  [--label_scale_pipeline_registry_1_1000] [--label_scale_network_plan_1_500] [--label_scale_overviewmap_1_10000] [--label_scale_overviewmap_1_5000]
+                                                  [--label_scale_pipeline_registry_1_1000] [--label_scale_network_plan_1_250] [--label_scale_network_plan_1_500] [--label_scale_overviewmap_1_10000] [--label_scale_overviewmap_1_5000]
                                                   [--label_scale_overviewmap_1_2000] [--selected_ids SELECTED_IDS] [--pgservice PGSERVICE] [--pghost PGHOST] [--pgport PGPORT] [--pgdatabase PGDATABASE]
                                                   [--pguser PGUSER] [--pgpass PGPASS]
 
@@ -231,6 +250,8 @@ Full usage
      --logs_next_to_file   Put log files next to XTF output file
      --label_scale_pipeline_registry_1_1000
                            Export labels in scale 1:1'000, can be combined with other scales (Leitungskataster/Cadastre des conduites souterraines)
+     --label_scale_network_plan_1_250
+                           Export labels in scale 1:250, can be combined with other scales (Werkplan/Plan de reseau)
      --label_scale_network_plan_1_500
                            Export labels in scale 1:500, can be combined with other scales (Werkplan/Plan de reseau)
      --label_scale_overviewmap_1_10000
@@ -266,7 +287,7 @@ Full usage
    $ python3 plugin/tww_cmd.py interlis_export --help
 
    usage: tww_cmd.py interlis_export [-h] --xtf_file XTF_FILE [--selection SELECTION] [--export_model {SIA405_ABWASSER_2020_1_LV95,DSS_2020_1_LV95,VSA_KEK_2020_1_LV95}] [--logs_next_to_file]
-                                                  [--label_scale_pipeline_registry_1_1000] [--label_scale_network_plan_1_500] [--label_scale_overviewmap_1_10000] [--label_scale_overviewmap_1_5000]
+                                                  [--label_scale_pipeline_registry_1_1000] [--label_scale_network_plan_1_250] [--label_scale_network_plan_1_500] [--label_scale_overviewmap_1_10000] [--label_scale_overviewmap_1_5000]
                                                   [--label_scale_overviewmap_1_2000] [--selected_ids SELECTED_IDS] [--pgservice PGSERVICE] [--pghost PGHOST] [--pgport PGPORT] [--pgdatabase PGDATABASE]
                                                   [--pguser PGUSER] [--pgpass PGPASS]
 
@@ -280,6 +301,8 @@ Full usage
      --logs_next_to_file   Put log files next to XTF output file
      --label_scale_pipeline_registry_1_1000
                            Export labels in scale 1:1'000, can be combined with other scales (Leitungskataster/Cadastre des conduites souterraines)
+     --label_scale_network_plan_1_250
+                           Export labels in scale 1:250, can be combined with other scales (Werkplan/Plan de reseau)
      --label_scale_network_plan_1_500
                            Export labels in scale 1:500, can be combined with other scales (Werkplan/Plan de reseau)
      --label_scale_overviewmap_1_10000

@@ -31,28 +31,28 @@ repos:
 
   # Sort imports
   - repo: https://github.com/pycqa/isort
-    rev: "5.13.2"
+    rev: "6.0.1"
     hooks:
       - id: isort
         args: ["--profile", "black"]
 
   # Black formatting
   - repo: https://github.com/psf/black
-    rev: "24.8.0"
+    rev: "25.1.0"
     hooks:
       - id: black
         args: ["--line-length=99"]
 
   # tool to automatically upgrade syntax for newer versions of the language
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.17.0
+    rev: v3.20.0
     hooks:
       - id: pyupgrade
-        args: [--py37-plus]
+        args: [--py310-plus]
 
   # Lint files
   - repo: https://github.com/pycqa/flake8
-    rev: "7.1.1"
+    rev: "7.3.0"
     hooks:
       - id: flake8
         args: [

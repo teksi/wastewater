@@ -1,0 +1,25 @@
+name: 📦 Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  datamodel-create-dumps:
+    name: Call Datamodel Create Dumps Workflow
+    uses: ./.github/workflows/datamodel-create-dumps.yml
+    with:
+      release_tag: ${{ github.event.release.tag_name }}
+
+  plugin-package:
+    name: Call Plugin Package Workflow
+    uses: ./.github/workflows/plugin-package.yml
+    with:
+      release_tag: ${{ github.event.release.tag_name }}
+
+  project-translations:
+    name: Call Project Translations Workflow
+    uses: ./.github/workflows/project-translation.yml
+    with:
+      release_tag: ${{ github.event.release.tag_name }}
+    secrets: inherit

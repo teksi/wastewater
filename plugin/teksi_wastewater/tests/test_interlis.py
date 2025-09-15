@@ -3,6 +3,7 @@ import os
 import re
 import sys
 import xml.etree.ElementTree as ET
+from decimal import Decimal
 
 from qgis.testing import start_app, unittest
 from teksi_wastewater.interlis import config
@@ -73,6 +74,28 @@ class TestInterlis(unittest.TestCase):
 
         return None
 
+    @staticmethod
+    def _get_xtf_object_node_text(
+        xtf_file, topicname: str, classname: str, tid: str, attributename: str
+    ) -> str:
+
+        # from xml file
+        tree = ET.parse(xtf_file)
+        root = tree.getroot()
+
+        def get_namespace(element):
+            m = re.match(r"\{.*\}", element.tag)
+            return m.group(0) if m else ""
+
+        namespace: str = get_namespace(root)
+
+        # findtext with Clark Notation: https://de.wikipedia.org/wiki/Namensraum_(XML)#Namensraum-Notation_nach_James_Clark
+        return root.findtext(
+            f"./{namespace}DATASECTION/{namespace}{topicname}"
+            f"/{namespace}{topicname}.{classname}[@TID='{tid}']"
+            f"/{namespace}{attributename}"
+        )
+
     def setUp(self):
         DatabaseUtils.databaseConfig.PGHOST = "db"
         DatabaseUtils.databaseConfig.PGDATABASE = "tww"
@@ -114,6 +137,24 @@ class TestInterlis(unittest.TestCase):
         self.assertIsNotNone(result)
         self.assertEqual(result[0], 448.0)
 
+        # check on height_width_ratio decimal(8,5) instead of decimal(5,2)
+        result = DatabaseUtils.fetchone(
+            "SELECT height_width_ratio FROM tww_od.pipe_profile WHERE obj_id='ch000000PP000003';"
+        )
+        self.assertIsNotNone(result)
+
+        # self.assertEqual(result[0], 1.13000)
+        self.assertEqual(result[0], Decimal("1.13000"))
+
+        # in future if VSA-DSS / SIA405 INTERLIS is also patched change to:
+        # self.assertEqual(result[0], 1.12857)
+
+        # update height_width_ratio to long decimal to test export
+        # row = {
+        # "height_width_ratio": 1.12857,
+        # }
+        # self.update("pipe_profile", row, 'ch000000PP000003')
+
         # Import minimal dss
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_DSS)
         interlisImporterExporter = InterlisImporterExporter()
@@ -149,15 +190,37 @@ class TestInterlis(unittest.TestCase):
         self.assertIsNotNone(result)
         self.assertEqual(result[0], 448.0)
 
+        # Export minimal sia405_base
+        DatabaseUtils.execute("UPDATE tww_od.organisation SET tww_local_extension=true;")
+        export_xtf_file = self._get_output_filename("export_minimal_dataset_sia405_base")
+        interlisImporterExporter.interlis_export(
+            xtf_file_output=self._get_output_filename(export_xtf_file),
+            export_models=[config.MODEL_NAME_SIA405_BASE_ABWASSER],
+            logs_next_to_file=True,
+        )
+
+        # Check exported TID
+        exported_xtf_filename = self._get_output_filename(
+            f"{export_xtf_file}_{config.MODEL_NAME_SIA405_BASE_ABWASSER}.xtf"
+        )
+        interlis_object = self._get_xtf_object(
+            exported_xtf_filename,
+            config.TOPIC_NAME_SIA405_ADMINISTRATION,
+            "Organisation",
+            "ch20p3q400001497",
+        )
+        self.assertIsNotNone(interlis_object)
+
         # Export minimal sia405
         export_xtf_file = self._get_output_filename("export_minimal_dataset_sia405")
         interlisImporterExporter.interlis_export(
             xtf_file_output=self._get_output_filename(export_xtf_file),
             export_models=[config.MODEL_NAME_SIA405_ABWASSER],
             logs_next_to_file=True,
+            user_interaction=False,
         )
 
-        # Check exported TID
+        # Check exported TID reach
         exported_xtf_filename = self._get_output_filename(
             f"{export_xtf_file}_{config.MODEL_NAME_SIA405_ABWASSER}.xtf"
         )
@@ -166,12 +229,39 @@ class TestInterlis(unittest.TestCase):
         )
         self.assertIsNotNone(interlis_object)
 
+        # Check pipe_profile.height_width_ratio of specific TID in exported xtf file
+        # Check if object exists
+        interlis_object = self._get_xtf_object(
+            exported_xtf_filename,
+            config.TOPIC_NAME_SIA405_ABWASSER,
+            "Rohrprofil",
+            "ch000000PP000003",
+        )
+
+        self.assertIsNotNone(interlis_object)
+
+        # Check value (as text) of HoehenBreitenverhaeltnis
+        # use of _get_xtf_object_node_text (can be used for any attribute of passed classname and TID)
+
+        HoehenBreitenverhaeltnis_Text = self._get_xtf_object_node_text(
+            exported_xtf_filename,
+            config.TOPIC_NAME_SIA405_ABWASSER,
+            "Rohrprofil",  # classname
+            "ch000000PP000003",  # tid
+            "HoehenBreitenverhaeltnis",  # attributename
+        )
+
+        self.assertEqual(HoehenBreitenverhaeltnis_Text, "1.13")
+        # in future if VSA-DSS / SIA405 INTERLIS is also patched  change to:
+        # self.assertEqual(HoehenBreitenverhaeltnis_Text, "1.12857")
+
         # Export minimal dss
         export_xtf_file = self._get_output_filename("export_minimal_dataset_dss")
         interlisImporterExporter.interlis_export(
             xtf_file_output=self._get_output_filename(export_xtf_file),
             export_models=[config.MODEL_NAME_DSS],
             logs_next_to_file=True,
+            user_interaction=False,
         )
 
         # Check exported TID
@@ -189,9 +279,10 @@ class TestInterlis(unittest.TestCase):
             xtf_file_output=self._get_output_filename(export_xtf_file),
             export_models=[config.MODEL_NAME_VSA_KEK],
             logs_next_to_file=True,
+            user_interaction=False,
         )
 
-        # Check exported TID
+        # Check exported TID examination
         exported_xtf_filename = self._get_output_filename(
             f"{export_xtf_file}_{config.MODEL_NAME_VSA_KEK}.xtf"
         )
@@ -229,10 +320,11 @@ class TestInterlis(unittest.TestCase):
             xtf_file_output=self._get_output_filename(export_xtf_file),
             export_models=[config.MODEL_NAME_DSS],
             logs_next_to_file=True,
+            user_interaction=False,
             selected_ids=["ch000000WN000002", "ch000000WN000003", "ch000000RE000002"],
         )
 
-        # Check exported TID
+        # Check exported TID pipe_profile
         export_xtf_file = self._get_output_filename("export_minimal_dataset_dss_selection")
         exported_xtf_filename = self._get_output_filename(
             f"{export_xtf_file}_{config.MODEL_NAME_DSS}.xtf"
@@ -252,10 +344,18 @@ class TestInterlis(unittest.TestCase):
         interlisImporterExporter = InterlisImporterExporter()
         interlisImporterExporter.interlis_import(xtf_file_input=xtf_file_input)
 
-        # Import minimal dss
+        # Import testdataset dss
         xtf_file_input = self._get_data_filename(TEST_DATASET_DSS)
         interlisImporterExporter = InterlisImporterExporter()
         interlisImporterExporter.interlis_import(xtf_file_input=xtf_file_input)
+
+        # new location for this check
+        # check if urgency_figure is imported
+        result = DatabaseUtils.fetchone(
+            "SELECT urgency_figure FROM tww_od.wastewater_structure WHERE obj_id='ch080qwzVE000019';"
+        )
+        self.assertIsNotNone(result)
+        self.assertEqual(result[0], 50)
 
         # Export minimal dss
         export_xtf_file = self._get_output_filename("export_minimal_dss_dataset.xtf")
@@ -263,6 +363,7 @@ class TestInterlis(unittest.TestCase):
             xtf_file_output=self._get_output_filename(export_xtf_file),
             export_models=[config.MODEL_NAME_DSS],
             logs_next_to_file=True,
+            user_interaction=False,
         )
 
     def test_get_xtf_models(self):
