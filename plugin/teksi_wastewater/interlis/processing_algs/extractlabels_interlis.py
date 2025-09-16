@@ -28,8 +28,8 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
 
     tr = partial(QCoreApplication.translate, "ExtractlabelsInterlisAlgorithm")
     AVAILABLE_SCALE_PIPELINE_REGISTRY_1_1000 = "Leitungskataster"
-    AVAILABLE_SCALE_NETWORK_PLAN_1_250 = "Werkplan"
-    AVAILABLE_SCALE_NETWORK_PLAN_1_500 = "Werkplan"
+    AVAILABLE_SCALE_NETWORK_PLAN_1_250 = "Werkplan.250"
+    AVAILABLE_SCALE_NETWORK_PLAN_1_500 = "Werkplan.500"
     AVAILABLE_SCALE_OVERVIEWMAP_1_10000 = "Uebersichtsplan.UeP10"
     AVAILABLE_SCALE_OVERVIEWMAP_1_5000 = "Uebersichtsplan.UeP5"
     AVAILABLE_SCALE_OVERVIEWMAP_1_2000 = "Uebersichtsplan.UeP2"
