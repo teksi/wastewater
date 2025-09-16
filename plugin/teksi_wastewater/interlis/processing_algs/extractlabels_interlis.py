@@ -238,7 +238,7 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
         if catchment_layer:
             catchment_feats = catchment_layer.getFeatures()
             rowid_to_obj_id.update(
-                {"catchment_area": {f.id(): f.attribute("obj_id") for f in catchment_feats}}
+                {"vw_tww_catchment_area": {f.id(): f.attribute("obj_id") for f in catchment_feats}}
             )
         if building_group_layer:
             building_group_feats = building_group_layer.getFeatures()
