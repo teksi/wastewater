@@ -24,7 +24,7 @@ class InterlisExporterToIntermediateSchema:
         model_classes_tww_sys,
         model_classes_tww_app=None,
         labels_orientation_offset=90,
-        labels_werkplan_scale=500,
+        # labels_werkplan_scale=500,
         selection=None,
         labels_file=None,
         basket_enabled=False,
@@ -60,7 +60,7 @@ class InterlisExporterToIntermediateSchema:
         self.model_classes_tww_sys = model_classes_tww_sys
         self.model_classes_tww_app = model_classes_tww_app
         self.labels_orientation_offset = labels_orientation_offset
-        self.labels_werkplan_scale = labels_werkplan_scale
+        # self.labels_werkplan_scale = labels_werkplan_scale
 
         self.tww_session = None
         self.abwasser_session = None
