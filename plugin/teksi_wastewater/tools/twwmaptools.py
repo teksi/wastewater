@@ -708,7 +708,7 @@ class TwwMapToolConnectNetworkElements(QgsMapTool):
                     TwwLayerManager.layer("vw_tww_reach"),
                 ],
             },
-            TwwLayerManager.layer("catchment_area"): {
+            TwwLayerManager.layer("vw_tww_catchment_area"): {
                 "fields": [
                     {
                         "id": "fk_wastewater_networkelement_rw_current",

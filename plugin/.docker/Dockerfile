@@ -19,4 +19,7 @@ ENV PGSERVICEFILE=/etc/postgresql-common/pg_service.conf
 ENV PGSERVICE=pg_tww
 ENV LANG=C.UTF-8
 
+# https://github.com/qgis/qgis-docker/pull/131
+ENV PYTHONPATH=/usr/share/qgis/python
+
 WORKDIR /

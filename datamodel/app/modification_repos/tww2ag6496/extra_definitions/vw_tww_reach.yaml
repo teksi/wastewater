@@ -39,3 +39,23 @@ joins:
     prefix: re_
     read_only: false
     where_clause: "agxx_re.fk_reach = OLD.obj_id"
+  agxx_reach_point_from:
+    table: tww_od.agxx_reach_point
+    alias: agxx_rp_from
+    join_on: "agxx_rp_from.fk_reach_point = rp_from.obj_id"
+    skip_columns: ["uuid","fk_reach_point"]
+    remap_columns:
+      fk_reach_point: rp_from_obj_id
+    prefix: rp_from_
+    read_only: false
+    where_clause: "agxx_rp_from.fk_reach_point = OLD.rp_from_obj_id"
+  agxx_reach_point_to:
+    table: tww_od.agxx_reach_point
+    alias: agxx_rp_to
+    join_on: "agxx_rp_to.fk_reach_point = rp_to.obj_id"
+    skip_columns: ["uuid","fk_reach_point"]
+    remap_columns:
+      fk_reach_point: rp_to_obj_id
+    prefix: rp_to_
+    read_only: false
+    where_clause: "agxx_rp_to.fk_reach_point = OLD.rp_to_obj_id"

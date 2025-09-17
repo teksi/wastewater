@@ -7,7 +7,7 @@ SWMM Create Input
 
 - The ``.inp`` file is the input file format for SWMM. It contains the wastewater network AND simulation parameters. The network can be extracted from the TWW data, but the simulation parameters must be set according to your study.
 
-- The simulation parameters are copied from a provided template ``.inp`` file. A default file is provided in the plugin folder in ``src\swmm_templates\default_tww_swmm_parameters.inp``, but you can create and use your own template file.
+- The simulation parameters are copied from a provided template ``.inp`` file. A default file is provided in the plugin folder in ``src\teksi_wastewater\swmm_templates\default_tww_swmm_parameters.inp``, but you can create and use your own template file.
 
 - By default, the export supposes that you use an *Horton Infiltration method*. If another method is set in the template ``.inp``, you might need to adapt the generated ``.inp``. See the linked `issue <https://github.com/TWW/TWW/issues/644/>`_
 

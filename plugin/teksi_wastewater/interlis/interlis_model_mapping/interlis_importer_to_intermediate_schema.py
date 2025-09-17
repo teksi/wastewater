@@ -18,6 +18,7 @@ class InterlisImporterToIntermediateSchema:
         model_classes_tww_vl,
         model_classes_tww_app=None,
         callback_progress_done=None,
+        filter_nulls=False,
     ):
         self.model = model
         self.callback_progress_done = callback_progress_done
@@ -29,6 +30,8 @@ class InterlisImporterToIntermediateSchema:
 
         self.session_interlis = None
         self.session_tww = None
+
+        self.filter_nulls = filter_nulls
 
     def tww_import(self, skip_closing_tww_session=False):
         try:
@@ -486,6 +489,9 @@ class InterlisImporterToIntermediateSchema:
         with given kwargs, and returns it.
         """
         instance = None
+
+        if self.filter_nulls:
+            kwargs = {key: val for key, val in kwargs.items() if val is not None}
 
         # We try to get the instance from the session/database
         obj_id = kwargs.get("obj_id", None)
@@ -1518,7 +1524,8 @@ class InterlisImporterToIntermediateSchema:
                 restructuring_concept=row.sanierungskonzept,
                 school_students=row.schuleschueler,
                 situation_geometry=row.lage,
-                # fk_disposal=self.get_pk(row.entsorgungref__REL), # n:m relation - see def _import_gebaeudegruppe_entsorgungassoc
+                # n:m relation - see def _import_gebaeudegruppe_entsorgungassoc
+                # fk_disposal=self.get_pk(row.entsorgungref__REL),
                 fk_measure=self.get_pk(row.massnahmeref__REL),
             )
             self.session_tww.add(building_group)
@@ -1815,8 +1822,8 @@ class InterlisImporterToIntermediateSchema:
                 ),
                 measuring_duration=row.messdauer,
                 remark=row.bemerkung,
-                time=row.zeit,
-                value=row.wert,
+                time_point=row.zeit,  # renamed 20250812 as time is a reserved SQL:2023 keyword
+                measurement_value=row.wert,  # renamed 20250812 as value is a reserved SQL:2023 keyword
                 fk_measuring_device=self.get_pk(row.messgeraetref__REL),
                 fk_measurement_series=self.get_pk(row.messreiheref__REL),
             )
@@ -1923,8 +1930,8 @@ class InterlisImporterToIntermediateSchema:
                 gross_costs=row.bruttokosten,
                 kind=self.get_vl_code(self.model_classes_tww_vl.backflow_prevention_kind, row.art),
                 year_of_replacement=row.ersatzjahr,
-                fk_throttle_shut_off_unit=self.get_pk(row.absperr_drosselorganref),
-                fk_pump=self.get_pk(row.foerderaggregatref),
+                fk_throttle_shut_off_unit=self.get_pk(row.absperr_drosselorganref__REL),
+                fk_pump=self.get_pk(row.foerderaggregatref__REL),
             )
             self.session_tww.add(backflow_prevention)
             print(".", end="")
