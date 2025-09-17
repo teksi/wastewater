@@ -63,13 +63,13 @@
 <li class="toctree-l4"><a class="reference internal" href="#enable-admin-mode">4.4.3.1. Aktivieren Sie den Admin-Modus</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#interlis-export">4.4.4. INTERLIS Export</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#export-extra-organisations">4.4.4.1. Export extra organisations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#interlis-export">4.4.4. INTERLIS-Export</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#export-extra-organisations">4.4.4.1. Zusätzliche Organisationen exportieren</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#interlis-import">4.4.5. INTERLIS Import</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#interlis-import">4.4.5. INTERLIS-Import</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#usage-command-line">4.4.6. Benutzung (Befehlszeile)</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#dependencies">4.4.6.1. Dependencies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dependencies">4.4.6.1. Abhängigkeiten</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#import">4.4.6.2. Import</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#export">4.4.6.3. Export</a></li>
 </ul>
@@ -119,18 +119,17 @@
 <div></div></blockquote>
 <section id="interlis-data-exchange">
 <h1><span class="section-number">4.4. </span>INTERLIS Datenaustausch<a class="headerlink" href="#interlis-data-exchange" title="Link to this heading"></a></h1>
-<p>This represents a guide on how to import/export data between TWW and <a class="reference external" href="https://www.interlis.ch">INTERLIS 2 Transfer Format (XTF)</a>.</p>
+<p>Dies ist ein Leitfaden für den Import/Export von Daten zwischen TWW und INTERLIS 2 Transfer Format (XTF) &lt;<a class="reference external" href="https://www.interlis.ch">https://www.interlis.ch</a>&gt;`_..</p>
 <section id="general">
 <h2><span class="section-number">4.4.1. </span>Allgemeines<a class="headerlink" href="#general" title="Link to this heading"></a></h2>
-<p>The TWW plugin includes an INTERLIS import/export feature.
-It is currently capable of importing and exporting the following models:</p>
+<p>Das TWW-plugin beinhaltet eine INTERLIS Import/Export Funktion. Die folgenden Datenmodelle werden zur Zeit unterstützt:</p>
 <ul class="simple">
 <li><p>SIA405_ABWASSER_2020_1_LV95</p></li>
 <li><p>DSS_2020_1_LV95</p></li>
 <li><p>VSA_KEK_2020_1_LV95</p></li>
-<li><p>SIA405_Base_Abwasser_1_LV95 (to export your own additional organisations that are not part of the centralized VSA Organisation dataset)</p></li>
+<li><p>SIA405_Base_Abwasser_1_LV95 (um die eigenen zusätzlichen Organisationen zu exportieren, die nicht Teil des zentralisierten VSA Organisations-Datensatzes sind. )</p></li>
 </ul>
-<p>Note that currently, exports are possible in German only. Translated exports are on the roadmap, let us know if you are interested in this feature.</p>
+<p>Bitte beachten Sie, dass Exporte derzeit nur in deutscher Sprache möglich sind. Übersetzte Exporte sind in Planung. Teilen Sie uns bitte mit, wenn Sie an dieser Funktion interessiert sind.</p>
 </section>
 <section id="prerequisites">
 <h2><span class="section-number">4.4.2. </span>Voraussetzungen<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h2>
@@ -169,43 +168,43 @@ Linux : use the package manager</p>
 </section>
 <section id="tww-version">
 <h3><span class="section-number">4.4.2.3. </span>TWW Version<a class="headerlink" href="#tww-version" title="Link to this heading"></a></h3>
-<p>The export only supports up-to-date TWW data model (2020.1 at the time of writing). Ensure your data model is fully updated before trying to import/export.</p>
+<p>Der Export unterstützt nur das aktuelle TWW-Datenmodell (2020.1 zum Zeitpunkt der Erstellung dieses Dokuments). Stellen Sie sicher, dass Ihr Datenmodell vollständig aktualisiert ist, bevor Sie den Import/Export versuchen.</p>
 </section>
 </section>
 <section id="usage-gui">
 <h2><span class="section-number">4.4.3. </span>Benutzung (GUI)<a class="headerlink" href="#usage-gui" title="Link to this heading"></a></h2>
 <section id="enable-admin-mode">
 <h3><span class="section-number">4.4.3.1. </span>Aktivieren Sie den Admin-Modus<a class="headerlink" href="#enable-admin-mode" title="Link to this heading"></a></h3>
-<p>In the <cite>plugin&gt;TWW&gt;settings</cite> dialog, under the <cite>Developer options</cite> tab, ensure <cite>Admin mode</cite> is enabled. Restart QGIS.</p>
+<p>Stellen Sie im Dialog „Plugin&gt;TWW&gt;Einstellungen“ unter dem Reiter „Entwickleroptionen“ sicher, dass der „Admin-Modus“ aktiviert ist. Starten Sie QGIS neu.</p>
 <figure class="align-default">
 <img alt="../../_images/settings_dialog.png" src="../../_images/settings_dialog.png" />
 </figure>
-<p>You should now see new <cite>import</cite> and <cite>export</cite> buttons in the TWW toolbar.</p>
+<p>In der TWW-Symbolleiste sollten nun die neuen Schaltflächen „Import“ und „Export“ erscheinen.</p>
 <figure class="align-default">
 <img alt="../../_images/toolbar.png" src="../../_images/toolbar.png" />
 </figure>
 </section>
 </section>
 <section id="interlis-export">
-<span id="id1"></span><h2><span class="section-number">4.4.4. </span>INTERLIS Export<a class="headerlink" href="#interlis-export" title="Link to this heading"></a></h2>
+<span id="id1"></span><h2><span class="section-number">4.4.4. </span>INTERLIS-Export<a class="headerlink" href="#interlis-export" title="Link to this heading"></a></h2>
 <figure class="align-default">
 <img alt="../../_images/tww_interlis_export_button.png" src="../../_images/tww_interlis_export_button.png" />
 </figure>
-<p>To export your TWW data, click on the <cite>INTERLIS export</cite> button.</p>
-<p>The following dialog will appear.</p>
+<p>Um Ihre TWW-Daten zu exportieren, klicken Sie auf die Schaltfläche „INTERLIS-Export“.</p>
+<p>Es erscheint folgender Dialog.</p>
 <figure class="align-default">
 <img alt="../../_images/tww_interlis_export.png" src="../../_images/tww_interlis_export.png" />
 </figure>
-<p>At first, select the export model.</p>
-<p>If you have an active selection in the nodes and/or reaches layer, you can choose to restrict the export to that selection. This is especially useful in combination with the upstream/downstream selection tools.</p>
+<p>Wählen Sie zunächst das Exportmodell aus.</p>
+<p>Wenn Sie eine aktive Auswahl in der Ebene „Knoten und/oder Haltungen“ haben, können Sie den Export auf diese Auswahl beschränken. Dies ist besonders nützlich in Kombination mit den Auswahlwerkzeugen „gegen Fliessrichtung“/„mit Fliessrichtung“.</p>
 <figure class="align-default">
 <img alt="../../_images/tww_interlis_export_selection.png" src="../../_images/tww_interlis_export_selection.png" />
 </figure>
-<p>The export tools is capable of exporting label positions for different scales. You can choose which scales you are interested in exporting by selected/deselecting them.</p>
+<p>Die Export-Tools können Labelpositionen für verschiedene Massstäbe exportieren. Sie können auswählen, welche Massstäbe Sie exportieren möchten, indem Sie diese auswählen oder die Auswahl aufheben.</p>
 <p>Bestätigen Sie das Dialogfeld und wählen Sie einen Speicherort für die <cite>.xtf</cite>-Datei.</p>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>Note that windows file pathes with empty strings in the directory path or filename are not supported at the moment.</p>
+<p>Beachten Sie, dass Windows-Dateipfade mit leeren Zeichenfolgen im Verzeichnispfad oder Dateinamen derzeit nicht unterstützt werden.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
@@ -213,28 +212,25 @@ Linux : use the package manager</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>Note that QGIS standard behaviour for too long labels is to turn them horizontally (orientation = 0). You can adjust the properties of the vw_tww_reach layer - Symbology - Placement - Label overrun from „no overrun“ to e.g. 7 mm (Millimeter)</p>
+<p>Beachten Sie, dass QGIS bei zu langen Beschriftungen standardmässig diese horizontal dreht (Ausrichtung = 0). Sie können die Eigenschaften der Ebene „vw_tww_Haltung“ anpassen – Symbologie – Platzierung – Beschriftungsüberlauf von „kein Überlauf“ auf z. B. 7 mm (Millimeter).</p>
 </div>
 <figure class="align-default">
 <img alt="../../_images/layer_vw_tww_reach_label_overrun.png" src="../../_images/layer_vw_tww_reach_label_overrun.png" />
 </figure>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>Note that remark fields are truncated to 80 characters on INTERLIS Export, as the INTERLIS definition is like this. If you have remark fields with more text then consider to move this data to documentation with the classes „file“ and „data_media“ so it can be exported to INTERLIS completely where you can add any document, photo or video to a class.</p>
+<p>Beachten Sie, dass Bemerkungsfelder bei INTERLIS Export auf 80 Zeichen gekürzt werden, da die INTERLIS-Definition dies vorsieht. Wenn Sie Bemerkungsfelder mit mehr Text haben, sollten Sie diese Daten in die Dokumentation mit den Klassen „Datei” und „Datentraeger” verschieben, damit sie vollständig nach INTERLIS exportiert werden können, wo Sie einer Klasse beliebige Dokumente, Fotos oder Videos hinzufügen können.</p>
 </div>
-<p>The following validations are run as pre-process:
-* Validate subclasses before export: check_subclass_counts</p>
+<p>Die folgenden Validierungen werden als Vorverarbeitung ausgeführt: * Unterklassen vor dem Export validieren: check_subclass_counts</p>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>Currently you will only find an ERROR message in the tww procotol tab if this check fails:
-<cite>2024-07-26T10:29:03        teksi_wastewater.utils:ERROR: number of subclass elements of structure_part NOT CORRECT in schema tww_od: checksum = 1 (positive number means missing entries, negative means too many subclass entries)</cite></p>
+<p>Derzeit wird nur dann eine FEHLER-Meldung in der Registerkarte „tww procotol“ angezeigt, wenn diese Überprüfung fehlschlägt: <cite>2024-07-26T10:29:03 teksi_wastewater.utils:ERROR: Anzahl der Unterklassenelemente von structure_part im Schema tww_od NICHT KORREKT: Prüfsumme = 1 (positive Zahl bedeutet fehlende Einträge, negative Zahl bedeutet zu viele Unterklasseeinträge)</cite></p>
 </div>
-<p>Exports include a validation step at the end using <cite>ilivalidator</cite>, which will inform you whether the export contains INTERLIS validation errors.</p>
-<p>If the export was successful a green success message appears.
-If the export is not successfull you will get either error messages during the export process or an error warning at the end of the process.</p>
-<p>You can check the protocol window and the text logs for further details.</p>
+<p>Der Export umfasst am Ende einen Validierungsschritt mit <cite>ilivalidator</cite>, der Sie darüber informiert, ob der Export INTERLIS-Validierungsfehler enthält.</p>
+<p>Wenn der Export erfolgreich war, erscheint eine grüne Erfolgsmeldung. Wenn der Export nicht erfolgreich war, erhalten Sie entweder während des Exportvorgangs Fehlermeldungen oder am Ende des Vorgangs eine Fehlerwarnung.</p>
+<p>Weitere Details finden Sie im Protokollfenster und in den Textprotokollen.</p>
 <table class="docutils align-default" id="id5">
-<caption><span class="caption-text">There are four different log files:</span><a class="headerlink" href="#id5" title="Link to this table"></a></caption>
+<caption><span class="caption-text">Es gibt vier verschiedene Log-Dateien:</span><a class="headerlink" href="#id5" title="Link to this table"></a></caption>
 <colgroup>
 <col style="width: 25.0%" />
 <col style="width: 50.0%" />
@@ -247,88 +243,88 @@ If the export is not successfull you will get either error messages during the e
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Export schema</p></td>
-<td><p>Creation of export schema with ili2db and the selected INTERLIS model file</p></td>
+<tr class="row-even"><td><p>Exportschema</p></td>
+<td><p>Erstellung eines Exportschemas mit ili2db und der ausgewählten INTERLIS-Modelldatei</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">*.ili2pg-schemaimport.log</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p>Data export intermediatary schema</p></td>
-<td><p>Export of data from tww_od to the new intermediary schema, translation from English to German</p></td>
+<tr class="row-odd"><td><p>Zwischenschema für den Datenexport</p></td>
+<td><p>Export von Daten aus tww_od in das neue Zwischenschema, Übersetzung vom Englischen ins Deutsche</p></td>
 <td><p><a href="#id2"><span class="problematic" id="id3">*</span></a>.tww2ili-export.log</p></td>
 </tr>
-<tr class="row-even"><td><p>Data export to xtf</p></td>
-<td><p>Data export from intermediary schema to INTERLIS Transfer file (xtf)</p></td>
+<tr class="row-even"><td><p>Datenexport nach xtf</p></td>
+<td><p>Datenexport aus dem Zwischenschema in die INTERLIS-Transferdatei (xtf)</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">*.ili2pg-export-MODELNAME.log</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p>INTERLIS validation</p></td>
-<td><p>Validation of the created xtf file(s) with ilivalidator</p></td>
+<tr class="row-odd"><td><p>INTERLIS Validierung</p></td>
+<td><p>Validierung der erstellten xtf-Datei(en) mit ilivalidator</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">*.ilivalidator-MODELNAME.log</span></code></p></td>
 </tr>
 </tbody>
 </table>
 <section id="export-extra-organisations">
-<h3><span class="section-number">4.4.4.1. </span>Export extra organisations<a class="headerlink" href="#export-extra-organisations" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.4.1. </span>Zusätzliche Organisationen exportieren<a class="headerlink" href="#export-extra-organisations" title="Link to this heading"></a></h3>
 <figure class="align-default">
 <img alt="../../_images/tww_interlis_export_organisation.jpg" src="../../_images/tww_interlis_export_organisation.jpg" />
 </figure>
-<p>Since Release 2025.x you can also export additional organisations that are not maintained as part of the <a class="reference external" href="https://vsa.ch/models/organisation/vsa_organisationen_2020_1.xtf">VSA organisation dataset</a> and that you are maintaining yourself. For a general introduction on how organisation are maintained by the Verband Schweizer Abwasser &amp; Gewässerschutzfachleute (VSA) <a class="reference external" href="https://vsa.ch/fachbereiche-cc/siedlungsentwaesserung/generelle-entwaesserungsplanung/datenmanagement/#Organisationstabelle">check this documentation</a>.</p>
-<p>Extra organisations could be for example bigger private organisations that are ususally summarized as ‚Privat‘ when publishing to others, but they are relevant for you to be distinguised. For an export they need to be flagged as <code class="docutils literal notranslate"><span class="pre">tww_local_extension</span> <span class="pre">=</span> <span class="pre">True</span></code></p>
+<p>Seit Release 2025.x können Sie auch zusätzliche Organisationen exportieren, die nicht als Teil des <a class="reference external" href="https://vsa.ch/models/organisation/vsa_organisationen_2020_1.xtf">VSA-Organisationsdatensatzes</a> gepflegt werden und die Sie selbst pflegen. Eine allgemeine Einführung in die Pflege von Organisationen durch den Verband Schweizer Abwasser &amp; Gewässerschutzfachleute (VSA) finden Sie in dieser Dokumentation &lt;<a class="reference external" href="https://vsa.ch/fachbereiche-cc/siedlungsentwaesserung/generelle-entwaesserungsplanung/datenmanagement/#Organisationstabelle">https://vsa.ch/fachbereiche-cc/siedlungsentwaesserung/generelle-entwaesserungsplanung/datenmanagement/#Organisationstabelle</a>&gt;_.</p>
+<p>Zusätzliche Organisationen könnten beispielsweise grössere private Organisationen sein, die bei Veröffentlichungen für andere in der Regel als „Privat“ zusammengefasst werden, für Sie jedoch relevant sind, um unterschieden zu werden. Für einen Export müssen sie als „tww_local_extension = True“ gekennzeichnet werden.</p>
 <figure class="align-default">
 <img alt="../../_images/organisation_tww_local_extension.png" src="../../_images/organisation_tww_local_extension.png" />
 </figure>
 </section>
 </section>
 <section id="interlis-import">
-<span id="id4"></span><h2><span class="section-number">4.4.5. </span>INTERLIS Import<a class="headerlink" href="#interlis-import" title="Link to this heading"></a></h2>
+<span id="id4"></span><h2><span class="section-number">4.4.5. </span>INTERLIS-Import<a class="headerlink" href="#interlis-import" title="Link to this heading"></a></h2>
 <figure class="align-default">
 <img alt="../../_images/tww_interlis_import_button.png" src="../../_images/tww_interlis_import_button.png" />
 </figure>
-<p>To import <cite>xtf`files, click on the `INTERLIS import</cite> button and navigate to the <cite>.xtf</cite> file.</p>
+<p>Um <cite>xtf</cite>-Dateien zu importieren, klicken Sie auf die Schaltfläche <cite>INTERLIS importieren</cite> und navigieren Sie zur <cite>.xtf</cite>-Datei.</p>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>Note that windows file pathes with empty strings in the directory path or filename are not supported at the moment.</p>
+<p>Beachten Sie, dass Windows-Dateipfade mit leeren Zeichenfolgen im Verzeichnispfad oder Dateinamen derzeit nicht unterstützt werden.</p>
 </div>
-<p><strong>Organisations before data !</strong></p>
+<p><strong>Organisationen vor Daten!</strong></p>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>Starting with release 2020 all organisations are in a separated dataset and need to be imported first, else a bunch of errors will be thrown on all references like fk_dataowner, fk_owner, fk_provider, etc. Download the VSA Organisation data set from <a class="reference external" href="https://www.vsa.ch/models/organisation/vsa_organisationen_2020_1.xtf">https://www.vsa.ch/models/organisation/vsa_organisationen_2020_1.xtf</a> and start with importing that data set. This data set is updated regularly - so please come back and check (and maybe re-import) at a later stage to have access to all available organisation.</p>
+<p>Ab der Version 2020 befinden sich alle Organisationen in einem separaten Datensatz und müssen zuerst importiert werden, da sonst eine Reihe von Fehlern bei allen Referenzen wie fk_dataowner, fk_owner, fk_provider usw. auftreten. Laden Sie den VSA-Organisationsdatensatz von <a class="reference external" href="https://www.vsa.ch/models/organisation/vsa_organisationen_2020_1.xtf">https://www.vsa.ch/models/organisation/vsa_organisationen_2020_1.xtf</a> herunter und beginnen Sie mit dem Import dieses Datensatzes. Dieser Datensatz wird regelmäßig aktualisiert. Bitte schauen Sie später noch einmal vorbei (und importieren Sie ihn gegebenenfalls erneut), um Zugriff auf alle verfügbaren Organisationen zu erhalten.</p>
 </div>
-<p>If you have organisations that are not yet in that data set <a class="reference external" href="https://vsa.ch/fachbereiche-cc/siedlungsentwaesserung/generelle-entwaesserungsplanung/datenmanagement/#Organisationstabelle">please inform the VSA and hand in an application to be added</a>.</p>
-<p>If you have additional own local organisations that are not (yet) in the VSA organisation data set continue with importing those before you start importing your network data. TV inspection data usually comes last, as it references your network data.</p>
-<p>After launching the import process your data set will be validated and imported in a intermediatary schema. Then the following dialog will appear.</p>
+<p>Wenn Sie Organisationen haben, die noch nicht in diesem Datensatz enthalten sind, informieren Sie bitte die VSA und reichen Sie einen Antrag auf Aufnahme ein &lt;<a class="reference external" href="https://vsa.ch/fachbereiche-cc/siedlungsentwaesserung/generelle-entwaesserungsplanung/datenmanagement/#Organisationstabelle">https://vsa.ch/fachbereiche-cc/siedlungsentwaesserung/generelle-entwaesserungsplanung/datenmanagement/#Organisationstabelle</a>&gt;_.</p>
+<p>Wenn Sie über weitere eigene lokale Organisationen verfügen, die (noch) nicht im VSA-Organisationsdatensatz enthalten sind, importieren Sie diese, bevor Sie mit dem Import Ihrer Netzwerkdaten beginnen. TV-Inspektionsdaten werden in der Regel zuletzt importiert, da sie auf Ihre Netzwerkdaten verweisen.</p>
+<p>Nach dem Start des Importvorgangs wird Ihr Datensatz validiert und in ein Zwischenschema importiert. Anschließend erscheint das folgende Dialogfeld.</p>
 <figure class="align-default">
 <img alt="../../_images/import_dialog.png" src="../../_images/import_dialog.png" />
 </figure>
 <p>Im linken Teil dieses Dialogfelds werden alle Elemente aufgelistet, die aus der <cite>.xtf</cite>-Datei importiert werden sollen, so dass Sie überprüfen können, was importiert werden soll, und Elemente abwählen können, die Sie eventuell überspringen möchten. Ausserdem wird der Validierungsstatus jedes Objekts angezeigt, der angibt, ob vor dem Import weitere Massnahmen erforderlich (UNGÜLTIG) oder empfohlen (WARNUNG) sind.</p>
-<p>The right part of this dialog shows a form specific to the type of element selected in the list, allowing to adapt the import.</p>
+<p>Der rechte Teil dieses Dialogfelds zeigt ein Formular, das für den in der Liste ausgewählten Elementtyp spezifisch ist und die Anpassung des Imports ermöglicht.</p>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>Currently de-selecting and selecting objects might take a long time depending how many data sets are in that respective class.</p>
+<p>Derzeit kann das Abwählen und Auswählen von Objekten je nach Anzahl der Datensätze in der jeweiligen Klasse sehr lange dauern.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
 <p>Special feature for TV Inspection import: For instance, it allows to attach „examinations“ to their pipes.</p>
 </div>
 <p>Wenn Sie mit den Importoptionen zufrieden sind, bestätigen Sie den Dialog, um die Änderungen in Ihrer Datenbank zu übernehmen.</p>
-<p>If the import was successful a green success message appears.</p>
+<p>Wenn der Import erfolgreich war, erscheint eine grüne Erfolgsmeldung.</p>
 </section>
 <section id="usage-command-line">
 <h2><span class="section-number">4.4.6. </span>Benutzung (Befehlszeile)<a class="headerlink" href="#usage-command-line" title="Link to this heading"></a></h2>
-<p>For advanced usage, the import/export tool can also be used as a command line tool.</p>
+<p>Für fortgeschrittene Anwendungen kann das Import-/Export-Tool auch als Befehlszeilentool verwendet werden.</p>
 <section id="dependencies">
-<h3><span class="section-number">4.4.6.1. </span>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h3>
-<p>The QGIS python classes must be available in the python interpreter.</p>
+<h3><span class="section-number">4.4.6.1. </span>Abhängigkeiten<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h3>
+<p>Die QGIS-Python-Klassen müssen im Python-Interpreter verfügbar sein.</p>
 <ul class="simple">
-<li><p>On windows you can use the OSGeo4W environment</p></li>
-<li><p>On linux you can extend the PYTHONPATH pointing to you QGIS installation, for example: <cite>export PYTHONPATH=“$PYTHONPATH:/usr/share/qgis/python“</cite></p></li>
+<li><p>Unter Windows können Sie die OSGeo4W-Umgebung verwenden.</p></li>
+<li><p>Unter Linux können Sie den PYTHONPATH so erweitern, dass er auf Ihre QGIS-Installation verweist, zum Beispiel: <cite>export PYTHONPATH=“$PYTHONPATH:/usr/share/qgis/python“</cite></p></li>
 </ul>
 </section>
 <section id="import">
 <h3><span class="section-number">4.4.6.2. </span>Import<a class="headerlink" href="#import" title="Link to this heading"></a></h3>
-<p>Import example</p>
+<p>Importbeispiel</p>
 <div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3<span class="w"> </span>plugin/tww_cmd.py<span class="w"> </span>interlis_import<span class="w"> </span>--xtf_file<span class="w"> </span>plugin/teksi_wastewater/tests/data/minimal-dataset-SIA405-ABWASSER.xtf<span class="w"> </span>--pgservice<span class="w"> </span>pg_tww
 </pre></div>
 </div>
-<p>Full usage</p>
+<p>Volle Nutzung</p>
 <div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3<span class="w"> </span>plugin/tww_cmd.py<span class="w"> </span>interlis_export<span class="w"> </span>--help
 
 <span class="go">usage: tww_cmd.py interlis_export [-h] --xtf_file XTF_FILE [--selection SELECTION] [--export_model {SIA405_ABWASSER_2020_1_LV95,DSS_2020_1_LV95,VSA_KEK_2020_1_LV95}] [--logs_next_to_file]</span>
@@ -371,11 +367,11 @@ If the export is not successfull you will get either error messages during the e
 </section>
 <section id="export">
 <h3><span class="section-number">4.4.6.3. </span>Export<a class="headerlink" href="#export" title="Link to this heading"></a></h3>
-<p>Export example</p>
+<p>Exportbeispiel</p>
 <div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">python3 plugin/tww_cmd.py interlis_export --xtf_file &quot;output.xtf&quot; --pgservice pg_tww</span>
 </pre></div>
 </div>
-<p>Full usage</p>
+<p>Volle Nutzung</p>
 <div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3<span class="w"> </span>plugin/tww_cmd.py<span class="w"> </span>interlis_export<span class="w"> </span>--help
 
 <span class="go">usage: tww_cmd.py interlis_export [-h] --xtf_file XTF_FILE [--selection SELECTION] [--export_model {SIA405_ABWASSER_2020_1_LV95,DSS_2020_1_LV95,VSA_KEK_2020_1_LV95}] [--logs_next_to_file]</span>
@@ -425,7 +421,7 @@ If the export is not successfull you will get either error messages during the e
 <img alt="https://vsa.ch/wp-content/uploads/2020/04/Daten-checker-d-f-it.jpg" src="https://vsa.ch/wp-content/uploads/2020/04/Daten-checker-d-f-it.jpg" />
 </figure>
 <p><a class="reference external" href="https://vsa.ch/fachbereiche-cc/siedlungsentwaesserung/generelle-entwaesserungsplanung/datenmanagement/#GEP-Datachecker">For details see explanation on the VSA Homepage</a></p>
-<p><a class="reference external" href="https://vsa.ch/Mediathek/gep-datachecker-jahresgebuehr/?media_filter_two=lizenzen-software">Information about access and licensing you can get here</a></p>
+<p>Informationen zu Zugriff und Lizenzierung finden Sie hier &lt;<a class="reference external" href="https://vsa.ch/Mediathek/gep-datachecker-jahresgebuehr/?media_filter_two=lizenzen-software">https://vsa.ch/Mediathek/gep-datachecker-jahresgebuehr/?media_filter_two=lizenzen-software</a>&gt;_</p>
 </section>
 </section>
 </section>
