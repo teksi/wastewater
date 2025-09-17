@@ -31,10 +31,10 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
 
     tr = partial(QCoreApplication.translate, "ExtractlabelsInterlisAlgorithm")
     AVAILABLE_SCALE_PIPELINE_REGISTRY_1_1000 = "Leitungskataster"
-    # AVAILABLE_SCALE_NETWORK_PLAN_1_250 = "Werkplan.250"
-    # AVAILABLE_SCALE_NETWORK_PLAN_1_500 = "Werkplan.500"
+    AVAILABLE_SCALE_NETWORK_PLAN_1_250 = "Werkplan.250"
+    AVAILABLE_SCALE_NETWORK_PLAN_1_500 = "Werkplan.500"
     # AVAILABLE_SCALE_NETWORK_PLAN_1_250 = "Werkplan"
-    AVAILABLE_SCALE_NETWORK_PLAN_1_xxx = "Werkplan"
+    # AVAILABLE_SCALE_NETWORK_PLAN_1_xxx = "Werkplan"
     AVAILABLE_SCALE_OVERVIEWMAP_1_10000 = "Uebersichtsplan.UeP10"
     AVAILABLE_SCALE_OVERVIEWMAP_1_5000 = "Uebersichtsplan.UeP5"
     AVAILABLE_SCALE_OVERVIEWMAP_1_2000 = "Uebersichtsplan.UeP2"
@@ -45,11 +45,11 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
             tr("Leitungskataster"),
             1000,
         ),  # TODO: check scale ?
-        # (AVAILABLE_SCALE_NETWORK_PLAN_1_250, tr("Werkplan 1:250"), 250),  # TODO: check scale ?
-        # (AVAILABLE_SCALE_NETWORK_PLAN_1_500, tr("Werkplan 1:500"), 500),  # TODO: check scale ?
+        (AVAILABLE_SCALE_NETWORK_PLAN_1_250, tr("Werkplan 1:250"), 250),  # TODO: check scale ?
+        (AVAILABLE_SCALE_NETWORK_PLAN_1_500, tr("Werkplan 1:500"), 500),  # TODO: check scale ?
         
         # add variable networkplan_scale
-        (AVAILABLE_SCALE_NETWORK_PLAN_1_xxx, tr("Werkplan"), networkplan_scale),  # TODO: check scale ?
+        #(AVAILABLE_SCALE_NETWORK_PLAN_1_xxx, tr("Werkplan"), networkplan_scale),  # TODO: check scale ?
         # (AVAILABLE_SCALE_NETWORK_PLAN_1_500, tr("Werkplan 1:500"), 500),  # TODO: check scale ?
         (AVAILABLE_SCALE_OVERVIEWMAP_1_10000, tr("Uebersichtsplan 1:10000"), 10000),
         (AVAILABLE_SCALE_OVERVIEWMAP_1_5000, tr("Uebersichtsplan 1:5000"), 5000),
