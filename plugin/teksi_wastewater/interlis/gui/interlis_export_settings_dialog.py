@@ -48,6 +48,13 @@ class InterlisExportSettingsDialog(QDialog):
         self.export_orientation_selection_comboBox.addItem("0°", 0.0)
         self.export_orientation_selection_comboBox.addItem("-90°", -90.0)
 
+        # Fill Werkplan scale selection combobox
+        self.export_werkplan_scale_selection_comboBox.clear()
+        self.export_werkplan_scale_selection_comboBox.addItem("1:500", 500)
+        self.export_werkplan_scale_selection_comboBox.addItem("1:250", 250)
+        self.export_werkplan_scale_selection_comboBox.addItem("1:200", 200)
+
+
         structures_layer = TwwLayerManager.layer("vw_tww_wastewater_structure")
         reaches_layer = TwwLayerManager.layer("vw_tww_reach")
         self.structures = structures_layer.selectedFeatures() if structures_layer else []
@@ -130,3 +137,8 @@ class InterlisExportSettingsDialog(QDialog):
     def labels_orientation_offset(self):
         eorientation = self.export_orientation_selection_comboBox.currentData()
         return eorientation
+
+    @property
+    def labels_werkplan_scale(self):
+        ewerkplanscale = self.export_werkplan_scale_selection_comboBox.currentData()
+        return ewerkplanscale
