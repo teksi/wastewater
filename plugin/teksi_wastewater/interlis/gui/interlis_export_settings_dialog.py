@@ -70,7 +70,7 @@ class InterlisExportSettingsDialog(QDialog):
             settings_value is True or settings_value == "true"
         )
 
-        # Populate the labels list (restoring checked states of scaes)
+        # Populate the labels list (restoring checked states of scales)
         selected_scales = QgsSettings().value("tww_plugin/last_selected_scales", "").split(",")
         qgis_version_ok = Qgis.QGIS_VERSION_INT >= 32602
         self.labels_groupbox.setEnabled(qgis_version_ok)

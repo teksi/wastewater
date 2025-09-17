@@ -29,6 +29,8 @@ class InterlisImporterExporterGui(QObject):
             progress_done_callback=self._progress_done_callback
         )
 
+
+
     def check_dependencies(self):
         SQLALCHEMY_MINIMAL_VERSION = "1.4"
         if sqlalchemy.__version__ < SQLALCHEMY_MINIMAL_VERSION:
@@ -124,6 +126,11 @@ class InterlisImporterExporterGui(QObject):
         self.progress_dialog.setMinimumWidth(self._PROGRESS_DIALOG_MINIMUM_WIDTH)
         self.progress_dialog.setCancelButtonText("Cancel")
         self.progress_dialog.setMinimumDuration(0)
+
+        #Add global variable
+        global networkplan_scale
+        networkplan_scale = export_dialog.labels_werkplan_scale
+
         self.progress_dialog.setWindowTitle("Export INTERLIS data...")
 
         try:
@@ -134,6 +141,7 @@ class InterlisImporterExporterGui(QObject):
                 user_interaction=True,
                 limit_to_selection=export_dialog.limit_to_selection,
                 export_orientation=export_dialog.labels_orientation_offset,
+                labels_werkplan_scale=export_dialog.labels_werkplan_scale,
                 selected_labels_scales_indices=export_dialog.selected_labels_scales_indices,
                 selected_ids=export_dialog.selected_ids,
                 srid=srid,
