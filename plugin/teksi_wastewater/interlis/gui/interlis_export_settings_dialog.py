@@ -54,7 +54,6 @@ class InterlisExportSettingsDialog(QDialog):
         self.export_werkplan_scale_selection_comboBox.addItem("1:250", 250)
         self.export_werkplan_scale_selection_comboBox.addItem("1:200", 200)
 
-
         structures_layer = TwwLayerManager.layer("vw_tww_wastewater_structure")
         reaches_layer = TwwLayerManager.layer("vw_tww_reach")
         self.structures = structures_layer.selectedFeatures() if structures_layer else []
