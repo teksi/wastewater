@@ -29,8 +29,6 @@ class InterlisImporterExporterGui(QObject):
             progress_done_callback=self._progress_done_callback
         )
 
-
-
     def check_dependencies(self):
         SQLALCHEMY_MINIMAL_VERSION = "1.4"
         if sqlalchemy.__version__ < SQLALCHEMY_MINIMAL_VERSION:
@@ -127,7 +125,7 @@ class InterlisImporterExporterGui(QObject):
         self.progress_dialog.setCancelButtonText("Cancel")
         self.progress_dialog.setMinimumDuration(0)
 
-        #Add global variable
+        # Add global variable
         global networkplan_scale
         networkplan_scale = export_dialog.labels_werkplan_scale
 
