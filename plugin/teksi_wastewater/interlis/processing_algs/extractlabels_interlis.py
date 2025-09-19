@@ -26,15 +26,10 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
     Otherwise, the output is difficult to use, because the FeatureID isn't stable (since it's the primary
     key of the reach and structure views is not an integer)"""
 
-    networkplan_scale = 333
-    # networkplan_scale = self.labels_werkplan_scale
-
     tr = partial(QCoreApplication.translate, "ExtractlabelsInterlisAlgorithm")
     AVAILABLE_SCALE_PIPELINE_REGISTRY_1_1000 = "Leitungskataster"
-    AVAILABLE_SCALE_NETWORK_PLAN_1_250 = "Werkplan.250"
-    AVAILABLE_SCALE_NETWORK_PLAN_1_500 = "Werkplan.500"
-    # AVAILABLE_SCALE_NETWORK_PLAN_1_250 = "Werkplan"
-    # AVAILABLE_SCALE_NETWORK_PLAN_1_xxx = "Werkplan"
+    AVAILABLE_SCALE_NETWORK_PLAN_1_250 = "Werkplan.250" # Defined with subvalue - will be replaced for xtf output back to Werkplan, only choose either or
+    AVAILABLE_SCALE_NETWORK_PLAN_1_500 = "Werkplan.500" # Defined with subvalue - will be replaced for xtf output back to Werkplan, only choose either or
     AVAILABLE_SCALE_OVERVIEWMAP_1_10000 = "Uebersichtsplan.UeP10"
     AVAILABLE_SCALE_OVERVIEWMAP_1_5000 = "Uebersichtsplan.UeP5"
     AVAILABLE_SCALE_OVERVIEWMAP_1_2000 = "Uebersichtsplan.UeP2"
@@ -45,14 +40,8 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
             tr("Leitungskataster"),
             1000,
         ),  # TODO: check scale ?
-
-        (AVAILABLE_SCALE_NETWORK_PLAN_1_250, tr("Werkplan 1:250"), 250),  # TODO: check scale ?
-        (AVAILABLE_SCALE_NETWORK_PLAN_1_500, tr("Werkplan 1:500"), 500),  # TODO: check scale ?
-        
-        # add variable networkplan_scale
-        #(AVAILABLE_SCALE_NETWORK_PLAN_1_xxx, tr("Werkplan"), networkplan_scale),  # TODO: check scale ?
-
-        # (AVAILABLE_SCALE_NETWORK_PLAN_1_500, tr("Werkplan 1:500"), 500),  # TODO: check scale ?
+        (AVAILABLE_SCALE_NETWORK_PLAN_1_250, tr("Werkplan 1:250"), 250),  # Option with scale 1:250 labels
+        (AVAILABLE_SCALE_NETWORK_PLAN_1_500, tr("Werkplan 1:500"), 500),  # Option with scale 1:500 labels
         (AVAILABLE_SCALE_OVERVIEWMAP_1_10000, tr("Uebersichtsplan 1:10000"), 10000),
         (AVAILABLE_SCALE_OVERVIEWMAP_1_5000, tr("Uebersichtsplan 1:5000"), 5000),
         (AVAILABLE_SCALE_OVERVIEWMAP_1_2000, tr("Uebersichtsplan 1:2000"), 2000),
