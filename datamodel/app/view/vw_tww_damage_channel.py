@@ -78,7 +78,7 @@ def vw_tww_damage_channel(
         RIGHT JOIN tww_od.damage dg on dg.fk_examination = ex.obj_id
         INNER JOIN tww_od.damage_channel dc ON dg.obj_id = dc.obj_id
         WHERE fi.tww_outdated IS NOT True AND ex.tww_outdated IS NOT True AND fi.kind IN (3775, 9146)
-        WINDOW W as (GROUP BY ex.fk_reach_point ORDER BY me.time_point DESC)
+        WINDOW W as (PARTITION BY ex.fk_reach_point ORDER BY me.time_point DESC)
         )
         SELECT
         {dg_cols_base}
