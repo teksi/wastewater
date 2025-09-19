@@ -125,10 +125,6 @@ class InterlisImporterExporterGui(QObject):
         self.progress_dialog.setCancelButtonText("Cancel")
         self.progress_dialog.setMinimumDuration(0)
 
-        # Add global variable
-        global networkplan_scale
-        networkplan_scale = export_dialog.labels_werkplan_scale
-
         self.progress_dialog.setWindowTitle("Export INTERLIS data...")
 
         try:
@@ -139,7 +135,6 @@ class InterlisImporterExporterGui(QObject):
                 user_interaction=True,
                 limit_to_selection=export_dialog.limit_to_selection,
                 export_orientation=export_dialog.labels_orientation_offset,
-                labels_werkplan_scale=export_dialog.labels_werkplan_scale,
                 selected_labels_scales_indices=export_dialog.selected_labels_scales_indices,
                 selected_ids=export_dialog.selected_ids,
                 srid=srid,
