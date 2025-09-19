@@ -3272,7 +3272,8 @@ class InterlisExporterToIntermediateSchema:
             "steuerungszentraleref": self.get_tid(row.fk_control_center__REL),
         }
 
-    def _textpos_common(self, row, t_type, geojson_crs_def, shortcut_en, oid_prefix):
+    # def _textpos_common(self, row, t_type, geojson_crs_def, shortcut_en, oid_prefix):
+    def _textpos_common(self, row, t_type, geojson_crs_def, shortcut_en, oid_prefix, plantyp):
         """
         Returns common attributes for textpos
         """
@@ -3300,7 +3301,8 @@ class InterlisExporterToIntermediateSchema:
             "texthali": "Left",  # can be Left/Center/Right
             "textvali": "Bottom",  # can be Top,Cap,Half,Base,Bottom
             # --- SIA405_TextPos ---
-            "plantyp": row["properties"]["scale"],
+            # "plantyp": row["properties"]["scale"],
+            "plantyp": plantyp,
             "textinhalt": row["properties"]["LabelText"],
             "bemerkung": None,
         }
@@ -3374,11 +3376,29 @@ class InterlisExporterToIntermediateSchema:
                 )
                 continue
 
+            # Adapt plantype if subtype of Werkplan as VSA-DSS does not yet supports subvalues.
+            plantyp = (label["properties"]["scale"],)
+            # ('Werkplan.500',)
+            plantyp_short = str(plantyp)
+            plantyp_short = plantyp_short[2:10]
+            logger.debug(f"Debug Plantyp_short: '{plantyp_short}'")
+            if plantyp_short == "Werkplan":
+                plantyp = "Werkplan"
+                logger.debug(f"Debug Plantyp adapted '{plantyp}'")
+            else:
+                logger.debug(f"Debug Plantyp not adapted '{plantyp}'")
+
             if not self.is_ag_xx_model:
                 if layer_name == "vw_tww_reach":
                     ili_label = self.model_classes_interlis.haltung_text(
                         **self._textpos_common(
-                            label, "haltung_text", geojson_crs_def, "RX", self.oid_prefix
+                            # label, "haltung_text", geojson_crs_def, "RX", self.oid_prefix
+                            label,
+                            "haltung_text",
+                            geojson_crs_def,
+                            "RX",
+                            self.oid_prefix,
+                            plantyp,
                         ),
                         haltungref=t_id,
                     )
@@ -3386,7 +3406,13 @@ class InterlisExporterToIntermediateSchema:
                 elif layer_name == "vw_tww_wastewater_structure":
                     ili_label = self.model_classes_interlis.abwasserbauwerk_text(
                         **self._textpos_common(
-                            label, "abwasserbauwerk_text", geojson_crs_def, "WX", self.oid_prefix
+                            # label, "abwasserbauwerk_text", geojson_crs_def, "WX", self.oid_prefix
+                            label,
+                            "abwasserbauwerk_text",
+                            geojson_crs_def,
+                            "WX",
+                            self.oid_prefix,
+                            plantyp,
                         ),
                         abwasserbauwerkref=t_id,
                     )
@@ -3394,7 +3420,13 @@ class InterlisExporterToIntermediateSchema:
                 elif layer_name == "catchment_area":
                     ili_label = self.model_classes_interlis.einzugsgebiet_text(
                         **self._textpos_common(
-                            label, "einzugsgebiet_text", geojson_crs_def, "CX", self.oid_prefix
+                            # label, "einzugsgebiet_text", geojson_crs_def, "CX", self.oid_prefix
+                            label,
+                            "einzugsgebiet_text",
+                            geojson_crs_def,
+                            "CX",
+                            self.oid_prefix,
+                            plantyp,
                         ),
                         einzugsgebietref=t_id,
                     )
@@ -3413,6 +3445,7 @@ class InterlisExporterToIntermediateSchema:
                                 geojson_crs_def,
                                 "RX",
                                 self.oid_prefix,
+                                plantyp,
                             ),
                             infrastrukturhaltungref=t_id,
                         )
@@ -3425,6 +3458,7 @@ class InterlisExporterToIntermediateSchema:
                                 geojson_crs_def,
                                 "WX",
                                 self.oid_prefix,
+                                plantyp,
                             ),
                             infrastrukturknotenref=t_id,
                         )
@@ -3437,7 +3471,12 @@ class InterlisExporterToIntermediateSchema:
                     if layer_name == "vw_tww_reach":
                         ili_label = self.model_classes_interlis.haltung_text(
                             **self._textpos_common(
-                                label, "gephaltung_text", geojson_crs_def, "RX", self.oid_prefix
+                                label,
+                                "gephaltung_text",
+                                geojson_crs_def,
+                                "RX",
+                                self.oid_prefix,
+                                plantyp,
                             ),
                             gephaltungref=t_id,
                         )
@@ -3445,7 +3484,12 @@ class InterlisExporterToIntermediateSchema:
                     elif layer_name == "vw_tww_wastewater_structure":
                         ili_label = self.model_classes_interlis.abwasserbauwerk_text(
                             **self._textpos_common(
-                                label, "gepknoten_text", geojson_crs_def, "WX", self.oid_prefix
+                                label,
+                                "gepknoten_text",
+                                geojson_crs_def,
+                                "WX",
+                                self.oid_prefix,
+                                plantyp,
                             ),
                             gepknotenref=t_id,
                         )
@@ -3453,7 +3497,12 @@ class InterlisExporterToIntermediateSchema:
                     elif layer_name == "catchment_area":
                         ili_label = self.model_classes_interlis.einzugsgebiet_text(
                             **self._textpos_common(
-                                label, "einzugsgebiet_text", geojson_crs_def, "CX", self.oid_prefix
+                                label,
+                                "einzugsgebiet_text",
+                                geojson_crs_def,
+                                "CX",
+                                self.oid_prefix,
+                                plantyp,
                             ),
                             einzugsgebietref=t_id,
                         )
@@ -3466,6 +3515,7 @@ class InterlisExporterToIntermediateSchema:
                                 geojson_crs_def,
                                 "BX",
                                 self.oid_prefix,
+                                plantyp,
                             ),
                             bautenausserhalbbaugebietref=t_id,
                         )
@@ -3473,7 +3523,12 @@ class InterlisExporterToIntermediateSchema:
                     elif layer_name == "measure_line":
                         ili_label = self.model_classes_interlis.gepmassnahme_text(
                             **self._textpos_common(
-                                label, "gepmassnahme_text", geojson_crs_def, "MX", self.oid_prefix
+                                label,
+                                "gepmassnahme_text",
+                                geojson_crs_def,
+                                "MX",
+                                self.oid_prefix,
+                                plantyp,
                             ),
                             gepmassnahmeref=t_id,
                         )
@@ -3481,7 +3536,12 @@ class InterlisExporterToIntermediateSchema:
                     elif layer_name == "measure_point":
                         ili_label = self.model_classes_interlis.gepmassnahme_text(
                             **self._textpos_common(
-                                label, "gepmassnahme_text", geojson_crs_def, "MX", self.oid_prefix
+                                label,
+                                "gepmassnahme_text",
+                                geojson_crs_def,
+                                "MX",
+                                self.oid_prefix,
+                                plantyp,
                             ),
                             gepmassnahmeref=t_id,
                         )
@@ -3489,7 +3549,12 @@ class InterlisExporterToIntermediateSchema:
                     elif layer_name == "measure_polygon":
                         ili_label = self.model_classes_interlis.gepmassnahme_text(
                             **self._textpos_common(
-                                label, "gepmassnahme_text", geojson_crs_def, "MX", self.oid_prefix
+                                label,
+                                "gepmassnahme_text",
+                                geojson_crs_def,
+                                "MX",
+                                self.oid_prefix,
+                                plantyp,
                             ),
                             gepmassnahmeref=t_id,
                         )
