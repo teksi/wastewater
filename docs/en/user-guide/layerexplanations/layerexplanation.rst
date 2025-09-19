@@ -59,6 +59,8 @@ Organisations ``tww_od.organisation``
 
 organisation contains the organisation that you can select in attributes like fk_dataowner, fk_operator, fk_provider, fk_owner, etc.
 
+In order to use the organisations efficiently, one can flag an organisation as active using the flag ``tww_active``. This flag filters the organisations accessible from the QGIS project.
+
  .. figure:: images/od_organisation.jpg
 
 This table is today a little bit hidden in the wastewater_structures group (but it is not only related to wastewater structures).
