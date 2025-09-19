@@ -24,7 +24,6 @@ class InterlisExporterToIntermediateSchema:
         model_classes_tww_sys,
         model_classes_tww_app=None,
         labels_orientation_offset=90,
-        # labels_werkplan_scale=500,
         selection=None,
         labels_file=None,
         basket_enabled=False,
@@ -60,7 +59,6 @@ class InterlisExporterToIntermediateSchema:
         self.model_classes_tww_sys = model_classes_tww_sys
         self.model_classes_tww_app = model_classes_tww_app
         self.labels_orientation_offset = labels_orientation_offset
-        # self.labels_werkplan_scale = labels_werkplan_scale
 
         self.tww_session = None
         self.abwasser_session = None
@@ -3378,9 +3376,23 @@ class InterlisExporterToIntermediateSchema:
                 )
                 continue
 
-            plantyp = row["properties"]["scale"],
-            if plantyp[0:8] = 'Werkplan':
+            # Adapt plantype if subtype of Werkplan as VSA-DSS does not yet supports subvalues.
+            plantyp = label["properties"]["scale"],
+            # ('Werkplan.500',)
+            plantyp_short = str(plantyp)
+            plantyp_short = plantyp_short[2:10]
+            logger.debug(
+                f"Debug Plantyp_short: '{plantyp_short}'"
+            )
+            if plantyp_short == 'Werkplan':
                 plantyp = "Werkplan"
+                logger.debug(
+                    f"Debug Plantyp adapted '{plantyp}'"
+                )
+            else:
+                logger.debug(
+                    f"Debug Plantyp not adapted '{plantyp}'"
+                )
 
             if not self.is_ag_xx_model:
                 if layer_name == "vw_tww_reach":
@@ -3424,6 +3436,7 @@ class InterlisExporterToIntermediateSchema:
                                 geojson_crs_def,
                                 "RX",
                                 self.oid_prefix,
+                                plantyp,
                             ),
                             infrastrukturhaltungref=t_id,
                         )
@@ -3436,6 +3449,7 @@ class InterlisExporterToIntermediateSchema:
                                 geojson_crs_def,
                                 "WX",
                                 self.oid_prefix,
+                                plantyp,
                             ),
                             infrastrukturknotenref=t_id,
                         )
@@ -3448,7 +3462,7 @@ class InterlisExporterToIntermediateSchema:
                     if layer_name == "vw_tww_reach":
                         ili_label = self.model_classes_interlis.haltung_text(
                             **self._textpos_common(
-                                label, "gephaltung_text", geojson_crs_def, "RX", self.oid_prefix
+                                label, "gephaltung_text", geojson_crs_def, "RX", self.oid_prefix, plantyp,
                             ),
                             gephaltungref=t_id,
                         )
@@ -3456,7 +3470,7 @@ class InterlisExporterToIntermediateSchema:
                     elif layer_name == "vw_tww_wastewater_structure":
                         ili_label = self.model_classes_interlis.abwasserbauwerk_text(
                             **self._textpos_common(
-                                label, "gepknoten_text", geojson_crs_def, "WX", self.oid_prefix
+                                label, "gepknoten_text", geojson_crs_def, "WX", self.oid_prefix, plantyp,
                             ),
                             gepknotenref=t_id,
                         )
@@ -3464,7 +3478,7 @@ class InterlisExporterToIntermediateSchema:
                     elif layer_name == "catchment_area":
                         ili_label = self.model_classes_interlis.einzugsgebiet_text(
                             **self._textpos_common(
-                                label, "einzugsgebiet_text", geojson_crs_def, "CX", self.oid_prefix
+                                label, "einzugsgebiet_text", geojson_crs_def, "CX", self.oid_prefix, plantyp,
                             ),
                             einzugsgebietref=t_id,
                         )
@@ -3477,6 +3491,7 @@ class InterlisExporterToIntermediateSchema:
                                 geojson_crs_def,
                                 "BX",
                                 self.oid_prefix,
+                                plantyp,
                             ),
                             bautenausserhalbbaugebietref=t_id,
                         )
@@ -3484,7 +3499,7 @@ class InterlisExporterToIntermediateSchema:
                     elif layer_name == "measure_line":
                         ili_label = self.model_classes_interlis.gepmassnahme_text(
                             **self._textpos_common(
-                                label, "gepmassnahme_text", geojson_crs_def, "MX", self.oid_prefix
+                                label, "gepmassnahme_text", geojson_crs_def, "MX", self.oid_prefix, plantyp,
                             ),
                             gepmassnahmeref=t_id,
                         )
@@ -3492,7 +3507,7 @@ class InterlisExporterToIntermediateSchema:
                     elif layer_name == "measure_point":
                         ili_label = self.model_classes_interlis.gepmassnahme_text(
                             **self._textpos_common(
-                                label, "gepmassnahme_text", geojson_crs_def, "MX", self.oid_prefix
+                                label, "gepmassnahme_text", geojson_crs_def, "MX", self.oid_prefix, plantyp,
                             ),
                             gepmassnahmeref=t_id,
                         )
@@ -3500,7 +3515,7 @@ class InterlisExporterToIntermediateSchema:
                     elif layer_name == "measure_polygon":
                         ili_label = self.model_classes_interlis.gepmassnahme_text(
                             **self._textpos_common(
-                                label, "gepmassnahme_text", geojson_crs_def, "MX", self.oid_prefix
+                                label, "gepmassnahme_text", geojson_crs_def, "MX", self.oid_prefix, plantyp,
                             ),
                             gepmassnahmeref=t_id,
                         )
