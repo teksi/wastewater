@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>381</width>
-    <height>418</height>
+    <height>322</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -66,16 +66,6 @@
            <string>Angle for horizontal labels (default: 90.0°)</string>
           </property>
          </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="werkplan_scale_label">
-          <property name="text">
-           <string>Scale for Werkplan (default: 1:500)</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QComboBox" name="export_werkplan_scale_selection_comboBox"/>
         </item>
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_2">
