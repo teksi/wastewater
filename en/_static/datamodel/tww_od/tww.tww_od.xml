@@ -1681,6 +1681,7 @@
          <index name="in_od_maintenance_event_identifier" unique="true">
             <column ascending="true" name="identifier"/>
             <column ascending="true" name="fk_dataowner"/>
+            <column ascending="true" name="time_point"/>
          </index>
          <checkConstraint constraint="((char_length(base_data) &lt;= 50))" name="me_base_data_length_max_50"/>
          <checkConstraint constraint="((char_length(data_details) &lt;= 50))" name="me_data_details_length_max_50"/>
