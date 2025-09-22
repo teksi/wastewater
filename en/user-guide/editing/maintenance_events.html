@@ -57,7 +57,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#link-an-existing-maintenance-event">3.3.3.3. Link an existing Maintenance Event</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#unlink-maintenance-events">3.3.3.4. Unlink Maintenance Events</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#editing">3.3.3.5. Editing</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#multi-edit">3.3.3.6. Multi Edit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mark-as-outdated">3.3.3.6. Mark as outdated</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#multi-edit">3.3.3.7. Multi Edit</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="connect_wastewater_network_elements.html">3.3.4. Connect Wastewater Network Elements</a></li>
@@ -183,8 +184,12 @@ Therefore TWW uses a intermediary RE_table to model the n:m relationship (<stron
 </ul>
 </div></blockquote>
 </section>
+<section id="mark-as-outdated">
+<h2><span class="section-number">3.3.3.6. </span>Mark as outdated<a class="headerlink" href="#mark-as-outdated" title="Link to this heading"></a></h2>
+<p>In order to use maintenance events and files efficiently, they can be flagged as outdated using a TEKSI-specific extension of the datamodel, namely a true/false value named <code class="docutils literal notranslate"><span class="pre">tww_outdated</span></code>.</p>
+</section>
 <section id="multi-edit">
-<h2><span class="section-number">3.3.3.6. </span>Multi Edit<a class="headerlink" href="#multi-edit" title="Link to this heading"></a></h2>
+<h2><span class="section-number">3.3.3.7. </span>Multi Edit<a class="headerlink" href="#multi-edit" title="Link to this heading"></a></h2>
 <p>Multi edit with linked tables is implemented in QGIS. It is possible to create or to link a maintenance event to a selection of reaches or wastewater structures in multiedit-mode.</p>
 </section>
 </section>

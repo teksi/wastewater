@@ -1187,6 +1187,7 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="fk_reach_point" nullable="true" remarks="" size="16" type="varchar" typeCode="12">
             <parent column="obj_id" foreignKey="rel_examination_reach_point" implied="false" onDeleteCascade="false" schema="tww_od" table="reach_point"/>
          </column>
+         <column autoUpdated="false" defaultValue="false" digits="0" id="10" name="tww_outdated" nullable="true" remarks="Not part of VSA DSS / Nicht Teil von VSA DSS / Pas part de VSA SDEE" size="1" type="bool" typeCode="-7"/>
          <primaryKey column="obj_id" sequenceNumberInPK="1"/>
          <index name="pkey_tww_od_examination_obj_id" unique="true">
             <column ascending="true" name="obj_id"/>
@@ -1269,6 +1270,7 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="fk_data_media" nullable="true" remarks="" size="16" type="varchar" typeCode="12">
             <parent column="obj_id" foreignKey="rel_file_data_media" implied="false" onDeleteCascade="false" schema="tww_od" table="data_media"/>
          </column>
+         <column autoUpdated="false" defaultValue="false" digits="0" id="11" name="tww_outdated" nullable="true" remarks="Not part of VSA DSS / Nicht Teil von VSA DSS / Pas part de VSA SDEE" size="1" type="bool" typeCode="-7"/>
          <primaryKey column="obj_id" sequenceNumberInPK="1"/>
          <index name="pkey_tww_od_file_obj_id" unique="true">
             <column ascending="true" name="obj_id"/>

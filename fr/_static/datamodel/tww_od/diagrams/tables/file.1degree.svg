@@ -114,7 +114,7 @@
 <g id="node3" class="node">
 <title>file</title>
 <g id="a_node3"><a xlink:href="../../tables/file.html" xlink:title="file" target="_top">
-<polygon fill="#ffffff" stroke="transparent" points="488,-225 488,-511 744,-511 744,-225 488,-225"/>
+<polygon fill="#ffffff" stroke="transparent" points="488,-203 488,-511 744,-511 744,-203 488,-203"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="490,-487 490,-509 742,-509 742,-487 490,-487"/>
 <polygon fill="none" stroke="black" points="490,-487 490,-509 742,-509 742,-487 490,-487"/>
 <text text-anchor="start" x="494.5" y="-496.2" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00">file</text>
@@ -171,17 +171,21 @@
 <text text-anchor="start" x="510" y="-253.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_data_media</text>
 <polygon fill="none" stroke="black" points="636,-245 636,-267 742,-267 742,-245 636,-245"/>
 <text text-anchor="start" x="639" y="-253.2" font-family="Helvetica,sans-Serif" font-size="11.00">varchar[16]</text>
-<polygon fill="#ffffff" stroke="transparent" points="490,-227 490,-245 742,-245 742,-227 490,-227"/>
-<polygon fill="none" stroke="black" points="490,-227 490,-245 742,-245 742,-227 490,-227"/>
-<polygon fill="#ffffff" stroke="transparent" points="491,-228 491,-244 579,-244 579,-228 491,-228"/>
-<text text-anchor="start" x="493" y="-233.2" font-family="Helvetica,sans-Serif" font-size="11.00">&lt; 5</text>
-<polygon fill="#ffffff" stroke="transparent" points="579,-228 579,-244 654,-244 654,-228 579,-228"/>
-<text text-anchor="start" x="612.5" y="-233.2" font-family="Helvetica,sans-Serif" font-size="11.00"> &#160;</text>
-<polygon fill="#ffffff" stroke="transparent" points="654,-228 654,-244 741,-244 741,-228 654,-228"/>
-<text text-anchor="start" x="719" y="-233.2" font-family="Helvetica,sans-Serif" font-size="11.00">0 &gt;</text>
-<polygon fill="black" stroke="black" points="579,-228 579,-244 579,-244 579,-228 579,-228"/>
-<polygon fill="black" stroke="black" points="654,-228 654,-244 654,-244 654,-228 654,-228"/>
-<polygon fill="none" stroke="black" stroke-width="2" points="489,-226 489,-510 743,-510 743,-226 489,-226"/>
+<polygon fill="none" stroke="black" points="490,-223 490,-245 636,-245 636,-223 490,-223"/>
+<text text-anchor="start" x="510" y="-231.2" font-family="Helvetica,sans-Serif" font-size="11.00">tww_outdated</text>
+<polygon fill="none" stroke="black" points="636,-223 636,-245 742,-245 742,-223 636,-223"/>
+<text text-anchor="start" x="639" y="-231.2" font-family="Helvetica,sans-Serif" font-size="11.00">bool[1]</text>
+<polygon fill="#ffffff" stroke="transparent" points="490,-205 490,-223 742,-223 742,-205 490,-205"/>
+<polygon fill="none" stroke="black" points="490,-205 490,-223 742,-223 742,-205 490,-205"/>
+<polygon fill="#ffffff" stroke="transparent" points="491,-206 491,-222 579,-222 579,-206 491,-206"/>
+<text text-anchor="start" x="493" y="-211.2" font-family="Helvetica,sans-Serif" font-size="11.00">&lt; 5</text>
+<polygon fill="#ffffff" stroke="transparent" points="579,-206 579,-222 654,-222 654,-206 579,-206"/>
+<text text-anchor="start" x="612.5" y="-211.2" font-family="Helvetica,sans-Serif" font-size="11.00"> &#160;</text>
+<polygon fill="#ffffff" stroke="transparent" points="654,-206 654,-222 741,-222 741,-206 654,-206"/>
+<text text-anchor="start" x="719" y="-211.2" font-family="Helvetica,sans-Serif" font-size="11.00">0 &gt;</text>
+<polygon fill="black" stroke="black" points="579,-206 579,-222 579,-222 579,-206 579,-206"/>
+<polygon fill="black" stroke="black" points="654,-206 654,-222 654,-222 654,-206 654,-206"/>
+<polygon fill="none" stroke="black" stroke-width="2" points="489,-204 489,-510 743,-510 743,-204 489,-204"/>
 </a>
 </g>
 </g>

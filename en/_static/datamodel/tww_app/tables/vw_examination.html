@@ -228,6 +228,23 @@
                                     <td></td>
                                 </tr>
                                 <tr>
+                                    <td><span id="tww_outdated">tww_outdated</span></td>
+                                    <td>bool</td>
+                                    <td>1</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
                                     <td><span id="vehicle">vehicle</span></td>
                                     <td>text</td>
                                     <td>2147483647</td>
@@ -588,7 +605,7 @@
                             </div>
                         </div>
                         <div class="box-body">
-                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">SELECT examination.obj_id,&#10;    examination.equipment,&#10;    examination.fk_reach_point,&#10;    examination.from_point_identifier,&#10;    examination.inspected_length,&#10;    examination.recording_type,&#10;    examination.to_point_identifier,&#10;    examination.vehicle,&#10;    examination.videonumber,&#10;    examination.weather,&#10;    maintenance_event.base_data,&#10;    maintenance_event.cost,&#10;    maintenance_event.data_details,&#10;    maintenance_event.duration,&#10;    maintenance_event.fk_dataowner,&#10;    maintenance_event.fk_measure,&#10;    maintenance_event.fk_operating_company,&#10;    maintenance_event.fk_provider,&#10;    maintenance_event.identifier,&#10;    maintenance_event.last_modification,&#10;    maintenance_event.operator,&#10;    maintenance_event.reason,&#10;    maintenance_event.remark,&#10;    maintenance_event.result,&#10;    maintenance_event.status,&#10;    maintenance_event.time_point&#10;   FROM (tww_od.examination&#10;     LEFT JOIN tww_od.maintenance_event ON (((maintenance_event.obj_id)::text &#61; (examination.obj_id)::text)));</textarea>
+                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">SELECT examination.obj_id,&#10;    examination.equipment,&#10;    examination.fk_reach_point,&#10;    examination.from_point_identifier,&#10;    examination.inspected_length,&#10;    examination.recording_type,&#10;    examination.to_point_identifier,&#10;    examination.tww_outdated,&#10;    examination.vehicle,&#10;    examination.videonumber,&#10;    examination.weather,&#10;    maintenance_event.base_data,&#10;    maintenance_event.cost,&#10;    maintenance_event.data_details,&#10;    maintenance_event.duration,&#10;    maintenance_event.fk_dataowner,&#10;    maintenance_event.fk_measure,&#10;    maintenance_event.fk_operating_company,&#10;    maintenance_event.fk_provider,&#10;    maintenance_event.identifier,&#10;    maintenance_event.last_modification,&#10;    maintenance_event.operator,&#10;    maintenance_event.reason,&#10;    maintenance_event.remark,&#10;    maintenance_event.result,&#10;    maintenance_event.status,&#10;    maintenance_event.time_point&#10;   FROM (tww_od.examination&#10;     LEFT JOIN tww_od.maintenance_event ON (((maintenance_event.obj_id)::text &#61; (examination.obj_id)::text)));</textarea>
                             <div style="padding-top: 5px;"><hr></div>
                             <div class="box box-solid">
                                 <div class="box-header with-border">

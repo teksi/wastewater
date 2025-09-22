@@ -303,6 +303,23 @@
                                     </td>
                                     <td></td>
                                 </tr>
+                                <tr>
+                                    <td><span id="tww_outdated">tww_outdated</span></td>
+                                    <td>bool</td>
+                                    <td>1</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>false</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td><p>Not part of VSA DSS / Nicht Teil von VSA DSS / Pas part de VSA SDEE</p></td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -368,8 +385,12 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td>ex_equipment_length_max_50</td>
-                                    <td>((char_length(equipment) &lt;&#61; 50))</td>
+                                    <td>ex_to_point_identifier_length_max_20</td>
+                                    <td>((char_length(to_point_identifier) &lt;&#61; 20))</td>
+                                </tr>
+                                <tr>
+                                    <td>ex_vehicle_length_max_50</td>
+                                    <td>((char_length(vehicle) &lt;&#61; 50))</td>
                                 </tr>
                                 <tr>
                                     <td>ex_videonumber_length_max_20</td>
@@ -380,12 +401,8 @@
                                     <td>((char_length(from_point_identifier) &lt;&#61; 20))</td>
                                 </tr>
                                 <tr>
-                                    <td>ex_to_point_identifier_length_max_20</td>
-                                    <td>((char_length(to_point_identifier) &lt;&#61; 20))</td>
-                                </tr>
-                                <tr>
-                                    <td>ex_vehicle_length_max_50</td>
-                                    <td>((char_length(vehicle) &lt;&#61; 50))</td>
+                                    <td>ex_equipment_length_max_50</td>
+                                    <td>((char_length(equipment) &lt;&#61; 50))</td>
                                 </tr>
                                 </tbody>
                             </table>
