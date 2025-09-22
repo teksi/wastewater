@@ -98,8 +98,7 @@ def vw_tww_damage_channel(
         {extra_cols_base}
         FROM base
         LEFT JOIN damage_pictures ON damage_pictures.obj_id=base.obj_id
-        LEFT JOIN examination_videos ON examination_videos.obj_id=base.obj_id
-        GROUP BY base.*;
+        LEFT JOIN examination_videos ON examination_videos.obj_id=base.obj_id;
     """.format(
         dg_cols=select_columns(
             connection=connection,
