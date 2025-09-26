@@ -14,7 +14,6 @@ from teksi_wastewater.interlis.processing_algs.extractlabels_interlis import (
 from teksi_wastewater.utils.database_utils import DatabaseUtils
 
 
-
 class TeksiWastewaterCmd:
     SUBPARSER_NAME_INTERLIS_IMPORT = "interlis_import"
     SUBPARSER_NAME_INTERLIS_EXPORT = "interlis_export"
@@ -198,7 +197,6 @@ class TeksiWastewaterCmd:
                 print(f"Additional details: {exception.additional_text}", file=sys.stderr)
             if exception.log_path:
                 print(f"Log file: {exception.log_path}", file=sys.stderr)
-
 
     def execute_interlis_export(self):
 
