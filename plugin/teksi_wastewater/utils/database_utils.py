@@ -2,6 +2,7 @@ import collections
 import configparser
 import os
 import re
+from typing import Any
 
 from .plugin_utils import logger
 
@@ -47,6 +48,30 @@ class DatabaseUtils:
         def __exit__(self, exc_type, exc_val, exc_tb):
             self.connection.commit()
             self.connection.close()
+
+    @staticmethod
+    def wrap_identifier(identifier: str) -> Any:
+        """
+        Safely wrap an identifier (e.g., table or column name) for use in SQL.
+        Works with both psycopg2 and psycopg3.
+        """
+        return psycopg.sql.Identifier(identifier)
+
+    @staticmethod
+    def wrap_literal(value: Any) -> Any:
+        """
+        Safely wrap a literal value for use in SQL.
+        Works with both psycopg2 and psycopg3.
+        """
+        return psycopg.sql.Literal(value)
+
+    @staticmethod
+    def compose_sql(query: str, *args: Any, **kwargs: Any) -> Any:
+        """
+        Safely compose an SQL query with identifiers and values.
+        Works with both psycopg2 and psycopg3.
+        """
+        return psycopg.sql.SQL(query).format(*args, **kwargs)
 
     @staticmethod
     def fetchone(query: str):
