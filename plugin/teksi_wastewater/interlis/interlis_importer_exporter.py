@@ -2,6 +2,7 @@ import logging
 import os
 import tempfile
 from pathlib import Path
+from typing import Any, List, Tuple
 
 from ..utils.database_utils import DatabaseUtils
 from . import config
@@ -838,16 +839,22 @@ class InterlisImporterExporter:
                     # Return statement added
                     return False
 
+
     def _check_value_condition(
         self,
-        check_classes,
-        value_name,
+        check_classes: List[str],
+        value_name: str,
         check_null: bool = True,
         check_val: Any = None,
-        limit_to_selection=False,
-    ):
+        limit_to_selection: bool = False
+    ) -> Tuple[bool, str, int]:
         """
         Check if attribute value_name fulfils condition.
+        check_classes: List of class names that are to be checked
+        value_name: name of the value to be checked
+        check_null: bool whether to check for IS NULL
+        check_val: value to be checked. Defaults to ''
+        limit_to_selection: bool whether a selection limit is active
         Returns: (failed, error_message, issue_count)
         """
         if not check_val:
