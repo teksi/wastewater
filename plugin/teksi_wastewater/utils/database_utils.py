@@ -56,7 +56,6 @@ class DatabaseUtils:
         """
         return psycopg.sql.Identifier(identifier)
 
-
     @staticmethod
     def wrap_literal(value: Any) -> Any:
         """

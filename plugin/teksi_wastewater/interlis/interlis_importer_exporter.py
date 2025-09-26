@@ -3,8 +3,6 @@ import os
 import tempfile
 from pathlib import Path
 
-
-
 from ..utils.database_utils import DatabaseUtils
 from . import config
 from .gui.interlis_import_selection_dialog import InterlisImportSelectionDialog
@@ -296,12 +294,13 @@ class InterlisImporterExporter:
 
         # go thru all available checks and register if check failed or not.
         results = self.run_integrity_checks(limit_to_selection)
-        if  not results["failed"]:
+        if not results["failed"]:
             logger.info(f"All checks passed! ({results['stats']['ok']} OK)")
             execute_export()
         else:
             if user_interaction:
                 from PyQt5.QtWidgets import QMessageBox
+
                 logger.debug("Adding QMessageBox ...")
                 # Add Message box to ask if export should still be continued or not
 
@@ -345,7 +344,9 @@ class InterlisImporterExporter:
                     execute_export()
             else:
                 logger.error(f"Failed checks:\n{results['failed_checks']}")
-                logger.info(f" {results['stats']['failed']} failed, {results['stats']['ok']} passed")
+                logger.info(
+                    f" {results['stats']['failed']} failed, {results['stats']['ok']} passed"
+                )
                 logger.info(
                     "INTERLIS export has been stopped due to failing export checks - see logs for details."
                 )
@@ -712,7 +713,7 @@ class InterlisImporterExporter:
         return {
             "failed": number_tests_failed > 0,
             "failed_checks": "\n".join(failed_check_list),
-            "stats": {"failed": number_tests_failed, "ok": number_tests_ok}
+            "stats": {"failed": number_tests_failed, "ok": number_tests_ok},
         }
 
     def _check_subclass_counts(self, limit_to_selection=False):
@@ -837,17 +838,24 @@ class InterlisImporterExporter:
                     # Return statement added
                     return False
 
-    def _check_value_condition(self, check_classes, value_name, check_null: bool=True, check_val: Any=None, limit_to_selection=False):
+    def _check_value_condition(
+        self,
+        check_classes,
+        value_name,
+        check_null: bool = True,
+        check_val: Any = None,
+        limit_to_selection=False,
+    ):
         """
         Check if attribute value_name fulfils condition.
         Returns: (failed, error_message, issue_count)
         """
         if not check_val:
-            check_val = ''
+            check_val = ""
         with DatabaseUtils.PsycopgConnection() as connection:
             cursor = connection.cursor()
             missing_count = 0
-            column_identifier=DatabaseUtils.wrap_identifier(value_name)
+            column_identifier = DatabaseUtils.wrap_identifier(value_name)
             condition_parts = [
                 DatabaseUtils.compose_sql(
                     "{column_name} = %s",
@@ -855,12 +863,12 @@ class InterlisImporterExporter:
                 )
             ]
             if check_null:
-                    condition_parts.append(
-                        DatabaseUtils.compose_sql(
-                            "OR {column_name} IS NULL",
-                            column_name=column_identifier,
-                        )
+                condition_parts.append(
+                    DatabaseUtils.compose_sql(
+                        "OR {column_name} IS NULL",
+                        column_name=column_identifier,
                     )
+                )
             condition = DatabaseUtils.compose_sql(" ".join(condition_parts))
             error_message = ""
             for _class in check_classes:
@@ -873,7 +881,7 @@ class InterlisImporterExporter:
                     table_name=DatabaseUtils.wrap_identifier(_class),
                     condition=condition,
                 )
-                cursor.execute(query,(check_val,))
+                cursor.execute(query, (check_val,))
                 result = cursor.fetchone()
                 class_count = int(result[0]) if result else 0
                 obj_ids_without_val = result[1] if result else []
@@ -888,7 +896,9 @@ class InterlisImporterExporter:
             if missing_count > 0:
                 errormsg = f"Missing {value_name} in schema tww_od: {missing_count}"
                 if limit_to_selection:
-                    logger.warning(f"Overall Subclass Count: {errormsg}. The problem might lie outside the selection")
+                    logger.warning(
+                        f"Overall Subclass Count: {errormsg}. The problem might lie outside the selection"
+                    )
                 else:
                     logger.error(f"INTEGRITY CHECK missing {value_name}: {errormsg}")
                 return (True, error_message, missing_count)
@@ -901,382 +911,421 @@ class InterlisImporterExporter:
         Check if attribute identifier is Null
         """
         check_classes = [
-                # VSA-KEK
-                ("data_media"),
-                ("file"),
-                ("maintenance_event"),
-                # SIA405 Abwasser
-                ("organisation"),
-                ("wastewater_structure"),
-                ("wastewater_networkelement"),
-                ("structure_part"),
-                ("reach_point"),
-                ("pipe_profile"),
-                # VSA-DSS
-                # new 2020
-                ("building_group"),
-                ("catchment_area"),
-                ("connection_object"),
-                ("control_center"),
-                # only VSA-DSS 2015
-                # ("hazard_source"),
-                ("hydr_geometry"),
-                ("hydraulic_char_data"),
-                # new 2020
-                ("measure"),
-                ("measurement_result"),
-                ("measurement_series"),
-                ("measuring_device"),
-                ("measuring_point"),
-                ("mechanical_pretreatment"),
-                ("overflow"),
-                ("overflow_char"),
-                ("retention_body"),
-                # only VSA-DSS 2015
-                # ("river_bank"),
-                # ("river_bed"),
-                # ("sector_water_body"),
-                ("sludge_treatment"),
-                # ("substance"),
-                ("surface_runoff_parameters"),
-                # ("surface_water_bodies"),
-                ("throttle_shut_off_unit"),
-                ("waste_water_treatment"),
-                ("waste_water_treatment_plant"),
-                # only VSA-DSS 2015
-                # ("water_catchment"),
-                # ("water_control_structure"),
-                # ("water_course_segment"),
-                ("wwtp_energy_use"),
-                ("zone"),
-            ]
-        return self._check_value_condition( check_classes, 'identifier', limit_to_selection=limit_to_selection)
+            # VSA-KEK
+            ("data_media"),
+            ("file"),
+            ("maintenance_event"),
+            # SIA405 Abwasser
+            ("organisation"),
+            ("wastewater_structure"),
+            ("wastewater_networkelement"),
+            ("structure_part"),
+            ("reach_point"),
+            ("pipe_profile"),
+            # VSA-DSS
+            # new 2020
+            ("building_group"),
+            ("catchment_area"),
+            ("connection_object"),
+            ("control_center"),
+            # only VSA-DSS 2015
+            # ("hazard_source"),
+            ("hydr_geometry"),
+            ("hydraulic_char_data"),
+            # new 2020
+            ("measure"),
+            ("measurement_result"),
+            ("measurement_series"),
+            ("measuring_device"),
+            ("measuring_point"),
+            ("mechanical_pretreatment"),
+            ("overflow"),
+            ("overflow_char"),
+            ("retention_body"),
+            # only VSA-DSS 2015
+            # ("river_bank"),
+            # ("river_bed"),
+            # ("sector_water_body"),
+            ("sludge_treatment"),
+            # ("substance"),
+            ("surface_runoff_parameters"),
+            # ("surface_water_bodies"),
+            ("throttle_shut_off_unit"),
+            ("waste_water_treatment"),
+            ("waste_water_treatment_plant"),
+            # only VSA-DSS 2015
+            # ("water_catchment"),
+            # ("water_control_structure"),
+            # ("water_course_segment"),
+            ("wwtp_energy_use"),
+            ("zone"),
+        ]
+        return self._check_value_condition(
+            check_classes, "identifier", limit_to_selection=limit_to_selection
+        )
 
     def _check_fk_owner_null(self, limit_to_selection=False):
         """
         Check if MANDATORY fk_owner is Null
         """
         check_classes = [
-                # SIA405 Abwasser
-                ("wastewater_structure"),
-            ]
-        return self._check_value_condition( check_classes, 'fk_owner', limit_to_selection=limit_to_selection)
+            # SIA405 Abwasser
+            ("wastewater_structure"),
+        ]
+        return self._check_value_condition(
+            check_classes, "fk_owner", limit_to_selection=limit_to_selection
+        )
 
     def _check_fk_operator_null(self, limit_to_selection=False):
         """
         Check if MANDATORY fk_operator is Null
         """
-        check_classes =[
-                # SIA405 Abwasser
-                ("wastewater_structure"),
-            ]
-        return self._check_value_condition( check_classes, 'fk_operator', limit_to_selection=limit_to_selection)
+        check_classes = [
+            # SIA405 Abwasser
+            ("wastewater_structure"),
+        ]
+        return self._check_value_condition(
+            check_classes, "fk_operator", limit_to_selection=limit_to_selection
+        )
 
     def _check_fk_dataowner_null(self, limit_to_selection=False):
         """
         Check if MANDATORY fk_dataowner is Null
         """
-        check_classes =[
-                # VSA-KEK
-                ("damage"),
-                ("data_media"),
-                ("file"),
-                ("maintenance_event"),
-                # SIA405 Abwasser
-                # take out for DSS 2020
-                # ("organisation"),
-                ("wastewater_structure"),
-                ("wastewater_networkelement"),
-                ("structure_part"),
-                ("reach_point"),
-                ("pipe_profile"),
-                # VSA-DSS
-                # new 2020
-                ("building_group"),
-                ("building_group_baugwr"),
-                ("catchment_area"),
-                ("connection_object"),
-                ("control_center"),
-                # new 2020
-                ("disposal"),
-                ("farm"),
-                # only VSA-DSS 2015
-                # ("hazard_source"),
-                ("hq_relation"),
-                ("hydraulic_char_data"),
-                ("hydr_geometry"),
-                ("hydr_geom_relation"),
-                # new 2020
-                ("log_card"),
-                # maintenance_event see VSA-KEK
-                # new 2020
-                ("measure"),
-                ("measurement_result"),
-                ("measurement_series"),
-                ("measuring_device"),
-                ("measuring_point"),
-                ("mechanical_pretreatment"),
-                ("mutation"),
-                ("overflow"),
-                ("overflow_char"),
-                ("profile_geometry"),
-                ("retention_body"),
-                # only VSA-DSS 2015
-                # ("river_bank"),
-                # ("river_bed"),
-                # ("sector_water_body"),
-                ("sludge_treatment"),
-                # ("substance"),
-                ("surface_runoff_parameters"),
-                # only VSA-DSS 2015
-                # ("surface_water_bodies"),
-                ("throttle_shut_off_unit"),
-                ("waste_water_treatment"),
-                ("waste_water_treatment_plant"),
-                # only VSA-DSS 2015
-                # ("water_catchment"),
-                # ("water_control_structure"),
-                # ("water_course_segment"),
-                ("wwtp_energy_use"),
-                ("zone"),
-                # sia405cc
-                ("sia405cc_cable"),
-                ("sia405cc_cable_point"),
-                ("sia405pt_protection_tube"),
-            ]
-        return self._check_value_condition( check_classes, 'fk_dataowner', limit_to_selection=limit_to_selection)
+        check_classes = [
+            # VSA-KEK
+            ("damage"),
+            ("data_media"),
+            ("file"),
+            ("maintenance_event"),
+            # SIA405 Abwasser
+            # take out for DSS 2020
+            # ("organisation"),
+            ("wastewater_structure"),
+            ("wastewater_networkelement"),
+            ("structure_part"),
+            ("reach_point"),
+            ("pipe_profile"),
+            # VSA-DSS
+            # new 2020
+            ("building_group"),
+            ("building_group_baugwr"),
+            ("catchment_area"),
+            ("connection_object"),
+            ("control_center"),
+            # new 2020
+            ("disposal"),
+            ("farm"),
+            # only VSA-DSS 2015
+            # ("hazard_source"),
+            ("hq_relation"),
+            ("hydraulic_char_data"),
+            ("hydr_geometry"),
+            ("hydr_geom_relation"),
+            # new 2020
+            ("log_card"),
+            # maintenance_event see VSA-KEK
+            # new 2020
+            ("measure"),
+            ("measurement_result"),
+            ("measurement_series"),
+            ("measuring_device"),
+            ("measuring_point"),
+            ("mechanical_pretreatment"),
+            ("mutation"),
+            ("overflow"),
+            ("overflow_char"),
+            ("profile_geometry"),
+            ("retention_body"),
+            # only VSA-DSS 2015
+            # ("river_bank"),
+            # ("river_bed"),
+            # ("sector_water_body"),
+            ("sludge_treatment"),
+            # ("substance"),
+            ("surface_runoff_parameters"),
+            # only VSA-DSS 2015
+            # ("surface_water_bodies"),
+            ("throttle_shut_off_unit"),
+            ("waste_water_treatment"),
+            ("waste_water_treatment_plant"),
+            # only VSA-DSS 2015
+            # ("water_catchment"),
+            # ("water_control_structure"),
+            # ("water_course_segment"),
+            ("wwtp_energy_use"),
+            ("zone"),
+            # sia405cc
+            ("sia405cc_cable"),
+            ("sia405cc_cable_point"),
+            ("sia405pt_protection_tube"),
+        ]
+        return self._check_value_condition(
+            check_classes, "fk_dataowner", limit_to_selection=limit_to_selection
+        )
 
     def _check_fk_provider_null(self, limit_to_selection=False):
         """
         Check if MANDATORY fk_provider is Null
         """
         check_classes = [
-                # VSA-KEK
-                ("damage"),
-                ("data_media"),
-                ("file"),
-                ("maintenance_event"),
-                # SIA405 Abwasser
-                # take out for DSS 2020
-                # ("organisation"),
-                ("wastewater_structure"),
-                ("wastewater_networkelement"),
-                ("structure_part"),
-                ("reach_point"),
-                ("pipe_profile"),
-                # VSA-DSS
-                # new 2020
-                ("building_group"),
-                ("building_group_baugwr"),
-                ("catchment_area"),
-                ("connection_object"),
-                ("control_center"),
-                # new 2020
-                ("disposal"),
-                ("farm"),
-                # only VSA-DSS 2015
-                # ("hazard_source"),
-                ("hq_relation"),
-                ("hydraulic_char_data"),
-                ("hydr_geometry"),
-                ("hydr_geom_relation"),
-                # new 2020
-                ("log_card"),
-                # maintenance_event see VSA-KEK
-                # new 2020
-                ("measure"),
-                ("measurement_result"),
-                ("measurement_series"),
-                ("measuring_device"),
-                ("measuring_point"),
-                ("mechanical_pretreatment"),
-                ("mutation"),
-                ("overflow"),
-                ("overflow_char"),
-                ("profile_geometry"),
-                ("retention_body"),
-                # only VSA-DSS 2015
-                # ("river_bank"),
-                # ("river_bed"),
-                # ("sector_water_body"),
-                ("sludge_treatment"),
-                # ("substance"),
-                ("surface_runoff_parameters"),
-                # ("surface_water_bodies"),
-                ("throttle_shut_off_unit"),
-                ("waste_water_treatment"),
-                ("waste_water_treatment_plant"),
-                # only VSA-DSS 2015
-                # ("water_catchment"),
-                # ("water_control_structure"),
-                # ("water_course_segment"),
-                ("wwtp_energy_use"),
-                ("zone"),
-                # sia405cc
-                ("sia405cc_cable"),
-                ("sia405cc_cable_point"),
-                ("sia405pt_protection_tube"),
-            ]
-        return self._check_value_condition( check_classes, 'fk_provider', limit_to_selection=limit_to_selection)
+            # VSA-KEK
+            ("damage"),
+            ("data_media"),
+            ("file"),
+            ("maintenance_event"),
+            # SIA405 Abwasser
+            # take out for DSS 2020
+            # ("organisation"),
+            ("wastewater_structure"),
+            ("wastewater_networkelement"),
+            ("structure_part"),
+            ("reach_point"),
+            ("pipe_profile"),
+            # VSA-DSS
+            # new 2020
+            ("building_group"),
+            ("building_group_baugwr"),
+            ("catchment_area"),
+            ("connection_object"),
+            ("control_center"),
+            # new 2020
+            ("disposal"),
+            ("farm"),
+            # only VSA-DSS 2015
+            # ("hazard_source"),
+            ("hq_relation"),
+            ("hydraulic_char_data"),
+            ("hydr_geometry"),
+            ("hydr_geom_relation"),
+            # new 2020
+            ("log_card"),
+            # maintenance_event see VSA-KEK
+            # new 2020
+            ("measure"),
+            ("measurement_result"),
+            ("measurement_series"),
+            ("measuring_device"),
+            ("measuring_point"),
+            ("mechanical_pretreatment"),
+            ("mutation"),
+            ("overflow"),
+            ("overflow_char"),
+            ("profile_geometry"),
+            ("retention_body"),
+            # only VSA-DSS 2015
+            # ("river_bank"),
+            # ("river_bed"),
+            # ("sector_water_body"),
+            ("sludge_treatment"),
+            # ("substance"),
+            ("surface_runoff_parameters"),
+            # ("surface_water_bodies"),
+            ("throttle_shut_off_unit"),
+            ("waste_water_treatment"),
+            ("waste_water_treatment_plant"),
+            # only VSA-DSS 2015
+            # ("water_catchment"),
+            # ("water_control_structure"),
+            # ("water_course_segment"),
+            ("wwtp_energy_use"),
+            ("zone"),
+            # sia405cc
+            ("sia405cc_cable"),
+            ("sia405cc_cable_point"),
+            ("sia405pt_protection_tube"),
+        ]
+        return self._check_value_condition(
+            check_classes, "fk_provider", limit_to_selection=limit_to_selection
+        )
 
     def _check_fk_wastewater_structure_null(self, limit_to_selection=False):
         """
         Check if MANDATORY fk_wastewater_structure is Null
         """
         check_classes = [
-                # VSA-KEK
-                # SIA405 Abwasser
-                ("structure_part"),
-                # VSA-DSS
-            ]
-        return self._check_value_condition( check_classes, 'fk_wastewater_structure', limit_to_selection=limit_to_selection)
+            # VSA-KEK
+            # SIA405 Abwasser
+            ("structure_part"),
+            # VSA-DSS
+        ]
+        return self._check_value_condition(
+            check_classes, "fk_wastewater_structure", limit_to_selection=limit_to_selection
+        )
 
     def _check_fk_wastewater_node_null(self, limit_to_selection=False):
         """
         Check if MANDATORY fk_wastewater_node is Null
         """
         check_classes = [
-                # VSA-KEK
-                # SIA405 Abwasser
-                # VSA-DSS
-                ("hydraulic_char_data"),
-                ("overflow"),
-                ("throttle_shut_off_unit"),
-            ]
-        return self._check_value_condition( check_classes, 'fk_wastewater_node', limit_to_selection=limit_to_selection)
+            # VSA-KEK
+            # SIA405 Abwasser
+            # VSA-DSS
+            ("hydraulic_char_data"),
+            ("overflow"),
+            ("throttle_shut_off_unit"),
+        ]
+        return self._check_value_condition(
+            check_classes, "fk_wastewater_node", limit_to_selection=limit_to_selection
+        )
 
     def _check_fk_responsible_entity_null(self, limit_to_selection=False):
         """
         Check if MANDATORY fk_responsible_entity is Null
         """
         check_classes = [
-                # VSA-KEK
-                # SIA405 Abwasser
-                # VSA-DSS
-                ("measure"),
-            ]
-        return self._check_value_condition( check_classes, 'fk_responsible_entity', limit_to_selection=limit_to_selection)
+            # VSA-KEK
+            # SIA405 Abwasser
+            # VSA-DSS
+            ("measure"),
+        ]
+        return self._check_value_condition(
+            check_classes, "fk_responsible_entity", limit_to_selection=limit_to_selection
+        )
 
     def _check_fk_responsible_start_null(self, limit_to_selection=False):
         """
         Check if MANDATORY fk_responsible_start is Null
         """
         check_classes = [
-                # VSA-KEK
-                # SIA405 Abwasser
-                # VSA-DSS
-                ("measure"),
-            ]
-        return self._check_value_condition( check_classes, 'fk_responsible_start', limit_to_selection=limit_to_selection)
+            # VSA-KEK
+            # SIA405 Abwasser
+            # VSA-DSS
+            ("measure"),
+        ]
+        return self._check_value_condition(
+            check_classes, "fk_responsible_start", limit_to_selection=limit_to_selection
+        )
 
     def _check_fk_discharge_point_null(self, limit_to_selection=False):
         """
         Check if MANDATORY fk_discharge_point is Null
         """
         check_classes = [
-                # VSA-KEK
-                # SIA405 Abwasser
-                # VSA-DSS
-                ("catchment_area_totals"),
-            ]
-        return self._check_value_condition( check_classes, 'fk_discharge_point', limit_to_selection=limit_to_selection)
+            # VSA-KEK
+            # SIA405 Abwasser
+            # VSA-DSS
+            ("catchment_area_totals"),
+        ]
+        return self._check_value_condition(
+            check_classes, "fk_discharge_point", limit_to_selection=limit_to_selection
+        )
 
     def _check_fk_hydraulic_char_data_null(self, limit_to_selection=False):
         """
         Check if MANDATORY fk_hydraulic_char_data is Null
         """
         check_classes = [
-                # VSA-KEK
-                # SIA405 Abwasser
-                # VSA-DSS
-                ("catchment_area_totals"),
-            ]
-        return self._check_value_condition( check_classes, 'fk_hydraulic_char_data', limit_to_selection=limit_to_selection)
+            # VSA-KEK
+            # SIA405 Abwasser
+            # VSA-DSS
+            ("catchment_area_totals"),
+        ]
+        return self._check_value_condition(
+            check_classes, "fk_hydraulic_char_data", limit_to_selection=limit_to_selection
+        )
 
     def _check_fk_building_group_null(self, limit_to_selection=False):
         """
         Check if MANDATORY fk_building_group is Null
         """
         check_classes = [
-                # VSA-KEK
-                # SIA405 Abwasser
-                # VSA-DSS
-                ("building_group_baugwr"),
-            ]
-        return self._check_value_condition( check_classes, 'fk_building_group', limit_to_selection=limit_to_selection)
+            # VSA-KEK
+            # SIA405 Abwasser
+            # VSA-DSS
+            ("building_group_baugwr"),
+        ]
+        return self._check_value_condition(
+            check_classes, "fk_building_group", limit_to_selection=limit_to_selection
+        )
 
     def _check_fk_reach_null(self, limit_to_selection=False):
         """
         Check if MANDATORY fk_reach is Null
         """
         check_classes = [
-                # VSA-KEK
-                # SIA405 Abwasser
-                # VSA-DSS
-                ("reach_progression_alternative"),
-            ]
-        return self._check_value_condition( check_classes, 'fk_reach', limit_to_selection=limit_to_selection)
+            # VSA-KEK
+            # SIA405 Abwasser
+            # VSA-DSS
+            ("reach_progression_alternative"),
+        ]
+        return self._check_value_condition(
+            check_classes, "fk_reach", limit_to_selection=limit_to_selection
+        )
 
     def _check_fk_reach_point_from_null(self, limit_to_selection=False):
         """
         Check if MANDATORY fk_reach_point_from is Null
         """
         check_classes = [
-                # VSA-KEK
-                # SIA405 Abwasser
-                # VSA-DSS
-                ("reach"),
-            ]
-        return self._check_value_condition( check_classes, 'fk_reach_point_from', limit_to_selection=limit_to_selection)
+            # VSA-KEK
+            # SIA405 Abwasser
+            # VSA-DSS
+            ("reach"),
+        ]
+        return self._check_value_condition(
+            check_classes, "fk_reach_point_from", limit_to_selection=limit_to_selection
+        )
 
     def _check_fk_reach_point_to_null(self, limit_to_selection=False):
         """
         Check if MANDATORY fk_reach_point_to is Null
         """
         check_classes = [
-                # VSA-KEK
-                # SIA405 Abwasser
-                # VSA-DSS
-                ("reach"),
-            ]
-        return self._check_value_condition( check_classes, 'fk_reach_point_to', limit_to_selection=limit_to_selection)
+            # VSA-KEK
+            # SIA405 Abwasser
+            # VSA-DSS
+            ("reach"),
+        ]
+        return self._check_value_condition(
+            check_classes, "fk_reach_point_to", limit_to_selection=limit_to_selection
+        )
 
     def _check_fk_pwwf_wastewater_node_null(self, limit_to_selection=False):
         """
         Check if MANDATORY fk_pwwf_wastewater_node is Null
         """
         check_classes = [
-                # VSA-KEK
-                # SIA405 Abwasser
-                # VSA-DSS
-                ("log_card"),
-            ]
-        return self._check_value_condition( check_classes, 'fk_pwwf_wastewater_node', limit_to_selection=limit_to_selection)
+            # VSA-KEK
+            # SIA405 Abwasser
+            # VSA-DSS
+            ("log_card"),
+        ]
+        return self._check_value_condition(
+            check_classes, "fk_pwwf_wastewater_node", limit_to_selection=limit_to_selection
+        )
 
     def _check_fk_catchment_area_null(self, limit_to_selection=False):
         """
         Check if MANDATORY fk_catchment_area is Null
         """
         check_classes = [
-                # VSA-KEK
-                # SIA405 Abwasser
-                # VSA-DSS
-                ("surface_runoff_parameters"),
-            ]
-        return self._check_value_condition( check_classes, 'fk_catchment_area', limit_to_selection=limit_to_selection)
+            # VSA-KEK
+            # SIA405 Abwasser
+            # VSA-DSS
+            ("surface_runoff_parameters"),
+        ]
+        return self._check_value_condition(
+            check_classes, "fk_catchment_area", limit_to_selection=limit_to_selection
+        )
 
     def _check_organisation_tww_local_extension_count(self, limit_to_selection=False):
         """
         Check if there are organisations with tww_local_extension set
         """
         check_classes = [
-                # VSA-KEK
-                # SIA405 Abwasser
-                # VSA-DSS
-                ("organisation"),
-            ]
-        return self._check_value_condition(check_classes, 'tww_local_extension', check_null=False, check_val=True, limit_to_selection=limit_to_selection)
-
+            # VSA-KEK
+            # SIA405 Abwasser
+            # VSA-DSS
+            ("organisation"),
+        ]
+        return self._check_value_condition(
+            check_classes,
+            "tww_local_extension",
+            check_null=False,
+            check_val=True,
+            limit_to_selection=limit_to_selection,
+        )
 
     def _init_model_classes(self, model):
         ModelInterlis = None
