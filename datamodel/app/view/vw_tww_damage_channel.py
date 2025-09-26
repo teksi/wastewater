@@ -59,6 +59,26 @@ def vw_tww_damage_channel(
              LEFT JOIN tww_app.vw_tww_channel ch ON ch.obj_id = ws.obj_id
              {extra_joins}
           WHERE ex.recording_type = 3686
+        ),
+        damage_pictures AS(
+        SELECT dc.obj_id, array_agg(path_relative) over w as pics
+        FROM tww_od.file fi
+        INNER JOIN tww_od.damage_channel dc ON fi.object = dc.obj_id
+        INNER JOIN tww_od.damage dg ON dg.obj_id = dc.obj_id
+        LEFT JOIN tww_od.examination ex ON dg.fk_examination = ex.obj_id
+        LEFT JOIN tww_od.maintenance_event me on me.obj_id = ex.obj_id
+        WHERE fi.tww_outdated IS NOT True AND fi.kind=3772 --picture
+        WINDOW W as (ORDER BY fi.obj_id DESC)
+        ),
+        examination_videos AS(
+        SELECT dc.obj_id, FIRST_value(path_relative) over w as video
+        FROM tww_od.file fi
+        INNER JOIN tww_od.examination ex ON fi.object = ex.obj_id
+        INNER JOIN tww_od.maintenance_event me on me.obj_id = ex.obj_id
+        RIGHT JOIN tww_od.damage dg on dg.fk_examination = ex.obj_id
+        INNER JOIN tww_od.damage_channel dc ON dg.obj_id = dc.obj_id
+        WHERE fi.tww_outdated IS NOT True AND ex.tww_outdated IS NOT True AND fi.kind IN (3775, 9146)
+        WINDOW W as (PARTITION BY ex.fk_reach_point ORDER BY me.time_point DESC)
         )
         SELECT
         {dg_cols_base}
@@ -72,8 +92,13 @@ def vw_tww_damage_channel(
         END) AS situation2d_geometry
         , base.direction
         , base.tww_is_primary
+        , damage_pictures.pics[0] as picture_1
+        , damage_pictures.pics[1] as picture_2
+        , examination_videos.video
         {extra_cols_base}
-        FROM base;
+        FROM base
+        LEFT JOIN damage_pictures ON damage_pictures.obj_id=base.obj_id
+        LEFT JOIN examination_videos ON examination_videos.obj_id=base.obj_id;
     """.format(
         dg_cols=select_columns(
             connection=connection,
