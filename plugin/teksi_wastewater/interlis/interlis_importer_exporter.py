@@ -839,15 +839,14 @@ class InterlisImporterExporter:
                     # Return statement added
                     return False
 
-
     def _check_value_condition(
         self,
-        check_classes: List[str],
+        check_classes: list[str],
         value_name: str,
         check_null: bool = True,
         check_val: Any = None,
-        limit_to_selection: bool = False
-    ) -> Tuple[bool, str, int]:
+        limit_to_selection: bool = False,
+    ) -> tuple[bool, str, int]:
         """
         Check if attribute value_name fulfils condition.
         check_classes: List of class names that are to be checked
