@@ -197,6 +197,8 @@ class TeksiWastewaterCmd:
                 print(f"Additional details: {exception.additional_text}", file=sys.stderr)
             if exception.log_path:
                 print(f"Log file: {exception.log_path}", file=sys.stderr)
+        except Exception as exception:
+            raise exception
 
     def execute_interlis_export(self):
 
@@ -246,6 +248,8 @@ class TeksiWastewaterCmd:
                 print(f"Additional details: {exception.additional_text}", file=sys.stderr)
             if exception.log_path:
                 print(f"Log file: {exception.log_path}", file=sys.stderr)
+        except Exception as exception:
+            raise exception
 
 
 if __name__ == "__main__":
