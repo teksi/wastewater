@@ -2,7 +2,7 @@ import logging
 import os
 import tempfile
 from pathlib import Path
-from typing import Any, List, Tuple
+from typing import Any
 
 from ..utils.database_utils import DatabaseUtils
 from . import config
