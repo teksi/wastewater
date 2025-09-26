@@ -3,7 +3,6 @@
 import argparse
 import sys
 
-from qgis.core import QgsApplication
 from teksi_wastewater.interlis import config
 from teksi_wastewater.interlis.interlis_importer_exporter import (
     InterlisImporterExporter,
@@ -14,7 +13,6 @@ from teksi_wastewater.interlis.processing_algs.extractlabels_interlis import (
 )
 from teksi_wastewater.utils.database_utils import DatabaseUtils
 
-QgsApplication.setPrefixPath("/usr", True)
 
 
 class TeksiWastewaterCmd:
@@ -24,11 +22,6 @@ class TeksiWastewaterCmd:
     def __init__(self):
         self.parser = argparse.ArgumentParser()
         self.args = None
-
-        self.parser.add_argument(
-            "--qgs_app_prefix_path",
-            help="QGIS Application prefix path",
-        )
 
         self.parser.add_argument(
             "--srid",
@@ -179,11 +172,6 @@ class TeksiWastewaterCmd:
             exit(1)
 
     def execute_interlis_import(self):
-        if self.args.qgs_app_prefix_path:
-            QgsApplication.setPrefixPath(self.args.qgs_app_prefix_path, True)
-        qgs = QgsApplication([], False)
-        qgs.initQgis()
-
         DatabaseUtils.databaseConfig.PGSERVICE = self.args.pgservice
         DatabaseUtils.databaseConfig.PGHOST = self.args.pghost
         DatabaseUtils.databaseConfig.PGPORT = self.args.pgport
@@ -211,17 +199,8 @@ class TeksiWastewaterCmd:
             if exception.log_path:
                 print(f"Log file: {exception.log_path}", file=sys.stderr)
 
-        except Exception as exception:
-            qgs.exitQgis()
-            raise exception
-
-        qgs.exitQgis()
 
     def execute_interlis_export(self):
-        if self.args.qgs_app_prefix_path:
-            QgsApplication.setPrefixPath(self.args.qgs_app_prefix_path, True)
-        qgs = QgsApplication([], False)
-        qgs.initQgis()
 
         DatabaseUtils.databaseConfig.PGSERVICE = self.args.pgservice
         DatabaseUtils.databaseConfig.PGHOST = self.args.pghost
@@ -269,12 +248,6 @@ class TeksiWastewaterCmd:
                 print(f"Additional details: {exception.additional_text}", file=sys.stderr)
             if exception.log_path:
                 print(f"Log file: {exception.log_path}", file=sys.stderr)
-
-        except Exception as exception:
-            qgs.exitQgis()
-            raise exception
-
-        qgs.exitQgis()
 
 
 if __name__ == "__main__":
