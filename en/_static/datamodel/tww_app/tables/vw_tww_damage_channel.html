@@ -465,6 +465,57 @@
                                     </td>
                                     <td></td>
                                 </tr>
+                                <tr>
+                                    <td><span id="picture_1">picture_1</span></td>
+                                    <td>text</td>
+                                    <td>2147483647</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="picture_2">picture_2</span></td>
+                                    <td>text</td>
+                                    <td>2147483647</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="video">video</span></td>
+                                    <td>text</td>
+                                    <td>2147483647</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -503,7 +554,7 @@
                             </div>
                         </div>
                         <div class="box-body">
-                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">WITH base AS (&#10;         SELECT dg.obj_id,&#10;            dg.comments,&#10;            dg.connection,&#10;            dg.fk_dataowner,&#10;            dg.fk_examination,&#10;            dg.fk_provider,&#10;            dg.last_modification,&#10;            dg.line_damage,&#10;            dg.single_damage_class,&#10;            dg.video_counter,&#10;            dg.view_parameters,&#10;            dc.channel_damage_begin,&#10;            dc.channel_damage_code,&#10;            dc.channel_damage_end,&#10;            dc.channel_distance,&#10;            dc.channel_quantification1,&#10;            dc.channel_quantification2,&#10;            ws.identifier AS ws_identifier,&#10;            ch.progression2d_geometry AS ch_progression2d_geometry,&#10;                CASE&#10;                    WHEN (re_2.obj_id IS NULL) THEN &#39;upstream&#39;::text&#10;                    ELSE &#39;downstream&#39;::text&#10;                END AS direction,&#10;            ch.tww_is_primary&#10;           FROM (((((((((tww_od.damage_channel dc&#10;             LEFT JOIN tww_od.damage dg ON (((dg.obj_id)::text &#61; (dc.obj_id)::text)))&#10;             LEFT JOIN tww_od.examination ex ON (((ex.obj_id)::text &#61; (dg.fk_examination)::text)))&#10;             LEFT JOIN tww_od.re_maintenance_event_wastewater_structure mews ON (((mews.fk_maintenance_event)::text &#61; (ex.obj_id)::text)))&#10;             LEFT JOIN tww_od.wastewater_structure ws ON (((mews.fk_wastewater_structure)::text &#61; (ws.obj_id)::text)))&#10;             LEFT JOIN tww_od.wastewater_networkelement ne ON (((ws.obj_id)::text &#61; (ne.fk_wastewater_structure)::text)))&#10;             LEFT JOIN tww_od.reach re ON (((re.obj_id)::text &#61; (ne.obj_id)::text)))&#10;             LEFT JOIN tww_od.reach_point rp ON (((rp.obj_id)::text &#61; (ex.fk_reach_point)::text)))&#10;             LEFT JOIN tww_od.reach re_2 ON (((re_2.fk_reach_point_from)::text &#61; (rp.obj_id)::text)))&#10;             LEFT JOIN tww_app.vw_tww_channel ch ON (((ch.obj_id)::text &#61; (ws.obj_id)::text)))&#10;          WHERE (ex.recording_type &#61; 3686)&#10;        )&#10; SELECT comments,&#10;    connection,&#10;    fk_dataowner,&#10;    fk_examination,&#10;    fk_provider,&#10;    last_modification,&#10;    line_damage,&#10;    single_damage_class,&#10;    video_counter,&#10;    view_parameters,&#10;    obj_id,&#10;    channel_damage_begin,&#10;    channel_damage_code,&#10;    channel_damage_end,&#10;    channel_distance,&#10;    channel_quantification1,&#10;    channel_quantification2,&#10;    ws_identifier,&#10;    st_lineinterpolatepoint(ch_progression2d_geometry,&#10;        CASE&#10;            WHEN (direction &#61; &#39;downstream&#39;::text) THEN LEAST(((channel_distance)::double precision / st_length(ch_progression2d_geometry)), (1)::double precision)&#10;            ELSE ((1)::double precision - LEAST(((channel_distance)::double precision / st_length(ch_progression2d_geometry)), (1)::double precision))&#10;        END) AS situation2d_geometry,&#10;    direction,&#10;    tww_is_primary&#10;   FROM base;</textarea>
+                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">WITH base AS (&#10;         SELECT dg.obj_id,&#10;            dg.comments,&#10;            dg.connection,&#10;            dg.fk_dataowner,&#10;            dg.fk_examination,&#10;            dg.fk_provider,&#10;            dg.last_modification,&#10;            dg.line_damage,&#10;            dg.single_damage_class,&#10;            dg.video_counter,&#10;            dg.view_parameters,&#10;            dc.channel_damage_begin,&#10;            dc.channel_damage_code,&#10;            dc.channel_damage_end,&#10;            dc.channel_distance,&#10;            dc.channel_quantification1,&#10;            dc.channel_quantification2,&#10;            ws.identifier AS ws_identifier,&#10;            ch.progression2d_geometry AS ch_progression2d_geometry,&#10;                CASE&#10;                    WHEN (re_2.obj_id IS NULL) THEN &#39;upstream&#39;::text&#10;                    ELSE &#39;downstream&#39;::text&#10;                END AS direction,&#10;            ch.tww_is_primary&#10;           FROM (((((((((tww_od.damage_channel dc&#10;             LEFT JOIN tww_od.damage dg ON (((dg.obj_id)::text &#61; (dc.obj_id)::text)))&#10;             LEFT JOIN tww_od.examination ex ON (((ex.obj_id)::text &#61; (dg.fk_examination)::text)))&#10;             LEFT JOIN tww_od.re_maintenance_event_wastewater_structure mews ON (((mews.fk_maintenance_event)::text &#61; (ex.obj_id)::text)))&#10;             LEFT JOIN tww_od.wastewater_structure ws ON (((mews.fk_wastewater_structure)::text &#61; (ws.obj_id)::text)))&#10;             LEFT JOIN tww_od.wastewater_networkelement ne ON (((ws.obj_id)::text &#61; (ne.fk_wastewater_structure)::text)))&#10;             LEFT JOIN tww_od.reach re ON (((re.obj_id)::text &#61; (ne.obj_id)::text)))&#10;             LEFT JOIN tww_od.reach_point rp ON (((rp.obj_id)::text &#61; (ex.fk_reach_point)::text)))&#10;             LEFT JOIN tww_od.reach re_2 ON (((re_2.fk_reach_point_from)::text &#61; (rp.obj_id)::text)))&#10;             LEFT JOIN tww_app.vw_tww_channel ch ON (((ch.obj_id)::text &#61; (ws.obj_id)::text)))&#10;          WHERE (ex.recording_type &#61; 3686)&#10;        ), damage_pictures AS (&#10;         SELECT dc.obj_id,&#10;            array_agg(fi.path_relative) OVER w AS pics&#10;           FROM ((((tww_od.file fi&#10;             JOIN tww_od.damage_channel dc ON ((fi.object &#61; (dc.obj_id)::text)))&#10;             JOIN tww_od.damage dg ON (((dg.obj_id)::text &#61; (dc.obj_id)::text)))&#10;             LEFT JOIN tww_od.examination ex ON (((dg.fk_examination)::text &#61; (ex.obj_id)::text)))&#10;             LEFT JOIN tww_od.maintenance_event me ON (((me.obj_id)::text &#61; (ex.obj_id)::text)))&#10;          WHERE ((fi.tww_outdated IS NOT TRUE) AND (fi.kind &#61; 3772))&#10;          WINDOW w AS (ORDER BY fi.obj_id DESC)&#10;        ), examination_videos AS (&#10;         SELECT dc.obj_id,&#10;            first_value(fi.path_relative) OVER w AS video&#10;           FROM ((((tww_od.file fi&#10;             JOIN tww_od.examination ex ON ((fi.object &#61; (ex.obj_id)::text)))&#10;             JOIN tww_od.maintenance_event me ON (((me.obj_id)::text &#61; (ex.obj_id)::text)))&#10;             RIGHT JOIN tww_od.damage dg ON (((dg.fk_examination)::text &#61; (ex.obj_id)::text)))&#10;             JOIN tww_od.damage_channel dc ON (((dg.obj_id)::text &#61; (dc.obj_id)::text)))&#10;          WHERE ((fi.tww_outdated IS NOT TRUE) AND (ex.tww_outdated IS NOT TRUE) AND (fi.kind &#61; ANY (ARRAY[3775, 9146])))&#10;          WINDOW w AS (PARTITION BY ex.fk_reach_point ORDER BY me.time_point DESC)&#10;        )&#10; SELECT base.comments,&#10;    base.connection,&#10;    base.fk_dataowner,&#10;    base.fk_examination,&#10;    base.fk_provider,&#10;    base.last_modification,&#10;    base.line_damage,&#10;    base.single_damage_class,&#10;    base.video_counter,&#10;    base.view_parameters,&#10;    base.obj_id,&#10;    base.channel_damage_begin,&#10;    base.channel_damage_code,&#10;    base.channel_damage_end,&#10;    base.channel_distance,&#10;    base.channel_quantification1,&#10;    base.channel_quantification2,&#10;    base.ws_identifier,&#10;    st_lineinterpolatepoint(base.ch_progression2d_geometry,&#10;        CASE&#10;            WHEN (base.direction &#61; &#39;downstream&#39;::text) THEN LEAST(((base.channel_distance)::double precision / st_length(base.ch_progression2d_geometry)), (1)::double precision)&#10;            ELSE ((1)::double precision - LEAST(((base.channel_distance)::double precision / st_length(base.ch_progression2d_geometry)), (1)::double precision))&#10;        END) AS situation2d_geometry,&#10;    base.direction,&#10;    base.tww_is_primary,&#10;    damage_pictures.pics[0] AS picture_1,&#10;    damage_pictures.pics[1] AS picture_2,&#10;    examination_videos.video&#10;   FROM ((base&#10;     LEFT JOIN damage_pictures ON (((damage_pictures.obj_id)::text &#61; (base.obj_id)::text)))&#10;     LEFT JOIN examination_videos ON (((examination_videos.obj_id)::text &#61; (base.obj_id)::text)));</textarea>
                             <div style="padding-top: 5px;"><hr></div>
                             <div class="box box-solid">
                                 <div class="box-header with-border">
