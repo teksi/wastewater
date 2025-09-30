@@ -56,8 +56,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#alterations-to-ordinary-data">4.5.1. Alterations to ordinary data</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#introduction">4.5.1.1. Einleitung</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#altering-symbology-and-labelling-behaviour">4.5.1.2. Symbologie- und Beschriftungsverhalten ändern</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#creation-of-custom-tables">4.5.1.3. Creation of custom tables</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#adding-fields-to-base-tables">4.5.1.4. Adding fields to base tables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#creation-of-custom-tables">4.5.1.3. Erstellung benutzerdefinierter Tabellen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-fields-to-base-tables">4.5.1.4. Felder zu Basistabellen hinzufügen</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#datamodel-updates">4.5.1.5. Datamodel updates</a></li>
 </ul>
 </li>
@@ -114,22 +114,21 @@
 <p>Das Datenmodell ist versioniert und Aktualisierungen werden mit dem Postgres Updates Manager (auch bekannt als <a class="reference external" href="https://github.com/opengisch/pum">PUM</a>) durchgeführt. Die zur Bearbeitung der Daten erforderlichen Ansichten werden automatisch mit der Bibliothek „Pirogue &lt;<a class="reference external" href="https://github.com/opengisch/pirogue">https://github.com/opengisch/pirogue</a>&gt;“ erzeugt.</p>
 <p>Die Kombination von beidem ermöglicht kleine Anpassungen des Datenmodells, wie das Hinzufügen von Feldern zu bestehenden Basistabellen oder die Erweiterung von Ansichten durch das Verbinden zusätzlicher Tabellen.</p>
 <p>Before going further, we strongly recommend to ask the community if you have any doubts about how to store any information in the database. TWW complies with <a class="reference external" href="http://www.sia.ch/405">SIA 405</a> Waste Water and <a class="reference external" href="https://www.vsa.ch/models/">VSA-DSS</a> datamodel.</p>
-<p>If the TWW data model is not yet able to hold some data, please let us know what kind and how it should be handled.
-The TWW data model is a standard proof adaptative model and could follow your needs.</p>
+<p>Wenn das TWW-Datenmodell bestimmte Daten noch nicht speichern kann, teilen Sie uns bitte mit, um welche Art von Daten es sich handelt und wie damit verfahren werden soll. Das TWW-Datenmodell ist ein standardisiertes, anpassungsfähiges Modell und kann Ihren Anforderungen entsprechend angepasst werden.</p>
 <p>Sollte dennoch eine Anpassung erforderlich sein, erklären die folgenden Erläuterungen und Regeln, wie Sie das TWW-Datenmodell an Ihre spezifischen Bedürfnisse anpassen können.</p>
 </section>
 <section id="altering-symbology-and-labelling-behaviour">
 <h3><span class="section-number">4.5.1.2. </span>Symbologie- und Beschriftungsverhalten ändern<a class="headerlink" href="#altering-symbology-and-labelling-behaviour" title="Link to this heading"></a></h3>
-<p>Symbology and labelling behaviour depends on the value lists `` tww_vl.channel_usage_current`` and `` tww_vl.channel_function_hierarchic``  These two value list tables have an additional column <code class="docutils literal notranslate"><span class="pre">tww_symbology_order</span></code>, which is used to define the hierarchy of the symbology.</p>
+<p>Die Symbolik und das Beschriftungsverhalten hängen von den Wertelisten „tww_vl.channel_usage_current“ und „tww_vl.channel_function_hierarchic“ ab. Diese beiden Wertelistentabellen verfügen über eine zusätzliche Spalte „tww_symbology_order“, die zur Definition der Hierarchie der Symbolik verwendet wird.</p>
 <p>Für die Beschriftung kann die Spalte `` tww_vl.channel_function_hierarchic.tww_use_in_labels`` genutzt werden,  um zu steuern, welche FunktionHierarchisch beim Generieren des Labels berücksichtigt werden.</p>
 </section>
 <section id="creation-of-custom-tables">
-<h3><span class="section-number">4.5.1.3. </span>Creation of custom tables<a class="headerlink" href="#creation-of-custom-tables" title="Link to this heading"></a></h3>
-<p>It is possible to add custom tables with ordinary data. They must be stored in <code class="docutils literal notranslate"><span class="pre">tww_od</span></code>. In order to version them, use the Postgres Updates Manager (aka <a class="reference external" href="https://github.com/opengisch/pum">PUM</a>).</p>
+<h3><span class="section-number">4.5.1.3. </span>Erstellung benutzerdefinierter Tabellen<a class="headerlink" href="#creation-of-custom-tables" title="Link to this heading"></a></h3>
+<p>Es ist möglich, benutzerdefinierte Tabellen mit gewöhnlichen Daten hinzuzufügen. Diese müssen in „tww_od“ gespeichert werden. Um sie zu versionieren, verwenden Sie den Postgres Updates Manager (auch bekannt als „PUM &lt;<a class="reference external" href="https://github.com/opengisch/pum">https://github.com/opengisch/pum</a>&gt;“).</p>
 </section>
 <section id="adding-fields-to-base-tables">
-<h3><span class="section-number">4.5.1.4. </span>Adding fields to base tables<a class="headerlink" href="#adding-fields-to-base-tables" title="Link to this heading"></a></h3>
-<p>Instead of adding additional fields to base tables, it is advised to create a new table with a foreign key linking it to the base table using <a class="reference external" href="https://github.com/opengisch/pum">PUM</a>.</p>
+<h3><span class="section-number">4.5.1.4. </span>Felder zu Basistabellen hinzufügen<a class="headerlink" href="#adding-fields-to-base-tables" title="Link to this heading"></a></h3>
+<p>Anstatt zusätzliche Felder zu Basistabellen hinzuzufügen, empfiehlt es sich, eine neue Tabelle mit einem Fremdschlüssel zu erstellen, der sie mit der Basistabelle über <a class="reference external" href="https://github.com/opengisch/pum">PUM</a> verknüpft.</p>
 </section>
 <section id="datamodel-updates">
 <h3><span class="section-number">4.5.1.5. </span>Datamodel updates<a class="headerlink" href="#datamodel-updates" title="Link to this heading"></a></h3>

@@ -54,8 +54,8 @@
 <li class="toctree-l2"><a class="reference internal" href="Prepare-Data.html">6.2. Prepare Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Generate-SWMM-File.html">6.3. Generate SWMM File</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">6.4. Check SWMM File</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#common-import-errors">6.4.1. Common import errors</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#missing-status-or-function-hierarchic-wn-function-hierarchic">6.4.1.1. Missing status or _function_hierarchic (wn_function_hierarchic)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#common-import-errors">6.4.1. Häufige Importfehler</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#missing-status-or-function-hierarchic-wn-function-hierarchic">6.4.1.1. Fehlender Status oder _FunktionHierarchisch (wn_function_hierarchic)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#catchment-area-connected-to-secondary-wastewater-structure">6.4.1.2. Catchment area connected to secondary wastewater structure</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#missing-discharge-coefficients">6.4.1.3. Missing discharge coefficients</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#missing-population-densities">6.4.1.4. Missing population densities</a></li>
@@ -113,16 +113,16 @@
 <li><p>etc.</p></li>
 </ul>
 <section id="common-import-errors">
-<span id="id2"></span><h2><span class="section-number">6.4.1. </span>Common import errors<a class="headerlink" href="#common-import-errors" title="Link to this heading"></a></h2>
+<span id="id2"></span><h2><span class="section-number">6.4.1. </span>Häufige Importfehler<a class="headerlink" href="#common-import-errors" title="Link to this heading"></a></h2>
 <section id="missing-status-or-function-hierarchic-wn-function-hierarchic">
-<h3><span class="section-number">6.4.1.1. </span>Missing status or _function_hierarchic (wn_function_hierarchic)<a class="headerlink" href="#missing-status-or-function-hierarchic-wn-function-hierarchic" title="Link to this heading"></a></h3>
-<p>The catchment area is linked to node which is not exported or a reach cannot be drawn because of a missing node:</p>
+<h3><span class="section-number">6.4.1.1. </span>Fehlender Status oder _FunktionHierarchisch (wn_function_hierarchic)<a class="headerlink" href="#missing-status-or-function-hierarchic-wn-function-hierarchic" title="Link to this heading"></a></h3>
+<p>Das Einzugsgebiet ist mit einem Knoten verbunden, der nicht exportiert wird, oder eine Haltung kann aufgrund eines fehlenden Knotens nicht gezeichnet werden:</p>
 <ul class="simple">
-<li><p>because of its status (abandonned etc.) or status is not defined (is Null)</p></li>
-<li><p>the node is not connected (correctly) to a conduit</p></li>
-<li><p>the node is secondary (the linked reach are secondary)</p></li>
+<li><p>aufgrund seines Status (aufgehoben usw.) oder der Status ist nicht definiert (ist Null)</p></li>
+<li><p>Der Knoten ist nicht (korrekt) mit einer Leitung verbunden.</p></li>
+<li><p>Der Knoten ist sekundär (die verbundenen Haltungen sind sekundär).</p></li>
 </ul>
-<p>and therefore not export in the vw_junctions.</p>
+<p>und daher nicht in die vw_junctions exportiert.</p>
 <p>Check your data manually before the export if wastwater_structure.status is not empty. Check whether wastwater_structure._function_hierarchic is filled in on Primary network nodes (PAA nodes).</p>
 <p><a class="reference external" href="https://github.com/TWW/TWW/issues/613">For more details see related Github issue</a></p>
 </section>
