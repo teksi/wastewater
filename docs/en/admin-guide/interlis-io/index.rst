@@ -97,6 +97,9 @@ If you have an active selection in the nodes and/or reaches layer, you can choos
 
 The export tools is capable of exporting label positions for different scales. You can choose which scales you are interested in exporting by selected/deselecting them.
 
+.. note::
+   Only choose either Werkplan 1:500 or Werkplan 1:250. The latter may give you a more accurarte placement while printing labels in the scale 1:500. Choosing both scales will give you duplicate label positions - so avoid this! You will not be able to distinguish anymore which are the labels for 1:250 and 1:500 in the exported xtf file as both will get the plantype = "Werkplan" (currently VSA-DSS / SIA405 Abwasser 2020.x only supports one scale - this might change in a future release).
+
 Then, confirm the dialog and choose where to save the `.xtf` file.
 
 .. note::
