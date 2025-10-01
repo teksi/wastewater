@@ -197,9 +197,12 @@ If you have additional own local organisations that are not (yet) in the VSA org
 
 After launching the import process your data set will be validated and imported in a intermediatary schema. Then the following dialog will appear.
 
-.. figure:: images/import_dialog.png
+.. figure:: images/tww_import_dialog.png
 
-The left part of this dialog lists all elements that are going to be imported from the `.xtf` file, allowing to review what is going to be imported and to deselect elements you may want to skip. It also shows the validation status of each object, showing whether further action is needed (INVALID) or recommended (WARNING) prior to importing.
+The left part of this dialog lists all elements that are going to be imported from the `.xtf` file, allowing to review what is going to be imported and to deselect elements you may want to skip. 
+You can see, if there is already a dataset with the same obj_id in the state attribute: (EXISTING) means that the import will not change anything, (MODIFIED) tells you that some attributes have been changed. For details see on the right side, where you can compare the values for each attribute.
+
+The second colums also shows the validation status of each object (VALID), showing whether further action is needed (INVALID) or recommended (WARNING) prior to importing.
 
 The right part of this dialog shows a form specific to the type of element selected in the list, allowing to adapt the import.
 
