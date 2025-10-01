@@ -48,7 +48,7 @@ class InterlisExportSettingsDialog(QDialog):
         self.export_orientation_selection_comboBox.addItem("0°", 0.0)
         self.export_orientation_selection_comboBox.addItem("-90°", -90.0)
 
-        # Fill Werkplan scale selection combobox
+        # Fill Werkplan scale selection combobox - removed again - can be re-implemented when subvalues of Werkplan will be introduced in INTERLIS data model
         # self.export_werkplan_scale_selection_comboBox.clear()
         # self.export_werkplan_scale_selection_comboBox.addItem("1:500", 500)
         # self.export_werkplan_scale_selection_comboBox.addItem("1:250", 250)
