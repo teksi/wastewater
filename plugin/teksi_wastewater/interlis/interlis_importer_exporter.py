@@ -855,7 +855,6 @@ class InterlisImporterExporter:
             model_classes_tww_sys=self.model_classes_tww_sys,
             model_classes_tww_app=self.model_classes_tww_app,
             labels_orientation_offset=export_orientation,
-            # labels_werkplan_scale=self.labels_werkplan_scale,
             selection=selected_ids,
             labels_file=labels_file_path,
             basket_enabled=basket_enabled,
