@@ -180,6 +180,11 @@ To import `xtf`files, click on the `INTERLIS import` button and navigate to the 
 .. note::
    Note that windows file pathes with empty strings in the directory path or filename are not supported at the moment.
 
+.. note::
+   There is a new option that you can avoid overwriting of data when there are NULL values of attributes in the import data set. This will keep your existing values that you already have in the database.
+
+.. figure:: images/interlis_import_options.png
+
 **Organisations before data !**
 
 .. note::
