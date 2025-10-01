@@ -209,8 +209,6 @@ The right part of this dialog shows a form specific to the type of element selec
 .. note::
    Currently de-selecting and selecting objects might take a long time depending how many data sets are in that respective class.
 
-.. note::
-   Special feature for TV Inspection import: For instance, it allows to attach "examinations" to their pipes.
 
 Once you're happy with the import options, confirm the dialog to persist the changes to your database.
 
@@ -262,9 +260,9 @@ Full usage
      --label_scale_pipeline_registry_1_1000
                            Export labels in scale 1:1'000, can be combined with other scales (Leitungskataster/Cadastre des conduites souterraines)
      --label_scale_network_plan_1_250
-                           Export labels in scale 1:250, can be combined with other scales (Werkplan/Plan de reseau)
+                           Export labels in scale 1:250, should not be combined with other scales of Werkplan (Werkplan/Plan de reseau)
      --label_scale_network_plan_1_500
-                           Export labels in scale 1:500, can be combined with other scales (Werkplan/Plan de reseau)
+                           Export labels in scale 1:500, should not be combined with other scales of Werkplan (Werkplan/Plan de reseau)
      --label_scale_overviewmap_1_10000
                            Export labels in scale 1:10'000, can be combined with other scales (Uebersichtsplan/Plan d'ensemble)
      --label_scale_overviewmap_1_5000
