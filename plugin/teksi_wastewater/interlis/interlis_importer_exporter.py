@@ -899,11 +899,14 @@ class InterlisImporterExporter:
             if check_null:
                 condition_parts.append(
                     DatabaseUtils.compose_sql(
-                        "OR {column_name} IS NULL",
+                        "{column_name} IS NULL",
                         column_name=column_identifier,
                     )
                 )
-            condition = DatabaseUtils.compose_sql(" ".join(condition_parts))
+            condition = DatabaseUtils.compose_sql(
+                "(" + " OR ".join(["{}"] * len(condition_parts)) + ")",
+                *condition_parts
+            )
             error_message = ""
             for _class in check_classes:
                 query = DatabaseUtils.compose_sql(
