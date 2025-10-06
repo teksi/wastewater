@@ -188,21 +188,17 @@ class InterlisImporterExporter:
         self._progress_done(100)
         logger.info("INTERLIS import finished.")
 
-    def interlis_export(
+    def execute_export(
         self,
         xtf_file_output,
         export_models,
         logs_next_to_file=True,
-        user_interaction=False,
         limit_to_selection=False,
         export_orientation=90.0,
         labels_file=None,
         selected_labels_scales_indices=[],
         selected_ids=None,
-        srid: int = None,
     ):
-
-        def execute_export():
             # File name without extension (used later for export)
             file_name_base, _ = os.path.splitext(xtf_file_output)
 
@@ -270,6 +266,21 @@ class InterlisImporterExporter:
             self._progress_done(100)
             logger.info("INTERLIS export finished.")
 
+
+    def interlis_export(
+        self,
+        xtf_file_output,
+        export_models,
+        logs_next_to_file=True,
+        user_interaction=False,
+        limit_to_selection=False,
+        export_orientation=90.0,
+        labels_file=None,
+        selected_labels_scales_indices=[],
+        selected_ids=None,
+        srid: int = None,
+    ):
+
         if srid:
             self.srid = srid
 
@@ -297,7 +308,16 @@ class InterlisImporterExporter:
         results = self.run_integrity_checks(limit_to_selection)
         if not results["failed"]:
             logger.info(f"All checks passed! ({results['stats']['ok']} OK)")
-            execute_export()
+            self.execute_export(
+                xtf_file_output,
+                export_models,
+                logs_next_to_file,
+                limit_to_selection,
+                export_orientation,
+                labels_file,
+                selected_labels_scales_indices,
+                selected_ids,
+            )
         else:
             if user_interaction:
                 from PyQt5.QtWidgets import QMessageBox
@@ -342,7 +362,16 @@ class InterlisImporterExporter:
                     logger.info(
                         "INTERLIS export has been continued manually in spite of failing export checks."
                     )
-                    execute_export()
+                    self.execute_export(
+                        xtf_file_output,
+                        export_models,
+                        logs_next_to_file,
+                        limit_to_selection,
+                        export_orientation,
+                        labels_file,
+                        selected_labels_scales_indices,
+                        selected_ids,
+                    )
             else:
                 logger.error(f"Failed checks:\n{results['failed_checks']}")
                 logger.info(
