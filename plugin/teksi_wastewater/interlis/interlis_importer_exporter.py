@@ -199,73 +199,72 @@ class InterlisImporterExporter:
         selected_labels_scales_indices=[],
         selected_ids=None,
     ):
-            # File name without extension (used later for export)
-            file_name_base, _ = os.path.splitext(xtf_file_output)
+        # File name without extension (used later for export)
+        file_name_base, _ = os.path.splitext(xtf_file_output)
 
-            # Configure logging
-            if logs_next_to_file:
-                self.base_log_path = xtf_file_output
-            else:
-                self.base_log_path = None
+        # Configure logging
+        if logs_next_to_file:
+            self.base_log_path = xtf_file_output
+        else:
+            self.base_log_path = None
 
-            self._progress_done(5, "Clearing ili schema...")
-            self._clear_ili_schema(recreate_tables=True)
+        self._progress_done(5, "Clearing ili schema...")
+        self._clear_ili_schema(recreate_tables=True)
 
-            self._progress_done(15, "Creating ili schema...")
-            create_basket_col = False
-            if config.MODEL_NAME_VSA_KEK in export_models:
-                create_basket_col = True
-            self._create_ili_schema(export_models, create_basket_col=create_basket_col)
+        self._progress_done(15, "Creating ili schema...")
+        create_basket_col = False
+        if config.MODEL_NAME_VSA_KEK in export_models:
+            create_basket_col = True
+        self._create_ili_schema(export_models, create_basket_col=create_basket_col)
 
-            self._progress_done(25, "Creating ili schema...")
-            create_basket_col = False
-            if config.MODEL_NAME_VSA_KEK in export_models:
-                create_basket_col = True
-            self._create_ili_schema(export_models, create_basket_col=create_basket_col)
+        self._progress_done(25, "Creating ili schema...")
+        create_basket_col = False
+        if config.MODEL_NAME_VSA_KEK in export_models:
+            create_basket_col = True
+        self._create_ili_schema(export_models, create_basket_col=create_basket_col)
 
-            # Export the labels file
-            tempdir = tempfile.TemporaryDirectory()
-            if len(selected_labels_scales_indices):
-                self._progress_done(30)
-                if not labels_file:
-                    labels_file = os.path.join(tempdir.name, "labels.geojson")
-                    self._export_labels_file(
-                        limit_to_selection=limit_to_selection,
-                        selected_labels_scales_indices=selected_labels_scales_indices,
-                        labels_file_path=labels_file,
-                        export_model=export_models[0],
-                        export_orientation=export_orientation,
-                    )
+        # Export the labels file
+        tempdir = tempfile.TemporaryDirectory()
+        if len(selected_labels_scales_indices):
+            self._progress_done(30)
+            if not labels_file:
+                labels_file = os.path.join(tempdir.name, "labels.geojson")
+                self._export_labels_file(
+                    limit_to_selection=limit_to_selection,
+                    selected_labels_scales_indices=selected_labels_scales_indices,
+                    labels_file_path=labels_file,
+                    export_model=export_models[0],
+                    export_orientation=export_orientation,
+                )
 
-            if export_models[0] == config.MODEL_NAME_AG96:
-                file_path = "data/Organisationstabelle_AG96.xtf"
-                abs_file_path = Path(__file__).parent.resolve() / file_path
-                logger.info("Importing AG-96 organisation to intermediate schema")
-                self._import_xtf_file(abs_file_path)
-            elif export_models[0] == config.MODEL_NAME_AG64:
-                file_path = "data/Organisationstabelle_AG64.xtf"
-                abs_file_path = Path(__file__).parent.resolve() / file_path
-                logger.info("Importing AG-64 organisation to intermediate schema")
-                self._import_xtf_file(abs_file_path)
+        if export_models[0] == config.MODEL_NAME_AG96:
+            file_path = "data/Organisationstabelle_AG96.xtf"
+            abs_file_path = Path(__file__).parent.resolve() / file_path
+            logger.info("Importing AG-96 organisation to intermediate schema")
+            self._import_xtf_file(abs_file_path)
+        elif export_models[0] == config.MODEL_NAME_AG64:
+            file_path = "data/Organisationstabelle_AG64.xtf"
+            abs_file_path = Path(__file__).parent.resolve() / file_path
+            logger.info("Importing AG-64 organisation to intermediate schema")
+            self._import_xtf_file(abs_file_path)
 
-            # Export to the temporary ili2pg model
-            self._progress_done(35, "Converting from TEKSI Wastewater...")
-            self._export_to_intermediate_schema(
-                export_model=export_models[0],
-                file_name=xtf_file_output,
-                selected_ids=selected_ids,
-                export_orientation=export_orientation,
-                labels_file_path=labels_file,
-                basket_enabled=create_basket_col,
-            )
-            tempdir.cleanup()  # Cleanup
+        # Export to the temporary ili2pg model
+        self._progress_done(35, "Converting from TEKSI Wastewater...")
+        self._export_to_intermediate_schema(
+            export_model=export_models[0],
+            file_name=xtf_file_output,
+            selected_ids=selected_ids,
+            export_orientation=export_orientation,
+            labels_file_path=labels_file,
+            basket_enabled=create_basket_col,
+        )
+        tempdir.cleanup()  # Cleanup
 
-            self._progress_done(75)
-            self._export_xtf_files(file_name_base, export_models)
+        self._progress_done(75)
+        self._export_xtf_files(file_name_base, export_models)
 
-            self._progress_done(100)
-            logger.info("INTERLIS export finished.")
-
+        self._progress_done(100)
+        logger.info("INTERLIS export finished.")
 
     def interlis_export(
         self,
