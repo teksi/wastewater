@@ -90,7 +90,7 @@ class InterlisExporterToIntermediateSchema:
             self.abwasser_session.commit()
             self.close_sessions()
         except Exception as e:
-            enhanced_exc = NotImplementedError
+            enhanced_exc = None
             if hasattr(e, "pgcode") and e.pgcode == "23503":  # psycopg2/3
                 enhanced_exc = self.parse_fk_violation(e)
             self.close_sessions()
