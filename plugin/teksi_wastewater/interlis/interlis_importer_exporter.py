@@ -769,7 +769,7 @@ class InterlisImporterExporter:
 
         self._progress_done(self.current_progress + 2)
         if export_model == config.MODEL_NAME_AG96:
-            catch_lyr = TwwLayerManager.layer("catchment_area")
+            catch_lyr = TwwLayerManager.layer("vw_tww_catchment_area")
             meas_pt_lyr = TwwLayerManager.layer("measure_point")
             meas_lin_lyr = TwwLayerManager.layer("measure_line")
             meas_ply_lyr = TwwLayerManager.layer("measure_polygon")
@@ -792,7 +792,7 @@ class InterlisImporterExporter:
                 },
             )
         elif export_model == config.MODEL_NAME_DSS:
-            catch_lyr = TwwLayerManager.layer("catchment_area")
+            catch_lyr = TwwLayerManager.layer("vw_tww_catchment_area")
 
             processing.run(
                 "tww:extractlabels_interlis",

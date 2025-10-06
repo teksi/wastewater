@@ -124,6 +124,7 @@ class InterlisImporterExporterGui(QObject):
         self.progress_dialog.setMinimumWidth(self._PROGRESS_DIALOG_MINIMUM_WIDTH)
         self.progress_dialog.setCancelButtonText("Cancel")
         self.progress_dialog.setMinimumDuration(0)
+
         self.progress_dialog.setWindowTitle("Export INTERLIS data...")
 
         try:
