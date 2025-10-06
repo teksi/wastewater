@@ -873,6 +873,7 @@ class InterlisImporterExporter:
         value_name: str,
         check_null: bool = True,
         check_val: Any = None,
+        check_true: bool = False,
         limit_to_selection: bool = False,
     ) -> tuple[bool, str, int]:
         """
@@ -900,6 +901,13 @@ class InterlisImporterExporter:
                 condition_parts.append(
                     DatabaseUtils.compose_sql(
                         "{column_name} IS NULL",
+                        column_name=column_identifier,
+                    )
+                )
+            if check_true:
+                condition_parts.append(
+                    DatabaseUtils.compose_sql(
+                        "{column_name} IS True",
                         column_name=column_identifier,
                     )
                 )
@@ -1359,7 +1367,7 @@ class InterlisImporterExporter:
             check_classes,
             "tww_local_extension",
             check_null=False,
-            check_val=True,
+            check_true=True,
             limit_to_selection=limit_to_selection,
         )
 
