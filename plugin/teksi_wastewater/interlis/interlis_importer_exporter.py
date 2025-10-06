@@ -904,8 +904,7 @@ class InterlisImporterExporter:
                     )
                 )
             condition = DatabaseUtils.compose_sql(
-                "(" + " OR ".join(["{}"] * len(condition_parts)) + ")",
-                *condition_parts
+                "(" + " OR ".join(["{}"] * len(condition_parts)) + ")", *condition_parts
             )
             error_message = ""
             for _class in check_classes:
