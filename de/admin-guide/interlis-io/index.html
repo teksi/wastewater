@@ -201,6 +201,10 @@ Linux : use the package manager</p>
 <img alt="../../_images/tww_interlis_export_selection.png" src="../../_images/tww_interlis_export_selection.png" />
 </figure>
 <p>Die Export-Tools können Labelpositionen für verschiedene Massstäbe exportieren. Sie können auswählen, welche Massstäbe Sie exportieren möchten, indem Sie diese auswählen oder die Auswahl aufheben.</p>
+<div class="admonition note">
+<p class="admonition-title">Bemerkung</p>
+<p>Only choose either Werkplan 1:500 or Werkplan 1:250. The latter may give you a more accurarte placement while printing labels in the scale 1:500. Choosing both scales will give you duplicate label positions - so avoid this! You will not be able to distinguish anymore which are the labels for 1:250 and 1:500 in the exported xtf file as both will get the plantype = „Werkplan“ (currently VSA-DSS / SIA405 Abwasser 2020.x only supports one scale - this might change in a future release).</p>
+</div>
 <p>Bestätigen Sie das Dialogfeld und wählen Sie einen Speicherort für die <cite>.xtf</cite>-Datei.</p>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
@@ -283,6 +287,13 @@ Linux : use the package manager</p>
 <p class="admonition-title">Bemerkung</p>
 <p>Beachten Sie, dass Windows-Dateipfade mit leeren Zeichenfolgen im Verzeichnispfad oder Dateinamen derzeit nicht unterstützt werden.</p>
 </div>
+<div class="admonition note">
+<p class="admonition-title">Bemerkung</p>
+<p>There is a new option that you can avoid overwriting of data when there are NULL values of attributes in the import data set. This will keep your existing values that you already have in the database.</p>
+</div>
+<figure class="align-default">
+<img alt="../../_images/interlis_import_options.png" src="../../_images/interlis_import_options.png" />
+</figure>
 <p><strong>Organisationen vor Daten!</strong></p>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
@@ -292,17 +303,15 @@ Linux : use the package manager</p>
 <p>Wenn Sie über weitere eigene lokale Organisationen verfügen, die (noch) nicht im VSA-Organisationsdatensatz enthalten sind, importieren Sie diese, bevor Sie mit dem Import Ihrer Netzwerkdaten beginnen. TV-Inspektionsdaten werden in der Regel zuletzt importiert, da sie auf Ihre Netzwerkdaten verweisen.</p>
 <p>Nach dem Start des Importvorgangs wird Ihr Datensatz validiert und in ein Zwischenschema importiert. Anschließend erscheint das folgende Dialogfeld.</p>
 <figure class="align-default">
-<img alt="../../_images/import_dialog.png" src="../../_images/import_dialog.png" />
+<img alt="../../_images/tww_import_dialog.png" src="../../_images/tww_import_dialog.png" />
 </figure>
-<p>Im linken Teil dieses Dialogfelds werden alle Elemente aufgelistet, die aus der <cite>.xtf</cite>-Datei importiert werden sollen, so dass Sie überprüfen können, was importiert werden soll, und Elemente abwählen können, die Sie eventuell überspringen möchten. Ausserdem wird der Validierungsstatus jedes Objekts angezeigt, der angibt, ob vor dem Import weitere Massnahmen erforderlich (UNGÜLTIG) oder empfohlen (WARNUNG) sind.</p>
+<p>The left part of this dialog lists all elements that are going to be imported from the <cite>.xtf</cite> file, allowing to review what is going to be imported and to deselect elements you may want to skip.
+You can see, if there is already a dataset with the same obj_id in the state attribute: (EXISTING) means that the import will not change anything, (MODIFIED) tells you that some attributes have been changed. For details see on the right side, where you can compare the values for each attribute.</p>
+<p>The second colums also shows the validation status of each object (VALID), showing whether further action is needed (INVALID) or recommended (WARNING) prior to importing.</p>
 <p>Der rechte Teil dieses Dialogfelds zeigt ein Formular, das für den in der Liste ausgewählten Elementtyp spezifisch ist und die Anpassung des Imports ermöglicht.</p>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
 <p>Derzeit kann das Abwählen und Auswählen von Objekten je nach Anzahl der Datensätze in der jeweiligen Klasse sehr lange dauern.</p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Bemerkung</p>
-<p>Special feature for TV Inspection import: For instance, it allows to attach „examinations“ to their pipes.</p>
 </div>
 <p>Wenn Sie mit den Importoptionen zufrieden sind, bestätigen Sie den Dialog, um die Änderungen in Ihrer Datenbank zu übernehmen.</p>
 <p>Wenn der Import erfolgreich war, erscheint eine grüne Erfolgsmeldung.</p>
@@ -343,9 +352,9 @@ Linux : use the package manager</p>
 <span class="go">  --label_scale_pipeline_registry_1_1000</span>
 <span class="go">                        Export labels in scale 1:1&#39;000, can be combined with other scales (Leitungskataster/Cadastre des conduites souterraines)</span>
 <span class="go">  --label_scale_network_plan_1_250</span>
-<span class="go">                        Export labels in scale 1:250, can be combined with other scales (Werkplan/Plan de reseau)</span>
+<span class="go">                        Export labels in scale 1:250, should not be combined with other scales of Werkplan (Werkplan/Plan de reseau)</span>
 <span class="go">  --label_scale_network_plan_1_500</span>
-<span class="go">                        Export labels in scale 1:500, can be combined with other scales (Werkplan/Plan de reseau)</span>
+<span class="go">                        Export labels in scale 1:500, should not be combined with other scales of Werkplan (Werkplan/Plan de reseau)</span>
 <span class="go">  --label_scale_overviewmap_1_10000</span>
 <span class="go">                        Export labels in scale 1:10&#39;000, can be combined with other scales (Uebersichtsplan/Plan d&#39;ensemble)</span>
 <span class="go">  --label_scale_overviewmap_1_5000</span>
