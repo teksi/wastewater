@@ -4,6 +4,10 @@ on:
   release:
     types: [published]
 
+concurrency:
+  group: dumps-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
 jobs:
   datamodel-create-dumps:
     name: Call Datamodel Create Dumps Workflow
