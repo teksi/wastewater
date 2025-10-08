@@ -952,7 +952,9 @@ class InterlisImporterExporter:
                 f"table name: {_class}, value name: {value_name}, class count: {class_count}"
             )
             if class_count == 0:
-                error_message += f"No exportable entries found in table tww_od.{_class} on {value_name} check"
+                error_message += (
+                    f"No exportable entries found in table tww_od.{_class} on {value_name} check"
+                )
                 empty_class_count += 1
             return (True, error_message, None)
         if empty_class_count > 0:
