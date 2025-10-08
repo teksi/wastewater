@@ -933,7 +933,9 @@ class InterlisImporterExporter:
                 result = cursor.fetchone()
                 class_count = int(result[0]) if result else 0
                 obj_ids_without_val = result[1] if result else []
-                logger.info(f"table name: {_class}, value name: {value_name}, class count: {class_count}")
+                logger.info(
+                    f"table name: {_class}, value name: {value_name}, class count: {class_count}"
+                )
                 if class_count > 0:
                     error_message += (
                         f"{class_count} rows in class '{_class}' "
