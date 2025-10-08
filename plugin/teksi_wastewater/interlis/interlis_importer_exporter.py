@@ -956,7 +956,6 @@ class InterlisImporterExporter:
                     f"No exportable entries found in table tww_od.{_class} on {value_name} check"
                 )
                 empty_class_count += 1
-            return (True, error_message, None)
         if empty_class_count > 0:
             return (True, error_message, empty_class_count)
         else:
