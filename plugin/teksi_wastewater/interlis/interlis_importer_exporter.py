@@ -163,7 +163,7 @@ class InterlisImporterExporter:
             self._import_update_main_cover_and_refresh_mat_views()
 
             # Validate subclasses after import
-            self._check_subclass_counts()
+            self._check_subclass_counts(raise_err=True)
 
             # Update organisations
             self._progress_done(96, "Set organisations filter...")
@@ -377,7 +377,11 @@ class InterlisImporterExporter:
                 logger.info(
                     "INTERLIS export has been stopped due to failing export checks - see logs for details."
                 )
-                exit
+                raise InterlisImporterExporterError(
+                        "INTERLIS Export aborted!",
+                        results['failed_checks'],
+                        None,
+                    )
 
     def _import_validate_xtf_file(self, xtf_file_input):
         log_path = make_log_path(self.base_log_path, "ilivalidator")
@@ -730,7 +734,7 @@ class InterlisImporterExporter:
         failed_check_list = []
 
         for check_name, check_func in checks:
-            failed, error_message, issue_count = check_func(limit_to_selection)
+            failed, error_message, _ = check_func(limit_to_selection)
             if failed:
                 number_tests_failed += 1
                 failed_check_list.append(f"{check_name}: {error_message}")
@@ -743,85 +747,69 @@ class InterlisImporterExporter:
             "stats": {"failed": number_tests_failed, "ok": number_tests_ok},
         }
 
-    def _check_subclass_counts(self, limit_to_selection=False):
+    def _check_subclass_counts(self, limit_to_selection=False, raise_err=False):
+        failed = False
+        error_messages = []
+        total_issue_count = 0
 
-        check_subclass_counts_failed = False
-        check_subclass_counts_failed = check_subclass_counts_failed and self._check_subclass_count(
-            config.TWW_OD_SCHEMA,
-            "wastewater_networkelement",
-            ["reach", "wastewater_node"],
-            limit_to_selection,
-        )
-        # logger.debug(f"check_subclass_counts_failed: {check_subclass_counts_failed} 1")
-        check_subclass_counts_failed = check_subclass_counts_failed and self._check_subclass_count(
-            config.TWW_OD_SCHEMA,
-            "wastewater_structure",
-            [
-                "channel",
-                "manhole",
-                "special_structure",
-                "infiltration_installation",
-                "discharge_point",
-                "wwtp_structure",
-                "small_treatment_plant",
-                "drainless_toilet",
-            ],
-            limit_to_selection,
-        )
-        # logger.debug(f"check_subclass_counts_failed: {check_subclass_counts_failed} 2")
-        check_subclass_counts_failed = check_subclass_counts_failed and self._check_subclass_count(
-            config.TWW_OD_SCHEMA,
-            "structure_part",
-            [
-                "benching",
-                "tank_emptying",
-                "tank_cleaning",
-                "cover",
-                "access_aid",
-                "electric_equipment",
-                "electromechanical_equipment",
-                "solids_retention",
-                "backflow_prevention",
-                "flushing_nozzle",
-                "dryweather_flume",
-                "dryweather_downspout",
-            ],
-            limit_to_selection,
-        )
-        check_subclass_counts_failed = check_subclass_counts_failed and self._check_subclass_count(
-            config.TWW_OD_SCHEMA,
-            "overflow",
-            ["pump", "leapingweir", "prank_weir"],
-            limit_to_selection,
-        )
-        check_subclass_counts_failed = check_subclass_counts_failed and self._check_subclass_count(
-            config.TWW_OD_SCHEMA,
-            "maintenance_event",
-            ["maintenance", "examination", "bio_ecol_assessment"],
-            limit_to_selection,
-        )
-        check_subclass_counts_failed = check_subclass_counts_failed and self._check_subclass_count(
-            config.TWW_OD_SCHEMA,
-            "damage",
-            ["damage_channel", "damage_manhole"],
-            limit_to_selection,
-        )
-        check_subclass_counts_failed = check_subclass_counts_failed and self._check_subclass_count(
-            config.TWW_OD_SCHEMA,
-            "connection_object",
-            ["fountain", "individual_surface", "building", "reservoir"],
-            limit_to_selection,
-        )
-        check_subclass_counts_failed = check_subclass_counts_failed and self._check_subclass_count(
-            config.TWW_OD_SCHEMA,
-            "zone",
-            ["infiltration_zone", "drainage_system"],
-            limit_to_selection,
-        )
+        # List of all checks to perform
+        checks = [
+            ("wastewater_networkelement", ["reach", "wastewater_node"]),
+            ("wastewater_structure",
+             ["channel",
+              "manhole",
+              "special_structure",
+              "infiltration_installation",
+              "discharge_point",
+              "wwtp_structure",
+              "small_treatment_plant",
+              "drainless_toilet",
+              ]),
+            ("structure_part",
+             ["benching",
+              "tank_emptying",
+              "tank_cleaning",
+              "cover",
+              "access_aid",
+              "electric_equipment",
+              "electromechanical_equipment",
+              "solids_retention",
+              "backflow_prevention",
+              "flushing_nozzle",
+              "dryweather_flume",
+              "dryweather_downspout",
+            ]),
+            ("overflow",
+             ["pump", "leapingweir", "prank_weir"]),
+            ("maintenance_event",
+             ["maintenance", "examination", "bio_ecol_assessment"],),
+            ("damage",
+             ["damage_channel", "damage_manhole"],),
+            ("connection_object",
+             ["fountain", "individual_surface", "building", "reservoir"],),
+            ("zone",
+            ["infiltration_zone", "drainage_system"],),
+        ]
+
+        for parent, children in checks:
+            check_failed, msg, count = self._check_subclass_count(
+                config.TWW_OD_SCHEMA, parent, children, limit_to_selection
+            )
+            failed = failed or check_failed
+            if msg:
+                error_messages.append(msg)
+            total_issue_count += count
+        error_message = "; ".join(error_messages) if error_messages else ""
         # logger.debug(f"check_subclass_counts_failed: {check_subclass_counts_failed} last")
-        return check_subclass_counts_failed
+        if raise_err and failed:
+            raise InterlisImporterExporterError("Subclass Count error", error_message, None)
+        return (failed, error_message, total_issue_count)
 
-    def _check_subclass_count(self, schema_name, parent_name, child_list, limit_to_selection):
+    def _check_subclass_count(self, schema_name, parent_name, child_list, limit_to_selection)-> tuple[bool, str, int]:
+        """
+             Returns: (failed, error message, parent_count)
+        """
+        errormsg = ""
         logger.info(f"INTEGRITY CHECK {parent_name} subclass data...")
         logger.info("CONNECTING TO DATABASE...")
 
@@ -829,6 +817,7 @@ class InterlisImporterExporter:
             cursor = connection.cursor()
 
             cursor.execute(f"SELECT obj_id FROM {schema_name}.{parent_name};")
+
             parent_rows = cursor.fetchall()
             if len(parent_rows) > 0:
                 parent_count = len(parent_rows)
@@ -839,17 +828,11 @@ class InterlisImporterExporter:
                     logger.info(f"Number of {child_name} datasets: {len(child_rows)}")
                     parent_count = parent_count - len(child_rows)
 
-                if parent_count == 0:
-                    logger.info(
-                        f"OK: number of subclass elements of class {parent_name} OK in schema {schema_name}!"
-                    )
-                    # Return statement added
-                    return True
-                else:
+                if parent_count != 0:
                     if parent_count > 0:
-                        errormsg = f"Too many superclass entries for {schema_name}.{parent_name}"
+                        errormsg += f"Too many superclass entries for {schema_name}.{parent_name}"
                     else:
-                        errormsg = f"Too many subclass entries for {schema_name}.{parent_name}"
+                        errormsg += f"Too many subclass entries for {schema_name}.{parent_name}"
 
                     if limit_to_selection:
                         logger.warning(
@@ -863,7 +846,13 @@ class InterlisImporterExporter:
                             None,
                         )
                     # Return statement added
-                    return False
+                    return (True, errormsg, parent_count)
+                else:
+                    logger.info(
+                        f"OK: number of subclass elements of class {parent_name} OK in schema {schema_name}!"
+                    )
+                    # Return statement added
+                    return (False, errormsg, parent_count)
 
     def _check_conditions(
         self,
