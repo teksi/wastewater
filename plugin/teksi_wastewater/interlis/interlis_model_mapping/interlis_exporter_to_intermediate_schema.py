@@ -4051,7 +4051,8 @@ class InterlisExporterToIntermediateSchema:
             error_msg = getattr(exc, "detail", None)
 
             detail_match = re.search(
-                r'DETAIL:\s*Key \(([^)]+)\)=\(([^)]+)\) is not present in table "([^"]+)"', error_msg
+                r'DETAIL:\s*Key \(([^)]+)\)=\(([^)]+)\) is not present in table "([^"]+)"',
+                error_msg,
             )
             if detail_match:
                 result["column"] = detail_match.group(1)
