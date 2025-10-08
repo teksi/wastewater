@@ -949,10 +949,11 @@ class InterlisImporterExporter:
         error_message = ""
         empty_class_count = 0
         for _class, (class_count, _) in results.items():
-            logger.info(f"table name: {_class}, value name: {value_name}, class count: {class_count}")
+            logger.info(
+                f"table name: {_class}, value name: {value_name}, class count: {class_count}"
+            )
             if class_count == 0:
-                error_message += ( f"No exportable entries found in table tww_od.{_class}"
-                )
+                error_message += f"No exportable entries found in table tww_od.{_class}"
                 empty_class_count += 1
             return (True, error_message, None)
         if empty_class_count > 0:
@@ -978,12 +979,16 @@ class InterlisImporterExporter:
         Returns: (failed, error_message, issue_count)
         """
         results = self._check_conditions(
-            check_classes=check_classes, value_name=value_name, check_val=check_val,
+            check_classes=check_classes,
+            value_name=value_name,
+            check_val=check_val,
         )
         missing_count = 0
         error_message = ""
         for _class, (class_count, obj_ids_without_val) in results.items():
-            logger.info(f"table name: {_class}, value name: {value_name}, class count: {class_count}")
+            logger.info(
+                f"table name: {_class}, value name: {value_name}, class count: {class_count}"
+            )
             if class_count > 0:
                 error_message += (
                     f"{class_count} rows in class '{_class}' "
