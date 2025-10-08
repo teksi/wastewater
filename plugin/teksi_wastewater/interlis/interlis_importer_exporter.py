@@ -834,40 +834,39 @@ class InterlisImporterExporter:
             cursor.execute(f"SELECT obj_id FROM {schema_name}.{parent_name};")
 
             parent_rows = cursor.fetchall()
-            if len(parent_rows) > 0:
-                parent_count = len(parent_rows)
-                logger.info(f"Number of {parent_name} datasets: {parent_count}")
-                for child_name in child_list:
-                    cursor.execute(f"SELECT obj_id FROM {schema_name}.{child_name};")
-                    child_rows = cursor.fetchall()
-                    logger.info(f"Number of {child_name} datasets: {len(child_rows)}")
-                    parent_count = parent_count - len(child_rows)
+            parent_count = len(parent_rows)
+            logger.info(f"Number of {parent_name} datasets: {parent_count}")
+            for child_name in child_list:
+                cursor.execute(f"SELECT obj_id FROM {schema_name}.{child_name};")
+                child_rows = cursor.fetchall()
+                logger.info(f"Number of {child_name} datasets: {len(child_rows)}")
+                parent_count = parent_count - len(child_rows)
 
-                if parent_count != 0:
-                    if parent_count > 0:
-                        errormsg += f"Too many superclass entries for {schema_name}.{parent_name}"
-                    else:
-                        errormsg += f"Too many subclass entries for {schema_name}.{parent_name}"
-
-                    if limit_to_selection:
-                        logger.warning(
-                            f"Overall Subclass Count: {errormsg}. The problem might lie outside the selection"
-                        )
-                    else:
-                        logger.error(f"Subclass Count error: {errormsg}")
-                        raise InterlisImporterExporterError(
-                            "Subclass Count error",
-                            errormsg,
-                            None,
-                        )
-                    # Return statement added
-                    return (True, errormsg, parent_count)
+            if parent_count != 0:
+                if parent_count > 0:
+                    errormsg += f"Too many superclass entries for {schema_name}.{parent_name}"
                 else:
-                    logger.info(
-                        f"OK: number of subclass elements of class {parent_name} OK in schema {schema_name}!"
+                    errormsg += f"Too many subclass entries for {schema_name}.{parent_name}"
+
+                if limit_to_selection:
+                    logger.warning(
+                        f"Overall Subclass Count: {errormsg}. The problem might lie outside the selection"
                     )
-                    # Return statement added
-                    return (False, errormsg, parent_count)
+                else:
+                    logger.error(f"Subclass Count error: {errormsg}")
+                    raise InterlisImporterExporterError(
+                        "Subclass Count error",
+                        errormsg,
+                        None,
+                    )
+                # Return statement added
+                return (True, errormsg, parent_count)
+            else:
+                logger.info(
+                    f"OK: number of subclass elements of class {parent_name} OK in schema {schema_name}!"
+                )
+                # Return statement added
+                return (False, errormsg, parent_count)
 
     def _check_conditions(
         self,
