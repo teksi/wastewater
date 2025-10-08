@@ -284,7 +284,7 @@ class InterlisImporterExporter:
             self.srid = srid
 
         if export_models[0] == "SIA405_Base_Abwasser_1_LV95":
-            failed, _, _ = self._check_organisation_tww_local_extension_count(limit_to_selection)
+            failed, _, _ = self._check_organisation_tww_local_extension_count()
             if failed:
                 errormsg = "INTERLIS export has been stopped as there have been no organisations for exporting!"
                 logger.info(
@@ -356,7 +356,6 @@ class InterlisImporterExporter:
                         errormsg,
                         None,
                     )
-                    exit
                 elif return_value == QMessageBox.Cancel:
                     logger.info(
                         "INTERLIS export has been continued manually in spite of failing export checks."
@@ -867,40 +866,31 @@ class InterlisImporterExporter:
                     # Return statement added
                     return False
 
-    def _check_value_condition(
+    def _check_conditions(
         self,
         check_classes: list[str],
         value_name: str,
-        check_null: bool = True,
         check_val: Any = None,
         check_str: bool = True,
+        check_null: bool = True,
         check_true: bool = False,
-        limit_to_selection: bool = False,
-    ) -> tuple[bool, str, int]:
+    ) -> dict[str, tuple[int, list[Any]]]:
         """
-        Check if attribute value_name fulfils condition.
-        check_classes: List of class names that are to be checked
-        value_name: name of the value to be checked
-        check_null: bool whether to check for IS NULL
-        check_val: value to be checked. Defaults to ''
-        limit_to_selection: bool whether a selection limit is active
-        Returns: (failed, error_message, issue_count)
+        Returns a dict of {class_name: (count, [obj_ids])} for missing values.
         """
         if not check_val:
             check_val = ""
         with DatabaseUtils.PsycopgConnection() as connection:
             cursor = connection.cursor()
-            missing_count = 0
             column_identifier = DatabaseUtils.wrap_identifier(value_name)
+            condition_parts = []
             if check_str:
-                condition_parts = [
+                condition_parts.append(
                     DatabaseUtils.compose_sql(
                         "{column_name} = %s",
                         column_name=column_identifier,
                     )
-                ]
-            else:
-                condition_parts = []
+                )
             if check_null:
                 condition_parts.append(
                     DatabaseUtils.compose_sql(
@@ -918,7 +908,7 @@ class InterlisImporterExporter:
             condition = DatabaseUtils.compose_sql(
                 "(" + " OR ".join(["{}"] * len(condition_parts)) + ")", *condition_parts
             )
-            error_message = ""
+            results = {}
             for _class in check_classes:
                 query = DatabaseUtils.compose_sql(
                     """
@@ -933,28 +923,85 @@ class InterlisImporterExporter:
                 result = cursor.fetchone()
                 class_count = int(result[0]) if result else 0
                 obj_ids_without_val = result[1] if result else []
-                logger.info(
-                    f"table name: {_class}, value name: {value_name}, class count: {class_count}"
-                )
-                if class_count > 0:
-                    error_message += (
-                        f"{class_count} rows in class '{_class}' "
-                        f"without {value_name}: {','.join(obj_ids_without_val)}\n"
-                    )
-                    missing_count += class_count
+                results[_class] = (class_count, obj_ids_without_val)
+            return results
 
-            if missing_count > 0:
-                errormsg = f"Missing {value_name} in schema tww_od: {missing_count}"
-                if limit_to_selection:
-                    logger.warning(
-                        f"Overall Subclass Count: {errormsg}. The problem might lie outside the selection"
-                    )
-                else:
-                    logger.error(f"INTEGRITY CHECK missing {value_name}: {errormsg}")
-                return (True, error_message, missing_count)
+    def _check_available_export_values(
+        self,
+        check_classes: list[str],
+        value_name: str,
+        check_val: Any = None,
+        check_str: bool = True,
+        check_null: bool = True,
+        check_true: bool = False,
+    ) -> tuple[bool, str, int]:
+        """
+        Check if attribute value_name fulfils condition.
+        check_classes: List of class names that are to be checked
+        value_name: name of the value to be checked
+        check_null: bool whether to check for IS NULL
+        check_val: value to be checked. Defaults to ''
+        Returns: (failed, error_message, issue_count)
+        """
+        results = self._check_conditions(
+            check_classes, value_name, check_val, check_str, check_null, check_true
+        )
+        error_message = ""
+        empty_class_count = 0
+        for _class, (class_count, _) in results.items():
+            logger.info(f"table name: {_class}, value name: {value_name}, class count: {class_count}")
+            if class_count == 0:
+                error_message += ( f"No exportable entries found in table tww_od.{_class}"
+                )
+                empty_class_count += 1
+            return (True, error_message, None)
+        if empty_class_count > 0:
+            return (True, error_message, empty_class_count)
+        else:
+            logger.info("OK: all {value_name} set!")
+            return (False, "", 0)
+
+    def _check_value_condition(
+        self,
+        check_classes: list[str],
+        value_name: str,
+        check_val: Any = None,
+        limit_to_selection: bool = False,
+    ) -> tuple[bool, str, int]:
+        """
+        Check if attribute value_name fulfils condition.
+        check_classes: List of class names that are to be checked
+        value_name: name of the value to be checked
+        check_null: bool whether to check for IS NULL
+        check_val: value to be checked. Defaults to ''
+        limit_to_selection: bool whether a selection limit is active
+        Returns: (failed, error_message, issue_count)
+        """
+        results = self._check_conditions(
+            check_classes=check_classes, value_name=value_name, check_val=check_val,
+        )
+        missing_count = 0
+        error_message = ""
+        for _class, (class_count, obj_ids_without_val) in results.items():
+            logger.info(f"table name: {_class}, value name: {value_name}, class count: {class_count}")
+            if class_count > 0:
+                error_message += (
+                    f"{class_count} rows in class '{_class}' "
+                    f"without {value_name}: {','.join(obj_ids_without_val)}\n"
+                )
+                missing_count += class_count
+        if missing_count > 0:
+            errormsg = f"Missing {value_name} in schema tww_od: {missing_count}"
+            if limit_to_selection:
+                logger.warning(
+                    f"Overall Subclass Count: {errormsg}. The problem might lie outside the selection"
+                )
             else:
-                logger.info("OK: all {value_name} set!")
-                return (False, "", 0)
+                logger.error(f"INTEGRITY CHECK missing {value_name}: {errormsg}")
+            return (True, error_message, missing_count)
+        else:
+            logger.info("OK: all {value_name} set!")
+            return (False, "", 0)
 
     def _check_identifier_null(self, limit_to_selection=False):
         """
@@ -1359,7 +1406,7 @@ class InterlisImporterExporter:
             check_classes, "fk_catchment_area", limit_to_selection=limit_to_selection
         )
 
-    def _check_organisation_tww_local_extension_count(self, limit_to_selection=False):
+    def _check_organisation_tww_local_extension_count(self):
         """
         Check if there are organisations with tww_local_extension set
         """
@@ -1369,13 +1416,12 @@ class InterlisImporterExporter:
             # VSA-DSS
             ("organisation"),
         ]
-        return self._check_value_condition(
+        return self._check_available_export_values(
             check_classes,
             "tww_local_extension",
             check_null=False,
             check_str=False,
             check_true=True,
-            limit_to_selection=limit_to_selection,
         )
 
     def _init_model_classes(self, model):
