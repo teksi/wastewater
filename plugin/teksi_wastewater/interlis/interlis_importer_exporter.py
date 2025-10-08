@@ -284,9 +284,8 @@ class InterlisImporterExporter:
             self.srid = srid
 
         if export_models[0] == "SIA405_Base_Abwasser_1_LV95":
-            failed, _, _ = self._check_organisation_tww_local_extension_count()
+            failed, errormsg, _ = self._check_organisation_tww_local_extension_count()
             if failed:
-                errormsg = "INTERLIS export has been stopped as there have been no organisations for exporting!"
                 logger.info(
                     "INTERLIS export has been stopped as there have been no organisations for exporting!"
                 )
@@ -953,7 +952,7 @@ class InterlisImporterExporter:
                 f"table name: {_class}, value name: {value_name}, class count: {class_count}"
             )
             if class_count == 0:
-                error_message += f"No exportable entries found in table tww_od.{_class}"
+                error_message += f"No exportable entries found in table tww_od.{_class} on {value_name} check"
                 empty_class_count += 1
             return (True, error_message, None)
         if empty_class_count > 0:
