@@ -4044,37 +4044,32 @@ class InterlisExporterToIntermediateSchema:
             "column": None,
             "key": None,
             "referenced_table": None,
-            "constraint": None,
         }
 
-        error_msg = str(exc)
+        if hasattr(exc, "pgcode") and exc.pgcode == "23503":
+            result["table"] = getattr(exc, "table_name", None)
+            error_msg = getattr(exc, "detail", None)
 
-        table_constraint_match = re.search(
-            r'insert or update on table "([^"]+)" violates foreign key constraint "([^"]+)"',
-            error_msg,
-        )
-        if table_constraint_match:
-            result["table"] = table_constraint_match.group(1)
-            result["constraint"] = table_constraint_match.group(2)
+            detail_match = re.search(
+                r'DETAIL:\s*Key \(([^)]+)\)=\(([^)]+)\) is not present in table "([^"]+)"', error_msg
+            )
+            if detail_match:
+                result["column"] = detail_match.group(1)
+                result["key"] = detail_match.group(2)
+                result["referenced_table"] = detail_match.group(3)
 
-        detail_match = re.search(
-            r'DETAIL:\s*Key \(([^)]+)\)=\(([^)]+)\) is not present in table "([^"]+)"', error_msg
-        )
-        if detail_match:
-            result["column"] = detail_match.group(1)
-            result["key"] = detail_match.group(2)
-            result["referenced_table"] = detail_match.group(3)
-
-        if self.model in [config.MODEL_NAME_AG64, config.MODEL_NAME_AG96]:
-            query = text("SELECT obj_id from pg2ili_abwasser.:table WHERE t_id= :t_id;")
-            table = result["table"]
+            if self.model in [config.MODEL_NAME_AG64, config.MODEL_NAME_AG96]:
+                query = text("SELECT obj_id from pg2ili_abwasser.:table WHERE t_id= :t_id;")
+                table = result["referenced_table"]
+            else:
+                query = text("SELECT t_ili_tid from pg2ili_abwasser.:table WHERE t_id= :t_id;")
+                table = "baseclass"
+            oid = self.abwasser_session.execute(
+                query, {"t_id": result["key"], "table": table}
+            ).fetchone()
+            enriched_msg = f"{str(exc)}\n" f"Object-ID: {oid}"
+            # Create a new exception of the same type, with the enriched message
+            new_exc = type(exc)(enriched_msg)
+            return new_exc
         else:
-            query = text("SELECT t_ili_tid from pg2ili_abwasser.:table WHERE t_id= :t_id;")
-            table = "baseclass"
-        oid = self.abwasser_session.execute(
-            query, {"t_id": result["key"], "table": table}
-        ).fetchone()
-        enriched_msg = f"{str(exc)}\n" f"Object-ID: {oid}"
-        # Create a new exception of the same type, with the enriched message
-        new_exc = type(exc)(enriched_msg)
-        return new_exc
+            return exc
