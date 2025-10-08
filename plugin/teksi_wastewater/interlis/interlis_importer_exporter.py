@@ -378,10 +378,10 @@ class InterlisImporterExporter:
                     "INTERLIS export has been stopped due to failing export checks - see logs for details."
                 )
                 raise InterlisImporterExporterError(
-                        "INTERLIS Export aborted!",
-                        results['failed_checks'],
-                        None,
-                    )
+                    "INTERLIS Export aborted!",
+                    results["failed_checks"],
+                    None,
+                )
 
     def _import_validate_xtf_file(self, xtf_file_input):
         log_path = make_log_path(self.base_log_path, "ilivalidator")
@@ -755,40 +755,53 @@ class InterlisImporterExporter:
         # List of all checks to perform
         checks = [
             ("wastewater_networkelement", ["reach", "wastewater_node"]),
-            ("wastewater_structure",
-             ["channel",
-              "manhole",
-              "special_structure",
-              "infiltration_installation",
-              "discharge_point",
-              "wwtp_structure",
-              "small_treatment_plant",
-              "drainless_toilet",
-              ]),
-            ("structure_part",
-             ["benching",
-              "tank_emptying",
-              "tank_cleaning",
-              "cover",
-              "access_aid",
-              "electric_equipment",
-              "electromechanical_equipment",
-              "solids_retention",
-              "backflow_prevention",
-              "flushing_nozzle",
-              "dryweather_flume",
-              "dryweather_downspout",
-            ]),
-            ("overflow",
-             ["pump", "leapingweir", "prank_weir"]),
-            ("maintenance_event",
-             ["maintenance", "examination", "bio_ecol_assessment"],),
-            ("damage",
-             ["damage_channel", "damage_manhole"],),
-            ("connection_object",
-             ["fountain", "individual_surface", "building", "reservoir"],),
-            ("zone",
-            ["infiltration_zone", "drainage_system"],),
+            (
+                "wastewater_structure",
+                [
+                    "channel",
+                    "manhole",
+                    "special_structure",
+                    "infiltration_installation",
+                    "discharge_point",
+                    "wwtp_structure",
+                    "small_treatment_plant",
+                    "drainless_toilet",
+                ],
+            ),
+            (
+                "structure_part",
+                [
+                    "benching",
+                    "tank_emptying",
+                    "tank_cleaning",
+                    "cover",
+                    "access_aid",
+                    "electric_equipment",
+                    "electromechanical_equipment",
+                    "solids_retention",
+                    "backflow_prevention",
+                    "flushing_nozzle",
+                    "dryweather_flume",
+                    "dryweather_downspout",
+                ],
+            ),
+            ("overflow", ["pump", "leapingweir", "prank_weir"]),
+            (
+                "maintenance_event",
+                ["maintenance", "examination", "bio_ecol_assessment"],
+            ),
+            (
+                "damage",
+                ["damage_channel", "damage_manhole"],
+            ),
+            (
+                "connection_object",
+                ["fountain", "individual_surface", "building", "reservoir"],
+            ),
+            (
+                "zone",
+                ["infiltration_zone", "drainage_system"],
+            ),
         ]
 
         for parent, children in checks:
@@ -805,9 +818,11 @@ class InterlisImporterExporter:
             raise InterlisImporterExporterError("Subclass Count error", error_message, None)
         return (failed, error_message, total_issue_count)
 
-    def _check_subclass_count(self, schema_name, parent_name, child_list, limit_to_selection)-> tuple[bool, str, int]:
+    def _check_subclass_count(
+        self, schema_name, parent_name, child_list, limit_to_selection
+    ) -> tuple[bool, str, int]:
         """
-             Returns: (failed, error message, parent_count)
+        Returns: (failed, error message, parent_count)
         """
         errormsg = ""
         logger.info(f"INTEGRITY CHECK {parent_name} subclass data...")
