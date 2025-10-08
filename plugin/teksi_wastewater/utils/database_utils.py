@@ -8,11 +8,13 @@ from .plugin_utils import logger
 
 try:
     import psycopg
+    from psycopg import sql
 
     PSYCOPG_VERSION = 3
     DEFAULTS_CONN_ARG = {"autocommit": True}
 except ImportError:
     import psycopg2 as psycopg
+    from psycopg2 import sql
 
     PSYCOPG_VERSION = 2
     DEFAULTS_CONN_ARG = {}
@@ -55,7 +57,7 @@ class DatabaseUtils:
         Safely wrap an identifier (e.g., table or column name) for use in SQL.
         Works with both psycopg2 and psycopg3.
         """
-        return psycopg.sql.Identifier(identifier)
+        return sql.Identifier(identifier)
 
     @staticmethod
     def wrap_literal(value: Any) -> Any:
@@ -63,7 +65,7 @@ class DatabaseUtils:
         Safely wrap a literal value for use in SQL.
         Works with both psycopg2 and psycopg3.
         """
-        return psycopg.sql.Literal(value)
+        return sql.Literal(value)
 
     @staticmethod
     def compose_sql(query: str, *args: Any, **kwargs: Any) -> Any:
@@ -71,7 +73,7 @@ class DatabaseUtils:
         Safely compose an SQL query with identifiers and values.
         Works with both psycopg2 and psycopg3.
         """
-        return psycopg.sql.SQL(query).format(*args, **kwargs)
+        return sql.SQL(query).format(*args, **kwargs)
 
     @staticmethod
     def fetchone(query: str):
