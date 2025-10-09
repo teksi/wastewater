@@ -342,7 +342,7 @@ WITH DATA;
     DROP TRIGGER IF EXISTS vw_tww_catchment_area_totals_INSERT ON tww_app.vw_tww_catchment_area_totals;
 
     CREATE TRIGGER vw_tww_catchment_area_totals_INSERT INSTEAD OF INSERT ON tww_app.vw_tww_catchment_area_totals
-      FOR EACH ROW EXECUTE PROCEDURE tww_app.vw_tww_catchment_area_totals_INSERT();
+      FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_catchment_area_totals_insert();
     """.format(
         insert_cat=insert_command(
             connection=connection,
