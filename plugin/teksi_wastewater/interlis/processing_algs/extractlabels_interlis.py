@@ -317,7 +317,7 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
             if catchment_layer:
                 lyr_name_to_key.update(
                     {
-                        TwwLayerManager.layer("catchment_area").name(): "catchment_area",
+                        TwwLayerManager.layer("vw_tww_catchment_area").name(): "vw_tww_catchment_area",
                     }
                 )
             if building_group_layer:

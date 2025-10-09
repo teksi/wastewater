@@ -3316,7 +3316,7 @@ class InterlisExporterToIntermediateSchema:
         tid_for_obj_id = {
             "vw_tww_reach": {},
             "vw_tww_wastewater_structure": {},
-            "catchment_area": {},
+            "vw_tww_catchment_area": {},
         }
         for row in self.abwasser_session.query(self.model_classes_interlis.haltung):
             tid_for_obj_id["vw_tww_reach"][row.t_ili_tid] = row.t_id
@@ -3325,7 +3325,7 @@ class InterlisExporterToIntermediateSchema:
 
         if self.model in [config.MODEL_NAME_DSS, config.MODEL_NAME_AG96]:
             for row in self.abwasser_session.query(self.model_classes_interlis.einzugsgebiet):
-                tid_for_obj_id["catchment_area"][row.t_ili_tid] = row.t_id
+                tid_for_obj_id["vw_tww_catchment_area"][row.t_ili_tid] = row.t_id
 
         if self.model == config.MODEL_NAME_AG96:
             tid_for_obj_id.update(
@@ -3417,7 +3417,7 @@ class InterlisExporterToIntermediateSchema:
                         abwasserbauwerkref=t_id,
                     )
 
-                elif layer_name == "catchment_area":
+                elif layer_name == "vw_tww_catchment_area":
                     ili_label = self.model_classes_interlis.einzugsgebiet_text(
                         **self._textpos_common(
                             # label, "einzugsgebiet_text", geojson_crs_def, "CX", self.oid_prefix
@@ -3494,7 +3494,7 @@ class InterlisExporterToIntermediateSchema:
                             gepknotenref=t_id,
                         )
 
-                    elif layer_name == "catchment_area":
+                    elif layer_name == "vw_tww_catchment_area":
                         ili_label = self.model_classes_interlis.einzugsgebiet_text(
                             **self._textpos_common(
                                 label,
