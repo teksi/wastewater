@@ -352,6 +352,7 @@ WITH DATA;
         ),
         insert_hc_c=insert_command(
             connection=connection,
+            table_schema="tww_od",
             table_name="hydraulic_char_data",
             table_alias="hc_c",
             prefix="hc_c_",
@@ -364,6 +365,7 @@ WITH DATA;
         ),
         insert_hc_o=insert_command(
             connection=connection,
+            table_schema="tww_od",
             table_name="hydraulic_char_data",
             table_alias="hc_o",
             prefix="hc_o_",
@@ -376,6 +378,7 @@ WITH DATA;
         ),
         insert_hc_p=insert_command(
             connection=connection,
+            table_schema="tww_od",
             table_name="hydraulic_char_data",
             table_alias="hc_p",
             prefix="hc_p_",
@@ -388,6 +391,7 @@ WITH DATA;
         ),
         insert_hg_c=insert_command(
             connection=connection,
+            table_schema="tww_od",
             table_name="hydr_geometry",
             table_alias="hg_c",
             prefix="hg_c_",
