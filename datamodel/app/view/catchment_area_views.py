@@ -181,12 +181,12 @@ CREATE MATERIALIZED VIEW tww_app.mvw_catchment_area_totals
     ,{hc_p_cols}
     ,{hg_c_cols}
    FROM tww_od.catchment_area_totals cat
-     LEFT JOIN tww_od.hydraulic_char_data hcd_c ON hcd_c.obj_id::text = cat.fk_hydraulic_char_data::text AND hcd.status = 6372
+     LEFT JOIN tww_od.hydraulic_char_data hcd_c ON hcd_c.obj_id::text = cat.fk_hydraulic_char_data::text AND hcd_c.status = 6372
      LEFT JOIN tww_od.wastewater_node wn ON hcd_c.fk_wastewater_node::text = wn.obj_id::text
      LEFT JOIN tww_od.hydr_geometry hg_c ON hg_c.obj_id::text = wn.fk_hydr_geometry::text
-     LEFT JOIN tww_od.hydraulic_char_data hcd_o ON hcd_o.fk_wastewater_node::text = wn.obj_id::text AND hcd.status = 6373
+     LEFT JOIN tww_od.hydraulic_char_data hcd_o ON hcd_o.fk_wastewater_node::text = wn.obj_id::text AND hcd_o.status = 6373
      LEFT JOIN tww_od.hydr_geometry hg_o ON hg_p.obj_id::text = wn.fk_hydr_geometry::text
-     LEFT JOIN tww_od.hydraulic_char_data hcd_p ON hcd_o.fk_wastewater_node::text = wn.obj_id::text AND hcd.status = 6371
+     LEFT JOIN tww_od.hydraulic_char_data hcd_p ON hcd_p.fk_wastewater_node::text = wn.obj_id::text AND hcd_p.status = 6371
      LEFT JOIN tww_od.hydr_geometry hg_p ON hg_p.obj_id::text = wn.fk_hydr_geometry::text
      LEFT JOIN tww_od.log_card lc ON lc.fk_pwwf_wastewater_node::text = wn.obj_id::text
      LEFT JOIN ( WITH ca AS (
