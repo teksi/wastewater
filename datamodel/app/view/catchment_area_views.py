@@ -175,10 +175,22 @@ CREATE MATERIALIZED VIEW tww_app.mvw_catchment_area_totals
     lc.obj_id as fk_log_card,
     ca_agg.perimeter_geometry,
     wn.situation3d_geometry,
-    wn.obj_id AS wn_obj_id
+    wn.obj_id AS wn_obj_id,
+    -- current
+    {hc_c_cols}
+    {hg_c_cols}
+    -- optimized
+    {hc_o_cols}
+    -- planned
+    {hc_p_cols}
    FROM tww_od.catchment_area_totals cat
-     LEFT JOIN tww_od.hydraulic_char_data hcd ON hcd.obj_id::text = cat.fk_hydraulic_char_data::text AND hcd.status = 6372
-     LEFT JOIN tww_od.wastewater_node wn ON hcd.fk_wastewater_node::text = wn.obj_id::text
+     LEFT JOIN tww_od.hydraulic_char_data hcd_c ON hcd_c.obj_id::text = cat.fk_hydraulic_char_data::text AND hcd.status = 6372
+     LEFT JOIN tww_od.wastewater_node wn ON hcd_c.fk_wastewater_node::text = wn.obj_id::text
+     LEFT JOIN tww_od.hydr_geometry hg_c ON hg_c.obj_id::text = wn.fk_hydr_geometry::text
+     LEFT JOIN tww_od.hydraulic_char_data hcd_o ON hcd_o.fk_wastewater_node::text = wn.obj_id::text AND hcd.status = 6373
+     LEFT JOIN tww_od.hydr_geometry hg_o ON hg_p.obj_id::text = wn.fk_hydr_geometry::text
+     LEFT JOIN tww_od.hydraulic_char_data hcd_p ON hcd_o.fk_wastewater_node::text = wn.obj_id::text AND hcd.status = 6371
+     LEFT JOIN tww_od.hydr_geometry hg_p ON hg_p.obj_id::text = wn.fk_hydr_geometry::text
      LEFT JOIN tww_od.log_card lc ON lc.fk_pwwf_wastewater_node::text = wn.obj_id::text
      LEFT JOIN ( WITH ca AS (
                  SELECT catchment_area.fk_special_building_ww_current AS fk_log_card,
@@ -202,7 +214,49 @@ CREATE MATERIALIZED VIEW tww_app.mvw_catchment_area_totals
            FROM collector
           GROUP BY collector.obj_id) ca_agg ON ca_agg.obj_id::text = lc.obj_id::text
 WITH DATA;
-"""
+""".format(
+        hc_c_cols=select_columns(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="hydraulic_char_data",
+            table_alias="hc_c",
+            prefix="hc_c_",
+            remove_pkey=False,
+            indent=4,
+            skip_columns=["fk_wastewater_node","status"],
+        ),
+        hc_o_cols=select_columns(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="hydraulic_char_data",
+            table_alias="hc_o",
+            prefix="hc_o_",
+            remove_pkey=False,
+            indent=4,
+            skip_columns=["fk_wastewater_node","status"],
+        ),
+        hc_p_cols=select_columns(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="hydraulic_char_data",
+            table_alias="hc_p",
+            prefix="hc_p_",
+            remove_pkey=False,
+            indent=4,
+            skip_columns=["fk_wastewater_node","status"],
+        ),
+        hg_c_cols=select_columns(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="hydr_geometry",
+            table_alias="hg_c",
+            prefix="hg_c_",
+            remove_pkey=False,
+            indent=4,
+            skip_columns=[],
+        ),
+    )
+
     cursor.execute(mview_sql)
 
     view_sql = """
@@ -279,7 +333,10 @@ WITH DATA;
 
     ELSE NULL;
     END CASE;
-
+    {insert_hc_c}
+    {insert_hc_o}
+    {insert_hc_p}
+    {insert_hg_c}
     {insert_cat}
 
     {insert_extra}
@@ -300,7 +357,45 @@ WITH DATA;
             remove_pkey=False,
             indent=2,
             skip_columns=[],
-            remap_columns={"fk_hydraulic_char_data": "hcd_oid"},
+            remap_columns={"fk_hydraulic_char_data": "hc_c_obj_id"},
+        ),
+        insert_hc_c=insert_command(
+            connection=connection,
+            table_name="hydraulic_char_data",
+            table_alias="hc_c",
+            prefix="hc_c_",
+            remove_pkey=False,
+            indent=6,
+            remap_columns={"fk_wastewater_node": "wn_obj_id",
+                           "status": 6372,},
+        ),
+        insert_hc_o=insert_command(
+            connection=connection,
+            table_name="hydraulic_char_data",
+            table_alias="hc_o",
+            prefix="hc_o_",
+            remove_pkey=False,
+            indent=6,
+            remap_columns={"fk_wastewater_node": "wn_obj_id",
+                           "status": 6373,},
+        ),
+        insert_hc_p=insert_command(
+            connection=connection,
+            table_name="hydraulic_char_data",
+            table_alias="hc_p",
+            prefix="hc_p_",
+            remove_pkey=False,
+            indent=6,
+            remap_columns={"fk_wastewater_node": "wn_obj_id",
+                           "status": 6371,},
+        ),
+        insert_hg_c=insert_command(
+            connection=connection,
+            table_name="hydr_geometry",
+            table_alias="hg_c",
+            prefix="hg_c_",
+            remove_pkey=False,
+            indent=6,
         ),
         insert_extra=insert_extra(connection=connection, extra_definition=extra_definition),
     )
@@ -339,6 +434,12 @@ WITH DATA;
     END CASE;
 
       {update_cat}
+
+      {update_hc_c}
+      {update_hc_o}
+      {update_hc_p}
+      {update_hg_c}
+
       {update_extra}
        RETURN NEW;
     END;
@@ -360,6 +461,62 @@ WITH DATA;
             indent=6,
             skip_columns=[],
             update_values={},
+        ),
+        update_hc_c=update_command(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="hydraulic_char_data",
+            table_alias="hc_c",
+            prefix="hc_c_",
+            indent=6,
+            skip_columns=[],
+            update_values={
+                "last_modification": "NEW.last_modification",
+                "fk_dataowner": "NEW.fk_dataowner",
+                "fk_provider": "NEW.fk_provider",
+            },
+        ),
+        update_hc_o=update_command(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="hydraulic_char_data",
+            table_alias="hc_o",
+            prefix="hc_o_",
+            indent=6,
+            skip_columns=[],
+            update_values={
+                "last_modification": "NEW.last_modification",
+                "fk_dataowner": "NEW.fk_dataowner",
+                "fk_provider": "NEW.fk_provider",
+            },
+        ),
+        update_hc_p=update_command(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="hydraulic_char_data",
+            table_alias="hc_p",
+            prefix="hc_p_",
+            indent=6,
+            skip_columns=[],
+            update_values={
+                "last_modification": "NEW.last_modification",
+                "fk_dataowner": "NEW.fk_dataowner",
+                "fk_provider": "NEW.fk_provider",
+            },
+        ),
+        update_hg_c=update_command(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="hydr_geometry",
+            table_alias="hg_c",
+            prefix="hg_c_",
+            indent=6,
+            skip_columns=[],
+            update_values={
+                "last_modification": "NEW.last_modification",
+                "fk_dataowner": "NEW.fk_dataowner",
+                "fk_provider": "NEW.fk_provider",
+            },
         ),
         update_extra=update_extra(connection=connection, extra_definition=extra_definition),
     )
