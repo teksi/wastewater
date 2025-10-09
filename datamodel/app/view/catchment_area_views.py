@@ -301,6 +301,7 @@ WITH DATA;
       RETURNS trigger AS
     $BODY$
     DECLARE
+      hc_oid VARCHAR(16);
       lc_rec RECORD;
     BEGIN
 
@@ -325,8 +326,11 @@ WITH DATA;
     ELSE NULL;
     END CASE;
     {insert_hc_c}
+    UPDATE tww_od.hydraulic_char_data SET status=6372 WHERE obj_id=hc_oid;
     {insert_hc_o}
+    UPDATE tww_od.hydraulic_char_data SET status=6373 WHERE obj_id=hc_oid;
     {insert_hc_p}
+    UPDATE tww_od.hydraulic_char_data SET status=6371 WHERE obj_id=hc_oid;
     {insert_hg_c}
     {insert_cat}
 
@@ -360,8 +364,8 @@ WITH DATA;
             indent=6,
             remap_columns={
                 "fk_wastewater_node": "wn_obj_id",
-                "status": 6372,
             },
+            returning="obj_id INTO hc_oid",
         ),
         insert_hc_o=insert_command(
             connection=connection,
@@ -373,8 +377,8 @@ WITH DATA;
             indent=6,
             remap_columns={
                 "fk_wastewater_node": "wn_obj_id",
-                "status": 6373,
             },
+            returning="obj_id INTO hc_oid",
         ),
         insert_hc_p=insert_command(
             connection=connection,
@@ -386,8 +390,8 @@ WITH DATA;
             indent=6,
             remap_columns={
                 "fk_wastewater_node": "wn_obj_id",
-                "status": 6371,
             },
+            returning="obj_id INTO hc_oid",
         ),
         insert_hg_c=insert_command(
             connection=connection,
