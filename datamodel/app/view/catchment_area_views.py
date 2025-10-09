@@ -339,10 +339,10 @@ WITH DATA;
       RETURN NEW;
     END; $BODY$ LANGUAGE plpgsql VOLATILE;
 
-    DROP TRIGGER IF EXISTS vw_tww_catchment_area_INSERT ON tww_app.vw_tww_catchment_area;
+    DROP TRIGGER IF EXISTS vw_tww_catchment_area_totals_INSERT ON tww_app.vw_tww_catchment_area_totals;
 
-    CREATE TRIGGER vw_tww_catchment_area_INSERT INSTEAD OF INSERT ON tww_app.vw_tww_catchment_area
-      FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_catchment_area_INSERT();
+    CREATE TRIGGER vw_tww_catchment_area_totals_INSERT INSTEAD OF INSERT ON tww_app.vw_tww_catchment_area_totals
+      FOR EACH ROW EXECUTE PROCEDURE tww_app.vw_tww_catchment_area_totals_INSERT();
     """.format(
         insert_cat=insert_command(
             connection=connection,
@@ -414,11 +414,6 @@ WITH DATA;
     DECLARE
       lc_rec RECORD;
     BEGIN
-
-
-      UPDATE tww_od.hydraulic_char_data
-      SET fk_wastewater_node = NEW.wn_obj_id
-      WHERE status=6372 AND obj_id=NEW.fk_hydraulic_char_data;
 
     SELECT lc.obj_id, lc.fk_pwwf_wastewater_node
     FROM tww_od.log_card
@@ -548,6 +543,10 @@ WITH DATA;
 
     extras = """
         ALTER VIEW tww_app.vw_tww_catchment_area_totals ALTER obj_id SET DEFAULT tww_app.generate_oid('tww_od','catchment_area_totals');
+        ALTER VIEW tww_app.vw_tww_catchment_area_totals ALTER hc_c_obj_id SET DEFAULT tww_app.generate_oid('tww_od','hydraulic_char_data');
+        ALTER VIEW tww_app.vw_tww_catchment_area_totals ALTER hc_o_obj_id SET DEFAULT tww_app.generate_oid('tww_od','hydraulic_char_data');
+        ALTER VIEW tww_app.vw_tww_catchment_area_totals ALTER hc_p_obj_id SET DEFAULT tww_app.generate_oid('tww_od','hydraulic_char_data');
+        ALTER VIEW tww_app.vw_tww_catchment_area_totals ALTER hg_c_obj_id SET DEFAULT tww_app.generate_oid('tww_od','hydr_geometry');
     """
     cursor.execute(extras)
 
