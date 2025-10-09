@@ -223,7 +223,7 @@ WITH DATA;
             prefix="hc_c_",
             remove_pkey=False,
             indent=4,
-            skip_columns=["fk_wastewater_node","status"],
+            skip_columns=["fk_wastewater_node", "status"],
         ),
         hc_o_cols=select_columns(
             connection=connection,
@@ -233,7 +233,7 @@ WITH DATA;
             prefix="hc_o_",
             remove_pkey=False,
             indent=4,
-            skip_columns=["fk_wastewater_node","status"],
+            skip_columns=["fk_wastewater_node", "status"],
         ),
         hc_p_cols=select_columns(
             connection=connection,
@@ -243,7 +243,7 @@ WITH DATA;
             prefix="hc_p_",
             remove_pkey=False,
             indent=4,
-            skip_columns=["fk_wastewater_node","status"],
+            skip_columns=["fk_wastewater_node", "status"],
         ),
         hg_c_cols=select_columns(
             connection=connection,
@@ -366,8 +366,10 @@ WITH DATA;
             prefix="hc_c_",
             remove_pkey=False,
             indent=6,
-            remap_columns={"fk_wastewater_node": "wn_obj_id",
-                           "status": 6372,},
+            remap_columns={
+                "fk_wastewater_node": "wn_obj_id",
+                "status": 6372,
+            },
         ),
         insert_hc_o=insert_command(
             connection=connection,
@@ -376,8 +378,10 @@ WITH DATA;
             prefix="hc_o_",
             remove_pkey=False,
             indent=6,
-            remap_columns={"fk_wastewater_node": "wn_obj_id",
-                           "status": 6373,},
+            remap_columns={
+                "fk_wastewater_node": "wn_obj_id",
+                "status": 6373,
+            },
         ),
         insert_hc_p=insert_command(
             connection=connection,
@@ -386,8 +390,10 @@ WITH DATA;
             prefix="hc_p_",
             remove_pkey=False,
             indent=6,
-            remap_columns={"fk_wastewater_node": "wn_obj_id",
-                           "status": 6371,},
+            remap_columns={
+                "fk_wastewater_node": "wn_obj_id",
+                "status": 6371,
+            },
         ),
         insert_hg_c=insert_command(
             connection=connection,
