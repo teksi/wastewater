@@ -181,11 +181,11 @@ CREATE MATERIALIZED VIEW tww_app.mvw_catchment_area_totals
     ,{hc_p_cols}
     ,{hg_c_cols}
    FROM tww_od.catchment_area_totals cat
-     LEFT JOIN tww_od.hydraulic_char_data hcd_c ON hcd_c.obj_id::text = cat.fk_hydraulic_char_data::text AND hcd_c.status = 6372
-     LEFT JOIN tww_od.wastewater_node wn ON hcd_c.fk_wastewater_node::text = wn.obj_id::text
+     LEFT JOIN tww_od.hydraulic_char_data hc_c ON hc_c.obj_id::text = cat.fk_hydraulic_char_data::text AND hc_c.status = 6372
+     LEFT JOIN tww_od.wastewater_node wn ON hc_c.fk_wastewater_node::text = wn.obj_id::text
      LEFT JOIN tww_od.hydr_geometry hg_c ON hg_c.obj_id::text = wn.fk_hydr_geometry::text
-     LEFT JOIN tww_od.hydraulic_char_data hcd_o ON hcd_o.fk_wastewater_node::text = wn.obj_id::text AND hcd_o.status = 6373
-     LEFT JOIN tww_od.hydraulic_char_data hcd_p ON hcd_p.fk_wastewater_node::text = wn.obj_id::text AND hcd_p.status = 6371
+     LEFT JOIN tww_od.hydraulic_char_data hc_o ON hc_o.fk_wastewater_node::text = wn.obj_id::text AND hc_o.status = 6373
+     LEFT JOIN tww_od.hydraulic_char_data hc_p ON hc_p.fk_wastewater_node::text = wn.obj_id::text AND hc_p.status = 6371
      LEFT JOIN tww_od.log_card lc ON lc.fk_pwwf_wastewater_node::text = wn.obj_id::text
      LEFT JOIN ( WITH ca AS (
                  SELECT catchment_area.fk_special_building_ww_current AS fk_log_card,
@@ -301,15 +301,11 @@ WITH DATA;
       RETURNS trigger AS
     $BODY$
     DECLARE
-      hcd_oid text;
       lc_rec RECORD;
     BEGIN
 
       NEW.identifier = COALESCE(NEW.identifier, NEW.obj_id);
 
-      INSERT INTO tww_od.hydraulic_char_data (status,fk_wastewater_node)
-      VALUES (6372,NEW.wn_obj_id)
-      RETURNING obj_id INTO hcd_oid;
 
     SELECT lc.obj_id, lc.fk_pwwf_wastewater_node
     FROM tww_od.log_card
