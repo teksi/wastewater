@@ -185,9 +185,7 @@ CREATE MATERIALIZED VIEW tww_app.mvw_catchment_area_totals
      LEFT JOIN tww_od.wastewater_node wn ON hcd_c.fk_wastewater_node::text = wn.obj_id::text
      LEFT JOIN tww_od.hydr_geometry hg_c ON hg_c.obj_id::text = wn.fk_hydr_geometry::text
      LEFT JOIN tww_od.hydraulic_char_data hcd_o ON hcd_o.fk_wastewater_node::text = wn.obj_id::text AND hcd_o.status = 6373
-     LEFT JOIN tww_od.hydr_geometry hg_o ON hg_p.obj_id::text = wn.fk_hydr_geometry::text
      LEFT JOIN tww_od.hydraulic_char_data hcd_p ON hcd_p.fk_wastewater_node::text = wn.obj_id::text AND hcd_p.status = 6371
-     LEFT JOIN tww_od.hydr_geometry hg_p ON hg_p.obj_id::text = wn.fk_hydr_geometry::text
      LEFT JOIN tww_od.log_card lc ON lc.fk_pwwf_wastewater_node::text = wn.obj_id::text
      LEFT JOIN ( WITH ca AS (
                  SELECT catchment_area.fk_special_building_ww_current AS fk_log_card,
