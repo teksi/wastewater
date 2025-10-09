@@ -176,13 +176,10 @@ CREATE MATERIALIZED VIEW tww_app.mvw_catchment_area_totals
     ca_agg.perimeter_geometry,
     wn.situation3d_geometry,
     wn.obj_id AS wn_obj_id,
-    -- current
     {hc_c_cols}
-    {hg_c_cols}
-    -- optimized
-    {hc_o_cols}
-    -- planned
-    {hc_p_cols}
+    ,{hc_o_cols}
+    ,{hc_p_cols}
+    ,{hg_c_cols}
    FROM tww_od.catchment_area_totals cat
      LEFT JOIN tww_od.hydraulic_char_data hcd_c ON hcd_c.obj_id::text = cat.fk_hydraulic_char_data::text AND hcd.status = 6372
      LEFT JOIN tww_od.wastewater_node wn ON hcd_c.fk_wastewater_node::text = wn.obj_id::text
