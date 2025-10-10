@@ -316,7 +316,7 @@ WITH DATA;
 
 
     SELECT lc.obj_id, lc.fk_pwwf_wastewater_node
-    FROM tww_od.log_card
+    FROM tww_od.log_card lc
     WHERE lc.obj_id=NEW.fk_log_card
     INTO lc_rec;
 
@@ -326,7 +326,7 @@ WITH DATA;
       VALUES (NEW.fk_log_card, NEW.wn_obj_id);
       ELSE NULL;
       END CASE;
-    WHEN lc_rec.fk_pwwf_wastewater_node != wn_obj_id THEN
+    WHEN lc_rec.fk_pwwf_wastewater_node != NEW.wn_obj_id THEN
       UPDATE tww_od.log_card lc SET lc.fk_pwwf_wastewater_node = NEW.wn_obj_id
       WHERE lc.obj_id=NEW.wn_obj_id;
 
@@ -476,11 +476,12 @@ WITH DATA;
             table_alias="hc_c",
             prefix="hc_c_",
             indent=6,
-            skip_columns=[],
+            skip_columns=["status"],
             update_values={
                 "last_modification": "NEW.last_modification",
                 "fk_dataowner": "NEW.fk_dataowner",
                 "fk_provider": "NEW.fk_provider",
+                "fk_wastewater_node": "NEW.wn_obj_id",
             },
         ),
         update_hc_o=update_command(
@@ -490,11 +491,12 @@ WITH DATA;
             table_alias="hc_o",
             prefix="hc_o_",
             indent=6,
-            skip_columns=[],
+            skip_columns=["status"],
             update_values={
                 "last_modification": "NEW.last_modification",
                 "fk_dataowner": "NEW.fk_dataowner",
                 "fk_provider": "NEW.fk_provider",
+                "fk_wastewater_node": "NEW.wn_obj_id",
             },
         ),
         update_hc_p=update_command(
@@ -504,11 +506,12 @@ WITH DATA;
             table_alias="hc_p",
             prefix="hc_p_",
             indent=6,
-            skip_columns=[],
+            skip_columns=["status"],
             update_values={
                 "last_modification": "NEW.last_modification",
                 "fk_dataowner": "NEW.fk_dataowner",
                 "fk_provider": "NEW.fk_provider",
+                "fk_wastewater_node": "NEW.wn_obj_id",
             },
         ),
         update_hg_c=update_command(
