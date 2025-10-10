@@ -1,0 +1,10 @@
+joins:
+  agxx_catchment_area_totals:
+    table: tww_od.agxx_catchment_area_totals
+    alias: agxx_cat
+    join_on: "agxx_cat.fk_catchment_area_totals = cat.obj_id"
+    skip_columns: ["uuid","fk_catchment_area_totals"]
+    remap_columns:
+      fk_catchment_area_totals: obj_id
+    read_only: false
+    where_clause: "agxx_ne.fk_catchment_area_totals = OLD.obj_id"
