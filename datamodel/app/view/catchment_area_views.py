@@ -173,26 +173,9 @@ CREATE MATERIALIZED VIEW tww_app.mvw_catchment_area_totals
  AS
  SELECT cat.obj_id as _obj_id, -- underscore necessary for pirogue
     lc.obj_id as fk_log_card,
-    ca_agg.perimeter_geometry,
-    wn.situation3d_geometry,
-    wn.obj_id AS wn_obj_id,
-    {hc_c_cols}
-    ,{hc_o_cols}
-    ,{hc_p_cols}
-    ,{hg_c_cols}
-    , ws.status AS ws_status
-    , ma.function AS ma_function
-    , ss.function AS ss_function
+    ca_agg.perimeter_geometry
    FROM tww_od.catchment_area_totals cat
-     LEFT JOIN tww_od.hydraulic_char_data hc_c ON hc_c.obj_id::text = cat.fk_hydraulic_char_data::text AND hc_c.status = 6372
      LEFT JOIN tww_od.wastewater_node wn ON hc_c.fk_wastewater_node::text = wn.obj_id::text
-     LEFT JOIN tww_od.wastewater_networkelement ne ON wn.obj_id::text = ne.obj_id::text
-     LEFT JOIN tww_od.wastewater_structure ws ON ne.fk_wastewater_structure::text = ws.obj_id::text
-     LEFT JOIN tww_od.manhole ma ON ma.obj_id::text = ws.obj_id::text
-     LEFT JOIN tww_od.special_structure ss ON ss.obj_id::text = ws.obj_id::text
-     LEFT JOIN tww_od.hydr_geometry hg_c ON hg_c.obj_id::text = wn.fk_hydr_geometry::text
-     LEFT JOIN tww_od.hydraulic_char_data hc_o ON hc_o.fk_wastewater_node::text = wn.obj_id::text AND hc_o.status = 6373
-     LEFT JOIN tww_od.hydraulic_char_data hc_p ON hc_p.fk_wastewater_node::text = wn.obj_id::text AND hc_p.status = 6371
      LEFT JOIN tww_od.log_card lc ON lc.fk_pwwf_wastewater_node::text = wn.obj_id::text
      LEFT JOIN ( WITH ca AS (
                  SELECT catchment_area.fk_special_building_ww_current AS fk_log_card,
@@ -216,7 +199,59 @@ CREATE MATERIALIZED VIEW tww_app.mvw_catchment_area_totals
            FROM collector
           GROUP BY collector.obj_id) ca_agg ON ca_agg.obj_id::text = lc.obj_id::text
 WITH DATA;
-""".format(
+"""
+
+    cursor.execute(mview_sql)
+
+    view_sql = """
+    DROP VIEW IF EXISTS tww_app.vw_tww_catchment_area_totals;
+
+    CREATE OR REPLACE VIEW tww_app.vw_tww_catchment_area_totals AS
+     SELECT
+        {cat_cols}
+        , {mv_cat_cols}
+    , wn.situation3d_geometry
+    , wn.obj_id AS wn_obj_id
+    , {hc_c_cols}
+    , {hc_o_cols}
+    , {hc_p_cols}
+    , {hg_c_cols}
+    , ws.status AS ws_status
+    , ma.function AS ma_function
+    , ss.function AS ss_function
+        {extra_cols}
+        FROM tww_od.catchment_area_totals cat
+        LEFT JOIN tww_app.mvw_catchment_area_totals mv_cat on mv_cat._obj_id=cat.obj_id
+        LEFT JOIN tww_od.hydraulic_char_data hc_c ON hc_c.obj_id::text = cat.fk_hydraulic_char_data::text AND hc_c.status = 6372
+        LEFT JOIN tww_od.wastewater_node wn ON hc_c.fk_wastewater_node::text = wn.obj_id::text
+        LEFT JOIN tww_od.wastewater_networkelement ne ON wn.obj_id::text = ne.obj_id::text
+        LEFT JOIN tww_od.wastewater_structure ws ON ne.fk_wastewater_structure::text = ws.obj_id::text
+        LEFT JOIN tww_od.manhole ma ON ma.obj_id::text = ws.obj_id::text
+        LEFT JOIN tww_od.special_structure ss ON ss.obj_id::text = ws.obj_id::text
+        LEFT JOIN tww_od.hydr_geometry hg_c ON hg_c.obj_id::text = wn.fk_hydr_geometry::text
+        LEFT JOIN tww_od.hydraulic_char_data hc_o ON hc_o.fk_wastewater_node::text = wn.obj_id::text AND hc_o.status = 6373
+        LEFT JOIN tww_od.hydraulic_char_data hc_p ON hc_p.fk_wastewater_node::text = wn.obj_id::text AND hc_p.status = 6371
+        {extra_joins};
+
+    """.format(
+        cat_cols=select_columns(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="catchment_area_totals",
+            table_alias="cat",
+            remove_pkey=False,
+            indent=4,
+            skip_columns=[],
+        ),
+        mv_cat_cols=select_columns(
+            connection=connection,
+            table_schema="tww_app",
+            table_name="mvw_catchment_area_totals",
+            table_alias="mv_cat",
+            remove_pkey=False,
+            indent=4,
+            skip_columns=["_obj_id"],
+        ),
         hc_c_cols=select_columns(
             connection=connection,
             table_schema="tww_od",
@@ -256,42 +291,6 @@ WITH DATA;
             remove_pkey=False,
             indent=4,
             skip_columns=[],
-        ),
-    )
-
-    cursor.execute(mview_sql)
-
-    view_sql = """
-    DROP VIEW IF EXISTS tww_app.vw_tww_catchment_area_totals;
-
-    CREATE OR REPLACE VIEW tww_app.vw_tww_catchment_area_totals AS
-     SELECT
-        {cat_cols}
-        , {mv_cat_cols}
-
-        {extra_cols}
-        FROM tww_od.catchment_area_totals cat
-        LEFT JOIN tww_app.mvw_catchment_area_totals mv_cat on mv_cat._obj_id=cat.obj_id
-        {extra_joins};
-
-    """.format(
-        cat_cols=select_columns(
-            connection=connection,
-            table_schema="tww_od",
-            table_name="catchment_area_totals",
-            table_alias="cat",
-            remove_pkey=False,
-            indent=4,
-            skip_columns=[],
-        ),
-        mv_cat_cols=select_columns(
-            connection=connection,
-            table_schema="tww_app",
-            table_name="mvw_catchment_area_totals",
-            table_alias="mv_cat",
-            remove_pkey=False,
-            indent=4,
-            skip_columns=["_obj_id"],
         ),
         extra_cols=(
             ""
