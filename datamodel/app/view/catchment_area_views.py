@@ -175,6 +175,7 @@ CREATE MATERIALIZED VIEW tww_app.mvw_catchment_area_totals
     lc.obj_id as fk_log_card,
     ca_agg.perimeter_geometry
    FROM tww_od.catchment_area_totals cat
+     LEFT JOIN tww_od.hydraulic_char_data hc_c ON hc_c.obj_id::text = cat.fk_hydraulic_char_data::text AND hc_c.status = 6372
      LEFT JOIN tww_od.wastewater_node wn ON hc_c.fk_wastewater_node::text = wn.obj_id::text
      LEFT JOIN tww_od.log_card lc ON lc.fk_pwwf_wastewater_node::text = wn.obj_id::text
      LEFT JOIN ( WITH ca AS (
