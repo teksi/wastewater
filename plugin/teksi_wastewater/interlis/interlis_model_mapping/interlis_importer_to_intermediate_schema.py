@@ -73,7 +73,7 @@ class InterlisImporterToIntermediateSchema:
             if self.model != config.MODEL_NAME_SIA405_BASE_ABWASSER:
                 self._import_sia405_abwasser()
 
-        if self.model == config.MODEL_NAME_DSS:
+        if self.model in (config.MODEL_NAME_DSS, config.MODEL_NAME_DSS_3D):
             self._import_dss()
 
         if self.model == config.MODEL_NAME_VSA_KEK:
@@ -557,6 +557,16 @@ class InterlisImporterToIntermediateSchema:
         """
         Returns common attributes for wastewater_structure
         """
+        attrs_3d={}
+        if hasattr(row, 'detailgeometrie3d'):
+            attrs_3d["detail_geometry3d_geometry"]=row.detailgeometrie3d
+        if hasattr(row, 'hoehenbestimmung'):
+            attrs_3d["elevation_determination"]=self.get_vl_code(self.model_classes_tww_od.channel_elevation_determination,row.hoehenbestimmung)
+        if hasattr(row, 'deckenkote'):
+            attrs_3d["upper_elevation"]=row.deckenkote
+        ## if row.maechtigkeit:
+        ##   as _depth is calculated, we do not import
+
         return {
             "accessibility": self.get_vl_code(
                 self.model_classes_tww_od.wastewater_structure_accessibility, row.zugaenglichkeit
@@ -611,6 +621,7 @@ class InterlisImporterToIntermediateSchema:
             "urgency_figure": row.dringlichkeitszahl,
             "year_of_construction": row.baujahr,
             "year_of_replacement": row.ersatzjahr,
+            **attrs_3d,
         }
 
     def wastewater_networkelement_common(self, row):
@@ -2154,6 +2165,15 @@ class InterlisImporterToIntermediateSchema:
 
     def _import_haltung(self):
         for row in self.session_interlis.query(self.model_classes_interlis.haltung):
+            attrs_3d={}
+            if hasattr(row, 'verlauf3d'):
+                verlauf=row.verlauf3d
+            else:
+                verlauf=self.session_tww.scalar(ST_Force3D(row.verlauf))
+            if hasattr(row, 'hoehenbestimmung'):
+                attrs_3d["elevation_determination"]=self.get_vl_code(
+                    self.model_classes_tww_od.reach_elevation_determination, row.hoehenbestimmung
+                ),
             reach = self.create_or_update(
                 self.model_classes_tww_od.reach,
                 **self.base_common(row),
@@ -2185,7 +2205,7 @@ class InterlisImporterToIntermediateSchema:
                 ),
                 length_effective=row.laengeeffektiv,
                 material=self.get_vl_code(self.model_classes_tww_vl.reach_material, row.material),
-                progression3d_geometry=self.session_tww.scalar(ST_Force3D(row.verlauf)),
+                progression3d_geometry=verlauf,
                 reliner_material=self.get_vl_code(
                     self.model_classes_tww_od.reach_reliner_material, row.reliner_material
                 ),
@@ -2199,6 +2219,7 @@ class InterlisImporterToIntermediateSchema:
                 ring_stiffness=row.ringsteifigkeit,
                 slope_building_plan=row.plangefaelle,  # TODO : check, does this need conversion ?
                 wall_roughness=row.wandrauhigkeit,
+                **attrs_3d,
             )
             self.session_tww.add(reach)
             print(".", end="")
