@@ -37,7 +37,10 @@ class InterlisExporterToIntermediateSchema:
             selection:      if provided, limits the export to networkelements that are provided in the selection
         """
         self.model = model
-        self.is_3d_model = model in [config.MODEL_NAME_DSS_3D, config.MODEL_NAME_SIA405_ABWASSER_3D]
+        self.is_3d_model = model in [
+            config.MODEL_NAME_DSS_3D,
+            config.MODEL_NAME_SIA405_ABWASSER_3D,
+        ]
         self.is_ag_xx_model = model in [config.MODEL_NAME_AG64, config.MODEL_NAME_AG96]
         self.callback_progress_done = callback_progress_done
 
@@ -564,10 +567,10 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-            attrs_3d={}
+            attrs_3d = {}
             if self.is_3d_model:
-                attrs_3d["detailgeometrie3d"]=row.detail_geometry3d_geometry
-                attrs_3d["hoehenbestimmung"]=self.get_vl(row.elevation_determination__REL)
+                attrs_3d["detailgeometrie3d"] = row.detail_geometry3d_geometry
+                attrs_3d["hoehenbestimmung"] = self.get_vl(row.elevation_determination__REL)
 
             kanal = self.model_classes_interlis.kanal(
                 # FIELDS TO MAP TO ABWASSER.kanal
@@ -601,11 +604,11 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-            attrs_3d={}
+            attrs_3d = {}
             if self.is_3d_model:
-                attrs_3d["detailgeometrie3d"]=row.detail_geometry3d_geometry
-                attrs_3d["hoehenbestimmung"]=self.get_vl(row.elevation_determination__REL)
-                attrs_3d["maechtigkeit"]=row._depth
+                attrs_3d["detailgeometrie3d"] = row.detail_geometry3d_geometry
+                attrs_3d["hoehenbestimmung"] = self.get_vl(row.elevation_determination__REL)
+                attrs_3d["maechtigkeit"] = row._depth
             normschacht = self.model_classes_interlis.normschacht(
                 # --- abwasserbauwerk ---
                 **self.wastewater_structure_common(row, "normschacht"),
@@ -636,12 +639,12 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-            attrs_3d={}
+            attrs_3d = {}
             if self.is_3d_model:
-                attrs_3d["deckenkote"]=row.upper_elevation
-                attrs_3d["detailgeometrie3d"]=row.detail_geometry3d_geometry
-                attrs_3d["hoehenbestimmung"]=self.get_vl(row.elevation_determination__REL)
-                attrs_3d["maechtigkeit"]=row._depth
+                attrs_3d["deckenkote"] = row.upper_elevation
+                attrs_3d["detailgeometrie3d"] = row.detail_geometry3d_geometry
+                attrs_3d["hoehenbestimmung"] = self.get_vl(row.elevation_determination__REL)
+                attrs_3d["maechtigkeit"] = row._depth
             einleitstelle = self.model_classes_interlis.einleitstelle(
                 # --- abwasserbauwerk ---
                 **self.wastewater_structure_common(row, "einleitstelle"),
@@ -673,12 +676,12 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-            attrs_3d={}
+            attrs_3d = {}
             if self.is_3d_model:
-                attrs_3d["deckenkote"]=row.upper_elevation
-                attrs_3d["detailgeometrie3d"]=row.detail_geometry3d_geometry
-                attrs_3d["hoehenbestimmung"]=self.get_vl(row.elevation_determination__REL)
-                attrs_3d["maechtigkeit"]=row._depth
+                attrs_3d["deckenkote"] = row.upper_elevation
+                attrs_3d["detailgeometrie3d"] = row.detail_geometry3d_geometry
+                attrs_3d["hoehenbestimmung"] = self.get_vl(row.elevation_determination__REL)
+                attrs_3d["maechtigkeit"] = row._depth
             spezialbauwerk = self.model_classes_interlis.spezialbauwerk(
                 # FIELDS TO MAP TO ABWASSER.spezialbauwerk
                 # --- abwasserbauwerk ---
@@ -711,12 +714,12 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-            attrs_3d={}
+            attrs_3d = {}
             if self.is_3d_model:
-                attrs_3d["deckenkote"]=row.upper_elevation
-                attrs_3d["detailgeometrie3d"]=row.detail_geometry3d_geometry
-                attrs_3d["hoehenbestimmung"]=self.get_vl(row.elevation_determination__REL)
-                attrs_3d["maechtigkeit"]=row._depth
+                attrs_3d["deckenkote"] = row.upper_elevation
+                attrs_3d["detailgeometrie3d"] = row.detail_geometry3d_geometry
+                attrs_3d["hoehenbestimmung"] = self.get_vl(row.elevation_determination__REL)
+                attrs_3d["maechtigkeit"] = row._depth
             versickerungsanlage = self.model_classes_interlis.versickerungsanlage(
                 # FIELDS TO MAP TO ABWASSER.versickerungsanlage
                 # --- abwasserbauwerk ---
@@ -934,10 +937,10 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-            attrs_3d={}
+            attrs_3d = {}
             if self.is_3d_model:
-                attrs_3d["verlauf3d"]=row.progression_geometry3d_geometry
-                attrs_3d["hoehenbestimmung"]=self.get_vl(row.elevation_determination__REL)
+                attrs_3d["verlauf3d"] = row.progression_geometry3d_geometry
+                attrs_3d["hoehenbestimmung"] = self.get_vl(row.elevation_determination__REL)
             # AVAILABLE FIELDS IN TWW.reach
 
             # --- wastewater_networkelement ---
@@ -1135,9 +1138,9 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-            attrs_3d={}
+            attrs_3d = {}
             if self.is_3d_model:
-                attrs_3d["maechtigkeit"]=row._depth
+                attrs_3d["maechtigkeit"] = row._depth
             # AVAILABLE FIELDS IN TWW.cover
 
             # --- structure_part ---
@@ -1386,10 +1389,10 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-            attrs_3d={}
+            attrs_3d = {}
             if self.is_3d_model:
-                attrs_3d["detailgeometrie3d"]=row.detail_geometry3d_geometry
-                attrs_3d["hoehenbestimmung"]=self.get_vl(row.elevation_determination__REL)
+                attrs_3d["detailgeometrie3d"] = row.detail_geometry3d_geometry
+                attrs_3d["hoehenbestimmung"] = self.get_vl(row.elevation_determination__REL)
             arabauwerk = self.model_classes_interlis.arabauwerk(
                 # --- bauwerksteil ---
                 **self.wastewater_structure_common(row, "arabauwerk"),
@@ -1435,10 +1438,10 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-            attrs_3d={}
+            attrs_3d = {}
             if self.is_3d_model:
-                attrs_3d["detailgeometrie3d"]=row.detail_geometry3d_geometry
-                attrs_3d["hoehenbestimmung"]=self.get_vl(row.elevation_determination__REL)
+                attrs_3d["detailgeometrie3d"] = row.detail_geometry3d_geometry
+                attrs_3d["hoehenbestimmung"] = self.get_vl(row.elevation_determination__REL)
             abflusslose_toilette = self.model_classes_interlis.abflusslose_toilette(
                 **self.wastewater_structure_common(row, "abflusslose_toilette"),
                 # --- drainless_toilet ---
@@ -2167,10 +2170,10 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-            attrs_3d={}
+            attrs_3d = {}
             if self.is_3d_model:
-                attrs_3d["detailgeometrie3d"]=row.detail_geometry3d_geometry
-                attrs_3d["hoehenbestimmung"]=self.get_vl(row.elevation_determination__REL)
+                attrs_3d["detailgeometrie3d"] = row.detail_geometry3d_geometry
+                attrs_3d["hoehenbestimmung"] = self.get_vl(row.elevation_determination__REL)
             klara = self.model_classes_interlis.klara(
                 **self.wastewater_structure_common(row, "klara"),
                 # --- small_treatment_plant ---

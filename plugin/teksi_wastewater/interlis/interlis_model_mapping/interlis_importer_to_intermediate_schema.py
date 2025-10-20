@@ -557,13 +557,15 @@ class InterlisImporterToIntermediateSchema:
         """
         Returns common attributes for wastewater_structure
         """
-        attrs_3d={}
-        if hasattr(row, 'detailgeometrie3d'):
-            attrs_3d["detail_geometry3d_geometry"]=row.detailgeometrie3d
-        if hasattr(row, 'hoehenbestimmung'):
-            attrs_3d["elevation_determination"]=self.get_vl_code(self.model_classes_tww_od.channel_elevation_determination,row.hoehenbestimmung)
-        if hasattr(row, 'deckenkote'):
-            attrs_3d["upper_elevation"]=row.deckenkote
+        attrs_3d = {}
+        if hasattr(row, "detailgeometrie3d"):
+            attrs_3d["detail_geometry3d_geometry"] = row.detailgeometrie3d
+        if hasattr(row, "hoehenbestimmung"):
+            attrs_3d["elevation_determination"] = self.get_vl_code(
+                self.model_classes_tww_od.channel_elevation_determination, row.hoehenbestimmung
+            )
+        if hasattr(row, "deckenkote"):
+            attrs_3d["upper_elevation"] = row.deckenkote
         ## if row.maechtigkeit:
         ##   as _depth is calculated, we do not import
 
@@ -2165,15 +2167,18 @@ class InterlisImporterToIntermediateSchema:
 
     def _import_haltung(self):
         for row in self.session_interlis.query(self.model_classes_interlis.haltung):
-            attrs_3d={}
-            if hasattr(row, 'verlauf3d'):
-                verlauf=row.verlauf3d
+            attrs_3d = {}
+            if hasattr(row, "verlauf3d"):
+                verlauf = row.verlauf3d
             else:
-                verlauf=self.session_tww.scalar(ST_Force3D(row.verlauf))
-            if hasattr(row, 'hoehenbestimmung'):
-                attrs_3d["elevation_determination"]=self.get_vl_code(
-                    self.model_classes_tww_od.reach_elevation_determination, row.hoehenbestimmung
-                ),
+                verlauf = self.session_tww.scalar(ST_Force3D(row.verlauf))
+            if hasattr(row, "hoehenbestimmung"):
+                attrs_3d["elevation_determination"] = (
+                    self.get_vl_code(
+                        self.model_classes_tww_od.reach_elevation_determination,
+                        row.hoehenbestimmung,
+                    ),
+                )
             reach = self.create_or_update(
                 self.model_classes_tww_od.reach,
                 **self.base_common(row),
