@@ -18,7 +18,7 @@ BEGIN
   JOIN tww_od.wastewater_networkelement ne on sp.fk_wastewater_structure=ne.fk_wastewater_structure AND ne.obj_id=NEW.obj_id
   JOIN tww_od.wastewater_node wn on wn.obj_id=ne.obj_id;
 
-  FOR co_obj_id IN co_obj_ids LOOP
+  FOREACH co_obj_id IN ARRAY co_obj_ids LOOP
     EXECUTE FORMAT("UPDATE tww_od.cover SET _depth = level - %s$1 WHERE obj_id = %L$2",min_level,co_obj_id)
   END LOOP;
 
