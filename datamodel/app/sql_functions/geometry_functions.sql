@@ -10,7 +10,6 @@ $BODY$
 DECLARE
   co_obj_ids varchar(16)[];
   min_level numeric;
-  co_obj_id varchar(16);
 BEGIN
   SELECT array_agg(co.obj_id), min(wn.bottom_level) INTO co_obj_ids,min_level
   FROM tww_od.cover co
@@ -18,8 +17,8 @@ BEGIN
   JOIN tww_od.wastewater_networkelement ne on sp.fk_wastewater_structure=ne.fk_wastewater_structure AND ne.obj_id=NEW.obj_id
   JOIN tww_od.wastewater_node wn on wn.obj_id=ne.obj_id;
 
-  FOREACH co_obj_id IN ARRAY co_obj_ids LOOP
-    EXECUTE FORMAT("UPDATE tww_od.cover SET _depth = level - %s$1 WHERE obj_id = %L$2",min_level,co_obj_id)
+  FOR i IN 1..array_length(co_obj_ids, 1) LOOP
+    EXECUTE format('UPDATE tww_od.cover SET _depth = level - %s WHERE obj_id = %L', min_level, co_obj_ids[i]);
   END LOOP;
 
   CASE
