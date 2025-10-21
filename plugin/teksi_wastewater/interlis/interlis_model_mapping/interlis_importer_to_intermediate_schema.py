@@ -566,8 +566,8 @@ class InterlisImporterToIntermediateSchema:
             )
         if hasattr(row, "deckenkote"):
             attrs_3d["upper_elevation"] = row.deckenkote
-        ## if row.maechtigkeit:
-        ##   as _depth is calculated, we do not import
+        # if row.maechtigkeit:
+        #   as _depth is calculated, we do not import
 
         return {
             "accessibility": self.get_vl_code(
