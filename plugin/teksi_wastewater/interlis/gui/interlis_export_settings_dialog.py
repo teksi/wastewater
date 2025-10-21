@@ -32,6 +32,12 @@ class InterlisExportSettingsDialog(QDialog):
         self.export_model_selection_comboBox.addItem(
             config.MODEL_NAME_SIA405_BASE_ABWASSER, [config.MODEL_NAME_SIA405_BASE_ABWASSER]
         )
+        self.export_model_selection_comboBox.addItem(
+            config.MODEL_NAME_DSS_3D, [config.MODMODEL_NAME_DSS_3DEL_NAME_DSS]
+        )
+        self.export_model_selection_comboBox.addItem(
+            config.MODEL_NAME_SIA405_ABWASSER_3D, [config.MODEL_NAME_SIA405_ABWASSER_3D]
+        )
 
         ag6496extension = QSettings().value("/TWW/AGxxExtensions", False)
         # QGIS loads value as string on application restart
