@@ -7,12 +7,12 @@
 CREATE OR REPLACE FUNCTION tww_app.synchronize_level_with_altitude_on_wastewater_node()
   RETURNS trigger AS
 $BODY$
-DECLARE 
+DECLARE
   co_obj_ids varchar(16)[];
   min_level numeric;
   co_obj_id varchar(16);
 BEGIN
-  SELECT array_agg(co.obj_id), min(wn.bottom_level) INTO co_obj_ids,min_level 
+  SELECT array_agg(co.obj_id), min(wn.bottom_level) INTO co_obj_ids,min_level
   FROM tww_od.cover co
   JOIN tww_od.structure_part sp on sp.obj_id=co.obj_id
   JOIN tww_od.wastewater_networkelement ne on sp.fk_wastewater_structure=ne.fk_wastewater_structure AND ne.obj_id=NEW.obj_id
@@ -57,10 +57,10 @@ CREATE TRIGGER synchronize_level_with_altitude
 CREATE OR REPLACE FUNCTION tww_app.synchronize_level_with_altitude_on_cover()
   RETURNS trigger AS
 $BODY$
-DECLARE 
+DECLARE
 wn_level numeric;
 BEGIN
-  SELECT min(wn.bottom_level) INTO wn_level 
+  SELECT min(wn.bottom_level) INTO wn_level
   FROM tww_od.wastewater_structure ws
   JOIN tww_od.structure_part sp on sp.fk_wastewater_structure=ws.obj_id AND sp.obj_id=NEW.obj_id
   JOIN tww_od.wastewater_node wn ON ws.fk_main_wastewater_node = wn.obj_id;
