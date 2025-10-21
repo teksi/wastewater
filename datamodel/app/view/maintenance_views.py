@@ -195,7 +195,7 @@ def vw_tww_channel_maintenance(connection: psycopg.Connection, extra_definition:
         ch_cols=select_columns(
             connection=connection,
             table_schema="tww_app",
-            table_name="vw_tww_channel",
+            table_name="mvw_tww_channel",
             table_alias="ch",
             remove_pkey=False,
             indent=4,
