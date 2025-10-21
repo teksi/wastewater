@@ -1,6 +1,6 @@
 CREATE OR REPLACE VIEW tww_app.vw_catchment_area_diverted
 AS
- SELECT 
+ SELECT
     row_number() over() as _id,
 	agg.*
 	FROM( SELECT
