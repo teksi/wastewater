@@ -9,19 +9,46 @@ $BODY$
 DECLARE
   co_obj_ids varchar(16)[];
   ws_oid varchar(16);
+  wn_recs record;
   min_level numeric;
   i int;
 BEGIN
+ 
   SELECT ws.obj_id into ws_oid FROM tww_od.wastewater_structure ws
-  JOIN tww_od.wastewater_networkelement ne on ws.obj_id=ne.fk_wastewater_structure AND ne.obj_id=_obj_id;
+  JOIN tww_od.wastewater_networkelement ne on ws.obj_id=ne.fk_wastewater_structure AND ne.obj_id=_obj_id; 
+  
+  with ws_agg AS
+  (
+  SELECT DISTINCT ON (ws.obj_id)
+  ws.obj_id as ws_oid,
+  min(wn.bottom_level) OVER w as wn_min_level,
+  wn.bottom_level
+  FROM tww_od.wastewater_structure ws 
+  JOIN tww_od.wastewater_networkelement ne ON ws.obj_id=ne.fk_wastewater_structure
+  JOIN tww_od.wastewater_node wn ON wn.obj_id = ne.obj_id
+  JOIN tww_od.structure_part sp ON ws.obj_id=sp.fk_wastewater_structure
+  JOIN tww_od.cover co ON sp.obj_id=co.obj_id 
+  WHERE 
+  (_all or ne.fk_wastewater_structure = ws_oid) AND 
+  NULLIF(wn.bottom_level, 0) IS NOT NULL
+  AND ne.fk_wastewater_structure IS NOT NULL
+  WINDOW w AS (PARTITION BY ne.fk_wastewater_structure ORDER BY wn.bottom_level ASC)
+  ),
+  co_agg AS (
+    SELECT
+      sp.fk_wastewater_structure AS ws_oid,
+      array_agg(co.obj_id) AS co_oids
+    FROM tww_od.structure_part sp
+    JOIN tww_od.cover co ON sp.obj_id = co.obj_id
+    GROUP BY sp.fk_wastewater_structure
+  )
+  SELECT
+    co.co_oids,
+    ws.wn_min_level
+  INTO co_obj_ids,min_level
+  FROM ws_agg ws
+  JOIN co_agg co ON ws.ws_oid = co.ws_oid;
 
-  SELECT array_agg(co.obj_id), min(wn.bottom_level) INTO co_obj_ids,min_level
-  FROM tww_od.cover co
-  JOIN tww_od.structure_part sp on sp.obj_id=co.obj_id
-  JOIN tww_od.wastewater_networkelement ne on sp.fk_wastewater_structure=ne.fk_wastewater_structure
-  JOIN tww_od.wastewater_node wn on wn.obj_id=ne.obj_id
-  WHERE _all OR ws.obj_id=ws_oid
-  GROUP BY ne.fk_wastewater_structure;
 
   IF NULLIF(min_level,0) IS NULL THEN
     FOR i IN 1..array_length(co_obj_ids, 1) LOOP
