@@ -51,11 +51,11 @@ BEGIN
 
 
   IF NULLIF(min_level,0) IS NULL THEN
-    FOR i IN 1..array_length(co_obj_ids, 1) LOOP
+    FOR i IN 1..coalesce(array_length(co_obj_ids, 1),0) LOOP
       EXECUTE format('UPDATE tww_od.cover SET _depth = NULL WHERE obj_id = %%L;', co_obj_ids[i]);
     END LOOP;
   ELSE
-    FOR i IN 1..array_length(co_obj_ids, 1) LOOP
+    FOR i IN 1..coalesce(array_length(co_obj_ids, 1),0) LOOP
       EXECUTE format('UPDATE tww_od.cover SET _depth = level - %%s WHERE obj_id = %%L;', min_level, co_obj_ids[i]);
     END LOOP;
   END IF;
