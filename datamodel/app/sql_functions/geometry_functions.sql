@@ -9,7 +9,6 @@ $BODY$
 DECLARE
   co_obj_ids varchar(16)[];
   ws_oid varchar(16);
-  wn_recs record;
   min_level numeric;
   i int;
 BEGIN
@@ -17,12 +16,12 @@ BEGIN
   SELECT ws.obj_id into ws_oid FROM tww_od.wastewater_structure ws
   JOIN tww_od.wastewater_networkelement ne on ws.obj_id=ne.fk_wastewater_structure AND ne.obj_id=_obj_id;
 
+  FOR co_obj_ids, min_level IN
   with ws_agg AS
   (
   SELECT DISTINCT ON (ws.obj_id)
   ws.obj_id as ws_oid,
   min(wn.bottom_level) OVER w as wn_min_level,
-  wn.bottom_level
   FROM tww_od.wastewater_structure ws
   JOIN tww_od.wastewater_networkelement ne ON ws.obj_id=ne.fk_wastewater_structure
   JOIN tww_od.wastewater_node wn ON wn.obj_id = ne.obj_id
@@ -45,20 +44,18 @@ BEGIN
   SELECT
     co.co_oids,
     ws.wn_min_level
-  INTO co_obj_ids,min_level
   FROM ws_agg ws
   JOIN co_agg co ON ws.ws_oid = co.ws_oid;
 
-
-  IF NULLIF(min_level,0) IS NULL THEN
-    FOR i IN 1..coalesce(array_length(co_obj_ids, 1),0) LOOP
-      EXECUTE format('UPDATE tww_od.cover SET _depth = NULL WHERE obj_id = %%L;', co_obj_ids[i]);
-    END LOOP;
-  ELSE
-    FOR i IN 1..coalesce(array_length(co_obj_ids, 1),0) LOOP
-      EXECUTE format('UPDATE tww_od.cover SET _depth = level - %%s WHERE obj_id = %%L;', min_level, co_obj_ids[i]);
-    END LOOP;
-  END IF;
+    IF NULLIF(_min_level, 0) IS NULL THEN
+      UPDATE tww_od.cover
+      SET _depth = NULL
+      WHERE obj_id = ANY(co_obj_ids);
+    ELSE
+      UPDATE tww_od.cover
+      SET _depth = level - min_level
+      WHERE obj_id = ANY(co_obj_ids);
+    END IF;
   RETURN;
 END; $BODY$
   LANGUAGE plpgsql VOLATILE;
