@@ -3,24 +3,50 @@
 -- Synchronize GEOMETRY with bottom_level tww_od.wastewater_node
 -----------------------------------------------
 -----------------------------------------------
+CREATE OR REPLACE FUNCTION tww_app.synchronize_co_depth_by_wastewater_networkelement(_obj_id text, _all boolean default false)
+  RETURNS void AS
+$BODY$
+DECLARE
+  co_obj_ids varchar(16)[];
+  ws_oid varchar(16);
+  min_level numeric;
+  i int;
+BEGIN
+  SELECT ws.obj_id into ws_oid FROM
+  SELECT tww_od.wastewater_structure ws
+  JOIN tww_od.wastewater_networkelement ne on ws.obj_id=ne.fk_wastewater_structure AND ne.obj_id=_obj_id;
+
+  SELECT array_agg(co.obj_id), min(wn.bottom_level) INTO co_obj_ids,min_level
+  FROM tww_od.cover co
+  JOIN tww_od.structure_part sp on sp.obj_id=co.obj_id
+  JOIN tww_od.wastewater_networkelement ne on sp.fk_wastewater_structure=ne.fk_wastewater_structure
+  JOIN tww_od.wastewater_node wn on wn.obj_id=ne.obj_id
+  WHERE _all OR ws.obj_id=ws_oid
+  GROUP BY ne.fk_wastewater_structure;
+
+  IF NULLIF(min_level,0) IS NULL THEN
+    FOR i IN 1..array_length(co_obj_ids, 1) LOOP
+      EXECUTE format('UPDATE tww_od.cover SET _depth = NULL WHERE obj_id = %%L;', co_obj_ids[i]);
+    END LOOP;
+  ELSE
+    FOR i IN 1..array_length(co_obj_ids, 1) LOOP
+      EXECUTE format('UPDATE tww_od.cover SET _depth = level - %%s WHERE obj_id = %%L;', min_level, co_obj_ids[i]);
+    END LOOP;
+  END IF;
+  RETURN;
+END; $BODY$
+  LANGUAGE plpgsql VOLATILE;
+
 
 CREATE OR REPLACE FUNCTION tww_app.synchronize_level_with_altitude_on_wastewater_node()
   RETURNS trigger AS
 $BODY$
-DECLARE
-  co_obj_ids varchar(16)[];
-  min_level numeric;
-  i int;
 BEGIN
-  SELECT array_agg(co.obj_id), min(wn.bottom_level) INTO co_obj_ids,min_level
-  FROM tww_od.cover co
-  JOIN tww_od.structure_part sp on sp.obj_id=co.obj_id
-  JOIN tww_od.wastewater_networkelement ne on sp.fk_wastewater_structure=ne.fk_wastewater_structure AND ne.obj_id=NEW.obj_id
-  JOIN tww_od.wastewater_node wn on wn.obj_id=ne.obj_id;
 
   CASE
     WHEN TG_OP = 'INSERT' THEN
       NEW.situation3d_geometry = ST_SetSRID( ST_MakePoint( ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), COALESCE(NEW.bottom_level,'NaN') ), {SRID});
+      SELECT tww_app.synchronize_co_depth_by_wastewater_networkelement(NEW.obj_id);
     WHEN TG_OP = 'UPDATE' THEN
       IF NEW.bottom_level <> OLD.bottom_level OR (NEW.bottom_level IS NULL AND OLD.bottom_level IS NOT NULL) OR (NEW.bottom_level IS NOT NULL AND OLD.bottom_level IS NULL) THEN
         NEW.situation3d_geometry = ST_SetSRID( ST_MakePoint( ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), COALESCE(NEW.bottom_level,'NaN') ), {SRID});
@@ -29,13 +55,10 @@ BEGIN
           NEW.bottom_level = NULLIF(ST_Z(NEW.situation3d_geometry),'NaN');
         END IF;
       END IF;
+      SELECT tww_app.synchronize_co_depth_by_wastewater_networkelement(OLD.obj_id);
+    ELSE
+      NULL;
   END CASE;
-  BEGIN
-    FOR i IN 1..array_length(co_obj_ids, 1) LOOP
-      EXECUTE format('UPDATE tww_od.cover SET _depth = level - %%s WHERE obj_id = %%L;', min_level, co_obj_ids[i]);
-    END LOOP;
-  END;
-  RETURN NEW;
 END; $BODY$
   LANGUAGE plpgsql VOLATILE;
 
