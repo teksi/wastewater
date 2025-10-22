@@ -72,7 +72,7 @@ BEGIN
   CASE
     WHEN TG_OP = 'INSERT' THEN
       NEW.situation3d_geometry = ST_SetSRID( ST_MakePoint( ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), COALESCE(NEW.bottom_level,'NaN') ), {SRID});
-      SELECT tww_app.synchronize_co_depth_by_wastewater_networkelement(NEW.obj_id);
+      PERFORM tww_app.synchronize_co_depth_by_wastewater_networkelement(NEW.obj_id);
     WHEN TG_OP = 'UPDATE' THEN
       IF NEW.bottom_level <> OLD.bottom_level OR (NEW.bottom_level IS NULL AND OLD.bottom_level IS NOT NULL) OR (NEW.bottom_level IS NOT NULL AND OLD.bottom_level IS NULL) THEN
         NEW.situation3d_geometry = ST_SetSRID( ST_MakePoint( ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), COALESCE(NEW.bottom_level,'NaN') ), {SRID});
@@ -81,7 +81,7 @@ BEGIN
           NEW.bottom_level = NULLIF(ST_Z(NEW.situation3d_geometry),'NaN');
         END IF;
       END IF;
-      SELECT tww_app.synchronize_co_depth_by_wastewater_networkelement(OLD.obj_id);
+      PERFORM tww_app.synchronize_co_depth_by_wastewater_networkelement(OLD.obj_id);
     ELSE
       NULL;
   END CASE;
