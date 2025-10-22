@@ -85,6 +85,7 @@ BEGIN
     ELSE
       NULL;
   END CASE;
+  RETURN NEW;
 END; $BODY$
   LANGUAGE plpgsql VOLATILE;
 
