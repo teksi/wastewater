@@ -207,7 +207,7 @@ def vw_tww_wastewater_structure(
             table_alias="ne",
             remove_pkey=True,
             indent=4,
-            skip_columns=[],
+            skip_columns=["fk_wastewater_structure"],
             prefix="wn_",
             remap_columns={},
         ),
@@ -559,11 +559,12 @@ def vw_tww_wastewater_structure(
             table_alias="sp",
             prefix="co_",
             indent=6,
-            skip_columns=["fk_wastewater_structure"],
+            skip_columns=[],
             update_values={
                 "last_modification": "NEW.last_modification",
                 "fk_dataowner": "NEW.fk_dataowner",
                 "fk_provider": "NEW.fk_provider",
+                "fk_wastewater_structure": "NEW.obj_id",
             },
         ),
         update_ws=update_command(
@@ -584,7 +585,9 @@ def vw_tww_wastewater_structure(
                 "fk_main_wastewater_node",
                 "_depth",
             ],
-            update_values={"fk_main_cover": "OLD.co_obj_id"},
+            update_values={
+              "fk_main_cover": "OLD.co_obj_id"
+              },
         ),
         update_ma=update_command(
             connection=connection,
@@ -652,6 +655,12 @@ def vw_tww_wastewater_structure(
             prefix="wn_",
             indent=6,
             skip_columns=[],
+            update_values={
+                "last_modification": "NEW.last_modification",
+                "fk_dataowner": "NEW.fk_dataowner",
+                "fk_provider": "NEW.fk_provider",
+                "fk_wastewater_structure": "NEW.obj_id",
+            },
         ),
         update_extra=update_extra(connection=connection, extra_definition=extra_definition),
         insert_vw_cover=insert_command(
