@@ -13,23 +13,23 @@ DECLARE
   min_level numeric;
   i int;
 BEGIN
- 
+
   SELECT ws.obj_id into ws_oid FROM tww_od.wastewater_structure ws
-  JOIN tww_od.wastewater_networkelement ne on ws.obj_id=ne.fk_wastewater_structure AND ne.obj_id=_obj_id; 
-  
+  JOIN tww_od.wastewater_networkelement ne on ws.obj_id=ne.fk_wastewater_structure AND ne.obj_id=_obj_id;
+
   with ws_agg AS
   (
   SELECT DISTINCT ON (ws.obj_id)
   ws.obj_id as ws_oid,
   min(wn.bottom_level) OVER w as wn_min_level,
   wn.bottom_level
-  FROM tww_od.wastewater_structure ws 
+  FROM tww_od.wastewater_structure ws
   JOIN tww_od.wastewater_networkelement ne ON ws.obj_id=ne.fk_wastewater_structure
   JOIN tww_od.wastewater_node wn ON wn.obj_id = ne.obj_id
   JOIN tww_od.structure_part sp ON ws.obj_id=sp.fk_wastewater_structure
-  JOIN tww_od.cover co ON sp.obj_id=co.obj_id 
-  WHERE 
-  (_all or ne.fk_wastewater_structure = ws_oid) AND 
+  JOIN tww_od.cover co ON sp.obj_id=co.obj_id
+  WHERE
+  (_all or ne.fk_wastewater_structure = ws_oid) AND
   NULLIF(wn.bottom_level, 0) IS NOT NULL
   AND ne.fk_wastewater_structure IS NOT NULL
   WINDOW w AS (PARTITION BY ne.fk_wastewater_structure ORDER BY wn.bottom_level ASC)
