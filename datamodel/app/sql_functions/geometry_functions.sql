@@ -12,8 +12,7 @@ DECLARE
   min_level numeric;
   i int;
 BEGIN
-  SELECT ws.obj_id into ws_oid FROM
-  SELECT tww_od.wastewater_structure ws
+  SELECT ws.obj_id into ws_oid FROM tww_od.wastewater_structure ws
   JOIN tww_od.wastewater_networkelement ne on ws.obj_id=ne.fk_wastewater_structure AND ne.obj_id=_obj_id;
 
   SELECT array_agg(co.obj_id), min(wn.bottom_level) INTO co_obj_ids,min_level
