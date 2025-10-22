@@ -30,11 +30,11 @@ BEGIN
         END IF;
       END IF;
   END CASE;
-
-  FOR i IN 1..array_length(co_obj_ids, 1) LOOP
-    EXECUTE format('UPDATE tww_od.cover SET _depth = level - %%s WHERE obj_id = %%L;', min_level, co_obj_ids[i]);
-  END LOOP;
-
+  BEGIN
+    FOR i IN 1..array_length(co_obj_ids, 1) LOOP
+      EXECUTE format('UPDATE tww_od.cover SET _depth = level - %%s WHERE obj_id = %%L;', min_level, co_obj_ids[i]);
+    END LOOP;
+  END;
   RETURN NEW;
 END; $BODY$
   LANGUAGE plpgsql VOLATILE;
