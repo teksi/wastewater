@@ -90,14 +90,14 @@ BEGIN
   CASE
     WHEN TG_OP = 'INSERT' THEN
       NEW.situation3d_geometry = ST_SetSRID( ST_MakePoint( ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), COALESCE(NEW.level,'NaN') ), {SRID});
-      NEW._depth = NEW.level - wn_level
+      NEW._depth = NEW.level - wn_level;
     WHEN TG_OP = 'UPDATE' THEN
       IF NEW.level <> OLD.level OR (NEW.level IS NULL AND OLD.level IS NOT NULL) OR (NEW.level IS NOT NULL AND OLD.level IS NULL) THEN
         NEW.situation3d_geometry = ST_SetSRID( ST_MakePoint( ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), COALESCE(NEW.level,'NaN') ), {SRID});
       ELSE
         IF ST_Z(NEW.situation3d_geometry) <> ST_Z(OLD.situation3d_geometry) THEN
           NEW.level = NULLIF(ST_Z(NEW.situation3d_geometry),'NaN');
-          NEW._depth = NEW.level - wn_level
+          NEW._depth = NEW.level - wn_level;
         END IF;
       END IF;
   END CASE;
