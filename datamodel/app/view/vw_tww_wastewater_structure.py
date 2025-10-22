@@ -585,9 +585,7 @@ def vw_tww_wastewater_structure(
                 "fk_main_wastewater_node",
                 "_depth",
             ],
-            update_values={
-              "fk_main_cover": "OLD.co_obj_id"
-              },
+            update_values={"fk_main_cover": "OLD.co_obj_id"},
         ),
         update_ma=update_command(
             connection=connection,
