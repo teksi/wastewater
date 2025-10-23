@@ -45,8 +45,8 @@ BEGIN
     co.co_oids,
     ws.wn_min_level
   FROM ws_agg ws
-  JOIN co_agg co ON ws.ws_oid = co.ws_oid;
-
+  JOIN co_agg co ON ws.ws_oid = co.ws_oid
+  LOOP
     IF NULLIF(_min_level, 0) IS NULL THEN
       UPDATE tww_od.cover
       SET _depth = NULL
@@ -56,6 +56,7 @@ BEGIN
       SET _depth = level - min_level
       WHERE obj_id = ANY(co_obj_ids);
     END IF;
+  END LOOP;
   RETURN;
 END; $BODY$
   LANGUAGE plpgsql VOLATILE;
