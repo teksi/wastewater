@@ -47,7 +47,7 @@ BEGIN
   FROM ws_agg ws
   JOIN co_agg co ON ws.ws_oid = co.ws_oid
   LOOP
-    IF NULLIF(_min_level, 0) IS NULL THEN
+    IF NULLIF(min_level, 0) IS NULL THEN
       UPDATE tww_od.cover
       SET _depth = NULL
       WHERE obj_id = ANY(co_obj_ids);
