@@ -21,7 +21,7 @@ BEGIN
   (
   SELECT DISTINCT ON (ws.obj_id)
   ws.obj_id as ws_oid,
-  min(wn.bottom_level) OVER w as wn_min_level,
+  min(wn.bottom_level) OVER w as wn_min_level
   FROM tww_od.wastewater_structure ws
   JOIN tww_od.wastewater_networkelement ne ON ws.obj_id=ne.fk_wastewater_structure
   JOIN tww_od.wastewater_node wn ON wn.obj_id = ne.obj_id
