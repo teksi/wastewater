@@ -326,7 +326,7 @@ class TestInterlis(unittest.TestCase):
             "SELECT elevation_determination FROM tww_od.wastewater_structure WHERE obj_id='ch000000CL000001';"
         )
         self.assertIsNotNone(result)
-        self.assertEqual(result[0], 9321) # accurate
+        self.assertEqual(result[0], 9321)  # accurate
 
         # Export selection of minimal dss
         export_xtf_file = self._get_output_filename("export_minimal_dataset_dss_selection")
@@ -404,14 +404,26 @@ class TestInterlis(unittest.TestCase):
         models = InterlisTools.get_xtf_models(xtf_file=xtf_file_input)
         self.assertCountEqual(
             models,
-            ["Units", "Base", config.MODEL_NAME_SIA405_BASE_ABWASSER, config.MODEL_NAME_DSS, config.MODEL_NAME_DSS_3D],
+            [
+                "Units",
+                "Base",
+                config.MODEL_NAME_SIA405_BASE_ABWASSER,
+                config.MODEL_NAME_DSS,
+                config.MODEL_NAME_DSS_3D,
+            ],
         )
 
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_SIA405_ABWASSER_3D)
         models = InterlisTools.get_xtf_models(xtf_file=xtf_file_input)
         self.assertCountEqual(
             models,
-            ["Units", "Base", config.MODEL_NAME_SIA405_BASE_ABWASSER, config.MODEL_NAME_DSS, config.MODEL_NAME_SIA405_ABWASSER_3D],
+            [
+                "Units",
+                "Base",
+                config.MODEL_NAME_SIA405_BASE_ABWASSER,
+                config.MODEL_NAME_DSS,
+                config.MODEL_NAME_SIA405_ABWASSER_3D,
+            ],
         )
 
         xtf_file_input = self._get_data_filename(TEST_DATASET_ORGANISATIONS)

@@ -560,7 +560,8 @@ class InterlisImporterToIntermediateSchema:
         attrs_3d = {}
         if hasattr(row, "hoehenbestimmung"):
             attrs_3d["elevation_determination"] = self.get_vl_code(
-                self.model_classes_tww_od.wastewater_structure_elevation_determination, row.hoehenbestimmung
+                self.model_classes_tww_od.wastewater_structure_elevation_determination,
+                row.hoehenbestimmung,
             )
         if hasattr(row, "deckenkote"):
             attrs_3d["upper_elevation"] = row.deckenkote
