@@ -576,7 +576,7 @@ class InterlisImporterToIntermediateSchema:
             "condition_score": row.zustandsnote,
             "contract_section": row.baulos,
             "detail_geometry3d_geometry": (
-                row.detaildetailgeometrie3d
+                row.detailgeometrie3d
                 if hasattr(row, "detailgeometrie3d")
                 else self.session_tww.scalar(ST_Force3D(row.detailgeometrie))
             ),
