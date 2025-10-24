@@ -8,7 +8,7 @@ from PyQt5.QtWidgets import QApplication, QMessageBox
 
 from ..utils.database_utils import DatabaseUtils
 from . import config
-from .gui.interlis_import_selection_dialog import InterlisImportSelectionDialog
+
 from .interlis_model_mapping.interlis_exporter_to_intermediate_schema import (
     InterlisExporterToIntermediateSchema,
     InterlisExporterToIntermediateSchemaError,
@@ -139,6 +139,7 @@ class InterlisImporterExporter:
             tww_session = self._import_from_intermediate_schema(import_model)
 
             if show_selection_dialog:
+                from .gui.interlis_import_selection_dialog import InterlisImportSelectionDialog
                 self._progress_done(90, "Import objects selection...")
                 import_dialog = InterlisImportSelectionDialog()
                 import_dialog.init_with_session(tww_session)
