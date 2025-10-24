@@ -75,7 +75,7 @@ def vw_tww_additional_ws(
         , wn._usage_current AS _channel_usage_current
         , wn._function_hierarchic AS _channel_function_hierarchic
         , vl_fh.tww_is_primary
-        , og.organisation_type as og_organisation_type
+        , og.organisation_type as _owner_organisation_type
         FROM tww_od.wastewater_structure ws
         LEFT JOIN tww_od.cover main_co ON main_co.obj_id = ws.fk_main_cover
         LEFT JOIN tww_od.structure_part main_co_sp ON main_co_sp.obj_id = ws.fk_main_cover

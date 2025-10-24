@@ -57,7 +57,7 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
         , {rp_from_cols}
         , {rp_to_cols}
         , vl_fh.tww_is_primary
-        , og.organisation_type as og_organisation_type
+        , og.organisation_type as _owner_organisation_type
       FROM tww_od.reach re
          LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = re.obj_id
          LEFT JOIN tww_od.reach_point rp_from ON rp_from.obj_id = re.fk_reach_point_from
