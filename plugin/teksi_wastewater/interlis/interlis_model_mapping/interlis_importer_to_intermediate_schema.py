@@ -558,11 +558,9 @@ class InterlisImporterToIntermediateSchema:
         Returns common attributes for wastewater_structure
         """
         attrs_3d = {}
-        if hasattr(row, "detailgeometrie3d"):
-            attrs_3d["detail_geometry3d_geometry"] = row.detailgeometrie3d
         if hasattr(row, "hoehenbestimmung"):
             attrs_3d["elevation_determination"] = self.get_vl_code(
-                self.model_classes_tww_od.channel_elevation_determination, row.hoehenbestimmung
+                self.model_classes_tww_od.wastewater_structure_elevation_determination, row.hoehenbestimmung
             )
         if hasattr(row, "deckenkote"):
             attrs_3d["upper_elevation"] = row.deckenkote
@@ -577,14 +575,11 @@ class InterlisImporterToIntermediateSchema:
             "condition_score": row.zustandsnote,
             "contract_section": row.baulos,
             "detail_geometry3d_geometry": (
-                row.detailgeometrie
-                if row.detailgeometrie is None
+                row.detaildetailgeometrie3d
+                if hasattr(row, "detailgeometrie3d")
                 else self.session_tww.scalar(ST_Force3D(row.detailgeometrie))
             ),
             # -- attribute 3D ---
-            # "elevation_determination": self.get_vl_code(
-            #    self.model_classes_tww_od.wastewater_structure_elevation_determination, row.hoehenbestimmung
-            # ),
             "financing": self.get_vl_code(
                 self.model_classes_tww_od.wastewater_structure_financing, row.finanzierung
             ),

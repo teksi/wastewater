@@ -28,9 +28,11 @@ PG_PORT = os.getenv("TWW_PG_PORT", 5432)
 MINIMAL_DATASET_DSS = "minimal-dataset-DSS.xtf"
 MINIMAL_DATASET_ORGANISATION_ARBON_ONLY = "minimal-dataset-organisation-arbon-only.xtf"
 MINIMAL_DATASET_SIA405_ABWASSER = "minimal-dataset-SIA405-ABWASSER.xtf"
+MINIMAL_DATASET_SIA405_ABWASSER_3D = "minimal-dataset-SIA405-ABWASSER.xtf"
 MINIMAL_DATASET_SIA405_ABWASSER_MODIFIED = "minimal-dataset-SIA405-ABWASSER-modified.xtf"
 MINIMAL_DATASET_KEK_MANHOLE_DAMAGE = "minimal-dataset-VSA-KEK-manhole-damage.xtf"
 TEST_DATASET_DSS = "test-dataset-DSS.xtf"
+TEST_DATASET_DSS_3D = "test-dataset-DSS_3D.xtf"
 TEST_DATASET_ORGANISATIONS = "test-dataset-organisations.xtf"
 
 
@@ -314,6 +316,18 @@ class TestInterlis(unittest.TestCase):
         self.assertIsNotNone(result)
         self.assertEqual(result[0], 448.0)
 
+        # Import modified minimal sia405_3D (test update)
+        xtf_file_input = self._get_data_filename(MINIMAL_DATASET_SIA405_ABWASSER_3D)
+        interlisImporterExporter = InterlisImporterExporter()
+        interlisImporterExporter.interlis_import(xtf_file_input=xtf_file_input)
+
+        # Check that we don't loose Z information on second import
+        result = DatabaseUtils.fetchone(
+            "SELECT elevation_determination FROM tww_od.wastewater_structure WHERE obj_id='ch000000CL000001';"
+        )
+        self.assertIsNotNone(result)
+        self.assertEqual(result[0], 9321) # accurate
+
         # Export selection of minimal dss
         export_xtf_file = self._get_output_filename("export_minimal_dataset_dss_selection")
         interlisImporterExporter.interlis_export(
@@ -384,6 +398,20 @@ class TestInterlis(unittest.TestCase):
         self.assertCountEqual(
             models,
             ["Units", "Base", config.MODEL_NAME_SIA405_BASE_ABWASSER, config.MODEL_NAME_DSS],
+        )
+
+        xtf_file_input = self._get_data_filename(TEST_DATASET_DSS_3D)
+        models = InterlisTools.get_xtf_models(xtf_file=xtf_file_input)
+        self.assertCountEqual(
+            models,
+            ["Units", "Base", config.MODEL_NAME_SIA405_BASE_ABWASSER, config.MODEL_NAME_DSS, config.MODEL_NAME_DSS_3D],
+        )
+
+        xtf_file_input = self._get_data_filename(MINIMAL_DATASET_SIA405_ABWASSER_3D)
+        models = InterlisTools.get_xtf_models(xtf_file=xtf_file_input)
+        self.assertCountEqual(
+            models,
+            ["Units", "Base", config.MODEL_NAME_SIA405_BASE_ABWASSER, config.MODEL_NAME_DSS, config.MODEL_NAME_SIA405_ABWASSER_3D],
         )
 
         xtf_file_input = self._get_data_filename(TEST_DATASET_ORGANISATIONS)
