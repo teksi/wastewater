@@ -41,22 +41,19 @@ def vw_tww_damage_channel(
         {dc_cols},
         ws.identifier AS ws_identifier,
         ch.progression2d_geometry AS ch_progression2d_geometry,
-        CASE
-          WHEN re_2.obj_id IS NULL THEN 'upstream'::text
-          ELSE 'downstream'::text
-        END AS direction
-        , ch.tww_is_primary
+            CASE
+                WHEN ch.fk_reach_point_to::text = ex.fk_reach_point::text THEN 'upstream'::text
+                WHEN ch.fk_reach_point_from::text = ex.fk_reach_point::text THEN 'downstream'::text
+                ELSE 'unknown'::text
+            END AS direction,
+        ch.tww_is_primary
         {extra_cols}
         FROM tww_od.damage_channel dc
              LEFT JOIN tww_od.damage dg ON dg.obj_id::text = dc.obj_id::text
              LEFT JOIN tww_od.examination ex ON ex.obj_id::text = dg.fk_examination::text
              LEFT JOIN tww_od.re_maintenance_event_wastewater_structure mews ON mews.fk_maintenance_event::text = ex.obj_id::text
              LEFT JOIN tww_od.wastewater_structure ws ON mews.fk_wastewater_structure::text = ws.obj_id::text
-             LEFT JOIN tww_od.wastewater_networkelement ne ON ws.obj_id::text = ne.fk_wastewater_structure::text
-             LEFT JOIN tww_od.reach re ON re.obj_id::text = ne.obj_id::text
-             LEFT JOIN tww_od.reach_point rp ON rp.obj_id::text = ex.fk_reach_point::text
-             LEFT JOIN tww_od.reach re_2 ON re_2.fk_reach_point_from::text = rp.obj_id::text
-             LEFT JOIN tww_app.vw_tww_channel ch ON ch.obj_id = ws.obj_id
+             LEFT JOIN tww_app.mvw_tww_channel ch ON ch.obj_id = ws.obj_id
              {extra_joins}
           WHERE ex.recording_type = 3686
         ),
