@@ -260,53 +260,53 @@
 <polygon fill="none" stroke="black" points="294,-303 294,-325 430,-325 430,-303 294,-303"/>
 <text text-anchor="start" x="297" y="-311.2" font-family="Helvetica,sans-Serif" font-size="11.00">varchar[16]</text>
 <polygon fill="none" stroke="black" points="10,-281 10,-303 294,-303 294,-281 10,-281"/>
-<text text-anchor="start" x="30" y="-289.2" font-family="Helvetica,sans-Serif" font-size="11.00">wn_fk_wastewater_structure</text>
+<text text-anchor="start" x="30" y="-289.2" font-family="Helvetica,sans-Serif" font-size="11.00">wn_identifier</text>
 <polygon fill="none" stroke="black" points="294,-281 294,-303 430,-303 430,-281 294,-281"/>
-<text text-anchor="start" x="297" y="-289.2" font-family="Helvetica,sans-Serif" font-size="11.00">varchar[16]</text>
+<text text-anchor="start" x="297" y="-289.2" font-family="Helvetica,sans-Serif" font-size="11.00">text[2147483647]</text>
 <polygon fill="none" stroke="black" points="10,-259 10,-281 294,-281 294,-259 10,-259"/>
-<text text-anchor="start" x="30" y="-267.2" font-family="Helvetica,sans-Serif" font-size="11.00">wn_identifier</text>
+<text text-anchor="start" x="30" y="-267.2" font-family="Helvetica,sans-Serif" font-size="11.00">wn_last_modification</text>
 <polygon fill="none" stroke="black" points="294,-259 294,-281 430,-281 430,-259 294,-259"/>
-<text text-anchor="start" x="297" y="-267.2" font-family="Helvetica,sans-Serif" font-size="11.00">text[2147483647]</text>
+<text text-anchor="start" x="297" y="-267.2" font-family="Helvetica,sans-Serif" font-size="11.00">timestamp[29,6]</text>
 <polygon fill="none" stroke="black" points="10,-237 10,-259 294,-259 294,-237 10,-237"/>
-<text text-anchor="start" x="30" y="-245.2" font-family="Helvetica,sans-Serif" font-size="11.00">wn_last_modification</text>
+<text text-anchor="start" x="30" y="-245.2" font-family="Helvetica,sans-Serif" font-size="11.00">wn_remark</text>
 <polygon fill="none" stroke="black" points="294,-237 294,-259 430,-259 430,-237 294,-237"/>
-<text text-anchor="start" x="297" y="-245.2" font-family="Helvetica,sans-Serif" font-size="11.00">timestamp[29,6]</text>
+<text text-anchor="start" x="297" y="-245.2" font-family="Helvetica,sans-Serif" font-size="11.00">text[2147483647]</text>
 <polygon fill="none" stroke="black" points="10,-215 10,-237 294,-237 294,-215 10,-215"/>
-<text text-anchor="start" x="30" y="-223.2" font-family="Helvetica,sans-Serif" font-size="11.00">wn_remark</text>
+<text text-anchor="start" x="30" y="-223.2" font-family="Helvetica,sans-Serif" font-size="11.00">_label</text>
 <polygon fill="none" stroke="black" points="294,-215 294,-237 430,-237 430,-215 294,-215"/>
 <text text-anchor="start" x="297" y="-223.2" font-family="Helvetica,sans-Serif" font-size="11.00">text[2147483647]</text>
 <polygon fill="none" stroke="black" points="10,-193 10,-215 294,-215 294,-193 10,-193"/>
-<text text-anchor="start" x="30" y="-201.2" font-family="Helvetica,sans-Serif" font-size="11.00">_label</text>
+<text text-anchor="start" x="30" y="-201.2" font-family="Helvetica,sans-Serif" font-size="11.00">_cover_label</text>
 <polygon fill="none" stroke="black" points="294,-193 294,-215 430,-215 430,-193 294,-193"/>
 <text text-anchor="start" x="297" y="-201.2" font-family="Helvetica,sans-Serif" font-size="11.00">text[2147483647]</text>
 <polygon fill="none" stroke="black" points="10,-171 10,-193 294,-193 294,-171 10,-171"/>
-<text text-anchor="start" x="30" y="-179.2" font-family="Helvetica,sans-Serif" font-size="11.00">_cover_label</text>
+<text text-anchor="start" x="30" y="-179.2" font-family="Helvetica,sans-Serif" font-size="11.00">_bottom_label</text>
 <polygon fill="none" stroke="black" points="294,-171 294,-193 430,-193 430,-171 294,-171"/>
 <text text-anchor="start" x="297" y="-179.2" font-family="Helvetica,sans-Serif" font-size="11.00">text[2147483647]</text>
 <polygon fill="none" stroke="black" points="10,-149 10,-171 294,-171 294,-149 10,-149"/>
-<text text-anchor="start" x="30" y="-157.2" font-family="Helvetica,sans-Serif" font-size="11.00">_bottom_label</text>
+<text text-anchor="start" x="30" y="-157.2" font-family="Helvetica,sans-Serif" font-size="11.00">_input_label</text>
 <polygon fill="none" stroke="black" points="294,-149 294,-171 430,-171 430,-149 294,-149"/>
 <text text-anchor="start" x="297" y="-157.2" font-family="Helvetica,sans-Serif" font-size="11.00">text[2147483647]</text>
 <polygon fill="none" stroke="black" points="10,-127 10,-149 294,-149 294,-127 10,-127"/>
-<text text-anchor="start" x="30" y="-135.2" font-family="Helvetica,sans-Serif" font-size="11.00">_input_label</text>
+<text text-anchor="start" x="30" y="-135.2" font-family="Helvetica,sans-Serif" font-size="11.00">_output_label</text>
 <polygon fill="none" stroke="black" points="294,-127 294,-149 430,-149 430,-127 294,-127"/>
 <text text-anchor="start" x="297" y="-135.2" font-family="Helvetica,sans-Serif" font-size="11.00">text[2147483647]</text>
 <polygon fill="none" stroke="black" points="10,-105 10,-127 294,-127 294,-105 10,-105"/>
-<text text-anchor="start" x="30" y="-113.2" font-family="Helvetica,sans-Serif" font-size="11.00">_output_label</text>
+<text text-anchor="start" x="30" y="-113.2" font-family="Helvetica,sans-Serif" font-size="11.00">_channel_usage_current</text>
 <polygon fill="none" stroke="black" points="294,-105 294,-127 430,-127 430,-105 294,-105"/>
-<text text-anchor="start" x="297" y="-113.2" font-family="Helvetica,sans-Serif" font-size="11.00">text[2147483647]</text>
+<text text-anchor="start" x="297" y="-113.2" font-family="Helvetica,sans-Serif" font-size="11.00">int4[10]</text>
 <polygon fill="none" stroke="black" points="10,-83 10,-105 294,-105 294,-83 10,-83"/>
-<text text-anchor="start" x="30" y="-91.2" font-family="Helvetica,sans-Serif" font-size="11.00">_channel_usage_current</text>
+<text text-anchor="start" x="30" y="-91.2" font-family="Helvetica,sans-Serif" font-size="11.00">_channel_function_hierarchic</text>
 <polygon fill="none" stroke="black" points="294,-83 294,-105 430,-105 430,-83 294,-83"/>
 <text text-anchor="start" x="297" y="-91.2" font-family="Helvetica,sans-Serif" font-size="11.00">int4[10]</text>
 <polygon fill="none" stroke="black" points="10,-61 10,-83 294,-83 294,-61 10,-61"/>
-<text text-anchor="start" x="30" y="-69.2" font-family="Helvetica,sans-Serif" font-size="11.00">_channel_function_hierarchic</text>
+<text text-anchor="start" x="30" y="-69.2" font-family="Helvetica,sans-Serif" font-size="11.00">tww_is_primary</text>
 <polygon fill="none" stroke="black" points="294,-61 294,-83 430,-83 430,-61 294,-61"/>
-<text text-anchor="start" x="297" y="-69.2" font-family="Helvetica,sans-Serif" font-size="11.00">int4[10]</text>
+<text text-anchor="start" x="297" y="-69.2" font-family="Helvetica,sans-Serif" font-size="11.00">bool[1]</text>
 <polygon fill="none" stroke="black" points="10,-39 10,-61 294,-61 294,-39 10,-39"/>
-<text text-anchor="start" x="30" y="-47.2" font-family="Helvetica,sans-Serif" font-size="11.00">tww_is_primary</text>
+<text text-anchor="start" x="30" y="-47.2" font-family="Helvetica,sans-Serif" font-size="11.00">_owner_organisation_type</text>
 <polygon fill="none" stroke="black" points="294,-39 294,-61 430,-61 430,-39 294,-39"/>
-<text text-anchor="start" x="297" y="-47.2" font-family="Helvetica,sans-Serif" font-size="11.00">bool[1]</text>
+<text text-anchor="start" x="297" y="-47.2" font-family="Helvetica,sans-Serif" font-size="11.00">int4[10]</text>
 <polygon fill="none" stroke="black" stroke-width="2" points="9,-38 9,-1646 431,-1646 431,-38 9,-38"/>
 </a>
 </g>

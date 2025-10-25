@@ -159,40 +159,6 @@
                                     </td>
                                     <td></td>
                                 </tr>
-                                <tr>
-                                    <td><span id="situation3d_geometry">situation3d_geometry</span></td>
-                                    <td>geometry</td>
-                                    <td>2147483647</td>
-                                    <td title='nullable'>√</td>
-                                    <td title=''></td>
-                                    <td>null</td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td><span id="wn_obj_id">wn_obj_id</span></td>
-                                    <td>varchar</td>
-                                    <td>16</td>
-                                    <td title='nullable'>√</td>
-                                    <td title=''></td>
-                                    <td>null</td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td></td>
-                                </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -231,7 +197,7 @@
                             </div>
                         </div>
                         <div class="box-body">
-                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">SELECT cat.obj_id AS _obj_id,&#10;    lc.obj_id AS fk_log_card,&#10;    ca_agg.perimeter_geometry,&#10;    wn.situation3d_geometry,&#10;    wn.obj_id AS wn_obj_id&#10;   FROM ((((tww_od.catchment_area_totals cat&#10;     LEFT JOIN tww_od.hydraulic_char_data hcd ON ((((hcd.obj_id)::text &#61; (cat.fk_hydraulic_char_data)::text) AND (hcd.status &#61; 6372))))&#10;     LEFT JOIN tww_od.wastewater_node wn ON (((hcd.fk_wastewater_node)::text &#61; (wn.obj_id)::text)))&#10;     LEFT JOIN tww_od.log_card lc ON (((lc.fk_pwwf_wastewater_node)::text &#61; (wn.obj_id)::text)))&#10;     LEFT JOIN ( WITH ca AS (&#10;                 SELECT catchment_area.fk_special_building_ww_current AS fk_log_card,&#10;                    catchment_area.perimeter_geometry AS geom&#10;                   FROM tww_od.catchment_area&#10;                  WHERE (catchment_area.fk_special_building_ww_current IS NOT NULL)&#10;                UNION&#10;                 SELECT catchment_area.fk_special_building_rw_current AS fk_log_card,&#10;                    catchment_area.perimeter_geometry AS geom&#10;                   FROM tww_od.catchment_area&#10;                  WHERE (catchment_area.fk_special_building_rw_current IS NOT NULL)&#10;                ), collector AS (&#10;                 SELECT COALESCE(main_lc.obj_id, lc_1.obj_id) AS obj_id,&#10;                    ca.geom&#10;                   FROM ((ca&#10;                     LEFT JOIN tww_od.log_card lc_1 ON (((ca.fk_log_card)::text &#61; (lc_1.obj_id)::text)))&#10;                     LEFT JOIN tww_od.log_card main_lc ON (((main_lc.obj_id)::text &#61; (lc_1.fk_main_structure)::text)))&#10;                )&#10;         SELECT collector.obj_id,&#10;            st_unaryunion(st_collect(collector.geom)) AS perimeter_geometry&#10;           FROM collector&#10;          GROUP BY collector.obj_id) ca_agg ON (((ca_agg.obj_id)::text &#61; (lc.obj_id)::text)));</textarea>
+                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">SELECT cat.obj_id AS _obj_id,&#10;    lc.obj_id AS fk_log_card,&#10;    ca_agg.perimeter_geometry&#10;   FROM ((((tww_od.catchment_area_totals cat&#10;     LEFT JOIN tww_od.hydraulic_char_data hc_c ON ((((hc_c.obj_id)::text &#61; (cat.fk_hydraulic_char_data)::text) AND (hc_c.status &#61; 6372))))&#10;     LEFT JOIN tww_od.wastewater_node wn ON (((hc_c.fk_wastewater_node)::text &#61; (wn.obj_id)::text)))&#10;     LEFT JOIN tww_od.log_card lc ON (((lc.fk_pwwf_wastewater_node)::text &#61; (wn.obj_id)::text)))&#10;     LEFT JOIN ( WITH ca AS (&#10;                 SELECT catchment_area.fk_special_building_ww_current AS fk_log_card,&#10;                    catchment_area.perimeter_geometry AS geom&#10;                   FROM tww_od.catchment_area&#10;                  WHERE (catchment_area.fk_special_building_ww_current IS NOT NULL)&#10;                UNION&#10;                 SELECT catchment_area.fk_special_building_rw_current AS fk_log_card,&#10;                    catchment_area.perimeter_geometry AS geom&#10;                   FROM tww_od.catchment_area&#10;                  WHERE (catchment_area.fk_special_building_rw_current IS NOT NULL)&#10;                ), collector AS (&#10;                 SELECT COALESCE(main_lc.obj_id, lc_1.obj_id) AS obj_id,&#10;                    ca.geom&#10;                   FROM ((ca&#10;                     LEFT JOIN tww_od.log_card lc_1 ON (((ca.fk_log_card)::text &#61; (lc_1.obj_id)::text)))&#10;                     LEFT JOIN tww_od.log_card main_lc ON (((main_lc.obj_id)::text &#61; (lc_1.fk_main_structure)::text)))&#10;                )&#10;         SELECT collector.obj_id,&#10;            st_unaryunion(st_collect(collector.geom)) AS perimeter_geometry&#10;           FROM collector&#10;          GROUP BY collector.obj_id) ca_agg ON (((ca_agg.obj_id)::text &#61; (lc.obj_id)::text)));</textarea>
                             <div style="padding-top: 5px;"><hr></div>
                             <div class="box box-solid">
                                 <div class="box-header with-border">

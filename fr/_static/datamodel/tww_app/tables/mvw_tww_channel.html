@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>vw_tww_channel - tww.tww_app</title>
+        <title>mvw_tww_channel - tww.tww_app</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <link rel="icon" type="image/png" sizes="16x16" href="../favicon.png">
@@ -73,7 +73,7 @@
             <div class="content-wrapper">
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
-                    <h1>vw_tww_channel</h1><p><span id="recordNumber">0</span> rows</p><br />
+                    <h1>mvw_tww_channel</h1><p><span id="recordNumber">0</span> rows</p><br />
                 </section>
                 <!-- Main content -->
                 <section class="content">
@@ -823,9 +823,9 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td><span id="_from_node">_from_node</span></td>
+                                    <td><span id="fk_reach_point_from">fk_reach_point_from</span></td>
                                     <td>varchar</td>
-                                    <td>2147483647</td>
+                                    <td>16</td>
                                     <td title='nullable'>√</td>
                                     <td title=''></td>
                                     <td>null</td>
@@ -840,9 +840,43 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td><span id="_to_node">_to_node</span></td>
+                                    <td><span id="_from_ne">_from_ne</span></td>
                                     <td>varchar</td>
-                                    <td>2147483647</td>
+                                    <td>16</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="fk_reach_point_to">fk_reach_point_to</span></td>
+                                    <td>varchar</td>
+                                    <td>16</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="_to_ne">_to_ne</span></td>
+                                    <td>varchar</td>
+                                    <td>16</td>
                                     <td title='nullable'>√</td>
                                     <td title=''></td>
                                     <td>null</td>
@@ -895,7 +929,7 @@
                                 <div class="tab-content no-padding">
                                     <div class="chart tab-pane active" id="oneDegreeImg-chart" style="position: relative; overflow-x:auto;">
                                         
-                                        <a name='diagram'><object type="image/svg+xml" id="oneDegreeImg" data="../diagrams/tables/vw_tww_channel.1degree.svg" class="diagram" border="0" align="left"></object></a>
+                                        <a name='diagram'><object type="image/svg+xml" id="oneDegreeImg" data="../diagrams/tables/mvw_tww_channel.1degree.svg" class="diagram" border="0" align="left"></object></a>
                                     </div>
                                 </div>
                             </div>
@@ -911,7 +945,7 @@
                             </div>
                         </div>
                         <div class="box-body">
-                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">WITH _topology AS (&#10;         SELECT ch_1.obj_id,&#10;            array_agg(wn_from.obj_id) AS _from_nodes,&#10;            array_agg(wn_to.obj_id) AS _to_nodes&#10;           FROM (((((((tww_od.channel ch_1&#10;             LEFT JOIN tww_od.wastewater_structure ws_1 ON (((ch_1.obj_id)::text &#61; (ws_1.obj_id)::text)))&#10;             LEFT JOIN tww_od.wastewater_networkelement ne_1 ON (((ne_1.fk_wastewater_structure)::text &#61; (ws_1.obj_id)::text)))&#10;             LEFT JOIN tww_od.reach re_1 ON (((ne_1.obj_id)::text &#61; (re_1.obj_id)::text)))&#10;             LEFT JOIN tww_od.reach_point rp_to ON (((re_1.fk_reach_point_to)::text &#61; (rp_to.obj_id)::text)))&#10;             LEFT JOIN tww_od.wastewater_node wn_to ON (((wn_to.obj_id)::text &#61; (rp_to.fk_wastewater_networkelement)::text)))&#10;             LEFT JOIN tww_od.reach_point rp_from ON (((re_1.fk_reach_point_from)::text &#61; (rp_from.obj_id)::text)))&#10;             LEFT JOIN tww_od.wastewater_node wn_from ON (((wn_from.obj_id)::text &#61; (rp_from.fk_wastewater_networkelement)::text)))&#10;          GROUP BY ch_1.obj_id&#10;        )&#10; SELECT ch.obj_id,&#10;    ch.bedding_encasement,&#10;    ch.connection_type,&#10;    ch.function_amelioration,&#10;    ch.function_hierarchic,&#10;    ch.function_hydraulic,&#10;    ch.jetting_interval,&#10;    ch.pipe_length,&#10;    ch.seepage,&#10;    ch.usage_current,&#10;    ch.usage_planned,&#10;    ws.accessibility AS ws_accessibility,&#10;    ws.condition_score AS ws_condition_score,&#10;    ws.contract_section AS ws_contract_section,&#10;    ws.elevation_determination AS ws_elevation_determination,&#10;    ws.financing AS ws_financing,&#10;    ws.fk_main_wastewater_node AS ws_fk_main_wastewater_node,&#10;    ws.fk_operator AS ws_fk_operator,&#10;    ws.fk_owner AS ws_fk_owner,&#10;    ws.gross_costs AS ws_gross_costs,&#10;    ws.identifier AS ws_identifier,&#10;    ws.inspection_interval AS ws_inspection_interval,&#10;    ws.last_modification AS ws_last_modification,&#10;    ws.location_name AS ws_location_name,&#10;    ws.records AS ws_records,&#10;    ws.remark AS ws_remark,&#10;    ws.renovation_necessity AS ws_renovation_necessity,&#10;    ws.replacement_value AS ws_replacement_value,&#10;    ws.rv_base_year AS ws_rv_base_year,&#10;    ws.rv_construction_type AS ws_rv_construction_type,&#10;    ws.status AS ws_status,&#10;    ws.status_survey_year AS ws_status_survey_year,&#10;    ws.structure_condition AS ws_structure_condition,&#10;    ws.subsidies AS ws_subsidies,&#10;    ws.urgency_figure AS ws_urgency_figure,&#10;    ws.year_of_construction AS ws_year_of_construction,&#10;    ws.year_of_replacement AS ws_year_of_replacement,&#10;    (st_multi(st_force2d(st_forcecurve(st_linemerge(st_collect(st_curvetoline(re.progression3d_geometry)))))))::geometry(MultiCurve,2056) AS progression2d_geometry,&#10;    min(re.clear_height) AS _re_min_height,&#10;    max(re.clear_height) AS _re_max_height,&#10;    sum(re.length_effective) AS _re_length_effective,&#10;    array_agg(DISTINCT vl_mat.value_en) AS _re_materials,&#10;    ( SELECT unnest(_topology._from_nodes) AS unnest&#10;        EXCEPT ALL&#10;         SELECT unnest(_topology._to_nodes) AS unnest&#10; LIMIT 1) AS _from_node,&#10;    ( SELECT unnest(_topology._to_nodes) AS unnest&#10;        EXCEPT ALL&#10;         SELECT unnest(_topology._from_nodes) AS unnest&#10; LIMIT 1) AS _to_node,&#10;    vl_fh.tww_is_primary&#10;   FROM ((((((tww_od.channel ch&#10;     JOIN _topology ON (((_topology.obj_id)::text &#61; (ch.obj_id)::text)))&#10;     LEFT JOIN tww_od.wastewater_structure ws ON (((ch.obj_id)::text &#61; (ws.obj_id)::text)))&#10;     LEFT JOIN tww_od.wastewater_networkelement ne ON (((ne.fk_wastewater_structure)::text &#61; (ws.obj_id)::text)))&#10;     LEFT JOIN tww_od.reach re ON (((ne.obj_id)::text &#61; (re.obj_id)::text)))&#10;     LEFT JOIN tww_vl.channel_function_hierarchic vl_fh ON ((vl_fh.code &#61; ch.function_hierarchic)))&#10;     LEFT JOIN tww_vl.reach_material vl_mat ON ((vl_mat.code &#61; re.material)))&#10;  GROUP BY ch.obj_id, ch.bedding_encasement, ch.connection_type, ch.function_amelioration, ch.function_hierarchic, ch.function_hydraulic, ch.jetting_interval, ch.pipe_length, ch.seepage, ch.usage_current, ch.usage_planned, ws.accessibility, ws.condition_score, ws.contract_section, ws.elevation_determination, ws.financing, ws.fk_main_wastewater_node, ws.fk_operator, ws.fk_owner, ws.gross_costs, ws.identifier, ws.inspection_interval, ws.last_modification, ws.location_name, ws.records, ws.remark, ws.renovation_necessity, ws.replacement_value, ws.rv_base_year, ws.rv_construction_type, ws.status, ws.status_survey_year, ws.structure_condition, ws.subsidies, ws.urgency_figure, ws.year_of_construction, ws.year_of_replacement, _topology._from_nodes, _topology._to_nodes, vl_fh.tww_is_primary;</textarea>
+                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">WITH channel_geometries AS (&#10;         SELECT ch_1.obj_id,&#10;            st_startpoint(st_linemerge(st_collect(st_force2d(re_1.progression3d_geometry)))) AS channel_start_point,&#10;            st_endpoint(st_linemerge(st_collect(st_force2d(re_1.progression3d_geometry)))) AS channel_end_point&#10;           FROM (((tww_od.channel ch_1&#10;             JOIN tww_od.wastewater_structure ws_1 ON (((ch_1.obj_id)::text &#61; (ws_1.obj_id)::text)))&#10;             JOIN tww_od.wastewater_networkelement ne_1 ON (((ne_1.fk_wastewater_structure)::text &#61; (ws_1.obj_id)::text)))&#10;             JOIN tww_od.reach re_1 ON (((re_1.obj_id)::text &#61; (ne_1.obj_id)::text)))&#10;          GROUP BY ch_1.obj_id&#10;        ), reach_start_end_points AS (&#10;         SELECT re_1.obj_id,&#10;            ne_1.fk_wastewater_structure,&#10;            re_1.fk_reach_point_from,&#10;            re_1.fk_reach_point_to,&#10;            st_startpoint(st_force2d(re_1.progression3d_geometry)) AS reach_start_point,&#10;            st_endpoint(st_force2d(re_1.progression3d_geometry)) AS reach_end_point&#10;           FROM (tww_od.reach re_1&#10;             JOIN tww_od.wastewater_networkelement ne_1 ON (((ne_1.obj_id)::text &#61; (re_1.obj_id)::text)))&#10;        ), rp_channel AS (&#10;         SELECT cg.obj_id,&#10;            rs.fk_reach_point_from,&#10;            re_1.fk_reach_point_to&#10;           FROM ((channel_geometries cg&#10;             JOIN reach_start_end_points rs ON ((((rs.fk_wastewater_structure)::text &#61; (cg.obj_id)::text) AND st_equals(rs.reach_start_point, cg.channel_start_point))))&#10;             JOIN reach_start_end_points re_1 ON ((((re_1.fk_wastewater_structure)::text &#61; (cg.obj_id)::text) AND st_equals(re_1.reach_end_point, cg.channel_end_point))))&#10;        )&#10; SELECT ch.obj_id,&#10;    ch.bedding_encasement,&#10;    ch.connection_type,&#10;    ch.function_amelioration,&#10;    ch.function_hierarchic,&#10;    ch.function_hydraulic,&#10;    ch.jetting_interval,&#10;    ch.pipe_length,&#10;    ch.seepage,&#10;    ch.usage_current,&#10;    ch.usage_planned,&#10;    ws.accessibility AS ws_accessibility,&#10;    ws.condition_score AS ws_condition_score,&#10;    ws.contract_section AS ws_contract_section,&#10;    ws.elevation_determination AS ws_elevation_determination,&#10;    ws.financing AS ws_financing,&#10;    ws.fk_main_wastewater_node AS ws_fk_main_wastewater_node,&#10;    ws.fk_operator AS ws_fk_operator,&#10;    ws.fk_owner AS ws_fk_owner,&#10;    ws.gross_costs AS ws_gross_costs,&#10;    ws.identifier AS ws_identifier,&#10;    ws.inspection_interval AS ws_inspection_interval,&#10;    ws.last_modification AS ws_last_modification,&#10;    ws.location_name AS ws_location_name,&#10;    ws.records AS ws_records,&#10;    ws.remark AS ws_remark,&#10;    ws.renovation_necessity AS ws_renovation_necessity,&#10;    ws.replacement_value AS ws_replacement_value,&#10;    ws.rv_base_year AS ws_rv_base_year,&#10;    ws.rv_construction_type AS ws_rv_construction_type,&#10;    ws.status AS ws_status,&#10;    ws.status_survey_year AS ws_status_survey_year,&#10;    ws.structure_condition AS ws_structure_condition,&#10;    ws.subsidies AS ws_subsidies,&#10;    ws.urgency_figure AS ws_urgency_figure,&#10;    ws.year_of_construction AS ws_year_of_construction,&#10;    ws.year_of_replacement AS ws_year_of_replacement,&#10;    (st_multi(st_force2d(st_forcecurve(st_linemerge(st_collect(st_curvetoline(re.progression3d_geometry)))))))::geometry(MultiCurve,2056) AS progression2d_geometry,&#10;    min(re.clear_height) AS _re_min_height,&#10;    max(re.clear_height) AS _re_max_height,&#10;    sum(re.length_effective) AS _re_length_effective,&#10;    array_agg(DISTINCT vl_mat.value_en) AS _re_materials,&#10;    rpc.fk_reach_point_from,&#10;    rp_from.fk_wastewater_networkelement AS _from_ne,&#10;    rpc.fk_reach_point_to,&#10;    rp_to.fk_wastewater_networkelement AS _to_ne,&#10;    vl_fh.tww_is_primary&#10;   FROM ((((((((tww_od.channel ch&#10;     JOIN rp_channel rpc ON (((rpc.obj_id)::text &#61; (ch.obj_id)::text)))&#10;     LEFT JOIN tww_od.reach_point rp_from ON (((rp_from.obj_id)::text &#61; (rpc.fk_reach_point_from)::text)))&#10;     LEFT JOIN tww_od.reach_point rp_to ON (((rp_to.obj_id)::text &#61; (rpc.fk_reach_point_to)::text)))&#10;     LEFT JOIN tww_od.wastewater_structure ws ON (((ch.obj_id)::text &#61; (ws.obj_id)::text)))&#10;     LEFT JOIN tww_od.wastewater_networkelement ne ON (((ne.fk_wastewater_structure)::text &#61; (ws.obj_id)::text)))&#10;     LEFT JOIN tww_od.reach re ON (((ne.obj_id)::text &#61; (re.obj_id)::text)))&#10;     LEFT JOIN tww_vl.channel_function_hierarchic vl_fh ON ((vl_fh.code &#61; ch.function_hierarchic)))&#10;     LEFT JOIN tww_vl.reach_material vl_mat ON ((vl_mat.code &#61; re.material)))&#10;  GROUP BY ch.obj_id, ch.bedding_encasement, ch.connection_type, ch.function_amelioration, ch.function_hierarchic, ch.function_hydraulic, ch.jetting_interval, ch.pipe_length, ch.seepage, ch.usage_current, ch.usage_planned, ws.accessibility, ws.condition_score, ws.contract_section, ws.elevation_determination, ws.financing, ws.fk_main_wastewater_node, ws.fk_operator, ws.fk_owner, ws.gross_costs, ws.identifier, ws.inspection_interval, ws.last_modification, ws.location_name, ws.records, ws.remark, ws.renovation_necessity, ws.replacement_value, ws.rv_base_year, ws.rv_construction_type, ws.status, ws.status_survey_year, ws.structure_condition, ws.subsidies, ws.urgency_figure, ws.year_of_construction, ws.year_of_replacement, rpc.fk_reach_point_from, rp_from.fk_wastewater_networkelement, rpc.fk_reach_point_to, rp_to.fk_wastewater_networkelement, vl_fh.tww_is_primary;</textarea>
                             <div style="padding-top: 5px;"><hr></div>
                             <div class="box box-solid">
                                 <div class="box-header with-border">
