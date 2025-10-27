@@ -224,8 +224,8 @@ WITH DATA;
    FROM tww_od.catchment_area_totals cat
      LEFT JOIN tww_app.mvw_catchment_area_totals mv_cat ON mv_cat._obj_id::text = cat.obj_id::text
      LEFT JOIN tww_od.hydraulic_char_data hc ON hc.obj_id::text = cat.fk_hydraulic_char_data::text
-	   LEFT JOIN tww_od.wastewater_node wn ON hc.fk_wastewater_node::text = wn.obj_id::text
-  	 LEFT JOIN tww_od.hydraulic_char_data hc_c ON hc_c.fk_wastewater_node::text = wn.obj_id::text AND hc_c.status = 6372
+     LEFT JOIN tww_od.wastewater_node wn ON hc.fk_wastewater_node::text = wn.obj_id::text
+     LEFT JOIN tww_od.hydraulic_char_data hc_c ON hc_c.fk_wastewater_node::text = wn.obj_id::text AND hc_c.status = 6372
      LEFT JOIN tww_od.hydraulic_char_data hc_o ON hc_o.fk_wastewater_node::text = wn.obj_id::text AND hc_o.status = 6373
      LEFT JOIN tww_od.hydraulic_char_data hc_p ON hc_p.fk_wastewater_node::text = wn.obj_id::text AND hc_p.status = 6371
      LEFT JOIN tww_od.wastewater_networkelement ne ON wn.obj_id::text = ne.obj_id::text
