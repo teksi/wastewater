@@ -89,8 +89,8 @@ def vw_tww_damage_channel(
         END) AS situation2d_geometry
         , base.direction
         , base.tww_is_primary
-        , damage_pictures.pics[0] as picture_1
-        , damage_pictures.pics[1] as picture_2
+        , damage_pictures.pics[1] as picture_1
+        , damage_pictures.pics[2] as picture_2
         , examination_videos.video
         {extra_cols_base}
         FROM base
