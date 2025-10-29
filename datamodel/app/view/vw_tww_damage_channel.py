@@ -16,7 +16,6 @@ from .utils.extra_definition_utils import (
 )
 
 
-
 def vw_tww_damage_channel(
     connection: psycopg.Connection,
     extra_definition: dict = None,
@@ -189,7 +188,6 @@ def vw_tww_damage_channel(
         insert_extra=insert_extra(connection=connection, extra_definition=extra_definition),
     )
 
-    
     cursor.execute(trigger_insert_sql)
 
     update_trigger_sql = """
@@ -257,7 +255,6 @@ def vw_tww_damage_channel(
         ALTER VIEW tww_app.vw_tww_damage_channel ALTER obj_id SET DEFAULT tww_app.generate_oid('tww_od','damage_channel');
     """
     cursor.execute(extras)
-
 
 
 if __name__ == "__main__":
