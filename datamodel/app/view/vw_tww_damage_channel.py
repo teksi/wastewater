@@ -158,6 +158,7 @@ def vw_tww_damage_channel(
 
     {insert_dg}
     {insert_dc}
+    {insert_extra}
 
       RETURN NEW;
     END; $BODY$ LANGUAGE plpgsql VOLATILE;
@@ -219,7 +220,7 @@ def vw_tww_damage_channel(
             skip_columns=[],
             update_values={},
         ),
-        update_dg=update_command(
+        update_dc=update_command(
             connection=connection,
             table_schema="tww_od",
             table_name="damage_channel",
