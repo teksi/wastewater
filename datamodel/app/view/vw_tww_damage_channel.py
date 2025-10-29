@@ -6,12 +6,15 @@ import argparse
 import os
 
 import psycopg
-from pirogue.utils import select_columns
+from pirogue.utils import insert_command, select_columns, update_command
 
 from .utils.extra_definition_utils import (
     extra_cols,
     extra_joins,
+    insert_extra,
+    update_extra,
 )
+
 
 
 def vw_tww_damage_channel(
@@ -145,6 +148,116 @@ def vw_tww_damage_channel(
     )
 
     cursor.execute(view_sql)
+
+    trigger_insert_sql = """
+    CREATE OR REPLACE FUNCTION tww_app.ft_vw_tww_damage_channel_INSERT()
+      RETURNS trigger AS
+    $BODY$
+    BEGIN
+
+      NEW.identifier = COALESCE(NEW.identifier, NEW.obj_id);
+
+    {insert_dg}
+    {insert_dc}
+
+      RETURN NEW;
+    END; $BODY$ LANGUAGE plpgsql VOLATILE;
+
+    DROP TRIGGER IF EXISTS vw_tww_damage_channel_INSERT ON tww_app.vw_tww_damage_channel;
+
+    CREATE TRIGGER vw_tww_damage_channel_INSERT INSTEAD OF INSERT ON tww_app.vw_tww_damage_channel
+      FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_damage_channel_INSERT();
+    """.format(
+        insert_dg=insert_command(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="damage",
+            table_alias="dg",
+            remove_pkey=False,
+            indent=2,
+            skip_columns=[],
+        ),
+        insert_dc=insert_command(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="damage_channel",
+            table_alias="dc",
+            remove_pkey=False,
+            indent=2,
+            skip_columns=[],
+        ),
+        insert_extra=insert_extra(connection=connection, extra_definition=extra_definition),
+    )
+
+    
+    cursor.execute(trigger_insert_sql)
+
+    update_trigger_sql = """
+    CREATE OR REPLACE FUNCTION tww_app.ft_vw_tww_damage_channel_UPDATE()
+      RETURNS trigger AS
+    $BODY$
+    BEGIN
+      {update_dg}
+      {update_dc}
+      {update_extra}
+       RETURN NEW;
+    END;
+    $BODY$
+    LANGUAGE plpgsql;
+
+
+
+    DROP TRIGGER IF EXISTS vw_tww_damage_channel_UPDATE ON tww_app.vw_tww_damage_channel;
+
+    CREATE TRIGGER vw_tww_damage_channel_UPDATE INSTEAD OF UPDATE ON tww_app.vw_tww_damage_channel
+      FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_damage_channel_UPDATE();
+    """.format(
+        update_dg=update_command(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="damage",
+            table_alias="dg",
+            indent=6,
+            skip_columns=[],
+            update_values={},
+        ),
+        update_dg=update_command(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="damage_channel",
+            table_alias="dc",
+            indent=6,
+            skip_columns=[],
+            update_values={},
+        ),
+        update_extra=update_extra(connection=connection, extra_definition=extra_definition),
+    )
+
+    cursor.execute(update_trigger_sql)
+
+    trigger_delete_sql = """
+    CREATE OR REPLACE FUNCTION tww_app.ft_vw_tww_damage_channel_DELETE()
+      RETURNS trigger AS
+    $BODY$
+    DECLARE
+    BEGIN
+      DELETE FROM tww_od.damage WHERE obj_id = OLD.obj_id;
+    RETURN OLD;
+    END; $BODY$ LANGUAGE plpgsql VOLATILE;
+
+    DROP TRIGGER IF EXISTS vw_tww_damage_channel_DELETE ON tww_app.vw_tww_damage_channel;
+
+    CREATE TRIGGER vw_tww_damage_channel_DELETE INSTEAD OF DELETE ON tww_app.vw_tww_damage_channel
+      FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_damage_channel_DELETE();
+    """
+
+    cursor.execute(trigger_delete_sql)
+
+    extras = """
+        ALTER VIEW tww_app.vw_tww_damage_channel ALTER obj_id SET DEFAULT tww_app.generate_oid('tww_od','damage_channel');
+    """
+    cursor.execute(extras)
+
 
 
 if __name__ == "__main__":
