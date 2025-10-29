@@ -58,22 +58,24 @@ def vw_tww_damage_channel(
           WHERE ex.recording_type = 3686
         ),
         damage_pictures AS(
-        SELECT dc.obj_id, array_agg(path_relative) over w as pics
+        SELECT dc.obj_id, array_agg(COALESCE(dm.path || fi.path_relative, fi.path_relative)) over w as pics
         FROM tww_od.file fi
         INNER JOIN tww_od.damage_channel dc ON fi.object = dc.obj_id
         INNER JOIN tww_od.damage dg ON dg.obj_id = dc.obj_id
         LEFT JOIN tww_od.examination ex ON dg.fk_examination = ex.obj_id
         LEFT JOIN tww_od.maintenance_event me on me.obj_id = ex.obj_id
+        LEFT JOIN tww_od.data_media dm ON dm.obj_id = fi.fk_data_media
         WHERE fi.tww_outdated IS NOT True AND fi.kind=3772 --picture
         WINDOW W as (ORDER BY fi.obj_id DESC)
         ),
         examination_videos AS(
-        SELECT dc.obj_id, FIRST_value(path_relative) over w as video
+        SELECT dc.obj_id, FIRST_value(COALESCE(dm.path || fi.path_relative, fi.path_relative)) over w as video
         FROM tww_od.file fi
         INNER JOIN tww_od.examination ex ON fi.object = ex.obj_id
         INNER JOIN tww_od.maintenance_event me on me.obj_id = ex.obj_id
         RIGHT JOIN tww_od.damage dg on dg.fk_examination = ex.obj_id
         INNER JOIN tww_od.damage_channel dc ON dg.obj_id = dc.obj_id
+        LEFT JOIN tww_od.data_media dm ON dm.obj_id = fi.fk_data_media
         WHERE fi.tww_outdated IS NOT True AND ex.tww_outdated IS NOT True AND fi.kind IN (3775, 9146)
         WINDOW W as (PARTITION BY ex.fk_reach_point ORDER BY me.time_point DESC)
         )
