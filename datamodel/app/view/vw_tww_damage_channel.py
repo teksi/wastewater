@@ -154,8 +154,6 @@ def vw_tww_damage_channel(
     $BODY$
     BEGIN
 
-      NEW.identifier = COALESCE(NEW.identifier, NEW.obj_id);
-
     {insert_dg}
     {insert_dc}
     {insert_extra}
