@@ -51,7 +51,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">5. Official TWW extensions</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">5.1. Initialising Database extensions</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#create-an-empty-datamodel-with-an-extension">5.1.1. create an empty datamodel with an extension</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#generate-the-data-model-under-linux">5.1.2. Generate the data model under Linux</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#generate-the-data-model-under-linux">5.1.2. Générer le modèle de données sous Linux</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="agxx/index.html">5.2. Extension AG-64/AG-96</a></li>
@@ -137,10 +137,10 @@ In order to be able to use an extension, activate the corresponding app modifica
 <p>For official models, an adapted value list sql is provided.</p>
 </section>
 <section id="generate-the-data-model-under-linux">
-<h2><span class="section-number">5.1.2. </span>Generate the data model under Linux<a class="headerlink" href="#generate-the-data-model-under-linux" title="Lien vers cette rubrique"></a></h2>
+<h2><span class="section-number">5.1.2. </span>Générer le modèle de données sous Linux<a class="headerlink" href="#generate-the-data-model-under-linux" title="Lien vers cette rubrique"></a></h2>
 <p>You can also generate the data model extension under Linux.</p>
 <ul>
-<li><p>Download the data model:</p>
+<li><p>Télécharger le modèle de données:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">TWW</span><span class="o">/</span><span class="n">datamodel</span>
 <span class="n">cd</span> <span class="n">datamodel</span>
 </pre></div>
@@ -148,7 +148,7 @@ In order to be able to use an extension, activate the corresponding app modifica
 </li>
 <li><p>Setup the <code class="docutils literal notranslate"><span class="pre">pg_service.conf</span></code> file and add the <code class="docutils literal notranslate"><span class="pre">pg_tww</span></code> service
 as in the <a class="reference internal" href="../installation-guide/workstation.html#pg-service-linux"><span class="std std-ref">Linux/macOS pg_service</span></a> section.</p></li>
-<li><p>Create the database:</p>
+<li><p>Créer la base de données</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psql</span> <span class="o">-</span><span class="n">U</span> <span class="n">postgres</span> <span class="o">-</span><span class="n">c</span> <span class="s1">&#39;CREATE DATABASE tww;&#39;</span>
 </pre></div>
 </div>
@@ -158,7 +158,7 @@ as in the <a class="reference internal" href="../installation-guide/workstation.
 </pre></div>
 </div>
 </li>
-<li><p>Run the generation script:</p>
+<li><p>Lancer le script de generation:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">scripts</span><span class="o">/</span><span class="n">db_setup</span><span class="o">.</span><span class="n">sh</span>
 </pre></div>
 </div>
