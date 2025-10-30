@@ -26,21 +26,6 @@ jobs:
     name: Run unit tests on datamodel (Windows)
     runs-on: windows-2022
 
-    services:
-      postgres:
-        image: postgis/postgis:16-3.5
-        env:
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_USER: postgres
-          POSTGRES_DB: postgres
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U postgres"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
     steps:
       - uses: actions/checkout@v5
 
@@ -49,6 +34,34 @@ jobs:
         with:
           python-version: '3.11'
           cache: 'pip'
+
+      - name: Install PostgreSQL with PostGIS
+        shell: pwsh
+        run: |
+          # Install PostgreSQL 16
+          choco install postgresql16 --params '/Password:postgres' -y
+
+          # Add PostgreSQL to PATH for this session
+          $env:PATH = "C:\Program Files\PostgreSQL\16\bin;$env:PATH"
+          echo "C:\Program Files\PostgreSQL\16\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+          # Wait for PostgreSQL service to start
+          Start-Sleep -Seconds 10
+
+          # Verify PostgreSQL is running
+          & "C:\Program Files\PostgreSQL\16\bin\pg_isready.exe" -U postgres
+
+      - name: Install PostGIS extension
+        shell: pwsh
+        env:
+          PGPASSWORD: postgres
+        run: |
+          # Install PostGIS
+          choco install postgis -y
+
+          # Enable PostGIS in the default database
+          & "C:\Program Files\PostgreSQL\16\bin\psql.exe" -U postgres -c "CREATE EXTENSION IF NOT EXISTS postgis;"
+          & "C:\Program Files\PostgreSQL\16\bin\psql.exe" -U postgres -c "SELECT PostGIS_version();"
 
       - name: Install Python dependencies
         shell: bash
@@ -85,7 +98,7 @@ jobs:
           EOF
 
           # Verify PostgreSQL connection
-          psql -h localhost -U postgres -p 5432 -c "SELECT version();"
+          psql -U postgres -c "SELECT version();"
 
       - name: Create database and install datamodel
         shell: bash
@@ -97,7 +110,7 @@ jobs:
           cp "$APPDATA/postgresql/pg_service.conf" ./pg_service.conf
 
           # Create the database
-          psql -h localhost -U postgres -p 5432 -c "CREATE DATABASE tww;"
+          psql -U postgres -c "CREATE DATABASE tww;"
 
           # Install datamodel with pum
           pum -vvv -s pg_tww -d datamodel install -p SRID 2056 --roles --grant
