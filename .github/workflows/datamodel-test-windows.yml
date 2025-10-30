@@ -94,35 +94,15 @@ jobs:
           python -m pip install -r datamodel/requirements.txt
           python -m pip install -r datamodel/requirements-test.txt
 
-      - name: Configure PostgreSQL service
-        shell: bash
+      # see https://github.community/t5/GitHub-Actions/Append-PATH-on-Windows/m-p/42873/highlight/true#M5155
+      - name: Add psql/bin path
         env:
-          PGPASSWORD: postgres
-        run: |
-          # Create pg_service.conf
-          mkdir -p "$APPDATA/postgresql"
-          cat > "$APPDATA/postgresql/pg_service.conf" << EOF
-          [postgres]
-          host=localhost
-          port=5432
-          dbname=postgres
-          user=postgres
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+        run: echo "##[add-path].\pgsql\bin"
 
-          [pg_tww]
-          host=localhost
-          port=5432
-          dbname=tww
-          user=postgres
-
-          [pg_tww_demo]
-          host=localhost
-          port=5432
-          dbname=tww_demo
-          user=postgres
-          EOF
-
-          # Verify PostgreSQL connection
-          psql -U postgres -c "SELECT version();"
+      - name: Setup db
+        shell: bash
+        run: ./scripts/ci_setup_db.sh
 
       - name: Create database and install datamodel
         shell: bash
