@@ -57,9 +57,6 @@ jobs:
           curl -o pgsql.zip -L https://get.enterprisedb.com/postgresql/postgresql-${EDB_VERSION}-windows-x64-binaries.zip
           unzip pgsql.zip -x 'pgsql/include/**' 'pgsql/doc/**' 'pgsql/pgAdmin 4/**' 'pgsql/StackBuilder/**'
 
-          # Match Npgsql CI Docker image and stash one level up
-          cp $GITHUB_WORKSPACE/.build/{server.crt,server.key,ca.crt} pgsql
-
           # Find OSGEO version number
           OSGEO_VERSION=$(\
             curl -Ls https://download.osgeo.org/postgis/windows/pg${{ env.pg_major }} |
@@ -83,50 +80,12 @@ jobs:
           cp -a postgis/$POSTGIS_FILE/. pgsql/
 
           # Start PostgreSQL
+          # Start PostgreSQL
           pgsql/bin/initdb -D pgsql/PGDATA -E UTF8 -U postgres
-          SOCKET_DIR=$(echo "$LOCALAPPDATA\Temp" | sed 's|\\|/|g')
-          sed -i "s|max_connections = 100|max_connections = 500|" pgsql/PGDATA/postgresql.conf
-          sed -i "s|#unix_socket_directories = ''|unix_socket_directories = '$SOCKET_DIR'|" pgsql/PGDATA/postgresql.conf
-          sed -i "s|#wal_level =|wal_level = logical #|" pgsql/PGDATA/postgresql.conf
-          sed -i "s|#max_wal_senders =|max_wal_senders = 50 #|" pgsql/PGDATA/postgresql.conf
-          sed -i "s|#logical_decoding_work_mem =|logical_decoding_work_mem = 64kB #|" pgsql/PGDATA/postgresql.conf
-          sed -i "s|#wal_sender_timeout =|wal_sender_timeout = 3s #|" pgsql/PGDATA/postgresql.conf
-          sed -i "s|#synchronous_standby_names =|synchronous_standby_names = 'npgsql_test_sync_standby' #|" pgsql/PGDATA/postgresql.conf
-          sed -i "s|#synchronous_commit =|synchronous_commit = local #|" pgsql/PGDATA/postgresql.conf
-          sed -i "s|#max_prepared_transactions = 0|max_prepared_transactions = 100|" pgsql/PGDATA/postgresql.conf
-          pgsql/bin/pg_ctl -D pgsql/PGDATA -l logfile -o '-c ssl=true -c ssl_cert_file=../server.crt -c ssl_key_file=../server.key -c ssl_ca_file=../ca.crt' start
+          pgsql/bin/pg_ctl -D pgsql/PGDATA -l logfile start
 
           # Create npgsql_tests user with md5 password 'npgsql_tests'
           pgsql/bin/psql -U postgres -c "CREATE ROLE npgsql_tests SUPERUSER LOGIN PASSWORD 'md5adf74603a5772843f53e812f03dacb02'"
-
-          pgsql/bin/psql -U postgres -c "CREATE ROLE npgsql_tests_ssl SUPERUSER LOGIN PASSWORD 'npgsql_tests_ssl'"
-          pgsql/bin/psql -U postgres -c "CREATE ROLE npgsql_tests_nossl SUPERUSER LOGIN PASSWORD 'npgsql_tests_nossl'"
-
-          # user 'npgsql_tests_scram' must be created with password encrypted as scram-sha-256 (which only applies after restart)
-          if [ ${{ env.pg_major }} -ge 14 ]; then
-            sed -i "s|password_encryption = md5|password_encryption = scram-sha-256|" pgsql/PGDATA/postgresql.conf
-          else
-            sed -i "s|#password_encryption = md5|password_encryption = scram-sha-256|" pgsql/PGDATA/postgresql.conf
-          fi
-
-          pgsql/bin/pg_ctl -D pgsql/PGDATA -l logfile -o '-c ssl=true -c ssl_cert_file=../server.crt -c ssl_key_file=../server.key -c ssl_ca_file=../ca.crt' restart
-
-          pgsql/bin/psql -U postgres -c "CREATE ROLE npgsql_tests_scram SUPERUSER LOGIN PASSWORD 'npgsql_tests_scram'"
-
-          # Disable trust authentication except for unix domain sockets, requiring MD5
-          # passwords - some tests must fail if a password isn't provided.
-          if [ ${{ env.pg_major }} -ge 13 ]; then
-                echo "local all all trust" > pgsql/PGDATA/pg_hba.conf
-                echo "host all npgsql_tests_scram all scram-sha-256" >> pgsql/PGDATA/pg_hba.conf
-          else
-                echo "host all npgsql_tests_scram all scram-sha-256" > pgsql/PGDATA/pg_hba.conf
-          fi
-          echo "hostssl all npgsql_tests_ssl all md5" >> pgsql/PGDATA/pg_hba.conf
-          echo "hostnossl all npgsql_tests_ssl all reject" >> pgsql/PGDATA/pg_hba.conf
-          echo "hostnossl all npgsql_tests_nossl all md5" >> pgsql/PGDATA/pg_hba.conf
-          echo "hostssl all npgsql_tests_nossl all reject" >> pgsql/PGDATA/pg_hba.conf
-          echo "host all all all md5" >> pgsql/PGDATA/pg_hba.conf
-          echo "host replication all all md5" >> pgsql/PGDATA/pg_hba.conf
 
       - name: Install Python dependencies
         shell: bash
