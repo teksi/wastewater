@@ -90,9 +90,9 @@ jobs:
       - name: Install Python dependencies
         shell: bash
         run: |
-          pip install --upgrade pip
-          pip install -r datamodel/requirements.txt
-          pip install -r datamodel/requirements-test.txt
+          python -m pip install --upgrade pip
+          python -m pip install -r datamodel/requirements.txt
+          python -m pip install -r datamodel/requirements-test.txt
 
       - name: Configure PostgreSQL service
         shell: bash
