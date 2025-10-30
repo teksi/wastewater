@@ -112,9 +112,6 @@ jobs:
           PGPASSWORD: postgres
           PGSERVICEFILE: ${{ github.workspace }}/pg_service.conf
         run: |
-          # Create the database
-          psql -U postgres -c "CREATE DATABASE tww;"
-
           # Install datamodel with pum
           pum -vvv -s pg_tww -d datamodel install -p SRID 2056 --roles --grant
 
