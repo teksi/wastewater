@@ -484,9 +484,10 @@ SELECT
 
 FROM tww_od.measure msr
 	LEFT JOIN tww_vl.measure_category msr_ct ON msr_ct.code = msr.category
-	LEFT JOIN tww_vl.measure_priority msr_pri ON msr_pri.code = msr.priority
-	LEFT JOIN tww_vl.measure_status msr_st ON msr_st.code = msr.status
-
+	 LEFT JOIN tww_vl.measure_category_export_rel_agxx ag_ct ON msr_ct.code = ag_ct.code
+     LEFT JOIN tww_vl.measure_priority msr_pri ON msr_pri.code = msr.priority
+	 LEFT JOIN tww_vl.measure_priority_export_rel_agxx ag_pri ON msr_pri.code = ag_pri.code
+     LEFT JOIN tww_vl.measure_status msr_st ON msr_st.code = msr.status
 	;
 
 
