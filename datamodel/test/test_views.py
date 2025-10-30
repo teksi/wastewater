@@ -18,6 +18,13 @@ class TestViews(unittest.TestCase, DbTestBase):
         pgservice = os.environ.get("PGSERVICE") or DEFAULT_PG_SERVICE
         cls.conn = psycopg.connect(f"service={pgservice}")
 
+    def test_vw_file_exists(self):
+        cur = self.cursor()
+        cur.execute(
+            "SELECT 1 FROM information_schema.views WHERE table_schema='tww_app' AND table_name='vw_file'"
+        )
+        assert cur.fetchone() is not None
+
     def test_vw_reach(self):
         row = {
             "clear_height": 100,
