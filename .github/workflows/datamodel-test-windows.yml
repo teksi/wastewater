@@ -22,6 +22,7 @@ on:
 
 
 env:
+  PGSYSCONFDIR: .
   postgis_version: 3
   pg_major: 16
 
