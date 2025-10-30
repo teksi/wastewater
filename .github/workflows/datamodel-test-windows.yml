@@ -23,8 +23,10 @@ on:
 
 env:
   PGSYSCONFDIR: .
-  postgis_version: 3
-  pg_major: 16
+  POSTGIS_VERSION: 3
+  PG_MAJOR: 16
+  PYTHONUTF8: 1
+  PYTHONIOENCODING: utf-8
 
 jobs:
   datamodel-tests-windows:
@@ -41,7 +43,7 @@ jobs:
           cache: 'pip'
 
       # taken from https://github.com/npgsql/npgsql/blob/main/.github/workflows/build.yml
-      - name: Start PostgreSQL ${{ env.pg_major }} (Windows)
+      - name: Start PostgreSQL ${{ env.PG_MAJOR }} (Windows)
         shell: bash
         run: |
           # Find EnterpriseDB version number
@@ -49,7 +51,7 @@ jobs:
               \$global:progressPreference='silentlyContinue';
               Invoke-WebRequest -URI https://www.postgresql.org/applications-v2.xml |
                   Select-Object -ExpandProperty Content |
-                  Select-Xml -XPath '/applications/application[id=\"postgresql_${{ env.pg_major }}\" and platform=\"windows-x64\"]/version/text()' |
+                  Select-Xml -XPath '/applications/application[id=\"postgresql_${{ env.PG_MAJOR }}\" and platform=\"windows-x64\"]/version/text()' |
                   Select-Object -First 1 -ExpandProperty Node |
                   Select-Object -ExpandProperty Value")
 
@@ -60,13 +62,13 @@ jobs:
 
           # Find OSGEO version number
           OSGEO_VERSION=$(\
-            curl -Ls https://download.osgeo.org/postgis/windows/pg${{ env.pg_major }} |
-            sed -n 's/.*>postgis-bundle-pg${{ env.pg_major }}-\(${{ env.postgis_version }}.[0-9]*.[0-9]*\)x64.zip<.*/\1/p' |
+            curl -Ls https://download.osgeo.org/postgis/windows/pg${{ env.PG_MAJOR }} |
+            sed -n 's/.*>postgis-bundle-pg${{ env.PG_MAJOR }}-\(${{ env.POSTGIS_VERSION }}.[0-9]*.[0-9]*\)x64.zip<.*/\1/p' |
             tail -n 1)
           if [ -z "$OSGEO_VERSION" ]; then
               OSGEO_VERSION=$(\
-                curl -Ls https://download.osgeo.org/postgis/windows/pg${{ env.pg_major }}/archive |
-                sed -n 's/.*>postgis-bundle-pg${{ env.pg_major }}-\(${{ env.postgis_version }}.[0-9]*.[0-9]*\)x64.zip<.*/\1/p' |
+                curl -Ls https://download.osgeo.org/postgis/windows/pg${{ env.PG_MAJOR }}/archive |
+                sed -n 's/.*>postgis-bundle-pg${{ env.PG_MAJOR }}-\(${{ env.POSTGIS_VERSION }}.[0-9]*.[0-9]*\)x64.zip<.*/\1/p' |
                 tail -n 1)
               POSTGIS_PATH="archive/"
           else
@@ -75,8 +77,8 @@ jobs:
 
           # Install PostGIS
           echo "Installing PostGIS (version: ${OSGEO_VERSION})"
-          POSTGIS_FILE="postgis-bundle-pg${{ env.pg_major }}-${OSGEO_VERSION}x64"
-          curl -o postgis.zip -L https://download.osgeo.org/postgis/windows/pg${{ env.pg_major }}/${POSTGIS_PATH}${POSTGIS_FILE}.zip
+          POSTGIS_FILE="postgis-bundle-pg${{ env.PG_MAJOR }}-${OSGEO_VERSION}x64"
+          curl -o postgis.zip -L https://download.osgeo.org/postgis/windows/pg${{ env.PG_MAJOR }}/${POSTGIS_PATH}${POSTGIS_FILE}.zip
           unzip postgis.zip -d postgis
           cp -a postgis/$POSTGIS_FILE/. pgsql/
 
