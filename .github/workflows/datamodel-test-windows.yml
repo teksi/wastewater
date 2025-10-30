@@ -1,0 +1,112 @@
+name: 🐘 Datamodel | Tests (Windows)
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - main
+      - db-testing
+    paths:
+      - datamodel/**
+      - '.github/workflows/datamodel-test-windows.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - datamodel/**
+      - '.github/workflows/datamodel-test-windows.yml'
+  workflow_dispatch:
+
+
+jobs:
+  datamodel-tests-windows:
+    name: Run unit tests on datamodel (Windows)
+    runs-on: windows-2022
+
+    services:
+      postgres:
+        image: postgis/postgis:16-3.5
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Python dependencies
+        shell: bash
+        run: |
+          pip install --upgrade pip
+          pip install -r datamodel/requirements.txt
+          pip install -r datamodel/requirements-test.txt
+
+      - name: Configure PostgreSQL service
+        shell: bash
+        env:
+          PGPASSWORD: postgres
+        run: |
+          # Create pg_service.conf
+          mkdir -p "$APPDATA/postgresql"
+          cat > "$APPDATA/postgresql/pg_service.conf" << EOF
+          [postgres]
+          host=localhost
+          port=5432
+          dbname=postgres
+          user=postgres
+
+          [pg_tww]
+          host=localhost
+          port=5432
+          dbname=tww
+          user=postgres
+
+          [pg_tww_demo]
+          host=localhost
+          port=5432
+          dbname=tww_demo
+          user=postgres
+          EOF
+
+          # Verify PostgreSQL connection
+          psql -h localhost -U postgres -p 5432 -c "SELECT version();"
+
+      - name: Create database and install datamodel
+        shell: bash
+        env:
+          PGPASSWORD: postgres
+          PGSERVICEFILE: ${{ github.workspace }}/pg_service.conf
+        run: |
+          # Copy service file to workspace for pum
+          cp "$APPDATA/postgresql/pg_service.conf" ./pg_service.conf
+
+          # Create the database
+          psql -h localhost -U postgres -p 5432 -c "CREATE DATABASE tww;"
+
+          # Install datamodel with pum
+          pum -vvv -s pg_tww -d datamodel install -p SRID 2056 --roles --grant
+
+      - name: Run tests
+        shell: bash
+        env:
+          PGPASSWORD: postgres
+          PGSERVICEFILE: ${{ github.workspace }}/pg_service.conf
+          PYTEST_ADDOPTS: "--color=yes"
+        run: |
+          pytest datamodel
