@@ -111,9 +111,6 @@ jobs:
           PGPASSWORD: postgres
           PGSERVICEFILE: ${{ github.workspace }}/pg_service.conf
         run: |
-          # Copy service file to workspace for pum
-          cp "$APPDATA/postgresql/pg_service.conf" ./pg_service.conf
-
           # Create the database
           psql -U postgres -c "CREATE DATABASE tww;"
 
