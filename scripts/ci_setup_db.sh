@@ -9,9 +9,10 @@ else
     PGSERVICE_FILE="$PGSYSCONFDIR/pg_service.conf"
 fi
 
-pgsrv="pum_test"
-echo "Adding service ${pgsrv} to $PGSERVICE_FILE"
-printf "[${pgsrv}]\nhost=localhost\ndbname=${pgsrv}\nuser=postgres\npassword=postgres\n\n" >> "$PGSERVICE_FILE"
+SERVICE_NAME="pg_tww"
+DATABASE_NAME="tww"
+echo "Adding service ${SERVICE_NAME} to $PGSERVICE_FILE"
+printf "[${SERVICE_NAME}]\nhost=localhost\ndbname=${DATABASE_NAME}\nuser=postgres\npassword=postgres\n\n" >> "$PGSERVICE_FILE"
 
-psql -c "DROP DATABASE IF EXISTS ${pgsrv};" "service=${pgsrv} dbname=postgres"
-psql -c "CREATE DATABASE  ${pgsrv};" "service=${pgsrv} dbname=postgres"
+psql -c "DROP DATABASE IF EXISTS ${DATABASE_NAME};" "service=${SERVICE_NAME} dbname=postgres"
+psql -c "CREATE DATABASE  ${DATABASE_NAME};" "service=${SERVICE_NAME} dbname=postgres"

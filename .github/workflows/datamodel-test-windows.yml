@@ -20,7 +20,6 @@ on:
       - '.github/workflows/datamodel-test-windows.yml'
   workflow_dispatch:
 
-
 env:
   PGSYSCONFDIR: .
   POSTGIS_VERSION: 3
