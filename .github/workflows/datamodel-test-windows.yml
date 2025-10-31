@@ -122,4 +122,4 @@ jobs:
           PGSERVICEFILE: ${{ github.workspace }}/pg_service.conf
           PYTEST_ADDOPTS: "--color=yes"
         run: |
-          python -m pytest path/to/tests/test_module.py
+          python -m pytest datamodel/test/test_app_complete.py
