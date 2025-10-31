@@ -95,6 +95,22 @@ class Hook(HookBase):
         }
         self.execute("CREATE SCHEMA tww_app;")
         self.run_sql_files_in_folder(self.cwd / "sql_functions")
+        
+        sql_directories = [
+            "view/varia",
+            "view/catchment_area",
+            "view/gep_views",
+            "view/swmm_views",
+            "view/network",
+        ]
+
+        for directory in sql_directories:
+            abs_dir = self.cwd / directory
+            self.run_sql_files_in_folder(abs_dir)
+
+        # run post_all
+        self.run_sql_files_in_folder(self.cwd / "post_all")
+        
         self.app_modifications = [
             entry
             for entry in self.parameters.get("modification_repositories")
@@ -289,21 +305,6 @@ Running modification {modification.get('id')}
             SimpleJoins(
                 definition=self.load_yaml(self.abspath / yaml_path), connection=self._connection
             ).create()
-
-        sql_directories = [
-            "view/varia",
-            "view/catchment_area",
-            "view/gep_views",
-            "view/swmm_views",
-            "view/network",
-        ]
-
-        for directory in sql_directories:
-            abs_dir = self.cwd / directory
-            self.run_sql_files_in_folder(abs_dir)
-
-        # run post_all
-        self.run_sql_files_in_folder(self.cwd / "post_all")
 
     @staticmethod
     def load_yaml(file: Path) -> dict[str]:
