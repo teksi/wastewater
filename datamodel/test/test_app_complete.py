@@ -24,7 +24,8 @@ class TestAppComplete(unittest.TestCase, DbTestBase):
             "ERROR",
         ]:
             cur.execute(
-                "SELECT 1 FROM information_schema.views WHERE table_schema='tww_app' AND table_name=%s",
+                "SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace "
+                "WHERE n.nspname = 'tww_app' AND c.relname = %s AND c.relkind IN ('v','m')",
                 (view,),
             )
             assert cur.fetchone() is not None, f"View tww_app.{view} does not exist"
