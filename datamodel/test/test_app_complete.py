@@ -21,7 +21,6 @@ class TestAppComplete(unittest.TestCase, DbTestBase):
         for view in [
             "vw_network_node",
             "vw_file",
-            "ERROR",
         ]:
             cur.execute(
                 "SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace "
