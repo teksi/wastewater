@@ -95,7 +95,7 @@ class Hook(HookBase):
         }
         self.execute("CREATE SCHEMA tww_app;")
         self.run_sql_files_in_folder(self.cwd / "sql_functions")
-        
+
         sql_directories = [
             "view/varia",
             "view/catchment_area",
@@ -110,7 +110,7 @@ class Hook(HookBase):
 
         # run post_all
         self.run_sql_files_in_folder(self.cwd / "post_all")
-        
+
         self.app_modifications = [
             entry
             for entry in self.parameters.get("modification_repositories")
