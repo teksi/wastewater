@@ -1,0 +1,137 @@
+name: 🐘 Oqtopus windwos test
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - main
+      - db-testing
+    paths:
+      - datamodel/**
+      - '.github/workflows/datamodel-test-windows.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - datamodel/**
+      - '.github/workflows/datamodel-test-windows.yml'
+  workflow_dispatch:
+
+env:
+  PGSYSCONFDIR: .
+  POSTGIS_VERSION: 3
+  PG_MAJOR: 16
+  PYTHONUTF8: 1
+  PYTHONIOENCODING: utf-8
+
+jobs:
+  datamodel-tests-windows:
+    name: Run unit tests on datamodel (Windows)
+    runs-on: windows-2022
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      # taken from https://github.com/npgsql/npgsql/blob/main/.github/workflows/build.yml
+      - name: Start PostgreSQL ${{ env.PG_MAJOR }} (Windows)
+        shell: bash
+        run: |
+          # Find EnterpriseDB version number
+          EDB_VERSION=$(pwsh -c "
+              \$global:progressPreference='silentlyContinue';
+              Invoke-WebRequest -URI https://www.postgresql.org/applications-v2.xml |
+                  Select-Object -ExpandProperty Content |
+                  Select-Xml -XPath '/applications/application[id=\"postgresql_${{ env.PG_MAJOR }}\" and platform=\"windows-x64\"]/version/text()' |
+                  Select-Object -First 1 -ExpandProperty Node |
+                  Select-Object -ExpandProperty Value")
+
+          # Install PostgreSQL
+          echo "Installing PostgreSQL (version: ${EDB_VERSION})"
+          curl -o pgsql.zip -L https://get.enterprisedb.com/postgresql/postgresql-${EDB_VERSION}-windows-x64-binaries.zip
+          unzip pgsql.zip -x 'pgsql/include/**' 'pgsql/doc/**' 'pgsql/pgAdmin 4/**' 'pgsql/StackBuilder/**'
+
+          # Find OSGEO version number
+          OSGEO_VERSION=$(\
+            curl -Ls https://download.osgeo.org/postgis/windows/pg${{ env.PG_MAJOR }} |
+            sed -n 's/.*>postgis-bundle-pg${{ env.PG_MAJOR }}-\(${{ env.POSTGIS_VERSION }}.[0-9]*.[0-9]*\)x64.zip<.*/\1/p' |
+            tail -n 1)
+          if [ -z "$OSGEO_VERSION" ]; then
+              OSGEO_VERSION=$(\
+                curl -Ls https://download.osgeo.org/postgis/windows/pg${{ env.PG_MAJOR }}/archive |
+                sed -n 's/.*>postgis-bundle-pg${{ env.PG_MAJOR }}-\(${{ env.POSTGIS_VERSION }}.[0-9]*.[0-9]*\)x64.zip<.*/\1/p' |
+                tail -n 1)
+              POSTGIS_PATH="archive/"
+          else
+              POSTGIS_PATH=""
+          fi
+
+          # Install PostGIS
+          echo "Installing PostGIS (version: ${OSGEO_VERSION})"
+          POSTGIS_FILE="postgis-bundle-pg${{ env.PG_MAJOR }}-${OSGEO_VERSION}x64"
+          curl -o postgis.zip -L https://download.osgeo.org/postgis/windows/pg${{ env.PG_MAJOR }}/${POSTGIS_PATH}${POSTGIS_FILE}.zip
+          unzip postgis.zip -d postgis
+          cp -a postgis/$POSTGIS_FILE/. pgsql/
+
+          # Start PostgreSQL
+          # Start PostgreSQL
+          pgsql/bin/initdb -D pgsql/PGDATA -E UTF8 -U postgres
+          pgsql/bin/pg_ctl -D pgsql/PGDATA -l logfile start
+
+          # Create npgsql_tests user with md5 password 'npgsql_tests'
+          pgsql/bin/psql -U postgres -c "CREATE ROLE npgsql_tests SUPERUSER LOGIN PASSWORD 'md5adf74603a5772843f53e812f03dacb02'"
+
+      - name: Install Python dependencies
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r datamodel/requirements.txt
+          python -m pip install -r datamodel/requirements-test.txt
+      # see https://github.community/t5/GitHub-Actions/Append-PATH-on-Windows/m-p/42873/highlight/true#M5155
+      - name: Add psql/bin path
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+        run: echo "##[add-path].\pgsql\bin"
+
+      - name: Setup db
+        shell: bash
+        run: ./scripts/ci_setup_db.sh
+
+      - name: Create database and install datamodel
+        shell: python
+        env:
+          PGPASSWORD: postgres
+          PGSERVICEFILE: ${{ github.workspace }}/pg_service.conf
+        run: |
+          with psycopg.connect(f"service={args.pg_service}") as conn:
+            from pum.upgrader import Upgrader, PumConfig
+            config = PumConfig()
+            upgrader = Upgrader(config=config)
+            parameters = {
+                "SRID": 2056,
+            }
+            upgrader.install(
+                parameters=parameters,
+                connection=conn,
+                roles=False,
+                grant=False,
+                beta_testing=False,
+            )
+
+
+      - name: Run tests
+        shell: bash
+        env:
+          PGPASSWORD: postgres
+          PGSERVICEFILE: ${{ github.workspace }}/pg_service.conf
+          PYTEST_ADDOPTS: "--color=yes"
+        run: |
+          python -m pytest datamodel/test/test_app_complete.py
