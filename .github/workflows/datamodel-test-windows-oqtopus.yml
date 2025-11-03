@@ -113,7 +113,7 @@ jobs:
         run: |
           import psycopg
           from pum.upgrader import Upgrader, PumConfig
-          with psycopg.connect(f"service={args.pg_service}") as conn:
+          with psycopg.connect(f"service=pg_tww") as conn:
             config = PumConfig()
             upgrader = Upgrader(config=config)
             parameters = {
