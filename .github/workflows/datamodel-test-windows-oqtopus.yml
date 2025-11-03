@@ -111,8 +111,9 @@ jobs:
           PGPASSWORD: postgres
           PGSERVICEFILE: ${{ github.workspace }}/pg_service.conf
         run: |
+          import psycopg
+          from pum.upgrader import Upgrader, PumConfig
           with psycopg.connect(f"service={args.pg_service}") as conn:
-            from pum.upgrader import Upgrader, PumConfig
             config = PumConfig()
             upgrader = Upgrader(config=config)
             parameters = {
