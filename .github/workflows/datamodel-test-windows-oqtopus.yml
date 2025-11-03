@@ -117,11 +117,7 @@ jobs:
           with psycopg.connect(f"service=pg_tww") as conn:
             config = PumConfig('.')
             upgrader = Upgrader(config=config)
-            parameters = {
-                "SRID": 2056,
-            }
             upgrader.install(
-                parameters=parameters,
                 connection=conn,
                 roles=False,
                 grant=False,
