@@ -68,7 +68,7 @@ jobs:
           make html
           touch build/html/.nojekyll
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: documentation
           path: docs/build/html
