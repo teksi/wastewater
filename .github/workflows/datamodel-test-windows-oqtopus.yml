@@ -107,6 +107,7 @@ jobs:
 
       - name: Create database and install datamodel
         shell: python
+        working-directory: ./datamodel
         env:
           PGPASSWORD: postgres
           PGSERVICEFILE: ${{ github.workspace }}/pg_service.conf
