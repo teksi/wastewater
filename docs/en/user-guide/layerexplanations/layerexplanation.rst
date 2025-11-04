@@ -107,3 +107,46 @@ Catchment ``tww_od.catchment_area``
 ------------------------------------
 
 Main layer to digitize and edit the catchment_areas.
+
+
+Disposal ``tww_od.disposal``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Information on the disposal of wastewater from building complexes (treatment/sludge disposal)
+
+
+Building_group_BAUGWR ``tww_od.building_group_baugwr``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Intermediate table for resolving the n-n relationship between building groups and building details (in BAU/GWR)
+
+re_building_group_disposal ``tww_od.re_building_group_disposal``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Relationship table for n:m relationship between building_group and disposal
+
+
+Log card
+--------
+
+Log card ``tww_od.vw_tww.log_card``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+xxx
+
+Catchment area totals ``tww_od.catchment_area_totals``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+xxx
+
+
+Catchment area totals aggregated ``tww_od.vw_catchment_area_totals_aggregated``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+xxx
+
+
+hydraulic char data ``tww_od.hydraulic_char_data``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+xxx
