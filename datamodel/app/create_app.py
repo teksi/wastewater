@@ -144,7 +144,7 @@ Running modification {modification.get('id')}
                 view_schema="tww_app",
                 pkey_default_value=True,
                 inner_defaults={"identifier": "obj_id"},
-            ).create()
+            ).create(commit=False)
 
         for key in self.multiple_inherintances:
             MultipleInheritance(
@@ -152,7 +152,7 @@ Running modification {modification.get('id')}
                 definition=self.load_yaml(self.abspath / self.multiple_inherintances[key]),
                 drop=True,
                 variables=variables_pirogue,
-            ).create()
+            ).create(commit=False)
 
         for key, value in self.extra_definitions.items():
             if value:
@@ -296,7 +296,7 @@ Running modification {modification.get('id')}
         for _, yaml_path in self.simple_joins_yaml.items():
             SimpleJoins(
                 definition=self.load_yaml(self.abspath / yaml_path), connection=self._connection
-            ).create()
+            ).create(commit=False)
 
         sql_directories = [
             "view/varia",

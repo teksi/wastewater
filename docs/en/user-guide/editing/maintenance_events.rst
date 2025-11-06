@@ -68,6 +68,10 @@ Editing
  * Do as described in adding - but just edit existing maintenance events.
  * Or edit the **vw_tww_maintenance_event** table (in layer group **inspection**)
 
+Mark as outdated
+----------------
+
+In order to use maintenance events and files efficiently, they can be flagged as outdated using a TEKSI-specific extension of the datamodel, namely a true/false value named ``tww_outdated``.
 
 Multi Edit
 -----------------------------------------------------------

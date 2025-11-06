@@ -28,8 +28,8 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
 
     tr = partial(QCoreApplication.translate, "ExtractlabelsInterlisAlgorithm")
     AVAILABLE_SCALE_PIPELINE_REGISTRY_1_1000 = "Leitungskataster"
-    AVAILABLE_SCALE_NETWORK_PLAN_1_250 = "Werkplan"
-    AVAILABLE_SCALE_NETWORK_PLAN_1_500 = "Werkplan"
+    AVAILABLE_SCALE_NETWORK_PLAN_1_250 = "Werkplan.250"  # Defined with subvalue - will be replaced for xtf output back to Werkplan, only choose either or
+    AVAILABLE_SCALE_NETWORK_PLAN_1_500 = "Werkplan.500"  # Defined with subvalue - will be replaced for xtf output back to Werkplan, only choose either or
     AVAILABLE_SCALE_OVERVIEWMAP_1_10000 = "Uebersichtsplan.UeP10"
     AVAILABLE_SCALE_OVERVIEWMAP_1_5000 = "Uebersichtsplan.UeP5"
     AVAILABLE_SCALE_OVERVIEWMAP_1_2000 = "Uebersichtsplan.UeP2"
@@ -40,8 +40,16 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
             tr("Leitungskataster"),
             1000,
         ),  # TODO: check scale ?
-        (AVAILABLE_SCALE_NETWORK_PLAN_1_250, tr("Werkplan"), 250),  # TODO: check scale ?
-        (AVAILABLE_SCALE_NETWORK_PLAN_1_500, tr("Werkplan"), 500),  # TODO: check scale ?
+        (
+            AVAILABLE_SCALE_NETWORK_PLAN_1_250,
+            tr("Werkplan 1:250"),
+            250,
+        ),  # Option with scale 1:250 labels
+        (
+            AVAILABLE_SCALE_NETWORK_PLAN_1_500,
+            tr("Werkplan 1:500"),
+            500,
+        ),  # Option with scale 1:500 labels
         (AVAILABLE_SCALE_OVERVIEWMAP_1_10000, tr("Uebersichtsplan 1:10000"), 10000),
         (AVAILABLE_SCALE_OVERVIEWMAP_1_5000, tr("Uebersichtsplan 1:5000"), 5000),
         (AVAILABLE_SCALE_OVERVIEWMAP_1_2000, tr("Uebersichtsplan 1:2000"), 2000),
@@ -238,7 +246,7 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
         if catchment_layer:
             catchment_feats = catchment_layer.getFeatures()
             rowid_to_obj_id.update(
-                {"catchment_area": {f.id(): f.attribute("obj_id") for f in catchment_feats}}
+                {"vw_tww_catchment_area": {f.id(): f.attribute("obj_id") for f in catchment_feats}}
             )
         if building_group_layer:
             building_group_feats = building_group_layer.getFeatures()
@@ -309,7 +317,9 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
             if catchment_layer:
                 lyr_name_to_key.update(
                     {
-                        TwwLayerManager.layer("catchment_area").name(): "catchment_area",
+                        TwwLayerManager.layer(
+                            "vw_tww_catchment_area"
+                        ).name(): "vw_tww_catchment_area",
                     }
                 )
             if building_group_layer:
