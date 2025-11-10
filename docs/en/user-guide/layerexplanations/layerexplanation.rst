@@ -109,6 +109,24 @@ Catchment ``tww_od.catchment_area``
 Main layer to digitize and edit the catchment_areas.
 
 
+Rural
+--------
+
+This topic covers the classes related to waste water disposal in rural areas that are located outside the sewerage area.
+
+
+Building group ``tww_od.building_group``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Buildings or groups of buildings in rural areas that are located outside the sewerage area, as well as buildings belonging to agricultural businesses (including those within the sewerage area)
+
+
+Farm ``tww_od.farm``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Agricultural business (farm): Must also be specified within the sewerage area (i.e. even if the business is located within the sub-catchment areas of the General Drainage Plan (GEP)).
+
+
 Disposal ``tww_od.disposal``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -132,21 +150,24 @@ Log card
 Log card ``tww_od.vw_tww.log_card``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-xxx
+Log card for special structures: Hydraulically specialized wastewater structures, e.g., storm water basins, storm water overflows, or pumping stations. Most special structures are also specialized structures. However, special structures such as separation structures or small pumping stations are often designed as standard shafts.
 
 Catchment area totals ``tww_od.catchment_area_totals``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-xxx
+Information on the attached catchment area (total), water volumes, and discharge point of the storm overflow or storm overflow basin. Direct catchment area only needs to be filled in if the discharge is activated during the design event or if it is unknown whether it will be activated. All information must be provided for both the actual and planned status.
 
 
 Catchment area totals aggregated ``tww_od.vw_catchment_area_totals_aggregated``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-xxx
+This view:
+1. refreshes all materialised views in tww_app when clicking the refresh sql button
+2. creates catchment_area view with explicit population and reduced area fields
 
 
-hydraulic char data ``tww_od.hydraulic_char_data``
+Hydraulic char data ``tww_od.hydraulic_char_data``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-xxx
+Aggregated hydraulic characteristics
+
