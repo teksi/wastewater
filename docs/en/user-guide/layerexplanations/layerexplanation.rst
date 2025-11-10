@@ -170,4 +170,3 @@ Hydraulic char data ``tww_od.hydraulic_char_data``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Aggregated hydraulic characteristics
-
