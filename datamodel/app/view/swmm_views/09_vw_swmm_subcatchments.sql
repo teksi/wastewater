@@ -41,7 +41,7 @@ SELECT
   END as Width, -- Width of overland flow path estimation
   0.5 as percSlope, -- default value
   0 as CurbLen, -- default value
-  0::varchar as SnowPack, -- default value
+  'default_snow_pack'::varchar as SnowPack, -- default value
   CASE
 		WHEN fk_wastewater_networkelement_ww_current is not null
 		THEN
