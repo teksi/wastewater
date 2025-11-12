@@ -2,7 +2,7 @@ from typing import Any
 
 from ...utils.database_utils import DatabaseUtils
 from .. import config
-from .various import logger, InterlisImporterExporterError
+from .various import InterlisImporterExporterError, logger
 
 
 class TWWExportChecker:
