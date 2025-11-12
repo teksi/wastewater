@@ -3,8 +3,8 @@ import os
 import tempfile
 from pathlib import Path
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QMessageBox
+from PyQt.QtCore import Qt
+from PyQt.QtWidgets import QApplication, QMessageBox
 
 from ..utils.database_utils import DatabaseUtils
 from . import config

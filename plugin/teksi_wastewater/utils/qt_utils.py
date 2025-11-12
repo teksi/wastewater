@@ -16,7 +16,7 @@
  ***************************************************************************/
 """
 
-from PyQt5.QtWidgets import QApplication
+from PyQt.QtWidgets import QApplication
 
 
 class OverrideCursor:

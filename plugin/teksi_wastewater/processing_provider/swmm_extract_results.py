@@ -17,7 +17,7 @@
  ***************************************************************************/
 """
 
-from PyQt5.QtCore import QVariant
+from PyQt.QtCore import QVariant
 from qgis.core import (
     QgsFeature,
     QgsFeatureSink,
