@@ -90,7 +90,7 @@ def vw_tww_damage_channel(
             WHEN base.direction = 'downstream'::text THEN LEAST(base.channel_distance / st_length(base.ch_progression2d_geometry), 1)
             WHEN base.direction = 'upstream'::text THEN 1 - LEAST(base.channel_distance / st_length(base.ch_progression2d_geometry), 1)
             ELSE NULL
-        END) AS situation2d_geometry,
+        END) AS situation2d_geometry
         , base.direction
         , base.tww_is_primary
         , damage_pictures.pics[1] as picture_1
