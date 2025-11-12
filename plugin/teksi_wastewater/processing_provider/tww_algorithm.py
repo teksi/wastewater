@@ -17,7 +17,7 @@
  ***************************************************************************/
 """
 
-from PyQt5.QtCore import QCoreApplication
+from PyQt.QtCore import QCoreApplication
 from qgis.core import QgsProcessingAlgorithm
 
 __author__ = "Matthias Kuhn"
