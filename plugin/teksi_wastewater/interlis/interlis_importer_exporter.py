@@ -27,7 +27,7 @@ from .interlis_model_mapping.model_tww import ModelTwwSys, ModelTwwVl
 from .interlis_model_mapping.model_tww_ag6496 import ModelTwwAG6496
 from .interlis_model_mapping.model_tww_od import ModelTwwOd
 from .utils.ili2db import InterlisTools
-from .utils.interlis_export_checker import TWWExportChecker
+from .utils.interlis_integrity_checker import TWWIntegrityChecker
 from .utils.various import (
     CmdException,
     InterlisImporterExporterError,
@@ -194,7 +194,8 @@ class InterlisImporterExporter:
             self._import_update_main_cover_and_refresh_mat_views()
 
             # Validate subclasses after import
-            self._check_subclass_counts(raise_err=True)
+            integrityChecker = TWWIntegrityChecker()
+            results = integrityChecker._check_subclass_counts(raise_err=True)
 
             # Update organisations
             self._progress_done(96, "Set organisations filter...")
@@ -203,6 +204,13 @@ class InterlisImporterExporter:
             # Reenable symbology triggers
             self._progress_done(97, "Reenable symbology and modification triggers...")
             self._import_enable_symbology_and_modification_triggers()
+
+            if results["failed"]:
+                raise InterlisImporterExporterError(
+                    "Unbalanced Subclass count found after import. Check logs for more info.",
+                    results["failed_checks"],
+                    None,
+                )
 
         except Exception as exception:
             # Make sure to re-enable triggers in case an exception occourred
@@ -334,8 +342,8 @@ class InterlisImporterExporter:
             logger.info(f"Debug.print export_model '{export_models[0]}'")
 
         # go thru all available checks and register if check failed or not.
-        exportChecker = TWWExportChecker(
-            export_models=export_models, limit_to_selection=limit_to_selection
+        exportChecker = TWWIntegrityChecker(
+            models=export_models, limit_to_selection=limit_to_selection
         )
         results = exportChecker.run_integrity_checks(limit_to_selection)
         if not results["failed"]:

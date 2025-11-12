@@ -5,10 +5,10 @@ from .. import config
 from .various import InterlisImporterExporterError, logger
 
 
-class TWWExportChecker:
-    def __init__(self, export_models=None, limit_to_selection=False):
+class TWWIntegrityChecker:
+    def __init__(self, models=None, limit_to_selection=False):
         self.limit_to_selection = limit_to_selection
-        self.export_models = export_models
+        self.models = models
 
     def run_integrity_checks(self):
         checks = [
@@ -319,7 +319,7 @@ class TWWExportChecker:
         check_classes = [
             ("organisation"),
         ]
-        if config.MODEL_NAME_VSA_KEK in self.export_models:
+        if config.MODEL_NAME_VSA_KEK in self.models:
             check_classes.extend(
                 [
                     # VSA-KEK
@@ -328,7 +328,7 @@ class TWWExportChecker:
                     ("maintenance_event"),
                 ]
             )
-        if config.MODEL_NAME_SIA405_ABWASSER in self.export_models:
+        if config.MODEL_NAME_SIA405_ABWASSER in self.models:
             check_classes.extend(
                 [
                     ("wastewater_structure"),
@@ -338,7 +338,7 @@ class TWWExportChecker:
                     ("pipe_profile"),
                 ]
             )
-        if config.MODEL_NAME_DSS in self.export_models:
+        if config.MODEL_NAME_DSS in self.models:
             check_classes.extend(
                 [
                     # VSA-DSS
@@ -381,14 +381,14 @@ class TWWExportChecker:
                     ("zone"),
                 ]
             )
-        if config.MODEL_NAME_AG64 in self.export_models:
+        if config.MODEL_NAME_AG64 in self.models:
             check_classes.extend(
                 [
                     ("wastewater_networkelement"),
                     ("overflow"),
                 ]
             )
-        if config.MODEL_NAME_AG96 in self.export_models:
+        if config.MODEL_NAME_AG96 in self.models:
             check_classes.extend(
                 [
                     ("wastewater_networkelement"),
@@ -412,7 +412,7 @@ class TWWExportChecker:
             config.MODEL_NAME_AG64,
             config.MODEL_NAME_AG96,
         }
-        if any(m in check_models for m in self.export_models):
+        if any(m in check_models for m in self.models):
             check_classes = [
                 # SIA405 Abwasser
                 ("wastewater_structure"),
@@ -429,7 +429,7 @@ class TWWExportChecker:
             config.MODEL_NAME_AG64,
             config.MODEL_NAME_AG96,
         }
-        if any(m in check_models for m in self.export_models):
+        if any(m in check_models for m in self.models):
             check_classes = [
                 # SIA405 Abwasser
                 ("wastewater_structure"),
@@ -441,7 +441,7 @@ class TWWExportChecker:
         Check if MANDATORY fk_dataowner is Null
         """
         check_classes = []
-        if config.MODEL_NAME_VSA_KEK in self.export_models:
+        if config.MODEL_NAME_VSA_KEK in self.models:
             check_classes.extend(
                 [
                     ("damage"),
@@ -450,7 +450,7 @@ class TWWExportChecker:
                     ("maintenance_event"),
                 ]
             )
-        if config.MODEL_NAME_SIA405_ABWASSER in self.export_models:
+        if config.MODEL_NAME_SIA405_ABWASSER in self.models:
             check_classes.extend(
                 [
                     ("wastewater_structure"),
@@ -460,7 +460,7 @@ class TWWExportChecker:
                     ("pipe_profile"),
                 ]
             )
-        if config.MODEL_NAME_DSS in self.export_models:
+        if config.MODEL_NAME_DSS in self.models:
             check_classes.extend(
                 [
                     ("building_group"),
@@ -516,14 +516,14 @@ class TWWExportChecker:
                     ("sia405pt_protection_tube"),
                 ]
             )
-        if config.MODEL_NAME_AG64 in self.export_models:
+        if config.MODEL_NAME_AG64 in self.models:
             check_classes.extend(
                 [
                     ("wastewater_networkelement"),
                     ("overflow"),
                 ]
             )
-        if config.MODEL_NAME_AG96 in self.export_models:
+        if config.MODEL_NAME_AG96 in self.models:
             check_classes.extend(
                 [
                     ("wastewater_networkelement"),
@@ -542,7 +542,7 @@ class TWWExportChecker:
         Check if MANDATORY fk_provider is Null
         """
         check_classes = []
-        if config.MODEL_NAME_VSA_KEK in self.export_models:
+        if config.MODEL_NAME_VSA_KEK in self.models:
             check_classes.extend(
                 [
                     # VSA-KEK
@@ -552,7 +552,7 @@ class TWWExportChecker:
                     ("maintenance_event"),
                 ]
             )
-        if config.MODEL_NAME_SIA405_ABWASSER in self.export_models:
+        if config.MODEL_NAME_SIA405_ABWASSER in self.models:
             check_classes.extend(
                 [
                     # take out for DSS 2020
@@ -564,7 +564,7 @@ class TWWExportChecker:
                     ("pipe_profile"),
                 ]
             )
-        if config.MODEL_NAME_DSS in self.export_models:
+        if config.MODEL_NAME_DSS in self.models:
             check_classes.extend(
                 [
                     # new 2020
@@ -616,7 +616,7 @@ class TWWExportChecker:
                     ("zone"),
                 ]
             )
-        if config.MODEL_NAME_CABLE in self.export_models:
+        if config.MODEL_NAME_CABLE in self.models:
             check_classes.extend(
                 [
                     # sia405cc
@@ -624,20 +624,20 @@ class TWWExportChecker:
                     ("sia405cc_cable_point"),
                 ]
             )
-        if config.MODEL_NAME_PROTECTION_TUBE in self.export_models:
+        if config.MODEL_NAME_PROTECTION_TUBE in self.models:
             check_classes.extend(
                 [
                     ("sia405pt_protection_tube"),
                 ]
             )
-        if config.MODEL_NAME_AG64 in self.export_models:
+        if config.MODEL_NAME_AG64 in self.models:
             check_classes.extend(
                 [
                     ("wastewater_networkelement"),
                     ("overflow"),
                 ]
             )
-        if config.MODEL_NAME_AG96 in self.export_models:
+        if config.MODEL_NAME_AG96 in self.models:
             check_classes.extend(
                 [
                     ("wastewater_networkelement"),
@@ -656,7 +656,7 @@ class TWWExportChecker:
         Check if MANDATORY fk_wastewater_structure is Null
         """
         check_classes = []
-        if config.MODEL_NAME_SIA405_ABWASSER in self.export_models:
+        if config.MODEL_NAME_SIA405_ABWASSER in self.models:
             check_classes.extend(
                 [
                     ("structure_part"),
@@ -669,7 +669,7 @@ class TWWExportChecker:
         Check if MANDATORY fk_wastewater_node is Null
         """
         check_classes = []
-        if config.MODEL_NAME_DSS in self.export_models:
+        if config.MODEL_NAME_DSS in self.models:
             check_classes.extend(
                 [
                     ("hydraulic_char_data"),
@@ -684,7 +684,7 @@ class TWWExportChecker:
         Check if MANDATORY fk_responsible_entity is Null
         """
         check_classes = []
-        if config.MODEL_NAME_DSS in self.export_models:
+        if config.MODEL_NAME_DSS in self.models:
             check_classes.extend(
                 [
                     ("measure"),
@@ -697,7 +697,7 @@ class TWWExportChecker:
         Check if MANDATORY fk_responsible_start is Null
         """
         check_classes = []
-        if config.MODEL_NAME_DSS in self.export_models:
+        if config.MODEL_NAME_DSS in self.models:
             check_classes.extend(
                 [
                     ("measure"),
@@ -710,7 +710,7 @@ class TWWExportChecker:
         Check if MANDATORY fk_discharge_point is Null
         """
         check_classes = []
-        if config.MODEL_NAME_DSS in self.export_models:
+        if config.MODEL_NAME_DSS in self.models:
             check_classes.extend(
                 [
                     ("catchment_area_totals"),
@@ -723,7 +723,7 @@ class TWWExportChecker:
         Check if MANDATORY fk_hydraulic_char_data is Null
         """
         check_classes = []
-        if config.MODEL_NAME_DSS in self.export_models:
+        if config.MODEL_NAME_DSS in self.models:
             check_classes.extend(
                 [
                     ("catchment_area_totals"),
@@ -736,7 +736,7 @@ class TWWExportChecker:
         Check if MANDATORY fk_building_group is Null
         """
         check_classes = []
-        if config.MODEL_NAME_DSS in self.export_models:
+        if config.MODEL_NAME_DSS in self.models:
             check_classes.extend(
                 [
                     ("building_group_baugwr"),
@@ -749,7 +749,7 @@ class TWWExportChecker:
         Check if MANDATORY fk_reach is Null
         """
         check_classes = []
-        if config.MODEL_NAME_SIA405_ABWASSER in self.export_models:
+        if config.MODEL_NAME_SIA405_ABWASSER in self.models:
             check_classes.extend(
                 [
                     ("reach_progression_alternative"),
@@ -767,7 +767,7 @@ class TWWExportChecker:
             config.MODEL_NAME_AG64,
             config.MODEL_NAME_AG96,
         }
-        if any(m in check_models for m in self.export_models):
+        if any(m in check_models for m in self.models):
             check_classes = [
                 ("reach"),
             ]
@@ -783,7 +783,7 @@ class TWWExportChecker:
             config.MODEL_NAME_AG64,
             config.MODEL_NAME_AG96,
         }
-        if any(m in check_models for m in self.export_models):
+        if any(m in check_models for m in self.models):
             check_classes = [
                 ("reach"),
             ]
@@ -794,7 +794,7 @@ class TWWExportChecker:
         Check if MANDATORY fk_pwwf_wastewater_node is Null
         """
         check_classes = []
-        if config.MODEL_NAME_DSS in self.export_models:
+        if config.MODEL_NAME_DSS in self.models:
             check_classes.extend(
                 [
                     ("log_card"),
@@ -807,7 +807,7 @@ class TWWExportChecker:
         Check if MANDATORY fk_catchment_area is Null
         """
         check_classes = []
-        if config.MODEL_NAME_DSS in self.export_models:
+        if config.MODEL_NAME_DSS in self.models:
             check_classes.extend(
                 [
                     ("surface_runoff_parameters"),
