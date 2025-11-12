@@ -12,6 +12,17 @@ from ...utils.plugin_utils import logger
 class CmdException(BaseException):
     pass
 
+class InterlisImporterExporterStopped(Exception):
+    pass
+
+
+class InterlisImporterExporterError(Exception):
+    def __init__(self, error, additional_text, log_path):
+        self.error = error
+        self.additional_text = additional_text
+        self.log_path = log_path
+
+
 
 def execute_subprocess(command, check=True, output_content=False):
     command_masked_pwd = re.sub(r"(--dbpwd)\s\"[\w\.*#?!@$%^&-]+\"", r'\1 "[PASSWORD]"', command)
