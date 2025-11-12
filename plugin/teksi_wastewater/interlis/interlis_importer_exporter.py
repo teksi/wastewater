@@ -13,6 +13,21 @@ from .interlis_model_mapping.interlis_exporter_to_intermediate_schema import (
 from .interlis_model_mapping.interlis_importer_to_intermediate_schema import (
     InterlisImporterToIntermediateSchema,
 )
+
+from .interlis_model_mapping.model_interlis_ag64 import ModelInterlisAG64
+from .interlis_model_mapping.model_interlis_ag96 import ModelInterlisAG96
+from .interlis_model_mapping.model_interlis_dss import ModelInterlisDss
+from .interlis_model_mapping.model_interlis_sia405_abwasser import (
+    ModelInterlisSia405Abwasser,
+)
+from .interlis_model_mapping.model_interlis_sia405_base_abwasser import (
+    ModelInterlisSia405BaseAbwasser,
+)
+from .interlis_model_mapping.model_interlis_vsa_kek import ModelInterlisVsaKek
+from .interlis_model_mapping.model_tww import ModelTwwSys, ModelTwwVl
+from .interlis_model_mapping.model_tww_ag6496 import ModelTwwAG6496
+from .interlis_model_mapping.model_tww_od import ModelTwwOd
+
 from .utils.ili2db import InterlisTools
 from .utils.interlis_export_checker import TWWExportChecker
 from .utils.various import (
@@ -42,6 +57,41 @@ class InterlisImporterExporter:
         self.srid = 2056
         self.current_progress = 0
 
+    def _init_model_classes(self, model):
+        ModelInterlis = None
+        if model == config.MODEL_NAME_AG96:
+            ModelInterlis = ModelInterlisAG96
+        elif model == config.MODEL_NAME_AG64:
+            ModelInterlis = ModelInterlisAG64
+        elif model == config.MODEL_NAME_SIA405_BASE_ABWASSER:
+            ModelInterlis = ModelInterlisSia405BaseAbwasser
+        elif model == config.MODEL_NAME_SIA405_ABWASSER:
+            ModelInterlis = ModelInterlisSia405Abwasser
+        elif model == config.MODEL_NAME_DSS:
+            ModelInterlis = ModelInterlisDss
+        elif model == config.MODEL_NAME_VSA_KEK:
+            ModelInterlis = ModelInterlisVsaKek
+        self.model_classes_interlis = ModelInterlis().classes()
+        self._progress_done(self.current_progress + 1)
+
+        if self.model_classes_tww_od is None:
+            self.model_classes_tww_od = ModelTwwOd().classes()
+            self._progress_done(self.current_progress + 1)
+
+        if self.model_classes_tww_vl is None:
+            self.model_classes_tww_vl = ModelTwwVl().classes()
+            self._progress_done(self.current_progress + 1)
+
+        if self.model_classes_tww_sys is None:
+            self.model_classes_tww_sys = ModelTwwSys().classes()
+            self._progress_done(self.current_progress + 1)
+
+        if (
+            model == config.MODEL_NAME_AG96 or model == config.MODEL_NAME_AG64
+        ) and self.model_classes_tww_app is None:
+            self.model_classes_tww_app = ModelTwwAG6496().classes()
+            self._progress_done(self.current_progress + 1)
+    
     def interlis_import(
         self,
         xtf_file_input,
