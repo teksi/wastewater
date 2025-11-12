@@ -39,7 +39,6 @@ The project is maintained by the [TEKSI community](https://www.teksi.ch)
 ## Website
 You can discover more about [TEKSI](https://www.teksi.ch)
 
-
 TEKSI Wastewater [Release 2024.0](https://github.com/teksi/wastewater/releases) is now available!
 
 Migration path from QGEP to TEKSI Wastewater is also established. <!---  // skip-keyword-check -->
