@@ -89,7 +89,10 @@ class TWWIntegrityChecker:
                     "dryweather_downspout",
                 ],
             ),
-            ("overflow", ["pump", "leapingweir", "prank_weir"]),
+            ("overflow", ["pump", "leapingweir", "prank_weir"]),]
+        if config.MODEL_NAME_VSA_KEK in self.models:
+            checks.extend(
+                [
             (
                 "maintenance_event",
                 ["maintenance", "examination", "bio_ecol_assessment"],
@@ -97,7 +100,9 @@ class TWWIntegrityChecker:
             (
                 "damage",
                 ["damage_channel", "damage_manhole"],
-            ),
+            ),])
+        if config.MODEL_NAME_VSA_DSS in self.models:
+            checks.extend([
             (
                 "connection_object",
                 ["fountain", "individual_surface", "building", "reservoir"],
@@ -106,7 +111,7 @@ class TWWIntegrityChecker:
                 "zone",
                 ["infiltration_zone", "drainage_system"],
             ),
-        ]
+        ])
 
         for parent, children in checks:
             check_failed, msg, count = self._check_subclass_count(
@@ -450,7 +455,11 @@ class TWWIntegrityChecker:
                     ("maintenance_event"),
                 ]
             )
-        if config.MODEL_NAME_SIA405_ABWASSER in self.models:
+        check_models = {
+            config.MODEL_NAME_SIA405_ABWASSER,
+            config.MODEL_NAME_DSS,
+        }
+        if any(m in check_models for m in self.models):
             check_classes.extend(
                 [
                     ("wastewater_structure"),
@@ -552,7 +561,11 @@ class TWWIntegrityChecker:
                     ("maintenance_event"),
                 ]
             )
-        if config.MODEL_NAME_SIA405_ABWASSER in self.models:
+        check_models = {
+            config.MODEL_NAME_SIA405_ABWASSER,
+            config.MODEL_NAME_DSS,
+        }
+        if any(m in check_models for m in self.models):
             check_classes.extend(
                 [
                     # take out for DSS 2020
@@ -656,7 +669,11 @@ class TWWIntegrityChecker:
         Check if MANDATORY fk_wastewater_structure is Null
         """
         check_classes = []
-        if config.MODEL_NAME_SIA405_ABWASSER in self.models:
+        check_models = {
+            config.MODEL_NAME_SIA405_ABWASSER,
+            config.MODEL_NAME_DSS,
+        }
+        if any(m in check_models for m in self.models):
             check_classes.extend(
                 [
                     ("structure_part"),
@@ -749,7 +766,11 @@ class TWWIntegrityChecker:
         Check if MANDATORY fk_reach is Null
         """
         check_classes = []
-        if config.MODEL_NAME_SIA405_ABWASSER in self.models:
+        check_models = {
+            config.MODEL_NAME_SIA405_ABWASSER,
+            config.MODEL_NAME_DSS,
+        }
+        if any(m in check_models for m in self.models):
             check_classes.extend(
                 [
                     ("reach_progression_alternative"),
