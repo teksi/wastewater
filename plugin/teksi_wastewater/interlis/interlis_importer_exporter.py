@@ -314,9 +314,11 @@ class InterlisImporterExporter:
 
         if srid:
             self.srid = srid
-
+        exportChecker = TWWIntegrityChecker(
+            models=export_models, limit_to_selection=limit_to_selection
+        )
         if export_models[0] == "SIA405_Base_Abwasser_1_LV95":
-            failed, errormsg, _ = self._check_organisation_tww_local_extension_count()
+            failed, errormsg, _ = exportChecker._check_organisation_tww_local_extension_count()
             if failed:
                 logger.info(
                     "INTERLIS export has been stopped as there have been no organisations for exporting!"
@@ -335,9 +337,7 @@ class InterlisImporterExporter:
             logger.info(f"Debug.print export_model '{export_models[0]}'")
 
         # go thru all available checks and register if check failed or not.
-        exportChecker = TWWIntegrityChecker(
-            models=export_models, limit_to_selection=limit_to_selection
-        )
+
         results = exportChecker.run_integrity_checks(limit_to_selection)
         if not results["failed"]:
             logger.info(f"All checks passed! ({results['stats']['ok']} OK)")
