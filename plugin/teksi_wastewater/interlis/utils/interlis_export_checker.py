@@ -1,16 +1,16 @@
 from typing import Any
 
+from various import InterlisImporterExporterError, logger
+
 from ...utils.database_utils import DatabaseUtils
 from .. import config
-
-from various import logger, InterlisImporterExporterError
 
 
 class TWWExportChecker:
     def __init__(self, export_models=None, limit_to_selection=False):
         self.limit_to_selection = limit_to_selection
-        self.export_models=export_models
-    
+        self.export_models = export_models
+
     def run_integrity_checks(self):
         checks = [
             ("subclass_counts", self._check_subclass_counts),
@@ -123,9 +123,7 @@ class TWWExportChecker:
             raise InterlisImporterExporterError("Subclass Count error", error_message, None)
         return (failed, error_message, total_issue_count)
 
-    def _check_subclass_count(
-        self, schema_name, parent_name, child_list
-    ) -> tuple[bool, str, int]:
+    def _check_subclass_count(self, schema_name, parent_name, child_list) -> tuple[bool, str, int]:
         """
         Returns: (failed, error message, parent_count)
         """
@@ -319,294 +317,340 @@ class TWWExportChecker:
         """
         Check if attribute identifier is Null
         """
-        check_classes=[("organisation"),]
+        check_classes = [
+            ("organisation"),
+        ]
         if config.MODEL_NAME_VSA_KEK in self.export_models:
-            check_classes.extend([
-            # VSA-KEK
-            ("data_media"),
-            ("file"),
-            ("maintenance_event"),])
+            check_classes.extend(
+                [
+                    # VSA-KEK
+                    ("data_media"),
+                    ("file"),
+                    ("maintenance_event"),
+                ]
+            )
         if config.MODEL_NAME_SIA405_ABWASSER in self.export_models:
-            check_classes.extend([
-            ("wastewater_structure"),
-            ("wastewater_networkelement"),
-            ("structure_part"),
-            ("reach_point"),
-            ("pipe_profile"),])
+            check_classes.extend(
+                [
+                    ("wastewater_structure"),
+                    ("wastewater_networkelement"),
+                    ("structure_part"),
+                    ("reach_point"),
+                    ("pipe_profile"),
+                ]
+            )
         if config.MODEL_NAME_DSS in self.export_models:
-            check_classes.extend([
-            # VSA-DSS
-            # new 2020
-            ("building_group"),
-            ("catchment_area"),
-            ("catchment_area_totals"),
-            ("connection_object"),
-            ("control_center"),
-            # only VSA-DSS 2015
-            # ("hazard_source"),
-            ("hydr_geometry"),
-            ("hydraulic_char_data"),
-            # new 2020
-            ("measure"),
-            ("measurement_result"),
-            ("measurement_series"),
-            ("measuring_device"),
-            ("measuring_point"),
-            ("mechanical_pretreatment"),
-            ("overflow"),
-            ("overflow_char"),
-            ("retention_body"),
-            # only VSA-DSS 2015
-            # ("river_bank"),
-            # ("river_bed"),
-            # ("sector_water_body"),
-            ("sludge_treatment"),
-            # ("substance"),
-            ("surface_runoff_parameters"),
-            # ("surface_water_bodies"),
-            ("throttle_shut_off_unit"),
-            ("waste_water_treatment"),
-            ("waste_water_treatment_plant"),
-            # only VSA-DSS 2015
-            # ("water_catchment"),
-            # ("water_control_structure"),
-            # ("water_course_segment"),
-            ("wwtp_energy_use"),
-            ("zone"),
-        ])
+            check_classes.extend(
+                [
+                    # VSA-DSS
+                    # new 2020
+                    ("building_group"),
+                    ("catchment_area"),
+                    ("catchment_area_totals"),
+                    ("connection_object"),
+                    ("control_center"),
+                    # only VSA-DSS 2015
+                    # ("hazard_source"),
+                    ("hydr_geometry"),
+                    ("hydraulic_char_data"),
+                    # new 2020
+                    ("measure"),
+                    ("measurement_result"),
+                    ("measurement_series"),
+                    ("measuring_device"),
+                    ("measuring_point"),
+                    ("mechanical_pretreatment"),
+                    ("overflow"),
+                    ("overflow_char"),
+                    ("retention_body"),
+                    # only VSA-DSS 2015
+                    # ("river_bank"),
+                    # ("river_bed"),
+                    # ("sector_water_body"),
+                    ("sludge_treatment"),
+                    # ("substance"),
+                    ("surface_runoff_parameters"),
+                    # ("surface_water_bodies"),
+                    ("throttle_shut_off_unit"),
+                    ("waste_water_treatment"),
+                    ("waste_water_treatment_plant"),
+                    # only VSA-DSS 2015
+                    # ("water_catchment"),
+                    # ("water_control_structure"),
+                    # ("water_course_segment"),
+                    ("wwtp_energy_use"),
+                    ("zone"),
+                ]
+            )
         if config.MODEL_NAME_AG64 in self.export_models:
-            check_classes.extend([
-            ("wastewater_networkelement"),
-            ("overflow"),])
+            check_classes.extend(
+                [
+                    ("wastewater_networkelement"),
+                    ("overflow"),
+                ]
+            )
         if config.MODEL_NAME_AG96 in self.export_models:
-            check_classes.extend([
-            ("wastewater_networkelement"),
-            ("overflow"),
-            ("building_group"),
-            ("catchment_area"),
-            ("measure"),
-            ("catchment_area_totals"),
-            ("zone"),
-            ])
-        return self._check_value_condition(
-            check_classes, "identifier"
-        )
+            check_classes.extend(
+                [
+                    ("wastewater_networkelement"),
+                    ("overflow"),
+                    ("building_group"),
+                    ("catchment_area"),
+                    ("measure"),
+                    ("catchment_area_totals"),
+                    ("zone"),
+                ]
+            )
+        return self._check_value_condition(check_classes, "identifier")
 
     def _check_fk_owner_null(self):
         """
         Check if MANDATORY fk_owner is Null
         """
-        check_classes =[]
-        check_models={config.MODEL_NAME_SIA405_ABWASSER,config.MODEL_NAME_AG64,config.MODEL_NAME_AG96}
-        if any( m in check_models for m in self.export_models):
+        check_classes = []
+        check_models = {
+            config.MODEL_NAME_SIA405_ABWASSER,
+            config.MODEL_NAME_AG64,
+            config.MODEL_NAME_AG96,
+        }
+        if any(m in check_models for m in self.export_models):
             check_classes = [
                 # SIA405 Abwasser
                 ("wastewater_structure"),
             ]
-        return self._check_value_condition(
-            check_classes, "fk_owner"
-        )
+        return self._check_value_condition(check_classes, "fk_owner")
 
     def _check_fk_operator_null(self):
         """
         Check if MANDATORY fk_operator is Null
         """
-        check_classes =[]
-        check_models={config.MODEL_NAME_SIA405_ABWASSER,config.MODEL_NAME_AG64,config.MODEL_NAME_AG96}
-        if any( m in check_models for m in self.export_models):
+        check_classes = []
+        check_models = {
+            config.MODEL_NAME_SIA405_ABWASSER,
+            config.MODEL_NAME_AG64,
+            config.MODEL_NAME_AG96,
+        }
+        if any(m in check_models for m in self.export_models):
             check_classes = [
                 # SIA405 Abwasser
                 ("wastewater_structure"),
             ]
-        return self._check_value_condition(
-            check_classes, "fk_operator"
-        )
+        return self._check_value_condition(check_classes, "fk_operator")
 
     def _check_fk_dataowner_null(self):
         """
         Check if MANDATORY fk_dataowner is Null
         """
-        check_classes=[]
+        check_classes = []
         if config.MODEL_NAME_VSA_KEK in self.export_models:
-            check_classes.extend([("damage"),
-            ("data_media"),
-            ("file"),
-            ("maintenance_event"),])
+            check_classes.extend(
+                [
+                    ("damage"),
+                    ("data_media"),
+                    ("file"),
+                    ("maintenance_event"),
+                ]
+            )
         if config.MODEL_NAME_SIA405_ABWASSER in self.export_models:
-            check_classes.extend([
-            ("wastewater_structure"),
-            ("wastewater_networkelement"),
-            ("structure_part"),
-            ("reach_point"),
-            ("pipe_profile"),])
+            check_classes.extend(
+                [
+                    ("wastewater_structure"),
+                    ("wastewater_networkelement"),
+                    ("structure_part"),
+                    ("reach_point"),
+                    ("pipe_profile"),
+                ]
+            )
         if config.MODEL_NAME_DSS in self.export_models:
-            check_classes.extend([
-            ("building_group"),
-            ("building_group_baugwr"),
-            ("catchment_area"),
-            ("connection_object"),
-            ("control_center"),
-            # new 2020
-            ("disposal"),
-            ("farm"),
-            # only VSA-DSS 2015
-            # ("hazard_source"),
-            ("hq_relation"),
-            ("hydraulic_char_data"),
-            ("hydr_geometry"),
-            ("hydr_geom_relation"),
-            # new 2020
-            ("log_card"),
-            # maintenance_event see VSA-KEK
-            # new 2020
-            ("measure"),
-            ("measurement_result"),
-            ("measurement_series"),
-            ("measuring_device"),
-            ("measuring_point"),
-            ("mechanical_pretreatment"),
-            ("mutation"),
-            ("overflow"),
-            ("overflow_char"),
-            ("profile_geometry"),
-            ("retention_body"),
-            # only VSA-DSS 2015
-            # ("river_bank"),
-            # ("river_bed"),
-            # ("sector_water_body"),
-            ("sludge_treatment"),
-            # ("substance"),
-            ("surface_runoff_parameters"),
-            # only VSA-DSS 2015
-            # ("surface_water_bodies"),
-            ("throttle_shut_off_unit"),
-            ("waste_water_treatment"),
-            ("waste_water_treatment_plant"),
-            # only VSA-DSS 2015
-            # ("water_catchment"),
-            # ("water_control_structure"),
-            # ("water_course_segment"),
-            ("wwtp_energy_use"),
-            ("zone"),
-            # sia405cc
-            ("sia405cc_cable"),
-            ("sia405cc_cable_point"),
-            ("sia405pt_protection_tube"),
-        ])
+            check_classes.extend(
+                [
+                    ("building_group"),
+                    ("building_group_baugwr"),
+                    ("catchment_area"),
+                    ("connection_object"),
+                    ("control_center"),
+                    # new 2020
+                    ("disposal"),
+                    ("farm"),
+                    # only VSA-DSS 2015
+                    # ("hazard_source"),
+                    ("hq_relation"),
+                    ("hydraulic_char_data"),
+                    ("hydr_geometry"),
+                    ("hydr_geom_relation"),
+                    # new 2020
+                    ("log_card"),
+                    # maintenance_event see VSA-KEK
+                    # new 2020
+                    ("measure"),
+                    ("measurement_result"),
+                    ("measurement_series"),
+                    ("measuring_device"),
+                    ("measuring_point"),
+                    ("mechanical_pretreatment"),
+                    ("mutation"),
+                    ("overflow"),
+                    ("overflow_char"),
+                    ("profile_geometry"),
+                    ("retention_body"),
+                    # only VSA-DSS 2015
+                    # ("river_bank"),
+                    # ("river_bed"),
+                    # ("sector_water_body"),
+                    ("sludge_treatment"),
+                    # ("substance"),
+                    ("surface_runoff_parameters"),
+                    # only VSA-DSS 2015
+                    # ("surface_water_bodies"),
+                    ("throttle_shut_off_unit"),
+                    ("waste_water_treatment"),
+                    ("waste_water_treatment_plant"),
+                    # only VSA-DSS 2015
+                    # ("water_catchment"),
+                    # ("water_control_structure"),
+                    # ("water_course_segment"),
+                    ("wwtp_energy_use"),
+                    ("zone"),
+                    # sia405cc
+                    ("sia405cc_cable"),
+                    ("sia405cc_cable_point"),
+                    ("sia405pt_protection_tube"),
+                ]
+            )
         if config.MODEL_NAME_AG64 in self.export_models:
-            check_classes.extend([
-            ("wastewater_networkelement"),
-            ("overflow"),])
+            check_classes.extend(
+                [
+                    ("wastewater_networkelement"),
+                    ("overflow"),
+                ]
+            )
         if config.MODEL_NAME_AG96 in self.export_models:
-            check_classes.extend([
-            ("wastewater_networkelement"),
-            ("overflow"),
-            ("building_group"),
-            ("catchment_area"),
-            ("measure"),
-            ("catchment_area_totals"),
-            ("zone"),
-            ])
-        return self._check_value_condition(
-            check_classes, "fk_dataowner"
-        )
+            check_classes.extend(
+                [
+                    ("wastewater_networkelement"),
+                    ("overflow"),
+                    ("building_group"),
+                    ("catchment_area"),
+                    ("measure"),
+                    ("catchment_area_totals"),
+                    ("zone"),
+                ]
+            )
+        return self._check_value_condition(check_classes, "fk_dataowner")
 
     def _check_fk_provider_null(self):
         """
         Check if MANDATORY fk_provider is Null
         """
-        check_classes=[]
+        check_classes = []
         if config.MODEL_NAME_VSA_KEK in self.export_models:
-            check_classes.extend([
-            # VSA-KEK
-            ("damage"),
-            ("data_media"),
-            ("file"),
-            ("maintenance_event"),])
+            check_classes.extend(
+                [
+                    # VSA-KEK
+                    ("damage"),
+                    ("data_media"),
+                    ("file"),
+                    ("maintenance_event"),
+                ]
+            )
         if config.MODEL_NAME_SIA405_ABWASSER in self.export_models:
-            check_classes.extend([
-            # take out for DSS 2020
-            # ("organisation"),
-            ("wastewater_structure"),
-            ("wastewater_networkelement"),
-            ("structure_part"),
-            ("reach_point"),
-            ("pipe_profile"),])
+            check_classes.extend(
+                [
+                    # take out for DSS 2020
+                    # ("organisation"),
+                    ("wastewater_structure"),
+                    ("wastewater_networkelement"),
+                    ("structure_part"),
+                    ("reach_point"),
+                    ("pipe_profile"),
+                ]
+            )
         if config.MODEL_NAME_DSS in self.export_models:
-            check_classes.extend([
-            # new 2020
-            ("building_group"),
-            ("building_group_baugwr"),
-            ("catchment_area"),
-            ("connection_object"),
-            ("control_center"),
-            # new 2020
-            ("disposal"),
-            ("farm"),
-            # only VSA-DSS 2015
-            # ("hazard_source"),
-            ("hq_relation"),
-            ("hydraulic_char_data"),
-            ("hydr_geometry"),
-            ("hydr_geom_relation"),
-            # new 2020
-            ("log_card"),
-            # maintenance_event see VSA-KEK
-            # new 2020
-            ("measure"),
-            ("measurement_result"),
-            ("measurement_series"),
-            ("measuring_device"),
-            ("measuring_point"),
-            ("mechanical_pretreatment"),
-            ("mutation"),
-            ("overflow"),
-            ("overflow_char"),
-            ("profile_geometry"),
-            ("retention_body"),
-            # only VSA-DSS 2015
-            # ("river_bank"),
-            # ("river_bed"),
-            # ("sector_water_body"),
-            ("sludge_treatment"),
-            # ("substance"),
-            ("surface_runoff_parameters"),
-            # ("surface_water_bodies"),
-            ("throttle_shut_off_unit"),
-            ("waste_water_treatment"),
-            ("waste_water_treatment_plant"),
-            # only VSA-DSS 2015
-            # ("water_catchment"),
-            # ("water_control_structure"),
-            # ("water_course_segment"),
-            ("wwtp_energy_use"),
-            ("zone"),])
+            check_classes.extend(
+                [
+                    # new 2020
+                    ("building_group"),
+                    ("building_group_baugwr"),
+                    ("catchment_area"),
+                    ("connection_object"),
+                    ("control_center"),
+                    # new 2020
+                    ("disposal"),
+                    ("farm"),
+                    # only VSA-DSS 2015
+                    # ("hazard_source"),
+                    ("hq_relation"),
+                    ("hydraulic_char_data"),
+                    ("hydr_geometry"),
+                    ("hydr_geom_relation"),
+                    # new 2020
+                    ("log_card"),
+                    # maintenance_event see VSA-KEK
+                    # new 2020
+                    ("measure"),
+                    ("measurement_result"),
+                    ("measurement_series"),
+                    ("measuring_device"),
+                    ("measuring_point"),
+                    ("mechanical_pretreatment"),
+                    ("mutation"),
+                    ("overflow"),
+                    ("overflow_char"),
+                    ("profile_geometry"),
+                    ("retention_body"),
+                    # only VSA-DSS 2015
+                    # ("river_bank"),
+                    # ("river_bed"),
+                    # ("sector_water_body"),
+                    ("sludge_treatment"),
+                    # ("substance"),
+                    ("surface_runoff_parameters"),
+                    # ("surface_water_bodies"),
+                    ("throttle_shut_off_unit"),
+                    ("waste_water_treatment"),
+                    ("waste_water_treatment_plant"),
+                    # only VSA-DSS 2015
+                    # ("water_catchment"),
+                    # ("water_control_structure"),
+                    # ("water_course_segment"),
+                    ("wwtp_energy_use"),
+                    ("zone"),
+                ]
+            )
         if config.MODEL_NAME_CABLE in self.export_models:
-            check_classes.extend([
-            # sia405cc
-            ("sia405cc_cable"),
-            ("sia405cc_cable_point"),])
+            check_classes.extend(
+                [
+                    # sia405cc
+                    ("sia405cc_cable"),
+                    ("sia405cc_cable_point"),
+                ]
+            )
         if config.MODEL_NAME_PROTECTION_TUBE in self.export_models:
-            check_classes.extend([
-            ("sia405pt_protection_tube"),
-            ])
+            check_classes.extend(
+                [
+                    ("sia405pt_protection_tube"),
+                ]
+            )
         if config.MODEL_NAME_AG64 in self.export_models:
-            check_classes.extend([
-            ("wastewater_networkelement"),
-            ("overflow"),])
+            check_classes.extend(
+                [
+                    ("wastewater_networkelement"),
+                    ("overflow"),
+                ]
+            )
         if config.MODEL_NAME_AG96 in self.export_models:
-            check_classes.extend([
-            ("wastewater_networkelement"),
-            ("overflow"),
-            ("building_group"),
-            ("catchment_area"),
-            ("measure"),
-            ("catchment_area_totals"),
-            ("zone"),
-            ])
-        return self._check_value_condition(
-            check_classes, "fk_provider"
-        )
+            check_classes.extend(
+                [
+                    ("wastewater_networkelement"),
+                    ("overflow"),
+                    ("building_group"),
+                    ("catchment_area"),
+                    ("measure"),
+                    ("catchment_area_totals"),
+                    ("zone"),
+                ]
+            )
+        return self._check_value_condition(check_classes, "fk_provider")
 
     def _check_fk_wastewater_structure_null(self):
         """
@@ -614,12 +658,12 @@ class TWWExportChecker:
         """
         check_classes = []
         if config.MODEL_NAME_SIA405_ABWASSER in self.export_models:
-            check_classes.extend([
-            ("structure_part"),
-            ])
-        return self._check_value_condition(
-            check_classes, "fk_wastewater_structure"
-        )
+            check_classes.extend(
+                [
+                    ("structure_part"),
+                ]
+            )
+        return self._check_value_condition(check_classes, "fk_wastewater_structure")
 
     def _check_fk_wastewater_node_null(self):
         """
@@ -627,14 +671,14 @@ class TWWExportChecker:
         """
         check_classes = []
         if config.MODEL_NAME_DSS in self.export_models:
-            check_classes.extend([
-                ("hydraulic_char_data"),
-                ("overflow"),
-                ("throttle_shut_off_unit"),
-            ])
-        return self._check_value_condition(
-            check_classes, "fk_wastewater_node"
-        )
+            check_classes.extend(
+                [
+                    ("hydraulic_char_data"),
+                    ("overflow"),
+                    ("throttle_shut_off_unit"),
+                ]
+            )
+        return self._check_value_condition(check_classes, "fk_wastewater_node")
 
     def _check_fk_responsible_entity_null(self):
         """
@@ -642,12 +686,12 @@ class TWWExportChecker:
         """
         check_classes = []
         if config.MODEL_NAME_DSS in self.export_models:
-            check_classes.extend([
-                ("measure"),
-            ])
-        return self._check_value_condition(
-            check_classes, "fk_responsible_entity"
-        )
+            check_classes.extend(
+                [
+                    ("measure"),
+                ]
+            )
+        return self._check_value_condition(check_classes, "fk_responsible_entity")
 
     def _check_fk_responsible_start_null(self):
         """
@@ -655,12 +699,12 @@ class TWWExportChecker:
         """
         check_classes = []
         if config.MODEL_NAME_DSS in self.export_models:
-            check_classes.extend([
-                ("measure"),
-            ])
-        return self._check_value_condition(
-            check_classes, "fk_responsible_start"
-        )
+            check_classes.extend(
+                [
+                    ("measure"),
+                ]
+            )
+        return self._check_value_condition(check_classes, "fk_responsible_start")
 
     def _check_fk_discharge_point_null(self):
         """
@@ -668,12 +712,12 @@ class TWWExportChecker:
         """
         check_classes = []
         if config.MODEL_NAME_DSS in self.export_models:
-            check_classes.extend([
-                ("catchment_area_totals"),
-            ])
-        return self._check_value_condition(
-            check_classes, "fk_discharge_point"
-        )
+            check_classes.extend(
+                [
+                    ("catchment_area_totals"),
+                ]
+            )
+        return self._check_value_condition(check_classes, "fk_discharge_point")
 
     def _check_fk_hydraulic_char_data_null(self):
         """
@@ -681,12 +725,12 @@ class TWWExportChecker:
         """
         check_classes = []
         if config.MODEL_NAME_DSS in self.export_models:
-            check_classes.extend([
-                ("catchment_area_totals"),
-            ])
-        return self._check_value_condition(
-            check_classes, "fk_hydraulic_char_data"
-        )
+            check_classes.extend(
+                [
+                    ("catchment_area_totals"),
+                ]
+            )
+        return self._check_value_condition(check_classes, "fk_hydraulic_char_data")
 
     def _check_fk_building_group_null(self):
         """
@@ -694,12 +738,12 @@ class TWWExportChecker:
         """
         check_classes = []
         if config.MODEL_NAME_DSS in self.export_models:
-            check_classes.extend([
-                ("building_group_baugwr"),
-            ])
-        return self._check_value_condition(
-            check_classes, "fk_building_group"
-        )
+            check_classes.extend(
+                [
+                    ("building_group_baugwr"),
+                ]
+            )
+        return self._check_value_condition(check_classes, "fk_building_group")
 
     def _check_fk_reach_null(self):
         """
@@ -707,40 +751,44 @@ class TWWExportChecker:
         """
         check_classes = []
         if config.MODEL_NAME_SIA405_ABWASSER in self.export_models:
-            check_classes.extend([
-                ("reach_progression_alternative"),
-            ])
-        return self._check_value_condition(
-            check_classes, "fk_reach"
-        )
+            check_classes.extend(
+                [
+                    ("reach_progression_alternative"),
+                ]
+            )
+        return self._check_value_condition(check_classes, "fk_reach")
 
     def _check_fk_reach_point_from_null(self):
         """
         Check if MANDATORY fk_reach_point_from is Null
         """
         check_classes = []
-        check_models={config.MODEL_NAME_SIA405_ABWASSER,config.MODEL_NAME_AG64,config.MODEL_NAME_AG96}
-        if any( m in check_models for m in self.export_models):
+        check_models = {
+            config.MODEL_NAME_SIA405_ABWASSER,
+            config.MODEL_NAME_AG64,
+            config.MODEL_NAME_AG96,
+        }
+        if any(m in check_models for m in self.export_models):
             check_classes = [
-            ("reach"),
+                ("reach"),
             ]
-        return self._check_value_condition(
-            check_classes, "fk_reach_point_from"
-        )
+        return self._check_value_condition(check_classes, "fk_reach_point_from")
 
     def _check_fk_reach_point_to_null(self):
         """
         Check if MANDATORY fk_reach_point_to is Null
         """
         check_classes = []
-        check_models={config.MODEL_NAME_SIA405_ABWASSER,config.MODEL_NAME_AG64,config.MODEL_NAME_AG96}
-        if any( m in check_models for m in self.export_models):
+        check_models = {
+            config.MODEL_NAME_SIA405_ABWASSER,
+            config.MODEL_NAME_AG64,
+            config.MODEL_NAME_AG96,
+        }
+        if any(m in check_models for m in self.export_models):
             check_classes = [
-            ("reach"),
+                ("reach"),
             ]
-        return self._check_value_condition(
-            check_classes, "fk_reach_point_to"
-        )
+        return self._check_value_condition(check_classes, "fk_reach_point_to")
 
     def _check_fk_pwwf_wastewater_node_null(self):
         """
@@ -748,12 +796,12 @@ class TWWExportChecker:
         """
         check_classes = []
         if config.MODEL_NAME_DSS in self.export_models:
-            check_classes.extend([
-            ("log_card"),
-            ])
-        return self._check_value_condition(
-            check_classes, "fk_pwwf_wastewater_node"
-        )
+            check_classes.extend(
+                [
+                    ("log_card"),
+                ]
+            )
+        return self._check_value_condition(check_classes, "fk_pwwf_wastewater_node")
 
     def _check_fk_catchment_area_null(self):
         """
@@ -761,12 +809,12 @@ class TWWExportChecker:
         """
         check_classes = []
         if config.MODEL_NAME_DSS in self.export_models:
-            check_classes.extend([
-            ("surface_runoff_parameters"),
-            ])
-        return self._check_value_condition(
-            check_classes, "fk_catchment_area"
-        )
+            check_classes.extend(
+                [
+                    ("surface_runoff_parameters"),
+                ]
+            )
+        return self._check_value_condition(check_classes, "fk_catchment_area")
 
     def _check_organisation_tww_local_extension_count(self):
         """

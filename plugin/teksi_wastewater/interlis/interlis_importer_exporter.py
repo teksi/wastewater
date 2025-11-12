@@ -2,7 +2,6 @@ import logging
 import os
 import tempfile
 from pathlib import Path
-from typing import Any
 
 from ..utils.database_utils import DatabaseUtils
 from . import config
@@ -14,23 +13,16 @@ from .interlis_model_mapping.interlis_exporter_to_intermediate_schema import (
 from .interlis_model_mapping.interlis_importer_to_intermediate_schema import (
     InterlisImporterToIntermediateSchema,
 )
-from .interlis_model_mapping.model_interlis_ag64 import ModelInterlisAG64
-from .interlis_model_mapping.model_interlis_ag96 import ModelInterlisAG96
-from .interlis_model_mapping.model_interlis_dss import ModelInterlisDss
-from .interlis_model_mapping.model_interlis_sia405_abwasser import (
-    ModelInterlisSia405Abwasser,
-)
-from .interlis_model_mapping.model_interlis_sia405_base_abwasser import (
-    ModelInterlisSia405BaseAbwasser,
-)
-from .interlis_model_mapping.model_interlis_vsa_kek import ModelInterlisVsaKek
-from .interlis_model_mapping.model_tww import ModelTwwSys, ModelTwwVl
-from .interlis_model_mapping.model_tww_ag6496 import ModelTwwAG6496
-from .interlis_model_mapping.model_tww_od import ModelTwwOd
 from .utils.ili2db import InterlisTools
-from .utils.various import CmdException, LoggingHandlerContext, logger, make_log_path, InterlisImporterExporterStopped, InterlisImporterExporterError
 from .utils.interlis_export_checker import TWWExportChecker
-
+from .utils.various import (
+    CmdException,
+    InterlisImporterExporterError,
+    InterlisImporterExporterStopped,
+    LoggingHandlerContext,
+    logger,
+    make_log_path,
+)
 
 
 class InterlisImporterExporter:
@@ -294,7 +286,9 @@ class InterlisImporterExporter:
             logger.info(f"Debug.print export_model '{export_models[0]}'")
 
         # go thru all available checks and register if check failed or not.
-        exportChecker=TWWExportChecker(export_models=export_models, limit_to_selection=limit_to_selection)
+        exportChecker = TWWExportChecker(
+            export_models=export_models, limit_to_selection=limit_to_selection
+        )
         results = exportChecker.run_integrity_checks(limit_to_selection)
         if not results["failed"]:
             logger.info(f"All checks passed! ({results['stats']['ok']} OK)")
