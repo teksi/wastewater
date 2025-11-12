@@ -85,11 +85,11 @@ def vw_tww_damage_channel(
         {dg_cols_base}
         , {dc_cols_base}
         , base.ws_identifier
-        , ST_LineInterpolatePoint(base.ch_progression2d_geometry
-        , CASE
-            WHEN base.direction = 'downstream'
-            THEN LEAST(base.channel_distance / ST_Length(base.ch_progression2d_geometry), 1)
-            ELSE 1::double precision - LEAST(base.channel_distance / ST_Length(base.ch_progression2d_geometry), 1)
+        , ST_LineInterpolatePoint(st_LineMerge(base.ch_progression2d_geometry),
+        CASE
+            WHEN base.direction = 'downstream'::text THEN LEAST(base.channel_distance / st_length(base.ch_progression2d_geometry), 1)
+            WHEN base.direction = 'upstream'::text THEN 1 - LEAST(base.channel_distance / st_length(base.ch_progression2d_geometry), 1)
+            ELSE NULL
         END) AS situation2d_geometry
         , base.direction
         , base.tww_is_primary
