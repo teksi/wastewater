@@ -338,7 +338,7 @@ class InterlisImporterExporter:
 
         # go thru all available checks and register if check failed or not.
 
-        results = exportChecker.run_integrity_checks(limit_to_selection)
+        results = exportChecker.run_integrity_checks()
         if not results["failed"]:
             logger.info(f"All checks passed! ({results['stats']['ok']} OK)")
             self.execute_export(
