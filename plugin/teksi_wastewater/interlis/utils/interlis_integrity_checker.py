@@ -14,7 +14,6 @@ class TWWIntegrityChecker:
         checks = [
             ("subclass_counts", self._check_subclass_counts),
             ("identifier_null", self._check_identifier_null),
-            ("check_identifier_null", self._check_identifier_null),
             ("fk_owner_null", self._check_fk_owner_null),
             ("fk_operator_null", self._check_fk_operator_null),
             ("fk_dataowner_null", self._check_fk_dataowner_null),
