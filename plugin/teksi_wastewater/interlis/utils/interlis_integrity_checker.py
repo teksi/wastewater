@@ -6,7 +6,7 @@ from .various import InterlisImporterExporterError, logger
 
 
 class TWWIntegrityChecker:
-    def __init__(self, models=None, limit_to_selection=False):
+    def __init__(self, models=[], limit_to_selection=False):
         self.limit_to_selection = limit_to_selection
         self.models = models
 
