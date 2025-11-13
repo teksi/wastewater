@@ -104,7 +104,7 @@ class TWWIntegrityChecker:
                     ),
                 ]
             )
-        if config.MODEL_NAME_VSA_DSS in self.models:
+        if config.MODEL_NAME_DSS in self.models:
             checks.extend(
                 [
                     (
