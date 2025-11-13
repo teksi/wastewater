@@ -89,7 +89,6 @@ class TWWIntegrityChecker:
                     "dryweather_downspout",
                 ],
             ),
-            ("overflow", ["pump", "leapingweir", "prank_weir"]),
         ]
         if config.MODEL_NAME_VSA_KEK in self.models:
             checks.extend(
@@ -107,6 +106,7 @@ class TWWIntegrityChecker:
         if config.MODEL_NAME_DSS in self.models:
             checks.extend(
                 [
+                    ("overflow", ["pump", "leapingweir", "prank_weir"]),
                     (
                         "connection_object",
                         ["fountain", "individual_surface", "building", "reservoir"],
