@@ -50,7 +50,7 @@
 <polygon fill="none" stroke="black" points="10,-105 10,-127 180,-127 180,-105 10,-105"/>
 <text text-anchor="start" x="30" y="-113.2" font-family="Helvetica,sans-Serif" font-size="11.00">culvert</text>
 <polygon fill="none" stroke="black" points="180,-105 180,-127 286,-127 286,-105 180,-105"/>
-<text text-anchor="start" x="183" y="-113.2" font-family="Helvetica,sans-Serif" font-size="11.00">text[2147483647]</text>
+<text text-anchor="start" x="183" y="-113.2" font-family="Helvetica,sans-Serif" font-size="11.00">int4[10]</text>
 <polygon fill="none" stroke="black" points="10,-83 10,-105 180,-105 180,-83 10,-83"/>
 <text text-anchor="start" x="30" y="-91.2" font-family="Helvetica,sans-Serif" font-size="11.00">state</text>
 <polygon fill="none" stroke="black" points="180,-83 180,-105 286,-105 286,-83 180,-83"/>

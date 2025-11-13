@@ -30,11 +30,11 @@
 <polygon fill="none" stroke="black" points="10,-237 10,-259 166,-259 166,-237 10,-237"/>
 <text text-anchor="start" x="30" y="-245.2" font-family="Helvetica,sans-Serif" font-size="11.00">type</text>
 <polygon fill="none" stroke="black" points="166,-237 166,-259 302,-259 302,-237 166,-237"/>
-<text text-anchor="start" x="169" y="-245.2" font-family="Helvetica,sans-Serif" font-size="11.00">varchar[2147483647]</text>
+<text text-anchor="start" x="169" y="-245.2" font-family="Helvetica,sans-Serif" font-size="11.00">text[2147483647]</text>
 <polygon fill="none" stroke="black" points="10,-215 10,-237 166,-237 166,-215 10,-215"/>
 <text text-anchor="start" x="30" y="-223.2" font-family="Helvetica,sans-Serif" font-size="11.00">stagedata</text>
 <polygon fill="none" stroke="black" points="166,-215 166,-237 302,-237 302,-215 166,-215"/>
-<text text-anchor="start" x="169" y="-223.2" font-family="Helvetica,sans-Serif" font-size="11.00">text[2147483647]</text>
+<text text-anchor="start" x="169" y="-223.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[0]</text>
 <polygon fill="none" stroke="black" points="10,-193 10,-215 166,-215 166,-193 10,-193"/>
 <text text-anchor="start" x="30" y="-201.2" font-family="Helvetica,sans-Serif" font-size="11.00">tide_gate</text>
 <polygon fill="none" stroke="black" points="166,-193 166,-215 302,-215 302,-193 166,-193"/>
