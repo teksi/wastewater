@@ -185,43 +185,6 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
-        <widget class="QGroupBox" name="mGbLayout">
-         <property name="title">
-          <string>Layout</string>
-         </property>
-         <layout class="QFormLayout" name="formLayout">
-          <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-          </property>
-          <item row="0" column="0" colspan="2">
-           <widget class="QGroupBox" name="mGbOverrideDefaultProfileTemplate">
-            <property name="title">
-             <string>Override default profile template</string>
-            </property>
-            <property name="checkable">
-             <bool>true</bool>
-            </property>
-            <property name="checked">
-             <bool>false</bool>
-            </property>
-            <layout class="QHBoxLayout" name="horizontalLayout">
-             <item>
-              <widget class="QLineEdit" name="mProfileTemplateFile"/>
-             </item>
-             <item>
-              <widget class="QPushButton" name="mPbnChooseProfileTemplateFile">
-               <property name="text">
-                <string>...</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
        <item row="2" column="0">
         <widget class="QGroupBox" name="groupBox">
          <property name="title">
@@ -315,7 +278,129 @@
          </layout>
         </widget>
        </item>
-      </layout>
+       <item row="3" column="0">
+        <widget class="QGroupBox" name="mGbLayout">
+         <property name="title">
+          <string>Layout</string>
+         </property>
+         <layout class="QFormLayout" name="formLayout">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+          </property>
+          <item row="0" column="0" colspan="2">
+           <widget class="QGroupBox" name="mGbOverrideDefaultProfileTemplate">
+            <property name="title">
+             <string>Override default profile template</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <item>
+              <widget class="QLineEdit" name="mProfileTemplateFile"/>
+             </item>
+             <item>
+              <widget class="QPushButton" name="mPbnChooseProfileTemplateFile">
+               <property name="text">
+                <string>...</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QGroupBox" name="mCbAg6496Extension">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="title">
+          <string>Enable AG-64 and AG-96 extensions</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+		 <layout class="QFormLayout" name="Ag6496layout">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+          </property>
+		  <item row="0" column="0" colspan ="2">
+           <widget class="QComboBox" name="mCbAg6496LastModification">
+            <item>
+             <property name="text">
+              <string>WI</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>GEP</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>None</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Both</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+	  <item row="5" column="0" colspan="2">
+           <widget class="QGroupBox" name="mGbOverrideSRID">
+            <property name="title">
+             <string>Override default SRID</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <layout class="QFormLayout" name="formLayout_srid">
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_srid">
+               <property name="text">
+                <string>SRID</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QWidget" name="widget" native="true">
+               <layout class="QHBoxLayout" name="horizontalLayout_srid">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QLineEdit" name="mSRID"/>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
      </widget>
     </widget>
    </item>

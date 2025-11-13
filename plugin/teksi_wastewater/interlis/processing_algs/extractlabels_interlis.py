@@ -28,7 +28,8 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
 
     tr = partial(QCoreApplication.translate, "ExtractlabelsInterlisAlgorithm")
     AVAILABLE_SCALE_PIPELINE_REGISTRY_1_1000 = "Leitungskataster"
-    AVAILABLE_SCALE_NETWORK_PLAN_1_500 = "Werkplan"
+    AVAILABLE_SCALE_NETWORK_PLAN_1_250 = "Werkplan.250"  # Defined with subvalue - will be replaced for xtf output back to Werkplan, only choose either or
+    AVAILABLE_SCALE_NETWORK_PLAN_1_500 = "Werkplan.500"  # Defined with subvalue - will be replaced for xtf output back to Werkplan, only choose either or
     AVAILABLE_SCALE_OVERVIEWMAP_1_10000 = "Uebersichtsplan.UeP10"
     AVAILABLE_SCALE_OVERVIEWMAP_1_5000 = "Uebersichtsplan.UeP5"
     AVAILABLE_SCALE_OVERVIEWMAP_1_2000 = "Uebersichtsplan.UeP2"
@@ -39,7 +40,16 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
             tr("Leitungskataster"),
             1000,
         ),  # TODO: check scale ?
-        (AVAILABLE_SCALE_NETWORK_PLAN_1_500, tr("Werkplan"), 500),  # TODO: check scale ?
+        (
+            AVAILABLE_SCALE_NETWORK_PLAN_1_250,
+            tr("Werkplan 1:250"),
+            250,
+        ),  # Option with scale 1:250 labels
+        (
+            AVAILABLE_SCALE_NETWORK_PLAN_1_500,
+            tr("Werkplan 1:500"),
+            500,
+        ),  # Option with scale 1:500 labels
         (AVAILABLE_SCALE_OVERVIEWMAP_1_10000, tr("Uebersichtsplan 1:10000"), 10000),
         (AVAILABLE_SCALE_OVERVIEWMAP_1_5000, tr("Uebersichtsplan 1:5000"), 5000),
         (AVAILABLE_SCALE_OVERVIEWMAP_1_2000, tr("Uebersichtsplan 1:2000"), 2000),
@@ -50,6 +60,12 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
     INPUT_SCALES = "SCALES"
     INPUT_STRUCTURE_VIEW_LAYER = "STRUCTURE_VIEW_LAYER"
     INPUT_REACH_VIEW_LAYER = "REACH_VIEW_LAYER"
+    INPUT_CATCHMENT_LAYER = "CATCHMENT_LAYER"
+    INPUT_MEASURE_POINT_LAYER = "MEASURE_POINT_LAYER"
+    INPUT_MEASURE_LINE_LAYER = "MEASURE_LINE_LAYER"
+    INPUT_MEASURE_POLYGON_LAYER = "MEASURE_POLYGON_LAYER"
+    INPUT_BUILDING_GROUP_LAYER = "BUILDING_GROUP_LAYER"
+    INPUT_REPLACE_WS_WITH_WN = "REPLACE_WS_WITH_WN"
 
     def name(self):
         return "extractlabels_interlis"
@@ -99,6 +115,60 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
             )
         )
 
+        self.addParameter(
+            QgsProcessingParameterVectorLayer(
+                self.INPUT_CATCHMENT_LAYER,
+                description=self.tr("Catchment layer"),
+                types=[QgsWkbTypes.PolygonGeometry],
+                optional=True,
+            )
+        )
+
+        self.addParameter(
+            QgsProcessingParameterVectorLayer(
+                self.INPUT_MEASURE_POINT_LAYER,
+                description=self.tr("Measure Point layer"),
+                types=[QgsWkbTypes.LineGeometry],
+                optional=True,
+            )
+        )
+
+        self.addParameter(
+            QgsProcessingParameterVectorLayer(
+                self.INPUT_MEASURE_LINE_LAYER,
+                description=self.tr("Measure Line layer"),
+                types=[QgsWkbTypes.LineGeometry],
+                optional=True,
+            )
+        )
+
+        self.addParameter(
+            QgsProcessingParameterVectorLayer(
+                self.INPUT_MEASURE_POLYGON_LAYER,
+                description=self.tr("Measure Polygon layer"),
+                types=[QgsWkbTypes.PolygonGeometry],
+                optional=True,
+            )
+        )
+
+        self.addParameter(
+            QgsProcessingParameterVectorLayer(
+                self.INPUT_BUILDING_GROUP_LAYER,
+                description=self.tr("Building group layer"),
+                types=[QgsWkbTypes.PolygonGeometry],
+                optional=True,
+            )
+        )
+
+        self.addParameter(
+            QgsProcessingParameterBoolean(
+                self.INPUT_REPLACE_WS_WITH_WN,
+                description=self.tr("Export wn_obj_id for Structure view layer"),
+                defaultValue=False,
+                optional=True,
+            )
+        )
+
     def processAlgorithm(
         self, parameters, context: QgsProcessingContext, feedback: QgsProcessingFeedback
     ):
@@ -112,6 +182,27 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
         reach_view_layer = self.parameterAsVectorLayer(
             parameters, self.INPUT_REACH_VIEW_LAYER, context
         )
+
+        catchment_layer = self.parameterAsVectorLayer(
+            parameters, self.INPUT_CATCHMENT_LAYER, context
+        )
+        building_group_layer = self.parameterAsVectorLayer(
+            parameters, self.INPUT_BUILDING_GROUP_LAYER, context
+        )
+        measure_point_layer = self.parameterAsVectorLayer(
+            parameters, self.INPUT_MEASURE_POINT_LAYER, context
+        )
+        measure_line_layer = self.parameterAsVectorLayer(
+            parameters, self.INPUT_MEASURE_LINE_LAYER, context
+        )
+        measure_polygon_layer = self.parameterAsVectorLayer(
+            parameters, self.INPUT_MEASURE_POLYGON_LAYER, context
+        )
+
+        use_wastewater_node = self.parameterAsBoolean(
+            parameters, self.INPUT_REPLACE_WS_WITH_WN, context
+        )
+
         scales = [
             self.AVAILABLE_SCALES[i]
             for i in self.parameterAsEnums(parameters, self.INPUT_SCALES, context)
@@ -132,12 +223,51 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
         # Store a mapping from FeatureID to obj_id (used below)
         reach_feats = reach_view_layer.getFeatures()
         structure_feats = structure_view_layer.getFeatures()
-        rowid_to_obj_id = {
-            "vw_tww_reach": {f.id(): f.attribute("obj_id") for f in reach_feats},
-            "vw_tww_wastewater_structure": {
-                f.id(): f.attribute("obj_id") for f in structure_feats
-            },
-        }
+
+        rowid_to_obj_id = {"vw_tww_reach": {f.id(): f.attribute("obj_id") for f in reach_feats}}
+
+        # AG-64 and AG-96 need to map the wastewater structure label to the wastewater node
+        if use_wastewater_node:
+            rowid_to_obj_id.update(
+                {
+                    "vw_tww_wastewater_structure": {
+                        f.id(): f.attribute("wn_obj_id") for f in structure_feats
+                    }
+                }
+            )
+        else:
+            rowid_to_obj_id.update(
+                {
+                    "vw_tww_wastewater_structure": {
+                        f.id(): f.attribute("obj_id") for f in structure_feats
+                    }
+                }
+            )
+        if catchment_layer:
+            catchment_feats = catchment_layer.getFeatures()
+            rowid_to_obj_id.update(
+                {"vw_tww_catchment_area": {f.id(): f.attribute("obj_id") for f in catchment_feats}}
+            )
+        if building_group_layer:
+            building_group_feats = building_group_layer.getFeatures()
+            rowid_to_obj_id.update(
+                {"building_group": {f.id(): f.attribute("obj_id") for f in building_group_feats}}
+            )
+        if measure_point_layer:
+            measure_point_feats = measure_point_layer.getFeatures()
+            rowid_to_obj_id.update(
+                {"measure_point": {f.id(): f.attribute("obj_id") for f in measure_point_feats}}
+            )
+        if measure_line_layer:
+            measure_line_feats = measure_line_layer.getFeatures()
+            rowid_to_obj_id.update(
+                {"measure_line": {f.id(): f.attribute("obj_id") for f in measure_line_feats}}
+            )
+        if measure_polygon_layer:
+            measure_polygon_feats = measure_polygon_layer.getFeatures()
+            rowid_to_obj_id.update(
+                {"measure_polygon": {f.id(): f.attribute("obj_id") for f in measure_polygon_feats}}
+            )
 
         annotated_paths = []
 
@@ -177,13 +307,46 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
             if labels_count == 0:
                 continue
 
-            # Annotate features with tww_obj_id and scal
+            # Annotate features with tww_obj_id and scale
             lyr_name_to_key = {
                 TwwLayerManager.layer(
                     "vw_tww_wastewater_structure"
                 ).name(): "vw_tww_wastewater_structure",
                 TwwLayerManager.layer("vw_tww_reach").name(): "vw_tww_reach",
             }
+            if catchment_layer:
+                lyr_name_to_key.update(
+                    {
+                        TwwLayerManager.layer(
+                            "vw_tww_catchment_area"
+                        ).name(): "vw_tww_catchment_area",
+                    }
+                )
+            if building_group_layer:
+                lyr_name_to_key.update(
+                    {
+                        TwwLayerManager.layer("building_group").name(): "building_group",
+                    }
+                )
+            if measure_point_layer:
+                lyr_name_to_key.update(
+                    {
+                        TwwLayerManager.layer("measure_point").name(): "measure_point",
+                    }
+                )
+            if measure_line_layer:
+                lyr_name_to_key.update(
+                    {
+                        TwwLayerManager.layer("measure_line").name(): "measure_line",
+                    }
+                )
+            if measure_polygon_layer:
+                lyr_name_to_key.update(
+                    {
+                        TwwLayerManager.layer("measure_polygon").name(): "measure_polygon",
+                    }
+                )
+            feedback.pushInfo(f"used layers: {lyr_name_to_key}")
             for label in geojson["features"]:
                 layer_name = label["properties"]["Layer"]
                 # this is a non-TWW layer, we don't annotate it

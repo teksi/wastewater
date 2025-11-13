@@ -1,10 +1,25 @@
 #!/usr/bin/env python3
 
+import psycopg
+from pum import SqlContent
 
-try:
-    import psycopg
-except ImportError:
-    import psycopg2 as psycopg
+
+def check_owner(connection: psycopg.Connection, table_schema: str, table_name: str):
+    try:
+        cursor = SqlContent(
+            " SELECT rolname FROM pg_roles WHERE pg_has_role( CURRENT_USER, oid, 'member');"
+        ).execute(connection)
+        roles = cursor.fetchall()
+
+        cursor = SqlContent(
+            f"SELECT tableowner from pg_tables WHERE tablename='{table_name}' and schemaname='{table_schema}';"
+        ).execute(connection)
+        owner = cursor.fetchone()
+
+        is_owner = True if owner in roles else False
+    except Exception as e:
+        print("An error occurred:", e)
+    return is_owner
 
 
 def create_last_modification_trigger(tbl: str, parent_tbl: str = None):
@@ -12,7 +27,7 @@ def create_last_modification_trigger(tbl: str, parent_tbl: str = None):
         f"_parent('tww_od.{parent_tbl}')" if parent_tbl else "()"
     )  # as parent:_tbl is a tuple, we don't need additional brackets
     query = f"""
-    CREATE TRIGGER
+    CREATE OR REPLACE TRIGGER
     update_last_modified_{tbl}
     BEFORE UPDATE OR INSERT ON
      tww_od.{tbl}
@@ -33,7 +48,7 @@ def create_oid_default(tbl: str):
 
 
 def set_defaults_and_triggers(
-    pg_service: str = "pg_tww",
+    connection: psycopg.Connection,
     SingleInheritances: dict = {},
 ):
     """
@@ -42,46 +57,49 @@ def set_defaults_and_triggers(
     :param SingleInheritances: dictionary of all SingleInheritances in database
     """
 
-    conn = psycopg.connect(f"service={pg_service}")
-    cursor = conn.cursor()
-    cursor.execute(
+    cursor = SqlContent(
         "select table_name from information_schema.tables WHERE table_schema = 'tww_od'"
-    )
+    ).execute(connection)
     entries = cursor.fetchall()
 
     for entry in entries:
-        cursor.execute(
+        cursor = SqlContent(
             f"""select 1 from information_schema.columns
             WHERE table_schema = 'tww_od'
             AND table_name = '{entry[0]}'
             and column_name = 'obj_id'"""
-        )
+        ).execute(connection)
         found = cursor.fetchone()
         if found:
             query = create_oid_default(entry[0])
-            cursor.execute(query)
+            SqlContent(query).execute(connection)
         if entry[0] in SingleInheritances.keys():  # Find Subclasses
-            cursor.execute(
+            cursor = SqlContent(
                 f"""select 1 from information_schema.columns
                 WHERE table_schema = 'tww_od'
                 AND table_name = '{SingleInheritances[entry[0]]}'
                 and column_name = 'last_modification'"""
-            )
+            ).execute(connection)
             found = cursor.fetchone()
             if found:
-                query = create_last_modification_trigger(entry[0], SingleInheritances[entry[0]])
-                cursor.execute(query)
-
+                if check_owner(connection, "tww_od", entry[0]):
+                    query = create_last_modification_trigger(
+                        entry[0], SingleInheritances[entry[0]]
+                    )
+                    SqlContent(query).execute(connection)
+                else:
+                    raise Exception(f"Must be owner of tww_od.{entry[0]} to create triggers")
         else:
-            cursor.execute(
+            cursor = SqlContent(
                 f"""select 1 from information_schema.columns
                 WHERE table_schema = 'tww_od'
                 AND table_name = '{entry[0]}'
                 and column_name = 'last_modification'"""
-            )
+            ).execute(connection)
             found = cursor.fetchone()
             if found:
-                query = create_last_modification_trigger(entry[0])
-                cursor.execute(query)
-    conn.commit()
-    conn.close()
+                if check_owner(connection, "tww_od", entry[0]):
+                    query = create_last_modification_trigger(entry[0])
+                    SqlContent(query).execute(connection)
+                else:
+                    raise Exception(f"Must be owner of tww_od.{entry[0]} to create triggers")

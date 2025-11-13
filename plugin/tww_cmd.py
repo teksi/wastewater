@@ -30,6 +30,12 @@ class TeksiWastewaterCmd:
             help="QGIS Application prefix path",
         )
 
+        self.parser.add_argument(
+            "--srid",
+            default=2056,
+            help="SRID for import/export",
+        )
+
         subparsers = self.parser.add_subparsers(dest="subparser_name", help="sub-command --help")
 
         self._add_subparser_interlis_import(subparsers=subparsers)
@@ -56,6 +62,11 @@ class TeksiWastewaterCmd:
             help="Put log files next to XTF import file",
             action="store_true",
         )
+        subparser.add_argument(
+            "--filter_nulls",
+            help="Filter out NULL values from import",
+            action="store_true",
+        )
 
         self._add_postgres_connection_args(subparser)
 
@@ -65,7 +76,7 @@ class TeksiWastewaterCmd:
             help=f"{self.SUBPARSER_NAME_INTERLIS_EXPORT} --help",
         )
 
-        subparser.add_argument("--xtf_file", help="XTF outup file", required=True)
+        subparser.add_argument("--xtf_file", help="XTF output file", required=True)
         subparser.add_argument(
             "--selection",
             help="if provided, limits the export to networkelements that are provided in the selection (comma separated list of ids)",
@@ -75,8 +86,11 @@ class TeksiWastewaterCmd:
             default=config.MODEL_NAME_DSS,
             choices=[
                 config.MODEL_NAME_SIA405_ABWASSER,
+                config.MODEL_NAME_SIA405_BASE_ABWASSER,
                 config.MODEL_NAME_DSS,
                 config.MODEL_NAME_VSA_KEK,
+                config.MODEL_NAME_AG96,
+                config.MODEL_NAME_AG64,
             ],
             help="Model to export (default:  %(default)s)",
         )
@@ -85,10 +99,15 @@ class TeksiWastewaterCmd:
             help="Put log files next to XTF output file",
             action="store_true",
         )
-
+        subparser.add_argument("--labels_file", help="json file containing labeling candidates")
         subparser.add_argument(
             "--label_scale_pipeline_registry_1_1000",
             help="Export labels in scale 1:1'000, can be combined with other scales (Leitungskataster/Cadastre des conduites souterraines)",
+            action="store_true",
+        )
+        subparser.add_argument(
+            "--label_scale_network_plan_1_250",
+            help="Export labels in scale 1:250, can be combined with other scales (Werkplan/Plan de reseau)",
             action="store_true",
         )
         subparser.add_argument(
@@ -179,6 +198,8 @@ class TeksiWastewaterCmd:
                 xtf_file_input=self.args.xtf_file,
                 show_selection_dialog=self.args.show_selection_dialog,
                 logs_next_to_file=self.args.logs_next_to_file,
+                filter_nulls=self.args.filter_nulls,
+                srid=self.args.srid,
             )
 
             print(f"\nData successfully imported from {self.args.xtf_file}")
@@ -214,6 +235,8 @@ class TeksiWastewaterCmd:
             label_scales.append(
                 ExtractlabelsInterlisAlgorithm.AVAILABLE_SCALE_PIPELINE_REGISTRY_1_1000
             )
+        if self.args.label_scale_network_plan_1_250:
+            label_scales.append(ExtractlabelsInterlisAlgorithm.AVAILABLE_SCALE_NETWORK_PLAN_1_250)
         if self.args.label_scale_network_plan_1_500:
             label_scales.append(ExtractlabelsInterlisAlgorithm.AVAILABLE_SCALE_NETWORK_PLAN_1_500)
         if self.args.label_scale_overviewmap_1_10000:
@@ -233,8 +256,10 @@ class TeksiWastewaterCmd:
                 xtf_file_output=self.args.xtf_file,
                 export_models=[self.args.export_model],
                 logs_next_to_file=self.args.logs_next_to_file,
+                labels_file=self.args.labels_file,
                 selected_labels_scales_indices=label_scales,
                 selected_ids=selected_ids,
+                srid=self.args.srid,
             )
             print(f"\nData successfully exported to {self.args.xtf_file}")
 

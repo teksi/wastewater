@@ -1,0 +1,20 @@
+variables:
+  myVariable:
+    value: "Hello World"
+    type: literal
+  myNumber:
+    value: 0
+    type: literal
+
+sql_files:
+  - file: 001_demo.sql
+  - file: 002_demo.sql
+
+extra_definitions:
+  vw_tww_overflow: "vw_tww_overflow.yaml"
+
+multiple_inherintances:
+  vw_maintenance: "vw_maintenance_event.yaml"
+
+simple_joins_yaml:
+  vw_export_reach: "vw_export_reach.yaml"
