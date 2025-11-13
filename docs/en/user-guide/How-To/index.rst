@@ -71,8 +71,10 @@ In the example, the 200mm-reaches are swwf-reaches and therefore not labeled.
 
 Which reach is I1, which is I2?
 
-Answer: TWW uses the azimut of the last segment of the reach (for inputs) or the first segement of the reach (for outputs) to define the order of the labels. If you stand in the North to the manhole and go clockwise around the manhole, you will first come to I1 and then later to I2.
-In the example, 300 combined-wastewater-reach is I1, 400 wastewater-reach is I2.
+Answer: TWW uses the azimut of the last segment of the reach (for inputs) or the first segement of the reach (for outputs) to define the order of the labels. If you stand on the Main-Node of the manhole and turn to the outlet, you find first I1 if you turn clockwise and you find later I2.
+In the example, 400 wastewater-reach is I1, 300 combined-wastewater-reach is I2.
+
+.. hint:: This way of numbering the reaches differs from QGEP, where the north direction was the start point.
 
 
 How to translate a label prefix (C, B, I, O)
