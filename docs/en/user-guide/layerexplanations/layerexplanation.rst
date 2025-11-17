@@ -157,7 +157,7 @@ Log card for special structures: Hydraulically specialized wastewater structures
 
 
 
-Catchment area totals ``tww_od.catchment_area_totals``
+Catchment area totals ``tww_app.catchment_area_totals``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Information on the attached catchment area (total), water volumes, and discharge point of the storm overflow or storm overflow basin. Direct catchment area only needs to be filled in if the discharge is activated during the design event or if it is unknown whether it will be activated. All information must be provided for both the actual and planned status.
@@ -167,7 +167,7 @@ Information on the attached catchment area (total), water volumes, and discharge
 ``tww_app.vw_catchment_area_totals`` adds the values of ``tww_od.catchment_area_totals`` and ``tww_app.hydr_char_data`` to the aggregated geometries
 
 
-Catchment area totals aggregated ``tww_od.vw_catchment_area_totals_aggregated``
+Catchment area totals aggregated ``tww_app.vw_catchment_area_totals_aggregated``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 It is not to be confused with ``tww_app.vw_catchment_area_totals``.
@@ -180,6 +180,14 @@ d. surface_red includes direct only
 e. sewer_infiltration_water includes upstream log cards
 f. waste_water_production includes upstream log cards
 g. _dim values respectively
+
+
+Both views map ``catchment_area`` and ``log_card`` via the following procedure:
+``[catchment_area.fk_special_building_xx_yy] - > (log_card.obj_id)``
+``[log_card..fk_main_structure] - > (log_card.obj_id) --optional``
+``[log_card.fk_pwwf_wastewater_node] - > (wastewater_node.obj_id)``
+``(wastewater_node.obj_id) <- [hydr_char_data.fk_pwwf_wastewater_node] -- with status=current``
+``(hydr_char_data.obj_id) <- [catchment_area_totals.fk_hydr_char_data]``
 
 
 Hydraulic char data ``tww_od.hydraulic_char_data``
