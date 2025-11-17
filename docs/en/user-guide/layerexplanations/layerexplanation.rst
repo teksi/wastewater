@@ -22,7 +22,7 @@ Even if there are several covers or wastewater nodes, there is just one point fo
 
 .. attention:: Do not export this point coordinates as covers. Use the layer vw_cover for this.
 
-.. Added in version 2025
+.. versionadded::2025.0
 
 A calculated field ``tww_is_primary`` is available for the user-defined definition of primary wastewater structures. It allows easier definitions of queries, symbologies and labels.
 
@@ -34,7 +34,7 @@ Main layer for line-wastewater structures (channels). Creating a new record in t
 
 .. figure:: images/schema_vw_tww_reach.jpg
 
-.. Added in version 2025
+.. versionadded::2025.0
 
 A calculated field ``tww_is_primary`` is available for the user-defined definition of primary wastewater structures. It allows easier definitions of queries, symbologies and labels.
 
@@ -64,7 +64,7 @@ Use this layer to change the situation of some specific cover (and not the whole
 Channels ``tww_app.mvw_tww_channel``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. Modified in version 2025 : Changed spelling and geometry line type
+.. versionchanged::2025.0 : Changed spelling and geometry line type
 
 The channel-class has no geometry. Therefore, mvw_tww_channel is a materialized view that uses the reach-geometries to work with e.g with maintenace_events, that are not connected to reaches, but to channels.
 
