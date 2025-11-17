@@ -155,18 +155,31 @@ Log card ``tww_od.vw_tww.log_card``
 
 Log card for special structures: Hydraulically specialized wastewater structures, e.g., storm water basins, storm water overflows, or pumping stations. Most special structures are also specialized structures. However, special structures such as separation structures or small pumping stations are often designed as standard shafts.
 
+
+
 Catchment area totals ``tww_od.catchment_area_totals``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Information on the attached catchment area (total), water volumes, and discharge point of the storm overflow or storm overflow basin. Direct catchment area only needs to be filled in if the discharge is activated during the design event or if it is unknown whether it will be activated. All information must be provided for both the actual and planned status.
 
+``tww_app.vw_catchment_area_totals`` is based on the materialized view ``tww_app.mvw_catchment_area_totals``.
+``tww_app.mvw_catchment_area_totals`` aggregates the geometry of the catchment areas by log card.
+``tww_app.vw_catchment_area_totals`` adds the values of ``tww_od.catchment_area_totals`` and ``tww_app.hydr_char_data`` to the aggregated geometries
+
 
 Catchment area totals aggregated ``tww_od.vw_catchment_area_totals_aggregated``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This view:
-1. refreshes all materialised views in tww_app when clicking the refresh sql button
-2. creates catchment_area view with explicit population and reduced area fields
+It is not to be confused with ``tww_app.vw_catchment_area_totals``.
+
+This view aggregates a set of values from the catchment areas, sometime including catchment areas on previous log cards
+a. population includes upstream log cards
+b. surface_area includes direct only
+c. surface_imp includes direct only
+d. surface_red includes direct only
+e. sewer_infiltration_water includes upstream log cards
+f. waste_water_production includes upstream log cards
+g. _dim values respectively
 
 
 Hydraulic char data ``tww_od.hydraulic_char_data``
