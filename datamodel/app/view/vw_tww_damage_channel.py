@@ -48,6 +48,10 @@ def vw_tww_damage_channel(
                 WHEN ch.fk_reach_point_from::text = ex.fk_reach_point::text THEN 'downstream'::text
                 ELSE 'unknown'::text
             END AS direction,
+            CASE
+                WHEN st_length(base.ch_progression2d_geometry)=0 THEN NULL
+                ELSE LEAST(base.channel_distance / st_length(base.ch_progression2d_geometry), 1)
+            END AS travelled_distance_share,
         ch.tww_is_primary
         {extra_cols}
         FROM tww_od.damage_channel dc
@@ -85,12 +89,15 @@ def vw_tww_damage_channel(
         {dg_cols_base}
         , {dc_cols_base}
         , base.ws_identifier
-        , ST_LineInterpolatePoint(st_LineMerge(base.ch_progression2d_geometry),
+        , CASE WHEN base.ch_progression2d_geometry IS NULL THEN NULL
+          ELSE
+          ST_LineInterpolatePoint(st_LineMerge(base.ch_progression2d_geometry),
         CASE
-            WHEN base.direction = 'downstream'::text THEN LEAST(base.channel_distance / st_length(base.ch_progression2d_geometry), 1)
-            WHEN base.direction = 'upstream'::text THEN 1 - LEAST(base.channel_distance / st_length(base.ch_progression2d_geometry), 1)
+            WHEN base.direction = 'downstream'::text THEN base.travelled_distance_share
+            WHEN base.direction = 'upstream'::text THEN 1 - base.travelled_distance_share
             ELSE NULL
-        END) AS situation2d_geometry
+        END) 
+        END AS situation2d_geometry
         , base.direction
         , base.tww_is_primary
         , damage_pictures.pics[1] as picture_1
