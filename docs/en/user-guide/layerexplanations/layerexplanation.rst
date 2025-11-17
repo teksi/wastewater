@@ -109,6 +109,8 @@ Catchment ``tww_od.catchment_area``
 Main layer to digitize and edit the catchment_areas.
 
 
+.. versionadded:: 2025.0
+
 Rural
 --------
 
@@ -143,6 +145,7 @@ re_building_group_disposal ``tww_od.re_building_group_disposal``
 
 Relationship table for n:m relationship between building_group and disposal
 
+.. versionadded:: 2025.0
 
 Log card
 --------
