@@ -49,8 +49,8 @@ def vw_tww_damage_channel(
                 ELSE 'unknown'::text
             END AS direction,
             CASE
-                WHEN st_length(base.ch_progression2d_geometry)=0 THEN NULL
-                ELSE LEAST(base.channel_distance / st_length(base.ch_progression2d_geometry), 1)
+                WHEN st_length(ch.progression2d_geometry)=0 THEN NULL
+                ELSE LEAST(dc.channel_distance / st_length(ch.progression2d_geometry), 1)
             END AS travelled_distance_share,
         ch.tww_is_primary
         {extra_cols}
