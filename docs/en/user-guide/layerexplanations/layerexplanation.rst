@@ -22,10 +22,9 @@ Even if there are several covers or wastewater nodes, there is just one point fo
 
 .. attention:: Do not export this point coordinates as covers. Use the layer vw_cover for this.
 
-Version 2025 enhancements
-"""""""""""""""""""""""""
+.. Added in version 2025
 
-New calculated field ``tww_is_primary`` for the user-defined definition of primary wastewater structures. Allows easier definitions of queries, symbologies and labels
+A calculated field ``tww_is_primary`` is available for the user-defined definition of primary wastewater structures. It allows easier definitions of queries, symbologies and labels.
 
 
 Reaches ``tww_app.vw_tww_reach``
@@ -35,11 +34,11 @@ Main layer for line-wastewater structures (channels). Creating a new record in t
 
 .. figure:: images/schema_vw_tww_reach.jpg
 
-Version 2025 enhancements
-"""""""""""""""""""""""""
+.. Added in version 2025
 
-* New calculated field ``tww_is_primary`` for the user-defined definition of primary wastewater structures. Allows easier definitions of queries, symbologies and labels
-* Possibilty to create flushing_nozzle on reaches as structure part of the channel
+A calculated field ``tww_is_primary`` is available for the user-defined definition of primary wastewater structures. It allows easier definitions of queries, symbologies and labels.
+
+There is a possibilty to create flushing_nozzle on reaches as structure part of the channel.
 
 
 Wastewater Structures
@@ -62,8 +61,10 @@ Covers ``tww_app.vw_cover``
 
 Use this layer to change the situation of some specific cover (and not the whole wastewater structure) or to add a new cover to an existing wastewater structure. You can add an additional covers in the covers-tab of the `vw_tww_wastewater_structure` too. Additionally, use this layer to show the detailed position of the covers (e.g. in network_plan or pipeline_registry) or to export the cover positions `situation_geometry`.
 
-Channels ``tww_app.mvw_tww_channel``  ``Version 2025 new layer with line-geometry``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Channels ``tww_app.mvw_tww_channel``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. Modified in version 2025 : Changed spelling and geometry line type
 
 The channel-class has no geometry. Therefore, mvw_tww_channel is a materialized view that uses the reach-geometries to work with e.g with maintenace_events, that are not connected to reaches, but to channels.
 
