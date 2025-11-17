@@ -96,7 +96,7 @@ def vw_tww_damage_channel(
             WHEN base.direction = 'downstream'::text THEN base.travelled_distance_share
             WHEN base.direction = 'upstream'::text THEN 1 - base.travelled_distance_share
             ELSE NULL
-        END) 
+        END)
         END AS situation2d_geometry
         , base.direction
         , base.tww_is_primary
