@@ -12,7 +12,8 @@ elif [ -f .env.example ]; then
   export $(grep -v '^#' .env.example | xargs)
 fi
 
-DOCKER_TAG=${DOCKER_TAG:-opengisch/pum_db}
+DOCKER_IMAGE_NAME=${DOCKER_IMAGE_NAME:-opengisch/pum_db}
+DOCKER_TAG=${DOCKER_TAG:-unstable}
 CONTAINER_NAME=${CONTAINER_NAME:-pum_db_test}
 DB_NAME=${DB_NAME:-pum_test}
 PG_SERVICE=${PG_SERVICE:-pg_pum_test}
@@ -57,12 +58,12 @@ if [[ $BUILD -eq 1 ]]; then
   --build-arg DB_NAME=${DB_NAME} \
   --build-arg PG_SERVICE=${PG_SERVICE} \
   -f datamodel/.docker/Dockerfile \
-  --tag ${DOCKER_TAG} \
+  --tag ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} \
   .
 fi
 
 docker rm -f ${CONTAINER_NAME} || true
-docker run -d -p ${PG_CONTAINER_PORT}:5432 -v $(pwd):/usr/src --name ${CONTAINER_NAME} ${DOCKER_TAG} -c log_statement=all
+docker run -d -p ${PG_CONTAINER_PORT}:5432 -v $(pwd):/usr/src --name ${CONTAINER_NAME} ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} -c log_statement=all
 
 docker exec ${CONTAINER_NAME} sh -c 'pum --version'
 
