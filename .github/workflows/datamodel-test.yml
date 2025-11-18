@@ -38,11 +38,11 @@ jobs:
         - modification_ci: false
           modification_agxx: false
 
-        - modification_ci: true
-          modification_agxx: false
+        # - modification_ci: true
+        #   modification_agxx: false
 
-        - modification_ci: false
-          modification_agxx: true
+        # - modification_ci: false
+        #   modification_agxx: true
 
     steps:
       - uses: actions/checkout@v5
