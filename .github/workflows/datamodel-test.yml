@@ -58,7 +58,7 @@ jobs:
 
       - name: Initialize container
         run: |
-          docker run -d -p 5432:5432 -v $(pwd):/src --name pum_db_container ${DOCKER_TAG}
+          docker run -d -p 5432:5432 -v $(pwd):/usr/src --name pum_db_container ${DOCKER_TAG}
           until docker exec pum_db_container pg_isready -U postgres; do
             echo "Waiting for PostgreSQL to be ready..."
             sleep 2
