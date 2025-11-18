@@ -7,14 +7,16 @@ services:
       args:
         POSTGIS_IMAGE: ${POSTGIS_IMAGE:-postgis/postgis:16-3.5-alpine}
     image: teksi/tww:${DOCKER_TAG:-unstable}
-    working_dir: /src
+    working_dir: /usr/src
     environment:
+      - DB_NAME
+      - PG_SERVICE
       - EXTENSION_CI
       - EXTENSION_AGXX
       - EXTENSION_ZIP
       - LANG_CODE
     volumes:
-      - .:/src
+      - .:/usr/src
     ports:
       # making the postgres database accessible for debugging
       - ${PG_CONTAINER_PORT:-5432}:${PG_CONTAINER_PORT:-5432}
