@@ -25,105 +25,58 @@ jobs:
     name: Run unit tests on datamodel
     runs-on: ubuntu-24.04
 
-    strategy:
-      fail-fast: true
-
-    steps:
-      - uses: actions/checkout@v5
-
-      - name: Docker build
-        run: |
-          docker build \
-          --build-arg RUN_TEST=True \
-          -f datamodel/.docker/Dockerfile \
-          --tag teksi/wastewater:unstable .
-
-      - name: Initialize container
-        run: |
-          docker run -d -p 5432:5432 --name teksi-wastewater teksi/wastewater:unstable
-          until docker exec teksi-wastewater pg_isready -U postgres; do
-            echo "Waiting for PostgreSQL to be ready..."
-            sleep 2
-          done
-          # create the database
-          docker exec teksi-wastewater sh -c 'createdb tww'
-          docker exec teksi-wastewater pum -vvv -s pg_tww -d datamodel install -p SRID 2056 --roles --grant
-
-      - name: Run tests
-        run:  docker exec teksi-wastewater pytest datamodel
-
-      - name: Docker logs
-        if: failure()
-        run: docker logs teksi-wastewater
-
-  extension-db-initalisation-tests:
-    name: Run tests to initialize db with an extended datamodel
-    runs-on: ubuntu-24.04
+    env:
+      DOCKER_TAG: teksi/tww:unstable
+      DB_NAME: tww
+      PG_SERVICE: pg_tww
+      DEMO_DATA: Aletsch
 
     strategy:
       fail-fast: true
-
-    steps:
-      - uses: actions/checkout@v5
-
-      - name: Docker build
-        run: |
-          docker build \
-          --build-arg RUN_TEST=True \
-          -f datamodel/.docker/Dockerfile \
-          --tag teksi/wastewater:unstable .
-
-      - name: Initialize container
-        run: |
-          docker run -d -p 5432:5432 --name teksi-wastewater teksi/wastewater:unstable
-          until docker exec teksi-wastewater pg_isready -U postgres; do
-            echo "Waiting for PostgreSQL to be ready..."
-            sleep 2
-          done
-          # create the database
-          docker exec teksi-wastewater sh -c 'createdb tww'
-          docker exec teksi-wastewater pum -vvv -s pg_tww -d datamodel install -p SRID 2056 -p modification_ci --roles --grant
-
-      - name: Docker logs
-        if: failure()
-        run: docker logs teksi-wastewater
-
-  extension-tests:
-    name: Run unit tests on extended datamodel
-    runs-on: ubuntu-24.04
-
-    strategy:
       matrix:
-        extension: ["agxx"]
-      fail-fast: true
+        include:
+        - modification_ci: false
+          modification_agxx: false
+
+        - modification_ci: true
+          modification_agxx: false
+
+        - modification_ci: false
+          modification_agxx: true
 
     steps:
       - uses: actions/checkout@v5
 
-      - name: Docker build
+      - name: "build dockerfile"
         run: |
-          docker build \
-          --build-arg RUN_TEST=True \
-          -f datamodel/.docker/Dockerfile \
-          --tag teksi/wastewater:unstable .
+          docker build -f datamodel/.docker/Dockerfile \
+            --build-arg RUN_TEST=True \
+            --build-arg DB_NAME=${DB_NAME} \
+            --build-arg PG_SERVICE=${PG_SERVICE} \
+            --build-arg TEST_PACKAGES="${TEST_PACKAGES}" \
+            --tag ${DOCKER_TAG} .
 
       - name: Initialize container
         run: |
-          docker run -d -p 5432:5432 --name teksi-wastewater teksi/wastewater:unstable
-          until docker exec teksi-wastewater pg_isready -U postgres; do
+          docker run -d -p 5432:5432 -v $(pwd):/src --name pum_db_container ${DOCKER_TAG}
+          until docker exec pum_db_container pg_isready -U postgres; do
             echo "Waiting for PostgreSQL to be ready..."
             sleep 2
           done
           # create the database
-          docker exec teksi-wastewater sh -c 'createdb tww'
-          docker exec teksi-wastewater pum -vvv -s pg_tww -d datamodel install -p SRID 2056 -p modification_${{ matrix.extension }} --roles --grant
+          docker exec pum_db_container sh -c "createdb ${DB_NAME}"
+          docker exec pum_db_container \
+              pum -vvv -s ${PG_SERVICE} -d datamodel install \
+              -p modification_ci ${{ matrix.modification_ci}} \
+              -p modification_agxx ${{ matrix.modification_agxx}} \
+              -p SRID 2056 --roles --grant
 
       - name: Run tests
-        run:  docker exec teksi-wastewater pytest datamodel
+        run:  docker exec pum_db_container pytest datamodel
 
       - name: Docker logs
         if: failure()
-        run: docker logs teksi-wastewater
+        run: docker logs pum_db_container
 
   static-tests:
     name: Run static tests on datamodel
