@@ -23,7 +23,7 @@ logger.addHandler(handler)
 
 start_app()
 
-PG_PORT = os.getenv("TWW_PG_PORT", 5432)
+PG_PORT = os.getenv("PG_PORT", 5432)
 
 MINIMAL_DATASET_DSS = "minimal-dataset-DSS.xtf"
 MINIMAL_DATASET_ORGANISATION_ARBON_ONLY = "minimal-dataset-organisation-arbon-only.xtf"
