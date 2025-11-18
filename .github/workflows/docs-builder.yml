@@ -23,10 +23,13 @@ on:
 
 jobs:
   datamodel-documentation:
+    # Skip generating datamodel docs on PRs labeled PR-fast-doc
+    if: ${{ !(github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'PR-fast-doc')) }}
     uses: ./.github/workflows/datamodel-create-dumps.yml
 
   build:
     needs: datamodel-documentation
+    if: always() # Always run to build docs even if datamodel step is skipped
     runs-on: ubuntu-24.04
 
     steps:
@@ -35,15 +38,23 @@ jobs:
 
       - name: install requirements
         working-directory: docs
+        run: pip install -r requirements.txt
+
+      - name: install tx requirements
+        if: ${{ !(github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'PR-fast-doc')) }}
+        working-directory: docs
         run: |
-          pip install -r requirements.txt
+          pip install -r requirements-tx.txt
           sudo apt-get install -y gettext
           curl -OL https://github.com/transifex/cli/releases/download/v1.6.10/tx-linux-amd64.tar.gz
           tar -xvzf tx-linux-amd64.tar.gz
           make gettext
 
+      - name: Prepare datamodel static folder
+        run: mkdir -p docs/_static/datamodel
+
       - name: tx pull
-        if: ${{ github.event.pull_request.head.repo.full_name == 'teksi/wastewater' || github.event_name == 'push' && github.ref == 'refs/heads/main' || github.event_name == 'schedule' }}
+        if: ${{ ( github.event.pull_request.head.repo.full_name == 'teksi/wastewater' || github.event_name == 'push' && github.ref == 'refs/heads/main' || github.event_name == 'schedule') && !(github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'PR-fast-doc')) }}
         env:
           TX_TOKEN: ${{ secrets.TX_TOKEN }}
         working-directory: docs
@@ -57,6 +68,8 @@ jobs:
         run: make transifex_sync
 
       - name: copy datamodel documentation
+        # Download artifact only if datamodel step ran (i.e., not a fast-doc PR)
+        if: ${{ !(github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'PR-fast-doc')) }}
         uses: actions/download-artifact@v6
         with:
           name: datamodel-schemaspy
