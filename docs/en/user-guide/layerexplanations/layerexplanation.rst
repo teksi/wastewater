@@ -22,12 +22,24 @@ Even if there are several covers or wastewater nodes, there is just one point fo
 
 .. attention:: Do not export this point coordinates as covers. Use the layer vw_cover for this.
 
+.. versionadded:: 2025.0
+
+A calculated field ``tww_is_primary`` is available for the user-defined definition of primary wastewater structures. It allows easier definitions of queries, symbologies and labels.
+
+
 Reaches ``tww_app.vw_tww_reach``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Main layer for line-wastewater structures (channels). Creating a new record in this layer always creates a new reach and a new channel. In the edit form, you have access to a lot of the related tables (e.g. structure parts, maintenance events).
 
 .. figure:: images/schema_vw_tww_reach.jpg
+
+.. versionadded:: 2025.0
+
+A calculated field ``tww_is_primary`` is available for the user-defined definition of primary wastewater structures. It allows easier definitions of queries, symbologies and labels.
+
+There is a possibilty to create flushing_nozzle on reaches as structure part of the channel.
+
 
 Wastewater Structures
 ---------------------
@@ -49,10 +61,14 @@ Covers ``tww_app.vw_cover``
 
 Use this layer to change the situation of some specific cover (and not the whole wastewater structure) or to add a new cover to an existing wastewater structure. You can add an additional covers in the covers-tab of the `vw_tww_wastewater_structure` too. Additionally, use this layer to show the detailed position of the covers (e.g. in network_plan or pipeline_registry) or to export the cover positions `situation_geometry`.
 
-Channels ``tww_app.vw_channel``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Channels ``tww_app.mvw_tww_channel``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The channel-class has no geometry and is therefore mostly changed in the vw_tww_reach layer.
+.. versionchanged:: 2025.0
+
+The channel-class has no geometry. Therefore, mvw_tww_channel is a materialized view that uses the reach line-geometries to work with e.g with maintenace_events, that are not connected to reaches, but to channels.
+
+The "old" vw_channel without geometry still exits beside.
 
 Organisations ``tww_od.organisation``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
