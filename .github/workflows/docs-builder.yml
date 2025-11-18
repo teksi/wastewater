@@ -38,8 +38,13 @@ jobs:
 
       - name: install requirements
         working-directory: docs
+        run: pip install -r requirements.txt
+
+      - name: install tx requirements
+        if: ${{ !(github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'PR-fast-doc')) }}
+        working-directory: docs
         run: |
-          pip install -r requirements.txt
+          pip install -r requirements-tx.txt
           sudo apt-get install -y gettext
           curl -OL https://github.com/transifex/cli/releases/download/v1.6.10/tx-linux-amd64.tar.gz
           tar -xvzf tx-linux-amd64.tar.gz
@@ -49,7 +54,7 @@ jobs:
         run: mkdir -p docs/_static/datamodel
 
       - name: tx pull
-        if: ${{ github.event.pull_request.head.repo.full_name == 'teksi/wastewater' || github.event_name == 'push' && github.ref == 'refs/heads/main' || github.event_name == 'schedule' }}
+        if: ${{ ( github.event.pull_request.head.repo.full_name == 'teksi/wastewater' || github.event_name == 'push' && github.ref == 'refs/heads/main' || github.event_name == 'schedule') && !(github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'PR-fast-doc')) }}
         env:
           TX_TOKEN: ${{ secrets.TX_TOKEN }}
         working-directory: docs
