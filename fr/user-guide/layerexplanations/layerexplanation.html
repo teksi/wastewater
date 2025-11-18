@@ -128,6 +128,10 @@
 <p class="admonition-title">Attention</p>
 <p>Ne pas exporter les coordonnées de ces points comme couvercles. Utiliser la couche vw_cover pour cela.</p>
 </div>
+<div class="versionadded">
+<p><span class="versionmodified added">Ajouté dans la version 2025.0.</span></p>
+</div>
+<p>A calculated field <code class="docutils literal notranslate"><span class="pre">tww_is_primary</span></code> is available for the user-defined definition of primary wastewater structures. It allows easier definitions of queries, symbologies and labels.</p>
 </section>
 <section id="reaches-tww-app-vw-tww-reach">
 <h3><span class="section-number">3.1.2.1.2. </span>Les tronçons <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_reach</span></code><a class="headerlink" href="#reaches-tww-app-vw-tww-reach" title="Lien vers cette rubrique"></a></h3>
@@ -135,6 +139,11 @@
 <figure class="align-default">
 <img alt="../../_images/schema_vw_tww_reach.jpg" src="../../_images/schema_vw_tww_reach.jpg" />
 </figure>
+<div class="versionadded">
+<p><span class="versionmodified added">Ajouté dans la version 2025.0.</span></p>
+</div>
+<p>A calculated field <code class="docutils literal notranslate"><span class="pre">tww_is_primary</span></code> is available for the user-defined definition of primary wastewater structures. It allows easier definitions of queries, symbologies and labels.</p>
+<p>There is a possibilty to create flushing_nozzle on reaches as structure part of the channel.</p>
 </section>
 </section>
 <section id="wastewater-structures">
@@ -152,9 +161,13 @@
 <h3><span class="section-number">3.1.2.2.3. </span>Couvercles <code class="docutils literal notranslate"><span class="pre">tww_app.vw_cover</span></code><a class="headerlink" href="#covers-tww-app-vw-cover" title="Lien vers cette rubrique"></a></h3>
 <p>Use this layer to change the situation of some specific cover (and not the whole wastewater structure) or to add a new cover to an existing wastewater structure. You can add an additional covers in the covers-tab of the <cite>vw_tww_wastewater_structure</cite> too. Additionally, use this layer to show the detailed position of the covers (e.g. in network_plan or pipeline_registry) or to export the cover positions <cite>situation_geometry</cite>.</p>
 </section>
-<section id="channels-tww-app-vw-channel">
-<h3><span class="section-number">3.1.2.2.4. </span>Canalisations <code class="docutils literal notranslate"><span class="pre">tww_app.vw_channel</span></code><a class="headerlink" href="#channels-tww-app-vw-channel" title="Lien vers cette rubrique"></a></h3>
-<p>La classe des canalisations n’a pas de géométries et est pour cela le plus souvent édité dans la couche tronçons <cite>vw_tww_reach</cite>.</p>
+<section id="channels-tww-app-mvw-tww-channel">
+<h3><span class="section-number">3.1.2.2.4. </span>Channels <code class="docutils literal notranslate"><span class="pre">tww_app.mvw_tww_channel</span></code><a class="headerlink" href="#channels-tww-app-mvw-tww-channel" title="Lien vers cette rubrique"></a></h3>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Modifié dans la version 2025.0.</span></p>
+</div>
+<p>The channel-class has no geometry. Therefore, mvw_tww_channel is a materialized view that uses the reach line-geometries to work with e.g with maintenace_events, that are not connected to reaches, but to channels.</p>
+<p>The « old » vw_channel without geometry still exits beside.</p>
 </section>
 <section id="organisations-tww-od-organisation">
 <h3><span class="section-number">3.1.2.2.5. </span>Organisations <code class="docutils literal notranslate"><span class="pre">tww_od.organisation</span></code><a class="headerlink" href="#organisations-tww-od-organisation" title="Lien vers cette rubrique"></a></h3>
