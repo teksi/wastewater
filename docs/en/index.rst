@@ -24,6 +24,7 @@ Contents
    installation-guide/index
    user-guide/index
    admin-guide/index
+   releases/index
    extensions-guide/index
    tww_swmm/index
    translation/index

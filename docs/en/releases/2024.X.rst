@@ -1,0 +1,14 @@
+.. _2024.X:
+
+2024.X
+===============
+
+Here you can find information about the 2024.X release of TEKSI wastewater
+
+Main features
+----------------
+
+ - First stable release of TEKSI wastewater module for QGIS
+ - Support of SIA 405 Wastewater (pipe cadastre) and VSA-DSS 2020.1 (general wastewater management plan) 
+ - 
+

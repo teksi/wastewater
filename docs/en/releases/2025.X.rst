@@ -1,0 +1,21 @@
+.. _2025.X:
+
+2025.X
+===============
+
+Here you can find information about the 2025.X release of TEKSI wastewater
+
+Main features
+---------------
+
+ - First version of TEKSI wastewater module for QGIS 3.40 LTR and initialied via the PostgreSQL Update Manager (PUM) and the TEKSI Module Management Tool (TMMT)
+ - Improved user interface for better usability and accessibility.
+ - New styles and symbology
+ - Extended translation support for french and german
+ 
+ 
+ 
+Bug fixes and performance improvements
+-----------------------------------------
+
+ - Various bug fixes for SWMM export
