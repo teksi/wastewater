@@ -32,7 +32,7 @@ jobs:
       DEMO_DATA: Aletsch
 
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         include:
         - modification_ci: false
