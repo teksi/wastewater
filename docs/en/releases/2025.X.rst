@@ -12,11 +12,10 @@ Main features
  - Improved user interface for better usability and accessibility.
  - New styles and symbology
  - Extended translation support for french and german
- 
- 
- 
+
+
+
 Bug fixes and performance improvements
 -----------------------------------------
 
  - Various bug fixes for SWMM export
- 
