@@ -17,7 +17,7 @@ services:
       - .:/src
     ports:
       # making the postgres database accessible for debugging
-      - ${PG_PORT:-5432}:${PG_PORT:-5432}
+      - ${PG_CONTAINER_PORT:-5432}:${PG_CONTAINER_PORT:-5432}
 
   qgis:
     build:
