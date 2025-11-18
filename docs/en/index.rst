@@ -18,7 +18,6 @@ Contents
 
 .. toctree::
    :maxdepth: 4
-   :numbered:
 
    features-guide/index
    installation-guide/index
