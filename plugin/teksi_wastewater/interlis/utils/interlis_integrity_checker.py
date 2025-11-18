@@ -150,7 +150,7 @@ class TWWIntegrityChecker:
             logger.info(f"Number of {parent_name} datasets: {len(parent_ids)}")
 
             missing_in_subclass = set(parent_ids)
-            missing_in_superclass = set()
+            missing_in_superclass = {}  # Maps subclass name to orphaned IDs
 
             for child_name in child_list:
                 cursor.execute(f"SELECT obj_id FROM {schema_name}.{child_name};")
@@ -160,31 +160,23 @@ class TWWIntegrityChecker:
 
                 missing_in_subclass -= child_ids
 
-                missing_in_superclass.update(child_ids - parent_ids)
+                orphaned = child_ids - parent_ids
+                if orphaned:
+                    missing_in_superclass[child_name] = orphaned
 
-            issues = {}
             if missing_in_subclass:
-                issues["missing_in_subclass"] = missing_in_subclass
                 errormsg += (
                     f"Missing subclass entries for {len(missing_in_subclass)} "
                     f"{schema_name}.{parent_name} objects (IDs: {sorted(missing_in_subclass)})\n"
                 )
             if missing_in_superclass:
-                issues["missing_in_superclass"] = missing_in_superclass
-                errormsg += (
-                    f"Missing superclass entries for {len(missing_in_superclass)} "
-                    f"objects in {schema_name}.{parent_name} subclasses (IDs: {sorted(missing_in_superclass)})\n"
-                )
-
-            if issues:
-                if missing_in_subclass:
+                for child_name, orphaned_ids in missing_in_superclass.items():
                     errormsg += (
-                        f"Missing subclass entries for {len(missing_in_subclass)} "
-                        f"{schema_name}.{parent_name} objects (IDs: {sorted(missing_in_subclass)})"
+                        f"Missing superclass entries for {len(orphaned_ids)} objects in {schema_name}.{child_name} "
+                        f"(IDs: {sorted(orphaned_ids)})\n"
                     )
-                else:
-                    errormsg += f"Too many subclass entries for {schema_name}.{parent_name}"
 
+            if missing_in_subclass or missing_in_superclass:
                 if self.limit_to_selection:
                     logger.warning(
                         f"Overall Subclass Count: {errormsg}. The problem might lie outside the selection"
