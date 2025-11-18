@@ -38,6 +38,9 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      - name: Setup env
+        run: cp .env.example .env
+
       - name: Docker build
         run: docker compose up -d --build
 

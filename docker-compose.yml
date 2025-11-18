@@ -6,11 +6,11 @@ services:
       dockerfile: datamodel/.docker/Dockerfile
       args:
         POSTGIS_IMAGE: ${POSTGIS_IMAGE:-postgis/postgis:16-3.5-alpine}
+        DB_NAME: ${DB_NAME:-tww}
+        PG_SERVICE: ${PG_SERVICE:-pg_tww}
     image: teksi/tww:${DOCKER_TAG:-unstable}
     working_dir: /usr/src
     environment:
-      - DB_NAME
-      - PG_SERVICE
       - EXTENSION_CI
       - EXTENSION_AGXX
       - EXTENSION_ZIP
