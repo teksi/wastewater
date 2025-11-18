@@ -144,18 +144,45 @@ class TWWIntegrityChecker:
 
             cursor.execute(f"SELECT obj_id FROM {schema_name}.{parent_name};")
 
+            cursor.execute(f"SELECT obj_id FROM {schema_name}.{parent_name};")
             parent_rows = cursor.fetchall()
-            parent_count = len(parent_rows)
-            logger.info(f"Number of {parent_name} datasets: {parent_count}")
+            parent_ids = {row[0] for row in parent_rows}
+            logger.info(f"Number of {parent_name} datasets: {len(parent_ids)}")
+
+            missing_in_subclass = set(parent_ids)
+            missing_in_superclass = set()
+
             for child_name in child_list:
                 cursor.execute(f"SELECT obj_id FROM {schema_name}.{child_name};")
                 child_rows = cursor.fetchall()
+                child_ids = {row[0] for row in child_rows}
                 logger.info(f"Number of {child_name} datasets: {len(child_rows)}")
-                parent_count = parent_count - len(child_rows)
 
-            if parent_count != 0:
-                if parent_count > 0:
-                    errormsg += f"Too many superclass entries for {schema_name}.{parent_name}"
+                missing_in_subclass -= child_ids
+
+                missing_in_superclass.update(child_ids - parent_ids)
+
+
+            issues = {}
+            if missing_in_subclass:
+                issues["missing_in_subclass"] = missing_in_subclass
+                errormsg += (
+                    f"Missing subclass entries for {len(missing_in_subclass)} "
+                    f"{schema_name}.{parent_name} objects (IDs: {sorted(missing_in_subclass)})\n"
+                )
+            if missing_in_superclass:
+                issues["missing_in_superclass"] = missing_in_superclass
+                errormsg += (
+                    f"Missing superclass entries for {len(missing_in_superclass)} "
+                    f"objects in {schema_name}.{parent_name} subclasses (IDs: {sorted(missing_in_superclass)})\n"
+                )
+
+            if issues:
+                if missing_in_subclass:
+                    errormsg += (
+                f"Missing subclass entries for {len(missing_in_subclass)} "
+                f"{schema_name}.{parent_name} objects (IDs: {sorted(missing_in_subclass)})"
+            )
                 else:
                     errormsg += f"Too many subclass entries for {schema_name}.{parent_name}"
 
@@ -165,19 +192,14 @@ class TWWIntegrityChecker:
                     )
                 else:
                     logger.error(f"Subclass Count error: {errormsg}")
-                    raise InterlisImporterExporterError(
-                        "Subclass Count error",
-                        errormsg,
-                        None,
-                    )
                 # Return statement added
-                return (True, errormsg, parent_count)
+                return (True, errormsg,  len(missing_in_subclass) + len(missing_in_superclass))
             else:
                 logger.info(
                     f"OK: number of subclass elements of class {parent_name} OK in schema {schema_name}!"
                 )
                 # Return statement added
-                return (False, errormsg, parent_count)
+                return (False, errormsg,  len(missing_in_subclass) + len(missing_in_superclass))
 
     def _check_conditions(
         self,
