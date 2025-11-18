@@ -54,7 +54,7 @@ jobs:
           docker compose exec db pum -vvv -s pg_tww -d datamodel install -p SRID 2056 --roles --grant
 
       - name: Create dumps
-        run: docker compose exec db /src/datamodel/scripts/create-dumps.py
+        run: docker compose exec db /usr/src/datamodel/scripts/create-dumps.py
 
       - name: Schemaspy
         run:  docker compose up schemaspy
