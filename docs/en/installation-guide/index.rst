@@ -1,6 +1,6 @@
 .. _installation-guide:
 
-TWW Installation Guide
+Installation Guide
 =======================
 
 
