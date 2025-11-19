@@ -18,10 +18,10 @@ and in the `user guide <../user-guide/index.html>`__.
 
 New functionalities will be tagged with the `release version` directly in the documentation as well as in the `releases <../releases/index.html>`__.
 
-Installation 
+Installation
 ----------------
 
-As this release was published before the development of the TEKSI Module Management Tool plugin (TMMT), 
+As this release was published before the development of the TEKSI Module Management Tool plugin (TMMT),
 it has to be installed manually directly from the assets available on the `release page <https://github.com/teksi/wastewater/releases/tag/2024.0.5>`__.
 
 Demo data
