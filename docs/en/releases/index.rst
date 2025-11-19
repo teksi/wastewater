@@ -10,5 +10,4 @@ Here you can find information about the different TEKSI wastewater releases, inc
 
    2024.X
    2025.X
-   future
-   template
+   2026.X

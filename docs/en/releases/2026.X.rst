@@ -1,9 +1,9 @@
-.. _future:
+.. _2026.X:
 
-version 2026.X
+2026.X (future)
 ===============
 
-Here you can find information about the 2026.X release of TEKSI wastewater
+Here you can find information about the future 2026.X release of TEKSI wastewater
 
 Main features
 ----------------
@@ -16,4 +16,5 @@ Main features
 
 Bug fixes and performance improvements
 -----------------------------------------
+
  - Various bug fixes for ...

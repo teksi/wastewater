@@ -1,6 +1,6 @@
 .. _template:
 
-version YYYY.X
+YYYY.X
 ===============
 
 Here you can find information about the YYYY.X release of TEKSI wastewater

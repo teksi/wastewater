@@ -11,3 +11,28 @@ Main features
  - First stable release of TEKSI wastewater module for QGIS
  - Support of SIA 405 Wastewater (pipe cadastre) and VSA-DSS 2020.1 (general wastewater management plan)
  - Support of VSA-KEK (TV inspections) 2020.1
+ - INTERLIS import/export
+
+All main available features are described in detail in the `features guide <../features-guide/index.html>`__.
+and in the `user guide <../user-guide/index.html>`__.
+
+New functionalities will be tagged with the `release version` directly in the documentation as well as in the `releases <../releases/index.html>`__.
+
+Installation 
+----------------
+
+As this release was published before the development of the TEKSI Module Management Tool plugin (TMMT), 
+it has to be installed manually directly from the assets available on the `release page <https://github.com/teksi/wastewater/releases/tag/2024.0.5>`__.
+
+Demo data
+----------------
+
+Demo data is available only in INTERLIS format for this release and can be downloaded here :
+`release page <https://github.com/teksi/wastewater/releases/tag/2024.0.5>`__.
+TODO : Upload INTERLIS demo files to the release page.
+
+
+Resources
+----------------
+ - Full changelog: https://github.com/teksi/wastewater/compare/2024.0.4...2024.0.5
+ - Release page: https://github.com/teksi/wastewater/releases/tag/2024.0.5
