@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>4.5. Personnalisation du modèle de données &mdash; Documentation TWW dev</title>
+  <title>Personnalisation du modèle de données &mdash; Documentation TWW dev</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
@@ -20,8 +20,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Recherche" href="../../search.html" />
-    <link rel="next" title="4.6. Data model tool" href="../datamodel-tool/index.html" />
-    <link rel="prev" title="4.4. Échange de données INTERLIS" href="../interlis-io/index.html" /> 
+    <link rel="next" title="Data model tool" href="../datamodel-tool/index.html" />
+    <link rel="prev" title="Échange de données INTERLIS" href="../interlis-io/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,37 +44,38 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">1. TEKSI Assainissement (TWW)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">2. Guide d’installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user-guide/index.html">3. TWW User Guide</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. Guide d’administration</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../datamodel.html">4.1. Datamodel</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pgadmin/index.html">4.2. pgAdmin</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../security/index.html">4.3. User Roles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../interlis-io/index.html">4.4. Échange de données INTERLIS</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">4.5. Personnalisation du modèle de données</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#alterations-to-ordinary-data">4.5.1. Alterations to ordinary data</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#introduction">4.5.1.1. Introduction</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#altering-symbology-and-labelling-behaviour">4.5.1.2. Altering symbology and labelling behaviour</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#creation-of-custom-tables">4.5.1.3. Creation of custom tables</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#adding-fields-to-base-tables">4.5.1.4. Adding fields to base tables</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#datamodel-updates">4.5.1.5. Datamodel updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">TEKSI Assainissement (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user-guide/index.html">User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Guide d’administration</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../datamodel.html">Datamodel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pgadmin/index.html">pgAdmin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.html">User Roles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interlis-io/index.html">Échange de données INTERLIS</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Personnalisation du modèle de données</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#alterations-to-ordinary-data">Alterations to ordinary data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#altering-symbology-and-labelling-behaviour">Altering symbology and labelling behaviour</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#creation-of-custom-tables">Creation of custom tables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-fields-to-base-tables">Adding fields to base tables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#datamodel-updates">Datamodel updates</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#modification-framework-for-application-schema">4.5.2. Modification Framework for application schema</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#creation-and-loading-of-modifications">4.5.2.1. Creation and loading of modifications</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#limitations-for-sql-scripts">4.5.2.2. Limitations for sql scripts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modification-framework-for-application-schema">Modification Framework for application schema</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#creation-and-loading-of-modifications">Creation and loading of modifications</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#limitations-for-sql-scripts">Limitations for sql scripts</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../datamodel-tool/index.html">4.6. Data model tool</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../db-update-pum/index.html">4.7. Manual update of the datamodel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datamodel-tool/index.html">Data model tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../db-update-pum/index.html">Manual update of the datamodel</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../extensions-guide/index.html">5. Official TWW extensions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">6. SWMM Data Exchange</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">7. Traduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extensions-guide/index.html">Official TWW extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">Traduction</a></li>
 </ul>
 
         </div>
@@ -91,8 +92,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">4. </span>Guide d’administration</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">4.5. </span>Personnalisation du modèle de données</li>
+          <li class="breadcrumb-item"><a href="../index.html">Guide d’administration</a></li>
+      <li class="breadcrumb-item active">Personnalisation du modèle de données</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/admin-guide/db-customization/index.rst.txt" rel="nofollow"> Afficher la source de la page</a>
       </li>
@@ -105,12 +106,12 @@
   <blockquote>
 <div></div></blockquote>
 <section id="customization-of-the-data-model">
-<h1><span class="section-number">4.5. </span>Personnalisation du modèle de données<a class="headerlink" href="#customization-of-the-data-model" title="Lien vers cette rubrique"></a></h1>
+<h1>Personnalisation du modèle de données<a class="headerlink" href="#customization-of-the-data-model" title="Lien vers cette rubrique"></a></h1>
 <p>Ce chapître décrit les personnalisations possibles du modèle de données.</p>
 <section id="alterations-to-ordinary-data">
-<h2><span class="section-number">4.5.1. </span>Alterations to ordinary data<a class="headerlink" href="#alterations-to-ordinary-data" title="Lien vers cette rubrique"></a></h2>
+<h2>Alterations to ordinary data<a class="headerlink" href="#alterations-to-ordinary-data" title="Lien vers cette rubrique"></a></h2>
 <section id="introduction">
-<h3><span class="section-number">4.5.1.1. </span>Introduction<a class="headerlink" href="#introduction" title="Lien vers cette rubrique"></a></h3>
+<h3>Introduction<a class="headerlink" href="#introduction" title="Lien vers cette rubrique"></a></h3>
 <p>Le modèle de données est versionné et mis à jour à l’aide du Postgres Updates Manager (abr. <a class="reference external" href="https://github.com/opengisch/pum">PUM</a>). Les vues requises pour l’édition des données sont générées automatiquement en utilisant la <a class="reference external" href="https://github.com/opengisch/pirogue">librairie Pirogue</a>.</p>
 <p>La combinaison des deux rend possible l’introduction de petites personnalisations du modèle de données comme l’ajout de champs aux tables existantes ou l’extension de vues par jointure de tables additionnelles.</p>
 <p>Before going further, we strongly recommend to ask the community if you have any doubts about how to store any information in the database. TWW complies with <a class="reference external" href="http://www.sia.ch/405">SIA 405</a> Waste Water and <a class="reference external" href="https://www.vsa.ch/models/">VSA-DSS</a> datamodel.</p>
@@ -119,26 +120,26 @@ The TWW data model is a standard proof adaptative model and could follow your ne
 <p>If a customization is still required, the following explanations and rules explain how to adapt TWW data model to your specific needs.</p>
 </section>
 <section id="altering-symbology-and-labelling-behaviour">
-<h3><span class="section-number">4.5.1.2. </span>Altering symbology and labelling behaviour<a class="headerlink" href="#altering-symbology-and-labelling-behaviour" title="Lien vers cette rubrique"></a></h3>
+<h3>Altering symbology and labelling behaviour<a class="headerlink" href="#altering-symbology-and-labelling-behaviour" title="Lien vers cette rubrique"></a></h3>
 <p>Symbology and labelling behaviour depends on the value lists `` tww_vl.channel_usage_current`` and `` tww_vl.channel_function_hierarchic``  These two value list tables have an additional column <code class="docutils literal notranslate"><span class="pre">tww_symbology_order</span></code>, which is used to define the hierarchy of the symbology.</p>
 <p>For labelling, one can use the column `` tww_vl.channel_function_hierarchic.tww_use_in_labels`` to define which functions_hierarchic are taken into account when creating a wastewater structure’s label.</p>
 </section>
 <section id="creation-of-custom-tables">
-<h3><span class="section-number">4.5.1.3. </span>Creation of custom tables<a class="headerlink" href="#creation-of-custom-tables" title="Lien vers cette rubrique"></a></h3>
+<h3>Creation of custom tables<a class="headerlink" href="#creation-of-custom-tables" title="Lien vers cette rubrique"></a></h3>
 <p>It is possible to add custom tables with ordinary data. They must be stored in <code class="docutils literal notranslate"><span class="pre">tww_od</span></code>. In order to version them, use the Postgres Updates Manager (aka <a class="reference external" href="https://github.com/opengisch/pum">PUM</a>).</p>
 </section>
 <section id="adding-fields-to-base-tables">
-<h3><span class="section-number">4.5.1.4. </span>Adding fields to base tables<a class="headerlink" href="#adding-fields-to-base-tables" title="Lien vers cette rubrique"></a></h3>
+<h3>Adding fields to base tables<a class="headerlink" href="#adding-fields-to-base-tables" title="Lien vers cette rubrique"></a></h3>
 <p>Instead of adding additional fields to base tables, it is advised to create a new table with a foreign key linking it to the base table using <a class="reference external" href="https://github.com/opengisch/pum">PUM</a>.</p>
 </section>
 <section id="datamodel-updates">
-<h3><span class="section-number">4.5.1.5. </span>Datamodel updates<a class="headerlink" href="#datamodel-updates" title="Lien vers cette rubrique"></a></h3>
+<h3>Datamodel updates<a class="headerlink" href="#datamodel-updates" title="Lien vers cette rubrique"></a></h3>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
 <p>The process of updating the database is currenty being overhauled. The following information can therefore change before the next release</p>
 </div>
 <section id="adding-fields-and-tables">
-<h4><span class="section-number">4.5.1.5.1. </span>Adding fields and tables<a class="headerlink" href="#adding-fields-and-tables" title="Lien vers cette rubrique"></a></h4>
+<h4>Adding fields and tables<a class="headerlink" href="#adding-fields-and-tables" title="Lien vers cette rubrique"></a></h4>
 <p>Afin de permettre les mises à niveau du modèle de données, un script de création et un script de suppression de la vue doivent être fournis. Ces scripts (SQL ou Python) doivent être placés dans un endroit spécifique et être nommés pre-all.{py,sql} et post-all.{py,sql}. Le chemin sera donné comme paramètre à PUM lors de la mise à niveau  (voir PUM <a class="reference external" href="https://github.com/opengisch/pum">documentation</a>).</p>
 <p>Si quelqu’un souhaite avoir ces vues mises à jour automatiquement lors d’une mise à jour du modèle, Pirogue peut être utilisé dynamiquement pour générer les vues. L’exemple de création des vues dans le modèle peut être utilisé.</p>
 <div class="admonition attention">
@@ -150,7 +151,7 @@ The TWW data model is a standard proof adaptative model and could follow your ne
 </section>
 </section>
 <section id="modification-framework-for-application-schema">
-<span id="modification-framework"></span><h2><span class="section-number">4.5.2. </span>Modification Framework for application schema<a class="headerlink" href="#modification-framework-for-application-schema" title="Lien vers cette rubrique"></a></h2>
+<span id="modification-framework"></span><h2>Modification Framework for application schema<a class="headerlink" href="#modification-framework-for-application-schema" title="Lien vers cette rubrique"></a></h2>
 <p>In order to add app modifications to TEKSI in a standardised way, TEKSI wastewater set into place an modification framework.</p>
 <p>There are two types of modification:</p>
 <ul class="simple">
@@ -169,7 +170,7 @@ The TWW data model is a standard proof adaptative model and could follow your ne
 <p>The modification framework is not intended for alterations on the schema <code class="docutils literal notranslate"><span class="pre">tww_od</span></code>. Use PUM functionalities instead</p>
 </div>
 <section id="creation-and-loading-of-modifications">
-<h3><span class="section-number">4.5.2.1. </span>Creation and loading of modifications<a class="headerlink" href="#creation-and-loading-of-modifications" title="Lien vers cette rubrique"></a></h3>
+<h3>Creation and loading of modifications<a class="headerlink" href="#creation-and-loading-of-modifications" title="Lien vers cette rubrique"></a></h3>
 <p>All modification parameters are handles in a yaml that is passed to PUM <a class="reference external" href="https://github.com/opengisch/pum">documentation</a> on update.
 The the default yaml is</p>
 <div class="highlight-YAML notranslate"><div class="highlight"><pre><span></span><span class="nt">base_configurations</span><span class="p">:</span>
@@ -224,7 +225,7 @@ The the default yaml is</p>
 </div>
 <p>The yaml handles the following parameters:</p>
 <section id="base-configurations">
-<h4><span class="section-number">4.5.2.1.1. </span>Base Configurations<a class="headerlink" href="#base-configurations" title="Lien vers cette rubrique"></a></h4>
+<h4>Base Configurations<a class="headerlink" href="#base-configurations" title="Lien vers cette rubrique"></a></h4>
 <p>Base Configurations handle variables that are handled over the entire project. Those parameters are exposed in TMMT as well, but when passing a yaml definition, they are overridden</p>
 <table class="docutils align-default" id="id5">
 <caption><span class="caption-text">Base Configurations</span><a class="headerlink" href="#id5" title="Lien vers ce tableau"></a></caption>
@@ -248,7 +249,7 @@ The the default yaml is</p>
 </table>
 </section>
 <section id="extra-definitions">
-<h4><span class="section-number">4.5.2.1.2. </span>Extra Definitions<a class="headerlink" href="#extra-definitions" title="Lien vers cette rubrique"></a></h4>
+<h4>Extra Definitions<a class="headerlink" href="#extra-definitions" title="Lien vers cette rubrique"></a></h4>
 <p>Extra definitions allow adding additional fields to custom views.
 The parameter defines the path to the corresponding yaml definition.
 The yaml is structured as follows:</p>
@@ -274,7 +275,7 @@ Entries that are in <code class="docutils literal notranslate"><span class="pre"
 It is expected that mt.fk_ws has a ON DELETE CASCADE`` foreign key constraint.</p>
 </section>
 <section id="multiple-inheritances">
-<h4><span class="section-number">4.5.2.1.3. </span>Multiple Inheritances<a class="headerlink" href="#multiple-inheritances" title="Lien vers cette rubrique"></a></h4>
+<h4>Multiple Inheritances<a class="headerlink" href="#multiple-inheritances" title="Lien vers cette rubrique"></a></h4>
 <p>Multiple Inheritances are used to aggregate all subtypes of a superclass into one view.
 The parameter defines the path to the corresponding yaml definition.
 The yaml is structured as follows:</p>
@@ -305,7 +306,7 @@ The yaml is structured as follows:</p>
 </div>
 </section>
 <section id="simple-joins-yaml">
-<h4><span class="section-number">4.5.2.1.4. </span>Simple Joins YAML<a class="headerlink" href="#simple-joins-yaml" title="Lien vers cette rubrique"></a></h4>
+<h4>Simple Joins YAML<a class="headerlink" href="#simple-joins-yaml" title="Lien vers cette rubrique"></a></h4>
 <p>The Simple Join YAML allows altering the path from which the join definition is loaded.
 The parameter defines the path to the corresponding yaml definition.
 The yaml is structured as follows:</p>
@@ -324,7 +325,7 @@ The yaml is structured as follows:</p>
 </div>
 </section>
 <section id="modification-repositories">
-<h4><span class="section-number">4.5.2.1.5. </span>Modification Repositories<a class="headerlink" href="#modification-repositories" title="Lien vers cette rubrique"></a></h4>
+<h4>Modification Repositories<a class="headerlink" href="#modification-repositories" title="Lien vers cette rubrique"></a></h4>
 <table class="docutils align-default" id="id6">
 <caption><span class="caption-text">Modification Repositories</span><a class="headerlink" href="#id6" title="Lien vers ce tableau"></a></caption>
 <colgroup>
@@ -362,7 +363,7 @@ The yaml is structured as follows:</p>
 </table>
 </section>
 <section id="modification-repository-templates">
-<h4><span class="section-number">4.5.2.1.6. </span>Modification Repository Templates<a class="headerlink" href="#modification-repository-templates" title="Lien vers cette rubrique"></a></h4>
+<h4>Modification Repository Templates<a class="headerlink" href="#modification-repository-templates" title="Lien vers cette rubrique"></a></h4>
 <p>A modification repository template allows to predefine the values of the following repository flags:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">variables</span></code></p></li>
@@ -373,7 +374,7 @@ The yaml is structured as follows:</p>
 </section>
 </section>
 <section id="limitations-for-sql-scripts">
-<h3><span class="section-number">4.5.2.2. </span>Limitations for sql scripts<a class="headerlink" href="#limitations-for-sql-scripts" title="Lien vers cette rubrique"></a></h3>
+<h3>Limitations for sql scripts<a class="headerlink" href="#limitations-for-sql-scripts" title="Lien vers cette rubrique"></a></h3>
 <p>The sql scripts must only be used for the following purposes:</p>
 <ul class="simple">
 <li><p>Adding additional views to the application schema</p></li>
@@ -392,8 +393,8 @@ They must therefore be written in such a way that existing data does not interfe
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
-        <a href="../interlis-io/index.html" class="btn btn-neutral float-left" title="4.4. Échange de données INTERLIS" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
-        <a href="../datamodel-tool/index.html" class="btn btn-neutral float-right" title="4.6. Data model tool" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../interlis-io/index.html" class="btn btn-neutral float-left" title="Échange de données INTERLIS" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+        <a href="../datamodel-tool/index.html" class="btn btn-neutral float-right" title="Data model tool" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

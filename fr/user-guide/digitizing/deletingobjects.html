@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>3.2.6. Suppression d’objets &mdash; Documentation TWW dev</title>
+  <title>Suppression d’objets &mdash; Documentation TWW dev</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
@@ -20,8 +20,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Recherche" href="../../search.html" />
-    <link rel="next" title="3.2.7. Numérisation des bassins versants" href="digitizingcatchments.html" />
-    <link rel="prev" title="3.2.5. Numérisation de canalisations" href="digitizingchannels.html" /> 
+    <link rel="next" title="Numérisation des bassins versants" href="digitizingcatchments.html" />
+    <link rel="prev" title="Numérisation de canalisations" href="digitizingchannels.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,41 +44,42 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">1. TEKSI Assainissement (TWW)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">2. Guide d’installation</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. TWW User Guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">3.1. Aperçu de TWW</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">3.2. Digitizing in TWW</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="dataentry.html">3.2.1. Saisie de données</a></li>
-<li class="toctree-l3"><a class="reference internal" href="digitizingwastewaterstructures.html">3.2.2. Numériser les structures assainissement</a></li>
-<li class="toctree-l3"><a class="reference internal" href="digitizingdetailedgeometry.html">3.2.3. Numérisation de géométries détaillées</a></li>
-<li class="toctree-l3"><a class="reference internal" href="digitizingdrainagechannel.html">3.2.4. Numériser une géométrie détaillée en tant que conduite de drainage</a></li>
-<li class="toctree-l3"><a class="reference internal" href="digitizingchannels.html">3.2.5. Numérisation de canalisations</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">3.2.6. Suppression d’objets</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#delete-reach">3.2.6.1. Delete Reach</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#delete-manhole-or-other-wastewater-structure">3.2.6.2. Delete Manhole or other Wastewater Structure</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#delete-wastewater-structure-but-keep-the-wastewater-node-and-the-connections-to-the-wastewater-node">3.2.6.3. Delete Wastewater Structure, but keep the wastewater_node and the connections to the wastewater_node</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#delete-cover">3.2.6.4. Delete Cover</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#delete-structure-parts">3.2.6.5. Suppression d’éléments de structures</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#delete-detailed-geometries">3.2.6.6. Delete detailed geometries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">TEKSI Assainissement (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">Installation Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">Aperçu de TWW</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Digitizing in TWW</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="dataentry.html">Saisie de données</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingwastewaterstructures.html">Numériser les structures assainissement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingdetailedgeometry.html">Numérisation de géométries détaillées</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingdrainagechannel.html">Numériser une géométrie détaillée en tant que conduite de drainage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingchannels.html">Numérisation de canalisations</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Suppression d’objets</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#delete-reach">Delete Reach</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-manhole-or-other-wastewater-structure">Delete Manhole or other Wastewater Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-wastewater-structure-but-keep-the-wastewater-node-and-the-connections-to-the-wastewater-node">Delete Wastewater Structure, but keep the wastewater_node and the connections to the wastewater_node</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-cover">Delete Cover</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-structure-parts">Suppression d’éléments de structures</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-detailed-geometries">Delete detailed geometries</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="digitizingcatchments.html">3.2.7. Numérisation des bassins versants</a></li>
-<li class="toctree-l3"><a class="reference internal" href="importingdata.html">3.2.8. Importing data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingcatchments.html">Numérisation des bassins versants</a></li>
+<li class="toctree-l3"><a class="reference internal" href="importingdata.html">Importing data</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../editing/index.html">3.3. Editing in TWW</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">3.4. Profils en long</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">3.5. Outils de poursuite de réseau</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">3.6. Impression de plans</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../history/index.html">3.7. History in TWW</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../How-To/index.html">3.8. How To</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../editing/index.html">Editing in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">Profils en long</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">Outils de poursuite de réseau</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">Impression de plans</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/index.html">History in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../How-To/index.html">How To</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">4. Guide d’administration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../extensions-guide/index.html">5. Official TWW extensions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">6. SWMM Data Exchange</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">7. Traduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">Guide d’administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extensions-guide/index.html">Official TWW extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">Traduction</a></li>
 </ul>
 
         </div>
@@ -95,9 +96,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>TWW User Guide</a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.2. </span>Digitizing in TWW</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">3.2.6. </span>Suppression d’objets</li>
+          <li class="breadcrumb-item"><a href="../index.html">User Guide</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Digitizing in TWW</a></li>
+      <li class="breadcrumb-item active">Suppression d’objets</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/user-guide/digitizing/deletingobjects.rst.txt" rel="nofollow"> Afficher la source de la page</a>
       </li>
@@ -110,11 +111,11 @@
   <blockquote>
 <div></div></blockquote>
 <section id="deleting-objects">
-<h1><span class="section-number">3.2.6. </span>Suppression d’objets<a class="headerlink" href="#deleting-objects" title="Lien vers cette rubrique"></a></h1>
+<h1>Suppression d’objets<a class="headerlink" href="#deleting-objects" title="Lien vers cette rubrique"></a></h1>
 <p>You can delete point or line objects (with all associated objects) through the <strong>vw_tww_(wastewater_structure/reach)</strong> layers.
 You can also pick and delete only a specific object (e.g. cover).</p>
 <section id="delete-reach">
-<h2><span class="section-number">3.2.6.1. </span>Delete Reach<a class="headerlink" href="#delete-reach" title="Lien vers cette rubrique"></a></h2>
+<h2>Delete Reach<a class="headerlink" href="#delete-reach" title="Lien vers cette rubrique"></a></h2>
 <ul class="simple">
 <li><p>Select <strong>vw_tww_reach</strong> and change to edit mode.</p></li>
 <li><p>Sélectionnez le/les tronçon(s) que vous voulez supprimer. Vous pouvez cliquer sur un objet ou dessiner une zone de sélection.</p></li>
@@ -148,7 +149,7 @@ You can also pick and delete only a specific object (e.g. cover).</p>
 </div>
 </section>
 <section id="delete-manhole-or-other-wastewater-structure">
-<h2><span class="section-number">3.2.6.2. </span>Delete Manhole or other Wastewater Structure<a class="headerlink" href="#delete-manhole-or-other-wastewater-structure" title="Lien vers cette rubrique"></a></h2>
+<h2>Delete Manhole or other Wastewater Structure<a class="headerlink" href="#delete-manhole-or-other-wastewater-structure" title="Lien vers cette rubrique"></a></h2>
 <ul class="simple">
 <li><p>Select <strong>vw_tww_wastewater_structure</strong> and change to edit mode</p></li>
 <li><p>Sélectionnez les objets (<strong>chambres</strong>, <strong>structures spéciales</strong> etc.) que vous voulez supprimer</p></li>
@@ -161,7 +162,7 @@ You can also pick and delete only a specific object (e.g. cover).</p>
 </div>
 </section>
 <section id="delete-wastewater-structure-but-keep-the-wastewater-node-and-the-connections-to-the-wastewater-node">
-<h2><span class="section-number">3.2.6.3. </span>Delete Wastewater Structure, but keep the wastewater_node and the connections to the wastewater_node<a class="headerlink" href="#delete-wastewater-structure-but-keep-the-wastewater-node-and-the-connections-to-the-wastewater-node" title="Lien vers cette rubrique"></a></h2>
+<h2>Delete Wastewater Structure, but keep the wastewater_node and the connections to the wastewater_node<a class="headerlink" href="#delete-wastewater-structure-but-keep-the-wastewater-node-and-the-connections-to-the-wastewater-node" title="Lien vers cette rubrique"></a></h2>
 <p>First, you have to kill the connection between wastewater_node and wastewater_structure. Because the fk_wastewater_structure field is not visible in the wastewater_node feature attribut window (this field make no sense in other cases, where the form is also used), you have to follow this way:</p>
 <ul class="simple">
 <li><p>Select <strong>vw_tww_wastewater_structure</strong> and change to edit mode</p></li>
@@ -187,7 +188,7 @@ You can also pick and delete only a specific object (e.g. cover).</p>
 </figure>
 </section>
 <section id="delete-cover">
-<h2><span class="section-number">3.2.6.4. </span>Delete Cover<a class="headerlink" href="#delete-cover" title="Lien vers cette rubrique"></a></h2>
+<h2>Delete Cover<a class="headerlink" href="#delete-cover" title="Lien vers cette rubrique"></a></h2>
 <ul class="simple">
 <li><p>Select <strong>vw_tww_wastewater_structure</strong> and change to edit mode</p></li>
 <li><p>Select the object (<strong>manholes</strong>, <strong>special structures</strong> etc.) from which the cover is to be deleted</p></li>
@@ -212,7 +213,7 @@ You can also pick and delete only a specific object (e.g. cover).</p>
 </ul>
 </section>
 <section id="delete-structure-parts">
-<h2><span class="section-number">3.2.6.5. </span>Suppression d’éléments de structures<a class="headerlink" href="#delete-structure-parts" title="Lien vers cette rubrique"></a></h2>
+<h2>Suppression d’éléments de structures<a class="headerlink" href="#delete-structure-parts" title="Lien vers cette rubrique"></a></h2>
 <ul class="simple">
 <li><p>Select <strong>vw_tww_wastewater_structure</strong> and change to edit mode</p></li>
 <li><p>Select the object (<strong>manholes</strong>, <strong>special structures</strong> etc.) from which a structure part is to be deleted</p></li>
@@ -225,7 +226,7 @@ You can also pick and delete only a specific object (e.g. cover).</p>
 </ul>
 </section>
 <section id="delete-detailed-geometries">
-<h2><span class="section-number">3.2.6.6. </span>Delete detailed geometries<a class="headerlink" href="#delete-detailed-geometries" title="Lien vers cette rubrique"></a></h2>
+<h2>Delete detailed geometries<a class="headerlink" href="#delete-detailed-geometries" title="Lien vers cette rubrique"></a></h2>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
 <p>Deleting features directly from <strong>wastewater_structure</strong> (layergroup Wastewater Structures) will remove the complete wastewater structure from the database and not only the geometry of the wastewater structure!</p>
@@ -253,8 +254,8 @@ You can also pick and delete only a specific object (e.g. cover).</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
-        <a href="digitizingchannels.html" class="btn btn-neutral float-left" title="3.2.5. Numérisation de canalisations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
-        <a href="digitizingcatchments.html" class="btn btn-neutral float-right" title="3.2.7. Numérisation des bassins versants" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="digitizingchannels.html" class="btn btn-neutral float-left" title="Numérisation de canalisations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+        <a href="digitizingcatchments.html" class="btn btn-neutral float-right" title="Numérisation des bassins versants" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

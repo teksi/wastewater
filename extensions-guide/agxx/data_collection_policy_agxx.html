@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>5.2.2. Data collection policy &mdash; TWW dev documentation</title>
+  <title>Data collection policy &mdash; TWW dev documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
@@ -19,8 +19,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="6. SWMM Data Exchange" href="../../tww_swmm/index.html" />
-    <link rel="prev" title="5.2.1. Plugin and Project Setup" href="plugin_setup_agxx.html" /> 
+    <link rel="next" title="SWMM Data Exchange" href="../../tww_swmm/index.html" />
+    <link rel="prev" title="Plugin and Project Setup" href="plugin_setup_agxx.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -43,31 +43,32 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">1. TEKSI wastewater (TWW)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">2. TWW Installation Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user-guide/index.html">3. TWW User Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">4. Admin Guide</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">5. Official TWW extensions</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../initialize-extensions.html">5.1. Initialising Database extensions</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">5.2. Extension AG-64/AG-96</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="plugin_setup_agxx.html">5.2.1. Plugin and Project Setup</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">5.2.2. Data collection policy</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#mapping">5.2.2.1. Mapping</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#infrastrukturknoten-gepknoten">5.2.2.2. Infrastrukturknoten/GEPKnoten</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#infrastrukturhaltung-gephaltung">5.2.2.3. Infrastrukturhaltung/GEPHaltung</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#ueberlauf-foerderaggregat">5.2.2.4. Ueberlauf_Foerderaggregat</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#gepmassnahme">5.2.2.5. GEPMassnahme</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#bautenausserhalbbaugebiet">5.2.2.6. Bautenausserhalbbaugebiet</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#sbw-einzugsgebiet">5.2.2.7. SBW_Einzugsgebiet</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#versickerungsbereichag">5.2.2.8. VersickerungsbereichAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">TEKSI wastewater (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user-guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">Admin Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Releases</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Official TWW extensions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../initialize-extensions.html">Initialising Database extensions</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Extension AG-64/AG-96</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="plugin_setup_agxx.html">Plugin and Project Setup</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Data collection policy</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mapping">Mapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#infrastrukturknoten-gepknoten">Infrastrukturknoten/GEPKnoten</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#infrastrukturhaltung-gephaltung">Infrastrukturhaltung/GEPHaltung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ueberlauf-foerderaggregat">Ueberlauf_Foerderaggregat</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gepmassnahme">GEPMassnahme</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bautenausserhalbbaugebiet">Bautenausserhalbbaugebiet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sbw-einzugsgebiet">SBW_Einzugsgebiet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#versickerungsbereichag">VersickerungsbereichAG</a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">6. SWMM Data Exchange</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">7. Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">Translation</a></li>
 </ul>
 
         </div>
@@ -84,9 +85,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">5. </span>Official TWW extensions</a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">5.2. </span>Extension AG-64/AG-96</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">5.2.2. </span>Data collection policy</li>
+          <li class="breadcrumb-item"><a href="../index.html">Official TWW extensions</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Extension AG-64/AG-96</a></li>
+      <li class="breadcrumb-item active">Data collection policy</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/extensions-guide/agxx/data_collection_policy_agxx.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -99,9 +100,9 @@
   <blockquote>
 <div></div></blockquote>
 <section id="data-collection-policy">
-<span id="data-collection-policy-agxx"></span><h1><span class="section-number">5.2.2. </span>Data collection policy<a class="headerlink" href="#data-collection-policy" title="Link to this heading"></a></h1>
+<span id="data-collection-policy-agxx"></span><h1>Data collection policy<a class="headerlink" href="#data-collection-policy" title="Link to this heading"></a></h1>
 <section id="mapping">
-<h2><span class="section-number">5.2.2.1. </span>Mapping<a class="headerlink" href="#mapping" title="Link to this heading"></a></h2>
+<h2>Mapping<a class="headerlink" href="#mapping" title="Link to this heading"></a></h2>
 <p>The AG-64/AG-96 object-ids are mapped to the database as follows:</p>
 <blockquote>
 <div><ul class="simple">
@@ -118,18 +119,18 @@
 <p>Almost all VSA-DSS values of the mentioned layers that do not exist in AG-64/96 are mapped to AG-64/96 using a backwards relation. Per default, the VSA-specific value list codes which are ambiguous in AG-64/96 are set to <code class="docutils literal notranslate"><span class="pre">inactive</span></code>.</p>
 <p>The AG-64/96 values are automatically mapped to VSA DSS where sensible, allowing to export both models.</p>
 <section id="handling-of-organisations">
-<h3><span class="section-number">5.2.2.1.1. </span>Handling of organisations<a class="headerlink" href="#handling-of-organisations" title="Link to this heading"></a></h3>
+<h3>Handling of organisations<a class="headerlink" href="#handling-of-organisations" title="Link to this heading"></a></h3>
 <p>In the models AG-64/AG-96, the organisations table differs from VSA. It has 20 characters and uses a different prefix. In order to maintain the VSA compatibility, TWW 2 AG-64/96 uses the VSA tables.</p>
 <p>There is a set of private entities in the AG-64/AG-96 organisations dataset that were not ported to VSA DSS. For these organisations, we use a OID prefix that was generated solely for this purpose and the AG-64/AG-96 postfix. The corresponding data is imported on initialisation.</p>
 <p>When exporting a dataset, the organisations are not exported from the TEKSI database. Instead, the AG-64/96 Organisation dataset is stored within the plugin and added to the export dataset.</p>
 </section>
 <section id="last-modification">
-<h3><span class="section-number">5.2.2.1.2. </span>Last Modification<a class="headerlink" href="#last-modification" title="Link to this heading"></a></h3>
+<h3>Last Modification<a class="headerlink" href="#last-modification" title="Link to this heading"></a></h3>
 <p>in AG-64/96, the last modification value of cadastre and general planning are separated. To keep track of them, they are managed on the database. There is a widget in the settings to alter the current value, <a class="reference external" href="./plugin_setup_agxx.html">see here</a> .</p>
 </section>
 </section>
 <section id="infrastrukturknoten-gepknoten">
-<h2><span class="section-number">5.2.2.2. </span>Infrastrukturknoten/GEPKnoten<a class="headerlink" href="#infrastrukturknoten-gepknoten" title="Link to this heading"></a></h2>
+<h2>Infrastrukturknoten/GEPKnoten<a class="headerlink" href="#infrastrukturknoten-gepknoten" title="Link to this heading"></a></h2>
 <p>The base OID for the Infrastrukturknoten/GEPKnoten is taken from <code class="docutils literal notranslate"><span class="pre">tww_od.wastewater_node</span></code>.</p>
 <p>The FunktionAG is mapped from</p>
 <blockquote>
@@ -385,11 +386,11 @@
 </tbody>
 </table>
 <section id="handling-of-building-connections">
-<h3><span class="section-number">5.2.2.2.1. </span>Handling of building connections<a class="headerlink" href="#handling-of-building-connections" title="Link to this heading"></a></h3>
+<h3>Handling of building connections<a class="headerlink" href="#handling-of-building-connections" title="Link to this heading"></a></h3>
 <p>Building connections are defined in the datamodel as Infrastrukturknoten/GEPKnoten with funktionag “Anschluss”. As these are no wastewater structures, the function is attributed to the wastewater node (<code class="docutils literal notranslate"><span class="pre">wastewater_node.ag64_function</span></code>).</p>
 </section>
 <section id="handling-of-covers">
-<h3><span class="section-number">5.2.2.2.2. </span>Handling of covers<a class="headerlink" href="#handling-of-covers" title="Link to this heading"></a></h3>
+<h3>Handling of covers<a class="headerlink" href="#handling-of-covers" title="Link to this heading"></a></h3>
 <p>The AG-64/AG-96 data collection guidelines state the following:</p>
 <blockquote>
 <div><ul class="simple">
@@ -402,24 +403,24 @@ In order to follow these limitations, there is an additional foreign key on <cod
 Additionally, the attribute <code class="docutils literal notranslate"><span class="pre">wastewater_node.ag64_function</span></code> can be set to “andere”.</p>
 </section>
 <section id="handling-of-the-attribute-istschnittstelle">
-<h3><span class="section-number">5.2.2.2.3. </span>Handling of the attribute “IstSchnittstelle”<a class="headerlink" href="#handling-of-the-attribute-istschnittstelle" title="Link to this heading"></a></h3>
+<h3>Handling of the attribute “IstSchnittstelle”<a class="headerlink" href="#handling-of-the-attribute-istschnittstelle" title="Link to this heading"></a></h3>
 <p>AG-96 has an attribute <code class="docutils literal notranslate"><span class="pre">IstSchnittstelle</span></code> which is not present in VSA DSS 2020.1. The value is stored in <code class="docutils literal notranslate"><span class="pre">tww_od.wastewater_node.ag96_isgateway</span></code>.</p>
 </section>
 </section>
 <section id="infrastrukturhaltung-gephaltung">
-<h2><span class="section-number">5.2.2.3. </span>Infrastrukturhaltung/GEPHaltung<a class="headerlink" href="#infrastrukturhaltung-gephaltung" title="Link to this heading"></a></h2>
+<h2>Infrastrukturhaltung/GEPHaltung<a class="headerlink" href="#infrastrukturhaltung-gephaltung" title="Link to this heading"></a></h2>
 <p>Apart from street water and square water, the NutzungsartAG are not modelled as a value list extensions. Use the backwards relation instead.</p>
 <section id="handling-of-reach-reach-connections">
-<h3><span class="section-number">5.2.2.3.1. </span>Handling of reach-reach connections<a class="headerlink" href="#handling-of-reach-reach-connections" title="Link to this heading"></a></h3>
+<h3>Handling of reach-reach connections<a class="headerlink" href="#handling-of-reach-reach-connections" title="Link to this heading"></a></h3>
 <p>AG-64/96 does not support reach-reach connections. If needed, the DSS topology is overridden on AG-64/96 export by a foreign key on <code class="docutils literal notranslate"><span class="pre">tww_od.agxx_reach_point.ag64_fk_wastewater_node</span></code> that points to <code class="docutils literal notranslate"><span class="pre">tww_od.agxx_unconnected_node_bwrel</span></code>.  are defined in the datamodel as Infrastrukturknoten/GEPKnoten with funktionag “Anschluss”. When this foreign key is not set, reach-reach connections throw an error on export.</p>
 </section>
 </section>
 <section id="ueberlauf-foerderaggregat">
-<h2><span class="section-number">5.2.2.4. </span>Ueberlauf_Foerderaggregat<a class="headerlink" href="#ueberlauf-foerderaggregat" title="Link to this heading"></a></h2>
+<h2>Ueberlauf_Foerderaggregat<a class="headerlink" href="#ueberlauf-foerderaggregat" title="Link to this heading"></a></h2>
 <p>The layer Ueberlauf_Foerderaggregat is mapped to <cite>tww_od.overflow</cite> and its specialisations</p>
 </section>
 <section id="gepmassnahme">
-<h2><span class="section-number">5.2.2.5. </span>GEPMassnahme<a class="headerlink" href="#gepmassnahme" title="Link to this heading"></a></h2>
+<h2>GEPMassnahme<a class="headerlink" href="#gepmassnahme" title="Link to this heading"></a></h2>
 <p>GEPMassnahme is mapped to <cite>tww_od.measure</cite>. The following categories can be mapped 1:1 onto a VSA DSS value and therefore have no separate value list entrance.</p>
 <table class="docutils align-default">
 <colgroup>
@@ -445,17 +446,17 @@ Additionally, the attribute <code class="docutils literal notranslate"><span cla
 </table>
 </section>
 <section id="bautenausserhalbbaugebiet">
-<h2><span class="section-number">5.2.2.6. </span>Bautenausserhalbbaugebiet<a class="headerlink" href="#bautenausserhalbbaugebiet" title="Link to this heading"></a></h2>
+<h2>Bautenausserhalbbaugebiet<a class="headerlink" href="#bautenausserhalbbaugebiet" title="Link to this heading"></a></h2>
 <p>Bautenausserhalbbaugebiet is mapped to <cite>tww_od.building_group</cite>. There is no backwards mapping from VSA-DSS <cite>Gebaeudegruppe.Sanierungsbedarf</cite> to AG-96 <cite>Bautenausserhalbbaugebiet.Sanierungsbedarf</cite> because the value <cite>unbekannt</cite> cannot be mapped.</p>
 </section>
 <section id="sbw-einzugsgebiet">
-<h2><span class="section-number">5.2.2.7. </span>SBW_Einzugsgebiet<a class="headerlink" href="#sbw-einzugsgebiet" title="Link to this heading"></a></h2>
+<h2>SBW_Einzugsgebiet<a class="headerlink" href="#sbw-einzugsgebiet" title="Link to this heading"></a></h2>
 <p>SBW_Einzugsgebiet is mapped to <cite>tww_od.catchment_area_totals</cite>. The perimeter geometry is stored as an extension geometry attribute (<code class="docutils literal notranslate"><span class="pre">ag_96_perimeter_geometry</span></code>). In order to alter it, one needs to manually import the layer into the qgs project.</p>
 <p>There exists a function to calculate the perimeter geometry by aggregating the catchment areas via catchment_area-&gt;log_card-&gt;main_log_card-&gt;hydraulic_char_data-&gt;catchment_area_totals.
 The perimeter geometry is a MultiSurface, while the INTERLIS model requires a CurvePolygon. According to the official data collection policy of the Canton, one should violate the datamodel and export a MultiPart. As the underlying export mechanism ili2pg does not allow to export a wrong geometry type, only the biggest Singlepart is exported.</p>
 </section>
 <section id="versickerungsbereichag">
-<h2><span class="section-number">5.2.2.8. </span>VersickerungsbereichAG<a class="headerlink" href="#versickerungsbereichag" title="Link to this heading"></a></h2>
+<h2>VersickerungsbereichAG<a class="headerlink" href="#versickerungsbereichag" title="Link to this heading"></a></h2>
 <p>VersickerungsbereichAG is mapped to <cite>tww_od.infiltration_zone</cite>.</p>
 </section>
 </section>
@@ -464,8 +465,8 @@ The perimeter geometry is a MultiSurface, while the INTERLIS model requires a Cu
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="plugin_setup_agxx.html" class="btn btn-neutral float-left" title="5.2.1. Plugin and Project Setup" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../../tww_swmm/index.html" class="btn btn-neutral float-right" title="6. SWMM Data Exchange" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="plugin_setup_agxx.html" class="btn btn-neutral float-left" title="Plugin and Project Setup" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../tww_swmm/index.html" class="btn btn-neutral float-right" title="SWMM Data Exchange" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

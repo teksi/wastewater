@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>2.3. Initialisierung der Datenbank &mdash; TWW dev Dokumentation</title>
+  <title>Initialisierung der Datenbank &mdash; TWW dev Dokumentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
@@ -20,8 +20,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Stichwortverzeichnis" href="../genindex.html" />
     <link rel="search" title="Suche" href="../search.html" />
-    <link rel="next" title="2.4. Arbeitsplatzrechner Einrichten" href="workstation.html" />
-    <link rel="prev" title="2.2. Datenbankserver aufsetzen" href="server.html" /> 
+    <link rel="next" title="Arbeitsplatzrechner Einrichten" href="workstation.html" />
+    <link rel="prev" title="Datenbankserver aufsetzen" href="server.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,28 +44,29 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">1. TEKSI Abwasser (TWW)</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">2. TWW Installation Guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="requirements.html">2.1. Voraussetzungen</a></li>
-<li class="toctree-l2"><a class="reference internal" href="server.html">2.2. Datenbankserver aufsetzen</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">2.3. Initialisierung der Datenbank</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#process">2.3.1. Vorgehen</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#create-minimal-roles-and-access">2.3.1.1. Rollen und Zugriffsrechte erstellen</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#restore-data-model-with-demodata">2.3.1.2. Restore data model with demodata</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#empty-data-model">2.3.1.3. Leeres Datenbank-Schema</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#generate-the-data-model-under-linux">2.3.1.4. Erzeugen des Datenmodells unter Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">TEKSI Abwasser (TWW)</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Installation Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="requirements.html">Voraussetzungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server.html">Datenbankserver aufsetzen</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Initialisierung der Datenbank</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#process">Vorgehen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#create-minimal-roles-and-access">Rollen und Zugriffsrechte erstellen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#restore-data-model-with-demodata">Restore data model with demodata</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#empty-data-model">Leeres Datenbank-Schema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#generate-the-data-model-under-linux">Erzeugen des Datenmodells unter Linux</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="workstation.html">2.4. Arbeitsplatzrechner Einrichten</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workstation.html">Arbeitsplatzrechner Einrichten</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">3. TWW Benutzerhandbuch</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">4. Administratorhandbuch</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../extensions-guide/index.html">5. Offizielle TWW-Erweiterungen</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tww_swmm/index.html">6. SWMM Data Exchange</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">7. Übersetzungen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">Administratorhandbuch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions-guide/index.html">Offizielle TWW-Erweiterungen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tww_swmm/index.html">SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">Übersetzungen</a></li>
 </ul>
 
         </div>
@@ -82,8 +83,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">2. </span>TWW Installation Guide</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">2.3. </span>Initialisierung der Datenbank</li>
+          <li class="breadcrumb-item"><a href="index.html">Installation Guide</a></li>
+      <li class="breadcrumb-item active">Initialisierung der Datenbank</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/installation-guide/database-initialization.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
       </li>
@@ -96,14 +97,14 @@
   <blockquote>
 <div></div></blockquote>
 <section id="database-initialization">
-<span id="id1"></span><h1><span class="section-number">2.3. </span>Initialisierung der Datenbank<a class="headerlink" href="#database-initialization" title="Link to this heading"></a></h1>
+<span id="id1"></span><h1>Initialisierung der Datenbank<a class="headerlink" href="#database-initialization" title="Link to this heading"></a></h1>
 <p>Für die Konfiguration der Datenbank können sie pgAdmin verwenden.</p>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
 <p>Mit diesem Link können sie lernen wie man <a class="reference internal" href="../admin-guide/pgadmin/install.html#install-pgadmin"><span class="std std-ref">Installation von pgAdmin</span></a> benutzt.</p>
 </div>
 <section id="process">
-<h2><span class="section-number">2.3.1. </span>Vorgehen<a class="headerlink" href="#process" title="Link to this heading"></a></h2>
+<h2>Vorgehen<a class="headerlink" href="#process" title="Link to this heading"></a></h2>
 <p>In pgAdmin4</p>
 <ul class="simple">
 <li><p>Verbinden Sie sich mit dem Datenbankserver</p></li>
@@ -112,7 +113,7 @@
 <p>E.g. <cite>tww_demo</cite>, avoid spaces, dots, uppercases and special characters
 As proposed in <a class="reference external" href="https://stackoverflow.com/questions/2878248/postgresql-naming-conventions">https://stackoverflow.com/questions/2878248/postgresql-naming-conventions</a></p>
 <section id="create-minimal-roles-and-access">
-<h3><span class="section-number">2.3.1.1. </span>Rollen und Zugriffsrechte erstellen<a class="headerlink" href="#create-minimal-roles-and-access" title="Link to this heading"></a></h3>
+<h3>Rollen und Zugriffsrechte erstellen<a class="headerlink" href="#create-minimal-roles-and-access" title="Link to this heading"></a></h3>
 <p>TWW roles are defined in the
 + <a class="reference external" href="https://github.com/teksi/wastewater/releases/download/2024.0.5/12_0_roles.sql">12_0_roles.sql</a> (per cluster)
 + <a class="reference external" href="https://github.com/teksi/wastewater/releases/download/2024.0.5/12_1_roles.sql">12_1_roles.sql</a> (per database)</p>
@@ -123,7 +124,7 @@ As proposed in <a class="reference external" href="https://stackoverflow.com/que
 <p>Copy paste and run the .sql files content in the query editor of pgAdmin (Tools &gt; Query Tool).</p>
 </section>
 <section id="restore-data-model-with-demodata">
-<span id="restore-datamodel-demodata"></span><h3><span class="section-number">2.3.1.2. </span>Restore data model with demodata<a class="headerlink" href="#restore-data-model-with-demodata" title="Link to this heading"></a></h3>
+<span id="restore-datamodel-demodata"></span><h3>Restore data model with demodata<a class="headerlink" href="#restore-data-model-with-demodata" title="Link to this heading"></a></h3>
 <div class="admonition warning">
 <p class="admonition-title">Warnung</p>
 <p>Demodata only available as an INTERLIS file
@@ -190,7 +191,7 @@ The undeling procedure is now providing an empty datamodel with value lists.</p>
 </ul>
 </section>
 <section id="empty-data-model">
-<h3><span class="section-number">2.3.1.3. </span>Leeres Datenbank-Schema<a class="headerlink" href="#empty-data-model" title="Link to this heading"></a></h3>
+<h3>Leeres Datenbank-Schema<a class="headerlink" href="#empty-data-model" title="Link to this heading"></a></h3>
 <p>Es ist auch möglich, ein leeres Datenbank-Schema zu erstellen (ohne Demodatensatz).</p>
 <ul class="simple">
 <li><p>Download the data model by going to <a class="reference external" href="https://github.com/teksi/wastewater/releases">https://github.com/teksi/wastewater/releases</a>
@@ -240,7 +241,7 @@ and by downloading the latest <cite>tww_vx.y.z_structure_with_value_lists.sql</c
 </ul>
 </section>
 <section id="generate-the-data-model-under-linux">
-<h3><span class="section-number">2.3.1.4. </span>Erzeugen des Datenmodells unter Linux<a class="headerlink" href="#generate-the-data-model-under-linux" title="Link to this heading"></a></h3>
+<h3>Erzeugen des Datenmodells unter Linux<a class="headerlink" href="#generate-the-data-model-under-linux" title="Link to this heading"></a></h3>
 <p>Es ist auch unter LINUX möglich das Datenmodell zu erzeugen</p>
 <ul>
 <li><p>Download des Datenmodells</p>
@@ -278,8 +279,8 @@ and by downloading the latest <cite>tww_vx.y.z_structure_with_value_lists.sql</c
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="server.html" class="btn btn-neutral float-left" title="2.2. Datenbankserver aufsetzen" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
-        <a href="workstation.html" class="btn btn-neutral float-right" title="2.4. Arbeitsplatzrechner Einrichten" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="server.html" class="btn btn-neutral float-left" title="Datenbankserver aufsetzen" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
+        <a href="workstation.html" class="btn btn-neutral float-right" title="Arbeitsplatzrechner Einrichten" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

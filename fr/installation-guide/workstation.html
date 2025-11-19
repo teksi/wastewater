@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>2.4. Configuration du poste de travail &mdash; Documentation TWW dev</title>
+  <title>Configuration du poste de travail &mdash; Documentation TWW dev</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
@@ -20,8 +20,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Recherche" href="../search.html" />
-    <link rel="next" title="3. TWW User Guide" href="../user-guide/index.html" />
-    <link rel="prev" title="2.3. Initialisation de la base de données" href="database-initialization.html" /> 
+    <link rel="next" title="User Guide" href="../user-guide/index.html" />
+    <link rel="prev" title="Initialisation de la base de données" href="database-initialization.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,33 +44,34 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">1. TEKSI Assainissement (TWW)</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">2. Guide d’installation</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="requirements.html">2.1. Prérequis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="server.html">2.2. Configuration du serveur de base de données</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database-initialization.html">2.3. Initialisation de la base de données</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">2.4. Configuration du poste de travail</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#database-configuration">2.4.1. Configuration de la base de données</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#windows-pg-service">2.4.1.1. Windows pg_service</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#linux-macos-pg-service">2.4.1.2. Linux/macOS pg_service</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#all-systems">2.4.1.3. Tous les systèmes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">TEKSI Assainissement (TWW)</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Installation Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="requirements.html">Prérequis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server.html">Configuration du serveur de base de données</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database-initialization.html">Initialisation de la base de données</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Configuration du poste de travail</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#database-configuration">Configuration de la base de données</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#windows-pg-service">Windows pg_service</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linux-macos-pg-service">Linux/macOS pg_service</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#all-systems">Tous les systèmes</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#install-qgis">2.4.2. Installer QGIS</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#install-tww-plugin">2.4.3. Install TWW plugin</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#install-the-demo-data">2.4.4. Install the demo data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#install-the-demo-project">2.4.5. Installation du projet de démo</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#if-you-are-a-data-owner-add-your-own-oid-to-the-project">2.4.6. If you are a data owner: Add your own OID to the project</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#working-with-more-than-one-database">2.4.7. Travailler avec plusieurs base de  données</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-qgis">Installer QGIS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-tww-plugin">Install TWW plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-the-demo-data">Install the demo data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-the-demo-project">Installation du projet de démo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#if-you-are-a-data-owner-add-your-own-oid-to-the-project">If you are a data owner: Add your own OID to the project</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#working-with-more-than-one-database">Travailler avec plusieurs base de  données</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">3. TWW User Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">4. Guide d’administration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../extensions-guide/index.html">5. Official TWW extensions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tww_swmm/index.html">6. SWMM Data Exchange</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">7. Traduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">Guide d’administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions-guide/index.html">Official TWW extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tww_swmm/index.html">SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">Traduction</a></li>
 </ul>
 
         </div>
@@ -87,8 +88,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">2. </span>Guide d’installation</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">2.4. </span>Configuration du poste de travail</li>
+          <li class="breadcrumb-item"><a href="index.html">Installation Guide</a></li>
+      <li class="breadcrumb-item active">Configuration du poste de travail</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/installation-guide/workstation.rst.txt" rel="nofollow"> Afficher la source de la page</a>
       </li>
@@ -101,16 +102,16 @@
   <blockquote>
 <div></div></blockquote>
 <section id="setup-workstation">
-<h1><span class="section-number">2.4. </span>Configuration du poste de travail<a class="headerlink" href="#setup-workstation" title="Lien vers cette rubrique"></a></h1>
+<h1>Configuration du poste de travail<a class="headerlink" href="#setup-workstation" title="Lien vers cette rubrique"></a></h1>
 <section id="database-configuration">
-<h2><span class="section-number">2.4.1. </span>Configuration de la base de données<a class="headerlink" href="#database-configuration" title="Lien vers cette rubrique"></a></h2>
+<h2>Configuration de la base de données<a class="headerlink" href="#database-configuration" title="Lien vers cette rubrique"></a></h2>
 <p>To tell a workstation, where the database is (on the local system or on a
 network server) you will have to create some files initially on every device on
 which you will have QGIS/TWW running (client). It is not required to do that on the
 server itself.</p>
 <p>Ces étapes dépendent de votre système d’exploitation.</p>
 <section id="windows-pg-service">
-<h3><span class="section-number">2.4.1.1. </span>Windows pg_service<a class="headerlink" href="#windows-pg-service" title="Lien vers cette rubrique"></a></h3>
+<h3>Windows pg_service<a class="headerlink" href="#windows-pg-service" title="Lien vers cette rubrique"></a></h3>
 <p>Créer un nouveau dossier où vous souhaitez enregister la configuration. Par exemple <code class="docutils literal notranslate"><span class="pre">pgconfig</span></code> dans vos documents. Ce dossier sera connu sous le nom de <code class="docutils literal notranslate"><span class="pre">PGSYSCONFDIR</span></code> dans ce guide.</p>
 <p>Configurer la variable d’environnement <code class="docutils literal notranslate"><span class="pre">PGSYSCONFDIR</span></code> pour pointer sur le chemin de <code class="docutils literal notranslate"><span class="pre">PGSYSCONFDIR</span></code></p>
 <div class="admonition note">
@@ -139,7 +140,7 @@ and <code class="docutils literal notranslate"><span class="pre">Edit</span></co
 </div>
 </section>
 <section id="linux-macos-pg-service">
-<span id="pg-service-linux"></span><h3><span class="section-number">2.4.1.2. </span>Linux/macOS pg_service<a class="headerlink" href="#linux-macos-pg-service" title="Lien vers cette rubrique"></a></h3>
+<span id="pg-service-linux"></span><h3>Linux/macOS pg_service<a class="headerlink" href="#linux-macos-pg-service" title="Lien vers cette rubrique"></a></h3>
 <p>On Unix systems (linux/macOS etc.) you may put the files <code class="docutils literal notranslate"><span class="pre">.pg_service.conf</span></code>
 and <code class="docutils literal notranslate"><span class="pre">.pgpass</span></code> into your home folder (normally <code class="docutils literal notranslate"><span class="pre">/home/[username]</span></code>). Pay attention to the starting . (&lt;&gt; Windows)!</p>
 <p>If your QGIS doesn’t find the <code class="docutils literal notranslate"><span class="pre">.pg_service.conf</span></code> file, set the environment variable PGSYSCONFDIR:</p>
@@ -151,7 +152,7 @@ and <code class="docutils literal notranslate"><span class="pre">.pgpass</span><
 .. figure:: images/macEnvVarCheck.png</p>
 </section>
 <section id="all-systems">
-<h3><span class="section-number">2.4.1.3. </span>Tous les systèmes<a class="headerlink" href="#all-systems" title="Lien vers cette rubrique"></a></h3>
+<h3>Tous les systèmes<a class="headerlink" href="#all-systems" title="Lien vers cette rubrique"></a></h3>
 <p>Placer les lignes suivantes dans le fichier <code class="docutils literal notranslate"><span class="pre">pg_service.conf</span></code> ou <code class="docutils literal notranslate"><span class="pre">.pg_service.conf</span></code>. Vous devrez peut-être apporter des modifications selon votre configuration.</p>
 <div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[pg_tww]</span>
 <span class="na">host</span><span class="o">=</span><span class="s">localhost</span>
@@ -180,7 +181,7 @@ and <code class="docutils literal notranslate"><span class="pre">.pgpass</span><
 </section>
 </section>
 <section id="install-qgis">
-<h2><span class="section-number">2.4.2. </span>Installer QGIS<a class="headerlink" href="#install-qgis" title="Lien vers cette rubrique"></a></h2>
+<h2>Installer QGIS<a class="headerlink" href="#install-qgis" title="Lien vers cette rubrique"></a></h2>
 <ul class="simple">
 <li><p>Minimum requirement 3.34.8</p></li>
 <li><p>We recommend using the latest master build (called qgis-dev on Windows)
@@ -190,7 +191,7 @@ choose <em>advanced installation</em> and install qgis-dev.</p></li>
 </ul>
 </section>
 <section id="install-tww-plugin">
-<h2><span class="section-number">2.4.3. </span>Install TWW plugin<a class="headerlink" href="#install-tww-plugin" title="Lien vers cette rubrique"></a></h2>
+<h2>Install TWW plugin<a class="headerlink" href="#install-tww-plugin" title="Lien vers cette rubrique"></a></h2>
 <p>Exigences du plugin;</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://pypi.org/project/networkx/">networkx</a> &gt;= 3.3</p></li>
@@ -233,11 +234,11 @@ choose <em>advanced installation</em> and install qgis-dev.</p></li>
 <p>TWW uses a data historization process. The <code class="docutils literal notranslate"><span class="pre">pg</span> <span class="pre">history</span> <span class="pre">viewer</span></code> <a class="reference external" href="http://plugins.qgis.org/plugins/pg_history_viewer/">plugin</a> allows you to view the changes made and replay some of them.</p>
 </section>
 <section id="install-the-demo-data">
-<h2><span class="section-number">2.4.4. </span>Install the demo data<a class="headerlink" href="#install-the-demo-data" title="Lien vers cette rubrique"></a></h2>
+<h2>Install the demo data<a class="headerlink" href="#install-the-demo-data" title="Lien vers cette rubrique"></a></h2>
 <p>as described <a class="reference external" href="https://teksi.github.io/wastewater/docs/installation-guide/database-initialization.html#restore-datamodel-demodata">here</a></p>
 </section>
 <section id="install-the-demo-project">
-<h2><span class="section-number">2.4.5. </span>Installation du projet de démo<a class="headerlink" href="#install-the-demo-project" title="Lien vers cette rubrique"></a></h2>
+<h2>Installation du projet de démo<a class="headerlink" href="#install-the-demo-project" title="Lien vers cette rubrique"></a></h2>
 <ul class="simple">
 <li><p>Download from <a class="reference external" href="https://github.com/teksi/wastewater/releases/latest">https://github.com/teksi/wastewater/releases/latest</a> the qgs project file and its translations</p></li>
 </ul>
@@ -259,7 +260,7 @@ choose <em>advanced installation</em> and install qgis-dev.</p></li>
 </ul>
 </section>
 <section id="if-you-are-a-data-owner-add-your-own-oid-to-the-project">
-<h2><span class="section-number">2.4.6. </span>If you are a data owner: Add your own OID to the project<a class="headerlink" href="#if-you-are-a-data-owner-add-your-own-oid-to-the-project" title="Lien vers cette rubrique"></a></h2>
+<h2>If you are a data owner: Add your own OID to the project<a class="headerlink" href="#if-you-are-a-data-owner-add-your-own-oid-to-the-project" title="Lien vers cette rubrique"></a></h2>
 <ul class="simple">
 <li><p>If you are a data owner (Datenherr), you should</p>
 <ul>
@@ -291,7 +292,7 @@ choose <em>advanced installation</em> and install qgis-dev.</p></li>
 </div>
 </section>
 <section id="working-with-more-than-one-database">
-<h2><span class="section-number">2.4.7. </span>Travailler avec plusieurs base de  données<a class="headerlink" href="#working-with-more-than-one-database" title="Lien vers cette rubrique"></a></h2>
+<h2>Travailler avec plusieurs base de  données<a class="headerlink" href="#working-with-more-than-one-database" title="Lien vers cette rubrique"></a></h2>
 <ul class="simple">
 <li><p>Create a new database in pgAdmin with a new name, e.g. communityA</p></li>
 <li><p>Create a new schema tww in this database (do not choose another name, because all scripts works with the schema-name tww)</p></li>
@@ -320,8 +321,8 @@ choose <em>advanced installation</em> and install qgis-dev.</p></li>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
-        <a href="database-initialization.html" class="btn btn-neutral float-left" title="2.3. Initialisation de la base de données" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
-        <a href="../user-guide/index.html" class="btn btn-neutral float-right" title="3. TWW User Guide" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="database-initialization.html" class="btn btn-neutral float-left" title="Initialisation de la base de données" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+        <a href="../user-guide/index.html" class="btn btn-neutral float-right" title="User Guide" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

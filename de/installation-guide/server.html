@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>2.2. Datenbankserver aufsetzen &mdash; TWW dev Dokumentation</title>
+  <title>Datenbankserver aufsetzen &mdash; TWW dev Dokumentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
@@ -20,8 +20,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Stichwortverzeichnis" href="../genindex.html" />
     <link rel="search" title="Suche" href="../search.html" />
-    <link rel="next" title="2.3. Initialisierung der Datenbank" href="database-initialization.html" />
-    <link rel="prev" title="2.1. Voraussetzungen" href="requirements.html" /> 
+    <link rel="next" title="Initialisierung der Datenbank" href="database-initialization.html" />
+    <link rel="prev" title="Voraussetzungen" href="requirements.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,25 +44,26 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">1. TEKSI Abwasser (TWW)</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">2. TWW Installation Guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="requirements.html">2.1. Voraussetzungen</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">2.2. Datenbankserver aufsetzen</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#required-software">2.2.1. Benötigte Software</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#server-installation">2.2.1.1. Server installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">TEKSI Abwasser (TWW)</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Installation Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="requirements.html">Voraussetzungen</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Datenbankserver aufsetzen</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#required-software">Benötigte Software</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#server-installation">Server installation</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="database-initialization.html">2.3. Initialisierung der Datenbank</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workstation.html">2.4. Arbeitsplatzrechner Einrichten</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database-initialization.html">Initialisierung der Datenbank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workstation.html">Arbeitsplatzrechner Einrichten</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">3. TWW Benutzerhandbuch</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">4. Administratorhandbuch</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../extensions-guide/index.html">5. Offizielle TWW-Erweiterungen</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tww_swmm/index.html">6. SWMM Data Exchange</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">7. Übersetzungen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">Administratorhandbuch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions-guide/index.html">Offizielle TWW-Erweiterungen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tww_swmm/index.html">SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">Übersetzungen</a></li>
 </ul>
 
         </div>
@@ -79,8 +80,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">2. </span>TWW Installation Guide</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">2.2. </span>Datenbankserver aufsetzen</li>
+          <li class="breadcrumb-item"><a href="index.html">Installation Guide</a></li>
+      <li class="breadcrumb-item active">Datenbankserver aufsetzen</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/installation-guide/server.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
       </li>
@@ -93,12 +94,12 @@
   <blockquote>
 <div></div></blockquote>
 <section id="setup-database-server">
-<h1><span class="section-number">2.2. </span>Datenbankserver aufsetzen<a class="headerlink" href="#setup-database-server" title="Link to this heading"></a></h1>
+<h1>Datenbankserver aufsetzen<a class="headerlink" href="#setup-database-server" title="Link to this heading"></a></h1>
 <p>Wenn von verschiedenen Arbeitsplätzen auf die gleiche Datenbank zugegriffen werden soll, kann sie auch auf einem Server im Netz installiert werden. Dies im Gegensatz zu einer lokalen Einplatz-Installation</p>
 <section id="required-software">
-<h2><span class="section-number">2.2.1. </span>Benötigte Software<a class="headerlink" href="#required-software" title="Link to this heading"></a></h2>
+<h2>Benötigte Software<a class="headerlink" href="#required-software" title="Link to this heading"></a></h2>
 <section id="server-installation">
-<h3><span class="section-number">2.2.1.1. </span>Server installation<a class="headerlink" href="#server-installation" title="Link to this heading"></a></h3>
+<h3>Server installation<a class="headerlink" href="#server-installation" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p>Install PostgreSQL (&gt;=15)</p>
 <ul>
@@ -134,8 +135,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="requirements.html" class="btn btn-neutral float-left" title="2.1. Voraussetzungen" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
-        <a href="database-initialization.html" class="btn btn-neutral float-right" title="2.3. Initialisierung der Datenbank" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="requirements.html" class="btn btn-neutral float-left" title="Voraussetzungen" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
+        <a href="database-initialization.html" class="btn btn-neutral float-right" title="Initialisierung der Datenbank" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

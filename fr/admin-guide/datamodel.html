@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>4.1. Datamodel &mdash; Documentation TWW dev</title>
+  <title>Datamodel &mdash; Documentation TWW dev</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
@@ -20,8 +20,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Recherche" href="../search.html" />
-    <link rel="next" title="4.2. pgAdmin" href="pgadmin/index.html" />
-    <link rel="prev" title="4. Guide d’administration" href="index.html" /> 
+    <link rel="next" title="pgAdmin" href="pgadmin/index.html" />
+    <link rel="prev" title="Guide d’administration" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,22 +44,23 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">1. TEKSI Assainissement (TWW)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../installation-guide/index.html">2. Guide d’installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">3. TWW User Guide</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">4. Guide d’administration</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">4.1. Datamodel</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pgadmin/index.html">4.2. pgAdmin</a></li>
-<li class="toctree-l2"><a class="reference internal" href="security/index.html">4.3. User Roles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interlis-io/index.html">4.4. Échange de données INTERLIS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="db-customization/index.html">4.5. Personnalisation du modèle de données</a></li>
-<li class="toctree-l2"><a class="reference internal" href="datamodel-tool/index.html">4.6. Data model tool</a></li>
-<li class="toctree-l2"><a class="reference internal" href="db-update-pum/index.html">4.7. Manual update of the datamodel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">TEKSI Assainissement (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation-guide/index.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Guide d’administration</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Datamodel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pgadmin/index.html">pgAdmin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security/index.html">User Roles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interlis-io/index.html">Échange de données INTERLIS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="db-customization/index.html">Personnalisation du modèle de données</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datamodel-tool/index.html">Data model tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="db-update-pum/index.html">Manual update of the datamodel</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../extensions-guide/index.html">5. Official TWW extensions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tww_swmm/index.html">6. SWMM Data Exchange</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">7. Traduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions-guide/index.html">Official TWW extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tww_swmm/index.html">SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">Traduction</a></li>
 </ul>
 
         </div>
@@ -76,8 +77,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">4. </span>Guide d’administration</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">4.1. </span>Datamodel</li>
+          <li class="breadcrumb-item"><a href="index.html">Guide d’administration</a></li>
+      <li class="breadcrumb-item active">Datamodel</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/admin-guide/datamodel.rst.txt" rel="nofollow"> Afficher la source de la page</a>
       </li>
@@ -90,7 +91,7 @@
   <blockquote>
 <div></div></blockquote>
 <section id="datamodel">
-<h1><span class="section-number">4.1. </span>Datamodel<a class="headerlink" href="#datamodel" title="Lien vers cette rubrique"></a></h1>
+<h1>Datamodel<a class="headerlink" href="#datamodel" title="Lien vers cette rubrique"></a></h1>
 <p>The datamodel complete description can be found <a class="reference external" href="https://teksi.github.io/wastewater/_static/datamodel/">here</a></p>
 </section>
 
@@ -98,8 +99,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
-        <a href="index.html" class="btn btn-neutral float-left" title="4. Guide d’administration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
-        <a href="pgadmin/index.html" class="btn btn-neutral float-right" title="4.2. pgAdmin" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Guide d’administration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+        <a href="pgadmin/index.html" class="btn btn-neutral float-right" title="pgAdmin" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>6. SWMM Data Exchange &mdash; TWW dev documentation</title>
+  <title>SWMM Data Exchange &mdash; TWW dev documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
@@ -19,8 +19,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="6.1. Storm Water Management Model (SWMM)" href="SWMM.html" />
-    <link rel="prev" title="5.2.2. Data collection policy" href="../extensions-guide/agxx/data_collection_policy_agxx.html" /> 
+    <link rel="next" title="Storm Water Management Model (SWMM)" href="SWMM.html" />
+    <link rel="prev" title="Data collection policy" href="../extensions-guide/agxx/data_collection_policy_agxx.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -43,23 +43,24 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">1. TEKSI wastewater (TWW)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../installation-guide/index.html">2. TWW Installation Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">3. TWW User Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">4. Admin Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../extensions-guide/index.html">5. Official TWW extensions</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">6. SWMM Data Exchange</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="SWMM.html">6.1. Storm Water Management Model (SWMM)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Prepare-Data.html">6.2. Prepare Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Generate-SWMM-File.html">6.3. Generate SWMM File</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Check-SWMM-File.html">6.4. Check SWMM File</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Run-SWMM-Simulation.html">6.5. Run SWMM Simulation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Process-Results.html">6.6. Import results</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Mapping.html">6.7. Mapping</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Developpers-Advanced-Users.html">6.8. For developpers and advanced users</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">TEKSI wastewater (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation-guide/index.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">Admin Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions-guide/index.html">Official TWW extensions</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">SWMM Data Exchange</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SWMM.html">Storm Water Management Model (SWMM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Prepare-Data.html">Prepare Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Generate-SWMM-File.html">Generate SWMM File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Check-SWMM-File.html">Check SWMM File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Run-SWMM-Simulation.html">Run SWMM Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Process-Results.html">Import results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Mapping.html">Mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Developpers-Advanced-Users.html">For developpers and advanced users</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">7. Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">Translation</a></li>
 </ul>
 
         </div>
@@ -76,7 +77,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active"><span class="section-number">6. </span>SWMM Data Exchange</li>
+      <li class="breadcrumb-item active">SWMM Data Exchange</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/tww_swmm/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -89,44 +90,44 @@
   <blockquote>
 <div></div></blockquote>
 <section id="swmm-data-exchange">
-<span id="tww-swmm"></span><h1><span class="section-number">6. </span>SWMM Data Exchange<a class="headerlink" href="#swmm-data-exchange" title="Link to this heading"></a></h1>
+<span id="tww-swmm"></span><h1>SWMM Data Exchange<a class="headerlink" href="#swmm-data-exchange" title="Link to this heading"></a></h1>
 <p>TWW plugin is able to export a SWMM file (<code class="docutils literal notranslate"><span class="pre">.inp</span></code>) and import SWMM results.</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="SWMM.html">6.1. Storm Water Management Model (SWMM)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Prepare-Data.html">6.2. Prepare Data</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="Prepare-Data.html#coefficient-of-friction">6.2.1. Coefficient of friction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SWMM.html">Storm Water Management Model (SWMM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Prepare-Data.html">Prepare Data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Prepare-Data.html#coefficient-of-friction">Coefficient of friction</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="Generate-SWMM-File.html">6.3. Generate SWMM File</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="Generate-SWMM-File.html#swmm-create-input">6.3.1. SWMM Create Input</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Generate-SWMM-File.html#selection">6.3.2. Selection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Generate-SWMM-File.html#change-default-export-parameters">6.3.3. Change default export parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Generate-SWMM-File.html">Generate SWMM File</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Generate-SWMM-File.html#swmm-create-input">SWMM Create Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Generate-SWMM-File.html#selection">Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Generate-SWMM-File.html#change-default-export-parameters">Change default export parameters</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="Check-SWMM-File.html">6.4. Check SWMM File</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="Check-SWMM-File.html#common-import-errors">6.4.1. Common import errors</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Check-SWMM-File.html#subcatchments-and-rain-gauges">6.4.2. Subcatchments and rain Gauges</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Check-SWMM-File.html">Check SWMM File</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Check-SWMM-File.html#common-import-errors">Common import errors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Check-SWMM-File.html#subcatchments-and-rain-gauges">Subcatchments and rain Gauges</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="Run-SWMM-Simulation.html">6.5. Run SWMM Simulation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="Run-SWMM-Simulation.html#run-a-simulation-from-swmm-interface">6.5.1. Run a simulation from SWMM interface</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Run-SWMM-Simulation.html#run-a-simulation-with-command-line">6.5.2. Run a simulation with command line</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Run-SWMM-Simulation.html#run-a-simulation-with-tww-swmm">6.5.3. Run a simulation with TWW-SWMM</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Run-SWMM-Simulation.html#common-running-errors">6.5.4. Common running errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Run-SWMM-Simulation.html">Run SWMM Simulation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Run-SWMM-Simulation.html#run-a-simulation-from-swmm-interface">Run a simulation from SWMM interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Run-SWMM-Simulation.html#run-a-simulation-with-command-line">Run a simulation with command line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Run-SWMM-Simulation.html#run-a-simulation-with-tww-swmm">Run a simulation with TWW-SWMM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Run-SWMM-Simulation.html#common-running-errors">Common running errors</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="Process-Results.html">6.6. Import results</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="Process-Results.html#swmm-import-results">6.6.1. SWMM Import Results</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Process-Results.html#swmm-extract-results">6.6.2. SWMM Extract Results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Process-Results.html">Import results</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Process-Results.html#swmm-import-results">SWMM Import Results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Process-Results.html#swmm-extract-results">SWMM Extract Results</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="Mapping.html">6.7. Mapping</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="Mapping.html#results-are-not-imported-in-tww">6.7.1. Results are not imported in TWW</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Mapping.html#results-are-imported-in-tww">6.7.2. Results are imported in TWW</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Mapping.html">Mapping</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Mapping.html#results-are-not-imported-in-tww">Results are not imported in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Mapping.html#results-are-imported-in-tww">Results are imported in TWW</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="Developpers-Advanced-Users.html">6.8. For developpers and advanced users</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Developpers-Advanced-Users.html">For developpers and advanced users</a></li>
 </ul>
 </div>
 </section>
@@ -135,8 +136,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../extensions-guide/agxx/data_collection_policy_agxx.html" class="btn btn-neutral float-left" title="5.2.2. Data collection policy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="SWMM.html" class="btn btn-neutral float-right" title="6.1. Storm Water Management Model (SWMM)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../extensions-guide/agxx/data_collection_policy_agxx.html" class="btn btn-neutral float-left" title="Data collection policy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="SWMM.html" class="btn btn-neutral float-right" title="Storm Water Management Model (SWMM)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

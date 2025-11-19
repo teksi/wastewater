@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>3.2.7. Numérisation des bassins versants &mdash; Documentation TWW dev</title>
+  <title>Numérisation des bassins versants &mdash; Documentation TWW dev</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
@@ -20,8 +20,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Recherche" href="../../search.html" />
-    <link rel="next" title="3.2.8. Importing data" href="importingdata.html" />
-    <link rel="prev" title="3.2.6. Suppression d’objets" href="deletingobjects.html" /> 
+    <link rel="next" title="Importing data" href="importingdata.html" />
+    <link rel="prev" title="Suppression d’objets" href="deletingobjects.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,42 +44,43 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">1. TEKSI Assainissement (TWW)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">2. Guide d’installation</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. TWW User Guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">3.1. Aperçu de TWW</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">3.2. Digitizing in TWW</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="dataentry.html">3.2.1. Saisie de données</a></li>
-<li class="toctree-l3"><a class="reference internal" href="digitizingwastewaterstructures.html">3.2.2. Numériser les structures assainissement</a></li>
-<li class="toctree-l3"><a class="reference internal" href="digitizingdetailedgeometry.html">3.2.3. Numérisation de géométries détaillées</a></li>
-<li class="toctree-l3"><a class="reference internal" href="digitizingdrainagechannel.html">3.2.4. Numériser une géométrie détaillée en tant que conduite de drainage</a></li>
-<li class="toctree-l3"><a class="reference internal" href="digitizingchannels.html">3.2.5. Numérisation de canalisations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="deletingobjects.html">3.2.6. Suppression d’objets</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">3.2.7. Numérisation des bassins versants</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#general">3.2.7.1. Généralités</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#digitizing">3.2.7.2. Numérisation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#editing">3.2.7.3. Édition</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#split-areas">3.2.7.4. Séparer des zones</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#merge-areas">3.2.7.5. Fusionner des zones</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#connect-catchment-area-to-wastewater-network-nodes">3.2.7.6. Connecter la zone du bassin versant aux noeuds du réseau assainissement</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#the-duplicate-coord-error">3.2.7.7. The “duplicate coord”-error</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">TEKSI Assainissement (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">Installation Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">Aperçu de TWW</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Digitizing in TWW</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="dataentry.html">Saisie de données</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingwastewaterstructures.html">Numériser les structures assainissement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingdetailedgeometry.html">Numérisation de géométries détaillées</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingdrainagechannel.html">Numériser une géométrie détaillée en tant que conduite de drainage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingchannels.html">Numérisation de canalisations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deletingobjects.html">Suppression d’objets</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Numérisation des bassins versants</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#general">Généralités</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#digitizing">Numérisation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#editing">Édition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#split-areas">Séparer des zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#merge-areas">Fusionner des zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#connect-catchment-area-to-wastewater-network-nodes">Connecter la zone du bassin versant aux noeuds du réseau assainissement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-duplicate-coord-error">The “duplicate coord”-error</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="importingdata.html">3.2.8. Importing data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="importingdata.html">Importing data</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../editing/index.html">3.3. Editing in TWW</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">3.4. Profils en long</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">3.5. Outils de poursuite de réseau</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">3.6. Impression de plans</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../history/index.html">3.7. History in TWW</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../How-To/index.html">3.8. How To</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../editing/index.html">Editing in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">Profils en long</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">Outils de poursuite de réseau</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">Impression de plans</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/index.html">History in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../How-To/index.html">How To</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">4. Guide d’administration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../extensions-guide/index.html">5. Official TWW extensions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">6. SWMM Data Exchange</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">7. Traduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">Guide d’administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extensions-guide/index.html">Official TWW extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">Traduction</a></li>
 </ul>
 
         </div>
@@ -96,9 +97,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>TWW User Guide</a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.2. </span>Digitizing in TWW</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">3.2.7. </span>Numérisation des bassins versants</li>
+          <li class="breadcrumb-item"><a href="../index.html">User Guide</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Digitizing in TWW</a></li>
+      <li class="breadcrumb-item active">Numérisation des bassins versants</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/user-guide/digitizing/digitizingcatchments.rst.txt" rel="nofollow"> Afficher la source de la page</a>
       </li>
@@ -111,9 +112,9 @@
   <blockquote>
 <div></div></blockquote>
 <section id="digitizing-catchment-areas">
-<h1><span class="section-number">3.2.7. </span>Numérisation des bassins versants<a class="headerlink" href="#digitizing-catchment-areas" title="Lien vers cette rubrique"></a></h1>
+<h1>Numérisation des bassins versants<a class="headerlink" href="#digitizing-catchment-areas" title="Lien vers cette rubrique"></a></h1>
 <section id="general">
-<h2><span class="section-number">3.2.7.1. </span>Généralités<a class="headerlink" href="#general" title="Lien vers cette rubrique"></a></h2>
+<h2>Généralités<a class="headerlink" href="#general" title="Lien vers cette rubrique"></a></h2>
 <p>Catchments can be digitized with QGIS standard tool <strong>Add Polygon Feature</strong>.</p>
 <figure class="align-default">
 <img alt="../../_images/qgis_standard_tools.jpg" src="../../_images/qgis_standard_tools.jpg" />
@@ -121,7 +122,7 @@
 <p>Les bassins versants ne doivent pas se chevaucher et peuvent avoir 4 connexions avec des noeuds assainissement.</p>
 </section>
 <section id="digitizing">
-<h2><span class="section-number">3.2.7.2. </span>Numérisation<a class="headerlink" href="#digitizing" title="Lien vers cette rubrique"></a></h2>
+<h2>Numérisation<a class="headerlink" href="#digitizing" title="Lien vers cette rubrique"></a></h2>
 <ul class="simple">
 <li><p>Sélectionnez le bouton <strong>Activer l’accrochage</strong></p></li>
 </ul>
@@ -184,7 +185,7 @@
 </div>
 </section>
 <section id="editing">
-<h2><span class="section-number">3.2.7.3. </span>Édition<a class="headerlink" href="#editing" title="Lien vers cette rubrique"></a></h2>
+<h2>Édition<a class="headerlink" href="#editing" title="Lien vers cette rubrique"></a></h2>
 <ul class="simple">
 <li><p>Vous pouvez éditer des bassins existants avec l’outil <strong>Sélectionner une entité</strong>.</p></li>
 </ul>
@@ -197,7 +198,7 @@
 </div>
 </section>
 <section id="split-areas">
-<h2><span class="section-number">3.2.7.4. </span>Séparer des zones<a class="headerlink" href="#split-areas" title="Lien vers cette rubrique"></a></h2>
+<h2>Séparer des zones<a class="headerlink" href="#split-areas" title="Lien vers cette rubrique"></a></h2>
 <ul class="simple">
 <li><p>You can split existing areas with the <strong>Split Features</strong> tool.</p></li>
 </ul>
@@ -209,7 +210,7 @@
 </ul>
 </section>
 <section id="merge-areas">
-<h2><span class="section-number">3.2.7.5. </span>Fusionner des zones<a class="headerlink" href="#merge-areas" title="Lien vers cette rubrique"></a></h2>
+<h2>Fusionner des zones<a class="headerlink" href="#merge-areas" title="Lien vers cette rubrique"></a></h2>
 <p>You can merge existing areas with the <strong>Merge Selected Feature</strong> tool.</p>
 <figure class="align-default">
 <img alt="../../_images/merge_selected_feature_tool.jpg" src="../../_images/merge_selected_feature_tool.jpg" />
@@ -231,7 +232,7 @@
 </div>
 </section>
 <section id="connect-catchment-area-to-wastewater-network-nodes">
-<h2><span class="section-number">3.2.7.6. </span>Connecter la zone du bassin versant aux noeuds du réseau assainissement<a class="headerlink" href="#connect-catchment-area-to-wastewater-network-nodes" title="Lien vers cette rubrique"></a></h2>
+<h2>Connecter la zone du bassin versant aux noeuds du réseau assainissement<a class="headerlink" href="#connect-catchment-area-to-wastewater-network-nodes" title="Lien vers cette rubrique"></a></h2>
 <p>You connect catchment areas with the tool <strong>Connect wastewater networkelements</strong> (it’s the same tool to connect reaches and nodes described in the chapter Editing in TWW).</p>
 <figure class="align-default">
 <img alt="../../_images/connect_wastewater_network_elements_button.jpg" src="../../_images/connect_wastewater_network_elements_button.jpg" />
@@ -266,7 +267,7 @@
 <p>Pour supprimer une connexion à un noeud assainissement, vous pouvez éditer la zone avec l’outil <strong>Identifier entités</strong>.</p>
 </section>
 <section id="the-duplicate-coord-error">
-<h2><span class="section-number">3.2.7.7. </span>The “duplicate coord”-error<a class="headerlink" href="#the-duplicate-coord-error" title="Lien vers cette rubrique"></a></h2>
+<h2>The “duplicate coord”-error<a class="headerlink" href="#the-duplicate-coord-error" title="Lien vers cette rubrique"></a></h2>
 <p>After digitizing catchment areas and export to DSS, you will probably get the message, that your exportfile is not valid. In the ilivalidator.log-file can be messages like:</p>
 <p>Error: line nnnn: DSS_2020_1_LV95.Siedlungsentwaesserung.Einzugsgebiet: tid chmmmm: duplicate coord at (x.xxx, y.yyy, NaN)</p>
 <p>The reason is: in the XTF-file, coordinates are writen with 0.001m (1mm). Vertex-points in QGIS can differed by only 0.0001m (0.01mm) or less.</p>
@@ -289,8 +290,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
-        <a href="deletingobjects.html" class="btn btn-neutral float-left" title="3.2.6. Suppression d’objets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
-        <a href="importingdata.html" class="btn btn-neutral float-right" title="3.2.8. Importing data" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="deletingobjects.html" class="btn btn-neutral float-left" title="Suppression d’objets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+        <a href="importingdata.html" class="btn btn-neutral float-right" title="Importing data" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

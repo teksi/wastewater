@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>4.4. INTERLIS Data exchange &mdash; TWW dev documentation</title>
+  <title>INTERLIS Data exchange &mdash; TWW dev documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
@@ -19,8 +19,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="4.5. Customization of the data model" href="../db-customization/index.html" />
-    <link rel="prev" title="4.3. User Roles" href="../security/index.html" /> 
+    <link rel="next" title="Customization of the data model" href="../db-customization/index.html" />
+    <link rel="prev" title="User Roles" href="../security/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -43,50 +43,51 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">1. TEKSI wastewater (TWW)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">2. TWW Installation Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user-guide/index.html">3. TWW User Guide</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. Admin Guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../datamodel.html">4.1. Datamodel</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pgadmin/index.html">4.2. pgAdmin</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../security/index.html">4.3. User Roles</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">4.4. INTERLIS Data exchange</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#general">4.4.1. General</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#prerequisites">4.4.2. Prerequisites</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#java">4.4.2.1. Java</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#python-libraries">4.4.2.2. Python libraries</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#tww-version">4.4.2.3. TWW Version</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">TEKSI wastewater (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user-guide/index.html">User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Admin Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../datamodel.html">Datamodel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pgadmin/index.html">pgAdmin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.html">User Roles</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">INTERLIS Data exchange</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#general">General</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#java">Java</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python-libraries">Python libraries</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tww-version">TWW Version</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#usage-gui">4.4.3. Usage (GUI)</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#enable-admin-mode">4.4.3.1. Enable admin mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#usage-gui">Usage (GUI)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#enable-admin-mode">Enable admin mode</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#interlis-export">4.4.4. INTERLIS Export</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#export-extra-organisations">4.4.4.1. Export extra organisations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#interlis-export">INTERLIS Export</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#export-extra-organisations">Export extra organisations</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#interlis-import">4.4.5. INTERLIS Import</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#usage-command-line">4.4.6. Usage (command line)</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#dependencies">4.4.6.1. Dependencies</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#import">4.4.6.2. Import</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#export">4.4.6.3. Export</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#interlis-import">INTERLIS Import</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#usage-command-line">Usage (command line)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#import">Import</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#export">Export</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#quality-control">4.4.7. Quality control</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#quality-control-with-vsa-online-checker-fachprufung-mit-vsa-checker-online">4.4.7.1. Quality control with VSA online checker (Fachprüfung mit VSA Checker (online))</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#quality-control">Quality control</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#quality-control-with-vsa-online-checker-fachprufung-mit-vsa-checker-online">Quality control with VSA online checker (Fachprüfung mit VSA Checker (online))</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../db-customization/index.html">4.5. Customization of the data model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../datamodel-tool/index.html">4.6. Data model tool</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../db-update-pum/index.html">4.7. Manual update of the datamodel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../db-customization/index.html">Customization of the data model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datamodel-tool/index.html">Data model tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../db-update-pum/index.html">Manual update of the datamodel</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../extensions-guide/index.html">5. Official TWW extensions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">6. SWMM Data Exchange</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">7. Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extensions-guide/index.html">Official TWW extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">Translation</a></li>
 </ul>
 
         </div>
@@ -103,8 +104,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">4. </span>Admin Guide</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">4.4. </span>INTERLIS Data exchange</li>
+          <li class="breadcrumb-item"><a href="../index.html">Admin Guide</a></li>
+      <li class="breadcrumb-item active">INTERLIS Data exchange</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/admin-guide/interlis-io/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -117,10 +118,10 @@
   <blockquote>
 <div></div></blockquote>
 <section id="interlis-data-exchange">
-<h1><span class="section-number">4.4. </span>INTERLIS Data exchange<a class="headerlink" href="#interlis-data-exchange" title="Link to this heading"></a></h1>
+<h1>INTERLIS Data exchange<a class="headerlink" href="#interlis-data-exchange" title="Link to this heading"></a></h1>
 <p>This represents a guide on how to import/export data between TWW and <a class="reference external" href="https://www.interlis.ch">INTERLIS 2 Transfer Format (XTF)</a>.</p>
 <section id="general">
-<h2><span class="section-number">4.4.1. </span>General<a class="headerlink" href="#general" title="Link to this heading"></a></h2>
+<h2>General<a class="headerlink" href="#general" title="Link to this heading"></a></h2>
 <p>The TWW plugin includes an INTERLIS import/export feature.
 It is currently capable of importing and exporting the following models:</p>
 <ul class="simple">
@@ -132,16 +133,16 @@ It is currently capable of importing and exporting the following models:</p>
 <p>Note that currently, exports are possible in German only. Translated exports are on the roadmap, let us know if you are interested in this feature.</p>
 </section>
 <section id="prerequisites">
-<h2><span class="section-number">4.4.2. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h2>
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h2>
 <section id="java">
-<h3><span class="section-number">4.4.2.1. </span>Java<a class="headerlink" href="#java" title="Link to this heading"></a></h3>
+<h3>Java<a class="headerlink" href="#java" title="Link to this heading"></a></h3>
 <p>You need java on your system.</p>
 <p>Windows : <a class="reference external" href="https://javadl.oracle.com/webapps/download/AutoDL?BundleId=245058_d3c52aa6bfa54d3ca74e617f18309292">Java for windows download</a>
 MacOS : <a class="reference external" href="https://javadl.oracle.com/webapps/download/AutoDL?BundleId=245051_d3c52aa6bfa54d3ca74e617f18309292">Java for MacOS download</a>
 Linux : use the package manager</p>
 </section>
 <section id="python-libraries">
-<h3><span class="section-number">4.4.2.2. </span>Python libraries<a class="headerlink" href="#python-libraries" title="Link to this heading"></a></h3>
+<h3>Python libraries<a class="headerlink" href="#python-libraries" title="Link to this heading"></a></h3>
 <p>You need <cite>sqlalchemy</cite> and <cite>geoalchemy2</cite>.</p>
 <p>To install : before launching QGIS, open OSGeo4W Shell</p>
 <figure class="align-default">
@@ -167,14 +168,14 @@ Linux : use the package manager</p>
 <p>The same <cite>–target</cite> flag can be added to install <cite>sqlalchemy</cite> and <cite>geoalchemy2</cite> in another location.</p>
 </section>
 <section id="tww-version">
-<h3><span class="section-number">4.4.2.3. </span>TWW Version<a class="headerlink" href="#tww-version" title="Link to this heading"></a></h3>
+<h3>TWW Version<a class="headerlink" href="#tww-version" title="Link to this heading"></a></h3>
 <p>The export only supports up-to-date TWW data model (2020.1 at the time of writing). Ensure your data model is fully updated before trying to import/export.</p>
 </section>
 </section>
 <section id="usage-gui">
-<h2><span class="section-number">4.4.3. </span>Usage (GUI)<a class="headerlink" href="#usage-gui" title="Link to this heading"></a></h2>
+<h2>Usage (GUI)<a class="headerlink" href="#usage-gui" title="Link to this heading"></a></h2>
 <section id="enable-admin-mode">
-<h3><span class="section-number">4.4.3.1. </span>Enable admin mode<a class="headerlink" href="#enable-admin-mode" title="Link to this heading"></a></h3>
+<h3>Enable admin mode<a class="headerlink" href="#enable-admin-mode" title="Link to this heading"></a></h3>
 <p>In the <cite>plugin&gt;TWW&gt;settings</cite> dialog, under the <cite>Developer options</cite> tab, ensure <cite>Admin mode</cite> is enabled. Restart QGIS.</p>
 <figure class="align-default">
 <img alt="../../_images/settings_dialog.png" src="../../_images/settings_dialog.png" />
@@ -186,7 +187,7 @@ Linux : use the package manager</p>
 </section>
 </section>
 <section id="interlis-export">
-<span id="id1"></span><h2><span class="section-number">4.4.4. </span>INTERLIS Export<a class="headerlink" href="#interlis-export" title="Link to this heading"></a></h2>
+<span id="id1"></span><h2>INTERLIS Export<a class="headerlink" href="#interlis-export" title="Link to this heading"></a></h2>
 <figure class="align-default">
 <img alt="../../_images/tww_interlis_export_button.png" src="../../_images/tww_interlis_export_button.png" />
 </figure>
@@ -269,7 +270,7 @@ If the export is not successfull you will get either error messages during the e
 </tbody>
 </table>
 <section id="export-extra-organisations">
-<h3><span class="section-number">4.4.4.1. </span>Export extra organisations<a class="headerlink" href="#export-extra-organisations" title="Link to this heading"></a></h3>
+<h3>Export extra organisations<a class="headerlink" href="#export-extra-organisations" title="Link to this heading"></a></h3>
 <figure class="align-default">
 <img alt="../../_images/tww_interlis_export_organisation.jpg" src="../../_images/tww_interlis_export_organisation.jpg" />
 </figure>
@@ -281,7 +282,7 @@ If the export is not successfull you will get either error messages during the e
 </section>
 </section>
 <section id="interlis-import">
-<span id="id4"></span><h2><span class="section-number">4.4.5. </span>INTERLIS Import<a class="headerlink" href="#interlis-import" title="Link to this heading"></a></h2>
+<span id="id4"></span><h2>INTERLIS Import<a class="headerlink" href="#interlis-import" title="Link to this heading"></a></h2>
 <figure class="align-default">
 <img alt="../../_images/tww_interlis_import_button.png" src="../../_images/tww_interlis_import_button.png" />
 </figure>
@@ -320,10 +321,10 @@ You can see, if there is already a dataset with the same obj_id in the state att
 <p>If the import was successful a green success message appears.</p>
 </section>
 <section id="usage-command-line">
-<h2><span class="section-number">4.4.6. </span>Usage (command line)<a class="headerlink" href="#usage-command-line" title="Link to this heading"></a></h2>
+<h2>Usage (command line)<a class="headerlink" href="#usage-command-line" title="Link to this heading"></a></h2>
 <p>For advanced usage, the import/export tool can also be used as a command line tool.</p>
 <section id="dependencies">
-<h3><span class="section-number">4.4.6.1. </span>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h3>
+<h3>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h3>
 <p>The QGIS python classes must be available in the python interpreter.</p>
 <ul class="simple">
 <li><p>On windows you can use the OSGeo4W environment</p></li>
@@ -331,7 +332,7 @@ You can see, if there is already a dataset with the same obj_id in the state att
 </ul>
 </section>
 <section id="import">
-<h3><span class="section-number">4.4.6.2. </span>Import<a class="headerlink" href="#import" title="Link to this heading"></a></h3>
+<h3>Import<a class="headerlink" href="#import" title="Link to this heading"></a></h3>
 <p>Import example</p>
 <div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3<span class="w"> </span>plugin/tww_cmd.py<span class="w"> </span>interlis_import<span class="w"> </span>--xtf_file<span class="w"> </span>plugin/teksi_wastewater/tests/data/minimal-dataset-SIA405-ABWASSER.xtf<span class="w"> </span>--pgservice<span class="w"> </span>pg_tww
 </pre></div>
@@ -378,7 +379,7 @@ You can see, if there is already a dataset with the same obj_id in the state att
 </div>
 </section>
 <section id="export">
-<h3><span class="section-number">4.4.6.3. </span>Export<a class="headerlink" href="#export" title="Link to this heading"></a></h3>
+<h3>Export<a class="headerlink" href="#export" title="Link to this heading"></a></h3>
 <p>Export example</p>
 <div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">python3 plugin/tww_cmd.py interlis_export --xtf_file &quot;output.xtf&quot; --pgservice pg_tww</span>
 </pre></div>
@@ -426,9 +427,9 @@ You can see, if there is already a dataset with the same obj_id in the state att
 </section>
 </section>
 <section id="quality-control">
-<h2><span class="section-number">4.4.7. </span>Quality control<a class="headerlink" href="#quality-control" title="Link to this heading"></a></h2>
+<h2>Quality control<a class="headerlink" href="#quality-control" title="Link to this heading"></a></h2>
 <section id="quality-control-with-vsa-online-checker-fachprufung-mit-vsa-checker-online">
-<h3><span class="section-number">4.4.7.1. </span>Quality control with VSA online checker (Fachprüfung mit VSA Checker (online))<a class="headerlink" href="#quality-control-with-vsa-online-checker-fachprufung-mit-vsa-checker-online" title="Link to this heading"></a></h3>
+<h3>Quality control with VSA online checker (Fachprüfung mit VSA Checker (online))<a class="headerlink" href="#quality-control-with-vsa-online-checker-fachprufung-mit-vsa-checker-online" title="Link to this heading"></a></h3>
 <figure class="align-default">
 <img alt="https://vsa.ch/wp-content/uploads/2020/04/Daten-checker-d-f-it.jpg" src="https://vsa.ch/wp-content/uploads/2020/04/Daten-checker-d-f-it.jpg" />
 </figure>
@@ -442,8 +443,8 @@ You can see, if there is already a dataset with the same obj_id in the state att
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../security/index.html" class="btn btn-neutral float-left" title="4.3. User Roles" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../db-customization/index.html" class="btn btn-neutral float-right" title="4.5. Customization of the data model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../security/index.html" class="btn btn-neutral float-left" title="User Roles" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../db-customization/index.html" class="btn btn-neutral float-right" title="Customization of the data model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

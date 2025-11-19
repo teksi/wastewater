@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>5.1. Datenbankerweiterungen initialisieren &mdash; TWW dev Dokumentation</title>
+  <title>Datenbankerweiterungen initialisieren &mdash; TWW dev Dokumentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
@@ -20,8 +20,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Stichwortverzeichnis" href="../genindex.html" />
     <link rel="search" title="Suche" href="../search.html" />
-    <link rel="next" title="5.2. Erweiterung AG-64/AG-96" href="agxx/index.html" />
-    <link rel="prev" title="5. Offizielle TWW-Erweiterungen" href="index.html" /> 
+    <link rel="next" title="Erweiterung AG-64/AG-96" href="agxx/index.html" />
+    <link rel="prev" title="Offizielle TWW-Erweiterungen" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,21 +44,22 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">1. TEKSI Abwasser (TWW)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../installation-guide/index.html">2. TWW Installation Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">3. TWW Benutzerhandbuch</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">4. Administratorhandbuch</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">5. Offizielle TWW-Erweiterungen</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">5.1. Datenbankerweiterungen initialisieren</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#create-an-empty-datamodel-with-an-extension">5.1.1. Ein leeres Datenmodell mit Erweiterung erstellen</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#generate-the-data-model-under-linux">5.1.2. Erzeugen des Datenmodells unter Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">TEKSI Abwasser (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation-guide/index.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">Administratorhandbuch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Releases</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Offizielle TWW-Erweiterungen</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Datenbankerweiterungen initialisieren</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#create-an-empty-datamodel-with-an-extension">Ein leeres Datenmodell mit Erweiterung erstellen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#generate-the-data-model-under-linux">Erzeugen des Datenmodells unter Linux</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="agxx/index.html">5.2. Erweiterung AG-64/AG-96</a></li>
+<li class="toctree-l2"><a class="reference internal" href="agxx/index.html">Erweiterung AG-64/AG-96</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../tww_swmm/index.html">6. SWMM Data Exchange</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">7. Übersetzungen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tww_swmm/index.html">SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">Übersetzungen</a></li>
 </ul>
 
         </div>
@@ -75,8 +76,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">5. </span>Offizielle TWW-Erweiterungen</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">5.1. </span>Datenbankerweiterungen initialisieren</li>
+          <li class="breadcrumb-item"><a href="index.html">Offizielle TWW-Erweiterungen</a></li>
+      <li class="breadcrumb-item active">Datenbankerweiterungen initialisieren</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/extensions-guide/initialize-extensions.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
       </li>
@@ -89,7 +90,7 @@
   <blockquote>
 <div></div></blockquote>
 <section id="initialising-database-extensions">
-<h1><span class="section-number">5.1. </span>Datenbankerweiterungen initialisieren<a class="headerlink" href="#initialising-database-extensions" title="Link to this heading"></a></h1>
+<h1>Datenbankerweiterungen initialisieren<a class="headerlink" href="#initialising-database-extensions" title="Link to this heading"></a></h1>
 <p>TEKSI Wastewater unterhält Datenbankerweiterungen, um die folgenden Modelle bedienen zu können:</p>
 <ul class="simple">
 <li><p>AG-64 Abwasserkataster Version 2.1.0</p></li>
@@ -98,7 +99,7 @@
 <p>The database is automatically loaded with the necessary tables and attributes for the extension.
 In order to be able to use an extension, activate the corresponding app modification <a class="reference internal" href="../admin-guide/db-customization/index.html#modification-framework"><span class="std std-ref">Modification Framework for application schema</span></a></p>
 <section id="create-an-empty-datamodel-with-an-extension">
-<span id="empty-extension-model"></span><h2><span class="section-number">5.1.1. </span>Ein leeres Datenmodell mit Erweiterung erstellen<a class="headerlink" href="#create-an-empty-datamodel-with-an-extension" title="Link to this heading"></a></h2>
+<span id="empty-extension-model"></span><h2>Ein leeres Datenmodell mit Erweiterung erstellen<a class="headerlink" href="#create-an-empty-datamodel-with-an-extension" title="Link to this heading"></a></h2>
 <p>Um eine Datenbankerweiterung nutzen zu können, muss sie aus dem Quellcode geladen werden.</p>
 <ul>
 <li><p>Laden Sie eine Standard TWW-Datenbank* <a class="reference external" href="https://github.com/TWW/datamodel/releases/latest">https://github.com/TWW/datamodel/releases/latest</a> * download <cite>tww_{version}_structure_with_value_lists.sql</cite></p></li>
@@ -133,7 +134,7 @@ In order to be able to use an extension, activate the corresponding app modifica
 <p>For official models, an adapted value list sql is provided.</p>
 </section>
 <section id="generate-the-data-model-under-linux">
-<h2><span class="section-number">5.1.2. </span>Erzeugen des Datenmodells unter Linux<a class="headerlink" href="#generate-the-data-model-under-linux" title="Link to this heading"></a></h2>
+<h2>Erzeugen des Datenmodells unter Linux<a class="headerlink" href="#generate-the-data-model-under-linux" title="Link to this heading"></a></h2>
 <p>Es ist auch unter LINUX möglich das Datenmodell zu erzeugen</p>
 <ul>
 <li><p>Download des Datenmodells</p>
@@ -166,8 +167,8 @@ In order to be able to use an extension, activate the corresponding app modifica
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="5. Offizielle TWW-Erweiterungen" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
-        <a href="agxx/index.html" class="btn btn-neutral float-right" title="5.2. Erweiterung AG-64/AG-96" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Offizielle TWW-Erweiterungen" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
+        <a href="agxx/index.html" class="btn btn-neutral float-right" title="Erweiterung AG-64/AG-96" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>6.5. Run SWMM Simulation &mdash; TWW dev documentation</title>
+  <title>Run SWMM Simulation &mdash; TWW dev documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
@@ -19,8 +19,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="6.6. Import results" href="Process-Results.html" />
-    <link rel="prev" title="6.4. Check SWMM File" href="Check-SWMM-File.html" /> 
+    <link rel="next" title="Import results" href="Process-Results.html" />
+    <link rel="prev" title="Check SWMM File" href="Check-SWMM-File.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -43,29 +43,30 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">1. TEKSI wastewater (TWW)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../installation-guide/index.html">2. TWW Installation Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">3. TWW User Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">4. Admin Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../extensions-guide/index.html">5. Official TWW extensions</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">6. SWMM Data Exchange</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="SWMM.html">6.1. Storm Water Management Model (SWMM)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Prepare-Data.html">6.2. Prepare Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Generate-SWMM-File.html">6.3. Generate SWMM File</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Check-SWMM-File.html">6.4. Check SWMM File</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">6.5. Run SWMM Simulation</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#run-a-simulation-from-swmm-interface">6.5.1. Run a simulation from SWMM interface</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#run-a-simulation-with-command-line">6.5.2. Run a simulation with command line</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#run-a-simulation-with-tww-swmm">6.5.3. Run a simulation with TWW-SWMM</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#common-running-errors">6.5.4. Common running errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">TEKSI wastewater (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation-guide/index.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">Admin Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions-guide/index.html">Official TWW extensions</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">SWMM Data Exchange</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="SWMM.html">Storm Water Management Model (SWMM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Prepare-Data.html">Prepare Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Generate-SWMM-File.html">Generate SWMM File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Check-SWMM-File.html">Check SWMM File</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Run SWMM Simulation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#run-a-simulation-from-swmm-interface">Run a simulation from SWMM interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#run-a-simulation-with-command-line">Run a simulation with command line</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#run-a-simulation-with-tww-swmm">Run a simulation with TWW-SWMM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#common-running-errors">Common running errors</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="Process-Results.html">6.6. Import results</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Mapping.html">6.7. Mapping</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Developpers-Advanced-Users.html">6.8. For developpers and advanced users</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Process-Results.html">Import results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Mapping.html">Mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Developpers-Advanced-Users.html">For developpers and advanced users</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">7. Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">Translation</a></li>
 </ul>
 
         </div>
@@ -82,8 +83,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">6. </span>SWMM Data Exchange</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">6.5. </span>Run SWMM Simulation</li>
+          <li class="breadcrumb-item"><a href="index.html">SWMM Data Exchange</a></li>
+      <li class="breadcrumb-item active">Run SWMM Simulation</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/tww_swmm/Run-SWMM-Simulation.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -96,19 +97,19 @@
   <blockquote>
 <div></div></blockquote>
 <section id="run-swmm-simulation">
-<span id="id1"></span><h1><span class="section-number">6.5. </span>Run SWMM Simulation<a class="headerlink" href="#run-swmm-simulation" title="Link to this heading"></a></h1>
+<span id="id1"></span><h1>Run SWMM Simulation<a class="headerlink" href="#run-swmm-simulation" title="Link to this heading"></a></h1>
 <section id="run-a-simulation-from-swmm-interface">
-<h2><span class="section-number">6.5.1. </span>Run a simulation from SWMM interface<a class="headerlink" href="#run-a-simulation-from-swmm-interface" title="Link to this heading"></a></h2>
+<h2>Run a simulation from SWMM interface<a class="headerlink" href="#run-a-simulation-from-swmm-interface" title="Link to this heading"></a></h2>
 <p>You can open the <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file with SWMM and run the simulation from the interface.</p>
 </section>
 <section id="run-a-simulation-with-command-line">
-<h2><span class="section-number">6.5.2. </span>Run a simulation with command line<a class="headerlink" href="#run-a-simulation-with-command-line" title="Link to this heading"></a></h2>
+<h2>Run a simulation with command line<a class="headerlink" href="#run-a-simulation-with-command-line" title="Link to this heading"></a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="n">EXEPATH</span><span class="p">}</span>\<span class="n">swmm5</span><span class="o">.</span><span class="n">exe</span> <span class="p">{</span><span class="n">INPUTPATH</span><span class="p">}</span>\<span class="p">{</span><span class="n">INPUTFILENAME</span><span class="p">}</span><span class="o">.</span><span class="n">inp</span> <span class="p">{</span><span class="n">OUTPUTPATH</span><span class="p">}</span>\<span class="p">{</span><span class="n">REPORTFILENAME</span><span class="p">}</span><span class="o">.</span><span class="n">rpt</span> <span class="p">{</span><span class="n">OUTPUTPATH</span><span class="p">}</span>\<span class="p">{</span><span class="n">OUTPUTFILENAME</span><span class="p">}</span><span class="o">.</span><span class="n">out</span>
 </pre></div>
 </div>
 </section>
 <section id="run-a-simulation-with-tww-swmm">
-<h2><span class="section-number">6.5.3. </span>Run a simulation with TWW-SWMM<a class="headerlink" href="#run-a-simulation-with-tww-swmm" title="Link to this heading"></a></h2>
+<h2>Run a simulation with TWW-SWMM<a class="headerlink" href="#run-a-simulation-with-tww-swmm" title="Link to this heading"></a></h2>
 <p>The path to the SWMM executable must be set in the Processsing tools options. The plugin will launch the command line in the background.</p>
 <p>Launch <code class="docutils literal notranslate"><span class="pre">SWMM</span> <span class="pre">Execute</span></code>:</p>
 <ul class="simple">
@@ -117,7 +118,7 @@
 </ul>
 </section>
 <section id="common-running-errors">
-<h2><span class="section-number">6.5.4. </span>Common running errors<a class="headerlink" href="#common-running-errors" title="Link to this heading"></a></h2>
+<h2>Common running errors<a class="headerlink" href="#common-running-errors" title="Link to this heading"></a></h2>
 <p>The list of errors can be found <a class="reference external" href="https://swmm5.org/2016/09/05/swmm-5-1-and-infoswmm-error-and-warning-messages/">here</a></p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">ERROR</span> <span class="pre">211:</span> <span class="pre">invalid</span> <span class="pre">number</span> <span class="pre">-XXX</span> <span class="pre">at</span> <span class="pre">line</span> <span class="pre">XXX</span> <span class="pre">of</span> <span class="pre">[JUNC]</span> <span class="pre">section:</span></code>: A negative number is provided for the depth. Change the value in TWW or in the <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file.</p></li>
@@ -129,8 +130,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="Check-SWMM-File.html" class="btn btn-neutral float-left" title="6.4. Check SWMM File" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="Process-Results.html" class="btn btn-neutral float-right" title="6.6. Import results" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Check-SWMM-File.html" class="btn btn-neutral float-left" title="Check SWMM File" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Process-Results.html" class="btn btn-neutral float-right" title="Import results" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>5.1. Initialising Database extensions &mdash; Documentation TWW dev</title>
+  <title>Initialising Database extensions &mdash; Documentation TWW dev</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
@@ -20,8 +20,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Recherche" href="../search.html" />
-    <link rel="next" title="5.2. Extension AG-64/AG-96" href="agxx/index.html" />
-    <link rel="prev" title="5. Official TWW extensions" href="index.html" /> 
+    <link rel="next" title="Extension AG-64/AG-96" href="agxx/index.html" />
+    <link rel="prev" title="Official TWW extensions" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,21 +44,22 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">1. TEKSI Assainissement (TWW)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../installation-guide/index.html">2. Guide d’installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">3. TWW User Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">4. Guide d’administration</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">5. Official TWW extensions</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">5.1. Initialising Database extensions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#create-an-empty-datamodel-with-an-extension">5.1.1. create an empty datamodel with an extension</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#generate-the-data-model-under-linux">5.1.2. Générer le modèle de données sous Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">TEKSI Assainissement (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation-guide/index.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">Guide d’administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Releases</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Official TWW extensions</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Initialising Database extensions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#create-an-empty-datamodel-with-an-extension">create an empty datamodel with an extension</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#generate-the-data-model-under-linux">Générer le modèle de données sous Linux</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="agxx/index.html">5.2. Extension AG-64/AG-96</a></li>
+<li class="toctree-l2"><a class="reference internal" href="agxx/index.html">Extension AG-64/AG-96</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../tww_swmm/index.html">6. SWMM Data Exchange</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">7. Traduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tww_swmm/index.html">SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">Traduction</a></li>
 </ul>
 
         </div>
@@ -75,8 +76,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">5. </span>Official TWW extensions</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">5.1. </span>Initialising Database extensions</li>
+          <li class="breadcrumb-item"><a href="index.html">Official TWW extensions</a></li>
+      <li class="breadcrumb-item active">Initialising Database extensions</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/extensions-guide/initialize-extensions.rst.txt" rel="nofollow"> Afficher la source de la page</a>
       </li>
@@ -89,7 +90,7 @@
   <blockquote>
 <div></div></blockquote>
 <section id="initialising-database-extensions">
-<h1><span class="section-number">5.1. </span>Initialising Database extensions<a class="headerlink" href="#initialising-database-extensions" title="Lien vers cette rubrique"></a></h1>
+<h1>Initialising Database extensions<a class="headerlink" href="#initialising-database-extensions" title="Lien vers cette rubrique"></a></h1>
 <p>TEKSI Wastewater maintains database extensions to serve the following models:</p>
 <ul class="simple">
 <li><p>AG-64 Abwasserkataster Version 2.1.0</p></li>
@@ -98,7 +99,7 @@
 <p>The database is automatically loaded with the necessary tables and attributes for the extension.
 In order to be able to use an extension, activate the corresponding app modification <a class="reference internal" href="../admin-guide/db-customization/index.html#modification-framework"><span class="std std-ref">Modification Framework for application schema</span></a></p>
 <section id="create-an-empty-datamodel-with-an-extension">
-<span id="empty-extension-model"></span><h2><span class="section-number">5.1.1. </span>create an empty datamodel with an extension<a class="headerlink" href="#create-an-empty-datamodel-with-an-extension" title="Lien vers cette rubrique"></a></h2>
+<span id="empty-extension-model"></span><h2>create an empty datamodel with an extension<a class="headerlink" href="#create-an-empty-datamodel-with-an-extension" title="Lien vers cette rubrique"></a></h2>
 <p>In order to use a database extension, we need to load them from the source code:</p>
 <ul>
 <li><p>Load a standard TWW Database
@@ -137,7 +138,7 @@ In order to be able to use an extension, activate the corresponding app modifica
 <p>For official models, an adapted value list sql is provided.</p>
 </section>
 <section id="generate-the-data-model-under-linux">
-<h2><span class="section-number">5.1.2. </span>Générer le modèle de données sous Linux<a class="headerlink" href="#generate-the-data-model-under-linux" title="Lien vers cette rubrique"></a></h2>
+<h2>Générer le modèle de données sous Linux<a class="headerlink" href="#generate-the-data-model-under-linux" title="Lien vers cette rubrique"></a></h2>
 <p>You can also generate the data model extension under Linux.</p>
 <ul>
 <li><p>Télécharger le modèle de données:</p>
@@ -171,8 +172,8 @@ as in the <a class="reference internal" href="../installation-guide/workstation.
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
-        <a href="index.html" class="btn btn-neutral float-left" title="5. Official TWW extensions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
-        <a href="agxx/index.html" class="btn btn-neutral float-right" title="5.2. Extension AG-64/AG-96" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Official TWW extensions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+        <a href="agxx/index.html" class="btn btn-neutral float-right" title="Extension AG-64/AG-96" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

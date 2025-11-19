@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>3.3.3. Hinzufügen oder bearbeiten von Erhaltungsereignissen &mdash; TWW dev Dokumentation</title>
+  <title>Hinzufügen oder bearbeiten von Erhaltungsereignissen &mdash; TWW dev Dokumentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
@@ -20,8 +20,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Stichwortverzeichnis" href="../../genindex.html" />
     <link rel="search" title="Suche" href="../../search.html" />
-    <link rel="next" title="3.3.4. Abwassernetz Elemente verbinden" href="connect_wastewater_network_elements.html" />
-    <link rel="prev" title="3.3.2. Verschieben von Abwasserbauwerken zusammen mit Haltungen, Deckeln und Knoten" href="moving.html" /> 
+    <link rel="next" title="Abwassernetz Elemente verbinden" href="connect_wastewater_network_elements.html" />
+    <link rel="prev" title="Verschieben von Abwasserbauwerken zusammen mit Haltungen, Deckeln und Knoten" href="moving.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,38 +44,39 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">1. TEKSI Abwasser (TWW)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">2. TWW Installation Guide</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. TWW Benutzerhandbuch</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">3.1. Übersicht über TWW</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../digitizing/index.html">3.2. Digitalisieren in TWW</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">3.3. Bearbeiten in TWW</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="editing.html">3.3.1. Bearbeiten von bestehenden Daten</a></li>
-<li class="toctree-l3"><a class="reference internal" href="moving.html">3.3.2. Verschieben von Abwasserbauwerken zusammen mit Haltungen, Deckeln und Knoten</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">3.3.3. Hinzufügen oder bearbeiten von Erhaltungsereignissen</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#general">3.3.3.1. Allgemeines</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#adding-a-new-maintenance-event">3.3.3.2. Ein neues Erhaltungsereignis hinzufügen</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#link-an-existing-maintenance-event">3.3.3.3. Verknüpfen mit einem bestehenden Erhaltungsereignis.</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#unlink-maintenance-events">3.3.3.4. Verknüpfung zu Erhaltungsereignissen auflösen</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#editing">3.3.3.5. Bearbeitung</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#mark-as-outdated">3.3.3.6. Mark as outdated</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#multi-edit">3.3.3.7. Mehrfachbearbeitung</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">TEKSI Abwasser (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">Installation Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">Übersicht über TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../digitizing/index.html">Digitalisieren in TWW</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Bearbeiten in TWW</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="editing.html">Bearbeiten von bestehenden Daten</a></li>
+<li class="toctree-l3"><a class="reference internal" href="moving.html">Verschieben von Abwasserbauwerken zusammen mit Haltungen, Deckeln und Knoten</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Hinzufügen oder bearbeiten von Erhaltungsereignissen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#general">Allgemeines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-a-new-maintenance-event">Ein neues Erhaltungsereignis hinzufügen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#link-an-existing-maintenance-event">Verknüpfen mit einem bestehenden Erhaltungsereignis.</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unlink-maintenance-events">Verknüpfung zu Erhaltungsereignissen auflösen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#editing">Bearbeitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mark-as-outdated">Mark as outdated</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#multi-edit">Mehrfachbearbeitung</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="connect_wastewater_network_elements.html">3.3.4. Abwassernetz Elemente verbinden</a></li>
+<li class="toctree-l3"><a class="reference internal" href="connect_wastewater_network_elements.html">Abwassernetz Elemente verbinden</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">3.4. Längsschnitte</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">3.5. Werkzeuge zur Netzwerkverfolgung</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">3.6. Plandruck</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../history/index.html">3.7. History in TWW</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../How-To/index.html">3.8. How To</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">Längsschnitte</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">Werkzeuge zur Netzwerkverfolgung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">Plandruck</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/index.html">History in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../How-To/index.html">How To</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">4. Administratorhandbuch</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../extensions-guide/index.html">5. Offizielle TWW-Erweiterungen</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">6. SWMM Data Exchange</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">7. Übersetzungen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">Administratorhandbuch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extensions-guide/index.html">Offizielle TWW-Erweiterungen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">Übersetzungen</a></li>
 </ul>
 
         </div>
@@ -92,9 +93,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>TWW Benutzerhandbuch</a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.3. </span>Bearbeiten in TWW</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">3.3.3. </span>Hinzufügen oder bearbeiten von Erhaltungsereignissen</li>
+          <li class="breadcrumb-item"><a href="../index.html">User Guide</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Bearbeiten in TWW</a></li>
+      <li class="breadcrumb-item active">Hinzufügen oder bearbeiten von Erhaltungsereignissen</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/user-guide/editing/maintenance_events.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
       </li>
@@ -107,17 +108,17 @@
   <blockquote>
 <div></div></blockquote>
 <section id="adding-or-editing-of-maintenance-events">
-<span id="maintenance-events"></span><h1><span class="section-number">3.3.3. </span>Hinzufügen oder bearbeiten von Erhaltungsereignissen<a class="headerlink" href="#adding-or-editing-of-maintenance-events" title="Link to this heading"></a></h1>
+<span id="maintenance-events"></span><h1>Hinzufügen oder bearbeiten von Erhaltungsereignissen<a class="headerlink" href="#adding-or-editing-of-maintenance-events" title="Link to this heading"></a></h1>
 <p>Eine Anleitung zum hinzufügen oder bearbeiten vom  Erhaltungsereignis-Datensätzen in TWW.</p>
 <section id="general">
-<h2><span class="section-number">3.3.3.1. </span>Allgemeines<a class="headerlink" href="#general" title="Link to this heading"></a></h2>
+<h2>Allgemeines<a class="headerlink" href="#general" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Erhaltungsereignissen können mit einem oder mehreren Abwasserbauwerken verbunden sein. In der Datenbank ist das mit einer re-Zwischentabelle umgesetzt, um die n:m-Beziehung abzubilden (<strong>re_maintenance_event_wastewater_structure</strong>)</p></li>
 <li><p>Erhaltungsereignisse können während dem Erfassen eines neuen Schachtes oder einer neuen Haltung erfasst oder verknüpft werden.</p></li>
 </ul>
 </section>
 <section id="adding-a-new-maintenance-event">
-<h2><span class="section-number">3.3.3.2. </span>Ein neues Erhaltungsereignis hinzufügen<a class="headerlink" href="#adding-a-new-maintenance-event" title="Link to this heading"></a></h2>
+<h2>Ein neues Erhaltungsereignis hinzufügen<a class="headerlink" href="#adding-a-new-maintenance-event" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Aktivieren Sie den Bearbeitungsmodus.</p></li>
 <li><p>Mit dem <strong>Objekte abfragen</strong> Werkzeug können Sie <strong>Schächte</strong> oder <strong>Haltungen</strong> auswählen indem sie den zugehörigen Layer auswählen (<strong>vw_tww_Abwasserbauwerk</strong> oder <strong>vw_tww_Haltung</strong>)</p></li>
@@ -140,7 +141,7 @@
 </div></blockquote>
 </section>
 <section id="link-an-existing-maintenance-event">
-<h2><span class="section-number">3.3.3.3. </span>Verknüpfen mit einem bestehenden Erhaltungsereignis.<a class="headerlink" href="#link-an-existing-maintenance-event" title="Link to this heading"></a></h2>
+<h2>Verknüpfen mit einem bestehenden Erhaltungsereignis.<a class="headerlink" href="#link-an-existing-maintenance-event" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Aktivieren Sie den Bearbeitungsmodus.</p></li>
 <li><p>Mit dem <strong>Objekte abfragen</strong> Werkzeug können Sie <strong>Schächte</strong> oder <strong>Haltungen</strong> auswählen indem sie den zugehörigen Layer auswählen (<strong>vw_tww_Abwasserbauwerk</strong> oder <strong>vw_tww_Haltung</strong>)</p></li>
@@ -158,7 +159,7 @@
 </div></blockquote>
 </section>
 <section id="unlink-maintenance-events">
-<h2><span class="section-number">3.3.3.4. </span>Verknüpfung zu Erhaltungsereignissen auflösen<a class="headerlink" href="#unlink-maintenance-events" title="Link to this heading"></a></h2>
+<h2>Verknüpfung zu Erhaltungsereignissen auflösen<a class="headerlink" href="#unlink-maintenance-events" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Aktivieren Sie den Bearbeitungsmodus.</p></li>
 <li><p>Mit dem <strong>Objekte abfragen</strong> Werkzeug können Sie <strong>Schächte</strong> oder <strong>Haltungen</strong> auswählen indem sie den zugehörigen Layer auswählen (<strong>vw_tww_Abwasserbauwerk</strong> oder <strong>vw_tww_Haltung</strong>)</p></li>
@@ -176,7 +177,7 @@
 </div></blockquote>
 </section>
 <section id="editing">
-<h2><span class="section-number">3.3.3.5. </span>Bearbeitung<a class="headerlink" href="#editing" title="Link to this heading"></a></h2>
+<h2>Bearbeitung<a class="headerlink" href="#editing" title="Link to this heading"></a></h2>
 <blockquote>
 <div><ul class="simple">
 <li><p>Machen Sie es wie es beim Hinzufügen beschrieben - aber bearbeiten Sie nur die bereits bestehenden Erhaltungsereignisse.</p></li>
@@ -185,11 +186,11 @@
 </div></blockquote>
 </section>
 <section id="mark-as-outdated">
-<h2><span class="section-number">3.3.3.6. </span>Mark as outdated<a class="headerlink" href="#mark-as-outdated" title="Link to this heading"></a></h2>
+<h2>Mark as outdated<a class="headerlink" href="#mark-as-outdated" title="Link to this heading"></a></h2>
 <p>In order to use maintenance events and files efficiently, they can be flagged as outdated using a TEKSI-specific extension of the datamodel, namely a true/false value named <code class="docutils literal notranslate"><span class="pre">tww_outdated</span></code>.</p>
 </section>
 <section id="multi-edit">
-<h2><span class="section-number">3.3.3.7. </span>Mehrfachbearbeitung<a class="headerlink" href="#multi-edit" title="Link to this heading"></a></h2>
+<h2>Mehrfachbearbeitung<a class="headerlink" href="#multi-edit" title="Link to this heading"></a></h2>
 <p>In QGIS ist Multi-Edit mit verknüpften Tabellen implementiert. Im Multi-Edit-Modus ist es möglich, ein Erhaltungsereignis zu erstellen oder mit einer Auswahl von Haltungen oder Schächten zu verknüpfen.</p>
 </section>
 </section>
@@ -198,8 +199,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="moving.html" class="btn btn-neutral float-left" title="3.3.2. Verschieben von Abwasserbauwerken zusammen mit Haltungen, Deckeln und Knoten" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
-        <a href="connect_wastewater_network_elements.html" class="btn btn-neutral float-right" title="3.3.4. Abwassernetz Elemente verbinden" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="moving.html" class="btn btn-neutral float-left" title="Verschieben von Abwasserbauwerken zusammen mit Haltungen, Deckeln und Knoten" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
+        <a href="connect_wastewater_network_elements.html" class="btn btn-neutral float-right" title="Abwassernetz Elemente verbinden" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

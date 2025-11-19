@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>3.2.8. Datenimport &mdash; TWW dev Dokumentation</title>
+  <title>Datenimport &mdash; TWW dev Dokumentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
@@ -20,8 +20,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Stichwortverzeichnis" href="../../genindex.html" />
     <link rel="search" title="Suche" href="../../search.html" />
-    <link rel="next" title="3.3. Bearbeiten in TWW" href="../editing/index.html" />
-    <link rel="prev" title="3.2.7. Digitalisierung der Einzugsgebiete" href="digitizingcatchments.html" /> 
+    <link rel="next" title="Bearbeiten in TWW" href="../editing/index.html" />
+    <link rel="prev" title="Digitalisierung der Einzugsgebiete" href="digitizingcatchments.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,38 +44,39 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">1. TEKSI Abwasser (TWW)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">2. TWW Installation Guide</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. TWW Benutzerhandbuch</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">3.1. Übersicht über TWW</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">3.2. Digitalisieren in TWW</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="dataentry.html">3.2.1. Datenerfassung</a></li>
-<li class="toctree-l3"><a class="reference internal" href="digitizingwastewaterstructures.html">3.2.2. Abwasserbauwerke digitalisieren</a></li>
-<li class="toctree-l3"><a class="reference internal" href="digitizingdetailedgeometry.html">3.2.3. Digitalisieren detaillierter Geometrie</a></li>
-<li class="toctree-l3"><a class="reference internal" href="digitizingdrainagechannel.html">3.2.4. Digitalisieren detaillierter Geometrie für Entwässerungsrinnen</a></li>
-<li class="toctree-l3"><a class="reference internal" href="digitizingchannels.html">3.2.5. Kanäle Digitalisieren</a></li>
-<li class="toctree-l3"><a class="reference internal" href="deletingobjects.html">3.2.6. Objekte löschen</a></li>
-<li class="toctree-l3"><a class="reference internal" href="digitizingcatchments.html">3.2.7. Digitalisierung der Einzugsgebiete</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">3.2.8. Datenimport</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#general">3.2.8.1. Allgemeines</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#example-importing-manholes-from-a-txt-file">3.2.8.2. Beispiel Import Schächte mit einer TXT-Datei:</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#example-importing-manholes-with-attributes">3.2.8.3. Beispiel Import Schächte mit Attributen:</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">TEKSI Abwasser (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">Installation Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">Übersicht über TWW</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Digitalisieren in TWW</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="dataentry.html">Datenerfassung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingwastewaterstructures.html">Abwasserbauwerke digitalisieren</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingdetailedgeometry.html">Digitalisieren detaillierter Geometrie</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingdrainagechannel.html">Digitalisieren detaillierter Geometrie für Entwässerungsrinnen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingchannels.html">Kanäle Digitalisieren</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deletingobjects.html">Objekte löschen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingcatchments.html">Digitalisierung der Einzugsgebiete</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Datenimport</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#general">Allgemeines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-importing-manholes-from-a-txt-file">Beispiel Import Schächte mit einer TXT-Datei:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-importing-manholes-with-attributes">Beispiel Import Schächte mit Attributen:</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../editing/index.html">3.3. Bearbeiten in TWW</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">3.4. Längsschnitte</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">3.5. Werkzeuge zur Netzwerkverfolgung</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">3.6. Plandruck</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../history/index.html">3.7. History in TWW</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../How-To/index.html">3.8. How To</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../editing/index.html">Bearbeiten in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">Längsschnitte</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">Werkzeuge zur Netzwerkverfolgung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">Plandruck</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/index.html">History in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../How-To/index.html">How To</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">4. Administratorhandbuch</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../extensions-guide/index.html">5. Offizielle TWW-Erweiterungen</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">6. SWMM Data Exchange</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">7. Übersetzungen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">Administratorhandbuch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extensions-guide/index.html">Offizielle TWW-Erweiterungen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">Übersetzungen</a></li>
 </ul>
 
         </div>
@@ -92,9 +93,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>TWW Benutzerhandbuch</a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.2. </span>Digitalisieren in TWW</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">3.2.8. </span>Datenimport</li>
+          <li class="breadcrumb-item"><a href="../index.html">User Guide</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Digitalisieren in TWW</a></li>
+      <li class="breadcrumb-item active">Datenimport</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/user-guide/digitizing/importingdata.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
       </li>
@@ -107,10 +108,10 @@
   <blockquote>
 <div></div></blockquote>
 <section id="importing-data">
-<h1><span class="section-number">3.2.8. </span>Datenimport<a class="headerlink" href="#importing-data" title="Link to this heading"></a></h1>
+<h1>Datenimport<a class="headerlink" href="#importing-data" title="Link to this heading"></a></h1>
 <p>Es ist recht einfach, Daten (Lage und Attribute) aus externen Quellen zu importieren. Hier eine allgemeine Beschreibung und ein Beispiel.</p>
 <section id="general">
-<h2><span class="section-number">3.2.8.1. </span>Allgemeines<a class="headerlink" href="#general" title="Link to this heading"></a></h2>
+<h2>Allgemeines<a class="headerlink" href="#general" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Die zu importierenden Daten sind als (Vektor-)Layer im TWW Projekt hinzuzufügen.</p></li>
 <li><p>Die Feldnamen der Attribute müssen gleich sein wie die Feldnamen im TWW Layer. Wenn möglich sind standard open Formate wie Geopackage zu bevorzugen. Bei Shp-Dateien ist die Beschränkung der Feldnamen im dbf-Format auf 10 Stellen oft der Grund, dass die Feldnamen wie gefordert eingesetzt werden können (und Alias-Feldnamen funktionieren leider nicht).</p></li>
@@ -122,7 +123,7 @@
 <p>Wenn neue Wert zu bereits existierenden Datensätzen importiert werden soll (z.B. aktualisieren des Feldes Abwasserbauwerk.Sanierungsbedarf), kann nicht kopiert werden, weil es ja keine neuen Datensätze geben soll. Für diese Aufgabe kann der QGIS Feldrechner benutzt werden.</p>
 </section>
 <section id="example-importing-manholes-from-a-txt-file">
-<h2><span class="section-number">3.2.8.2. </span>Beispiel Import Schächte mit einer TXT-Datei:<a class="headerlink" href="#example-importing-manholes-from-a-txt-file" title="Link to this heading"></a></h2>
+<h2>Beispiel Import Schächte mit einer TXT-Datei:<a class="headerlink" href="#example-importing-manholes-from-a-txt-file" title="Link to this heading"></a></h2>
 <p>Die Bilder wurden in QGEP erstellt, die Schritte sind in TWW aber gleich geblieben</p>
 <ul class="simple">
 <li><p>Ändern der Feldnamen auf identifier, x, y, co_level  (englische Feldnamen für Bezeichnung, X, Y, Deckelkote)</p></li>
@@ -160,7 +161,7 @@
 </div>
 </section>
 <section id="example-importing-manholes-with-attributes">
-<h2><span class="section-number">3.2.8.3. </span>Beispiel Import Schächte mit Attributen:<a class="headerlink" href="#example-importing-manholes-with-attributes" title="Link to this heading"></a></h2>
+<h2>Beispiel Import Schächte mit Attributen:<a class="headerlink" href="#example-importing-manholes-with-attributes" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Beispiel für den Import weiterer Attribute</p></li>
 </ul>
@@ -179,8 +180,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="digitizingcatchments.html" class="btn btn-neutral float-left" title="3.2.7. Digitalisierung der Einzugsgebiete" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
-        <a href="../editing/index.html" class="btn btn-neutral float-right" title="3.3. Bearbeiten in TWW" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="digitizingcatchments.html" class="btn btn-neutral float-left" title="Digitalisierung der Einzugsgebiete" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
+        <a href="../editing/index.html" class="btn btn-neutral float-right" title="Bearbeiten in TWW" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
