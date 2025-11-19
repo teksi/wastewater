@@ -168,7 +168,7 @@ Place your mouse over a value in the valuelist of an attribut and you get additi
 
 
 
-Context-Hints for fields 
+Context-Hints for fields
 ------------------------
 .. versionadded:: 2025.0
 

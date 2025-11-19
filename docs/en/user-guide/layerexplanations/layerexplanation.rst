@@ -56,7 +56,7 @@ Additional Wastewater Structures  ``tww_app.vw_tww_additional_ws``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. versionadded:: 2025.0
 
-A layer for the DSS-classes 
+A layer for the DSS-classes
 
 * small_treatment_plant
 
@@ -200,4 +200,3 @@ These value lists are defined in the VSA-datamodel. Do not change.
 .. versionchanged:: 2025.0
 
 In VL Channel channel_function_hierarchic are now special tww_fields (symbology_order, is_primary, use_in_labels) to configure labels and help the user to customize his project.
-
