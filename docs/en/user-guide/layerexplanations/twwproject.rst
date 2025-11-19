@@ -155,3 +155,18 @@ The layer order panel enables to manually define the order of the layers display
 It is strongly relevant when digitizing with QGIS standard tools and can be very handy in many situations.
 
 .. figure:: images/layerorder.jpg
+
+
+
+Context-Hints for fields and values
+-----------------------------------
+.. versionadded:: 2025.0
+
+This works just for layers based directly from the tww_od - tables, not for views.
+
+Place your mouse over the name of the attribut and you get additional info for this field if there is an additionial discription on the VSA-DSS-Objektkatalog.
+Place your mouse over a value in the valuelist of an attribut and you get additional info for this value if there is an additionial discription on the VSA-DSS-Objektkatalog.
+
+.. figure:: images/hintattribute.jpg
+
+.. figure:: images/hintvalue.jpg
