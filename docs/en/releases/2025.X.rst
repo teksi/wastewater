@@ -29,10 +29,10 @@ TODO : add a screenshot of the new styles.
 
 TODO : Add a screenshot of the demo data initialization process via TMMT.
 
-Installation 
+Installation
 ----------------
 
- - As this release is published after the development of the TEKSI Module Management Tool plugin (TMMT), check the 
+ - As this release is published after the development of the TEKSI Module Management Tool plugin (TMMT), check the
  `installation guide <../installation-guide/index.html>`__ for more information on how to install TEKSI wastewater module via TMMT.
 TODO : adapt installation instructions.
 
