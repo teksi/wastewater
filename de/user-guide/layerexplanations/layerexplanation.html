@@ -132,7 +132,7 @@
 <div class="versionadded">
 <p><span class="versionmodified added">Added in version 2025.0.</span></p>
 </div>
-<p>A calculated field <code class="docutils literal notranslate"><span class="pre">tww_is_primary</span></code> is available for the user-defined definition of primary wastewater structures. It allows easier definitions of queries, symbologies and labels.</p>
+<p>Das berechnete Feld <code class="docutils literal notranslate"><span class="pre">tww_is_primary</span></code> ist für eine benutzerdefinierte Definition der PAA Abwasserbauwerke vorhanden. Damit können Abfragen, Symbolisierungen und Beschriftungen einfacher definiert werden.</p>
 </section>
 <section id="reaches-tww-app-vw-tww-reach">
 <h3>Haltungen <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_reach</span></code><a class="headerlink" href="#reaches-tww-app-vw-tww-reach" title="Link to this heading"></a></h3>
@@ -143,7 +143,7 @@
 <div class="versionadded">
 <p><span class="versionmodified added">Added in version 2025.0.</span></p>
 </div>
-<p>A calculated field <code class="docutils literal notranslate"><span class="pre">tww_is_primary</span></code> is available for the user-defined definition of primary wastewater structures. It allows easier definitions of queries, symbologies and labels.</p>
+<p>Das berechnete Feld <code class="docutils literal notranslate"><span class="pre">tww_is_primary</span></code> ist für eine benutzerdefinierte Definition der PAA Abwasserbauwerke vorhanden. Damit können Abfragen, Symbolisierungen und Beschriftungen einfacher definiert werden.</p>
 <p>There is a possibilty to create flushing_nozzle on reaches as structure part of the channel.</p>
 </section>
 </section>
@@ -163,12 +163,12 @@
 <p>Den Deckellayer nur benutzen, um die Lageinfo von einem ausgewählten Deckel zu verändern (und nicht das ganze Abwasserbauwerk zu verschieben). Oder um einen neuen Deckel zu einem Abwasserbauwerk hinzu zufügen. (Ein Deckel kann auch im Reiter Deckel von vw_tww_Abwasserbauwerk hinzugefügt werden. Und der Layer wird verwendet, um die Position der Deckel darzustellen (z.B. im Werkplan) oder um die Deckellage zu exportieren.</p>
 </section>
 <section id="channels-tww-app-mvw-tww-channel">
-<h3>Channels <code class="docutils literal notranslate"><span class="pre">tww_app.mvw_tww_channel</span></code><a class="headerlink" href="#channels-tww-app-mvw-tww-channel" title="Link to this heading"></a></h3>
+<h3>Kanäle <code class="docutils literal notranslate"><span class="pre">tww_app.mvw_tww_channel</span></code><a class="headerlink" href="#channels-tww-app-mvw-tww-channel" title="Link to this heading"></a></h3>
 <div class="versionchanged">
 <p><span class="versionmodified changed">Geändert in Version 2025.0.</span></p>
 </div>
-<p>The channel-class has no geometry. Therefore, mvw_tww_channel is a materialized view that uses the reach line-geometries to work with e.g with maintenace_events, that are not connected to reaches, but to channels.</p>
-<p>The „old“ vw_channel without geometry still exits beside.</p>
+<p>Die Klasse Kanal hat keine Geometrie. Mit mvw_tww_Kanal gibt es eine materialisierte View, die deshalb die Geometrie der Haltungen verwendet, um z.B. mit Erhaltungsereignissen zu arbeiten, die ja nicht mit Haltungen, aber mit Kanälen verknüpft sind.</p>
+<p>Die „alte“ vw_Kanal ohne Geometrie ist auch noch vorhanden.</p>
 </section>
 <section id="organisations-tww-od-organisation">
 <h3>Organisationen <code class="docutils literal notranslate"><span class="pre">tww_od.organisation</span></code><a class="headerlink" href="#organisations-tww-od-organisation" title="Link to this heading"></a></h3>

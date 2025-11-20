@@ -165,11 +165,10 @@ Per default, the fields <code class="docutils literal notranslate"><span class="
 <p>In diesem Beispiel gibt es 4 Einläufe beim Schacht, aber es werden nur 2 Einlaufkoten angeschrieben (E1, E2). Warum?</p>
 <p>Antwort: In der Datenbank-Funktion, in der die Einlauf_Beschrfitungen berechnet werden, can ein Filter so gesetzt werden, das nur Haltungen mit einer bestimmten Funktion_Hierarchisch (z.B. nur PAA-Haltungen) beschriftet werden (benutzte ein Spezielles Feld in der vl_channel_function_hierarchic, Dokumentation folgt). Im Beispiel sind die 200mm-Haltungen als SAA-Haltungen definiert und deshalb nicht beschriftet.</p>
 <p>Welche Haltung ist E1, welche ist E2?</p>
-<p>Answer: TWW uses the azimut of the last segment of the reach (for inputs) or the first segment of the reach (for outputs) to define the order of the labels. If you stand on the Main-Node of the manhole and turn to the outlet, you find first I1 if you turn clockwise and you find later I2.
-In the example, 400 wastewater-reach is I1, 300 combined-wastewater-reach is I2.</p>
+<p>Antwort: TWW benutzt des Azimut des letzten Haltungssegments (Bei Einläufen) resp. des ersten Haltungssegments (bei Ausläufen) um die Reihenfolge der Beschriftungen zu definieren. Wenn man auf dem Haupt-Knoten des Schachtes steht, sich zum Auslauf dreht, dann kommt im Uhrzeigersinn zuerst E1 und später E2. Im Beispiel ist der  Schmutzabwasserkanal 400mm der E1, der Mischabwasserkanal 300mm ist E2.</p>
 <div class="admonition hint">
 <p class="admonition-title">Hinweis</p>
-<p>This way of numbering the reaches differs from QGEP, where the north direction was the starting point.</p>
+<p>Diese Nummerierungsmethode war in QGEP noch anders. In QGEP war die Nordrichtung der Startpunkt für die Nummerierung im Urzeigersinn.</p>
 </div>
 </section>
 <section id="how-to-translate-a-label-prefix-c-b-i-o">
