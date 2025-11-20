@@ -31,6 +31,9 @@ modification_repositories:
   - id: ci
     active: false
     template: modification_repos/ci_extension/config.yaml
+  - id: web
+    active: false
+    template: modification_repos/webgis/config.yaml
   - id: agxx
     active: false
     reset_vl: false

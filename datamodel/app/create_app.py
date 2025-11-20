@@ -38,6 +38,7 @@ class Hook(HookBase):
         connection: psycopg.Connection,
         SRID: int = 2056,
         modification_agxx: bool = False,
+        modification_web: bool = False,
         modification_ci: bool = False,
         lang_code: str = "en",
         modification_yaml: Path = None,
@@ -46,6 +47,7 @@ class Hook(HookBase):
         Creates the schema tww_app for TEKSI Wastewater & GEP
         :param SRID: the EPSG code for geometry columns. Overridden by modification_yaml
         :param modification_agxx: bool of whether to load agxx modification. Overridden by modification_yaml
+        :param modification_agxx: bool of whether to load web modification. Overridden by modification_yaml
         :param modification_ci: bool of whether to load ci modification. Overridden by modification_yaml
         :param lang_code: language code for use in modification views. Overridden by modification_yaml
         :param modification_yaml: Path of yaml containing app parametrisation
@@ -62,6 +64,8 @@ class Hook(HookBase):
             if "modification_repositories" in self.parameters:
                 for entry in self.parameters["modification_repositories"]:
                     if modification_ci and entry["id"] == "ci":
+                        entry["active"] = True
+                    if modification_web and entry["id"] == "web":
                         entry["active"] = True
                     if modification_agxx and entry["id"] == "agxx":
                         entry["active"] = True
@@ -90,6 +94,10 @@ class Hook(HookBase):
             },
             "display_lang": {
                 "value": f"display_{lang_code}",
+                "type": "identifier",
+            },
+            "name_lang": {
+                "value": f"name_{lang_code}",
                 "type": "identifier",
             },
         }
