@@ -210,22 +210,6 @@ Running modification {modification.get('id')}
                 else {}
             ),
         )
-        vw_tww_channel_maintenance(
-            connection=self._connection,
-            extra_definition=(
-                self.load_yaml(self.extra_definitions["vw_tww_channel_maintenance"])
-                if self.extra_definitions["vw_tww_channel_maintenance"]
-                else {}
-            ),
-        )
-        vw_tww_ws_maintenance(
-            connection=self._connection,
-            extra_definition=(
-                self.load_yaml(self.extra_definitions["vw_tww_ws_maintenance"])
-                if self.extra_definitions["vw_tww_ws_maintenance"]
-                else {}
-            ),
-        )
         vw_tww_damage_channel(
             connection=self._connection,
             extra_definition=(
