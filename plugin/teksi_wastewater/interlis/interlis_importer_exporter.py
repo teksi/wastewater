@@ -249,11 +249,6 @@ class InterlisImporterExporter:
             create_basket_col = True
         self._create_ili_schema(export_models, create_basket_col=create_basket_col)
 
-        self._progress_done(25, "Creating ili schema...")
-        create_basket_col = False
-        if config.MODEL_NAME_VSA_KEK in export_models:
-            create_basket_col = True
-        self._create_ili_schema(export_models, create_basket_col=create_basket_col)
 
         # Export the labels file
         tempdir = tempfile.TemporaryDirectory()
