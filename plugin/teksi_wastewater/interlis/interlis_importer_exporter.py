@@ -249,7 +249,6 @@ class InterlisImporterExporter:
             create_basket_col = True
         self._create_ili_schema(export_models, create_basket_col=create_basket_col)
 
-
         # Export the labels file
         tempdir = tempfile.TemporaryDirectory()
         if len(selected_labels_scales_indices):
