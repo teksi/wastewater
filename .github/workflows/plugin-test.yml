@@ -50,7 +50,7 @@ jobs:
         run: sudo ./plugin/scripts/download-interlis-libs.sh
 
       - name: Docker build
-        run: docker compose --profile qgis up -d --build
+        run: docker compose --profile qgis up --build -d
 
       - name: Set up Database
         run: |

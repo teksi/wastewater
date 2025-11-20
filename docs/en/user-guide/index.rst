@@ -1,6 +1,6 @@
 .. _user-guide:
 
-TWW User Guide
+User Guide
 ===============
 
 This represents a guide on how to collect data in TWW (digitizing), edit existing data and use various tools like length profile, network following and plan plotting.
