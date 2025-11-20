@@ -3,18 +3,21 @@ base_configurations:
    - SRID: 2056
 
 extra_definitions:
-  vw_tww_reach: null
-  vw_tww_wastewater_structure: null
-  vw_tww_overflow: null
-  vw_wastewater_structure: null
-  vw_tww_infiltration_installation: null
+  vw_tww_additional_ws: null
+  vw_tww_catchment_area: null
+  vw_tww_catchment_area_totals: null
   vw_tww_channel: null
   vw_tww_channel_maintenance: null
-  vw_tww_ws_maintenance: null
   vw_tww_damage_channel: null
-  vw_tww_additional_ws: null
-  vw_tww_measurement_series: null
+  vw_tww_infiltration_installation: null
   vw_tww_log_card: null
+  vw_tww_measurement_series: null
+  vw_tww_overflow: null
+  vw_tww_reach: null
+  vw_tww_wastewater_structure: null
+  vw_tww_ws_maintenance: null
+  vw_wastewater_structure: null
+
 
 multiple_inherintances:
   vw_maintenance: "view/multipleinheritance/vw_maintenance_event.yaml"
@@ -27,7 +30,7 @@ simple_joins_yaml:
 modification_repositories:
   - id: ci
     active: false
-    template: modification_repos/ci-extension/config.yaml
+    template: modification_repos/ci_extension/config.yaml
   - id: agxx
     active: false
     reset_vl: false

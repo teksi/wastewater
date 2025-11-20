@@ -8,7 +8,6 @@ variables:
 
 sql_files:
   - file: 001_demo.sql
-  - file: 002_demo.sql
 
 extra_definitions:
   vw_tww_overflow: "vw_tww_overflow.yaml"
