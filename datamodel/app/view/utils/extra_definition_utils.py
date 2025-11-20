@@ -92,22 +92,22 @@ def update_extra(connection: psycopg.Connection, extra_definition: dict = {}):
 
         condition = table_def.get("case_condition", None)
         update_sql = update_command(
-                    connection=connection,
-                    table_schema=table_parts(table_def["table"])[0],
-                    table_name=table_parts(table_def["table"])[1],
-                    remove_pkey=table_def.get("remove_pkey", False),
-                    indent=2,
-                    skip_columns=[
-                        col
-                        for col in table_def.get("skip_columns", [])
-                        if col not in table_def.get("remap_columns", {})
-                    ],
-                    remap_columns=table_def.get("remap_columns", {}),
-                    prefix=table_def.get("prefix", None),
-                    table_alias=table_def.get("alias", None),
-                    update_values=table_def.get("update_values", {}),
-                    where_clause=table_def.get("where_clause", None),
-                )
+            connection=connection,
+            table_schema=table_parts(table_def["table"])[0],
+            table_name=table_parts(table_def["table"])[1],
+            remove_pkey=table_def.get("remove_pkey", False),
+            indent=2,
+            skip_columns=[
+                col
+                for col in table_def.get("skip_columns", [])
+                if col not in table_def.get("remap_columns", {})
+            ],
+            remap_columns=table_def.get("remap_columns", {}),
+            prefix=table_def.get("prefix", None),
+            table_alias=table_def.get("alias", None),
+            update_values=table_def.get("update_values", {}),
+            where_clause=table_def.get("where_clause", None),
+        )
         if condition:
             wrapped_sql = f"""
             CASE WHEN {condition} THEN
