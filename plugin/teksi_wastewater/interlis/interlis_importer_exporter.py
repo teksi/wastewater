@@ -2296,6 +2296,10 @@ class InterlisImporterExporter:
             ModelInterlis = ModelInterlisDss
         elif model == config.MODEL_NAME_VSA_KEK:
             ModelInterlis = ModelInterlisVsaKek
+        elif model == config.MODEL_NAME_SIA405_ABWASSER_3D:
+            ModelInterlis = ModelInterlisSia405Abwasser
+        elif model == config.MODEL_NAME_DSS_3D:
+            ModelInterlis = ModelInterlisDss
         self.model_classes_interlis = ModelInterlis().classes()
         self._progress_done(self.current_progress + 1)
 
