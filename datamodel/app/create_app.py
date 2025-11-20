@@ -336,12 +336,16 @@ Running modification {modification.get('id')}
             for key, value in modification_config.get("simple_joins_yaml", {}).items():
                 if not self.simple_joins_yaml[key]:
                     self.simple_joins_yaml[key] = curr_dir / value
-                    logger.info(f"altered {key} simpleJoin definition to {self.simple_joins_yaml[key]}")
+                    logger.info(
+                        f"altered {key} simpleJoin definition to {self.simple_joins_yaml[key]}"
+                    )
 
             for key, value in modification_config.get("multiple_inherintances", {}).items():
                 if self.multiple_inherintances[key]:
                     self.multiple_inherintances[key] = curr_dir / value
-                    logger.info(f"altered {key} multipleInheritance definition to {self.multiple_inherintances[key]}")
+                    logger.info(
+                        f"altered {key} multipleInheritance definition to {self.multiple_inherintances[key]}"
+                    )
 
     def manage_vl(
         self,
