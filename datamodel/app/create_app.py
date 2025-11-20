@@ -323,6 +323,7 @@ Running modification {modification.get('id')}
         sql_vars = self.parse_variables(ext_variables)
 
         for sql_file in modification_config.get("sql_files", None):
+            logger.info(f"Running sql file {sql_file}")
             file_name = curr_dir / sql_file.get("file")
             self.run_sql_file(file_name, sql_vars)
 
@@ -330,14 +331,17 @@ Running modification {modification.get('id')}
             for key, value in modification_config.get("extra_definitions", {}).items():
                 if not self.extra_definitions[key]:
                     self.extra_definitions[key] = curr_dir / value
+                    logger.info(f"altered {key} extra definition to {self.extra_definitions[key]}")
 
             for key, value in modification_config.get("simple_joins_yaml", {}).items():
                 if not self.simple_joins_yaml[key]:
                     self.simple_joins_yaml[key] = curr_dir / value
+                    logger.info(f"altered {key} simpleJoin definition to {self.simple_joins_yaml[key]}")
 
             for key, value in modification_config.get("multiple_inherintances", {}).items():
                 if self.multiple_inherintances[key]:
                     self.multiple_inherintances[key] = curr_dir / value
+                    logger.info(f"altered {key} multipleInheritance definition to {self.multiple_inherintances[key]}")
 
     def manage_vl(
         self,
