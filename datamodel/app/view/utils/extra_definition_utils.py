@@ -42,41 +42,56 @@ def extra_joins(connection: psycopg.Connection, extra_definition: dict = {}):
 
 
 def insert_extra(connection: psycopg.Connection, extra_definition: dict = {}):
-    if extra_definition:
-        str = "\n     ".join(
-            [
-                insert_command(
-                    connection=connection,
-                    table_schema=table_parts(table_def["table"])[0],
-                    table_name=table_parts(table_def["table"])[1],
-                    remove_pkey=table_def.get("remove_pkey", False),
-                    indent=2,
-                    skip_columns=[
-                        col
-                        for col in table_def.get("skip_columns", [])
-                        if col not in table_def.get("remap_columns", {})
-                    ],
-                    remap_columns=table_def.get("remap_columns", {}),
-                    prefix=table_def.get("prefix", None),
-                    table_alias=table_def.get("alias", None),
-                    insert_values=table_def.get("insert_values", {}),
-                )
-                for table_def in (
-                    t
-                    for t in extra_definition.get("joins", {}).values()
-                    if not t.get("read_only", True)
-                )
-            ]
+    if not extra_definition:
+        return ""
+
+    sql_parts = []
+    for table_def in extra_definition.get("joins", {}).values():
+        if table_def.get("read_only", True):
+            continue
+
+        condition = table_def.get("case_condition", None)
+        insert_sql = insert_command(
+            connection=connection,
+            table_schema=table_parts(table_def["table"])[0],
+            table_name=table_parts(table_def["table"])[1],
+            remove_pkey=table_def.get("remove_pkey", False),
+            indent=2,
+            skip_columns=[
+                col
+                for col in table_def.get("skip_columns", [])
+                if col not in table_def.get("remap_columns", {})
+            ],
+            remap_columns=table_def.get("remap_columns", {}),
+            prefix=table_def.get("prefix", None),
+            table_alias=table_def.get("alias", None),
+            insert_values=table_def.get("insert_values", {}),
         )
-        return str
+        if condition:
+            wrapped_sql = f"""
+            CASE WHEN {condition} THEN
+                {insert_sql}
+            ELSE NULL;
+            END;
+            """
+            sql_parts.append(wrapped_sql)
+        else:
+            sql_parts.append(insert_sql)
+        return "\n     ".join(sql_parts)
     return ""
 
 
 def update_extra(connection: psycopg.Connection, extra_definition: dict = {}):
-    if extra_definition:
-        str = "\n     ".join(
-            [
-                update_command(
+    if not extra_definition:
+        return ""
+
+    sql_parts = []
+    for table_def in extra_definition.get("joins", {}).values():
+        if table_def.get("read_only", True):
+            continue
+
+        condition = table_def.get("case_condition", None)
+        update_sql = update_command(
                     connection=connection,
                     table_schema=table_parts(table_def["table"])[0],
                     table_name=table_parts(table_def["table"])[1],
@@ -93,12 +108,15 @@ def update_extra(connection: psycopg.Connection, extra_definition: dict = {}):
                     update_values=table_def.get("update_values", {}),
                     where_clause=table_def.get("where_clause", None),
                 )
-                for table_def in (
-                    t
-                    for t in extra_definition.get("joins", {}).values()
-                    if not t.get("read_only", True)
-                )
-            ]
-        )
-        return str
+        if condition:
+            wrapped_sql = f"""
+            CASE WHEN {condition} THEN
+                {update_sql}
+            ELSE NULL;
+            END;
+            """
+            sql_parts.append(wrapped_sql)
+        else:
+            sql_parts.append(update_sql)
+        return "\n     ".join(sql_parts)
     return ""
