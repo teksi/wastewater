@@ -321,7 +321,7 @@ Running modification {modification.get('id')}
 
         ext_variables = modification_config.get("variables", {})
         sql_vars = self.parse_variables({**self.variables_sql, **ext_variables})
-    
+
         for sql_file in modification_config.get("sql_files", None):
             logger.info(f"Running sql file {sql_file}")
             file_name = curr_dir / sql_file.get("file")
