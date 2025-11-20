@@ -30,7 +30,7 @@ simple_joins_yaml:
 modification_repositories:
   - id: ci
     active: false
-    template: modification_repos/ci-extension/config.yaml
+    template: modification_repos/ci_extension/config.yaml
   - id: agxx
     active: false
     reset_vl: false
