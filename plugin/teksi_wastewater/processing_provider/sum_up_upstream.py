@@ -19,7 +19,7 @@
 
 import statistics
 
-from PyQt5.QtCore import QVariant
+from PyQt.QtCore import QVariant
 from qgis.core import (
     NULL,
     QgsExpression,
