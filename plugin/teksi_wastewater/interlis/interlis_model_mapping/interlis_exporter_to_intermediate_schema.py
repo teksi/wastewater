@@ -4049,10 +4049,11 @@ class InterlisExporterToIntermediateSchema:
         if hasattr(exc, "pgcode") and exc.pgcode == "23503":
             result["table"] = getattr(exc, "table_name", None)
             error_msg = getattr(exc, "detail", None)
+            logger.debug(f"Unparsed error message: {error_msg}")
 
             detail_match = re.search(
-                r'DETAIL:\s*Key \(([^)]+)\)=\(([^)]+)\) is not present in table "([^"]+)"',
-                error_msg,
+                r'DETAIL:\s*key \(([^)]+)\)=\(([^)]+)\) is not present in table "([^"]+)"',
+                error_msg.lower(),
             )
             if detail_match:
                 result["column"] = detail_match.group(1)
