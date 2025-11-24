@@ -1,4 +1,5 @@
+psycopg
+pydantic
 pum
 pirogue
-python3-psycopg
-python3-pydantic
+
