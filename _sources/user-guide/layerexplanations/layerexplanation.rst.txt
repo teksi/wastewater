@@ -134,6 +134,7 @@ See `editing maintenance events <../editing/maintenance_events.html>`_ for more 
 
 Bio_Ecol_Assessment ``tww_app.vw_bio_ecol_assessment``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 .. versionadded:: 2025.0
 
 A subclass of Maintenance_event
@@ -143,6 +144,7 @@ Create the bio_ecol_assessments in the main tables (discharge points in vw_tww_w
 
 Documents
 ----------
+
 .. versionchanged:: 2025.0
 
 Documents have now there own layergroup (before in layergroup Wastewater Structures)
@@ -163,6 +165,7 @@ Use this layer to create and symbolize overflows.
 
 Layergroups Connection Object, Measures, Log Card, Rural
 ---------------------------------------------------------
+
 .. versionadded:: 2025.0
 
 Since these layers where not available in DSS 2015, they have not been in the tww version 2024.
@@ -199,4 +202,87 @@ These value lists are defined in the VSA-datamodel. Do not change.
 
 .. versionchanged:: 2025.0
 
-In VL Channel channel_function_hierarchic are now special tww_fields (symbology_order, is_primary, use_in_labels) to configure labels and help the user to customize his project.
+Main layer to digitize and edit the catchment_areas.
+
+Rural
+--------
+
+This topic covers the classes related to waste water disposal in rural areas that are located outside the sewerage area.
+
+.. versionadded:: 2025.0
+
+Building group ``tww_od.building_group``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Buildings or groups of buildings in rural areas that are located outside the sewerage area, as well as buildings belonging to agricultural businesses (including those within the sewerage area)
+
+
+Farm ``tww_od.farm``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Agricultural business (farm): Must also be specified within the sewerage area (i.e. even if the business is located within the sub-catchment areas of the General Drainage Plan (GEP)).
+
+
+Disposal ``tww_od.disposal``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Information on the disposal of wastewater from building complexes (treatment/sludge disposal)
+
+
+Building_group_BAUGWR ``tww_od.building_group_baugwr``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Intermediate table for resolving the n-n relationship between building groups and building details (in BAU/GWR)
+
+re_building_group_disposal ``tww_od.re_building_group_disposal``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Relationship table for n:m relationship between building_group and disposal
+
+Log card
+--------
+
+Log card ``tww_od.vw_tww.log_card``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Log card for special structures: Hydraulically specialized wastewater structures, e.g., storm water basins, storm water overflows, or pumping stations. Most special structures are also specialized structures. However, special structures such as separation structures or small pumping stations are often designed as standard shafts.
+
+.. versionadded:: 2025.0
+
+Catchment area totals ``tww_app.catchment_area_totals``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Information on the attached catchment area (total), water volumes, and discharge point of the storm overflow or storm overflow basin. Direct catchment area only needs to be filled in if the discharge is activated during the design event or if it is unknown whether it will be activated. All information must be provided for both the actual and planned status.
+
+``tww_app.vw_catchment_area_totals`` is based on the materialized view ``tww_app.mvw_catchment_area_totals``.
+``tww_app.mvw_catchment_area_totals`` aggregates the geometry of the catchment areas by log card.
+``tww_app.vw_catchment_area_totals`` adds the values of ``tww_od.catchment_area_totals`` and ``tww_app.hydr_char_data`` to the aggregated geometries
+
+
+Catchment area totals aggregated ``tww_app.vw_catchment_area_totals_aggregated``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+It is not to be confused with ``tww_app.vw_catchment_area_totals``.
+
+This view aggregates a set of values from the catchment areas, sometime including catchment areas on previous log cards
+a. population includes upstream log cards
+b. surface_area includes direct only
+c. surface_imp includes direct only
+d. surface_red includes direct only
+e. sewer_infiltration_water includes upstream log cards
+f. waste_water_production includes upstream log cards
+g. _dim values respectively
+
+
+Both views map ``catchment_area`` and ``log_card`` via the following procedure:
+``[catchment_area.fk_special_building_xx_yy] - > (log_card.obj_id)``
+``[log_card..fk_main_structure] - > (log_card.obj_id) --optional``
+``[log_card.fk_pwwf_wastewater_node] - > (wastewater_node.obj_id)``
+``(wastewater_node.obj_id) <- [hydr_char_data.fk_pwwf_wastewater_node] -- with status=current``
+``(hydr_char_data.obj_id) <- [catchment_area_totals.fk_hydr_char_data]``
+
+
+Hydraulic char data ``tww_od.hydraulic_char_data``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Aggregated hydraulic characteristics

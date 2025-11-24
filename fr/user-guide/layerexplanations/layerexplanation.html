@@ -59,6 +59,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#catchment-tww-app-vw-tww-catchment-area">Catchment <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_catchment_area</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#topology">Topologie</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#value-lists-tww-vl">Listes de valeurs <code class="docutils literal notranslate"><span class="pre">tww_vl.*</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rural">Rural</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#log-card">Log card</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="namingconventions.html">Naming conventions</a></li>
@@ -287,7 +289,73 @@ Use the vw_network_segment layer to show the flow direction, if you use a marker
 <div class="versionchanged">
 <p><span class="versionmodified changed">Modifié dans la version 2025.0.</span></p>
 </div>
-<p>In VL Channel channel_function_hierarchic are now special tww_fields (symbology_order, is_primary, use_in_labels) to configure labels and help the user to customize his project.</p>
+<p>Main layer to digitize and edit the catchment_areas.</p>
+</section>
+<section id="rural">
+<h2>Rural<a class="headerlink" href="#rural" title="Lien vers cette rubrique"></a></h2>
+<p>This topic covers the classes related to waste water disposal in rural areas that are located outside the sewerage area.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Ajouté dans la version 2025.0.</span></p>
+</div>
+<section id="building-group-tww-od-building-group">
+<h3>Building group <code class="docutils literal notranslate"><span class="pre">tww_od.building_group</span></code><a class="headerlink" href="#building-group-tww-od-building-group" title="Lien vers cette rubrique"></a></h3>
+<p>Buildings or groups of buildings in rural areas that are located outside the sewerage area, as well as buildings belonging to agricultural businesses (including those within the sewerage area)</p>
+</section>
+<section id="farm-tww-od-farm">
+<h3>Farm <code class="docutils literal notranslate"><span class="pre">tww_od.farm</span></code><a class="headerlink" href="#farm-tww-od-farm" title="Lien vers cette rubrique"></a></h3>
+<p>Agricultural business (farm): Must also be specified within the sewerage area (i.e. even if the business is located within the sub-catchment areas of the General Drainage Plan (GEP)).</p>
+</section>
+<section id="disposal-tww-od-disposal">
+<h3>Disposal <code class="docutils literal notranslate"><span class="pre">tww_od.disposal</span></code><a class="headerlink" href="#disposal-tww-od-disposal" title="Lien vers cette rubrique"></a></h3>
+<p>Information on the disposal of wastewater from building complexes (treatment/sludge disposal)</p>
+</section>
+<section id="building-group-baugwr-tww-od-building-group-baugwr">
+<h3>Building_group_BAUGWR <code class="docutils literal notranslate"><span class="pre">tww_od.building_group_baugwr</span></code><a class="headerlink" href="#building-group-baugwr-tww-od-building-group-baugwr" title="Lien vers cette rubrique"></a></h3>
+<p>Intermediate table for resolving the n-n relationship between building groups and building details (in BAU/GWR)</p>
+</section>
+<section id="re-building-group-disposal-tww-od-re-building-group-disposal">
+<h3>re_building_group_disposal <code class="docutils literal notranslate"><span class="pre">tww_od.re_building_group_disposal</span></code><a class="headerlink" href="#re-building-group-disposal-tww-od-re-building-group-disposal" title="Lien vers cette rubrique"></a></h3>
+<p>Relationship table for n:m relationship between building_group and disposal</p>
+</section>
+</section>
+<section id="log-card">
+<h2>Log card<a class="headerlink" href="#log-card" title="Lien vers cette rubrique"></a></h2>
+<section id="log-card-tww-od-vw-tww-log-card">
+<h3>Log card <code class="docutils literal notranslate"><span class="pre">tww_od.vw_tww.log_card</span></code><a class="headerlink" href="#log-card-tww-od-vw-tww-log-card" title="Lien vers cette rubrique"></a></h3>
+<p>Log card for special structures: Hydraulically specialized wastewater structures, e.g., storm water basins, storm water overflows, or pumping stations. Most special structures are also specialized structures. However, special structures such as separation structures or small pumping stations are often designed as standard shafts.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Ajouté dans la version 2025.0.</span></p>
+</div>
+</section>
+<section id="catchment-area-totals-tww-app-catchment-area-totals">
+<h3>Catchment area totals <code class="docutils literal notranslate"><span class="pre">tww_app.catchment_area_totals</span></code><a class="headerlink" href="#catchment-area-totals-tww-app-catchment-area-totals" title="Lien vers cette rubrique"></a></h3>
+<p>Information on the attached catchment area (total), water volumes, and discharge point of the storm overflow or storm overflow basin. Direct catchment area only needs to be filled in if the discharge is activated during the design event or if it is unknown whether it will be activated. All information must be provided for both the actual and planned status.</p>
+<p><code class="docutils literal notranslate"><span class="pre">tww_app.vw_catchment_area_totals</span></code> is based on the materialized view <code class="docutils literal notranslate"><span class="pre">tww_app.mvw_catchment_area_totals</span></code>.
+<code class="docutils literal notranslate"><span class="pre">tww_app.mvw_catchment_area_totals</span></code> aggregates the geometry of the catchment areas by log card.
+<code class="docutils literal notranslate"><span class="pre">tww_app.vw_catchment_area_totals</span></code> adds the values of <code class="docutils literal notranslate"><span class="pre">tww_od.catchment_area_totals</span></code> and <code class="docutils literal notranslate"><span class="pre">tww_app.hydr_char_data</span></code> to the aggregated geometries</p>
+</section>
+<section id="catchment-area-totals-aggregated-tww-app-vw-catchment-area-totals-aggregated">
+<h3>Catchment area totals aggregated <code class="docutils literal notranslate"><span class="pre">tww_app.vw_catchment_area_totals_aggregated</span></code><a class="headerlink" href="#catchment-area-totals-aggregated-tww-app-vw-catchment-area-totals-aggregated" title="Lien vers cette rubrique"></a></h3>
+<p>It is not to be confused with <code class="docutils literal notranslate"><span class="pre">tww_app.vw_catchment_area_totals</span></code>.</p>
+<p>This view aggregates a set of values from the catchment areas, sometime including catchment areas on previous log cards
+a. population includes upstream log cards
+b. surface_area includes direct only
+c. surface_imp includes direct only
+d. surface_red includes direct only
+e. sewer_infiltration_water includes upstream log cards
+f. waste_water_production includes upstream log cards
+g. _dim values respectively</p>
+<p>Both views map <code class="docutils literal notranslate"><span class="pre">catchment_area</span></code> and <code class="docutils literal notranslate"><span class="pre">log_card</span></code> via the following procedure:
+<code class="docutils literal notranslate"><span class="pre">[catchment_area.fk_special_building_xx_yy]</span> <span class="pre">-</span> <span class="pre">&gt;</span> <span class="pre">(log_card.obj_id)</span></code>
+<code class="docutils literal notranslate"><span class="pre">[log_card..fk_main_structure]</span> <span class="pre">-</span> <span class="pre">&gt;</span> <span class="pre">(log_card.obj_id)</span> <span class="pre">--optional</span></code>
+<code class="docutils literal notranslate"><span class="pre">[log_card.fk_pwwf_wastewater_node]</span> <span class="pre">-</span> <span class="pre">&gt;</span> <span class="pre">(wastewater_node.obj_id)</span></code>
+<code class="docutils literal notranslate"><span class="pre">(wastewater_node.obj_id)</span> <span class="pre">&lt;-</span> <span class="pre">[hydr_char_data.fk_pwwf_wastewater_node]</span> <span class="pre">--</span> <span class="pre">with</span> <span class="pre">status=current</span></code>
+<code class="docutils literal notranslate"><span class="pre">(hydr_char_data.obj_id)</span> <span class="pre">&lt;-</span> <span class="pre">[catchment_area_totals.fk_hydr_char_data]</span></code></p>
+</section>
+<section id="hydraulic-char-data-tww-od-hydraulic-char-data">
+<h3>Hydraulic char data <code class="docutils literal notranslate"><span class="pre">tww_od.hydraulic_char_data</span></code><a class="headerlink" href="#hydraulic-char-data-tww-od-hydraulic-char-data" title="Lien vers cette rubrique"></a></h3>
+<p>Aggregated hydraulic characteristics</p>
+</section>
 </section>
 </section>
 
