@@ -71,7 +71,7 @@ Working with labels
 
 
 How vw_tww_wastewater_structure labels work
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Labeling a manhole with his levels is quite a complex thing. Levels are not stored in the wastewater_structure class itself, but in the cover table and as reachpoint levels with the connected reaches. TWW has therefore 4 calculated fields to be able to label these levels:
 
@@ -176,7 +176,7 @@ Hydraulic modeling
 ------------------
 
 Collecting a hydr_geometry (corresponds to a basin geometry in Mike+)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Note:
 
@@ -219,7 +219,7 @@ Note:
 
 
 Hydraulic modeling of an overflow (prank weir / leapingweir / pump)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 There is a special view for overflows, altough it would be possible to edit the overflow-data in layer vw_tww_wastewater_structure.
 The advantage of layer vw_tww_overflow: overflows can be visualized, can be found again and are available in lists.
