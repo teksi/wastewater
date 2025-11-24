@@ -54,7 +54,10 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">TWW-Projekt Eigenschaften und Einstellungen</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#project-properties">Projekteigenschaften</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#map-themes">Kartenthemen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#multisymbol-stiles">Multisymbol Stiles</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#layer-order">Layerreihenfolge</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#context-hints-for-values">Context-Hints for values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#context-hints-for-fields">Context-Hints for fields</a></li>
 </ul>
 </li>
 </ul>
@@ -129,11 +132,7 @@
 <p><strong>Projekt-Beziehungen</strong> erlauben es, die Verknüpfung zwischen zwei Objekten vollständig zu nutzen (Eltern und Kind(er)) und einen Datensatz auf der Karte zu verlinken. Bei grossen Datensätzen ist die Projekt-Beziehung schneller als die Wertbeziehung.</p>
 <div class="admonition attention">
 <p class="admonition-title">Achtung</p>
-<p>Wenn Multiedit in Layern mit Projekt-Beziehungen genutzt werden, gilt es zur Zeit einen Bug in QGIS zu beachten, der dazu führt dass ungewollte Änderungen gesichert werden (heute in QGIS 3.34.4)</p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Bemerkung</p>
-<p>Falls es triftige Gründe gibt, mit Multiedit zu arbeiten, dann ist es eine gute Idee eine separaten Stile zu definieren, in dem keine Beziehungsreferenzen verwendet werden.</p>
+<p>With QGIS Version before 3.40: Using Multiedit with projet relations widgets encounters some bugs on QGIS side, handle with care when altering theses attributes.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
@@ -153,6 +152,13 @@
 <p>‚concat(_label, replace(_cover_label,‘C‘,&#64;tww_cover_prefix), replace(_bottom_label,‘B‘,&#64;tww_bottom_prefix), replace(_input_label,‘I‘,&#64;tww_input_prefix), replace(_output_label,‘O‘,&#64;tww_output_prefix))‘</p>
 <p><strong>Variablen um die Symbol Grösse zu definieren</strong></p>
 <p>Oft werden grosse oder kleine Symbole oder unterschiedliche Beschriftungen abhängig von Attributen (primäres oder sekundäres Abwasserbauwerk, oder Eigentümer) dargestellt. Weil es auch Unterschiede in der Übersetzung der Attribute gibt (pwwf / paa / oap …..), ist eine Möglichkeit, über eine Variable zu definieren, welcher Wert ein grosses oder kleines Symbol hat. Die Variable kann in regelbasierten Symboldefinitionen verwendet werden oder in einer Funktion um die Grösse zu berechnen in unterschiedlichen Layern.</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Geändert in Version 2025.0.</span></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Bemerkung</p>
+<p>use the tww_is_primary-fields to search or symbolize with values of field function_hierarchic.</p>
+</div>
 <p><strong>Variablen um Massstabsgrenzen zu definieren, an denen ein Symbolisierung ändern soll</strong></p>
 <p>In der VSA-DSS sind 5 Plantypen definiert (Leitungskataster, Werkplan, 3 Übersichtspläne). Jeder Plantyp hat andere Regeln für die Beschriftung und Symbolisierung. Deshalb müssen die Grenzen definiert werden, welcher Plantyp bei welchem Massstab benutzt wird. Diese „Grenzmassstäbe“ werden in Haltungs- und Schacht-Beschriftungen und in Haltungs- und Schacht-Symbolisierungen benutzt (mit verschiedenen unterschiedlichen Stilen in jedem Layer). Wenn mit Variablen gearbeitet wird, können diese „Grenzmassstäbe“ einfach geändert werden.</p>
 <p>Beispiel in vw_tww_Haltung:</p>
@@ -213,12 +219,53 @@
 <img alt="../../_images/usage_current_map_theme.png" src="../../_images/usage_current_map_theme.png" />
 </figure>
 </section>
+<section id="multisymbol-stiles">
+<h2>Multisymbol Stiles<a class="headerlink" href="#multisymbol-stiles" title="Link to this heading"></a></h2>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Geändert in Version 2025.0.</span></p>
+</div>
+<p>Why multi-symbol-styles?</p>
+<p>Because different representations are necessary for the important layers during GEP, a new style can be created for each symbology. However, with each new style, the entire labeling definition, the configuration of the attribute forms, and the field aliases are also copied. When translating the project file for a German or French version, only the field aliases in the active style are adjusted.</p>
+<p>So there are many disadvantages just because we need different symbologies…</p>
+<p>The solution: multi-symbol-styles</p>
+<p>Create rule-based symbols and group them for different themes like network plan, overview, renovation necessity, etc.</p>
+<p>How to do:</p>
+<ul class="simple">
+<li><p>Go to layer/properties/symbology and choose “Rule-based”</p></li>
+<li><p>Add a new rule with the + button</p></li>
+<li><p>Set the name of your new symbol-group as Label of the rule</p></li>
+<li><p>Do not enter a filter and unselect the symbol -&gt; you have now a new “group-folder”</p></li>
+<li><p>Create symbols in this group-folder by using “Refine Selected Rules” or just with the + Button and move the new rule in the group-folder or copy/paste another existing rule…</p></li>
+</ul>
+<p>Instead of changing styles, you just turn on one group and turn off the not used group. Or you work with QGIS map-themes as before with the old styles.</p>
+</section>
 <section id="layer-order">
 <h2>Layerreihenfolge<a class="headerlink" href="#layer-order" title="Link to this heading"></a></h2>
 <p>TWW benutzt sehr viele Layer. Es macht deshalb Sinn, die Layer in einer logischen Art und Weise zu organisieren.</p>
 <p>Mit dem Layerreihenfolge Bedienfeld kann die Darstellungsreihenfolge in der Kartendarstellung geändert werden, ohne die logische Struktur im Layer Bedienfeld anzupassen. Dies ist bei der Digitalisierung mit QGIS-Standardwerkzeugen von großer Bedeutung und kann in vielen Situationen sehr praktisch sein.</p>
 <figure class="align-default">
 <img alt="../../_images/layerorder.jpg" src="../../_images/layerorder.jpg" />
+</figure>
+</section>
+<section id="context-hints-for-values">
+<h2>Context-Hints for values<a class="headerlink" href="#context-hints-for-values" title="Link to this heading"></a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2025.0.</span></p>
+</div>
+<p>Place your mouse over a value in the valuelist of an attribut and you get additional info for this value if there is an additionial discription on the VSA-DSS-Objektkatalog.</p>
+<figure class="align-default">
+<img alt="../../_images/hintvalue.jpg" src="../../_images/hintvalue.jpg" />
+</figure>
+</section>
+<section id="context-hints-for-fields">
+<h2>Context-Hints for fields<a class="headerlink" href="#context-hints-for-fields" title="Link to this heading"></a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2025.0.</span></p>
+</div>
+<p>This works just for layers based directly from the tww_od - tables, not for views.</p>
+<p>Place your mouse over the name of the attribut and you get additional info for this field if there is an additionial discription on the VSA-DSS-Objektkatalog.</p>
+<figure class="align-default">
+<img alt="../../_images/hintattribute.jpg" src="../../_images/hintattribute.jpg" />
 </figure>
 </section>
 </section>

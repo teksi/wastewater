@@ -53,7 +53,10 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">TWW-project properties and settings</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#project-properties">Project Properties</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#map-themes">Map Themes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#multisymbol-stiles">Multisymbol Stiles</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#layer-order">Layer Order</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#context-hints-for-values">Context-Hints for values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#context-hints-for-fields">Context-Hints for fields</a></li>
 </ul>
 </li>
 </ul>
@@ -129,11 +132,7 @@ Where possible, value relations widgets are used instead of project relations. V
 <p><strong>Project relations</strong> allows you to fully use the relation between two objects (parent and child(s)) and to link a record on the map. Is faster with large datasets.</p>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
-<p>Using Multiedit with projet relations widgets encounters yet some bugs on QGIS side, handle with care when altering theses attributes. (as of today with QGIS 3.34.4)</p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If there is a good advantage to work with Multiedit, it’s a good idea to define a style, that has no relation-field in the Feature Attributs window.</p>
+<p>With QGIS Version before 3.40: Using Multiedit with projet relations widgets encounters some bugs on QGIS side, handle with care when altering theses attributes.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -153,6 +152,13 @@ Where possible, value relations widgets are used instead of project relations. V
 <p>‘concat(_label, replace(_cover_label,’C’,&#64;tww_cover_prefix), replace(_bottom_label,’B’,&#64;tww_bottom_prefix), replace(_input_label,’I’,&#64;tww_input_prefix), replace(_output_label,’O’,&#64;tww_output_prefix))’</p>
 <p><strong>Variables to define symbols size</strong></p>
 <p>Often are symbols big or small or with different labels depending on attributs (primary or secondary network, owner of the wastewater_structures). Because there are also differences in the languages (pwwf / paa / oap …), it’s one way, to define in a variable, which value has big symbols. You can use this variable in rule based symboldefinitions or in the size definition of symbols or in value definition of labels etc. in differnet layers.</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 2025.0.</span></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>use the tww_is_primary-fields to search or symbolize with values of field function_hierarchic.</p>
+</div>
 <p><strong>Variables to define the scale, where the plansymbols change</strong></p>
 <p>In VSA-DSS are 5 plan-types defined (pipeline_registry, network_plan, 3 overview maps). Every plan has other rules for labeling and symbols. Therefore you have to define scales, where to show which plan-type. And these scales are used in reach labeldefinition, in reach symboldefinition, in manhole labeldefinition and manholesymboldefinition (and with several styles in every layer). If you work with variables, you can easy change the scales.</p>
 <p>Example in vw_tww_reach:</p>
@@ -215,6 +221,26 @@ You can export and import Projectcolors in a GPL-File.</p>
 <img alt="../../_images/usage_current_map_theme.png" src="../../_images/usage_current_map_theme.png" />
 </figure>
 </section>
+<section id="multisymbol-stiles">
+<h2>Multisymbol Stiles<a class="headerlink" href="#multisymbol-stiles" title="Link to this heading"></a></h2>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 2025.0.</span></p>
+</div>
+<p>Why multi-symbol-styles?</p>
+<p>Because different representations are necessary for the important layers during GEP, a new style can be created for each symbology. However, with each new style, the entire labeling definition, the configuration of the attribute forms, and the field aliases are also copied. When translating the project file for a German or French version, only the field aliases in the active style are adjusted.</p>
+<p>So there are many disadvantages just because we need different symbologies…</p>
+<p>The solution: multi-symbol-styles</p>
+<p>Create rule-based symbols and group them for different themes like network plan, overview, renovation necessity, etc.</p>
+<p>How to do:</p>
+<ul class="simple">
+<li><p>Go to layer/properties/symbology and choose “Rule-based”</p></li>
+<li><p>Add a new rule with the + button</p></li>
+<li><p>Set the name of your new symbol-group as Label of the rule</p></li>
+<li><p>Do not enter a filter and unselect the symbol -&gt; you have now a new “group-folder”</p></li>
+<li><p>Create symbols in this group-folder by using “Refine Selected Rules” or just with the + Button and move the new rule in the group-folder or copy/paste another existing rule…</p></li>
+</ul>
+<p>Instead of changing styles, you just turn on one group and turn off the not used group. Or you work with QGIS map-themes as before with the old styles.</p>
+</section>
 <section id="layer-order">
 <h2>Layer Order<a class="headerlink" href="#layer-order" title="Link to this heading"></a></h2>
 <p>TWW uses a lot of layers. Therefore it’s a good idea to have the layer organised in a logical way.</p>
@@ -222,6 +248,27 @@ You can export and import Projectcolors in a GPL-File.</p>
 It is strongly relevant when digitizing with QGIS standard tools and can be very handy in many situations.</p>
 <figure class="align-default">
 <img alt="../../_images/layerorder.jpg" src="../../_images/layerorder.jpg" />
+</figure>
+</section>
+<section id="context-hints-for-values">
+<h2>Context-Hints for values<a class="headerlink" href="#context-hints-for-values" title="Link to this heading"></a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2025.0.</span></p>
+</div>
+<p>Place your mouse over a value in the valuelist of an attribut and you get additional info for this value if there is an additionial discription on the VSA-DSS-Objektkatalog.</p>
+<figure class="align-default">
+<img alt="../../_images/hintvalue.jpg" src="../../_images/hintvalue.jpg" />
+</figure>
+</section>
+<section id="context-hints-for-fields">
+<h2>Context-Hints for fields<a class="headerlink" href="#context-hints-for-fields" title="Link to this heading"></a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2025.0.</span></p>
+</div>
+<p>This works just for layers based directly from the tww_od - tables, not for views.</p>
+<p>Place your mouse over the name of the attribut and you get additional info for this field if there is an additionial discription on the VSA-DSS-Objektkatalog.</p>
+<figure class="align-default">
+<img alt="../../_images/hintattribute.jpg" src="../../_images/hintattribute.jpg" />
 </figure>
 </section>
 </section>

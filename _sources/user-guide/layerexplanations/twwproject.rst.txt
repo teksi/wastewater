@@ -26,9 +26,7 @@ Where possible, value relations widgets are used instead of project relations. V
 
 **Project relations** allows you to fully use the relation between two objects (parent and child(s)) and to link a record on the map. Is faster with large datasets.
 
-.. attention:: Using Multiedit with projet relations widgets encounters yet some bugs on QGIS side, handle with care when altering theses attributes. (as of today with QGIS 3.34.4)
-
-.. note:: If there is a good advantage to work with Multiedit, it's a good idea to define a style, that has no relation-field in the Feature Attributs window.
+.. attention:: With QGIS Version before 3.40: Using Multiedit with projet relations widgets encounters some bugs on QGIS side, handle with care when altering theses attributes.
 
 .. note:: Project relations are not editable (yet) and are not copied when dealing with other .qgs projects.
 
@@ -51,6 +49,11 @@ Background: the database uses always the "english" letters to write the _*_label
 **Variables to define symbols size**
 
 Often are symbols big or small or with different labels depending on attributs (primary or secondary network, owner of the wastewater_structures). Because there are also differences in the languages (pwwf / paa / oap ...), it's one way, to define in a variable, which value has big symbols. You can use this variable in rule based symboldefinitions or in the size definition of symbols or in value definition of labels etc. in differnet layers.
+
+.. versionchanged:: 2025.0
+
+.. note:: use the tww_is_primary-fields to search or symbolize with values of field function_hierarchic.
+
 
 **Variables to define the scale, where the plansymbols change**
 
@@ -112,6 +115,38 @@ A map theme is a snapshot of the current map legend that records:
 .. figure:: images/usage_current_map_theme.png
 
 
+
+Multisymbol Stiles
+------------------
+.. versionchanged:: 2025.0
+
+Why multi-symbol-styles?
+
+Because different representations are necessary for the important layers during GEP, a new style can be created for each symbology. However, with each new style, the entire labeling definition, the configuration of the attribute forms, and the field aliases are also copied. When translating the project file for a German or French version, only the field aliases in the active style are adjusted.
+
+So there are many disadvantages just because we need different symbologies...
+
+The solution: multi-symbol-styles
+
+Create rule-based symbols and group them for different themes like network plan, overview, renovation necessity, etc.
+
+How to do:
+
+*	Go to layer/properties/symbology and choose “Rule-based”
+
+*   Add a new rule with the + button
+
+*   Set the name of your new symbol-group as Label of the rule
+
+*   Do not enter a filter and unselect the symbol -> you have now a new “group-folder”
+
+*    Create symbols in this group-folder by using “Refine Selected Rules” or just with the + Button and move the new rule in the group-folder or copy/paste another existing rule…
+
+Instead of changing styles, you just turn on one group and turn off the not used group. Or you work with QGIS map-themes as before with the old styles.
+
+
+
+
 Layer Order
 -----------
 TWW uses a lot of layers. Therefore it's a good idea to have the layer organised in a logical way.
@@ -120,3 +155,25 @@ The layer order panel enables to manually define the order of the layers display
 It is strongly relevant when digitizing with QGIS standard tools and can be very handy in many situations.
 
 .. figure:: images/layerorder.jpg
+
+
+
+Context-Hints for values
+------------------------
+.. versionadded:: 2025.0
+
+Place your mouse over a value in the valuelist of an attribut and you get additional info for this value if there is an additionial discription on the VSA-DSS-Objektkatalog.
+
+.. figure:: images/hintvalue.jpg
+
+
+
+Context-Hints for fields
+------------------------
+.. versionadded:: 2025.0
+
+This works just for layers based directly from the tww_od - tables, not for views.
+
+Place your mouse over the name of the attribut and you get additional info for this field if there is an additionial discription on the VSA-DSS-Objektkatalog.
+
+.. figure:: images/hintattribute.jpg

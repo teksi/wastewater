@@ -51,12 +51,14 @@
 <li class="toctree-l3"><a class="reference internal" href="overview.html">Einleitung und Übersicht</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Layer Erläuterungen</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#main-layers">Hauptlayer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#wastewater-structures">Abwasserbauwerke</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#maintenance-events-tww-app-vw-tww-maintenance">Erhaltungsereignis <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_maintenance_event</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#value-lists-tww-vl">Wertelisten <code class="docutils literal notranslate"><span class="pre">tww_vl.*</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#layergroup-wastewater-structures">Layergroup Wastewater Structures</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#layergroup-examination-maintenance">Layergroup Examination-Maintenance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#documents">Documents</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#hydraulic">Hydraulik Layer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#layergroups-connection-object-measures-log-card-rural">Layergroups Connection Object, Measures, Log Card, Rural</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#catchment-tww-app-vw-tww-catchment-area">Catchment <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_catchment_area</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#topology">Topologie</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#catchment-tww-od-catchment-area">Einzugsgebiete <code class="docutils literal notranslate"><span class="pre">tww_od.catchment_area</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#value-lists-tww-vl">Wertelisten <code class="docutils literal notranslate"><span class="pre">tww_vl.*</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="namingconventions.html">Namenskonventionen</a></li>
@@ -129,8 +131,8 @@
 <p class="admonition-title">Achtung</p>
 <p>Diese Punkte können nicht als Deckel-Koordinaten exportiert werden. Benutze als Deckel den Layer vw_Deckel.</p>
 </div>
-<div class="versionadded">
-<p><span class="versionmodified added">Added in version 2025.0.</span></p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Geändert in Version 2025.0.</span></p>
 </div>
 <p>Das berechnete Feld <code class="docutils literal notranslate"><span class="pre">tww_is_primary</span></code> ist für eine benutzerdefinierte Definition der PAA Abwasserbauwerke vorhanden. Damit können Abfragen, Symbolisierungen und Beschriftungen einfacher definiert werden.</p>
 </section>
@@ -143,20 +145,38 @@
 <div class="versionadded">
 <p><span class="versionmodified added">Added in version 2025.0.</span></p>
 </div>
-<p>Das berechnete Feld <code class="docutils literal notranslate"><span class="pre">tww_is_primary</span></code> ist für eine benutzerdefinierte Definition der PAA Abwasserbauwerke vorhanden. Damit können Abfragen, Symbolisierungen und Beschriftungen einfacher definiert werden.</p>
-<p>There is a possibilty to create flushing_nozzle on reaches as structure part of the channel.</p>
+<ul class="simple">
+<li><p>Das berechnete Feld <code class="docutils literal notranslate"><span class="pre">tww_is_primary</span></code> ist für eine benutzerdefinierte Definition der PAA Abwasserbauwerke vorhanden. Damit können Abfragen, Symbolisierungen und Beschriftungen einfacher definiert werden.</p></li>
+<li><p>Create flushing_nozzle on reaches as structure part of the channel.</p></li>
+</ul>
 </section>
 </section>
-<section id="wastewater-structures">
-<h2>Abwasserbauwerke<a class="headerlink" href="#wastewater-structures" title="Link to this heading"></a></h2>
+<section id="layergroup-wastewater-structures">
+<h2>Layergroup Wastewater Structures<a class="headerlink" href="#layergroup-wastewater-structures" title="Link to this heading"></a></h2>
 <section id="wastewater-structures-details-tww-app-wastewater-structure">
 <h3>Abwasserbauwerke Details <code class="docutils literal notranslate"><span class="pre">tww_app.wastewater_structure</span></code><a class="headerlink" href="#wastewater-structures-details-tww-app-wastewater-structure" title="Link to this heading"></a></h3>
 <p>Diese Layer zeigen und ermöglichen das Editieren von Detailgeometrien von Abwasserbauwerken. Eine neue Detailgeometrie kann im Layer <cite>vw_tww_Abwasserbauwerk</cite> mit der Aktion  <cite>Digitize</cite> erstellt werden.</p>
 <p>Vergleiche <a class="reference external" href="../digitizing/digitizingdetailedgeometry.html">Digitalisieren detaillierter Geometrie</a> für weitere Infos.</p>
 </section>
+<section id="additional-wastewater-structures-tww-app-vw-tww-additional-ws">
+<h3>Additional Wastewater Structures  <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_additional_ws</span></code><a class="headerlink" href="#additional-wastewater-structures-tww-app-vw-tww-additional-ws" title="Link to this heading"></a></h3>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2025.0.</span></p>
+</div>
+<p>A layer for the DSS-classes</p>
+<ul class="simple">
+<li><p>small_treatment_plant</p></li>
+<li><p>drainless_toilet</p></li>
+<li><p>wwtp_structure</p></li>
+</ul>
+</section>
 <section id="structure-parts-tww-app-structure-part">
 <h3>Bauwerksteile <code class="docutils literal notranslate"><span class="pre">tww_app.structure_part</span></code><a class="headerlink" href="#structure-parts-tww-app-structure-part" title="Link to this heading"></a></h3>
-<p>Deckel ist der einzige Bauwerksteil mit einer eigenen Lageinformation. Alle anderen Bauwerksteile sind nur mit ihrem Abwasserbauwerk verknüpft und sollen nur über die Hauptlayer  (vw_tww_Abwasserbauwerk und vw_tww_Haltung) geändert werden.</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Geändert in Version 2025.0.</span></p>
+</div>
+<p>In version 2025.0 are all structure_parts configured in the TWW-project. Because there are many structure parts, they are grouped in layergroups Structure Parts Channel, Structure Parts Manhole and DSSMini Structure Parts.</p>
+<p>Cover and flushing nozzle are the only structure parts with a point-geometry itself. All other structure parts are just linked to their wastewater structures and should by only edited by the main layers (<cite>vw_tww_wastewater_structure</cite> and <cite>vw_tww_reach</cite>).</p>
 </section>
 <section id="covers-tww-app-vw-cover">
 <h3>Deckel <code class="docutils literal notranslate"><span class="pre">tww_app.vw_cover</span></code><a class="headerlink" href="#covers-tww-app-vw-cover" title="Link to this heading"></a></h3>
@@ -164,11 +184,25 @@
 </section>
 <section id="channels-tww-app-mvw-tww-channel">
 <h3>Kanäle <code class="docutils literal notranslate"><span class="pre">tww_app.mvw_tww_channel</span></code><a class="headerlink" href="#channels-tww-app-mvw-tww-channel" title="Link to this heading"></a></h3>
-<div class="versionchanged">
-<p><span class="versionmodified changed">Geändert in Version 2025.0.</span></p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2025.0.</span></p>
 </div>
-<p>Die Klasse Kanal hat keine Geometrie. Mit mvw_tww_Kanal gibt es eine materialisierte View, die deshalb die Geometrie der Haltungen verwendet, um z.B. mit Erhaltungsereignissen zu arbeiten, die ja nicht mit Haltungen, aber mit Kanälen verknüpft sind.</p>
-<p>Die „alte“ vw_Kanal ohne Geometrie ist auch noch vorhanden.</p>
+<p>The channel-class has no geometry. Therefore, mvw_tww_channel is a materialized view that uses the reach line-geometries to work with e.g maintenace_events, that are not connected to reaches, but to channels.</p>
+<p>The „old“ <code class="docutils literal notranslate"><span class="pre">vw_channel</span></code> -layer without geometry still exits beside.</p>
+</section>
+<section id="measuring-point-tww-od-measuring-point">
+<h3>Measuring_point   <code class="docutils literal notranslate"><span class="pre">tww_od.measuring_point</span></code><a class="headerlink" href="#measuring-point-tww-od-measuring-point" title="Link to this heading"></a></h3>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2025.0.</span></p>
+</div>
+<p>Just the layermeasuring_point (as part of the measuring subsystem) is added to be able to attribute the measuring_point-log-cards. Other tables of the measuring subsystem are available in the database, but are not configured.</p>
+</section>
+<section id="change-points-tww-app-vw-change-points">
+<h3>Change Points <code class="docutils literal notranslate"><span class="pre">tww_app.vw_change_points</span></code><a class="headerlink" href="#change-points-tww-app-vw-change-points" title="Link to this heading"></a></h3>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2025.0.</span></p>
+</div>
+<p>A view to visualize the points (wastewater_nodes between to reaches of the same channel), where material or clear_heigth or slope changes.</p>
 </section>
 <section id="organisations-tww-od-organisation">
 <h3>Organisationen <code class="docutils literal notranslate"><span class="pre">tww_od.organisation</span></code><a class="headerlink" href="#organisations-tww-od-organisation" title="Link to this heading"></a></h3>
@@ -182,15 +216,34 @@
 <p>Die Tabelle ist in der Layergruppe Konfiguration „versteckt“.</p>
 </section>
 </section>
+<section id="layergroup-examination-maintenance">
+<h2>Layergroup Examination-Maintenance<a class="headerlink" href="#layergroup-examination-maintenance" title="Link to this heading"></a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2025.0.</span></p>
+</div>
+<p>Visualized maintenance-events with the layers <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_channel_maintenance</span></code> and <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_ws_maintenance</span></code> that adds the geometry and the most important attributes of the connected wastewater_structures to the maintenance_event-records.
+You can not create new maintenance-events with this views, but you can edit attributes, symbolize and export</p>
 <section id="maintenance-events-tww-app-vw-tww-maintenance">
-<h2>Erhaltungsereignis <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_maintenance_event</span></code><a class="headerlink" href="#maintenance-events-tww-app-vw-tww-maintenance" title="Link to this heading"></a></h2>
+<h3>Erhaltungsereignis <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_maintenance_event</span></code><a class="headerlink" href="#maintenance-events-tww-app-vw-tww-maintenance" title="Link to this heading"></a></h3>
 <p>Erhaltungsereignisse können mit der View tww_od.vw_tww_maintenance_event erstellt werden.</p>
 <p>Die Erhaltungsereignisse werden im Tab Erhaltungsereignis in den Hauptlayern benutzt. Erhaltungsereignisse können mit einem oder mehreren Abwasserbauwerken verknüpft sein.</p>
 <p>Vergleiche <a class="reference external" href="../editing/maintenance_events.html">Bearbeiten von Erhaltungsereignissen</a> für mehr Infos.</p>
 </section>
-<section id="value-lists-tww-vl">
-<h2>Wertelisten <code class="docutils literal notranslate"><span class="pre">tww_vl.*</span></code><a class="headerlink" href="#value-lists-tww-vl" title="Link to this heading"></a></h2>
-<p>Diese Wertelisten sind im Datenmodell VSA-DSS definiert. Nicht ändern.</p>
+<section id="bio-ecol-assessment-tww-app-vw-bio-ecol-assessment">
+<h3>Bio_Ecol_Assessment <code class="docutils literal notranslate"><span class="pre">tww_app.vw_bio_ecol_assessment</span></code><a class="headerlink" href="#bio-ecol-assessment-tww-app-vw-bio-ecol-assessment" title="Link to this heading"></a></h3>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2025.0.</span></p>
+</div>
+<p>A subclass of Maintenance_event</p>
+<p>Create the bio_ecol_assessments in the main tables (discharge points in vw_tww_wastewater_structure) and visualize it in vw_tww_ws_maintenance.</p>
+</section>
+</section>
+<section id="documents">
+<h2>Documents<a class="headerlink" href="#documents" title="Link to this heading"></a></h2>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Geändert in Version 2025.0.</span></p>
+</div>
+<p>Documents have now there own layergroup (before in layergroup Wastewater Structures)</p>
 </section>
 <section id="hydraulic">
 <h2>Hydraulik Layer<a class="headerlink" href="#hydraulic" title="Link to this heading"></a></h2>
@@ -200,21 +253,41 @@
 </section>
 <section id="overflow-tables-tww-app-vw-tww-overflow">
 <h3>Überlauf Tabellen <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_overflow</span></code><a class="headerlink" href="#overflow-tables-tww-app-vw-tww-overflow" title="Link to this heading"></a></h3>
-<p>Diese Tabellen sind mit den Abwasserknoten verknüpft. Im Demo-Projekt (Version 8.0, 4.6.2020) sind keine Verknüpfungen definiert für diese Tabellen.</p>
+<p>Use this layer to create and symbolize overflows.</p>
 </section>
+</section>
+<section id="layergroups-connection-object-measures-log-card-rural">
+<h2>Layergroups Connection Object, Measures, Log Card, Rural<a class="headerlink" href="#layergroups-connection-object-measures-log-card-rural" title="Link to this heading"></a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2025.0.</span></p>
+</div>
+<p>Since these layers where not available in DSS 2015, they have not been in the tww version 2024.</p>
+<p>All DSS-tables are now configured in TWW.</p>
+</section>
+<section id="catchment-tww-app-vw-tww-catchment-area">
+<h2>Catchment <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_catchment_area</span></code><a class="headerlink" href="#catchment-tww-app-vw-tww-catchment-area" title="Link to this heading"></a></h2>
+<p>Main layer to digitize and edit the catchment_areas. Layers catchment_connection lines do just visualize the connections. They are not editable.</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Geändert in Version 2025.0.</span></p>
+</div>
+<p>The fk-fields to connect to the log cards are know configured.</p>
 </section>
 <section id="topology">
 <h2>Topologie<a class="headerlink" href="#topology" title="Link to this heading"></a></h2>
 <section id="nodes-tww-app-vw-network-node-and-segments-tww-app-vw-network-segment">
 <h3>Punkte <code class="docutils literal notranslate"><span class="pre">tww_app.vw_network.node</span></code> und Linien <code class="docutils literal notranslate"><span class="pre">tww_app.vw_network.segment</span></code><a class="headerlink" href="#nodes-tww-app-vw-network-node-and-segments-tww-app-vw-network-segment" title="Link to this heading"></a></h3>
-<p>Diese beiden Layer werden von TWW für das Längenprofil und die Netzverfolgung verwendet. Nicht verändern.
-Der Layer vw_network_segment kann benutzt werden, um die Fliessrichtung darzustellen. Dazu kann als Symbol eine Marker-Linie (filled_arrowhead) verwendet werden.</p>
-<p>Vergleiche <a class="reference external" href="../editing/connect_wastewater_network_elements.html">Werkzeuge zur Netzwerkverfolgung</a> für mehr Infos und wie eine zweckmässige Topologie erstellt werden soll.</p>
+<p>These two layers are used by the tww-extension for the network-following functionalities.
+Use the vw_network_segment layer to show the flow direction, if you use a markerline (filled_arrowhead) as symbol.</p>
+<p>See <a class="reference external" href="../editing/connect_wastewater_network_elements.html">connect wastewater network elements</a> for more information on how to create and maintain a good topology.</p>
 </section>
 </section>
-<section id="catchment-tww-od-catchment-area">
-<h2>Einzugsgebiete <code class="docutils literal notranslate"><span class="pre">tww_od.catchment_area</span></code><a class="headerlink" href="#catchment-tww-od-catchment-area" title="Link to this heading"></a></h2>
-<p>Hauptlayer um Einzugsgebiete zu erfassen oder zu verändern.</p>
+<section id="value-lists-tww-vl">
+<h2>Wertelisten <code class="docutils literal notranslate"><span class="pre">tww_vl.*</span></code><a class="headerlink" href="#value-lists-tww-vl" title="Link to this heading"></a></h2>
+<p>Diese Wertelisten sind im Datenmodell VSA-DSS definiert. Nicht ändern.</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Geändert in Version 2025.0.</span></p>
+</div>
+<p>In VL Channel channel_function_hierarchic are now special tww_fields (symbology_order, is_primary, use_in_labels) to configure labels and help the user to customize his project.</p>
 </section>
 </section>
 

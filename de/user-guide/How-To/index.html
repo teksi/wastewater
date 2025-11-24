@@ -56,15 +56,20 @@
 <li class="toctree-l2"><a class="reference internal" href="../history/index.html">History in TWW</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">How To</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#setting-default-values">Standard Werte setzen</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#how-vw-tww-wastewater-structure-labels-work">Wie Beschriftungen in vw_tww_Abwasserbauwerk funktionieren</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#how-to-translate-a-label-prefix-c-b-i-o">Wie können die Labelbuchstaben (C, B, I, O) übersetzt werden</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#how-to-check-if-triggers-are-active">Wie kann geprüft werden, ob Trigger aktiv sind</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#how-to-run-symbology-functions-manually">Symbologie-Funktion manuell anstossen</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#manual-label-positioning-for-different-scales">Manuelle Beschriftungspositionen für unterschiedliche Massstäbe</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#how-to-import-existing-label-positions">Importieren von bestehenden Beschriftungspositionen</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#collecting-a-hydr-geometry-corresponds-to-a-basin-geometry-in-mike">Erfassen einer Hydr_Geometrie (entspricht einer Beckengeometrie in Mike+)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#hydraulic-modeling-of-an-overflow-prank-weir-leapingweir-pump">Hydraulische Modellierung eines Überlaufes (Streichwehr/Leapingwehr/Förderanlage)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#overflow-characteristic">Überlaufcharakteristik</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#increase-speed-of-calculations-and-update-symbology-and-labels">Increase speed of calculations and update symbology and labels</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#working-with-labels">Working with labels</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#how-vw-tww-wastewater-structure-labels-work">Wie Beschriftungen in vw_tww_Abwasserbauwerk funktionieren</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-translate-a-label-prefix-c-b-i-o">Wie können die Labelbuchstaben (C, B, I, O) übersetzt werden</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#manual-label-positioning-for-different-scales">Manuelle Beschriftungspositionen für unterschiedliche Massstäbe</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-import-existing-label-positions">Importieren von bestehenden Beschriftungspositionen</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#hydraulic-modeling">Hydraulic modeling</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#collecting-a-hydr-geometry-corresponds-to-a-basin-geometry-in-mike">Erfassen einer Hydr_Geometrie (entspricht einer Beckengeometrie in Mike+)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hydraulic-modeling-of-an-overflow-prank-weir-leapingweir-pump">Hydraulische Modellierung eines Überlaufes (Streichwehr/Leapingwehr/Förderanlage)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#overflow-characteristic">Überlaufcharakteristik</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#further-informations">Weitere Infos</a></li>
 </ul>
 </li>
@@ -150,8 +155,20 @@
 Per default, the fields <code class="docutils literal notranslate"><span class="pre">fk_provider</span></code> and <code class="docutils literal notranslate"><span class="pre">fk_dataowner</span></code> are already connected to the function <code class="docutils literal notranslate"><span class="pre">tww_app.get_default_values(field_name)</span></code>.</p>
 <p>Ein Beispiel für ein SQL Skript, um einen Standardwert in allen Vorkommen eines Feldes einzusetzen, ist <a class="reference external" href="https://github.com/teksi/wastewater/blob/main/datamodel/changelogs/0001/14_default_values.sql">hier</a>)</p>
 </section>
+<section id="increase-speed-of-calculations-and-update-symbology-and-labels">
+<h2>Increase speed of calculations and update symbology and labels<a class="headerlink" href="#increase-speed-of-calculations-and-update-symbology-and-labels" title="Link to this heading"></a></h2>
+<p>The TWW plugin has some menu commands to speed up calculations and for updating symbology and labels.</p>
+<figure class="align-default">
+<img alt="../../_images/tww_symbology_triggers.jpg" src="../../_images/tww_symbology_triggers.jpg" />
+</figure>
+<p>Select <em>Disable symbology triggers</em> before starting multiedit or a field calculation for a change of many records.</p>
+<p>Select <em>Enable symbology triggers</em> after the calculations or the multiedit sessions. If you forget to enable the symbology triggers, TWW will warn you if you start the project the next time.</p>
+<p>When the triggers are disabled, there is no update of calculated fields. E.g. the input- or output-labels or the _channel_function_hierarchic field in in layer vw_tww_wastewater_structure are not recalculated. To recalculate all these fields select <em>Update Symbology</em> in the TWW-Plugin-menu</p>
+</section>
+<section id="working-with-labels">
+<h2>Working with labels<a class="headerlink" href="#working-with-labels" title="Link to this heading"></a></h2>
 <section id="how-vw-tww-wastewater-structure-labels-work">
-<h2>Wie Beschriftungen in vw_tww_Abwasserbauwerk funktionieren<a class="headerlink" href="#how-vw-tww-wastewater-structure-labels-work" title="Link to this heading"></a></h2>
+<h3>Wie Beschriftungen in vw_tww_Abwasserbauwerk funktionieren<a class="headerlink" href="#how-vw-tww-wastewater-structure-labels-work" title="Link to this heading"></a></h3>
 <p>Die Beschriftung eines Kontrollschachtes mit den verschiedenen Koten ist eine recht komplexe Sache. Die Koten sind nicht in der Klasse Abwasserbauwerk selbst gespeichert, sondern in den Klassen Deckel und Haltungspunkt der verknüpften Haltungen. TWW hat dafür 4 berechnete Felder um diese Koten beschriften zu können:</p>
 <ul class="simple">
 <li><p>_cover_label: Zeigt die Kote/n des Feldes Deckel.Kote des Abwasserbauwerks</p></li>
@@ -172,78 +189,15 @@ Per default, the fields <code class="docutils literal notranslate"><span class="
 </div>
 </section>
 <section id="how-to-translate-a-label-prefix-c-b-i-o">
-<h2>Wie können die Labelbuchstaben (C, B, I, O) übersetzt werden<a class="headerlink" href="#how-to-translate-a-label-prefix-c-b-i-o" title="Link to this heading"></a></h2>
+<h3>Wie können die Labelbuchstaben (C, B, I, O) übersetzt werden<a class="headerlink" href="#how-to-translate-a-label-prefix-c-b-i-o" title="Link to this heading"></a></h3>
 <p>Um die Kurzzeichen in den Beschriftungen zu übersetzen sind im QGIS-Projekt entsprechende Variablen definiert. Um die Buchstaben für Deckel-Koten, Sohlenkoten und Ein- und Auslaufkoten zu ändern, müssen diese Projekt-Einstellungen geändert werden:</p>
 <figure class="align-default">
 <img alt="../../_images/tww_label_prefix_settings.jpg" src="../../_images/tww_label_prefix_settings.jpg" />
 </figure>
-<p>Um die Änderungen zu sehen, müssen die Symbology Funktionen manuell gestartet werden (vgl. nächstes Kapitel)</p>
-</section>
-<section id="how-to-check-if-triggers-are-active">
-<h2>Wie kann geprüft werden, ob Trigger aktiv sind<a class="headerlink" href="#how-to-check-if-triggers-are-active" title="Link to this heading"></a></h2>
-<p>Während gewissen Prozessen wie der INTERLIS Import werden gewisse Trigger temporär deaktiviert um die Bearbeitungszeit zu verkürzen.</p>
-<ul>
-<li><p>Prüfe den Status der Triggers:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">check_symbology_triggers_enabled</span><span class="p">();</span>
-<span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">check_modification_triggers_enabled</span><span class="p">();</span>
-</pre></div>
-</div>
-</li>
-<li><p>Aktivieren/Deaktivieren der Trigger:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">alter_symbology_triggers</span><span class="p">(</span><span class="s1">&#39;enable&#39;</span><span class="p">);</span>
-<span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">alter_symbology_triggers</span><span class="p">(</span><span class="s1">&#39;disable&#39;</span><span class="p">);</span>
-<span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">alter_modification_triggers</span><span class="p">(</span><span class="s1">&#39;enable&#39;</span><span class="p">);</span>
-<span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">alter_modification_triggers</span><span class="p">(</span><span class="s1">&#39;disable&#39;</span><span class="p">);</span>
-</pre></div>
-</div>
-</li>
-</ul>
-</section>
-<section id="how-to-run-symbology-functions-manually">
-<h2>Symbologie-Funktion manuell anstossen<a class="headerlink" href="#how-to-run-symbology-functions-manually" title="Link to this heading"></a></h2>
-<p>Manchmal werden die berechneten Beschriftungen Deckel-, Einlauf-, Auslauf-, Sohlenkote nicht richtig dargestellt, obwohl sie in der Datenbank entsprechend eingetragen sind.  Das kann vorkommen, wenn zum Beispiel Daten importiert wurden. Oder wenn für das Beschleunigen eines Import’s die Trigger deaktiviert wurden.</p>
-<ul>
-<li><p>Prüfe den Status der Symbology Trigger:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">check_symbology_triggers_enabled</span><span class="p">();</span>
-</pre></div>
-</div>
-</li>
-<li><p>Aktivieren/Deaktivieren der Symbologie-Trigger:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">alter_symbology_triggers</span><span class="p">(</span><span class="s1">&#39;enable&#39;</span><span class="p">);</span>
-<span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">alter_symbology_triggers</span><span class="p">(</span><span class="s1">&#39;disable&#39;</span><span class="p">);</span>
-</pre></div>
-</div>
-</li>
-<li><p>Starte <strong>label function</strong> für alle Daten (_label, _cover_label, _bottom_label, _input_label und_output_label):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">update_wastewater_structure_label</span><span class="p">(</span><span class="n">NULL</span><span class="p">,</span> <span class="n">true</span><span class="p">)</span>
-</pre></div>
-</div>
-</li>
-</ul>
-<figure class="align-default">
-<img alt="../../_images/tww_label_attributes.jpg" src="../../_images/tww_label_attributes.jpg" />
-</figure>
-<ul>
-<li><p>Starte die Berechnung der Schacht-Tiefe für alle Daten (wastewater_structure._depth):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">update_depth</span><span class="p">(</span><span class="n">NULL</span><span class="p">,</span> <span class="n">true</span><span class="p">);</span>
-</pre></div>
-</div>
-</li>
-</ul>
-<figure class="align-default">
-<img alt="../../_images/tww_system_attributes_depth.jpg" src="../../_images/tww_system_attributes_depth.jpg" />
-</figure>
-<p>Für die Symbolisierung von Schächten und Abwasserknoten mit _function_hierarchic und _usage_current berechnet <cite>update_wastewater_node_symbology</cite>  die TWW-Attribute mit den verknüpften Haltungen.</p>
-<ul>
-<li><p>Starte <a href="#id1"><span class="problematic" id="id2">**</span></a>Abwasserknoten Symbologie“ für alle Datensätze (berechnet Funktion_Hierarchisch und Nutzungsart_Ist aus den verknüpften Haltungen und berechnet damit die Felder wastewater_node._function_hierarchic und_usage_current):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">update_wastewater_node_symbology</span><span class="p">(</span><span class="n">NULL</span><span class="p">,</span> <span class="n">true</span><span class="p">);</span>
-</pre></div>
-</div>
-</li>
-</ul>
+<p>To see your changes, you have to choose „Update Symbology“ in the TWW-plugin menu.</p>
 </section>
 <section id="manual-label-positioning-for-different-scales">
-<h2>Manuelle Beschriftungspositionen für unterschiedliche Massstäbe<a class="headerlink" href="#manual-label-positioning-for-different-scales" title="Link to this heading"></a></h2>
+<h3>Manuelle Beschriftungspositionen für unterschiedliche Massstäbe<a class="headerlink" href="#manual-label-positioning-for-different-scales" title="Link to this heading"></a></h3>
 <p>In QGIS können verschiedene Beschriftungsdefinitionen für verschiedene Massstäbe definiert werden. Bei der Arbeit am Bildschirm funktioniert das gut. Aber soll ein Plan mit Beschriftung gedruckt oder ein Datenexport der Beschriftungen (z.B. für ins Regio-GIS) gemacht werden, ist es oft nötig, die Beschriftungspositionen manuell zu definieren. Wenn eine Beschriftung manuell platziert wird in QGIS, dann gilt diese fixe Position aber für jeden Massstab. Und das führt nicht immer zu guten Resultaten.</p>
 <p>Lösung</p>
 <ul class="simple">
@@ -280,7 +234,7 @@ Per default, the fields <code class="docutils literal notranslate"><span class="
 </div>
 </section>
 <section id="how-to-import-existing-label-positions">
-<h2>Importieren von bestehenden Beschriftungspositionen<a class="headerlink" href="#how-to-import-existing-label-positions" title="Link to this heading"></a></h2>
+<h3>Importieren von bestehenden Beschriftungspositionen<a class="headerlink" href="#how-to-import-existing-label-positions" title="Link to this heading"></a></h3>
 <p>In guten Beschriftungspositionen kann viel Arbeit stecken. Diese Arbeit soll nicht verloren gehen.</p>
 <ul class="simple">
 <li><p>Exportieren der Beschriftungsposition im alten GIS in der Form Obj_ID, KoordinateX(Ost), KoordinateY(Nord).</p></li>
@@ -297,8 +251,11 @@ Per default, the fields <code class="docutils literal notranslate"><span class="
 <li><p>Falls notwendig definiere die Ausrichtung horizontal und vertikal der Beschriftungen im Platzierungs-Reiter der Beschriftungsdefinition.</p></li>
 </ul>
 </section>
+</section>
+<section id="hydraulic-modeling">
+<h2>Hydraulic modeling<a class="headerlink" href="#hydraulic-modeling" title="Link to this heading"></a></h2>
 <section id="collecting-a-hydr-geometry-corresponds-to-a-basin-geometry-in-mike">
-<h2>Erfassen einer Hydr_Geometrie (entspricht einer Beckengeometrie in Mike+)<a class="headerlink" href="#collecting-a-hydr-geometry-corresponds-to-a-basin-geometry-in-mike" title="Link to this heading"></a></h2>
+<h3>Erfassen einer Hydr_Geometrie (entspricht einer Beckengeometrie in Mike+)<a class="headerlink" href="#collecting-a-hydr-geometry-corresponds-to-a-basin-geometry-in-mike" title="Link to this heading"></a></h3>
 <p>Hinweis:</p>
 <ul class="simple">
 <li><p>Schächte mit einer Hydr_Geometrie sind als Spezialbauwerke (und nicht als Normschächte) zu erfassen.</p></li>
@@ -338,7 +295,7 @@ Per default, the fields <code class="docutils literal notranslate"><span class="
 </ul>
 </section>
 <section id="hydraulic-modeling-of-an-overflow-prank-weir-leapingweir-pump">
-<h2>Hydraulische Modellierung eines Überlaufes (Streichwehr/Leapingwehr/Förderanlage)<a class="headerlink" href="#hydraulic-modeling-of-an-overflow-prank-weir-leapingweir-pump" title="Link to this heading"></a></h2>
+<h3>Hydraulische Modellierung eines Überlaufes (Streichwehr/Leapingwehr/Förderanlage)<a class="headerlink" href="#hydraulic-modeling-of-an-overflow-prank-weir-leapingweir-pump" title="Link to this heading"></a></h3>
 <p>Es gibt ein spezielle View für Überläufe, auch wenn möglich wäre, die Überlauf-Daten im Layer vw_tww_Abwasserbauwerk zu erfassen. Der Vorteil des Layer <a href="#id3"><span class="problematic" id="id4">vw_tww_Ueberlauf_</span></a> Überläufe können visualisiert und einfach gesucht werden und sind als Listen verfügbar.</p>
 <p>Vorgehen:</p>
 <p>Falls er noch nicht existiert: Bei Wehren ist ein zweiter Abwasserknoten im Bauwerk zu erstellen. Ein zweiter Auslauf ist bereits erstellt (grün = entlastetes Mischabwasser) und ist aber beim Überlaufbauwerk noch mit keinem Abwasserknoten verknüpft.</p>
@@ -393,7 +350,7 @@ Per default, the fields <code class="docutils literal notranslate"><span class="
 </figure>
 </section>
 <section id="overflow-characteristic">
-<h2>Überlaufcharakteristik<a class="headerlink" href="#overflow-characteristic" title="Link to this heading"></a></h2>
+<h3>Überlaufcharakteristik<a class="headerlink" href="#overflow-characteristic" title="Link to this heading"></a></h3>
 <p>Bei einem Leaping-Wehr, einem Förderaggregat oder bei speziellen Verhältnissen kann bei einem Überlauf eine Überlaufcharakteristik definiert werden:</p>
 <p>Es kann eine bereits vorhandene Charakteristik im Feld FS_Ueberlauf_Char gewählt werden oder mit dem grünen + Knopf eine neue Charakteristik erstellt werden .</p>
 <p>Es erscheint das Objektattribute Fenster für die Ueberlaufcharakteristik:</p>
@@ -404,6 +361,7 @@ Per default, the fields <code class="docutils literal notranslate"><span class="
 <li><p>Auch hier wird die Bezeichnung später in Mike+ übernommen als Tabellenbezeichnung für eine QH-Beziehung, welche z.B. in einer lokalen Steuerung benutzt wird.</p></li>
 <li><p>Definiere die notwendigen HQ oder QQ Werte mit dem <strong>Kindobjekt hinzufügen</strong> Knopf. Es muss der richtige Tab entsprechend der Wahl im Feld <strong>Kennlinie_Typ</strong> gewählt werden.</p></li>
 </ol>
+</section>
 </section>
 <section id="further-informations">
 <h2>Weitere Infos<a class="headerlink" href="#further-informations" title="Link to this heading"></a></h2>

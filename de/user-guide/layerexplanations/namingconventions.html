@@ -107,7 +107,8 @@
 <h1>Namenskonventionen<a class="headerlink" href="#naming-conventions" title="Link to this heading"></a></h1>
 <section id="schemas-in-the-tww-database">
 <h2>Schemas in der TWW-Datenbank<a class="headerlink" href="#schemas-in-the-tww-database" title="Link to this heading"></a></h2>
-<p>Schema in TEKSI-Datenbank haben alle die selben Regeln. Um sie zu unterscheiden gibt es für jedes Werk ein eigenes Kurzzeichen (3 Buchstaben). TWW (TEKSI wastewater resp. TEKSI Abwasser) ist das Kurzzeichen für das Modul Abwasser. Die TWW-Datenbank hat fünf TWW-Schema:</p>
+<p>Schema in TEKSI-Databases will follow all the same rules. To destinguish, every infrastructre has his own shortcut (3 letters). TWW (TEKSI wastewater) is the shortcut for module wastewater network management.
+The TWW-Database has four tww-schemas:</p>
 <ul class="simple">
 <li><p>tww_od: in diesem Schema sind alle Tabelle, welche den Klassen des VSA-DSS-Datenmodels entsprechen (Deckel, Abwasserknoten, Kanal etc.). Wegen dem neuen Update-Management in TWW, die Views sind nicht mehr im <a href="#id1"><span class="problematic" id="id2">*</span></a>_od-Schema, sondern im <a href="#id3"><span class="problematic" id="id4">*</span></a>_app-Schema.</p></li>
 <li><p>tww_vl: ist das Schema für die Wertelisten (value lists). Es gibt ein Tabelle für jede Werteliste der VSA-DSS. Als TWW-User kann man diese Tabellen nicht bearbeiten.</p></li>

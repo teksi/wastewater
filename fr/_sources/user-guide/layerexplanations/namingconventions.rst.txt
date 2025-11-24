@@ -4,7 +4,7 @@ Naming conventions
 Schemas in the TWW-Database
 ----------------------------
 Schema in TEKSI-Databases will follow all the same rules. To destinguish, every infrastructre has his own shortcut (3 letters). TWW (TEKSI wastewater) is the shortcut for module wastewater network management.
-The TWW-Database has five tww-schemas:
+The TWW-Database has four tww-schemas:
 
 * tww_od: in this schema you find the tables, that correspond to the VSA-DSS-datamodel (cover, wastewater_node, channel, etc.) Also for sequences of these tables. Because of the new update-management, the views are no more in the *_od-schema, but in the *_app-schema.
 

@@ -56,15 +56,20 @@
 <li class="toctree-l2"><a class="reference internal" href="../history/index.html">History in TWW</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">How To</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#setting-default-values">Définir les valeurs par défaut</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#how-vw-tww-wastewater-structure-labels-work">Comment fonctionnent les labels de la couche <cite>vw_tww_wastewater_structure</cite></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#how-to-translate-a-label-prefix-c-b-i-o">How to translate a label prefix (C, B, I, O)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#how-to-check-if-triggers-are-active">How to check if triggers are active</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#how-to-run-symbology-functions-manually">How to run symbology functions manually</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#manual-label-positioning-for-different-scales">Manual Label-positioning for different scales</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#how-to-import-existing-label-positions">How to import existing label-positions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#collecting-a-hydr-geometry-corresponds-to-a-basin-geometry-in-mike">Collecting a hydr_geometry (corresponds to a basin geometry in Mike+)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#hydraulic-modeling-of-an-overflow-prank-weir-leapingweir-pump">Hydraulic modeling of an overflow (prank weir / leapingweir / pump)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#overflow-characteristic">Overflow characteristic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#increase-speed-of-calculations-and-update-symbology-and-labels">Increase speed of calculations and update symbology and labels</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#working-with-labels">Working with labels</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#how-vw-tww-wastewater-structure-labels-work">Comment fonctionnent les labels de la couche <cite>vw_tww_wastewater_structure</cite></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-translate-a-label-prefix-c-b-i-o">How to translate a label prefix (C, B, I, O)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#manual-label-positioning-for-different-scales">Manual Label-positioning for different scales</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-import-existing-label-positions">How to import existing label-positions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#hydraulic-modeling">Hydraulic modeling</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#collecting-a-hydr-geometry-corresponds-to-a-basin-geometry-in-mike">Collecting a hydr_geometry (corresponds to a basin geometry in Mike+)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hydraulic-modeling-of-an-overflow-prank-weir-leapingweir-pump">Hydraulic modeling of an overflow (prank weir / leapingweir / pump)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#overflow-characteristic">Overflow characteristic</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#further-informations">Further informations</a></li>
 </ul>
 </li>
@@ -150,8 +155,20 @@
 Per default, the fields <code class="docutils literal notranslate"><span class="pre">fk_provider</span></code> and <code class="docutils literal notranslate"><span class="pre">fk_dataowner</span></code> are already connected to the function <code class="docutils literal notranslate"><span class="pre">tww_app.get_default_values(field_name)</span></code>.</p>
 <p>Un exemple de script SQL montre comment installer les valeurs par défaut toutes les occurrences d’un même nom de champ <a class="reference external" href="https://github.com/teksi/wastewater/blob/main/datamodel/changelogs/0001/14_default_values.sql">ici</a>)</p>
 </section>
+<section id="increase-speed-of-calculations-and-update-symbology-and-labels">
+<h2>Increase speed of calculations and update symbology and labels<a class="headerlink" href="#increase-speed-of-calculations-and-update-symbology-and-labels" title="Lien vers cette rubrique"></a></h2>
+<p>The TWW plugin has some menu commands to speed up calculations and for updating symbology and labels.</p>
+<figure class="align-default">
+<img alt="../../_images/tww_symbology_triggers.jpg" src="../../_images/tww_symbology_triggers.jpg" />
+</figure>
+<p>Select <em>Disable symbology triggers</em> before starting multiedit or a field calculation for a change of many records.</p>
+<p>Select <em>Enable symbology triggers</em> after the calculations or the multiedit sessions. If you forget to enable the symbology triggers, TWW will warn you if you start the project the next time.</p>
+<p>When the triggers are disabled, there is no update of calculated fields. E.g. the input- or output-labels or the _channel_function_hierarchic field in in layer vw_tww_wastewater_structure are not recalculated. To recalculate all these fields select <em>Update Symbology</em> in the TWW-Plugin-menu</p>
+</section>
+<section id="working-with-labels">
+<h2>Working with labels<a class="headerlink" href="#working-with-labels" title="Lien vers cette rubrique"></a></h2>
 <section id="how-vw-tww-wastewater-structure-labels-work">
-<h2>Comment fonctionnent les labels de la couche <cite>vw_tww_wastewater_structure</cite><a class="headerlink" href="#how-vw-tww-wastewater-structure-labels-work" title="Lien vers cette rubrique"></a></h2>
+<h3>Comment fonctionnent les labels de la couche <cite>vw_tww_wastewater_structure</cite><a class="headerlink" href="#how-vw-tww-wastewater-structure-labels-work" title="Lien vers cette rubrique"></a></h3>
 <p>Labeling a manhole with his levels is quite a complex thing. Levels are not stored in the wastewater_structure class itself, but in the cover table and as reachpoint levels with the connected reaches. TWW has therefore 4 calculated fields to be able to label these levels:</p>
 <ul class="simple">
 <li><p>_cover_label: shows the level / the levels of the cover/s.level of the wastewater structure</p></li>
@@ -174,78 +191,15 @@ In the example, 400 wastewater-reach is I1, 300 combined-wastewater-reach is I2.
 </div>
 </section>
 <section id="how-to-translate-a-label-prefix-c-b-i-o">
-<h2>How to translate a label prefix (C, B, I, O)<a class="headerlink" href="#how-to-translate-a-label-prefix-c-b-i-o" title="Lien vers cette rubrique"></a></h2>
+<h3>How to translate a label prefix (C, B, I, O)<a class="headerlink" href="#how-to-translate-a-label-prefix-c-b-i-o" title="Lien vers cette rubrique"></a></h3>
 <p>To easily translate label prefixes a series of QGIS project variables have been added. If you want to change the prefixes for cover level, bottom level and entry and exit levels, change the following project settings:</p>
 <figure class="align-default">
 <img alt="../../_images/tww_label_prefix_settings.jpg" src="../../_images/tww_label_prefix_settings.jpg" />
 </figure>
-<p>To see your changes, you have to rerun the symbology functions manually (see next chapter)</p>
-</section>
-<section id="how-to-check-if-triggers-are-active">
-<h2>How to check if triggers are active<a class="headerlink" href="#how-to-check-if-triggers-are-active" title="Lien vers cette rubrique"></a></h2>
-<p>For some processes such as INTERLIS Imports, a set of triggers are temporarily deactivated to speed up the process.</p>
-<ul>
-<li><p>Check status of triggers:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">check_symbology_triggers_enabled</span><span class="p">();</span>
-<span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">check_modification_triggers_enabled</span><span class="p">();</span>
-</pre></div>
-</div>
-</li>
-<li><p>Activate / Deactivate triggers:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">alter_symbology_triggers</span><span class="p">(</span><span class="s1">&#39;enable&#39;</span><span class="p">);</span>
-<span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">alter_symbology_triggers</span><span class="p">(</span><span class="s1">&#39;disable&#39;</span><span class="p">);</span>
-<span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">alter_modification_triggers</span><span class="p">(</span><span class="s1">&#39;enable&#39;</span><span class="p">);</span>
-<span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">alter_modification_triggers</span><span class="p">(</span><span class="s1">&#39;disable&#39;</span><span class="p">);</span>
-</pre></div>
-</div>
-</li>
-</ul>
-</section>
-<section id="how-to-run-symbology-functions-manually">
-<h2>How to run symbology functions manually<a class="headerlink" href="#how-to-run-symbology-functions-manually" title="Lien vers cette rubrique"></a></h2>
-<p>Sometimes the labels such as bottom, cover or entry/exit levels are not correctly displayed, even if the corresponding attribut is filled in. This happens for example when you import data by INTERLIS Import or another way. Maybe the triggers were temporarily deactivated to speed up the import process.</p>
-<ul>
-<li><p>Check status of symbology triggers:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">check_symbology_triggers_enabled</span><span class="p">();</span>
-</pre></div>
-</div>
-</li>
-<li><p>Activate / Deactivate symbology triggers:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">alter_symbology_triggers</span><span class="p">(</span><span class="s1">&#39;enable&#39;</span><span class="p">);</span>
-<span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">alter_symbology_triggers</span><span class="p">(</span><span class="s1">&#39;disable&#39;</span><span class="p">);</span>
-</pre></div>
-</div>
-</li>
-<li><p>Run <strong>label function</strong> for all entities (_label, _cover_label, _bottom_label, _input_label and _output_label):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">update_wastewater_structure_label</span><span class="p">(</span><span class="n">NULL</span><span class="p">,</span> <span class="n">true</span><span class="p">)</span>
-</pre></div>
-</div>
-</li>
-</ul>
-<figure class="align-default">
-<img alt="../../_images/tww_label_attributes.jpg" src="../../_images/tww_label_attributes.jpg" />
-</figure>
-<ul>
-<li><p>Run depth calculation for all entities (wastewater_structure._depth):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">update_depth</span><span class="p">(</span><span class="n">NULL</span><span class="p">,</span> <span class="n">true</span><span class="p">);</span>
-</pre></div>
-</div>
-</li>
-</ul>
-<figure class="align-default">
-<img alt="../../_images/tww_system_attributes_depth.jpg" src="../../_images/tww_system_attributes_depth.jpg" />
-</figure>
-<p>For symbolizing point elements (manholes, special structures etc. and  wastewater_nodes)  with _function_hierarchic and _usage_current the function <cite>update_wastewater_node_symbology</cite> calculates the two tww attributes from the connected reach(es).</p>
-<ul>
-<li><p>Run <strong>wastewater node symbology</strong> for all entities (calculates function_hierarchic and usage_current from connected reaches and adds result to  wastewater_node._function_hierarchic and   _usage_current):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">update_wastewater_node_symbology</span><span class="p">(</span><span class="n">NULL</span><span class="p">,</span> <span class="n">true</span><span class="p">);</span>
-</pre></div>
-</div>
-</li>
-</ul>
+<p>To see your changes, you have to choose « Update Symbology » in the TWW-plugin menu.</p>
 </section>
 <section id="manual-label-positioning-for-different-scales">
-<h2>Manual Label-positioning for different scales<a class="headerlink" href="#manual-label-positioning-for-different-scales" title="Lien vers cette rubrique"></a></h2>
+<h3>Manual Label-positioning for different scales<a class="headerlink" href="#manual-label-positioning-for-different-scales" title="Lien vers cette rubrique"></a></h3>
 <p>QGIS label definition can handle different labels for different scales. This works very well if you work on the screen.
 If you have to print plans with labels or if you have to export labels for data exchange (e.g. exchange with RegioGIS-platform), it will often be necessary to determine the label positions manually.
 If a label is positioned manually in QGIS, this fixed position applies to every scale. And that’s not always a good result.</p>
@@ -287,7 +241,7 @@ You have not the change something in the placement, because this rule uses the s
 </div>
 </section>
 <section id="how-to-import-existing-label-positions">
-<h2>How to import existing label-positions<a class="headerlink" href="#how-to-import-existing-label-positions" title="Lien vers cette rubrique"></a></h2>
+<h3>How to import existing label-positions<a class="headerlink" href="#how-to-import-existing-label-positions" title="Lien vers cette rubrique"></a></h3>
 <p>Good label-positions can be hard work. So you don’t want to loose it.</p>
 <ul class="simple">
 <li><p>Export your label-positions from your old system in the form obj_id, coordinateX (east), coordinateY (north).</p></li>
@@ -304,8 +258,11 @@ You have not the change something in the placement, because this rule uses the s
 <li><p>If necessary define the horizontal/vertical alignment of your label-coordinates in the placement of the label definition.</p></li>
 </ul>
 </section>
+</section>
+<section id="hydraulic-modeling">
+<h2>Hydraulic modeling<a class="headerlink" href="#hydraulic-modeling" title="Lien vers cette rubrique"></a></h2>
 <section id="collecting-a-hydr-geometry-corresponds-to-a-basin-geometry-in-mike">
-<h2>Collecting a hydr_geometry (corresponds to a basin geometry in Mike+)<a class="headerlink" href="#collecting-a-hydr-geometry-corresponds-to-a-basin-geometry-in-mike" title="Lien vers cette rubrique"></a></h2>
+<h3>Collecting a hydr_geometry (corresponds to a basin geometry in Mike+)<a class="headerlink" href="#collecting-a-hydr-geometry-corresponds-to-a-basin-geometry-in-mike" title="Lien vers cette rubrique"></a></h3>
 <p>Note:</p>
 <ul class="simple">
 <li><p>Wastewater structures with a hydr_geometry have to be defined as special structures (and not as standard manholes).</p></li>
@@ -345,7 +302,7 @@ You have not the change something in the placement, because this rule uses the s
 </ul>
 </section>
 <section id="hydraulic-modeling-of-an-overflow-prank-weir-leapingweir-pump">
-<h2>Hydraulic modeling of an overflow (prank weir / leapingweir / pump)<a class="headerlink" href="#hydraulic-modeling-of-an-overflow-prank-weir-leapingweir-pump" title="Lien vers cette rubrique"></a></h2>
+<h3>Hydraulic modeling of an overflow (prank weir / leapingweir / pump)<a class="headerlink" href="#hydraulic-modeling-of-an-overflow-prank-weir-leapingweir-pump" title="Lien vers cette rubrique"></a></h3>
 <p>There is a special view for overflows, altough it would be possible to edit the overflow-data in layer vw_tww_wastewater_structure.
 The advantage of layer vw_tww_overflow: overflows can be visualized, can be found again and are available in lists.</p>
 <p>Action:</p>
@@ -402,7 +359,7 @@ A second outlet has already been created (green = discharged combined wastewater
 </figure>
 </section>
 <section id="overflow-characteristic">
-<h2>Overflow characteristic<a class="headerlink" href="#overflow-characteristic" title="Lien vers cette rubrique"></a></h2>
+<h3>Overflow characteristic<a class="headerlink" href="#overflow-characteristic" title="Lien vers cette rubrique"></a></h3>
 <p>In the case of a leaping weir, a pump or under special conditions, an overflow characteristic can be defined for the overflow:</p>
 <p>You can select an existing characteristic in the field fk_overflow_char or you create a new characteristic with the green + button.</p>
 <p>The Feature Attributes window for the overflow characteristic appears:</p>
@@ -413,6 +370,7 @@ A second outlet has already been created (green = discharged combined wastewater
 <li><p>Here too, the identifer is later adopted in Mike+ as a table name for a QH relationship, which is used, for example, in a local controller.</p></li>
 <li><p>Define the necessary HQ or QQ values with the <strong>add child object</strong> button. Be sure to choose the correct tab corresponding to the choice in <strong>kind_overflow_char</strong></p></li>
 </ol>
+</section>
 </section>
 <section id="further-informations">
 <h2>Further informations<a class="headerlink" href="#further-informations" title="Lien vers cette rubrique"></a></h2>
