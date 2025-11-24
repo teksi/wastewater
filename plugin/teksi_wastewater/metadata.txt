@@ -6,7 +6,7 @@ about=Provides selection, connection and editing tools. Requires a compatible TE
 
 qgisMinimumVersion=3.34.8
 category=Vector
-version=2025.0.2
+version=2025.0.2rc11
 
 tags=teksi, gep, pgee, abwasser, wastewater, assainissement, network, sewer, infrastructure, management
 
