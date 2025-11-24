@@ -53,7 +53,7 @@ This layer shows and enables you to edit the detailed geometries of wastewater s
 See `digitizing detailed geometries <../digitizing/digitizingdetailedgeometry.html>`_ for more information.
 
 Additional Wastewater Structures  ``tww_app.vw_tww_additional_ws``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. versionadded:: 2025.0
 
 A layer for the DSS-classes
@@ -162,7 +162,7 @@ Overflow tables ``tww_app.vw_tww_overflow``
 Use this layer to create and symbolize overflows.
 
 Layergroups Connection Object, Measures, Log Card, Rural
---------------------------------------------------------
+---------------------------------------------------------
 .. versionadded:: 2025.0
 
 Since these layers where not available in DSS 2015, they have not been in the tww version 2024.
@@ -171,7 +171,7 @@ All DSS-tables are now configured in TWW.
 
 
 Catchment ``tww_app.vw_tww_catchment_area``
-------------------------------------
+----------------------------------------------
 
 Main layer to digitize and edit the catchment_areas. Layers catchment_connection lines do just visualize the connections. They are not editable.
 
