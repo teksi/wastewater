@@ -66,6 +66,7 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
     INPUT_MEASURE_POLYGON_LAYER = "MEASURE_POLYGON_LAYER"
     INPUT_BUILDING_GROUP_LAYER = "BUILDING_GROUP_LAYER"
     INPUT_REPLACE_WS_WITH_WN = "REPLACE_WS_WITH_WN"
+    INPUT_INCLUDE_UNPLACED = "INCLUDE_UNPLACED"
 
     def name(self):
         return "extractlabels_interlis"
@@ -162,6 +163,14 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
 
         self.addParameter(
             QgsProcessingParameterBoolean(
+                self.INPUT_INCLUDE_UNPLACED,
+                description=self.tr("Include unplaced"),
+                defaultValue=False,
+                optional=True,
+            )
+        )
+        self.addParameter(
+            QgsProcessingParameterBoolean(
                 self.INPUT_REPLACE_WS_WITH_WN,
                 description=self.tr("Export wn_obj_id for Structure view layer"),
                 defaultValue=False,
@@ -201,6 +210,10 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
 
         use_wastewater_node = self.parameterAsBoolean(
             parameters, self.INPUT_REPLACE_WS_WITH_WN, context
+        )
+
+        include_unplaced = self.parameterAsBoolean(
+            parameters, self.INPUT_INCLUDE_UNPLACED, context
         )
 
         scales = [
@@ -286,7 +299,7 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
                 {
                     "DPI": 96,  # TODO: check what this changes
                     "EXTENT": extent,
-                    "INCLUDE_UNPLACED": True,
+                    "INCLUDE_UNPLACED": include_unplaced,
                     "MAP_THEME": None,
                     "OUTPUT": extract_path,
                     "SCALE": scale_value,

@@ -20,10 +20,10 @@ SELECT
             ELSE (ca.surface_area::numeric)::double precision
   END AS Area,
   CASE
-    WHEN state = 'rw_current' then discharge_coefficient_rw_current
-    WHEN state = 'rw_planned'  then discharge_coefficient_rw_planned
-    WHEN state = 'ww_current' then discharge_coefficient_ww_current
-    WHEN state = 'ww_planned'  then discharge_coefficient_ww_planned
+    WHEN state = 'rw_current' AND discharge_coefficient_rw_current IS NOT NULL then discharge_coefficient_rw_current
+    WHEN state = 'rw_planned' AND discharge_coefficient_rw_planned IS NOT NULL then discharge_coefficient_rw_planned
+    WHEN state = 'ww_current' AND discharge_coefficient_ww_current IS NOT NULL then discharge_coefficient_ww_current
+    WHEN state = 'ww_planned'  AND discharge_coefficient_ww_planned IS NOT NULL then discharge_coefficient_ww_planned
     ELSE 0
   END as percImperv, -- take from catchment_area instead of default value
   CASE
@@ -41,7 +41,7 @@ SELECT
   END as Width, -- Width of overland flow path estimation
   0.5 as percSlope, -- default value
   0 as CurbLen, -- default value
-  NULL::varchar as SnowPack, -- default value
+  'default_snow_pack'::varchar as SnowPack, -- default value
   CASE
 		WHEN fk_wastewater_networkelement_ww_current is not null
 		THEN

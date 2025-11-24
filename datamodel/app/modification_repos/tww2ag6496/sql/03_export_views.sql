@@ -470,9 +470,9 @@ SELECT
 	, msr.intervention_demand AS handlungsbedarf
 	, msr.year_implementation_effective AS jahr_umsetzung_effektiv
 	, msr.year_implementation_planned AS jahr_umsetzung_geplant
-	, msr_ct.value_de AS kategorie
+	, coalesce(ag_ct.value_de,msr_ct.value_de) AS kategorie
 	, msr.perimeter_geometry AS perimeter
-	, msr_pri.value_de AS prioritaetag
+	, coalesce(ag_pri.value_de,msr_pri.value_de) AS prioritaetag
 	, msr_st.value_de AS status
 	, msr.symbolpos_geometry AS symbolpos
 	, msr.link AS verweis
@@ -484,9 +484,10 @@ SELECT
 
 FROM tww_od.measure msr
 	LEFT JOIN tww_vl.measure_category msr_ct ON msr_ct.code = msr.category
-	LEFT JOIN tww_vl.measure_priority msr_pri ON msr_pri.code = msr.priority
-	LEFT JOIN tww_vl.measure_status msr_st ON msr_st.code = msr.status
-
+	 LEFT JOIN tww_vl.measure_category_export_rel_agxx ag_ct ON msr_ct.code = ag_ct.code
+     LEFT JOIN tww_vl.measure_priority msr_pri ON msr_pri.code = msr.priority
+	 LEFT JOIN tww_vl.measure_priority_export_rel_agxx ag_pri ON msr_pri.code = ag_pri.code
+     LEFT JOIN tww_vl.measure_status msr_st ON msr_st.code = msr.status
 	;
 
 

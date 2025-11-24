@@ -50,8 +50,28 @@ Per default, the fields ``fk_provider`` and ``fk_dataowner`` are already connect
 An example SQL script how to insert the default value for all occurences of a field name can be found `here <https://github.com/teksi/wastewater/blob/main/datamodel/changelogs/0001/14_default_values.sql>`_)
 
 
+
+Increase speed of calculations and update symbology and labels
+--------------------------------------------------------------
+
+The TWW plugin has some menu commands to speed up calculations and for updating symbology and labels.
+
+.. figure:: images/tww_symbology_triggers.jpg
+
+Select *Disable symbology triggers* before starting multiedit or a field calculation for a change of many records.
+
+Select *Enable symbology triggers* after the calculations or the multiedit sessions. If you forget to enable the symbology triggers, TWW will warn you if you start the project the next time.
+
+When the triggers are disabled, there is no update of calculated fields. E.g. the input- or output-labels or the _channel_function_hierarchic field in in layer vw_tww_wastewater_structure are not recalculated. To recalculate all these fields select *Update Symbology* in the TWW-Plugin-menu
+
+
+
+Working with labels
+-------------------
+
+
 How vw_tww_wastewater_structure labels work
--------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Labeling a manhole with his levels is quite a complex thing. Levels are not stored in the wastewater_structure class itself, but in the cover table and as reachpoint levels with the connected reaches. TWW has therefore 4 calculated fields to be able to label these levels:
 
@@ -71,72 +91,26 @@ In the example, the 200mm-reaches are swwf-reaches and therefore not labeled.
 
 Which reach is I1, which is I2?
 
-Answer: TWW uses the azimut of the last segment of the reach (for inputs) or the first segement of the reach (for outputs) to define the order of the labels. If you stand in the North to the manhole and go clockwise around the manhole, you will first come to I1 and then later to I2.
-In the example, 300 combined-wastewater-reach is I1, 400 wastewater-reach is I2.
+Answer: TWW uses the azimut of the last segment of the reach (for inputs) or the first segment of the reach (for outputs) to define the order of the labels. If you stand on the Main-Node of the manhole and turn to the outlet, you find first I1 if you turn clockwise and you find later I2.
+In the example, 400 wastewater-reach is I1, 300 combined-wastewater-reach is I2.
+
+.. hint:: This way of numbering the reaches differs from QGEP, where the north direction was the starting point.
+
 
 
 How to translate a label prefix (C, B, I, O)
---------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To easily translate label prefixes a series of QGIS project variables have been added. If you want to change the prefixes for cover level, bottom level and entry and exit levels, change the following project settings:
 
 .. figure:: images/tww_label_prefix_settings.jpg
 
-To see your changes, you have to rerun the symbology functions manually (see next chapter)
-
-How to check if triggers are active
----------------------------------------
-
-For some processes such as INTERLIS Imports, a set of triggers are temporarily deactivated to speed up the process.
-
-* Check status of triggers::
-
-   SELECT tww_app.check_symbology_triggers_enabled();
-   SELECT tww_app.check_modification_triggers_enabled();
-
-* Activate / Deactivate triggers::
-
-   SELECT tww_app.alter_symbology_triggers('enable');
-   SELECT tww_app.alter_symbology_triggers('disable');
-   SELECT tww_app.alter_modification_triggers('enable');
-   SELECT tww_app.alter_modification_triggers('disable');
-
-How to run symbology functions manually
----------------------------------------
-
-Sometimes the labels such as bottom, cover or entry/exit levels are not correctly displayed, even if the corresponding attribut is filled in. This happens for example when you import data by INTERLIS Import or another way. Maybe the triggers were temporarily deactivated to speed up the import process.
-
-* Check status of symbology triggers::
-
-   SELECT tww_app.check_symbology_triggers_enabled();
-
-* Activate / Deactivate symbology triggers::
-
-   SELECT tww_app.alter_symbology_triggers('enable');
-   SELECT tww_app.alter_symbology_triggers('disable');
-
-* Run **label function** for all entities (_label, _cover_label, _bottom_label, _input_label and _output_label)::
-
-   SELECT tww_app.update_wastewater_structure_label(NULL, true)
-
-.. figure:: images/tww_label_attributes.jpg
-
-* Run depth calculation for all entities (wastewater_structure._depth)::
-
-   SELECT tww_app.update_depth(NULL, true);
-
-.. figure:: images/tww_system_attributes_depth.jpg
-
-For symbolizing point elements (manholes, special structures etc. and  wastewater_nodes)  with _function_hierarchic and _usage_current the function `update_wastewater_node_symbology` calculates the two tww attributes from the connected reach(es).
-
-* Run **wastewater node symbology** for all entities (calculates function_hierarchic and usage_current from connected reaches and adds result to  wastewater_node._function_hierarchic and   _usage_current)::
-
-   SELECT tww_app.update_wastewater_node_symbology(NULL, true);
+To see your changes, you have to choose "Update Symbology" in the TWW-plugin menu.
 
 
 
 Manual Label-positioning for different scales
----------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 QGIS label definition can handle different labels for different scales. This works very well if you work on the screen.
 If you have to print plans with labels or if you have to export labels for data exchange (e.g. exchange with RegioGIS-platform), it will often be necessary to determine the label positions manually.
@@ -177,7 +151,7 @@ Now you can move or fix your labels for every rule with different positions with
 
 
 How to import existing label-positions
---------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Good label-positions can be hard work. So you don't want to loose it.
 
@@ -200,8 +174,11 @@ If you can not find a .qgd-file, then you have probably not moved or rotated a l
 
 
 
+Hydraulic modeling
+------------------
+
 Collecting a hydr_geometry (corresponds to a basin geometry in Mike+)
--------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Note:
 
@@ -244,7 +221,7 @@ Note:
 
 
 Hydraulic modeling of an overflow (prank weir / leapingweir / pump)
---------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 There is a special view for overflows, altough it would be possible to edit the overflow-data in layer vw_tww_wastewater_structure.
 The advantage of layer vw_tww_overflow: overflows can be visualized, can be found again and are available in lists.
@@ -312,7 +289,7 @@ To finish, the 2nd outlet has to be linked to the 2nd wastewater node:
 
 
 Overflow characteristic
------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 In the case of a leaping weir, a pump or under special conditions, an overflow characteristic can be defined for the overflow:
 
