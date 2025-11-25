@@ -230,7 +230,7 @@ class InterlisImporterExporter:
         labels_file=None,
         selected_labels_scales_indices=[],
         selected_ids=None,
-        include_unplaced: bool=False,
+        include_unplaced: bool = False,
     ):
         # File name without extension (used later for export)
         file_name_base, _ = os.path.splitext(xtf_file_output)
