@@ -18,12 +18,12 @@ Contents
 
 .. toctree::
    :maxdepth: 4
-   :numbered:
 
    features-guide/index
    installation-guide/index
    user-guide/index
    admin-guide/index
+   releases/index
    extensions-guide/index
    tww_swmm/index
    translation/index
