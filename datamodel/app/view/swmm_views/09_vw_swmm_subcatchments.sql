@@ -6,7 +6,10 @@
 CREATE OR REPLACE VIEW tww_app.swmm_vw_subcatchments AS
 SELECT
   concat(replace(ca.obj_id, ' ', '_'), '_', state) as Name,
-  concat('raingage@', replace(ca.obj_id, ' ', '_'))::varchar as RainGage,
+  CASE
+    WHEN state = 'rw_current' or state = 'rw_planned' then concat('raingage@', replace(ca.obj_id, ' ', '_'), '_rainwater')::varchar
+    ELSE concat('raingage@', replace(ca.obj_id, ' ', '_'), '_wastewater')::varchar
+  END as RainGage
   CASE
     WHEN state = 'rw_current' then fk_wastewater_networkelement_rw_current
     WHEN state = 'rw_planned'  then fk_wastewater_networkelement_rw_planned
