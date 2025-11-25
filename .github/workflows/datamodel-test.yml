@@ -37,12 +37,19 @@ jobs:
         include:
         - modification_ci: false
           modification_agxx: false
+          modification_web: false
 
         - modification_ci: true
           modification_agxx: false
+          modification_web: false
 
         - modification_ci: false
           modification_agxx: true
+          modification_web: false
+
+        - modification_ci: false
+          modification_agxx: false
+          modification_web: true
 
     steps:
       - uses: actions/checkout@v5
@@ -69,6 +76,7 @@ jobs:
               pum -vvv -s ${PG_SERVICE} -d datamodel install \
               -p modification_ci ${{ matrix.modification_ci}} \
               -p modification_agxx ${{ matrix.modification_agxx}} \
+              -p modification_web ${{ matrix.modification_web}} \
               -p SRID 2056 --roles --grant
 
       - name: Run tests

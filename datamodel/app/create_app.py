@@ -47,7 +47,7 @@ class Hook(HookBase):
         Creates the schema tww_app for TEKSI Wastewater & GEP
         :param SRID: the EPSG code for geometry columns. Overridden by modification_yaml
         :param modification_agxx: bool of whether to load agxx modification. Overridden by modification_yaml
-        :param modification_agxx: bool of whether to load web modification. Overridden by modification_yaml
+        :param modification_web: bool of whether to load web modification. Overridden by modification_yaml
         :param modification_ci: bool of whether to load ci modification. Overridden by modification_yaml
         :param lang_code: language code for use in modification views. Overridden by modification_yaml
         :param modification_yaml: Path of yaml containing app parametrisation
@@ -463,6 +463,13 @@ if __name__ == "__main__":
         help="load ci modification",
     )
     parser.add_argument(
+        "-w",
+        "--modification_web",
+        action="store_true",
+        default=False,
+        help="load web modification",
+    )
+    parser.add_argument(
         "-l",
         "--lang_code",
         help="language code",
@@ -482,6 +489,7 @@ if __name__ == "__main__":
             SRID=args.srid,
             modification_agxx=args.modification_agxx,
             modification_ci=args.modification_ci,
+            modification_web=args.modification_web,
             modification_yaml=args.modification_yaml,
             lang_code=args.lang_code,
         )
