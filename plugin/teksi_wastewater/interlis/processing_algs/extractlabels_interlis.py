@@ -28,8 +28,8 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
 
     tr = partial(QCoreApplication.translate, "ExtractlabelsInterlisAlgorithm")
     AVAILABLE_SCALE_PIPELINE_REGISTRY_1_1000 = "Leitungskataster"
-    AVAILABLE_SCALE_NETWORK_PLAN_1_250 = "Werkplan"
-    AVAILABLE_SCALE_NETWORK_PLAN_1_500 = "Werkplan"
+    AVAILABLE_SCALE_NETWORK_PLAN_1_250 = "Werkplan.250"  # Defined with subvalue - will be replaced for xtf output back to Werkplan, only choose either or
+    AVAILABLE_SCALE_NETWORK_PLAN_1_500 = "Werkplan.500"  # Defined with subvalue - will be replaced for xtf output back to Werkplan, only choose either or
     AVAILABLE_SCALE_OVERVIEWMAP_1_10000 = "Uebersichtsplan.UeP10"
     AVAILABLE_SCALE_OVERVIEWMAP_1_5000 = "Uebersichtsplan.UeP5"
     AVAILABLE_SCALE_OVERVIEWMAP_1_2000 = "Uebersichtsplan.UeP2"
@@ -40,8 +40,16 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
             tr("Leitungskataster"),
             1000,
         ),  # TODO: check scale ?
-        (AVAILABLE_SCALE_NETWORK_PLAN_1_250, tr("Werkplan"), 250),  # TODO: check scale ?
-        (AVAILABLE_SCALE_NETWORK_PLAN_1_500, tr("Werkplan"), 500),  # TODO: check scale ?
+        (
+            AVAILABLE_SCALE_NETWORK_PLAN_1_250,
+            tr("Werkplan 1:250"),
+            250,
+        ),  # Option with scale 1:250 labels
+        (
+            AVAILABLE_SCALE_NETWORK_PLAN_1_500,
+            tr("Werkplan 1:500"),
+            500,
+        ),  # Option with scale 1:500 labels
         (AVAILABLE_SCALE_OVERVIEWMAP_1_10000, tr("Uebersichtsplan 1:10000"), 10000),
         (AVAILABLE_SCALE_OVERVIEWMAP_1_5000, tr("Uebersichtsplan 1:5000"), 5000),
         (AVAILABLE_SCALE_OVERVIEWMAP_1_2000, tr("Uebersichtsplan 1:2000"), 2000),
@@ -58,6 +66,7 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
     INPUT_MEASURE_POLYGON_LAYER = "MEASURE_POLYGON_LAYER"
     INPUT_BUILDING_GROUP_LAYER = "BUILDING_GROUP_LAYER"
     INPUT_REPLACE_WS_WITH_WN = "REPLACE_WS_WITH_WN"
+    INPUT_INCLUDE_UNPLACED = "INCLUDE_UNPLACED"
 
     def name(self):
         return "extractlabels_interlis"
@@ -154,6 +163,14 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
 
         self.addParameter(
             QgsProcessingParameterBoolean(
+                self.INPUT_INCLUDE_UNPLACED,
+                description=self.tr("Include unplaced"),
+                defaultValue=False,
+                optional=True,
+            )
+        )
+        self.addParameter(
+            QgsProcessingParameterBoolean(
                 self.INPUT_REPLACE_WS_WITH_WN,
                 description=self.tr("Export wn_obj_id for Structure view layer"),
                 defaultValue=False,
@@ -193,6 +210,10 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
 
         use_wastewater_node = self.parameterAsBoolean(
             parameters, self.INPUT_REPLACE_WS_WITH_WN, context
+        )
+
+        include_unplaced = self.parameterAsBoolean(
+            parameters, self.INPUT_INCLUDE_UNPLACED, context
         )
 
         scales = [
@@ -278,7 +299,7 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
                 {
                     "DPI": 96,  # TODO: check what this changes
                     "EXTENT": extent,
-                    "INCLUDE_UNPLACED": True,
+                    "INCLUDE_UNPLACED": include_unplaced,
                     "MAP_THEME": None,
                     "OUTPUT": extract_path,
                     "SCALE": scale_value,
@@ -309,7 +330,9 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
             if catchment_layer:
                 lyr_name_to_key.update(
                     {
-                        TwwLayerManager.layer("catchment_area").name(): "catchment_area",
+                        TwwLayerManager.layer(
+                            "vw_tww_catchment_area"
+                        ).name(): "vw_tww_catchment_area",
                     }
                 )
             if building_group_layer:

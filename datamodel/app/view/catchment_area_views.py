@@ -173,12 +173,10 @@ CREATE MATERIALIZED VIEW tww_app.mvw_catchment_area_totals
  AS
  SELECT cat.obj_id as _obj_id, -- underscore necessary for pirogue
     lc.obj_id as fk_log_card,
-    ca_agg.perimeter_geometry,
-    wn.situation3d_geometry,
-    wn.obj_id AS wn_obj_id
+    ca_agg.perimeter_geometry
    FROM tww_od.catchment_area_totals cat
-     LEFT JOIN tww_od.hydraulic_char_data hcd ON hcd.obj_id::text = cat.fk_hydraulic_char_data::text AND hcd.status = 6372
-     LEFT JOIN tww_od.wastewater_node wn ON hcd.fk_wastewater_node::text = wn.obj_id::text
+     LEFT JOIN tww_od.hydraulic_char_data hc_c ON hc_c.obj_id::text = cat.fk_hydraulic_char_data::text AND hc_c.status = 6372
+     LEFT JOIN tww_od.wastewater_node wn ON hc_c.fk_wastewater_node::text = wn.obj_id::text
      LEFT JOIN tww_od.log_card lc ON lc.fk_pwwf_wastewater_node::text = wn.obj_id::text
      LEFT JOIN ( WITH ca AS (
                  SELECT catchment_area.fk_special_building_ww_current AS fk_log_card,
@@ -203,6 +201,7 @@ CREATE MATERIALIZED VIEW tww_app.mvw_catchment_area_totals
           GROUP BY collector.obj_id) ca_agg ON ca_agg.obj_id::text = lc.obj_id::text
 WITH DATA;
 """
+
     cursor.execute(mview_sql)
 
     view_sql = """
@@ -212,10 +211,28 @@ WITH DATA;
      SELECT
         {cat_cols}
         , {mv_cat_cols}
-
+    , wn.situation3d_geometry
+    , wn.obj_id AS wn_obj_id
+    , {hc_c_cols}
+    , {hc_o_cols}
+    , {hc_p_cols}
+    , {hg_c_cols}
+    , ws.status AS ws_status
+    , ma.function AS ma_function
+    , ss.function AS ss_function
         {extra_cols}
-        FROM tww_od.catchment_area_totals cat
-        LEFT JOIN tww_app.mvw_catchment_area_totals mv_cat on mv_cat._obj_id=cat.obj_id
+   FROM tww_od.catchment_area_totals cat
+     LEFT JOIN tww_app.mvw_catchment_area_totals mv_cat ON mv_cat._obj_id::text = cat.obj_id::text
+     LEFT JOIN tww_od.hydraulic_char_data hc ON hc.obj_id::text = cat.fk_hydraulic_char_data::text
+     LEFT JOIN tww_od.wastewater_node wn ON hc.fk_wastewater_node::text = wn.obj_id::text
+     LEFT JOIN tww_od.hydraulic_char_data hc_c ON hc_c.fk_wastewater_node::text = wn.obj_id::text AND hc_c.status = 6372
+     LEFT JOIN tww_od.hydraulic_char_data hc_o ON hc_o.fk_wastewater_node::text = wn.obj_id::text AND hc_o.status = 6373
+     LEFT JOIN tww_od.hydraulic_char_data hc_p ON hc_p.fk_wastewater_node::text = wn.obj_id::text AND hc_p.status = 6371
+     LEFT JOIN tww_od.wastewater_networkelement ne ON wn.obj_id::text = ne.obj_id::text
+     LEFT JOIN tww_od.wastewater_structure ws ON ne.fk_wastewater_structure::text = ws.obj_id::text
+     LEFT JOIN tww_od.manhole ma ON ma.obj_id::text = ws.obj_id::text
+     LEFT JOIN tww_od.special_structure ss ON ss.obj_id::text = ws.obj_id::text
+     LEFT JOIN tww_od.hydr_geometry hg_c ON hg_c.obj_id::text = wn.fk_hydr_geometry::text
         {extra_joins};
 
     """.format(
@@ -237,6 +254,46 @@ WITH DATA;
             indent=4,
             skip_columns=["_obj_id"],
         ),
+        hc_c_cols=select_columns(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="hydraulic_char_data",
+            table_alias="hc_c",
+            prefix="hc_c_",
+            remove_pkey=False,
+            indent=4,
+            skip_columns=["fk_wastewater_node", "status"],
+        ),
+        hc_o_cols=select_columns(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="hydraulic_char_data",
+            table_alias="hc_o",
+            prefix="hc_o_",
+            remove_pkey=False,
+            indent=4,
+            skip_columns=["fk_wastewater_node", "status"],
+        ),
+        hc_p_cols=select_columns(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="hydraulic_char_data",
+            table_alias="hc_p",
+            prefix="hc_p_",
+            remove_pkey=False,
+            indent=4,
+            skip_columns=["fk_wastewater_node", "status"],
+        ),
+        hg_c_cols=select_columns(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="hydr_geometry",
+            table_alias="hg_c",
+            prefix="hg_c_",
+            remove_pkey=False,
+            indent=4,
+            skip_columns=[],
+        ),
         extra_cols=(
             ""
             if not extra_definition
@@ -252,18 +309,15 @@ WITH DATA;
       RETURNS trigger AS
     $BODY$
     DECLARE
-      hcd_oid text;
+      hc_oid VARCHAR(16);
       lc_rec RECORD;
     BEGIN
 
       NEW.identifier = COALESCE(NEW.identifier, NEW.obj_id);
 
-      INSERT INTO tww_od.hydraulic_char_data (status,fk_wastewater_node)
-      VALUES (6372,NEW.wn_obj_id)
-      RETURNING obj_id INTO hcd_oid;
 
     SELECT lc.obj_id, lc.fk_pwwf_wastewater_node
-    FROM tww_od.log_card
+    FROM tww_od.log_card lc
     WHERE lc.obj_id=NEW.fk_log_card
     INTO lc_rec;
 
@@ -273,13 +327,19 @@ WITH DATA;
       VALUES (NEW.fk_log_card, NEW.wn_obj_id);
       ELSE NULL;
       END CASE;
-    WHEN lc_rec.fk_pwwf_wastewater_node != wn_obj_id THEN
+    WHEN lc_rec.fk_pwwf_wastewater_node != NEW.wn_obj_id THEN
       UPDATE tww_od.log_card lc SET lc.fk_pwwf_wastewater_node = NEW.wn_obj_id
       WHERE lc.obj_id=NEW.wn_obj_id;
 
     ELSE NULL;
     END CASE;
-
+    {insert_hc_c}
+    UPDATE tww_od.hydraulic_char_data SET status=6372 WHERE obj_id=hc_oid;
+    {insert_hc_o}
+    UPDATE tww_od.hydraulic_char_data SET status=6373 WHERE obj_id=hc_oid;
+    {insert_hc_p}
+    UPDATE tww_od.hydraulic_char_data SET status=6371 WHERE obj_id=hc_oid;
+    {insert_hg_c}
     {insert_cat}
 
     {insert_extra}
@@ -287,10 +347,10 @@ WITH DATA;
       RETURN NEW;
     END; $BODY$ LANGUAGE plpgsql VOLATILE;
 
-    DROP TRIGGER IF EXISTS vw_tww_catchment_area_INSERT ON tww_app.vw_tww_catchment_area;
+    DROP TRIGGER IF EXISTS vw_tww_catchment_area_totals_INSERT ON tww_app.vw_tww_catchment_area_totals;
 
-    CREATE TRIGGER vw_tww_catchment_area_INSERT INSTEAD OF INSERT ON tww_app.vw_tww_catchment_area
-      FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_catchment_area_INSERT();
+    CREATE TRIGGER vw_tww_catchment_area_totals_INSERT INSTEAD OF INSERT ON tww_app.vw_tww_catchment_area_totals
+      FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_catchment_area_totals_insert();
     """.format(
         insert_cat=insert_command(
             connection=connection,
@@ -300,7 +360,55 @@ WITH DATA;
             remove_pkey=False,
             indent=2,
             skip_columns=[],
-            remap_columns={"fk_hydraulic_char_data": "hcd_oid"},
+            remap_columns={"fk_hydraulic_char_data": "hc_c_obj_id"},
+        ),
+        insert_hc_c=insert_command(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="hydraulic_char_data",
+            table_alias="hc_c",
+            prefix="hc_c_",
+            remove_pkey=False,
+            indent=6,
+            remap_columns={
+                "fk_wastewater_node": "wn_obj_id",
+            },
+            returning="obj_id INTO hc_oid",
+        ),
+        insert_hc_o=insert_command(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="hydraulic_char_data",
+            table_alias="hc_o",
+            prefix="hc_o_",
+            remove_pkey=False,
+            indent=6,
+            remap_columns={
+                "fk_wastewater_node": "wn_obj_id",
+            },
+            returning="obj_id INTO hc_oid",
+        ),
+        insert_hc_p=insert_command(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="hydraulic_char_data",
+            table_alias="hc_p",
+            prefix="hc_p_",
+            remove_pkey=False,
+            indent=6,
+            remap_columns={
+                "fk_wastewater_node": "wn_obj_id",
+            },
+            returning="obj_id INTO hc_oid",
+        ),
+        insert_hg_c=insert_command(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="hydr_geometry",
+            table_alias="hg_c",
+            prefix="hg_c_",
+            remove_pkey=False,
+            indent=6,
         ),
         insert_extra=insert_extra(connection=connection, extra_definition=extra_definition),
     )
@@ -314,11 +422,6 @@ WITH DATA;
     DECLARE
       lc_rec RECORD;
     BEGIN
-
-
-      UPDATE tww_od.hydraulic_char_data
-      SET fk_wastewater_node = NEW.wn_obj_id
-      WHERE status=6372 AND obj_id=NEW.fk_hydraulic_char_data;
 
     SELECT lc.obj_id, lc.fk_pwwf_wastewater_node
     FROM tww_od.log_card
@@ -339,6 +442,12 @@ WITH DATA;
     END CASE;
 
       {update_cat}
+
+      {update_hc_c}
+      {update_hc_o}
+      {update_hc_p}
+      {update_hg_c}
+
       {update_extra}
        RETURN NEW;
     END;
@@ -360,6 +469,65 @@ WITH DATA;
             indent=6,
             skip_columns=[],
             update_values={},
+        ),
+        update_hc_c=update_command(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="hydraulic_char_data",
+            table_alias="hc_c",
+            prefix="hc_c_",
+            indent=6,
+            skip_columns=["status"],
+            update_values={
+                "last_modification": "NEW.last_modification",
+                "fk_dataowner": "NEW.fk_dataowner",
+                "fk_provider": "NEW.fk_provider",
+                "fk_wastewater_node": "NEW.wn_obj_id",
+            },
+        ),
+        update_hc_o=update_command(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="hydraulic_char_data",
+            table_alias="hc_o",
+            prefix="hc_o_",
+            indent=6,
+            skip_columns=["status"],
+            update_values={
+                "last_modification": "NEW.last_modification",
+                "fk_dataowner": "NEW.fk_dataowner",
+                "fk_provider": "NEW.fk_provider",
+                "fk_wastewater_node": "NEW.wn_obj_id",
+            },
+        ),
+        update_hc_p=update_command(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="hydraulic_char_data",
+            table_alias="hc_p",
+            prefix="hc_p_",
+            indent=6,
+            skip_columns=["status"],
+            update_values={
+                "last_modification": "NEW.last_modification",
+                "fk_dataowner": "NEW.fk_dataowner",
+                "fk_provider": "NEW.fk_provider",
+                "fk_wastewater_node": "NEW.wn_obj_id",
+            },
+        ),
+        update_hg_c=update_command(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="hydr_geometry",
+            table_alias="hg_c",
+            prefix="hg_c_",
+            indent=6,
+            skip_columns=[],
+            update_values={
+                "last_modification": "NEW.last_modification",
+                "fk_dataowner": "NEW.fk_dataowner",
+                "fk_provider": "NEW.fk_provider",
+            },
         ),
         update_extra=update_extra(connection=connection, extra_definition=extra_definition),
     )
@@ -386,6 +554,10 @@ WITH DATA;
 
     extras = """
         ALTER VIEW tww_app.vw_tww_catchment_area_totals ALTER obj_id SET DEFAULT tww_app.generate_oid('tww_od','catchment_area_totals');
+        ALTER VIEW tww_app.vw_tww_catchment_area_totals ALTER hc_c_obj_id SET DEFAULT tww_app.generate_oid('tww_od','hydraulic_char_data');
+        ALTER VIEW tww_app.vw_tww_catchment_area_totals ALTER hc_o_obj_id SET DEFAULT tww_app.generate_oid('tww_od','hydraulic_char_data');
+        ALTER VIEW tww_app.vw_tww_catchment_area_totals ALTER hc_p_obj_id SET DEFAULT tww_app.generate_oid('tww_od','hydraulic_char_data');
+        ALTER VIEW tww_app.vw_tww_catchment_area_totals ALTER hg_c_obj_id SET DEFAULT tww_app.generate_oid('tww_od','hydr_geometry');
     """
     cursor.execute(extras)
 

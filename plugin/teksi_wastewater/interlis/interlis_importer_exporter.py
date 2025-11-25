@@ -230,6 +230,7 @@ class InterlisImporterExporter:
         labels_file=None,
         selected_labels_scales_indices=[],
         selected_ids=None,
+        include_unplaced: bool=False,
     ):
         # File name without extension (used later for export)
         file_name_base, _ = os.path.splitext(xtf_file_output)
@@ -261,6 +262,7 @@ class InterlisImporterExporter:
                     labels_file_path=labels_file,
                     export_model=export_models[0],
                     export_orientation=export_orientation,
+                    include_unplaced=include_unplaced,
                 )
 
         if export_models[0] == config.MODEL_NAME_AG96:
@@ -304,6 +306,7 @@ class InterlisImporterExporter:
         selected_labels_scales_indices=[],
         selected_ids=None,
         srid: int = None,
+        include_unplaced: bool = False,
     ):
 
         if srid:
@@ -505,6 +508,7 @@ class InterlisImporterExporter:
         labels_file_path,
         export_model,
         export_orientation=90.0,
+        include_unplaced=False,
     ):
         self._progress_done(self.current_progress, "Extracting labels...")
 
@@ -531,7 +535,7 @@ class InterlisImporterExporter:
 
         self._progress_done(self.current_progress + 2)
         if export_model == config.MODEL_NAME_AG96:
-            catch_lyr = TwwLayerManager.layer("catchment_area")
+            catch_lyr = TwwLayerManager.layer("vw_tww_catchment_area")
             meas_pt_lyr = TwwLayerManager.layer("measure_point")
             meas_lin_lyr = TwwLayerManager.layer("measure_line")
             meas_ply_lyr = TwwLayerManager.layer("measure_polygon")
@@ -551,10 +555,11 @@ class InterlisImporterExporter:
                     "BUILDING_GROUP_LAYER": building_group_lyr,
                     "SCALES": selected_labels_scales_indices,
                     "REPLACE_WS_WITH_WN": True,
+                    "INPUT_INCLUDE_UNPLACED": include_unplaced,
                 },
             )
         elif export_model == config.MODEL_NAME_DSS:
-            catch_lyr = TwwLayerManager.layer("catchment_area")
+            catch_lyr = TwwLayerManager.layer("vw_tww_catchment_area")
 
             processing.run(
                 "tww:extractlabels_interlis",
@@ -565,6 +570,7 @@ class InterlisImporterExporter:
                     "REACH_VIEW_LAYER": reaches_lyr,
                     "CATCHMENT_LAYER": catch_lyr,
                     "SCALES": selected_labels_scales_indices,
+                    "INPUT_INCLUDE_UNPLACED": include_unplaced,
                 },
             )
         elif export_model == config.MODEL_NAME_AG64:
@@ -577,6 +583,7 @@ class InterlisImporterExporter:
                     "REACH_VIEW_LAYER": reaches_lyr,
                     "SCALES": selected_labels_scales_indices,
                     "REPLACE_WS_WITH_WN": True,
+                    "INPUT_INCLUDE_UNPLACED": include_unplaced,
                 },
             )
         else:
@@ -589,6 +596,7 @@ class InterlisImporterExporter:
                     "STRUCTURE_VIEW_LAYER": structures_lyr,
                     "REACH_VIEW_LAYER": reaches_lyr,
                     "SCALES": selected_labels_scales_indices,
+                    "INPUT_INCLUDE_UNPLACED": include_unplaced,
                 },
             )
 

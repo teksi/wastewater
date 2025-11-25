@@ -97,6 +97,11 @@ DECLARE
 	col text;
 	ttp text;
 BEGIN
+	CASE WHEN OLD.fieldname IS NULL
+	THEN RETURN NULL;
+	ELSE NULL;
+	END CASE;
+
 	FOR sch,tbl,col,ttp IN
 	SELECT
        t.table_schema,

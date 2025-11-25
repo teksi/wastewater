@@ -360,7 +360,7 @@
 	  <item row="5" column="0" colspan="2">
            <widget class="QGroupBox" name="mGbOverrideSRID">
             <property name="title">
-             <string>Log to file</string>
+             <string>Override default SRID</string>
             </property>
             <property name="checkable">
              <bool>true</bool>
