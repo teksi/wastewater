@@ -91,7 +91,7 @@ class TwwMapTool(QgsMapTool):
     def __init__(self, iface: QgisInterface, button, network_analyzer: TwwGraphManager = None):
         QgsMapTool.__init__(self, iface.mapCanvas())
         self.canvas = iface.mapCanvas()
-        self.cursor = QCursor(Qt.CrossCursor)
+        self.cursor = QCursor(Qt.CursorShape.CrossCursor)
         self.button = button
         self.msgBar = iface.messageBar()
         self.network_analyzer = network_analyzer
@@ -745,7 +745,7 @@ class TwwMapToolConnectNetworkElements(QgsMapTool):
 
         self.action.setChecked(True)
 
-        self.iface.mapCanvas().setCursor(QCursor(Qt.CrossCursor))
+        self.iface.mapCanvas().setCursor(QCursor(Qt.CursorShape.CrossCursor))
 
     def setSnapLayers(self, snapper, layers):
         config = QgsSnappingConfig()

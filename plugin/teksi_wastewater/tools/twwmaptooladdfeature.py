@@ -122,7 +122,7 @@ class TwwMapToolAddFeature(QgsMapToolAdvancedDigitizing):
         When activating the map tool
         """
         QgsMapToolAdvancedDigitizing.activate(self)
-        self.canvas.setCursor(QCursor(Qt.CrossCursor))
+        self.canvas.setCursor(QCursor(Qt.CursorShape.CrossCursor))
         msgtitle = self.tr("Advanced Digitizing")
         msg = self.tr("Digitize start and end point. Rightclick to abort.")
         self.messageBarItem = QgsMessageBar.createMessage(msgtitle, msg)
@@ -439,7 +439,7 @@ class TwwMapToolDigitizeDrainageChannel(QgsMapTool):
         Map tool is activated
         """
         QgsMapTool.activate(self)
-        self.canvas.setCursor(QCursor(Qt.CrossCursor))
+        self.canvas.setCursor(QCursor(Qt.CursorShape.CrossCursor))
         msgtitle = self.tr("Digitizing Drainage Channel")
         msg = self.tr("Digitize start and end point. Rightclick to abort.")
         self.messageBarItem = QgsMessageBar.createMessage(msgtitle, msg)
