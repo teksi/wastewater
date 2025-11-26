@@ -115,7 +115,7 @@ class TwwMapToolAddFeature(QgsMapToolAdvancedDigitizing):
         self.temp_rubberband = QgsRubberBand(iface.mapCanvas(), layer.geometryType())
         self.temp_rubberband.setColor(QColor("#ee5555"))
         self.temp_rubberband.setWidth(1)
-        self.temp_rubberband.setLineStyle(Qt.DotLine)
+        self.temp_rubberband.setLineStyle(Qt.PenStyle.DotLine)
 
     def activate(self):
         """
