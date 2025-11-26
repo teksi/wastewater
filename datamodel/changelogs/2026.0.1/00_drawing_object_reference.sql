@@ -3,7 +3,7 @@ CREATE TABLE tww_vl.drawing_object_reference () INHERITS ( tww_vl.value_list_bas
 ALTER TABLE tww_vl.drawing_object_reference ADD CONSTRAINT vl_object_reference_pk PRIMARY KEY (id);
 COMMENT ON TABLE tww_vl.drawing_object_reference IS 'Reference for object measurements depicting where the measurement took place on the object, with respect to the sea-level';
 /* VALUES */
-/* 
+/*
 INSERT INTO tww_vl.drawing_object_reference (id, value_en, value_fr, value_de, value_it, value_ro) VALUES (101, 'other', 'autre', 'alta');
 INSERT INTO tww_vl.drawing_object_reference (id, value_en, value_fr, value_de, value_it, value_ro) VALUES (102, 'unknown', 'inconnu', 'necunoscută');
 INSERT INTO tww_vl.drawing_object_reference (id, value_en, value_fr, value_de, value_it, value_ro) VALUES (103, 'to be determined', 'à déterminer', 'de determinat');
@@ -16,6 +16,5 @@ INSERT INTO tww_vl.drawing_object_reference (id, value_fr, value_en, value_de, v
 INSERT INTO tww_vl.drawing_object_reference (id, value_fr, value_en, value_de, value_it, value_ro) VALUES (9010,'fond de fouille','excavation bed','bază săpătură');
 INSERT INTO tww_vl.drawing_object_reference (id, value_fr, value_en, value_de, value_it, value_ro) VALUES (9020,'sur vanne','on valve','pe supapă');
 INSERT INTO tww_vl.drawing_object_reference (id, value_fr, value_en, value_de, value_it, value_ro) VALUES (9021,'sur tige de vanne','on valve shaft','pe arborele supapei');
-INSERT INTO tww_vl.drawing_object_reference (id, value_fr, value_en, value_de, value_it, value_ro) VALUES (9022,'sur cape de vanne','on valve bonnet','pe capota supapelor'); 
+INSERT INTO tww_vl.drawing_object_reference (id, value_fr, value_en, value_de, value_it, value_ro) VALUES (9022,'sur cape de vanne','on valve bonnet','pe capota supapelor');
 */
-
