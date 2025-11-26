@@ -18,7 +18,7 @@
 """
 
 import qgis.utils as qgis_utils
-from PyQt.QtCore import QVariant
+from qgis.PyQt.QtCore import QVariant
 from qgis.core import (
     QgsExpression,
     QgsFeature,

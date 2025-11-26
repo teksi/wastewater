@@ -4,7 +4,7 @@ import tempfile
 import uuid
 from functools import partial
 
-from PyQt.QtCore import QCoreApplication
+from qgis.PyQt.QtCore import QCoreApplication
 from qgis import processing
 from qgis.core import (
     QgsProcessingContext,
