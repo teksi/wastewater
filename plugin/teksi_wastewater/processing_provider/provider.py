@@ -21,7 +21,7 @@ import logging
 import os
 
 from processing.core.ProcessingConfig import ProcessingConfig, Setting
-from PyQt.QtGui import QIcon
+from qgis.PyQt.QtGui import QIcon
 from qgis.core import Qgis, QgsProcessingProvider
 from qgis.utils import iface
 
