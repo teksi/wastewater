@@ -138,7 +138,7 @@ class TwwProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
         dlg.layout().addWidget(rw_planned_checkbox)
         dlg.layout().addWidget(btn_box)
 
-        if dlg.exec_():
+        if dlg.exec():
             QgsProject.instance().writeEntry(
                 "Tww", "FollowWastewaterCurrent", ww_current_checkbox.isChecked()
             )

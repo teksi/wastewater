@@ -42,7 +42,7 @@ class InterlisImporterExporterGui(QObject):
         """
         import_dialog = InterlisImportSettingsDialog(None)
 
-        if import_dialog.exec_() == import_dialog.Rejected:
+        if import_dialog.exec() == import_dialog.Rejected:
             return
 
         default_folder = QgsSettings().value(
@@ -101,7 +101,7 @@ class InterlisImporterExporterGui(QObject):
         """
         export_dialog = InterlisExportSettingsDialog(None)
 
-        if export_dialog.exec_() == export_dialog.Rejected:
+        if export_dialog.exec() == export_dialog.Rejected:
             return
 
         default_folder = QgsSettings().value(

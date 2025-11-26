@@ -143,7 +143,7 @@ class InterlisImporterExporter:
                 import_dialog = InterlisImportSelectionDialog()
                 import_dialog.init_with_session(tww_session)
                 QApplication.restoreOverrideCursor()
-                if import_dialog.exec_() == import_dialog.Rejected:
+                if import_dialog.exec() == import_dialog.Rejected:
                     tww_session.rollback()
                     tww_session.close()
                     raise InterlisImporterExporterStopped()

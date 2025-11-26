@@ -896,7 +896,7 @@ class TwwMapToolConnectNetworkElements(QgsMapTool):
         source_feature = self.get_feature_for_match(source)
         target_feature = self.get_feature_for_match(target)
 
-        if dlg.exec_():
+        if dlg.exec():
             for cbx in properties:
                 if cbx.isChecked():
                     source_feature[cbx.objectName()] = target_feature["obj_id"]

@@ -177,7 +177,7 @@ class TwwMapToolAddFeature(QgsMapToolAdvancedDigitizing):
         f.setGeometry(self.rubberband.asGeometry())
         dlg = self.iface.getFeatureForm(self.layer, f)
         dlg.setMode(QgsAttributeEditorContext.AddFeatureMode)
-        dlg.exec_()
+        dlg.exec()
         self.rubberband.reset3D()
         self.temp_rubberband.reset()
 
@@ -390,7 +390,7 @@ class TwwMapToolAddReach(TwwMapToolAddFeature):
 
             dlg = self.iface.getFeatureForm(self.layer, f)
             dlg.setMode(QgsAttributeEditorContext.AddFeatureMode)
-            dlg.exec_()
+            dlg.exec()
             self.last_feature_attributes = dlg.feature().attributes()
 
         self.rubberband.reset3D()
@@ -496,7 +496,7 @@ class TwwMapToolDigitizeDrainageChannel(QgsMapTool):
                     dlg.layout().addWidget(bb)
                     bb.accepted.connect(dlg.accept)
                     bb.rejected.connect(dlg.reject)
-                    if dlg.exec_():
+                    if dlg.exec():
                         try:
                             width = float(txt.text()) / 2
                         except ValueError:
