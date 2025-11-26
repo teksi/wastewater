@@ -152,7 +152,7 @@ class TwwMapToolAddFeature(QgsMapToolAdvancedDigitizing):
         :param event:
         :return:
         """
-        if event.button() == Qt.RightButton:
+        if event.button() == Qt.MouseButton.RightButton:
             self.right_clicked(event)
         else:
             self.left_clicked(event)
@@ -475,7 +475,7 @@ class TwwMapToolDigitizeDrainageChannel(QgsMapTool):
             * if the Ctrl-modifier is pressed, ask for the rectangle width
         :param event: coordinates etc.
         """
-        if event.button() == Qt.RightButton:
+        if event.button() == Qt.MouseButton.RightButton:
             self.deactivate()
         else:
             mousepos = self.canvas.getCoordinateTransform().toMapCoordinates(

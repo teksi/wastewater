@@ -139,7 +139,7 @@ class TwwMapTool(QgsMapTool):
         """
         Issues rightClicked and leftClicked events
         """
-        if event.button() == Qt.RightButton:
+        if event.button() == Qt.MouseButton.RightButton:
             self.rightClicked(event)
         else:
             self.leftClicked(event)
@@ -816,7 +816,7 @@ class TwwMapToolConnectNetworkElements(QgsMapTool):
         """
         On a click update the rubberbands and the snapping results if it's a left click. Reset if it's a right click.
         """
-        if event.button() == Qt.LeftButton:
+        if event.button() == Qt.MouseButton.LeftButton:
             if self.snapresult.isValid():
                 if self.source_match:
                     self.connect_features(self.source_match, self.snapresult)
