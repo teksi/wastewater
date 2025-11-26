@@ -19,7 +19,7 @@ CREATE INDEX dimension_distance_geoidx ON tww_od.drawing_dimension_distance USIN
 --  TODO : move to app
 /* --------- !! !! ----------*/
 /* Trigger for 2d length */
-CREATE OR REPLACE FUNCTION tww_app.ft_dimension_distance_distance() RETURNS trigger AS 
+CREATE OR REPLACE FUNCTION tww_app.ft_dimension_distance_distance() RETURNS trigger AS
 $BODY$
 	BEGIN
 		NEW._calculation := ST_Distance( ST_StartPoint(NEW.geometry), ST_EndPoint(NEW.geometry) );
