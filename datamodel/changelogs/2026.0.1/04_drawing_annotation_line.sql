@@ -5,7 +5,7 @@ CREATE TABLE tww_od.drawing_annotation_line (id serial PRIMARY KEY);
 COMMENT ON TABLE tww_od.drawing_annotation_line IS 'Table for annotation lines.';
 
 /* COLUMNS */
-ALTER TABLE tww_od.drawing_annotation_line ADD COLUMN labelvisible     boolean not null default true; 
+ALTER TABLE tww_od.drawing_annotation_line ADD COLUMN labelvisible     boolean not null default true;
 ALTER TABLE tww_od.drawing_annotation_line ADD COLUMN text_size        decimal(7,2);
 ALTER TABLE tww_od.drawing_annotation_line ADD COLUMN text_orientation decimal(7,2);
 ALTER TABLE tww_od.drawing_annotation_line ADD COLUMN annotation       text;
