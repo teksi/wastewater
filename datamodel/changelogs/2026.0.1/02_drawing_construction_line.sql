@@ -18,4 +18,7 @@ CREATE INDEX constructionpoint_geoidx ON tww_od.drawing_construction_line USING 
 
 
 /* constraints */
-ALTER TABLE tww_od.drawing_construction_line ADD CONSTRAINT constructionpoint_fk_object_reference FOREIGN KEY (fk_object_reference) REFERENCES qwat_vl.object_reference(id) MATCH FULL; CREATE INDEX fki_constructionpoint_fk_object_reference ON tww_od.drawing_construction_line(fk_object_reference);
+ALTER TABLE tww_od.drawing_construction_line ADD CONSTRAINT construction_line_fk_object_reference FOREIGN KEY (fk_object_reference) REFERENCES tww_vl.object_reference(id) MATCH FULL; 
+
+/* index */
+CREATE INDEX fki_construction_line_fk_object_reference ON tww_od.drawing_construction_line(fk_object_reference);
