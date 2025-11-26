@@ -18,7 +18,6 @@
 """
 
 import qgis.utils as qgis_utils
-from qgis.PyQt.QtCore import QVariant
 from qgis.core import (
     QgsExpression,
     QgsFeature,
@@ -36,6 +35,7 @@ from qgis.core import (
     QgsProcessingParameterVectorLayer,
     QgsWkbTypes,
 )
+from qgis.PyQt.QtCore import QVariant
 
 from .tww_algorithm import TwwAlgorithm
 

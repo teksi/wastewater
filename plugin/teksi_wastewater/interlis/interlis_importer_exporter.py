@@ -3,8 +3,8 @@ import os
 import tempfile
 from pathlib import Path
 
-from qgis.PyQt.QtCore import Qt
 from PyQt.QtWidgets import QApplication, QMessageBox
+from qgis.PyQt.QtCore import Qt
 
 from ..utils.database_utils import DatabaseUtils
 from . import config

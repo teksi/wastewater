@@ -4,7 +4,6 @@ import tempfile
 import uuid
 from functools import partial
 
-from qgis.PyQt.QtCore import QCoreApplication
 from qgis import processing
 from qgis.core import (
     QgsProcessingContext,
@@ -15,6 +14,7 @@ from qgis.core import (
     QgsProcessingParameterVectorLayer,
     QgsWkbTypes,
 )
+from qgis.PyQt.QtCore import QCoreApplication
 
 from ...processing_provider.tww_algorithm import TwwAlgorithm
 from ...utils.twwlayermanager import TwwLayerManager

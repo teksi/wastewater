@@ -19,7 +19,6 @@
 
 import statistics
 
-from qgis.PyQt.QtCore import QVariant
 from qgis.core import (
     NULL,
     QgsExpression,
@@ -43,6 +42,7 @@ from qgis.core import (
     QgsProcessingParameterVectorLayer,
     QgsWkbTypes,
 )
+from qgis.PyQt.QtCore import QVariant
 
 from .tww_algorithm import TwwAlgorithm
 

@@ -17,7 +17,6 @@
  ***************************************************************************/
 """
 
-from qgis.PyQt.QtCore import QVariant
 from qgis.core import (
     QgsFeature,
     QgsFeatureSink,
@@ -29,6 +28,7 @@ from qgis.core import (
     QgsProcessingParameterFeatureSink,
     QgsProcessingParameterFile,
 )
+from qgis.PyQt.QtCore import QVariant
 
 from .tww_algorithm import TwwAlgorithm
 from .TwwSwmm import TwwSwmm
