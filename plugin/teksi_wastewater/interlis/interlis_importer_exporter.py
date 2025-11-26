@@ -3,7 +3,7 @@ import os
 import tempfile
 from pathlib import Path
 
-from PyQt.QtWidgets import QApplication, QMessageBox
+from qgis.PyQt.QtWidgets import QApplication, QMessageBox
 from qgis.PyQt.QtCore import Qt
 
 from ..utils.database_utils import DatabaseUtils
