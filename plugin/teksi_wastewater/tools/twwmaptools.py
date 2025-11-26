@@ -888,7 +888,9 @@ class TwwMapToolConnectNetworkElements(QgsMapTool):
             properties.append(cbx)
             dlg.layout().addWidget(cbx)
 
-        btn_box = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
+        btn_box = QDialogButtonBox(
+            QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel
+        )
         dlg.layout().addWidget(btn_box)
         btn_box.accepted.connect(dlg.accept)
         btn_box.rejected.connect(dlg.reject)

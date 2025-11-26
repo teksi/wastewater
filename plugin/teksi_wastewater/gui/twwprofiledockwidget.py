@@ -129,7 +129,9 @@ class TwwProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
         rw_planned_checkbox = QCheckBox(self.tr("Rainwater planned"))
         status, _ = QgsProject.instance().readBoolEntry("Tww", "FollowRainwaterPlanned", True)
         rw_planned_checkbox.setChecked(status)
-        btn_box = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
+        btn_box = QDialogButtonBox(
+            QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel
+        )
         btn_box.accepted.connect(dlg.accept)
         btn_box.rejected.connect(dlg.reject)
         dlg.layout().addWidget(ww_current_checkbox)
