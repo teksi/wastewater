@@ -34,7 +34,7 @@ def mvw_tww_channel(
     DROP MATERIALIZED VIEW IF EXISTS tww_app.mvw_tww_channel;
 
     CREATE MATERIALIZED VIEW tww_app.mvw_tww_channel AS
-     WITH  reach_2d AS MATERIALIZED (SELECT obj_id, 
+     WITH  reach_2d AS MATERIALIZED (SELECT obj_id,
         st_curvetoline(st_force2d(progression3d_geometry)) AS progression2d_geometry,
                 fk_reach_point_from,
                 fk_reach_point_to,
