@@ -15,14 +15,14 @@ from .utils.extra_definition_utils import (
 )
 
 
-def vw_tww_channel(
+def mvw_tww_channel(
     connection: psycopg.Connection,
     srid: psycopg.sql.Literal,
     extra_definition: dict = None,
     lang_code: str = "en",
 ):
     """
-    Creates tww_channel view
+    Creates mvw_tww_channel view
     :param connection: Psycopg connection
     :param extra_definition: a dictionary for additional read-only columns
     """
@@ -427,6 +427,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
     pg_service = args.pg_service or os.getenv("PGSERVICE")
     with psycopg.connect(f"service={pg_service}") as conn:
-        vw_tww_channel(connection=conn)
+        mvw_tww_channel(connection=conn)
         vw_tww_channel_maintenance(connection=conn)
         vw_tww_ws_maintenance(connection=conn)

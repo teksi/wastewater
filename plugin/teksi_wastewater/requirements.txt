@@ -1,4 +1,4 @@
-psycopg
-pydantic
-pum
-pirogue
+psycopg>=3.1.18,<4.0.0
+sqlalchemy
+geoalchemy2
+networkx
