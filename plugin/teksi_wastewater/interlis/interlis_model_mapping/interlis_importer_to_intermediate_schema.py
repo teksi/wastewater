@@ -757,7 +757,10 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_kanal(self):
-        for row in self.session_interlis.query(self.model_classes_interlis.kanal):
+        query=self.session_interlis.query(self.model_classes_interlis.kanal)
+        if  hasattr(self.model_classes_interlis,"kanal3d"):
+            query=query.join(self.model_classes_interlis.kanal3d)
+        for row in query:
             channel = self.create_or_update(
                 self.model_classes_tww_od.channel,
                 **self.base_common(row),
@@ -796,7 +799,10 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_normschacht(self):
-        for row in self.session_interlis.query(self.model_classes_interlis.normschacht):
+        query=self.session_interlis.query(self.model_classes_interlis.normschacht)
+        if  hasattr(self.model_classes_interlis,"normschacht3d"):
+            query=query.join(self.model_classes_interlis.normschacht3d)
+        for row in query:
             manhole = self.create_or_update(
                 self.model_classes_tww_od.manhole,
                 **self.base_common(row),
@@ -831,7 +837,10 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_einleitstelle(self):
-        for row in self.session_interlis.query(self.model_classes_interlis.einleitstelle):
+        query=self.session_interlis.query(self.model_classes_interlis.einleitstelle)
+        if  hasattr(self.model_classes_interlis,"einleitstelle3d"):
+            query=query.join(self.model_classes_interlis.einleitstelle3d)
+        for row in query:
             discharge_point = self.create_or_update(
                 self.model_classes_tww_od.discharge_point,
                 **self.base_common(row),
@@ -859,7 +868,10 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_spezialbauwerk(self):
-        for row in self.session_interlis.query(self.model_classes_interlis.spezialbauwerk):
+        query=self.session_interlis.query(self.model_classes_interlis.spezialbauwerk)
+        if  hasattr(self.model_classes_interlis,"spezialbauwerk3d"):
+            query=query.join(self.model_classes_interlis.spezialbauwerk3d)
+        for row in query:
             special_structure = self.create_or_update(
                 self.model_classes_tww_od.special_structure,
                 **self.base_common(row),
@@ -899,7 +911,10 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_versickerungsanlage(self):
-        for row in self.session_interlis.query(self.model_classes_interlis.versickerungsanlage):
+        query=self.session_interlis.query(self.model_classes_interlis.versickerungsanlage)
+        if  hasattr(self.model_classes_interlis,"versickerungsanlage3d"):
+            query=query.join(self.model_classes_interlis.versickerungsanlage3d)
+        for row in query:
             infiltration_installation = self.create_or_update(
                 self.model_classes_tww_od.infiltration_installation,
                 **self.base_common(row),
@@ -1042,7 +1057,10 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_arabauwerk(self):
-        for row in self.session_interlis.query(self.model_classes_interlis.arabauwerk):
+        query=self.session_interlis.query(self.model_classes_interlis.arabauwerk)
+        if  hasattr(self.model_classes_interlis,"arabauwerk3d"):
+            query=query.join(self.model_classes_interlis.arabauwerk3d)
+        for row in query:
             wwtp_structure = self.create_or_update(
                 self.model_classes_tww_od.wwtp_structure,
                 **self.base_common(row),
@@ -1068,7 +1086,10 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_abflusslose_toilette(self):
-        for row in self.session_interlis.query(self.model_classes_interlis.abflusslose_toilette):
+        query=self.session_interlis.query(self.model_classes_interlis.abflusslose_toilette)
+        if  hasattr(self.model_classes_interlis,"abflusslose_toilette3d"):
+            query=query.join(self.model_classes_interlis.abflusslose_toilette3d)
+        for row in query:
             drainless_toilet = self.create_or_update(
                 self.model_classes_tww_od.drainless_toilet,
                 **self.base_common(row),
@@ -1662,7 +1683,10 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_klara(self):
-        for row in self.session_interlis.query(self.model_classes_interlis.klara):
+        query=self.session_interlis.query(self.model_classes_interlis.klara)
+        if  hasattr(self.model_classes_interlis,"klara3d"):
+            query=query.join(self.model_classes_interlis.klara3d)
+        for row in query:
             small_treatment_plant = self.create_or_update(
                 self.model_classes_tww_od.small_treatment_plant,
                 **self.base_common(row),
@@ -2267,7 +2291,10 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_deckel(self):
-        for row in self.session_interlis.query(self.model_classes_interlis.deckel):
+        query=self.session_interlis.query(self.model_classes_interlis.deckel)
+        if  hasattr(self.model_classes_interlis,"deckel3d"):
+            query=query.join(self.model_classes_interlis.deckel3d)
+        for row in query:
             cover = self.create_or_update(
                 self.model_classes_tww_od.cover,
                 **self.base_common(row),
