@@ -117,15 +117,24 @@ Then, confirm the dialog and choose where to save the `.xtf` file.
 .. note::
    Note that remark fields are truncated to 80 characters on INTERLIS Export, as the INTERLIS definition is like this. If you have remark fields with more text then consider to move this data to documentation with the classes "file" and "data_media" so it can be exported to INTERLIS completely where you can add any document, photo or video to a class.
 
-The following validations are run as pre-process:
-* Validate subclasses before export: check_subclass_counts
-
 .. note::
-   Currently you will only find an ERROR message in the tww procotol tab if this check fails:
-   `2024-07-26T10:29:03        teksi_wastewater.utils:ERROR: number of subclass elements of structure_part NOT CORRECT in schema tww_od: checksum = 1 (positive number means missing entries, negative means too many subclass entries)`
+   More information on `QGIS label export https://docs.qgis.org/3.44/en/docs/user_manual/processing_algs/qgis/cartography.html#extract-labels`_
+
+The following validations are run as pre-process:
+
+* Validate subclasses before export (_check_subclass_counts): The total of the subclass entries over alls subclasses must be equal to the numer of entries in the superclass.
+* Identifier NULL check (_check_identifier_null): As identifier is mandatory in the INTERLIS models, we check whether every identifier field has an entry (NOT NULL). If you have data, where you do not want to create your own identifiers, copy the obj_id as identifier (e.g. for reach_points). This is also the standard behaviour when you add new data. If you have copied data from elsewhere (not created in TEKSI), you might have to clean up this, else your INTERLIS export will stop.
+* Check references to the class organisation (_check_fk_owner_null, _check_fk_operator_null, _check_fk_dataowner_null, _check_fk_provider_null): Owner, Operator and the metainformation about dataowner and provider are MANDATORY in a INTERLIS Export file. Therefor these pre-checks make sure they are filled in. If you don't know, choose the Organisation 'unknown', that is also an entry in the organisation dataset.
+* Check references to classes that are MANDATORY (e.g. _check_fk_reach_point_from_null, ...): References that are MANDATORY in INTERLIS will be pre-checked to avoid crash during export.
+
+You will get a new summary window that tells you, if any of these pre-checks failed:
+
+.. figure:: images/interlis_export_precheck_results.png
+
+You can choose to continue export, if you think the pre-check results will not be relevant for your export (e.g. if you export SIA405 Abwaser, but there are reference check errors that are within the VSA-DSS part that are beyond SIA405 Abwasser).
 
 
-Exports include a validation step at the end using `ilivalidator`, which will inform you whether the export contains INTERLIS validation errors.
+Exports include also a validation step at the end using `ilivalidator`, which will inform you whether the export contains INTERLIS validation errors.
 
 If the export was successful a green success message appears.
 If the export is not successfull you will get either error messages during the export process or an error warning at the end of the process.
