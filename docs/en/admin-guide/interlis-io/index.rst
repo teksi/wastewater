@@ -121,7 +121,7 @@ Then, confirm the dialog and choose where to save the `.xtf` file.
    More information on `QGIS label export https://docs.qgis.org/3.44/en/docs/user_manual/processing_algs/qgis/cartography.html#extract-labels`_
 
 The following validations are run as pre-process:
-* Validate subclasses before export (_check_subclass_counts): The total of the subclass entries over alls subclasses must be equal to the numer of entries in the superclass. 
+* Validate subclasses before export (_check_subclass_counts): The total of the subclass entries over alls subclasses must be equal to the numer of entries in the superclass.
 * Identifier NULL check (_check_identifier_null): As identifier is mandatory in the INTERLIS models, we check whether every identifier field has an entry (NOT NULL). If you have data, where you do not want to create your own identifiers, copy the obj_id as identifier (e.g. for reach_points). This is also the standard behaviour when you add new data. If you have copied data from elsewhere (not created in TEKSI), you might have to clean up this, else your INTERLIS export will stop.
 * Check references to the class organisation (_check_fk_owner_null, _check_fk_operator_null, _check_fk_dataowner_null, _check_fk_provider_null): Owner, Operator and the metainformation about dataowner and provider are MANDATORY in a INTERLIS Export file. Therefor these pre-checks make sure they are filled in. If you don't know, choose the Organisation 'unknown', that is also an entry in the organisation dataset.
 * Check references to classes that are MANDATORY (e.g. _check_fk_reach_point_from_null, ...): References that are MANDATORY in INTERLIS will be pre-checked to avoid crash during export.
