@@ -37,6 +37,10 @@ class InterlisExporterToIntermediateSchema:
             selection:      if provided, limits the export to networkelements that are provided in the selection
         """
         self.model = model
+        self.is_3d_model = model in [
+            config.MODEL_NAME_DSS_3D,
+            config.MODEL_NAME_SIA405_ABWASSER_3D,
+        ]
         self.is_ag_xx_model = model in [config.MODEL_NAME_AG64, config.MODEL_NAME_AG96]
         self.callback_progress_done = callback_progress_done
 
@@ -113,9 +117,17 @@ class InterlisExporterToIntermediateSchema:
             if self.model != config.MODEL_NAME_SIA405_BASE_ABWASSER:
                 self._export_sia405_abwasser()
 
+                if self.model == config.MODEL_NAME_SIA405_ABWASSER_3D:
+                    self.current_basket = self.basket_topic_sia405_abwasser_3d
+                    self._export_sia405_abwasser_3d()
+
                 if self.model == config.MODEL_NAME_DSS:
                     self.current_basket = self.basket_topic_dss
                     self._export_dss()
+
+                if self.model == config.MODEL_NAME_DSS_3D:
+                    self.current_basket = self.basket_topic_dss_3d
+                    self._export_dss_3d()
 
                 if self.model == config.MODEL_NAME_VSA_KEK:
                     self.current_basket = self.basket_topic_kek
@@ -202,11 +214,65 @@ class InterlisExporterToIntermediateSchema:
         )
         self.abwasser_session.add(self.basket_topic_ag96)
 
+        self.basket_topic_sia405_abwasser_3d = self.model_classes_interlis.t_ili2db_basket(
+            t_id=8,
+            dataset=dataset.t_id,
+            topic=config.TOPIC_NAME_SIA405_ABWASSER_3D,
+            t_ili_tid=None,
+            attachmentkey=dataset.datasetname,
+            domains="",
+        )
+        self.abwasser_session.add(self.basket_topic_sia405_abwasser_3d)
+
+        self.basket_topic_dss_3d = self.model_classes_interlis.t_ili2db_basket(
+            t_id=9,
+            dataset=dataset.t_id,
+            topic=config.TOPIC_NAME_DSS_3D,
+            t_ili_tid=None,
+            attachmentkey=dataset.datasetname,
+            domains="",
+        )
+        self.abwasser_session.add(self.basket_topic_dss_3d)
+
         self.abwasser_session.flush()
 
     def _export_sia405_abwasser_base(self):
         logger.info("Exporting TWW.organisation -> ABWASSER.organisation")
         self._export_organisation()
+        self._check_for_stop()
+
+    def _export_sia405_abwasser_3d(self):
+        if not self.model == config.MODEL_NAME_DSS_3D:
+            self.current_basket = self.basket_topic_sia405_abwasser_3d
+        else:
+            self.current_basket = self.basket_topic_dss_3d
+
+        logger.info("Exporting TWW.channel -> ABWASSER.kanal (3D)")
+        self._export_channel_3d()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.cover -> ABWASSER.deckel (3D)")
+        self._export_cover_3d()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.reach -> ABWASSER.haltung (3D)")
+        self._export_reach_3d()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.manhole -> ABWASSER.normschacht (3D)")
+        self._export_manhole_3d()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.discharge_point -> ABWASSER.einleitstelle (3D)")
+        self._export_discharge_point_3d()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.special_structure -> ABWASSER.spezialbauwerk (3D)")
+        self._export_special_structure_3d()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.infiltration_installation -> ABWASSER.versickerungsanlage (3D)")
+        self._export_infiltration_installation_3d()
         self._check_for_stop()
 
     def _export_sia405_abwasser(self):
@@ -286,6 +352,21 @@ class InterlisExporterToIntermediateSchema:
 
         logger.info("Exporting TWW.flushing_nozzle -> ABWASSER.spuelstutzen")
         self._export_flushing_nozzle()
+        self._check_for_stop()
+
+    def _export_dss_3d(self):
+        self.current_basket = self.basket_topic_dss_3d
+
+        logger.info("Exporting TWW.wwtp_structure -> ABWASSER.arabauwerk (3D)")
+        self._export_wwtp_structure_3d()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.small_treatment_plant -> ABWASSER.KLARA (3D)")
+        self._export_small_treatment_plant_3d()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.drainless_toilet -> ABWASSER.Abflusslose_Toilette (3D)")
+        self._export_drainless_toilet_3d()
         self._check_for_stop()
 
     def _export_dss(self):
@@ -563,6 +644,7 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
+
             kanal = self.model_classes_interlis.kanal(
                 # FIELDS TO MAP TO ABWASSER.kanal
                 # --- abwasserbauwerk ---
@@ -2903,6 +2985,187 @@ class InterlisExporterToIntermediateSchema:
         logger.info("done")
         self.abwasser_session.flush()
 
+    def _export_channel_3d(self):
+        query = self.tww_session.query(self.model_classes_tww_od.channel)
+        if self.filtered:
+            query = query.join(self.model_classes_tww_od.wastewater_networkelement).filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            )
+            logger.info(f"Selection query: {query.statement}")
+        for row in query:
+            input = self.model_classes_interlis.kanal3d(
+                **self._wastewater_structure_common_3d(row)
+            )
+            self.abwasser_session.add(input)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_manhole_3d(self):
+        query = self.tww_session.query(self.model_classes_tww_od.manhole)
+        if self.filtered:
+            query = query.join(self.model_classes_tww_od.wastewater_networkelement).filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            )
+            logger.info(f"Selection query: {query.statement}")
+        for row in query:
+            input = self.model_classes_interlis.normschacht3d(
+                **self._wastewater_structure_common_3d(row),
+                maechtigkeit=row.depth,
+                hoehenbestimmung=self.get_vl(row.elevation_determination__REL),
+            )
+            self.abwasser_session.add(input)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_special_structure_3d(self):
+        query = self.tww_session.query(self.model_classes_tww_od.manhole)
+        if self.filtered:
+            query = query.join(self.model_classes_tww_od.wastewater_networkelement).filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            )
+            logger.info(f"Selection query: {query.statement}")
+        for row in query:
+            input = self.model_classes_interlis.spezialbauwerk3d(
+                **self._wastewater_structure_common_3d(row),
+                maechtigkeit=row.depth,
+                deckenkote=row.upper_elevation,
+                hoehenbestimmung=self.get_vl(row.elevation_determination__REL),
+            )
+            self.abwasser_session.add(input)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_infiltration_installation_3d(self):
+        query = self.tww_session.query(self.model_classes_tww_od.infiltration_installation)
+        if self.filtered:
+            query = query.join(self.model_classes_tww_od.wastewater_networkelement).filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            )
+            logger.info(f"Selection query: {query.statement}")
+        for row in query:
+            input = self.model_classes_interlis.versickerungsanlage3d(
+                **self._wastewater_structure_common_3d(row),
+                maechtigkeit=row.depth,
+                deckenkote=row.upper_elevation,
+                hoehenbestimmung=self.get_vl(row.elevation_determination__REL),
+            )
+            self.abwasser_session.add(input)
+            print(".", end="")
+
+    def _export_discharge_point_3d(self):
+        query = self.tww_session.query(self.model_classes_tww_od.discharge_point)
+        if self.filtered:
+            query = query.join(self.model_classes_tww_od.wastewater_networkelement).filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            )
+            logger.info(f"Selection query: {query.statement}")
+        for row in query:
+            input = self.model_classes_interlis.einleitstelle3d(
+                **self._wastewater_structure_common_3d(row),
+                maechtigkeit=row.depth,
+                deckenkote=row.upper_elevation,
+                hoehenbestimmung=self.get_vl(row.elevation_determination__REL),
+            )
+            self.abwasser_session.add(input)
+            print(".", end="")
+        logger.info("done")
+
+    def _export_small_treatment_plant_3d(self):
+        query = self.tww_session.query(self.model_classes_tww_od.mall_treatment_plant)
+        if self.filtered:
+            query = query.join(self.model_classes_tww_od.wastewater_networkelement).filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            )
+            logger.info(f"Selection query: {query.statement}")
+        for row in query:
+            input = self.model_classes_interlis.klara3d(
+                **self._wastewater_structure_common_3d(row),
+                maechtigkeit=row.depth,
+                hoehenbestimmung=self.get_vl(row.elevation_determination__REL),
+            )
+            self.abwasser_session.add(input)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_wwtp_structure_3d(self):
+        query = self.tww_session.query(self.model_classes_tww_od.wwtp_structure)
+        if self.filtered:
+            query = query.join(self.model_classes_tww_od.wastewater_networkelement).filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            )
+            logger.info(f"Selection query: {query.statement}")
+        for row in query:
+            input = self.model_classes_interlis.arabauwerk3d(
+                **self._wastewater_structure_common_3d(row),
+                maechtigkeit=row.depth,
+                hoehenbestimmung=self.get_vl(row.elevation_determination__REL),
+            )
+            self.abwasser_session.add(input)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_drainless_toilet_3d(self):
+        query = self.tww_session.query(self.model_classes_tww_od.drainless_toilet)
+        if self.filtered:
+            query = query.join(self.model_classes_tww_od.wastewater_networkelement).filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            )
+            logger.info(f"Selection query: {query.statement}")
+        for row in query:
+            input = self.model_classes_interlis.abflusslosetoilette3d(
+                **self._wastewater_structure_common_3d(row),
+                maechtigkeit=row.depth,
+                hoehenbestimmung=self.get_vl(row.elevation_determination__REL),
+            )
+            self.abwasser_session.add(input)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_cover_3d(self):
+        query = self.tww_session.query(self.model_classes_tww_od.cover)
+        if self.filtered:
+            query = (
+                query.join(self.model_classes_tww_od.wastewater_structure)
+                .join(self.model_classes_tww_od.wastewater_networkelement)
+                .filter(
+                    self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+                )
+            )
+            logger.info(f"Selection query: {query.statement}")
+        for row in query:
+            input = self.model_classes_interlis.deckel3d(
+                **self._3d_common(row),
+                maechtigkeit=row.depth,
+            )
+            self.abwasser_session.add(input)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_reach_3d(self):
+        query = self.tww_session.query(self.model_classes_tww_od.reach)
+        if self.filtered:
+            query = query.join(self.model_classes_tww_od.wastewater_networkelement).filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            )
+            logger.info(f"Selection query: {query.statement}")
+        for row in query:
+            input = self.model_classes_interlis.haltung3d(
+                **self._3d_common(row),
+                verlauf3d=row.progression3d_geometry,
+                hoehenbestimmung=self.get_vl(row.elevation_determination__REL),
+            )
+            self.abwasser_session.add(input)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
     def get_tid(self, relation):
         """
         Makes a tid for a relation
@@ -3054,6 +3317,25 @@ class InterlisExporterToIntermediateSchema:
             return ""
 
         return instance.prefix
+
+    def _3d_common(self, row):
+        """
+        Returns common attributes for base
+        """
+        base = {
+            "t_id": self.get_tid(row),
+        }
+        if self.current_basket:
+            base["t_basket"] = self.current_basket.t_id
+
+        return base
+
+    def _wastewater_structure_common_3d(self, row):
+        return {
+            "detailgeometrie3d": row.detail_geometry3d_geometry,
+            "hoehenbestimmung": self.get_vl(row.elevation_determination__REL),
+            **self._3d_common(row),
+        }
 
     def base_common(self, row, type_name):
         """
