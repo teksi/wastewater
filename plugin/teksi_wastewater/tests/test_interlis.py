@@ -251,9 +251,10 @@ class TestInterlis(unittest.TestCase):
             "HoehenBreitenverhaeltnis",  # attributename
         )
 
-        self.assertEqual(HoehenBreitenverhaeltnis_Text, "1.13")
+        # adapt to VSA model patch for 2020.1 published end of November 2025
+        # self.assertEqual(HoehenBreitenverhaeltnis_Text, "1.13")
         # in future if VSA-DSS / SIA405 INTERLIS is also patched  change to:
-        # self.assertEqual(HoehenBreitenverhaeltnis_Text, "1.12857")
+        self.assertEqual(HoehenBreitenverhaeltnis_Text, "1.12857")
 
         # Export minimal dss
         export_xtf_file = self._get_output_filename("export_minimal_dataset_dss")
