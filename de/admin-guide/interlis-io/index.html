@@ -226,12 +226,23 @@ Linux : use the package manager</p>
 <p class="admonition-title">Bemerkung</p>
 <p>Beachten Sie, dass Bemerkungsfelder bei INTERLIS Export auf 80 Zeichen gekürzt werden, da die INTERLIS-Definition dies vorsieht. Wenn Sie Bemerkungsfelder mit mehr Text haben, sollten Sie diese Daten in die Dokumentation mit den Klassen „Datei” und „Datentraeger” verschieben, damit sie vollständig nach INTERLIS exportiert werden können, wo Sie einer Klasse beliebige Dokumente, Fotos oder Videos hinzufügen können.</p>
 </div>
-<p>Die folgenden Validierungen werden als Vorverarbeitung ausgeführt: * Unterklassen vor dem Export validieren: check_subclass_counts</p>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>Derzeit wird nur dann eine FEHLER-Meldung in der Registerkarte „tww procotol“ angezeigt, wenn diese Überprüfung fehlschlägt: <cite>2024-07-26T10:29:03 teksi_wastewater.utils:ERROR: Anzahl der Unterklassenelemente von structure_part im Schema tww_od NICHT KORREKT: Prüfsumme = 1 (positive Zahl bedeutet fehlende Einträge, negative Zahl bedeutet zu viele Unterklasseeinträge)</cite></p>
+<p>More information on <a href="#id6"><span class="problematic" id="id7">`QGIS label export https://docs.qgis.org/3.44/en/docs/user_manual/processing_algs/qgis/cartography.html#extract-labels`_</span></a></p>
 </div>
-<p>Der Export umfasst am Ende einen Validierungsschritt mit <cite>ilivalidator</cite>, der Sie darüber informiert, ob der Export INTERLIS-Validierungsfehler enthält.</p>
+<p>The following validations are run as pre-process:</p>
+<ul class="simple">
+<li><p>Validate subclasses before export (_check_subclass_counts): The total of the subclass entries over alls subclasses must be equal to the numer of entries in the superclass.</p></li>
+<li><p>Identifier NULL check (_check_identifier_null): As identifier is mandatory in the INTERLIS models, we check whether every identifier field has an entry (NOT NULL). If you have data, where you do not want to create your own identifiers, copy the obj_id as identifier (e.g. for reach_points). This is also the standard behaviour when you add new data. If you have copied data from elsewhere (not created in TEKSI), you might have to clean up this, else your INTERLIS export will stop.</p></li>
+<li><p>Check references to the class organisation (_check_fk_owner_null, _check_fk_operator_null, _check_fk_dataowner_null, _check_fk_provider_null): Owner, Operator and the metainformation about dataowner and provider are MANDATORY in a INTERLIS Export file. Therefor these pre-checks make sure they are filled in. If you don’t know, choose the Organisation ‚unknown‘, that is also an entry in the organisation dataset.</p></li>
+<li><p>Check references to classes that are MANDATORY (e.g. _check_fk_reach_point_from_null, …): References that are MANDATORY in INTERLIS will be pre-checked to avoid crash during export.</p></li>
+</ul>
+<p>You will get a new summary window that tells you, if any of these pre-checks failed:</p>
+<figure class="align-default">
+<img alt="../../_images/interlis_export_precheck_results.png" src="../../_images/interlis_export_precheck_results.png" />
+</figure>
+<p>You can choose to continue export, if you think the pre-check results will not be relevant for your export (e.g. if you export SIA405 Abwaser, but there are reference check errors that are within the VSA-DSS part that are beyond SIA405 Abwasser).</p>
+<p>Exports include also a validation step at the end using <cite>ilivalidator</cite>, which will inform you whether the export contains INTERLIS validation errors.</p>
 <p>Wenn der Export erfolgreich war, erscheint eine grüne Erfolgsmeldung. Wenn der Export nicht erfolgreich war, erhalten Sie entweder während des Exportvorgangs Fehlermeldungen oder am Ende des Vorgangs eine Fehlerwarnung.</p>
 <p>Weitere Details finden Sie im Protokollfenster und in den Textprotokollen.</p>
 <table class="docutils align-default" id="id5">
