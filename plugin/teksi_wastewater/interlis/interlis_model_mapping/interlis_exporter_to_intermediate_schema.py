@@ -691,7 +691,6 @@ class InterlisExporterToIntermediateSchema:
                 # maechtigkeit=row.depth,
                 material=self.get_vl(row.material__REL),
                 oberflaechenzulauf=self.get_vl(row.surface_inflow__REL),
-
             )
             self.abwasser_session.add(normschacht)
             print(".", end="")
@@ -3127,7 +3126,7 @@ class InterlisExporterToIntermediateSchema:
             print(".", end="")
         logger.info("done")
         self.abwasser_session.flush()
-    
+
     def _export_cover_3d(self):
         query = self.tww_session.query(self.model_classes_tww_od.cover)
         if self.filtered:
@@ -3152,17 +3151,14 @@ class InterlisExporterToIntermediateSchema:
     def _export_reach_3d(self):
         query = self.tww_session.query(self.model_classes_tww_od.reach)
         if self.filtered:
-            query = (
-                query.join(self.model_classes_tww_od.wastewater_networkelement)
-                .filter(
-                    self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
-                )
+            query = query.join(self.model_classes_tww_od.wastewater_networkelement).filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
             input = self.model_classes_interlis.haltung3d(
                 **self._3d_common(row),
-                verlauf3d = row.progression3d_geometry,
+                verlauf3d=row.progression3d_geometry,
                 hoehenbestimmung=self.get_vl(row.elevation_determination__REL),
             )
             self.abwasser_session.add(input)

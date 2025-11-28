@@ -69,7 +69,7 @@ class InterlisImporterExporter:
             config.MODEL_NAME_VSA_KEK: ModelInterlisVsaKek,
             config.MODEL_NAME_SIA405_ABWASSER_3D: ModelInterlisSia405Abwasser3D,
             config.MODEL_NAME_DSS_3D: ModelInterlisDss3D,
-            }.get(model)
+        }.get(model)
         if ModelInterlis is None:
             raise ValueError(f"Unknown model: {model}")
         self.model_classes_interlis = ModelInterlis().classes()
