@@ -263,7 +263,7 @@ def vw_tww_channel_maintenance(connection: psycopg.Connection, extra_definition:
       INSTEAD OF UPDATE
       ON tww_app.vw_tww_channel_maintenance
       FOR EACH ROW
-      EXECUTE PROCEDURE tww_app.ft_mvw_tww_channel_maintenance_update();
+      EXECUTE PROCEDURE tww_app.ft_vw_tww_channel_maintenance_update();
     """.format(
         update_mn=update_command(
             connection=connection,
