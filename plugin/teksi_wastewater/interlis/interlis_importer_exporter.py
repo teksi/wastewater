@@ -16,6 +16,7 @@ from .interlis_model_mapping.interlis_importer_to_intermediate_schema import (
 from .interlis_model_mapping.model_interlis_ag64 import ModelInterlisAG64
 from .interlis_model_mapping.model_interlis_ag96 import ModelInterlisAG96
 from .interlis_model_mapping.model_interlis_dss import ModelInterlisDss
+from .interlis_model_mapping.model_interlis_dss_3D import ModelInterlisDss3D
 from .interlis_model_mapping.model_interlis_sia405_abwasser import (
     ModelInterlisSia405Abwasser,
 )
@@ -59,8 +60,7 @@ class InterlisImporterExporter:
         self.current_progress = 0
 
     def _init_model_classes(self, model):
-        ModelInterlis = None
-        model_dict = {
+        ModelInterlis = {
             config.MODEL_NAME_AG96: ModelInterlisAG96,
             config.MODEL_NAME_AG64: ModelInterlisAG64,
             config.MODEL_NAME_SIA405_BASE_ABWASSER: ModelInterlisSia405BaseAbwasser,
@@ -68,20 +68,10 @@ class InterlisImporterExporter:
             config.MODEL_NAME_DSS: ModelInterlisDss,
             config.MODEL_NAME_VSA_KEK: ModelInterlisVsaKek,
             config.MODEL_NAME_SIA405_ABWASSER_3D: ModelInterlisSia405Abwasser3D,
-            config.MODEL_NAME_DSS_3D: ModelInterlisDss,
-        }
-        if model == config.MODEL_NAME_AG96:
-            ModelInterlis = ModelInterlisAG96
-        elif model == config.MODEL_NAME_AG64:
-            ModelInterlis = ModelInterlisAG64
-        elif model == config.MODEL_NAME_SIA405_BASE_ABWASSER:
-            ModelInterlis = ModelInterlisSia405BaseAbwasser
-        elif model == config.MODEL_NAME_SIA405_ABWASSER:
-            ModelInterlis = ModelInterlisSia405Abwasser
-        elif model == config.MODEL_NAME_DSS:
-            ModelInterlis = ModelInterlisDss
-        elif model == config.MODEL_NAME_VSA_KEK:
-            ModelInterlis = ModelInterlisVsaKek
+            config.MODEL_NAME_DSS_3D: ModelInterlisDss3D,
+            }.get(model)
+        if ModelInterlis is None:
+            raise ValueError(f"Unknown model: {model}")
         self.model_classes_interlis = ModelInterlis().classes()
         self._progress_done(self.current_progress + 1)
 
