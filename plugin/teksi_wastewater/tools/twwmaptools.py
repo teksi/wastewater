@@ -91,7 +91,7 @@ class TwwMapTool(QgsMapTool):
     def __init__(self, iface: QgisInterface, button, network_analyzer: TwwGraphManager = None):
         QgsMapTool.__init__(self, iface.mapCanvas())
         self.canvas = iface.mapCanvas()
-        self.cursor = QCursor(Qt.CrossCursor)
+        self.cursor = QCursor(Qt.CursorShape.CrossCursor)
         self.button = button
         self.msgBar = iface.messageBar()
         self.network_analyzer = network_analyzer
@@ -139,7 +139,7 @@ class TwwMapTool(QgsMapTool):
         """
         Issues rightClicked and leftClicked events
         """
-        if event.button() == Qt.RightButton:
+        if event.button() == Qt.MouseButton.RightButton:
             self.rightClicked(event)
         else:
             self.leftClicked(event)
@@ -745,7 +745,7 @@ class TwwMapToolConnectNetworkElements(QgsMapTool):
 
         self.action.setChecked(True)
 
-        self.iface.mapCanvas().setCursor(QCursor(Qt.CrossCursor))
+        self.iface.mapCanvas().setCursor(QCursor(Qt.CursorShape.CrossCursor))
 
     def setSnapLayers(self, snapper, layers):
         config = QgsSnappingConfig()
@@ -816,7 +816,7 @@ class TwwMapToolConnectNetworkElements(QgsMapTool):
         """
         On a click update the rubberbands and the snapping results if it's a left click. Reset if it's a right click.
         """
-        if event.button() == Qt.LeftButton:
+        if event.button() == Qt.MouseButton.LeftButton:
             if self.snapresult.isValid():
                 if self.source_match:
                     self.connect_features(self.source_match, self.snapresult)
@@ -888,7 +888,9 @@ class TwwMapToolConnectNetworkElements(QgsMapTool):
             properties.append(cbx)
             dlg.layout().addWidget(cbx)
 
-        btn_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+        btn_box = QDialogButtonBox(
+            QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel
+        )
         dlg.layout().addWidget(btn_box)
         btn_box.accepted.connect(dlg.accept)
         btn_box.rejected.connect(dlg.reject)
@@ -896,7 +898,7 @@ class TwwMapToolConnectNetworkElements(QgsMapTool):
         source_feature = self.get_feature_for_match(source)
         target_feature = self.get_feature_for_match(target)
 
-        if dlg.exec_():
+        if dlg.exec():
             for cbx in properties:
                 if cbx.isChecked():
                     source_feature[cbx.objectName()] = target_feature["obj_id"]

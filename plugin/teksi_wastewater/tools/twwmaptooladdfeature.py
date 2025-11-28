@@ -115,14 +115,14 @@ class TwwMapToolAddFeature(QgsMapToolAdvancedDigitizing):
         self.temp_rubberband = QgsRubberBand(iface.mapCanvas(), layer.geometryType())
         self.temp_rubberband.setColor(QColor("#ee5555"))
         self.temp_rubberband.setWidth(1)
-        self.temp_rubberband.setLineStyle(Qt.DotLine)
+        self.temp_rubberband.setLineStyle(Qt.PenStyle.DotLine)
 
     def activate(self):
         """
         When activating the map tool
         """
         QgsMapToolAdvancedDigitizing.activate(self)
-        self.canvas.setCursor(QCursor(Qt.CrossCursor))
+        self.canvas.setCursor(QCursor(Qt.CursorShape.CrossCursor))
         msgtitle = self.tr("Advanced Digitizing")
         msg = self.tr("Digitize start and end point. Rightclick to abort.")
         self.messageBarItem = QgsMessageBar.createMessage(msgtitle, msg)
@@ -152,7 +152,7 @@ class TwwMapToolAddFeature(QgsMapToolAdvancedDigitizing):
         :param event:
         :return:
         """
-        if event.button() == Qt.RightButton:
+        if event.button() == Qt.MouseButton.RightButton:
             self.right_clicked(event)
         else:
             self.left_clicked(event)
@@ -177,7 +177,7 @@ class TwwMapToolAddFeature(QgsMapToolAdvancedDigitizing):
         f.setGeometry(self.rubberband.asGeometry())
         dlg = self.iface.getFeatureForm(self.layer, f)
         dlg.setMode(QgsAttributeEditorContext.AddFeatureMode)
-        dlg.exec_()
+        dlg.exec()
         self.rubberband.reset3D()
         self.temp_rubberband.reset()
 
@@ -390,7 +390,7 @@ class TwwMapToolAddReach(TwwMapToolAddFeature):
 
             dlg = self.iface.getFeatureForm(self.layer, f)
             dlg.setMode(QgsAttributeEditorContext.AddFeatureMode)
-            dlg.exec_()
+            dlg.exec()
             self.last_feature_attributes = dlg.feature().attributes()
 
         self.rubberband.reset3D()
@@ -439,7 +439,7 @@ class TwwMapToolDigitizeDrainageChannel(QgsMapTool):
         Map tool is activated
         """
         QgsMapTool.activate(self)
-        self.canvas.setCursor(QCursor(Qt.CrossCursor))
+        self.canvas.setCursor(QCursor(Qt.CursorShape.CrossCursor))
         msgtitle = self.tr("Digitizing Drainage Channel")
         msg = self.tr("Digitize start and end point. Rightclick to abort.")
         self.messageBarItem = QgsMessageBar.createMessage(msgtitle, msg)
@@ -475,7 +475,7 @@ class TwwMapToolDigitizeDrainageChannel(QgsMapTool):
             * if the Ctrl-modifier is pressed, ask for the rectangle width
         :param event: coordinates etc.
         """
-        if event.button() == Qt.RightButton:
+        if event.button() == Qt.MouseButton.RightButton:
             self.deactivate()
         else:
             mousepos = self.canvas.getCoordinateTransform().toMapCoordinates(
@@ -492,11 +492,13 @@ class TwwMapToolDigitizeDrainageChannel(QgsMapTool):
                     dlg.layout().addWidget(QLabel(self.tr("Enter width")))
                     txt = QLineEdit("0.1")
                     dlg.layout().addWidget(txt)
-                    bb = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+                    bb = QDialogButtonBox(
+                        QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel
+                    )
                     dlg.layout().addWidget(bb)
                     bb.accepted.connect(dlg.accept)
                     bb.rejected.connect(dlg.reject)
-                    if dlg.exec_():
+                    if dlg.exec():
                         try:
                             width = float(txt.text()) / 2
                         except ValueError:
