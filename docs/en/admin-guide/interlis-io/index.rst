@@ -130,6 +130,9 @@ You will get a new summary window that tells you, if any of these pre-checks fai
 
 .. figure:: images/interlis_export_precheck_results.png
 
+You can choose to continue export, if you think the pre-check results will not be relevant for your export (e.g. if you export SIA405 Abwaser, but there are reference check errors that are within the VSA-DSS part that are beyond SIA405 Abwasser).
+
+
 Exports include also a validation step at the end using `ilivalidator`, which will inform you whether the export contains INTERLIS validation errors.
 
 If the export was successful a green success message appears.
