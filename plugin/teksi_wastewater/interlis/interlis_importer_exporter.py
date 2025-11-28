@@ -123,6 +123,7 @@ class InterlisImporterExporter:
         import_model_hierarchy = [
             config.MODEL_NAME_DSS_3D,
             config.MODEL_NAME_DSS,
+            config.MODEL_NAME_VSA_KEK,
             config.MODEL_NAME_SIA405_ABWASSER_3D,
             config.MODEL_NAME_SIA405_ABWASSER,
             config.MODEL_NAME_AG96,
