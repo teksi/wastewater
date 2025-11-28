@@ -15,7 +15,7 @@ from view.catchment_area_views import (
     vw_tww_catchment_area_totals,
 )
 from view.maintenance_views import (
-    vw_tww_channel,
+    mvw_tww_channel,
     vw_tww_channel_maintenance,
     vw_tww_ws_maintenance,
 )
@@ -184,13 +184,13 @@ Running modification {modification.get('id')}
                 else {}
             ),
         )
-        vw_tww_channel(
+        mvw_tww_channel(
             connection=self._connection,
             srid=SRID,
             lang_code=lang_code,
             extra_definition=(
-                self.load_yaml(self.extra_definitions["vw_tww_channel"])
-                if self.extra_definitions.get("vw_tww_channel")
+                self.load_yaml(self.extra_definitions["mvw_tww_channel"])
+                if self.extra_definitions.get("mvw_tww_channel")
                 else {}
             ),
         )
