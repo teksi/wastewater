@@ -34,15 +34,23 @@ def mvw_tww_channel(
     DROP MATERIALIZED VIEW IF EXISTS tww_app.mvw_tww_channel;
 
     CREATE MATERIALIZED VIEW tww_app.mvw_tww_channel AS
-        WITH channel_geometries AS (
+     WITH  reach_2d AS MATERIALIZED (SELECT obj_id, 
+        st_curvetoline(st_force2d(progression3d_geometry)) AS progression2d_geometry,
+                fk_reach_point_from,
+                fk_reach_point_to,
+                clear_height,
+                length_effective,
+                material
+        FROM tww_od.reach),
+        channel_geometries AS (
             SELECT
                 ch.obj_id,
-                ST_StartPoint(ST_LineMerge(ST_Collect(ST_Force2D(re.progression3d_geometry)))) AS channel_start_point,
-                ST_EndPoint(ST_LineMerge(ST_Collect(ST_Force2D(re.progression3d_geometry)))) AS channel_end_point
+                st_startpoint(st_linemerge(st_collect(re.progression2d_geometry))) AS channel_start_point,
+                st_endpoint(st_linemerge(st_collect(re.progression2d_geometry))) AS channel_end_point
             FROM tww_od.channel ch
-                JOIN tww_od.wastewater_structure ws ON ch.obj_id::text = ws.obj_id::text
-                JOIN tww_od.wastewater_networkelement ne ON ne.fk_wastewater_structure::text = ws.obj_id::text
-                JOIN tww_od.reach re ON re.obj_id::text = ne.obj_id::text
+            JOIN tww_od.wastewater_structure ws ON ch.obj_id = ws.obj_id
+            JOIN tww_od.wastewater_networkelement ne ON ne.fk_wastewater_structure = ws.obj_id
+            JOIN reach_2d re ON re.obj_id = ne.obj_id
             GROUP BY ch.obj_id
         ),
         reach_start_end_points AS (
@@ -51,30 +59,39 @@ def mvw_tww_channel(
                 ne.fk_wastewater_structure,
                 re.fk_reach_point_from,
                 re.fk_reach_point_to,
-                ST_StartPoint(ST_Force2D(re.progression3d_geometry)) AS reach_start_point,
-                ST_EndPoint(ST_Force2D(re.progression3d_geometry)) AS reach_end_point
-            FROM tww_od.reach re
-                JOIN tww_od.wastewater_networkelement ne ON ne.obj_id::text = re.obj_id::text
+                st_startpoint(re.progression2d_geometry) AS reach_start_point,
+                st_endpoint(re.progression2d_geometry) AS reach_end_point
+            FROM reach_2d re
+            JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = re.obj_id
         ),
-        rp_channel as(
-        SELECT cg.obj_id,
-            rs.fk_reach_point_from,
-            re.fk_reach_point_to
-        FROM channel_geometries cg
-            JOIN reach_start_end_points rs ON rs.fk_wastewater_structure = cg.obj_id
-                AND ST_Equals(rs.reach_start_point, cg.channel_start_point)
-            JOIN reach_start_end_points re ON re.fk_wastewater_structure = cg.obj_id
-                AND ST_Equals(re.reach_end_point, cg.channel_end_point)
-
+        rp_channel AS (
+            SELECT
+                cg.obj_id,
+                rs.fk_reach_point_from,
+                re.fk_reach_point_to
+            FROM channel_geometries cg
+            JOIN reach_start_end_points rs ON rs.fk_wastewater_structure = cg.obj_id AND st_equals(rs.reach_start_point, cg.channel_start_point)
+            JOIN reach_start_end_points re ON re.fk_wastewater_structure = cg.obj_id AND st_equals(re.reach_end_point, cg.channel_end_point)
+        ), re_agg as(
+        select ne.fk_wastewater_structure,
+            st_multi(st_forcecurve(st_linemerge(st_collect(re.progression2d_geometry))))::geometry(MultiCurve,2056) AS progression2d_geometry,
+            min(re.clear_height) AS _re_min_height,
+            max(re.clear_height) AS _re_max_height,
+            sum(re.length_effective) AS _re_length_effective,
+            array_agg(DISTINCT vl_mat.value_{lang_code}) AS _re_materials
+        FROM reach_2d re
+        INNER JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = re.obj_id
+        LEFT JOIN tww_vl.reach_material vl_mat ON vl_mat.code = re.material
+        GROUP BY ne.fk_wastewater_structure
         )
         SELECT
           {ch_cols}
         , {ws_cols}
-        , ST_Multi(ST_Force2D(ST_ForceCurve(ST_LineMerge(ST_Collect(ST_CurveToLine(re.progression3d_geometry))))))::geometry(MultiCurve, {{srid}})  as progression2d_geometry
-        , min(re.clear_height) AS _re_min_height
-        , max(re.clear_height) AS _re_max_height
-        , sum(length_effective) as _re_length_effective
-        , array_agg(DISTINCT vl_mat.value_{lang_code}) as _re_materials
+        , re_agg.progression2d_geometry
+        , re_agg._re_min_height
+        , re_agg._re_max_height
+        , re_agg._re_length_effective
+        , re_agg._re_materials
         , rpc.fk_reach_point_from
         , rp_from.fk_wastewater_networkelement as _from_ne
         , rpc.fk_reach_point_to
@@ -85,18 +102,8 @@ def mvw_tww_channel(
          LEFT JOIN tww_od.reach_point rp_from on rp_from.obj_id=rpc.fk_reach_point_from
          LEFT JOIN tww_od.reach_point rp_to on rp_to.obj_id=rpc.fk_reach_point_to
          LEFT JOIN tww_od.wastewater_structure ws ON ch.obj_id = ws.obj_id
-         LEFT JOIN tww_od.wastewater_networkelement ne ON ne.fk_wastewater_structure = ws.obj_id
-         LEFT JOIN tww_od.reach re ON ne.obj_id = re.obj_id
          LEFT JOIN tww_vl.channel_function_hierarchic vl_fh ON vl_fh.code = ch.function_hierarchic
-         LEFT JOIN tww_vl.reach_material vl_mat on vl_mat.code = re.material
-       GROUP BY
-         {ch_cols_grp}
-        , {ws_cols_grp}
-        , rpc.fk_reach_point_from
-        , rp_from.fk_wastewater_networkelement
-        , rpc.fk_reach_point_to
-        , rp_to.fk_wastewater_networkelement
-        , vl_fh.tww_is_primary
+
     """.format(
         lang_code=lang_code,
         ch_cols=select_columns(
