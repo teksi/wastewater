@@ -129,7 +129,6 @@ class InterlisExporterToIntermediateSchema:
                     self.current_basket = self.basket_topic_dss_3d
                     self._export_dss_3d()
 
-
                 if self.model == config.MODEL_NAME_VSA_KEK:
                     self.current_basket = self.basket_topic_kek
                     self._export_vsa_kek()
@@ -245,7 +244,9 @@ class InterlisExporterToIntermediateSchema:
     def _export_sia405_abwasser_3d(self):
         if not self.model == config.MODEL_NAME_DSS_3D:
             self.current_basket = self.basket_topic_sia405_abwasser_3d
-            logger.info("Exporting TWW.dryweather_downspout -> ABWASSER.trockenwetterfallrohr (3D)")
+            logger.info(
+                "Exporting TWW.dryweather_downspout -> ABWASSER.trockenwetterfallrohr (3D)"
+            )
             self._export_dryweather_downspout()
             self._check_for_stop()
         else:
@@ -372,7 +373,6 @@ class InterlisExporterToIntermediateSchema:
         logger.info("Exporting TWW.drainless_toilet -> ABWASSER.Abflusslose_Toilette (3D)")
         self._export_drainless_toilet_3d()
         self._check_for_stop()
-
 
     def _export_dss(self):
         logger.info(
@@ -3051,7 +3051,7 @@ class InterlisExporterToIntermediateSchema:
         for row in query:
             input = self.model_classes_interlis.kanal3d(
                 **self._wastewater_structure_common_3d(row)
-                )
+            )
             self.abwasser_session.add(input)
             print(".", end="")
         logger.info("done")
@@ -3068,13 +3068,13 @@ class InterlisExporterToIntermediateSchema:
             input = self.model_classes_interlis.normschacht3d(
                 **self._wastewater_structure_common_3d(row),
                 maechtigkeit=row.depth,
-                hoehenbestimmung = self.get_vl(row.elevation_determination__REL),
-                )
+                hoehenbestimmung=self.get_vl(row.elevation_determination__REL),
+            )
             self.abwasser_session.add(input)
             print(".", end="")
         logger.info("done")
         self.abwasser_session.flush()
-    
+
     def _export_special_structure_3d(self):
         query = self.tww_session.query(self.model_classes_tww_od.manhole)
         if self.filtered:
@@ -3087,13 +3087,13 @@ class InterlisExporterToIntermediateSchema:
                 **self._wastewater_structure_common_3d(row),
                 maechtigkeit=row.depth,
                 deckenkote=row.upper_elevation,
-                hoehenbestimmung = self.get_vl(row.elevation_determination__REL),
-                )
+                hoehenbestimmung=self.get_vl(row.elevation_determination__REL),
+            )
             self.abwasser_session.add(input)
             print(".", end="")
         logger.info("done")
         self.abwasser_session.flush()
-    
+
     def _export_infiltration_installation_3d(self):
         query = self.tww_session.query(self.model_classes_tww_od.infiltration_installation)
         if self.filtered:
@@ -3106,11 +3106,11 @@ class InterlisExporterToIntermediateSchema:
                 **self._wastewater_structure_common_3d(row),
                 maechtigkeit=row.depth,
                 deckenkote=row.upper_elevation,
-                hoehenbestimmung = self.get_vl(row.elevation_determination__REL),
-                )
+                hoehenbestimmung=self.get_vl(row.elevation_determination__REL),
+            )
             self.abwasser_session.add(input)
             print(".", end="")
-    
+
     def _export_discharge_point_3d(self):
         query = self.tww_session.query(self.model_classes_tww_od.discharge_point)
         if self.filtered:
@@ -3123,8 +3123,8 @@ class InterlisExporterToIntermediateSchema:
                 **self._wastewater_structure_common_3d(row),
                 maechtigkeit=row.depth,
                 deckenkote=row.upper_elevation,
-                hoehenbestimmung = self.get_vl(row.elevation_determination__REL),
-                )
+                hoehenbestimmung=self.get_vl(row.elevation_determination__REL),
+            )
             self.abwasser_session.add(input)
             print(".", end="")
         logger.info("done")
@@ -3140,8 +3140,8 @@ class InterlisExporterToIntermediateSchema:
             input = self.model_classes_interlis.klara3d(
                 **self._wastewater_structure_common_3d(row),
                 maechtigkeit=row.depth,
-                hoehenbestimmung = self.get_vl(row.elevation_determination__REL),
-                )
+                hoehenbestimmung=self.get_vl(row.elevation_determination__REL),
+            )
             self.abwasser_session.add(input)
             print(".", end="")
         logger.info("done")
@@ -3158,8 +3158,8 @@ class InterlisExporterToIntermediateSchema:
             input = self.model_classes_interlis.arabauwerk3d(
                 **self._wastewater_structure_common_3d(row),
                 maechtigkeit=row.depth,
-                hoehenbestimmung = self.get_vl(row.elevation_determination__REL),
-                )
+                hoehenbestimmung=self.get_vl(row.elevation_determination__REL),
+            )
             self.abwasser_session.add(input)
             print(".", end="")
         logger.info("done")
@@ -3176,8 +3176,8 @@ class InterlisExporterToIntermediateSchema:
             input = self.model_classes_interlis.abflusslosetoilette3d(
                 **self._wastewater_structure_common_3d(row),
                 maechtigkeit=row.depth,
-                hoehenbestimmung = self.get_vl(row.elevation_determination__REL),
-                )
+                hoehenbestimmung=self.get_vl(row.elevation_determination__REL),
+            )
             self.abwasser_session.add(input)
             print(".", end="")
         logger.info("done")
@@ -3346,14 +3346,13 @@ class InterlisExporterToIntermediateSchema:
             base["t_basket"] = self.current_basket.t_id
 
         return base
-    
+
     def _wastewater_structure_common_3d(self, row):
         return {
-                "detailgeometrie3d": row.detail_geometry3d_geometry,
-                "hoehenbestimmung": self.get_vl(row.elevation_determination__REL),
-                **self._3d_common(row),
+            "detailgeometrie3d": row.detail_geometry3d_geometry,
+            "hoehenbestimmung": self.get_vl(row.elevation_determination__REL),
+            **self._3d_common(row),
         }
-
 
     def base_common(self, row, type_name):
         """

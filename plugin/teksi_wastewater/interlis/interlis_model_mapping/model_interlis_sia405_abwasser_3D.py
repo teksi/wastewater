@@ -1,5 +1,4 @@
 from .. import config
-from .model_interlis_dss import ModelInterlisDss
 from .model_interlis_sia405_abwasser import ModelInterlisSia405Abwasser
 
 

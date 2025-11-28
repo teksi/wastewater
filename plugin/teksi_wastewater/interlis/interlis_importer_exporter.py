@@ -16,7 +16,6 @@ from .interlis_model_mapping.interlis_importer_to_intermediate_schema import (
 from .interlis_model_mapping.model_interlis_ag64 import ModelInterlisAG64
 from .interlis_model_mapping.model_interlis_ag96 import ModelInterlisAG96
 from .interlis_model_mapping.model_interlis_dss import ModelInterlisDss
-from .interlis_model_mapping.model_interlis_dss_3D import ModelInterlisDss3D
 from .interlis_model_mapping.model_interlis_sia405_abwasser import (
     ModelInterlisSia405Abwasser,
 )
@@ -70,7 +69,7 @@ class InterlisImporterExporter:
             config.MODEL_NAME_VSA_KEK: ModelInterlisVsaKek,
             config.MODEL_NAME_SIA405_ABWASSER_3D: ModelInterlisSia405Abwasser3D,
             config.MODEL_NAME_DSS_3D: ModelInterlisDss,
-            }
+        }
         if model == config.MODEL_NAME_AG96:
             ModelInterlis = ModelInterlisAG96
         elif model == config.MODEL_NAME_AG64:
@@ -131,19 +130,20 @@ class InterlisImporterExporter:
         self._progress_done(10, "Extract model from xtf...")
         import_models = self.interlisTools.get_xtf_models(xtf_file_input)
 
-        import_model_hierarchy =[config.MODEL_NAME_DSS_3D,
-                                 config.MODEL_NAME_DSS,
-                                 config.MODEL_NAME_SIA405_ABWASSER_3D,
-                                 config.MODEL_NAME_SIA405_ABWASSER,
-                                 config.MODEL_NAME_AG96,
-                                 config.MODEL_NAME_AG64,
-                                 config.MODEL_NAME_SIA405_BASE_ABWASSER 
-                                 ]
+        import_model_hierarchy = [
+            config.MODEL_NAME_DSS_3D,
+            config.MODEL_NAME_DSS,
+            config.MODEL_NAME_SIA405_ABWASSER_3D,
+            config.MODEL_NAME_SIA405_ABWASSER,
+            config.MODEL_NAME_AG96,
+            config.MODEL_NAME_AG64,
+            config.MODEL_NAME_SIA405_BASE_ABWASSER,
+        ]
         import_models_filtered = list(set(import_models).intersection(import_model_hierarchy))
         if import_models_filtered:
-            import_model=import_models_filtered[0]
+            import_model = import_models_filtered[0]
         else:
-            import_model=""
+            import_model = ""
 
         if not import_model:
             error_text = f"No supported model was found among '{import_models}'."
@@ -258,7 +258,7 @@ class InterlisImporterExporter:
             config.MODEL_NAME_VSA_KEK,
             config.MODEL_NAME_DSS_3D,
             config.MODEL_NAME_SIA405_ABWASSER_3D,
-            }.intersection(export_models):
+        }.intersection(export_models):
             create_basket_col = True
         else:
             create_basket_col = False

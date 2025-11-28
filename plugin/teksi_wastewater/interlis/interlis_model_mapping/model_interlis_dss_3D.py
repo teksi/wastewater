@@ -25,7 +25,7 @@ class ModelInterlisDss3D(ModelInterlisDss):
 
         ModelInterlisDss3D.klara3d = klara3d
 
-        # SIA 405 3D Extends 
+        # SIA 405 3D Extends
         class deckel3d(ModelInterlisSia405Abwasser.deckel):
             __tablename__ = "dss_3d__1_lv95siedlngswssrng_3d_deckel"
             __table_args__ = {"schema": config.ABWASSER_SCHEMA}
