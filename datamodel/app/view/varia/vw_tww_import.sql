@@ -4,6 +4,7 @@ CREATE OR REPLACE VIEW tww_app.import_vw_manhole AS
  SELECT DISTINCT ON (ws.obj_id) ws.obj_id,
     ws.identifier,
     COALESCE(wn.situation3d_geometry, main_co.situation3d_geometry)::geometry(POINTZ, {SRID}) AS situation_geometry,
+    main_co.obj_id as co_obj_id,
     main_co.cover_shape as co_shape,
     main_co.diameter as co_diameter,
     main_co.material as co_material,
@@ -24,6 +25,7 @@ CREATE OR REPLACE VIEW tww_app.import_vw_manhole AS
     ma.function as ma_function,
     ss.function as ss_function,
     ne.remark,
+    wn.obj_id as wn_obj_id,
     wn.bottom_level as wn_bottom_level,
     NULL::text AS photo1,
     NULL::text AS photo2,
@@ -65,6 +67,7 @@ CREATE OR REPLACE VIEW tww_app.import_vw_manhole AS
 				FROM tww_od.import_manhole_quarantine
 			    GROUP BY obj_id
 			  	) q ON q.obj_id = ws.obj_id
+	WHERE NOT EXISTS (SELECT 1 FROM tww_od.channel ch WHERE ch.obj_id=ws.obj_id)
    ;
 
 
@@ -78,10 +81,16 @@ BEGIN
       DELETE FROM tww_app.vw_tww_wastewater_structure
       WHERE obj_id = NEW.obj_id;
     ELSE
+
+	    NEW.obj_id = COALESCE(NEW.obj_id, tww_app.generate_oid('tww_od'::text, 'wastewater_structure'::text));
+	    NEW.co_obj_id = COALESCE(NEW.co_obj_id, tww_app.generate_oid('tww_od'::text, 'cover'::text));
+	    NEW.wn_obj_id = COALESCE(NEW.wn_obj_id, tww_app.generate_oid('tww_od'::text, 'wastewater_node'::text));
       -- insert data into quarantine
       INSERT INTO tww_od.import_manhole_quarantine
       (
       obj_id,
+      co_obj_id,
+      wn_obj_id,
       identifier,
       situation_geometry,
       co_shape,
@@ -126,6 +135,8 @@ BEGIN
       VALUES
       (
       NEW.obj_id,
+      NEW.co_obj_id,
+      NEW.wn_obj_id,
       NEW.identifier,
       NEW.situation_geometry,
       NEW.co_shape,
@@ -168,6 +179,8 @@ BEGIN
       NEW.outlet_2_depth_m
       );
     END IF;
+  ELSE
+    NULL;
   END IF;
   RETURN NEW;
 END; $BODY$
@@ -179,16 +192,14 @@ CREATE TRIGGER on_mutation_make_insert_or_delete
   INSTEAD OF INSERT OR UPDATE
   ON tww_app.import_vw_manhole
   FOR EACH ROW
-  EXECUTE PROCEDURE tww_app.import_vw_manhole_insert_into_quarantine_or_delete();
+  EXECUTE FUNCTION tww_app.import_vw_manhole_insert_into_quarantine_or_delete();
 
 
 -- logic for tww_od.import_manhole_quarantine
 
 -- create trigger functions and triggers for quarantine table
 -- SELECT set_config('tww.srid', {SRID}::text, false);
-DO $DO$
-BEGIN
-EXECUTE format($TRIGGER$
+
 CREATE OR REPLACE FUNCTION tww_app.import_manhole_quarantine_try_structure_update() RETURNS trigger AS $BODY$
 BEGIN
 
@@ -196,6 +207,9 @@ BEGIN
   IF( NEW._depth IS NOT NULL AND NEW.co_level IS NULL AND NEW.wn_bottom_level IS NULL ) THEN
     RAISE EXCEPTION 'No referencing value for calculation with depth';
   END IF;
+
+  NEW.co_level=coalesce(NEW.co_level,NEW.wn_bottom_level + NEW._depth);
+  NEW.wn_bottom_level=coalesce(NEW.wn_bottom_level,NEW.co_level - NEW._depth);
 
   -- tww_od.wastewater_structure
   IF( SELECT TRUE FROM tww_app.vw_tww_wastewater_structure WHERE obj_id = NEW.obj_id ) THEN
@@ -206,11 +220,7 @@ BEGIN
     co_diameter = NEW.co_diameter,
     co_material = NEW.co_material,
     co_positional_accuracy = NEW.co_positional_accuracy,
-    co_level =
-      (CASE WHEN NEW.co_level IS NULL AND NEW.wn_bottom_level IS NOT NULL AND NEW._depth IS NOT NULL
-      THEN NEW.wn_bottom_level + NEW._depth
-      ELSE NEW.co_level
-      END),
+    co_level =NEW.co_level,
     _depth = NEW._depth,
     _channel_usage_current = NEW._channel_usage_current,
     ma_material = NEW.ma_material,
@@ -220,19 +230,18 @@ BEGIN
     ma_function = NEW.ma_function,
     ss_function = NEW.ss_function,
     remark = NEW.remark,
-    wn_bottom_level =
-      (CASE WHEN NEW.wn_bottom_level IS NULL AND NEW.co_level IS NOT NULL AND NEW._depth IS NOT NULL
-      THEN NEW.co_level - NEW._depth
-      ELSE NEW.wn_bottom_level
-      END)
+    wn_bottom_level = NEW.wn_bottom_level
     WHERE obj_id = NEW.obj_id;
     RAISE NOTICE 'Updated row in tww_app.vw_tww_wastewater_structure';
   ELSE
-    INSERT INTO tww_app.vw_tww_wastewater_structure
+
+	INSERT INTO tww_app.vw_tww_wastewater_structure
     (
     obj_id,
+	co_obj_id,
+	wn_obj_id,
     identifier,
-    situation_geometry,
+    situation3d_geometry,
     co_shape,
     co_diameter,
     co_material,
@@ -247,21 +256,22 @@ BEGIN
     ma_function,
     ss_function,
     remark,
-    wn_bottom_level
+    wn_bottom_level,
+	fk_provider,
+	fk_dataowner
     )
     VALUES
     (
     NEW.obj_id,
+	NEW.co_obj_id,
+	NEW.wn_obj_id,
     NEW.identifier,
-    ST_Force2D(NEW.situation_geometry),
+    ST_Force2D(NEW.situation_geometry), --even though the name is 3d, in the view it is 2d
     NEW.co_shape,
     NEW.co_diameter,
     NEW.co_material,
     NEW.co_positional_accuracy,
-      (CASE WHEN NEW.co_level IS NULL AND NEW.wn_bottom_level IS NOT NULL AND NEW._depth IS NOT NULL
-      THEN NEW.wn_bottom_level + NEW._depth
-      ELSE NEW.co_level
-      END),
+    NEW.co_level,
     NEW._depth,
     NEW._channel_usage_current,
     NEW.ma_material,
@@ -271,10 +281,9 @@ BEGIN
     NEW.ma_function,
     NEW.ss_function,
     NEW.remark,
-      (CASE WHEN NEW.wn_bottom_level IS NULL AND NEW.co_level IS NOT NULL AND NEW._depth IS NOT NULL
-      THEN NEW.co_level - NEW._depth
-      ELSE NEW.wn_bottom_level
-      END)
+    NEW.wn_bottom_level,
+	tww_app.get_default_values('fk_provider'::text),
+	tww_app.get_default_values('fk_dataowner'::text)
       );
     RAISE NOTICE 'Inserted row in tww_app.vw_tww_wastewater_structure';
   END IF;
@@ -321,9 +330,7 @@ BEGIN
     RETURN NEW;
 END; $BODY$
 LANGUAGE plpgsql;
-$TRIGGER$, {SRID});
-END
-$DO$;
+
 
 DROP TRIGGER IF EXISTS after_update_try_structure_update ON tww_od.import_manhole_quarantine;
 
