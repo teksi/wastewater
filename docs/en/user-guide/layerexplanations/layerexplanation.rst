@@ -249,10 +249,42 @@ Log card for special structures: Hydraulically specialized wastewater structures
 
 .. versionadded:: 2025.0
 
+Creating and editing a log_card:
+
+* Add a new point record in layer vw_tww_log_card by clicking anywhere an the map with the QGIS Add Point Feature -Tool.
+* Select the wastewater_node of the log_card on the map.
+* Do not try editing the identifier of the log_card: the identifier will be set by default equal to the identifier of the wastewater_node.
+* Select fk_agency (is mandatory because this value is mandatory in DSS-mini).
+* Choose OK. 
+
+.. figure:: images/new_log_card.jpg
+
+
+The database is now ready to connect the catchment_area-records to the log_card. In vw_tww_catchment_area.fk_special_building_* are log_cards selectable, that belong to a special_structure. Use multiedit or field-calculator to edit the fk_special_building-fields.
+
+.. figure:: images/connect_ca_to_log_card.jpg
+
+
+The connected catchment_areas with fk_special_building_ww_current will be displayed in layer vw_tww_catchment_area_totals (polygon) after clicking the TWW-SQL-Button (Refresch network topology).
+The fields of this layer (population, surface_area,...) are not calculated automatically in the actual version (2025.02). Use statistic functions to get the necessary values.
+
+To edit the hydraulic_char_data, edit again the record in layer vw_tww_log_card. In Tab hydraulic char data add a new record and choose a status. Identifier of hydraulic_char_record is set autmatically to identifier of log_card-status (problem: if the wastewater_node_identifier is to long -> log_card.idenitifer is long -> hydraulic_char_data is too long!).
+The fields that are editable depend on the function of the special_structure: Pump-attributes are only visible for pumps, weir-attributes (also overflow_results) are only visible for special_structures with overflow.
+
+.. figure:: images/new_hydraulic_char_data.jpg
+
+
+Also the catchment_area_totals are edited in the record in layer vw_tww_log_card. Select the hydraulic char data, use tab catchment_area_totals and add a new record. Identifier should be set to identifier of hydraulic_char_data. The values has to be written manually actually (2025.02).
+
+.. figure:: images/new_catchment_area_totals.jpg
+
+
+
+
 Catchment area totals ``tww_app.catchment_area_totals``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Information on the attached catchment area (total), water volumes, and discharge point of the storm overflow or storm overflow basin. Direct catchment area only needs to be filled in if the discharge is activated during the design event or if it is unknown whether it will be activated. All information must be provided for both the actual and planned status.
+Information on the attached catchment area (total), water volumes, and discharge point of the storm overflow or storm overflow basin. Direct catchment area only needs to be filled in if the discharge is activated during the design event or if it is unknown whether it will be activated. All information must be provided for both the actual and planned status. All information must be provided manually (Version 2025.02).
 
 ``tww_app.vw_catchment_area_totals`` is based on the materialized view ``tww_app.mvw_catchment_area_totals``.
 
