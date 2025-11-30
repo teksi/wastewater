@@ -255,7 +255,7 @@ Creating and editing a log_card:
 * Select the wastewater_node of the log_card on the map.
 * Do not try editing the identifier of the log_card: the identifier will be set by default equal to the identifier of the wastewater_node.
 * Select fk_agency (is mandatory because this value is mandatory in DSS-mini).
-* Choose OK. 
+* Choose OK.
 
 
 .. figure:: images/new_log_card.jpg
