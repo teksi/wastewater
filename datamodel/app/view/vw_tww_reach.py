@@ -277,7 +277,7 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
       -------------------------------------
       -- Synchronize geometry with level --
       -------------------------------------
-      
+
       -- Start point
       SELECT NULLIF(ST_Z(ST_StartPoint(NEW.progression3d_geometry)),'NaN') INTO new_lvl;
 
