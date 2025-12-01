@@ -47,6 +47,8 @@ A simple way to migrate your data is to export it from the 2024.X database in IN
 
 TODO : Add a screenshot of the migration process.
 
+Do not forget to migrate your **oid-prefix**, your **default-values** for dataowner and provider and to adjust the **sequences** for correct obj_id's.
+
 In the future, TMMT will propose updates directly from the changelogs provided in the releases and should be able to handle upgrades with no migration required.
 
 Bug fixes and performance improvements
