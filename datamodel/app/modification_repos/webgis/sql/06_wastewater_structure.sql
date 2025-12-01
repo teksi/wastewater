@@ -11,9 +11,9 @@ AS
             ELSE 'unknown'::text
         END AS ws_type,
     replace(
-      COALESCE(ma_fu.{value_lang}, 
-        ss_fu.{value_lang}, 
-        ii_knd.{value_lang}, 
+      COALESCE(ma_fu.{value_lang},
+        ss_fu.{value_lang},
+        ii_knd.{value_lang},
         (dot_dp.{name_lang}::text||' ' || dp_rlvnc.{value_lang}::text)::character varying)
       , '_'::text, ' '::text) AS _function,
     own.identifier AS _owner,
