@@ -137,35 +137,6 @@ def mvw_tww_channel(
                 "fk_main_cover",
             ],
         ),
-        ch_cols_grp=select_columns(
-            connection=connection,
-            table_schema="tww_od",
-            table_name="channel",
-            table_alias="ch",
-            remove_pkey=False,
-            indent=4,
-            skip_columns=[],
-        ),
-        ws_cols_grp=select_columns(
-            connection=connection,
-            table_schema="tww_od",
-            table_name="wastewater_structure",
-            table_alias="ws",
-            remove_pkey=True,
-            indent=4,
-            skip_columns=[
-                "detail_geometry3d_geometry",
-                "fk_dataowner",
-                "fk_provider",
-                "_label",
-                "_cover_label",
-                "_bottom_label",
-                "_input_label",
-                "_output_label",
-                "_depth",
-                "fk_main_cover",
-            ],
-        ),
     )
 
     matview_sql = psycopg.sql.SQL(matview_sql).format(srid=psycopg.sql.Literal(srid))
