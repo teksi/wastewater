@@ -126,7 +126,8 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         # 1. change geometry including Z with startpoint Z 3 and endpoint Z 9, no change on rp_from_level, no change on rp_to_level
         # UPDATE INTO tww_app.vw_tww_reach SET progression3d_geometry=ST_SetSRID(ST_GeomFromText('COMPOUNDCURVE Z ((1 2 3,4 5 6,7 8 9))'), 2056) WHERE obj_id=obj_id'
         row = {
-            "progression3d_geometry": "01090000A00808000001000000010200008003000000000000000000F03F000000000000004000000000000008400000000000001040000000000000144000000000000018400000000000001C4000000000000020400000000000002240"
+            "progression3d_geometry": "01090000A00808000001000000010200008003000000000000000000F03F000000000000004000000000000008400000000000001040000000000000144000000000000018400000000000001C4000000000000020400000000000002240",
+            "tww_update_lvl_by_geom": True
         }
         self.update("vw_tww_reach", row, obj_id)
         new_row = self.select("vw_tww_reach", obj_id)
@@ -151,6 +152,7 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         row = {
             "progression3d_geometry": "01090000A00808000001000000010200008003000000000000000000F03F000000000000004000000000008040400000000000001040000000000000144000000000000018400000000000001C4000000000000020400000000000C05840",
             "rp_to_level": None,
+            "tww_update_lvl_by_geom": True
         }
         self.update("vw_tww_reach", row, obj_id)
         new_row = self.select("vw_tww_reach", obj_id)
