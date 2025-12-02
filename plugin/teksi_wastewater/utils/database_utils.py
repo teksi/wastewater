@@ -233,3 +233,8 @@ class DatabaseUtils:
             messages.append("Symbology triggers are disabled")
 
         return messages
+
+    @staticmethod
+    def refresh_matviews():
+        logger.info("Refreshing materialized views")
+        DatabaseUtils.execute("SELECT tww_app.network_refresh_network_simple();")
