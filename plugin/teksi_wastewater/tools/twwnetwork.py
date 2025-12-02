@@ -37,8 +37,8 @@ import networkx as nx
 from qgis.core import NULL, Qgis, QgsGeometry, QgsMessageLog, QgsPointXY
 from qgis.PyQt.QtCore import QObject, Qt, pyqtSignal
 
-from ..utils.qt_utils import OverrideCursor
 from ..utils.database_utils import DatabaseUtils
+from ..utils.qt_utils import OverrideCursor
 
 
 class TwwGraphManager(QObject):
@@ -164,11 +164,10 @@ class TwwGraphManager(QObject):
             with OverrideCursor(Qt.WaitCursor):
                 DatabaseUtils.refresh_matviews()
             self.message_emitted.emit(
-                    self.tr("Success"),
-                    self.tr("Materialized Views successfully updated"),
-                    Qgis.Success,
-                )
-
+                self.tr("Success"),
+                self.tr("Materialized Views successfully updated"),
+                Qgis.Success,
+            )
 
         except Exception as exception:
             self.message_emitted.emit(
@@ -182,12 +181,10 @@ class TwwGraphManager(QObject):
             self.graph.clear()
             self.createGraph()
             self.message_emitted.emit(
-                    self.tr("Success"),
-                    self.tr("Network successfully updated"),
-                    Qgis.Success,
-                )
-
-
+                self.tr("Success"),
+                self.tr("Network successfully updated"),
+                Qgis.Success,
+            )
 
         except Exception as exception:
             self.message_emitted.emit(
