@@ -3,8 +3,8 @@ import os
 import tempfile
 from pathlib import Path
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QMessageBox
+from qgis.PyQt.QtCore import Qt
+from qgis.PyQt.QtWidgets import QApplication, QMessageBox
 
 from ..utils.database_utils import DatabaseUtils
 from . import config
@@ -143,7 +143,7 @@ class InterlisImporterExporter:
                 import_dialog = InterlisImportSelectionDialog()
                 import_dialog.init_with_session(tww_session)
                 QApplication.restoreOverrideCursor()
-                if import_dialog.exec_() == import_dialog.Rejected:
+                if import_dialog.exec() == import_dialog.Rejected:
                     tww_session.rollback()
                     tww_session.close()
                     raise InterlisImporterExporterStopped()

@@ -154,7 +154,7 @@ class TeksiWastewaterPlugin:
 
         fp = os.path.join(os.path.abspath(os.path.dirname(__file__)), "metadata.txt")
 
-        ini_text = QSettings(fp, QSettings.IniFormat)
+        ini_text = QSettings(fp, QSettings.Format.IniFormat)
         verno = ini_text.value("version")
 
         self.logger.info("TEKSI Wastewater plugin version " + verno + " started")
@@ -586,14 +586,14 @@ class TeksiWastewaterPlugin:
 
     def showSettings(self):
         settings_dlg = TwwSettingsDialog(self.iface.mainWindow())
-        settings_dlg.exec_()
+        settings_dlg.exec()
 
         self.update_admin_mode()
 
     def about(self):
         from .gui.about_dialog import AboutDialog
 
-        AboutDialog(self.iface.mainWindow()).exec_()
+        AboutDialog(self.iface.mainWindow()).exec()
 
     def actionExportClicked(self):
         if self.interlisImporterExporter is None:
