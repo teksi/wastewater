@@ -19,7 +19,7 @@ AS
     ne.identifier AS _special_building_identifier,
     hcd.remark
    FROM tww_od.catchment_area_totals cat
-     LEFT JOIN tww_od.agxx_catchment_area_totals cat_ag_ag on cat.obj_id=cat_ag.fk_catchment_area_totals
+     LEFT JOIN tww_od.agxx_catchment_area_totals cat_ag on cat.obj_id=cat_ag.fk_catchment_area_totals
      LEFT JOIN tww_od.hydraulic_char_data hcd ON hcd.obj_id::text = cat.fk_hydraulic_char_data::text AND hcd.status = 6372
      LEFT JOIN tww_od.wastewater_node wn ON hcd.fk_wastewater_node::text = wn.obj_id::text
      LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id::text = wn.obj_id::text
