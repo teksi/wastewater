@@ -101,16 +101,23 @@
 <li><p>First version of TEKSI wastewater module for QGIS 3.40 LTR and initialized via the PostgreSQL Update Manager (PUM) and the TEKSI Module Management Tool (TMMT).</p></li>
 </ul>
 <p>Check the <a class="reference external" href="../installation-guide/index.html">installation guide</a> for more information on how to install TEKSI wastewater module via TMMT.</p>
-</div></blockquote>
-<p>TODO : Add a screenshot of TMMT with TEKSI wastewater module.</p>
 <blockquote>
-<div><ul class="simple">
-<li><p>Improved user interface for better usability and accessibility.</p></li>
-</ul>
+<div><figure class="align-default">
+<img alt="../_images/tmmt_menu.jpg" src="../_images/tmmt_menu.jpg" />
+</figure>
+<figure class="align-default">
+<img alt="../_images/tmmt_window.jpg" src="../_images/tmmt_window.jpg" />
+</figure>
 </div></blockquote>
-<p>TODO add a screenshot of the new user interface.</p>
+<p class="attribution">—Improved user interface for better usability and accessibility.</p>
+</div></blockquote>
 <blockquote>
-<div><ul class="simple">
+<div><blockquote>
+<div><figure class="align-default">
+<img alt="../_images/new_layers1.jpg" src="../_images/new_layers1.jpg" />
+</figure>
+</div></blockquote>
+<ul class="simple">
 <li><p>New styles and symbology</p></li>
 </ul>
 </div></blockquote>
@@ -145,6 +152,7 @@
 </div></blockquote>
 <p>A simple way to migrate your data is to export it from the 2024.X database in INTERLIS format and import it into a new 2025.X database.</p>
 <p>TODO : Add a screenshot of the migration process.</p>
+<p>Do not forget to migrate your <strong>oid-prefix</strong>, your <strong>default-values</strong> for dataowner and provider and to adjust the <strong>sequences</strong> for correct obj_id’s.</p>
 <p>In the future, TMMT will propose updates directly from the changelogs provided in the releases and should be able to handle upgrades with no migration required.</p>
 </section>
 <section id="bug-fixes-and-performance-improvements">
