@@ -48,7 +48,7 @@ parameters:
     default: false
     description: enable AG-64/96 app modification
 
-  - name: modification_web
+  - name: webgis
     type: boolean
     default: false
     description: enable WebGIS app modification

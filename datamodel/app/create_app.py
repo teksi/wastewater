@@ -38,7 +38,7 @@ class Hook(HookBase):
         connection: psycopg.Connection,
         SRID: int = 2056,
         modification_agxx: bool = False,
-        modification_web: bool = False,
+        webgis: bool = False,
         modification_ci: bool = False,
         lang_code: str = "en",
         modification_yaml: Path = None,
@@ -47,7 +47,7 @@ class Hook(HookBase):
         Creates the schema tww_app for TEKSI Wastewater & GEP
         :param SRID: the EPSG code for geometry columns. Overridden by modification_yaml
         :param modification_agxx: bool of whether to load agxx modification. Overridden by modification_yaml
-        :param modification_web: bool of whether to load web modification. Overridden by modification_yaml
+        :param webgis: bool of whether to load web modification. Overridden by modification_yaml
         :param modification_ci: bool of whether to load ci modification. Overridden by modification_yaml
         :param lang_code: language code for use in modification views. Overridden by modification_yaml
         :param modification_yaml: Path of yaml containing app parametrisation
@@ -65,7 +65,7 @@ class Hook(HookBase):
                 for entry in self.parameters["modification_repositories"]:
                     if modification_ci and entry["id"] == "ci":
                         entry["active"] = True
-                    if modification_web and entry["id"] == "web":
+                    if webgis and entry["id"] == "webgis":
                         entry["active"] = True
                     if modification_agxx and entry["id"] == "agxx":
                         entry["active"] = True
@@ -464,10 +464,10 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "-w",
-        "--modification_web",
+        "--webgis",
         action="store_true",
         default=False,
-        help="load web modification",
+        help="load webGIS modification",
     )
     parser.add_argument(
         "-l",
@@ -489,7 +489,7 @@ if __name__ == "__main__":
             SRID=args.srid,
             modification_agxx=args.modification_agxx,
             modification_ci=args.modification_ci,
-            modification_web=args.modification_web,
+            webgis=args.webgis,
             modification_yaml=args.modification_yaml,
             lang_code=args.lang_code,
         )

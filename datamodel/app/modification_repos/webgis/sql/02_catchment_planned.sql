@@ -28,4 +28,5 @@ AS
      LEFT JOIN tww_vl.catchment_area_retention_planned ret ON ret.code = ca.retention_planned
      LEFT JOIN tww_od.wastewater_networkelement ne_rw ON ca.fk_wastewater_networkelement_rw_planned::text = ne_rw.obj_id::text
      LEFT JOIN tww_od.wastewater_networkelement ne_ww ON ca.fk_wastewater_networkelement_ww_planned::text = ne_ww.obj_id::text
+     LEFT JOIN tww_vl.catchment_area_drainage_system_current ds_chk ON ds.code = ca.drainage_system_current
 WITH DATA;
