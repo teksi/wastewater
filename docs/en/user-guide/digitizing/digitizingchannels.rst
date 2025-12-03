@@ -86,7 +86,7 @@ Geometry synchronization
 
 When inserting a new reach using the wizard, the start and end points of the line geometry determine the level of the corresponding reach points (as shown in the pictures above).
 These values can be overwritten before saving.
-Upon saving, the level values `rp_from_level` and `rp_to_level` are used to define The Z value of the first and last vertex of a reach.
+Upon saving, the level values `rp_from_level` and `rp_to_level` are used to define the Z value of the first and last vertex of a reach.
 
 When updating a reach, there are several cases:
 
@@ -94,13 +94,6 @@ When updating a reach, there are several cases:
   2. The first/last reach geometry vertex was changed, but the `rp_from_level` / `rp_to_level` was not. In this case, the QGIS variable `@tww_update_lvl_by_geom` defines whether the `rp_from_level` / `rp_to_level` is overwritten by the Z value of the first / last vertex of the reach
   3. Both the first/last reach geometry vertex and the `rp_from_level` / `rp_to_level` were changed. The `rp_from_level` / `rp_to_level` take precendence
   4. Neither the first/last reach geometry vertex nor the `rp_from_level` / `rp_to_level` was changed. No changes occur
-
-In case 1,
-The snapped reachpoint of the new reach have the altitude from the wastewater node bottom_level of manhole new KS and manhole 1.030.
-These levels are copied by the wizard into the attributes `rp_from_level` and `rp_to_level` and can be edited there by the user.
-When the user changes these values, the Z value of the geometry of the digitized feature and its reach points will be changed as well.
-
-.. note:: If a reach point's level changes, the Z value of its geometry changes, and so does the start- or the end-point of the reach. When the Z value of the reach's geometry changes, the reach point's geometry and its level is ajusted as well. If both values change, the level takes precendence. On an insert it's like when both value change. Means the reach's geometry is set according to the reach point's levels and if they are NULL, the Z value of the reach's start- and end-point are set to NaN.
 
 Synchronization of levels also works when snapping on 3d points (e.g. a textfile as result of gps-measurement with x,y,z coordinates added to the QGIS-project) or line/polygon vertices of 3D geometries while digitizing.
 Be aware, that TEKSI stores 3d-reaches, but the generally used INTERLIS models VSA-DSS 2020.1 / SIA405 Abwasser 2020.1 drop the Z value on all vertices.
