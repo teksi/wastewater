@@ -37,12 +37,19 @@ jobs:
         include:
         - modification_ci: false
           modification_agxx: false
+          webgis: false
 
         - modification_ci: true
           modification_agxx: false
+          webgis: false
 
         - modification_ci: false
           modification_agxx: true
+          webgis: false
+
+        - modification_ci: false
+          modification_agxx: false
+          webgis: true
 
     steps:
       - uses: actions/checkout@v6
@@ -69,6 +76,7 @@ jobs:
               pum -vvv -s ${PG_SERVICE} -d datamodel install \
               -p modification_ci ${{ matrix.modification_ci}} \
               -p modification_agxx ${{ matrix.modification_agxx}} \
+              -p webgis ${{ matrix.webgis}} \
               -p SRID 2056 --roles --grant
 
       - name: Run tests
