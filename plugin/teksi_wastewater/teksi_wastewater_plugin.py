@@ -366,9 +366,9 @@ class TeksiWastewaterPlugin:
 
         for message in messages:
             self.iface.messageBar().pushMessage(
-                "Error",
+                "Warning",
                 message,
-                level=Qgis.Critical,
+                level=Qgis.Warning,
             )
 
     def tww_validity_check_action(self):

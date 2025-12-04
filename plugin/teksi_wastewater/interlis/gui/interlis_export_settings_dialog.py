@@ -48,6 +48,12 @@ class InterlisExportSettingsDialog(QDialog):
         self.export_orientation_selection_comboBox.addItem("0°", 0.0)
         self.export_orientation_selection_comboBox.addItem("-90°", -90.0)
 
+        # Fill Werkplan scale selection combobox - removed again - can be re-implemented when subvalues of Werkplan will be introduced in INTERLIS data model
+        # self.export_werkplan_scale_selection_comboBox.clear()
+        # self.export_werkplan_scale_selection_comboBox.addItem("1:500", 500)
+        # self.export_werkplan_scale_selection_comboBox.addItem("1:250", 250)
+        # self.export_werkplan_scale_selection_comboBox.addItem("1:200", 200)
+
         structures_layer = TwwLayerManager.layer("vw_tww_wastewater_structure")
         reaches_layer = TwwLayerManager.layer("vw_tww_reach")
         self.structures = structures_layer.selectedFeatures() if structures_layer else []
@@ -63,7 +69,7 @@ class InterlisExportSettingsDialog(QDialog):
             settings_value is True or settings_value == "true"
         )
 
-        # Populate the labels list (restoring checked states of scaes)
+        # Populate the labels list (restoring checked states of scales)
         selected_scales = QgsSettings().value("tww_plugin/last_selected_scales", "").split(",")
         qgis_version_ok = Qgis.QGIS_VERSION_INT >= 32602
         self.labels_groupbox.setEnabled(qgis_version_ok)

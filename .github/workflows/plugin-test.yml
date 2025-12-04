@@ -36,7 +36,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           submodules: recursive
 
@@ -50,7 +50,7 @@ jobs:
         run: sudo ./plugin/scripts/download-interlis-libs.sh
 
       - name: Docker build
-        run: docker compose --profile qgis up -d --build
+        run: docker compose --profile qgis up --build -d
 
       - name: Clear Database
         run: |
