@@ -44,7 +44,7 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">TEKSI Abwasser (TWW)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">Installation Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user-guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user-guide/index.html">Benutzerhandbuch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../index.html">Administratorhandbuch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../extensions-guide/index.html">Offizielle TWW-Erweiterungen</a></li>
@@ -82,23 +82,22 @@
 <span id="labelcustomisation"></span><h1>Customisation of labeling and symbology behaviour<a class="headerlink" href="#customisation-of-labeling-and-symbology-behaviour" title="Link to this heading"></a></h1>
 <section id="relevant-fields">
 <h2>Relevant fields<a class="headerlink" href="#relevant-fields" title="Link to this heading"></a></h2>
-<p>The symbology and labeling behaviour of <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_wastewater_structure</span></code> depends on the following fields:</p>
+<p>Das Symbolisierungs- und Beschriftungsverhalten von <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_wastewater_structure</span></code> hängt von den folgenden Feldern ab:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">_channel_function_hierarchic</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">_channel_usage_current</span></code></p></li>
 </ul>
-<p>These two values are stored in <code class="docutils literal notranslate"><span class="pre">tww_od.wastewater_node</span></code> and updated by triggers. These triggers are defined so that the database sysadmin can influence how the labelling is executed.</p>
+<p>Diese beiden Werte werden in <code class="docutils literal notranslate"><span class="pre">tww_od.wastewater_node</span></code> gespeichert und durch Trigger aktualisiert. Diese Trigger sind so definiert, dass der Datenbankadministrator Einfluss auf die Beschriftung/Symbolisierung nehmen kann.</p>
 </section>
 <section id="labelling">
-<h2>Labelling<a class="headerlink" href="#labelling" title="Link to this heading"></a></h2>
-<p>Per default, we only label inflows from primary reaches, but all outflows regardless of hierarchy.
-If you want to include secondary inflows in the labels, this can be achieved by setting the field <code class="docutils literal notranslate"><span class="pre">tww_vl.channel_function_hierarchic.tww_include_in_labels</span></code> to <code class="docutils literal notranslate"><span class="pre">true</span></code> for all entries.</p>
+<h2>Beschriftung<a class="headerlink" href="#labelling" title="Link to this heading"></a></h2>
+<p>Standardmäßig werden nur Einläufe aus primären Haltungen, aber alle Ausläufe unabhängig von der Hierarchie gekennzeichnet. Um auch sekundäre Einläufe zu beschriften, setzen Sie das Feld <code class="docutils literal notranslate"><span class="pre">tww_vl.channel_function_hierarchic.tww_include_in_labels</span></code> für alle Einträge auf <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p>
 </section>
 <section id="symbology">
-<h2>Symbology<a class="headerlink" href="#symbology" title="Link to this heading"></a></h2>
-<p>The relevant fields are taken from the primary wastewater node of a wastewater structure. The corresponding channel values are defined by triggers that use the following priorisation scheme</p>
+<h2>Symbolisierung<a class="headerlink" href="#symbology" title="Link to this heading"></a></h2>
+<p>Die relevanten Felder werden dem primären Abwasserknoten eines Abwasserbauwerks entnommen. Die zugehörigen Kanalwerte werden durch Trigger definiert, die folgendes Priorisierungsschema verwenden</p>
 <ol class="arabic simple">
-<li><p>incoming channels where <code class="docutils literal notranslate"><span class="pre">tww_vl.channel_usage_current.tww_symbology_inflow_prio</span></code> are <code class="docutils literal notranslate"><span class="pre">true</span></code></p></li>
+<li><p>Einläufe, deren <code class="docutils literal notranslate"><span class="pre">tww_vl.channel_usage_current.tww_symbology_inflow_prio</span></code> = <code class="docutils literal notranslate"><span class="pre">true</span></code></p></li>
 <li><p>outgoing channels by <code class="docutils literal notranslate"><span class="pre">tww_vl.channel_function_hierarchic.tww_symbology_order</span></code></p></li>
 <li><p>incoming channels by <code class="docutils literal notranslate"><span class="pre">tww_vl.channel_function_hierarchic.tww_symbology_order</span></code></p></li>
 <li><p>outgoing channels by <code class="docutils literal notranslate"><span class="pre">tww_vl.channel_usage_current.tww_symbology_order</span></code></p></li>

@@ -46,7 +46,7 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">TEKSI Abwasser (TWW)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">Installation Guide</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">User Guide</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Benutzerhandbuch</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">Übersicht über TWW</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../digitizing/index.html">Digitalisieren in TWW</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../editing/index.html">Bearbeiten in TWW</a></li>
@@ -56,15 +56,15 @@
 <li class="toctree-l2"><a class="reference internal" href="../history/index.html">History in TWW</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">How To</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#setting-default-values">Standard Werte setzen</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#increase-speed-of-calculations-and-update-symbology-and-labels">Increase speed of calculations and update symbology and labels</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#working-with-labels">Working with labels</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#increase-speed-of-calculations-and-update-symbology-and-labels">Beschleunigen von Berechnungen und aktualisieren von Symbolen und Beschriftungen.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#working-with-labels">Arbeiten mit Beschriftungen</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#how-vw-tww-wastewater-structure-labels-work">Wie Beschriftungen in vw_tww_Abwasserbauwerk funktionieren</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#how-to-translate-a-label-prefix-c-b-i-o">Wie können die Labelbuchstaben (C, B, I, O) übersetzt werden</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#manual-label-positioning-for-different-scales">Manuelle Beschriftungspositionen für unterschiedliche Massstäbe</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#how-to-import-existing-label-positions">Importieren von bestehenden Beschriftungspositionen</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#hydraulic-modeling">Hydraulic modeling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#hydraulic-modeling">Hydraulik Modellierung</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#collecting-a-hydr-geometry-corresponds-to-a-basin-geometry-in-mike">Erfassen einer Hydr_Geometrie (entspricht einer Beckengeometrie in Mike+)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#hydraulic-modeling-of-an-overflow-prank-weir-leapingweir-pump">Hydraulische Modellierung eines Überlaufes (Streichwehr/Leapingwehr/Förderanlage)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#overflow-characteristic">Überlaufcharakteristik</a></li>
@@ -96,7 +96,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html">User Guide</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Benutzerhandbuch</a></li>
       <li class="breadcrumb-item active">How To</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/user-guide/How-To/index.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
@@ -156,17 +156,17 @@ Per default, the fields <code class="docutils literal notranslate"><span class="
 <p>Ein Beispiel für ein SQL Skript, um einen Standardwert in allen Vorkommen eines Feldes einzusetzen, ist <a class="reference external" href="https://github.com/teksi/wastewater/blob/main/datamodel/changelogs/0001/14_default_values.sql">hier</a>)</p>
 </section>
 <section id="increase-speed-of-calculations-and-update-symbology-and-labels">
-<h2>Increase speed of calculations and update symbology and labels<a class="headerlink" href="#increase-speed-of-calculations-and-update-symbology-and-labels" title="Link to this heading"></a></h2>
-<p>The TWW plugin has some menu commands to speed up calculations and for updating symbology and labels.</p>
+<h2>Beschleunigen von Berechnungen und aktualisieren von Symbolen und Beschriftungen.<a class="headerlink" href="#increase-speed-of-calculations-and-update-symbology-and-labels" title="Link to this heading"></a></h2>
+<p>Das TWW-Plugin verfügt über einige Menübefehle, um Berechnungen zu beschleunigen und Symbolisierung und Beschriftungen zu aktualisieren.</p>
 <figure class="align-default">
 <img alt="../../_images/tww_symbology_triggers.jpg" src="../../_images/tww_symbology_triggers.jpg" />
 </figure>
-<p>Select <em>Disable symbology triggers</em> before starting multiedit or a field calculation for a change of many records.</p>
-<p>Select <em>Enable symbology triggers</em> after the calculations or the multiedit sessions. If you forget to enable the symbology triggers, TWW will warn you if you start the project the next time.</p>
-<p>When the triggers are disabled, there is no update of calculated fields. E.g. the input- or output-labels or the _channel_function_hierarchic field in in layer vw_tww_wastewater_structure are not recalculated. To recalculate all these fields select <em>Update Symbology</em> in the TWW-Plugin-menu</p>
+<p>Wählen Sie <em>Disable symbology triggers</em>, bevor Sie die Mehrfachbearbeitung oder eine Feldberechnung für eine grosse Anzahl von Datensätzen starten.</p>
+<p>Wählen Sie nach den Berechnungen oder Multiedit-Sitzungen das Menü <em>Enable symbology triggers</em>. Falls Sie die Symbology Trigger nicht aktivieren, werden Sie von TWW beim nächsten Projektstart darauf hingewiesen.</p>
+<p>Wenn die Trigger deaktiviert sind, werden berechnete Felder nicht aktualisiert. Beispielsweise werden die Einlauf- oder Auslauf-Beschriftungen oder das Feld „_channel_function_hierarchic“ im Layer „vw_tww_wastewater_structure“ nicht neu berechnet. Um alle Felder neu zu berechnen, wählen Sie im TWW-Plugin-Menü „Update Symbology“.</p>
 </section>
 <section id="working-with-labels">
-<h2>Working with labels<a class="headerlink" href="#working-with-labels" title="Link to this heading"></a></h2>
+<h2>Arbeiten mit Beschriftungen<a class="headerlink" href="#working-with-labels" title="Link to this heading"></a></h2>
 <section id="how-vw-tww-wastewater-structure-labels-work">
 <h3>Wie Beschriftungen in vw_tww_Abwasserbauwerk funktionieren<a class="headerlink" href="#how-vw-tww-wastewater-structure-labels-work" title="Link to this heading"></a></h3>
 <p>Die Beschriftung eines Kontrollschachtes mit den verschiedenen Koten ist eine recht komplexe Sache. Die Koten sind nicht in der Klasse Abwasserbauwerk selbst gespeichert, sondern in den Klassen Deckel und Haltungspunkt der verknüpften Haltungen. TWW hat dafür 4 berechnete Felder um diese Koten beschriften zu können:</p>
@@ -194,7 +194,7 @@ Per default, the fields <code class="docutils literal notranslate"><span class="
 <figure class="align-default">
 <img alt="../../_images/tww_label_prefix_settings.jpg" src="../../_images/tww_label_prefix_settings.jpg" />
 </figure>
-<p>To see your changes, you have to choose „Update Symbology“ in the TWW-plugin menu.</p>
+<p>Um die Änderungen zu sehen, wählen Sie im TWW-Plugin-Menü „Update Symbology“.</p>
 </section>
 <section id="manual-label-positioning-for-different-scales">
 <h3>Manuelle Beschriftungspositionen für unterschiedliche Massstäbe<a class="headerlink" href="#manual-label-positioning-for-different-scales" title="Link to this heading"></a></h3>
@@ -253,7 +253,7 @@ Per default, the fields <code class="docutils literal notranslate"><span class="
 </section>
 </section>
 <section id="hydraulic-modeling">
-<h2>Hydraulic modeling<a class="headerlink" href="#hydraulic-modeling" title="Link to this heading"></a></h2>
+<h2>Hydraulik Modellierung<a class="headerlink" href="#hydraulic-modeling" title="Link to this heading"></a></h2>
 <section id="collecting-a-hydr-geometry-corresponds-to-a-basin-geometry-in-mike">
 <h3>Erfassen einer Hydr_Geometrie (entspricht einer Beckengeometrie in Mike+)<a class="headerlink" href="#collecting-a-hydr-geometry-corresponds-to-a-basin-geometry-in-mike" title="Link to this heading"></a></h3>
 <p>Hinweis:</p>

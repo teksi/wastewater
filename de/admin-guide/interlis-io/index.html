@@ -46,7 +46,7 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">TEKSI Abwasser (TWW)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">Installation Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user-guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user-guide/index.html">Benutzerhandbuch</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Administratorhandbuch</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../datamodel.html">Datenmodell</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../pgadmin/index.html">pgAdmin</a></li>
@@ -204,7 +204,7 @@ Linux : use the package manager</p>
 <p>Die Export-Tools können Labelpositionen für verschiedene Massstäbe exportieren. Sie können auswählen, welche Massstäbe Sie exportieren möchten, indem Sie diese auswählen oder die Auswahl aufheben.</p>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>Only choose either Werkplan 1:500 or Werkplan 1:250. The latter may give you a more accurarte placement while printing labels in the scale 1:500. Choosing both scales will give you duplicate label positions - so avoid this! You will not be able to distinguish anymore which are the labels for 1:250 and 1:500 in the exported xtf file as both will get the plantype = „Werkplan“ (currently VSA-DSS / SIA405 Abwasser 2020.x only supports one scale - this might change in a future release).</p>
+<p>Wählen Sie entweder Werkplan 1:500 oder Werkplan 1:250. Letzterer ermöglicht eine genauere Platzierung der Beschriftungen im Maßstab 1:500. Die Auswahl beider Maßstäbe im gleichen Export führt zu doppelten Beschriftungspositionen – vermeiden Sie dies! In der exportierten XTF-Datei lassen sich die Beschriftungen für 1:250 und 1:500 nicht mehr unterscheiden, da beide den Plantyp „Werkplan“ erhalten (derzeit unterstützt VSA-DSS / SIA405 Abwasser 2020.x nur einen Maßstab – dies kann sich in einer zukünftigen Version ändern).</p>
 </div>
 <p>Bestätigen Sie das Dialogfeld und wählen Sie einen Speicherort für die <cite>.xtf</cite>-Datei.</p>
 <div class="admonition note">
@@ -232,17 +232,17 @@ Linux : use the package manager</p>
 </div>
 <p>The following validations are run as pre-process:</p>
 <ul class="simple">
-<li><p>Validate subclasses before export (_check_subclass_counts): The total of the subclass entries over alls subclasses must be equal to the numer of entries in the superclass.</p></li>
-<li><p>Identifier NULL check (_check_identifier_null): As identifier is mandatory in the INTERLIS models, we check whether every identifier field has an entry (NOT NULL). If you have data, where you do not want to create your own identifiers, copy the obj_id as identifier (e.g. for reach_points). This is also the standard behaviour when you add new data. If you have copied data from elsewhere (not created in TEKSI), you might have to clean up this, else your INTERLIS export will stop.</p></li>
-<li><p>Check references to the class organisation (_check_fk_owner_null, _check_fk_operator_null, _check_fk_dataowner_null, _check_fk_provider_null): Owner, Operator and the metainformation about dataowner and provider are MANDATORY in a INTERLIS Export file. Therefor these pre-checks make sure they are filled in. If you don’t know, choose the Organisation ‚unknown‘, that is also an entry in the organisation dataset.</p></li>
-<li><p>Check references to classes that are MANDATORY (e.g. _check_fk_reach_point_from_null, …): References that are MANDATORY in INTERLIS will be pre-checked to avoid crash during export.</p></li>
+<li><p>Subklassen vor dem Export prüfen (_check_subclass_counts): Die Summe der Einträge in den Subklassen über alle Subklassen hinweg muss der Anzahl der Einträge in der Superklasse entsprechen.</p></li>
+<li><p>Prüfung auf NULL-Werte für Bezeichnungen (_check_identifier_null): Da Bezeichnungen in den INTERLIS-Modellen obligatorisch sind, wird geprüft, ob jedes Bezeichnung-Feld einen Eintrag (NOT NULL) enthält. Wenn Sie Daten haben, für die Sie keine eigenen Bezeichnungen erstellen möchten, kopieren Sie die obj_id als Bezeichnungen (z. B. für Haltungspunkte). Dies ist auch das Standardverhalten beim Hinzufügen neuer Daten. Wenn Sie Daten von anderen Quellen kopiert haben (die nicht in TEKSI erstellt wurden), müssen Sie diese möglicherweise bereinigen, da sonst der INTERLIS-Export abgebrochen wird.</p></li>
+<li><p>Prüfen Sie die Verweise auf die Organisationsklasse (_check_fk_owner_null, _check_fk_operator_null, _check_fk_dataowner_null, _check_fk_provider_null): Eigentümer, Betreiber und die Metainformationen zu Dateneigentümer und Datenlieferant sind in einer INTERLIS-Exportdatei obligatorisch. Diese Vorabprüfungen stellen sicher, dass diese Felder ausgefüllt sind. Falls Sie die Informationen nicht kennen, wählen Sie die Organisation „unbekannt“, da diese ebenfalls im Organisationsdatensatz vorhanden ist.</p></li>
+<li><p>Überprüfen Sie Verweise auf Klassen, die als MANDATORY (zwingend) gekennzeichnet sind (z. B. _check_fk_reach_point_from_null, …): Verweise, die in INTERLIS als MANDATORY gekennzeichnet sind, werden vorab geprüft, um einen Absturz beim Export zu vermeiden.</p></li>
 </ul>
-<p>You will get a new summary window that tells you, if any of these pre-checks failed:</p>
+<p>Es öffnet sich ein neues Zusammenfassungsfenster, das Ihnen mitteilt, falls eine dieser Vor-Prüfungen fehlgeschlagen ist:</p>
 <figure class="align-default">
 <img alt="../../_images/interlis_export_precheck_results.png" src="../../_images/interlis_export_precheck_results.png" />
 </figure>
-<p>You can choose to continue export, if you think the pre-check results will not be relevant for your export (e.g. if you export SIA405 Abwaser, but there are reference check errors that are within the VSA-DSS part that are beyond SIA405 Abwasser).</p>
-<p>Exports include also a validation step at the end using <cite>ilivalidator</cite>, which will inform you whether the export contains INTERLIS validation errors.</p>
+<p>Sie können den Export fortsetzen, wenn Sie der Meinung sind, dass die Ergebnisse der Vorprüfung für Ihren Export nicht relevant sind (z. B. wenn Sie SIA405 Abwasser exportieren, aber Referenzprüfungsfehler innerhalb des VSA-DSS-Teils vorliegen, die über SIA405 Abwasser hinausgehen).</p>
+<p>Ein Export beinhaltet außerdem am Ende einen Validierungsschritt mit <cite>ilivalidator</cite>, der Sie darüber informiert, ob der Export INTERLIS-Validierungsfehler enthält.</p>
 <p>Wenn der Export erfolgreich war, erscheint eine grüne Erfolgsmeldung. Wenn der Export nicht erfolgreich war, erhalten Sie entweder während des Exportvorgangs Fehlermeldungen oder am Ende des Vorgangs eine Fehlerwarnung.</p>
 <p>Weitere Details finden Sie im Protokollfenster und in den Textprotokollen.</p>
 <table class="docutils align-default" id="id5">
@@ -301,7 +301,7 @@ Linux : use the package manager</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>There is a new option that you can avoid overwriting of data when there are NULL values of attributes in the import data set. This will keep your existing values that you already have in the database.</p>
+<p>Es gibt eine neue Option, mit der Sie das Überschreiben von Daten vermeiden können, wenn Attribute im Importdatensatz NULL-Werte enthalten. Dadurch bleiben Ihre bereits in der Datenbank vorhandenen Werte erhalten.</p>
 </div>
 <figure class="align-default">
 <img alt="../../_images/interlis_import_options.png" src="../../_images/interlis_import_options.png" />
@@ -317,9 +317,8 @@ Linux : use the package manager</p>
 <figure class="align-default">
 <img alt="../../_images/tww_import_dialog.png" src="../../_images/tww_import_dialog.png" />
 </figure>
-<p>The left part of this dialog lists all elements that are going to be imported from the <cite>.xtf</cite> file, allowing to review what is going to be imported and to deselect elements you may want to skip.
-You can see, if there is already a dataset with the same obj_id in the state attribute: (EXISTING) means that the import will not change anything, (MODIFIED) tells you that some attributes have been changed. For details see on the right side, where you can compare the values for each attribute.</p>
-<p>The second colums also shows the validation status of each object (VALID), showing whether further action is needed (INVALID) or recommended (WARNING) prior to importing.</p>
+<p>Im linken Teil dieses Dialogfelds werden alle Elemente aufgelistet, die aus der <cite>.xtf</cite>-Datei importiert werden. Sie können die zu importierenden Elemente überprüfen und unerwünschte Elemente abwählen. Falls bereits ein Datensatz mit derselben <cite>obj_id</cite> existiert, sehe Sie in der Spalte <cite>state</cite>  folgendes: <cite>(EXISTING)</cite> bedeutet, dass der Import keine Änderungen mit sich bringt, <cite>(MODIFIED)</cite> hingegen, dass einige Attribute geändert wurden. Details finden Sie auf der rechten Seite, wo Sie die Werte der einzelnen Attribute vergleichen können.</p>
+<p>In der zweiten Spalte wird außerdem der Validierungsstatus jedes Objekts (GÜLTIG) angezeigt. Daraus wird ersichtlich, ob vor dem Import weitere Maßnahmen erforderlich (UNGÜLTIG) oder empfohlen (WARNUNG) sind.</p>
 <p>Der rechte Teil dieses Dialogfelds zeigt ein Formular, das für den in der Liste ausgewählten Elementtyp spezifisch ist und die Anpassung des Imports ermöglicht.</p>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>

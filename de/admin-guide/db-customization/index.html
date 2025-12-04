@@ -46,7 +46,7 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">TEKSI Abwasser (TWW)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">Installation Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user-guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user-guide/index.html">Benutzerhandbuch</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Administratorhandbuch</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../datamodel.html">Datenmodell</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../pgadmin/index.html">pgAdmin</a></li>
@@ -58,7 +58,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#altering-symbology-and-labelling-behaviour">Symbologie- und Beschriftungsverhalten ändern</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#creation-of-custom-tables">Erstellung benutzerdefinierter Tabellen</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#adding-fields-to-base-tables">Felder zu Basistabellen hinzufügen</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#datamodel-updates">Datamodel updates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#datamodel-updates">Datenmodell Update</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#modification-framework-for-application-schema">Modification Framework for application schema</a><ul>
@@ -114,7 +114,7 @@
 <h3>Einleitung<a class="headerlink" href="#introduction" title="Link to this heading"></a></h3>
 <p>Das Datenmodell ist versioniert und Aktualisierungen werden mit dem Postgres Updates Manager (auch bekannt als <a class="reference external" href="https://github.com/opengisch/pum">PUM</a>) durchgeführt. Die zur Bearbeitung der Daten erforderlichen Ansichten werden automatisch mit der Bibliothek „Pirogue &lt;<a class="reference external" href="https://github.com/opengisch/pirogue">https://github.com/opengisch/pirogue</a>&gt;“ erzeugt.</p>
 <p>Die Kombination von beidem ermöglicht kleine Anpassungen des Datenmodells, wie das Hinzufügen von Feldern zu bestehenden Basistabellen oder die Erweiterung von Ansichten durch das Verbinden zusätzlicher Tabellen.</p>
-<p>Before going further, we strongly recommend to ask the community if you have any doubts about how to store any information in the database. TWW complies with <a class="reference external" href="http://www.sia.ch/405">SIA 405</a> Waste Water and <a class="reference external" href="https://www.vsa.ch/models/">VSA-DSS</a> datamodel.</p>
+<p>Bevor Sie fortfahren, empfehlen wir Ihnen dringend, die Community zu fragen, wenn Sie irgendwelche Fragen haben, wie Sie Informationen in der Datenbank speichern können. TWW erfüllt die Anforderungen der <a class="reference external" href="http://www.sia.ch/405">SIA 405</a> Abwasser und des <a class="reference external" href="http://dss.vsa.ch">VSA-DSS</a> Datenmodells.</p>
 <p>Wenn das TWW-Datenmodell bestimmte Daten noch nicht speichern kann, teilen Sie uns bitte mit, um welche Art von Daten es sich handelt und wie damit verfahren werden soll. Das TWW-Datenmodell ist ein standardisiertes, anpassungsfähiges Modell und kann Ihren Anforderungen entsprechend angepasst werden.</p>
 <p>Sollte dennoch eine Anpassung erforderlich sein, erklären die folgenden Erläuterungen und Regeln, wie Sie das TWW-Datenmodell an Ihre spezifischen Bedürfnisse anpassen können.</p>
 </section>
@@ -132,20 +132,20 @@
 <p>Anstatt zusätzliche Felder zu Basistabellen hinzuzufügen, empfiehlt es sich, eine neue Tabelle mit einem Fremdschlüssel zu erstellen, der sie mit der Basistabelle über <a class="reference external" href="https://github.com/opengisch/pum">PUM</a> verknüpft.</p>
 </section>
 <section id="datamodel-updates">
-<h3>Datamodel updates<a class="headerlink" href="#datamodel-updates" title="Link to this heading"></a></h3>
+<h3>Datenmodell Update<a class="headerlink" href="#datamodel-updates" title="Link to this heading"></a></h3>
 <div class="admonition attention">
 <p class="admonition-title">Achtung</p>
 <p>The process of updating the database is currenty being overhauled. The following information can therefore change before the next release</p>
 </div>
 <section id="adding-fields-and-tables">
-<h4>Adding fields and tables<a class="headerlink" href="#adding-fields-and-tables" title="Link to this heading"></a></h4>
+<h4>Felder und Tabellen hinzufügen<a class="headerlink" href="#adding-fields-and-tables" title="Link to this heading"></a></h4>
 <p>Um Upgrades des Datenmodells zu ermöglichen, sollte man ein Skript bereitstellen, um sie zu erstellen, und eines, um sie zu löschen. Diese Skripte (SQL oder Python) sollten in einem bestimmten Pfad abgelegt und als pre-all.{py,sql} und post-all.{py,sql} bezeichnet werden. Dieser Pfad muss als Variable an PUM übergeben werden, wenn das Datenmodell als Delta-Verzeichnis aktualisiert wird (siehe PUM-<a class="reference external" href="https://github.com/opengisch/pum">Dokumentation</a>).</p>
 <p>If one wants to have these views automatically updated when fields are added the data model, Pirogue can be used to dynamically generate the views. You can take example of the creation of the views in the data model.</p>
 <div class="admonition attention">
 <p class="admonition-title">Achtung</p>
-<p>It is discouraged to add additional fields to base tables that are defined by TEKSI Wastewater, as they can interfere with datamodel updates.</p>
+<p>Es wird davon abgeraten, den von TEKSI Abwasser definierten Basistabellen zusätzliche Felder hinzuzufügen, da diese mit Datenmodellaktualisierungen in Konflikt geraten können.</p>
 </div>
-<p>If it is necessary to add custom fields, create a separate table with a foreign key pointing to the TEKSI base table and join it to the base views.</p>
+<p>Falls doch benutzerdefinierte Felder hinzugefügt werden müssen, erstellen Sie eine separate Tabelle mit einem Fremdschlüssel, der auf die TEKSI-Basistabelle verweist, und verknüpfen Sie diese mit den Basis-Views.</p>
 </section>
 </section>
 </section>
@@ -205,6 +205,9 @@ The the default yaml is</p>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ci</span>
 <span class="w">    </span><span class="nt">active</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 <span class="w">    </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">modification_repos/ci_extension/config.yaml</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">webgis</span>
+<span class="w">    </span><span class="nt">active</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">modification_repos/webgis/config.yaml</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">agxx</span>
 <span class="w">    </span><span class="nt">active</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 <span class="w">    </span><span class="nt">reset_vl</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>

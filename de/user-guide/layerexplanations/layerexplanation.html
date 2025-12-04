@@ -46,13 +46,13 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">TEKSI Abwasser (TWW)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">Installation Guide</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">User Guide</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Benutzerhandbuch</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">Übersicht über TWW</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="overview.html">Einleitung und Übersicht</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Layer Erläuterungen</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#main-layers">Hauptlayer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#layergroup-wastewater-structures">Layergroup Wastewater Structures</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#layergroup-examination-maintenance">Layergroup Examination-Maintenance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#layergroup-wastewater-structures">Layergruppe Abwasserbauwerke</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#layergroup-examination-maintenance">Layergruppe Untersuchung-Unterhalt</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#documents">Documents</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#hydraulic">Hydraulik Layer</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#layergroups-connection-object-measures-log-card-rural">Layergroups Connection Object, Measures, Log Card, Rural</a></li>
@@ -97,7 +97,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html">User Guide</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Benutzerhandbuch</a></li>
           <li class="breadcrumb-item"><a href="index.html">Übersicht über TWW</a></li>
       <li class="breadcrumb-item active">Layer Erläuterungen</li>
       <li class="wy-breadcrumbs-aside">
@@ -149,12 +149,12 @@
 </div>
 <ul class="simple">
 <li><p>Das berechnete Feld <code class="docutils literal notranslate"><span class="pre">tww_is_primary</span></code> ist für eine benutzerdefinierte Definition der PAA Abwasserbauwerke vorhanden. Damit können Abfragen, Symbolisierungen und Beschriftungen einfacher definiert werden.</p></li>
-<li><p>Create flushing_nozzle on reaches as structure part of the channel.</p></li>
+<li><p>Erzeuge Spülstutzen auf Haltungen als Bauwerksteil von Kanälen</p></li>
 </ul>
 </section>
 </section>
 <section id="layergroup-wastewater-structures">
-<h2>Layergroup Wastewater Structures<a class="headerlink" href="#layergroup-wastewater-structures" title="Link to this heading"></a></h2>
+<h2>Layergruppe Abwasserbauwerke<a class="headerlink" href="#layergroup-wastewater-structures" title="Link to this heading"></a></h2>
 <section id="wastewater-structures-details-tww-app-wastewater-structure">
 <h3>Abwasserbauwerke Details <code class="docutils literal notranslate"><span class="pre">tww_app.wastewater_structure</span></code><a class="headerlink" href="#wastewater-structures-details-tww-app-wastewater-structure" title="Link to this heading"></a></h3>
 <p>Diese Layer zeigen und ermöglichen das Editieren von Detailgeometrien von Abwasserbauwerken. Eine neue Detailgeometrie kann im Layer <cite>vw_tww_Abwasserbauwerk</cite> mit der Aktion  <cite>Digitize</cite> erstellt werden.</p>
@@ -165,10 +165,10 @@
 <div class="versionadded">
 <p><span class="versionmodified added">Added in version 2025.0.</span></p>
 </div>
-<p>A layer for the DSS-classes</p>
+<p>Ein Layer für die DSS-Klassen</p>
 <ul class="simple">
-<li><p>small_treatment_plant</p></li>
-<li><p>drainless_toilet</p></li>
+<li><p>Kleinkläranlage</p></li>
+<li><p>Abflusslose Toilette</p></li>
 <li><p>ARABauwerk</p></li>
 </ul>
 </section>
@@ -177,8 +177,8 @@
 <div class="versionchanged">
 <p><span class="versionmodified changed">Geändert in Version 2025.0.</span></p>
 </div>
-<p>In version 2025.0 are all structure_parts configured in the TWW-project. Because there are many structure parts, they are grouped in layergroups Structure Parts Channel, Structure Parts Manhole and DSSMini Structure Parts.</p>
-<p>Cover and flushing nozzle are the only structure parts with a point-geometry itself. All other structure parts are just linked to their wastewater structures and should by only edited by the main layers (<cite>vw_tww_wastewater_structure</cite> and <cite>vw_tww_reach</cite>).</p>
+<p>In der TWW Version 2025.X sind alle Bauwerksteile im TWW-Projekt konfiguriert. Weil es viele Bauwerksteil-Subklassen gibt sind sie in den Layergruppen Kanal-Bauwerkteil, Schacht-Bauwerksteil und DSS-mini-Bauwerksteil gruppiert.</p>
+<p>Deckel und Spülstutzen sind die einzigen Bauwerksteile mit einer eigenen Lageinformation. Alle anderen Bauwerksteile sind nur mit ihrem Abwasserbauwerk verknüpft und sollen nur über die Hauptlayer  (<cite>vw_tww_Abwasserbauwerk</cite> und <cite>vw_tww_Haltung</cite>) geändert werden.</p>
 </section>
 <section id="covers-tww-app-vw-cover">
 <h3>Deckel <code class="docutils literal notranslate"><span class="pre">tww_app.vw_cover</span></code><a class="headerlink" href="#covers-tww-app-vw-cover" title="Link to this heading"></a></h3>
@@ -189,27 +189,27 @@
 <div class="versionadded">
 <p><span class="versionmodified added">Added in version 2025.0.</span></p>
 </div>
-<p>The channel-class has no geometry. Therefore, mvw_tww_channel is a materialized view that uses the reach line-geometries to work with e.g maintenace_events, that are not connected to reaches, but to channels.</p>
-<p>The „old“ <code class="docutils literal notranslate"><span class="pre">vw_channel</span></code> -layer without geometry still exits beside.</p>
+<p>Die Klasse Kanal hat keine Geometrie. Mit mvw_tww_Kanal gibt es eine materialisierte View, die deshalb die Geometrie der Haltungen verwendet, um z.B. mit Erhaltungsereignissen zu arbeiten, die ja nicht mit Haltungen, aber mit Kanälen verknüpft sind.</p>
+<p>Der „alte“`` vw_Kanal`` -Layer ohne Geometrie ist auch noch vorhanden.</p>
 </section>
 <section id="measuring-point-tww-od-measuring-point">
-<h3>Measuring_point   <code class="docutils literal notranslate"><span class="pre">tww_od.measuring_point</span></code><a class="headerlink" href="#measuring-point-tww-od-measuring-point" title="Link to this heading"></a></h3>
+<h3>Messstelle   <code class="docutils literal notranslate"><span class="pre">tww_od.measuring_point</span></code><a class="headerlink" href="#measuring-point-tww-od-measuring-point" title="Link to this heading"></a></h3>
 <div class="versionadded">
 <p><span class="versionmodified added">Added in version 2025.0.</span></p>
 </div>
-<p>Just the layermeasuring_point (as part of the measuring subsystem) is added to be able to attribute the measuring_point-log-cards. Other tables of the measuring subsystem are available in the database, but are not configured.</p>
+<p>Nur der Layer Messstelle measuring_point (ein Teil des Subsystem Messung) ist vorhanden um die Attribute der Stammkarte Messstelle zu verwalten. Andere Tabellen des Substystem Messung sind in der Datenbank vorhanden, aber im QGIS-Projekt nicht konfiguriert.</p>
 </section>
 <section id="change-points-tww-app-vw-change-points">
-<h3>Change Points <code class="docutils literal notranslate"><span class="pre">tww_app.vw_change_points</span></code><a class="headerlink" href="#change-points-tww-app-vw-change-points" title="Link to this heading"></a></h3>
+<h3>Wechselpunkte <code class="docutils literal notranslate"><span class="pre">tww_app.vw_change_points</span></code><a class="headerlink" href="#change-points-tww-app-vw-change-points" title="Link to this heading"></a></h3>
 <div class="versionadded">
 <p><span class="versionmodified added">Added in version 2025.0.</span></p>
 </div>
-<p>A view to visualize the points (wastewater_nodes between to reaches of the same channel), where material or clear_heigth or slope changes.</p>
+<p>Eine View, um die Punkte mit Material-, Lichte-Hoehe oder Gefällswechsel darzustellen (Punkte müssen Abwasserknoten zwischen Haltungen mit dem gleichen Kanal sein).</p>
 </section>
 <section id="organisations-tww-od-organisation">
 <h3>Organisationen <code class="docutils literal notranslate"><span class="pre">tww_od.organisation</span></code><a class="headerlink" href="#organisations-tww-od-organisation" title="Link to this heading"></a></h3>
 <p>Organisation enthält die Organisation die in den Attributen FS_Datenherr, FS_Eigentümer, FS_Betreiber, FS_Datenlieferant etc. gewählt werden können.</p>
-<p>In order to use the organisations efficiently, one can flag an organisation as active using the flag <code class="docutils literal notranslate"><span class="pre">tww_active</span></code>. This flag filters the organisations accessible from the QGIS project.</p>
+<p>Im Organisationen effizent zu verwenden, können Organisationen mit dem Flag <code class="docutils literal notranslate"><span class="pre">tww_active</span></code> aktiviert werden. Diese Flag filtert dann im QGIS-Projekt die angezeigten Organisationen.</p>
 <blockquote>
 <div><figure class="align-default">
 <img alt="../../_images/od_organisation.jpg" src="../../_images/od_organisation.jpg" />
@@ -219,12 +219,11 @@
 </section>
 </section>
 <section id="layergroup-examination-maintenance">
-<h2>Layergroup Examination-Maintenance<a class="headerlink" href="#layergroup-examination-maintenance" title="Link to this heading"></a></h2>
+<h2>Layergruppe Untersuchung-Unterhalt<a class="headerlink" href="#layergroup-examination-maintenance" title="Link to this heading"></a></h2>
 <div class="versionadded">
 <p><span class="versionmodified added">Added in version 2025.0.</span></p>
 </div>
-<p>Visualized maintenance-events with the layers <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_channel_maintenance</span></code> and <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_ws_maintenance</span></code> that adds the geometry and the most important attributes of the connected wastewater_structures to the maintenance_event-records.
-You can not create new maintenance-events with this views, but you can edit attributes, symbolize and export</p>
+<p>Die Layer  <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_channel_maintenance</span></code> und``tww_app.vw_tww_ws_maintenance`` nutzen die Geomtrie und die wichtigsten Attribute der verknüpften Abwasserbauwerke um Erhaltungsereignisse in der Karte darzustellen.  In diesen Layern können nicht neue Erhaltungsereignis-Datensätze erfasst, aber es können Felder geändert werden und es kann symbolisiert und exportiert werden.</p>
 <section id="maintenance-events-tww-app-vw-tww-maintenance">
 <h3>Erhaltungsereignis <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_maintenance_event</span></code><a class="headerlink" href="#maintenance-events-tww-app-vw-tww-maintenance" title="Link to this heading"></a></h3>
 <p>Erhaltungsereignisse können mit der View tww_od.vw_tww_maintenance_event erstellt werden.</p>
@@ -232,11 +231,11 @@ You can not create new maintenance-events with this views, but you can edit attr
 <p>Vergleiche <a class="reference external" href="../editing/maintenance_events.html">Bearbeiten von Erhaltungsereignissen</a> für mehr Infos.</p>
 </section>
 <section id="bio-ecol-assessment-tww-app-vw-bio-ecol-assessment">
-<h3>Bio_Ecol_Assessment <code class="docutils literal notranslate"><span class="pre">tww_app.vw_bio_ecol_assessment</span></code><a class="headerlink" href="#bio-ecol-assessment-tww-app-vw-bio-ecol-assessment" title="Link to this heading"></a></h3>
+<h3>Biol_oekol_Gesamtbeurteilung <code class="docutils literal notranslate"><span class="pre">tww_app.vw_bio_ecol_assessment</span></code><a class="headerlink" href="#bio-ecol-assessment-tww-app-vw-bio-ecol-assessment" title="Link to this heading"></a></h3>
 <div class="versionadded">
 <p><span class="versionmodified added">Added in version 2025.0.</span></p>
 </div>
-<p>A subclass of Maintenance_event</p>
+<p>Eine Subklasse der Erhaltungsereignisse</p>
 <p>Create the bio_ecol_assessments in the main tables (discharge points in vw_tww_wastewater_structure) and visualize it in vw_tww_ws_maintenance.</p>
 </section>
 </section>
