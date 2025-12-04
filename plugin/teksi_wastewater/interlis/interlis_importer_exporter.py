@@ -167,11 +167,12 @@ class InterlisImporterExporter:
             tww_session = self._import_from_intermediate_schema(import_model)
 
             if show_selection_dialog:
+                from PyQt5.QtCore import Qt
+                from PyQt5.QtWidgets import QApplication
+
                 from .gui.interlis_import_selection_dialog import (
                     InterlisImportSelectionDialog,
                 )
-                from PyQt5.QtCore import Qt
-                from PyQt5.QtWidgets import QApplication
 
                 self._progress_done(90, "Import objects selection...")
                 import_dialog = InterlisImportSelectionDialog()
