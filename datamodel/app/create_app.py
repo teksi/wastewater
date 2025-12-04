@@ -15,7 +15,7 @@ from view.catchment_area_views import (
     vw_tww_catchment_area_totals,
 )
 from view.maintenance_views import (
-    vw_tww_channel,
+    mvw_tww_channel,
     vw_tww_channel_maintenance,
     vw_tww_ws_maintenance,
 )
@@ -38,6 +38,7 @@ class Hook(HookBase):
         connection: psycopg.Connection,
         SRID: int = 2056,
         modification_agxx: bool = False,
+        webgis: bool = False,
         modification_ci: bool = False,
         lang_code: str = "en",
         modification_yaml: Path = None,
@@ -46,6 +47,7 @@ class Hook(HookBase):
         Creates the schema tww_app for TEKSI Wastewater & GEP
         :param SRID: the EPSG code for geometry columns. Overridden by modification_yaml
         :param modification_agxx: bool of whether to load agxx modification. Overridden by modification_yaml
+        :param webgis: bool of whether to load web modification. Overridden by modification_yaml
         :param modification_ci: bool of whether to load ci modification. Overridden by modification_yaml
         :param lang_code: language code for use in modification views. Overridden by modification_yaml
         :param modification_yaml: Path of yaml containing app parametrisation
@@ -62,6 +64,8 @@ class Hook(HookBase):
             if "modification_repositories" in self.parameters:
                 for entry in self.parameters["modification_repositories"]:
                     if modification_ci and entry["id"] == "ci":
+                        entry["active"] = True
+                    if webgis and entry["id"] == "webgis":
                         entry["active"] = True
                     if modification_agxx and entry["id"] == "agxx":
                         entry["active"] = True
@@ -98,6 +102,10 @@ class Hook(HookBase):
             },
             "viewer_role": {
                 "value": "tww_viewer",
+                "type": "identifier",
+            },
+            "name_lang": {
+                "value": f"name_{lang_code}",
                 "type": "identifier",
             },
         }
@@ -192,13 +200,13 @@ Running modification {modification.get('id')}
                 else {}
             ),
         )
-        vw_tww_channel(
+        mvw_tww_channel(
             connection=self._connection,
             srid=SRID,
             lang_code=lang_code,
             extra_definition=(
-                self.load_yaml(self.extra_definitions["vw_tww_channel"])
-                if self.extra_definitions.get("vw_tww_channel")
+                self.load_yaml(self.extra_definitions["mvw_tww_channel"])
+                if self.extra_definitions.get("mvw_tww_channel")
                 else {}
             ),
         )
@@ -215,22 +223,6 @@ Running modification {modification.get('id')}
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_ws_maintenance"])
                 if self.extra_definitions.get("vw_tww_ws_maintenance")
-                else {}
-            ),
-        )
-        vw_tww_channel_maintenance(
-            connection=self._connection,
-            extra_definition=(
-                self.load_yaml(self.extra_definitions["vw_tww_channel_maintenance"])
-                if self.extra_definitions["vw_tww_channel_maintenance"]
-                else {}
-            ),
-        )
-        vw_tww_ws_maintenance(
-            connection=self._connection,
-            extra_definition=(
-                self.load_yaml(self.extra_definitions["vw_tww_ws_maintenance"])
-                if self.extra_definitions["vw_tww_ws_maintenance"]
                 else {}
             ),
         )
@@ -344,9 +336,10 @@ Running modification {modification.get('id')}
             curr_dir = ""
 
         ext_variables = modification_config.get("variables", {})
-        sql_vars = self.parse_variables(ext_variables)
+        sql_vars = self.parse_variables({**self.variables_sql, **ext_variables})
 
         for sql_file in modification_config.get("sql_files", None):
+            logger.info(f"Running sql file {sql_file}")
             file_name = curr_dir / sql_file.get("file")
             self.run_sql_file(file_name, sql_vars)
 
@@ -354,14 +347,21 @@ Running modification {modification.get('id')}
             for key, value in modification_config.get("extra_definitions", {}).items():
                 if not self.extra_definitions[key]:
                     self.extra_definitions[key] = curr_dir / value
+                    logger.info(f"altered {key} extra definition to {self.extra_definitions[key]}")
 
             for key, value in modification_config.get("simple_joins_yaml", {}).items():
                 if not self.simple_joins_yaml[key]:
                     self.simple_joins_yaml[key] = curr_dir / value
+                    logger.info(
+                        f"altered {key} simpleJoin definition to {self.simple_joins_yaml[key]}"
+                    )
 
             for key, value in modification_config.get("multiple_inherintances", {}).items():
                 if self.multiple_inherintances[key]:
                     self.multiple_inherintances[key] = curr_dir / value
+                    logger.info(
+                        f"altered {key} multipleInheritance definition to {self.multiple_inherintances[key]}"
+                    )
 
     def manage_vl(
         self,
@@ -471,6 +471,13 @@ if __name__ == "__main__":
         help="load ci modification",
     )
     parser.add_argument(
+        "-w",
+        "--webgis",
+        action="store_true",
+        default=False,
+        help="load webGIS modification",
+    )
+    parser.add_argument(
         "-l",
         "--lang_code",
         help="language code",
@@ -490,6 +497,7 @@ if __name__ == "__main__":
             SRID=args.srid,
             modification_agxx=args.modification_agxx,
             modification_ci=args.modification_ci,
+            webgis=args.webgis,
             modification_yaml=args.modification_yaml,
             lang_code=args.lang_code,
         )
