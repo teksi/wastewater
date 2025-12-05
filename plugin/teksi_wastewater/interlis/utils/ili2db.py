@@ -5,7 +5,7 @@ from types import SimpleNamespace
 
 from sqlalchemy.ext.automap import AutomapBase
 
-from ...libs.modelbaker.iliwrapper import globals, ili2dbutils
+from .modelbaker.iliwrapper import globals, ili2dbutils
 from .. import config
 from .various import execute_subprocess, get_pgconf_as_ili_args, logger
 
