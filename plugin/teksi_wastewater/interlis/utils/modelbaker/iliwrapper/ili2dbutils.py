@@ -16,14 +16,16 @@
  *                                                                         *
  ***************************************************************************/
 """
+
 import glob
 import os
 import platform
 import re
-import requests
 import subprocess
 import tempfile
 import zipfile
+
+import requests
 
 from .globals import DbIliMode
 from .ili2dbtools import get_tool_url, get_tool_version
@@ -31,7 +33,7 @@ from .ili2dbtools import get_tool_url, get_tool_version
 
 def get_ili2db_bin(tool, db_ili_version, stdout, stderr):
     if tool not in DbIliMode or tool == DbIliMode.ili:
-        raise RuntimeError("Tool {} not found".format(tool))
+        raise RuntimeError(f"Tool {tool} not found")
 
     tool |= (
         DbIliMode.ili
@@ -42,7 +44,7 @@ def get_ili2db_bin(tool, db_ili_version, stdout, stderr):
     ili_tool_url = get_tool_url(tool, db_ili_version)
 
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    ili2db_dir = "{}-{}".format(tool_name, ili_tool_version)
+    ili2db_dir = f"{tool_name}-{ili_tool_version}"
 
     # the structure changed since 3.12.2
     if is_version_valid(
@@ -55,16 +57,14 @@ def get_ili2db_bin(tool, db_ili_version, stdout, stderr):
             dir_path,
             "bin",
             ili2db_dir,
-            "{tool}-{version}.jar".format(tool=tool_name, version=ili_tool_version),
+            f"{tool_name}-{ili_tool_version}.jar",
         )
     else:
         ili2db_file = os.path.join(
             dir_path,
             "bin",
             ili2db_dir,
-            "{tool}-{version}/{tool}.jar".format(
-                tool=tool_name, version=ili_tool_version
-            ),
+            "{tool}-{version}/{tool}.jar".format(tool=tool_name, version=ili_tool_version),
         )
 
     if not os.path.isfile(ili2db_file):
@@ -76,7 +76,7 @@ def get_ili2db_bin(tool, db_ili_version, stdout, stderr):
         tmpfile = tempfile.NamedTemporaryFile(suffix=".zip", delete=False)
 
         stdout.emit(
-                "Downloading {} version {}…".format(tool_name, ili_tool_version),
+            f"Downloading {tool_name} version {ili_tool_version}…",
         )
 
         try:
@@ -86,11 +86,11 @@ def get_ili2db_bin(tool, db_ili_version, stdout, stderr):
             )
         except NetworkError as e:
             stderr.emit(
-                    'Could not download {tool_name}\n\n  Error: {error}\n\nFile "{file}" not found. Please download and extract <a href="{ili2db_url}">{tool_name}</a>'.format(
-                        tool_name=tool_name,
-                        ili2db_url=ili_tool_url,
-                        error=e.msg,
-                        file=ili2db_file,
+                'Could not download {tool_name}\n\n  Error: {error}\n\nFile "{file}" not found. Please download and extract <a href="{ili2db_url}">{tool_name}</a>'.format(
+                    tool_name=tool_name,
+                    ili2db_url=ili_tool_url,
+                    error=e.msg,
+                    file=ili2db_file,
                 )
             )
             return None
@@ -104,8 +104,8 @@ def get_ili2db_bin(tool, db_ili_version, stdout, stderr):
 
         if not os.path.isfile(ili2db_file):
             stderr.emit(
-                    'File "{file}" not found. Please download and extract <a href="{ili2db_url}">{tool_name}</a>.'.format(
-                        tool_name=tool_name, file=ili2db_file, ili2db_url=ili_tool_url
+                'File "{file}" not found. Please download and extract <a href="{ili2db_url}">{tool_name}</a>.'.format(
+                    tool_name=tool_name, file=ili2db_file, ili2db_url=ili_tool_url
                 )
             )
             return None
@@ -190,13 +190,9 @@ def get_java_path(base_configuration):
             for path in paths:
                 # Include double check as java can be found on different paths
                 # /usr/lib/jvm/java8oracle/bin/java
-                java_paths += [
-                    os.path.join(path.replace('"', "").replace("'", ""), "bin", "java")
-                ]
+                java_paths += [os.path.join(path.replace('"', "").replace("'", ""), "bin", "java")]
                 # C:\ProgramData\Oracle\Java\javapath\java
-                java_paths += [
-                    os.path.join(path.replace('"', "").replace("'", ""), "java")
-                ]
+                java_paths += [os.path.join(path.replace('"', "").replace("'", ""), "java")]
 
         if platform.system() == "Windows":
             java_path = which("java.exe")
@@ -234,6 +230,7 @@ def get_java_path(base_configuration):
 
         raise JavaNotFoundError(version_output)
 
+
 class NetworkError(RuntimeError):
     def __init__(self, error_code, msg):
         self.msg = msg
@@ -241,7 +238,8 @@ class NetworkError(RuntimeError):
 
 
 def download_file(
-    url, filename,
+    url,
+    filename,
 ):
     """
     Downloads the file from url to a local filename using the requests library.
@@ -254,10 +252,10 @@ def download_file(
     try:
         with requests.get(url, stream=True) as response:
             response.raise_for_status()
-            bytes_total = int(response.headers.get('content-length', 0))
+            int(response.headers.get("content-length", 0))
             bytes_received = 0
 
-            with open(filename, 'wb') as file:
+            with open(filename, "wb") as file:
                 for chunk in response.iter_content(chunk_size=8192):
                     if chunk:  # Filter out keep-alive chunks
                         file.write(chunk)
@@ -265,9 +263,10 @@ def download_file(
             return filename
 
     except requests.exceptions.RequestException as e:
-        error_code = getattr(e.response, 'status_code', -1)
+        error_code = getattr(e.response, "status_code", -1)
         error_msg = str(e)
         raise NetworkError(error_code, error_msg)
+
 
 def is_version_valid(
     current_version,
@@ -292,9 +291,7 @@ def is_version_valid(
         return False
 
     current_version_splitted = current_version.split(".")
-    if (
-        len(current_version_splitted) < 4
-    ):  # We could need 4 places for our custom plugin versions
+    if len(current_version_splitted) < 4:  # We could need 4 places for our custom plugin versions
         current_version_splitted = current_version_splitted + ["0", "0", "0", "0"]
         current_version_splitted = current_version_splitted[:4]
 
@@ -315,9 +312,7 @@ def is_version_valid(
         for i in range(len(current_version_splitted)):
             if int(current_version_splitted[i]) < int(min_required_version_splitted[i]):
                 return False
-            elif int(current_version_splitted[i]) > int(
-                min_required_version_splitted[i]
-            ):
+            elif int(current_version_splitted[i]) > int(min_required_version_splitted[i]):
                 return True
 
     return True
@@ -352,16 +347,13 @@ class JavaNotFoundError(FileNotFoundError):
     @property
     def error_string(self):
         if self.java_version:
-            return \
-                'Wrong java version found. Model Baker requires at least java version 8. Please <a href="{0}">install Java</a> and or <a href="{1}">configure a custom java path</a>.<br/><br/>Java Version:<br/>{2}'\
-            .format(
+            return 'Wrong java version found. Model Baker requires at least java version 8. Please <a href="{}">install Java</a> and or <a href="{}">configure a custom java path</a>.<br/><br/>Java Version:<br/>{}'.format(
                 JavaNotFoundError.JAVA_DOWNLOAD_URL,
                 JavaNotFoundError.PLUGIN_CONFIGURATION_URL,
                 self.html_java_version,
             )
         else:
-            return \
-                'Java 8 could not be found. Please <a href="{}">install Java</a> and or <a href="{}">configure a custom java path</a>.'.format(
-                    JavaNotFoundError.JAVA_DOWNLOAD_URL,
-                    JavaNotFoundError.PLUGIN_CONFIGURATION_URL,
+            return 'Java 8 could not be found. Please <a href="{}">install Java</a> and or <a href="{}">configure a custom java path</a>.'.format(
+                JavaNotFoundError.JAVA_DOWNLOAD_URL,
+                JavaNotFoundError.PLUGIN_CONFIGURATION_URL,
             )
