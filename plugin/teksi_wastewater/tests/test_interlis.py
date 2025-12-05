@@ -144,10 +144,11 @@ class TestInterlis(unittest.TestCase):
         self.assertIsNotNone(result)
 
         # self.assertEqual(result[0], 1.13000)
-        self.assertEqual(result[0], Decimal("1.13000"))
+        #self.assertEqual(result[0], Decimal("1.13000"))
 
         # in future if VSA-DSS / SIA405 INTERLIS is also patched change to:
-        # self.assertEqual(result[0], 1.12857)
+        # adapted after November 2025 patch is online
+        self.assertEqual(result[0], 1.12857)
 
         # update height_width_ratio to long decimal to test export
         # row = {
