@@ -149,7 +149,7 @@ class TestInterlis(unittest.TestCase):
         # adapted after November 2025 patch is online
         # self.assertEqual(result[0], 1.12857)
         self.assertEqual(result[0], Decimal("1.12857"))
-        
+
         # update height_width_ratio to long decimal to test export
         # row = {
         # "height_width_ratio": 1.12857,
