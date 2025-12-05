@@ -206,7 +206,7 @@ class TeksiWastewaterCmd:
         DatabaseUtils.databaseConfig.PGUSER = self.args.pguser
         DatabaseUtils.databaseConfig.PGPASS = self.args.pgpass
 
-        label_scales = self.get_label_scales(self.args)
+        label_scales = self.get_label_scales()
 
         selected_ids = []
         if self.args.selected_ids:
@@ -234,7 +234,7 @@ class TeksiWastewaterCmd:
         except Exception as exception:
             raise exception
 
-    def get_label_scales(args):
+    def get_label_scales(self):
         """Return a list of label scales based on boolean flags in `args`."""
         label_scales = []
 
@@ -249,17 +249,17 @@ class TeksiWastewaterCmd:
         }
 
         # Append scales based on `args` flags
-        if args.label_scale_pipeline_registry_1_1000:
+        if self.args.label_scale_pipeline_registry_1_1000:
             label_scales.append(available_scales["pipeline_registry_1_1000"])
-        if args.label_scale_network_plan_1_250:
+        if self.args.label_scale_network_plan_1_250:
             label_scales.append(available_scales["network_plan_1_250"])
-        if args.label_scale_network_plan_1_500:
+        if self.args.label_scale_network_plan_1_500:
             label_scales.append(available_scales["network_plan_1_500"])
-        if args.label_scale_overviewmap_1_10000:
+        if self.args.label_scale_overviewmap_1_10000:
             label_scales.append(available_scales["overviewmap_1_10000"])
-        if args.label_scale_overviewmap_1_5000:
+        if self.args.label_scale_overviewmap_1_5000:
             label_scales.append(available_scales["overviewmap_1_5000"])
-        if args.label_scale_overviewmap_1_2000:
+        if self.args.label_scale_overviewmap_1_2000:
             label_scales.append(available_scales["overviewmap_1_2000"])
 
         return label_scales
