@@ -8,9 +8,6 @@ from teksi_wastewater.interlis.interlis_importer_exporter import (
     InterlisImporterExporter,
     InterlisImporterExporterError,
 )
-from teksi_wastewater.interlis.processing_algs.extractlabels_interlis import (
-    ExtractlabelsInterlisAlgorithm,
-)
 from teksi_wastewater.utils.database_utils import DatabaseUtils
 
 
@@ -209,21 +206,7 @@ class TeksiWastewaterCmd:
         DatabaseUtils.databaseConfig.PGUSER = self.args.pguser
         DatabaseUtils.databaseConfig.PGPASS = self.args.pgpass
 
-        label_scales = []
-        if self.args.label_scale_pipeline_registry_1_1000:
-            label_scales.append(
-                ExtractlabelsInterlisAlgorithm.AVAILABLE_SCALE_PIPELINE_REGISTRY_1_1000
-            )
-        if self.args.label_scale_network_plan_1_250:
-            label_scales.append(ExtractlabelsInterlisAlgorithm.AVAILABLE_SCALE_NETWORK_PLAN_1_250)
-        if self.args.label_scale_network_plan_1_500:
-            label_scales.append(ExtractlabelsInterlisAlgorithm.AVAILABLE_SCALE_NETWORK_PLAN_1_500)
-        if self.args.label_scale_overviewmap_1_10000:
-            label_scales.append(ExtractlabelsInterlisAlgorithm.AVAILABLE_SCALE_OVERVIEWMAP_1_10000)
-        if self.args.label_scale_overviewmap_1_5000:
-            label_scales.append(ExtractlabelsInterlisAlgorithm.AVAILABLE_SCALE_OVERVIEWMAP_1_5000)
-        if self.args.label_scale_overviewmap_1_2000:
-            label_scales.append(ExtractlabelsInterlisAlgorithm.AVAILABLE_SCALE_OVERVIEWMAP_1_2000)
+        label_scales = self.get_label_scales(self.args)
 
         selected_ids = []
         if self.args.selected_ids:
@@ -250,6 +233,36 @@ class TeksiWastewaterCmd:
                 print(f"Log file: {exception.log_path}", file=sys.stderr)
         except Exception as exception:
             raise exception
+
+    def get_label_scales(args):
+        """Return a list of label scales based on boolean flags in `args`."""
+        label_scales = []
+
+        # must be written as in extractlabel_interlis algorithm. Not directly linked to avoid qgis dependency
+        available_scales = {
+            "pipeline_registry_1_1000": "Leitungskataster",
+            "network_plan_1_250": "Werkplan.250",
+            "network_plan_1_500": "Werkplan.500",
+            "overviewmap_1_10000": "Uebersichtsplan.UeP10",
+            "overviewmap_1_5000": "Uebersichtsplan.UeP5",
+            "overviewmap_1_2000": "Uebersichtsplan.UeP2",
+        }
+
+        # Append scales based on `args` flags
+        if args.label_scale_pipeline_registry_1_1000:
+            label_scales.append(available_scales["pipeline_registry_1_1000"])
+        if args.label_scale_network_plan_1_250:
+            label_scales.append(available_scales["network_plan_1_250"])
+        if args.label_scale_network_plan_1_500:
+            label_scales.append(available_scales["network_plan_1_500"])
+        if args.label_scale_overviewmap_1_10000:
+            label_scales.append(available_scales["overviewmap_1_10000"])
+        if args.label_scale_overviewmap_1_5000:
+            label_scales.append(available_scales["overviewmap_1_5000"])
+        if args.label_scale_overviewmap_1_2000:
+            label_scales.append(available_scales["overviewmap_1_2000"])
+
+        return label_scales
 
 
 if __name__ == "__main__":
