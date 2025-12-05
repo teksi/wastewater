@@ -71,7 +71,12 @@ Editing
 Mark as outdated
 ----------------
 
+.. versionadded:: 2025.0
+
 In order to use maintenance events and files efficiently, they can be flagged as outdated using a TEKSI-specific extension of the datamodel, namely a true/false value named ``tww_outdated``.
+
+ .. attention:: This extension-data is not part of the INTERLIS-export. If you migrate data via export-import, you will have to copy this values separately in the new database.
+
 
 Multi Edit
 -----------------------------------------------------------
