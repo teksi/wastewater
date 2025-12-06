@@ -242,7 +242,7 @@ Relationship table for n:m relationship between building_group and disposal
 Log card
 --------
 
-Log card ``tww_od.vw_tww.log_card``
+Log card ``tww_app.vw_tww_log_card``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Log card for special structures: Hydraulically specialized wastewater structures, e.g., storm water basins, storm water overflows, or pumping stations. Most special structures are also specialized structures. However, special structures such as separation structures or small pumping stations are often designed as standard shafts.
