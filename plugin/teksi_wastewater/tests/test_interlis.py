@@ -3,6 +3,7 @@ import os
 import re
 import sys
 import xml.etree.ElementTree as ET
+from decimal import Decimal
 
 from qgis.testing import start_app, unittest
 from teksi_wastewater.interlis import config
@@ -147,9 +148,8 @@ class TestInterlis(unittest.TestCase):
 
         # in future if VSA-DSS / SIA405 INTERLIS is also patched change to:
         # adapted after November 2025 patch is online
-        self.assertEqual(result[0], 1.12857)
-        # geht nicht Decimal not defined
-        # self.assertEqual(result[0], Decimal("1.12857"))
+        # needs from decimal import Decimal
+        self.assertEqual(result[0], Decimal("1.12857"))
 
         # update height_width_ratio to long decimal to test export
         # row = {
