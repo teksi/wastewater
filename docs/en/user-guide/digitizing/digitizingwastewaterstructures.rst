@@ -29,6 +29,8 @@ Select the ws_type you want (preselected is 'manhole'):
 - discharge_point
 - infiltration_installation
 
+.. note:: Other wastewater_structure subtypes (wwtp_structure, small_treatment_plant, drainless_toilet) are not part of the SIA405-datamodel and therefore not part of vw_tww_wastewater_structure. In TWW version 2025 exists another layer ``vw_tww_additional_ws`` for these subclasses.
+
 Depending on the **ws_type**, you will have different fields and tabs in the form.
 
 Then add the identifier (this is the attribute that will be displayed on the map).
