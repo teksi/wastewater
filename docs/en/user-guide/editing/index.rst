@@ -10,3 +10,4 @@ This represents a guide on how to add and edit data in TWW.
    moving
    maintenance_events
    connect_wastewater_network_elements
+   log_cards

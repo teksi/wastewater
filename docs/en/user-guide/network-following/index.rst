@@ -31,7 +31,11 @@ Upstream
 
 * After a few seconds all upstream reaches will be highlighted and you can see where the water is coming from.
 
-* If you want to select the highlighted reaches, then click on the **Select current path** button in the profile window
+* If you want to select the highlighted reaches and the connected wastewater_nodes, then click on the **Select current path** button in the profile window
+
+.. versionchanged:: 2025.0
+
+In Version TWW 2025, the select current path button selects also catchment_area records, that are connected with fk_wastewater_networkelement_ww_current to the selected nodes.
 
 
 .. figure:: images/network_select_currentpath.jpg
