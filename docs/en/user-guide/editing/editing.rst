@@ -210,7 +210,7 @@ How long did we wait:
 - Use field calculator with vw_channel: 33 seconds
 
 
-Why is vw_tww_reach so slow: there are triggers in the database, that updates for every record the calculated fields of the connected manholes and nodes, that this themes symbology is always up-to-date. 
+Why is vw_tww_reach so slow: there are triggers in the database, that updates for every record the calculated fields of the connected manholes and nodes, that this themes symbology is always up-to-date.
 
 TWW has a function to disable / enable symbology triggers (chapter how to)
 

@@ -98,7 +98,7 @@ Digitizing flushing nozzle
 
 .. versionadded:: 2025.0
 
-TWW is configured to digitize flushing nozzles as structure part of the channel. 
+TWW is configured to digitize flushing nozzles as structure part of the channel.
 
 You can digitize a flushing nozzle
 
@@ -106,4 +106,3 @@ You can digitize a flushing nozzle
 * create a new point on vw_flushing_nozzle and choose the connected channel for field fk_wastewater_structure on the map.
 
 .. note:: A flushing nozzle is connected to a wastewater_structure, but it's geometry is totally independent of the wastewater_structure-geometry. If you move the channel, you have to move the flushing nozzle manually.
-

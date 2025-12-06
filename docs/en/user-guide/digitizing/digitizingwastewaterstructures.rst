@@ -95,9 +95,7 @@ Digitizing Additional Wastewater Structures
 
 ``vw_tww_additional_ws`` is a view for working with subclasses wwtp_structure, small_treatment_plant, drainless_toilet. This subclasses are not part of the SIA405 datamodel.
 
-These subclasses are not digitized using the TWW Wizard, but with the QGIS **Add Point Feature** tool. 
-Similar to the digitizing of manholes or special structures, when creating a new record, also a cover and a wastewater node is created. The identifier of the wastewater_structure is duplicated into cover.identifier and node.identifier. 
+These subclasses are not digitized using the TWW Wizard, but with the QGIS **Add Point Feature** tool.
+Similar to the digitizing of manholes or special structures, when creating a new record, also a cover and a wastewater node is created. The identifier of the wastewater_structure is duplicated into cover.identifier and node.identifier.
 Unlike the digitizing in vw_tww_wastewater_structure, there is no main_node or main_cover. vw_tww_additional_ws is not configured to add a second cover or a second node.
 With the TWW-tool **connect wastwater networkelements** you can connect reaches also to this additional wastewater structures.
-
-

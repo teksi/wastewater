@@ -24,7 +24,7 @@ Creating / editing log_cards
 Connect the catchment_area to the log_card
 ------------------------------------------
 
-The database is now ready to connect the catchment_area-records to the log_card. 
+The database is now ready to connect the catchment_area-records to the log_card.
 In vw_tww_catchment_area.fk_special_building_* are log_cards selectable, that belong to a special_structure. Use multiedit or field-calculator to edit the fk_special_building-fields.
 
 
@@ -42,8 +42,8 @@ In version 2025.02 is no visualization of of the other connections (fk_special_b
 Edit hydraulic_char_data
 --------------------------
 
-To edit the hydraulic_char_data, edit again the record in layer vw_tww_log_card. 
-In Tab hydraulic char data add a new record and choose a status. 
+To edit the hydraulic_char_data, edit again the record in layer vw_tww_log_card.
+In Tab hydraulic char data add a new record and choose a status.
 Identifier of hydraulic_char_record is set autmatically to identifier of log_card-status (problem: if the wastewater_node_identifier is to long -> log_card.idenitifer is long -> hydraulic_char_data is too long!).
 
 The fields that are editable depend on the function of the special_structure: pump-attributes are only visible for pumps, weir-attributes (also overflow_results) are only visible for special_structures with overflow.
@@ -54,10 +54,8 @@ The fields that are editable depend on the function of the special_structure: pu
 
 Edit catchment_area_totals
 --------------------------
-  
+
 Also the catchment_area_totals are edited in the record in layer vw_tww_log_card. Select the hydraulic char data, use tab catchment_area_totals and add a new record. Identifier should be set to identifier of hydraulic_char_data. The values has to be written manually actually (2025.02).
 
 
 .. figure:: images/new_catchment_area_totals.jpg
-
-
