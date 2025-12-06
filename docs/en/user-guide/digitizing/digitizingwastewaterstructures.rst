@@ -86,3 +86,13 @@ The added feature's geometry defines the geometry of the connected tables like c
 When the level of the cover `co_level` is entered, this value is adapted to the Z value of the cover's geometry. The bottom level of the wastewater node `wn_bottom_level` defines the Z value of the wastewater node's geometry.
 
 .. note:: If a cover level changes, the Z value of the cover's geometry will be adjusted. When the geometry changes, the co_level attribut is adjusted as well. If both values change, the level takes precedence. On an insert it's like when both value change. Means the cover's geometry is set according to the cover level and if it's NULL, the Z value is set to NaN. The same situation is on editing the wastewater node directly.
+
+
+Digitizing Additional Wastewater Structures
+-------------------------------------------
+
+.. versionadded:: 2025.0
+
+A view for working with subclasses wwtp_structure, small_treatment_plant, drainless_toilet.
+
+
