@@ -144,10 +144,12 @@ class TestInterlis(unittest.TestCase):
         self.assertIsNotNone(result)
 
         # self.assertEqual(result[0], 1.13000)
-        self.assertEqual(result[0], Decimal("1.13000"))
+        # self.assertEqual(result[0], Decimal("1.13000"))
 
         # in future if VSA-DSS / SIA405 INTERLIS is also patched change to:
-        # self.assertEqual(result[0], 1.12857)
+        # adapted after November 2025 patch is online
+        # needs from decimal import Decimal
+        self.assertEqual(result[0], Decimal("1.12857"))
 
         # update height_width_ratio to long decimal to test export
         # row = {
@@ -251,9 +253,10 @@ class TestInterlis(unittest.TestCase):
             "HoehenBreitenverhaeltnis",  # attributename
         )
 
-        self.assertEqual(HoehenBreitenverhaeltnis_Text, "1.13")
+        # adapt to VSA model patch for 2020.1 published end of November 2025
+        # self.assertEqual(HoehenBreitenverhaeltnis_Text, "1.13")
         # in future if VSA-DSS / SIA405 INTERLIS is also patched  change to:
-        # self.assertEqual(HoehenBreitenverhaeltnis_Text, "1.12857")
+        self.assertEqual(HoehenBreitenverhaeltnis_Text, "1.12857")
 
         # Export minimal dss
         export_xtf_file = self._get_output_filename("export_minimal_dataset_dss")
