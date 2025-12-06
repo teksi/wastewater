@@ -28,7 +28,7 @@ Adding a new Maintenance Event
 
  * Edit the new record in the vw_tww_maintenance_event form, then click **OK**
 
- .. figure:: images/maintenance_new_record.jpg
+ .. figure:: images/maintenance_new_record2025.jpg
 
  .. figure:: images/maintenance_new_record_saved.jpg
 
