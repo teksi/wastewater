@@ -91,3 +91,19 @@ The snapped reachpoint of the new reach have the altitude from the wastewater no
 .. note:: If a reach point's level changes, the Z value of its geometry changes, and so does the start- or the end-point of the reach. When the Z value of the reach's geometry changes, the reach point's geometry and its level is ajusted as well. If both values change, the level takes precendence. On an insert it's like when both value change. Means the reach's geometry is set according to the reach point's levels and if they are NULL, the Z value of the reach's start- and end-point are set to NaN.
 
 Synchronization of levels works also for intermediate points (points between the reachpoints), if you snap while digitizing to 3d-points on another layer (e.g. a textfile as result of gps-measurement with x,y,z coordinates added to the QGIS-project). Be aware, that you have then a full 3d-reach, but on the export to INTERLIS these intermediate-levels will be lost, because VSA-DSS version 2020 does not support 3d for reach-geometry.
+
+
+Digitizing flushing nozzle
+---------------------------
+
+.. versionadded:: 2025.0
+
+TWW is configured to digitize flushing nozzles as structure part of the channel. 
+
+You can digitize a flushing nozzle
+
+* starting on the Feature Attribut window of vw_tww_reach with tab **Structure Parts**. Add point child feature and digitize the point on the map. Or
+* create a new point on vw_flushing_nozzle and choose the connected channel for field fk_wastewater_structure on the map.
+
+.. note:: A flushing nozzle is connected to a wastewater_structure, but it's geometry is totally independent of the wastewater_structure-geometry. If you move the channel, you have to move the flushing nozzle manually.
+
