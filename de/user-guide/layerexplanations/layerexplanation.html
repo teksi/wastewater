@@ -55,12 +55,12 @@
 <li class="toctree-l4"><a class="reference internal" href="#layergroup-examination-maintenance">Layergruppe Untersuchung-Unterhalt</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#documents">Dokumente</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#hydraulic">Hydraulik Layer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#layergroups-connection-object-measures-log-card-rural">Layergroups Connection Object, Measures, Log Card, Rural</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#catchment-tww-app-vw-tww-catchment-area">Catchment <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_catchment_area</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#layergroups-connection-object-measures-log-card-rural">Layergruppen Einzelobjekt, Massnahmen, Stammkarte, Abwasserentsorgung im ländlichen Raum</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#catchment-tww-app-vw-tww-catchment-area">Einzugsgebiet <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_catchment_area</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#topology">Topologie</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#value-lists-tww-vl">Wertelisten <code class="docutils literal notranslate"><span class="pre">tww_vl.*</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#rural">Rural</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#log-card">Log card</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rural">Abwasserentsorgung im ländlichen Raum</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#log-card">Stammkarte</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="namingconventions.html">Namenskonventionen</a></li>
@@ -236,7 +236,7 @@
 <p><span class="versionmodified added">Added in version 2025.0.</span></p>
 </div>
 <p>Eine Subklasse der Erhaltungsereignisse</p>
-<p>Create the bio_ecol_assessments in the main tables (discharge points in vw_tww_wastewater_structure) and visualize it in vw_tww_ws_maintenance.</p>
+<p>Erstellen Sie die biol_oeko_Gesmatbeurteilungen in den Haupttabellen (Einleitstellen in vw_tww_Abwasserbauwerk) und visualisieren Sie sie in vw_tww_ws_maintenance.</p>
 </section>
 </section>
 <section id="documents">
@@ -254,32 +254,32 @@
 </section>
 <section id="overflow-tables-tww-app-vw-tww-overflow">
 <h3>Überlauf Tabellen <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_overflow</span></code><a class="headerlink" href="#overflow-tables-tww-app-vw-tww-overflow" title="Link to this heading"></a></h3>
-<p>Use this layer to create and symbolize overflows.</p>
+<p>Verwenden Sie diesen Layer, um Überläufe zu erstellen und zu symbolisieren.</p>
 </section>
 </section>
 <section id="layergroups-connection-object-measures-log-card-rural">
-<h2>Layergroups Connection Object, Measures, Log Card, Rural<a class="headerlink" href="#layergroups-connection-object-measures-log-card-rural" title="Link to this heading"></a></h2>
+<h2>Layergruppen Einzelobjekt, Massnahmen, Stammkarte, Abwasserentsorgung im ländlichen Raum<a class="headerlink" href="#layergroups-connection-object-measures-log-card-rural" title="Link to this heading"></a></h2>
 <div class="versionadded">
 <p><span class="versionmodified added">Added in version 2025.0.</span></p>
 </div>
-<p>Since these layers where not available in DSS 2015, they have not been in the tww version 2024.</p>
-<p>All DSS-tables are now configured in TWW.</p>
+<p>Weil diese Klassen in der DSS Version 2015 noch nicht vorhanden waren, waren sie in TEKSI Abwasser Version 2024 noch nicht konfiguriert.</p>
+<p>Alle DSS-Klassen sind jetzt in TWW konfiguriert.</p>
 </section>
 <section id="catchment-tww-app-vw-tww-catchment-area">
-<h2>Catchment <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_catchment_area</span></code><a class="headerlink" href="#catchment-tww-app-vw-tww-catchment-area" title="Link to this heading"></a></h2>
-<p>Main layer to digitize and edit the catchment_areas. Layers catchment_connection lines do just visualize the connections. They are not editable.</p>
+<h2>Einzugsgebiet <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_catchment_area</span></code><a class="headerlink" href="#catchment-tww-app-vw-tww-catchment-area" title="Link to this heading"></a></h2>
+<p>Hauptlayer zum Digitalisieren und Bearbeiten der Einzugsgebiete. Die Layer „Einzugsgebietsverbindungslinien“ visualisieren lediglich die Verbindungen und sind nicht editierbar.</p>
 <div class="versionchanged">
 <p><span class="versionmodified changed">Geändert in Version 2025.0.</span></p>
 </div>
-<p>The fk-fields to connect to the log cards are know configured.</p>
+<p>Die FS-Felder für die Verknüpfung mit den Stammkarten sind jetzt konfiguriert.</p>
 </section>
 <section id="topology">
 <h2>Topologie<a class="headerlink" href="#topology" title="Link to this heading"></a></h2>
 <section id="nodes-tww-app-vw-network-node-and-segments-tww-app-vw-network-segment">
 <h3>Punkte <code class="docutils literal notranslate"><span class="pre">tww_app.vw_network.node</span></code> und Linien <code class="docutils literal notranslate"><span class="pre">tww_app.vw_network.segment</span></code><a class="headerlink" href="#nodes-tww-app-vw-network-node-and-segments-tww-app-vw-network-segment" title="Link to this heading"></a></h3>
-<p>These two layers are used by the tww-extension for the network-following functionalities.
-Use the vw_network_segment layer to show the flow direction, if you use a markerline (filled_arrowhead) as symbol.</p>
-<p>See <a class="reference external" href="../editing/connect_wastewater_network_elements.html">connect wastewater network elements</a> for more information on how to create and maintain a good topology.</p>
+<p>Diese beiden Layer werden von TWW für die Netzverfolgung verwendet. Nicht verändern.
+Der Layer vw_network_segment kann benutzt werden, um die Fliessrichtung darzustellen. Dazu kann als Symbol eine Marker-Linie (filled_arrowhead) verwendet werden.</p>
+<p>Vergleiche <a class="reference external" href="../editing/connect_wastewater_network_elements.html">Werkzeuge zur Netzwerkverfolgung</a> für mehr Infos und wie eine zweckmässige Topologie erstellt und gepflegt werden soll.</p>
 </section>
 </section>
 <section id="value-lists-tww-vl">
@@ -291,43 +291,43 @@ Use the vw_network_segment layer to show the flow direction, if you use a marker
 <p>Hauptlayer um Einzugsgebiete zu erfassen oder zu verändern.</p>
 </section>
 <section id="rural">
-<h2>Rural<a class="headerlink" href="#rural" title="Link to this heading"></a></h2>
-<p>This topic covers the classes related to waste water disposal in rural areas that are located outside the sewerage area.</p>
+<h2>Abwasserentsorgung im ländlichen Raum<a class="headerlink" href="#rural" title="Link to this heading"></a></h2>
+<p>Dieses Thema umfasst die Klassen zur Abwasserentsorgung in ländlichen Raum außerhalb der Bauzone.</p>
 <div class="versionadded">
 <p><span class="versionmodified added">Added in version 2025.0.</span></p>
 </div>
 <section id="building-group-tww-od-building-group">
-<h3>Building group <code class="docutils literal notranslate"><span class="pre">tww_od.building_group</span></code><a class="headerlink" href="#building-group-tww-od-building-group" title="Link to this heading"></a></h3>
-<p>Buildings or groups of buildings in rural areas that are located outside the sewerage area, as well as buildings belonging to agricultural businesses (including those within the sewerage area)</p>
+<h3>Gebäudegruppe <code class="docutils literal notranslate"><span class="pre">tww_od.building_group</span></code><a class="headerlink" href="#building-group-tww-od-building-group" title="Link to this heading"></a></h3>
+<p>Gebäude oder Gebäudegruppen in ländlichen Gebieten, die sich außerhalb des Baugebiets befinden und  landwirtschaftliche Betriebe (einschließlich derjenigen, die sich in den Bauzonen befinden).</p>
 </section>
 <section id="farm-tww-od-farm">
-<h3>Farm <code class="docutils literal notranslate"><span class="pre">tww_od.farm</span></code><a class="headerlink" href="#farm-tww-od-farm" title="Link to this heading"></a></h3>
-<p>Agricultural business (farm): Must also be specified within the sewerage area (i.e. even if the business is located within the sub-catchment areas of the General Drainage Plan (GEP)).</p>
+<h3>Landwirtschaftsbetrieb <code class="docutils literal notranslate"><span class="pre">tww_od.farm</span></code><a class="headerlink" href="#farm-tww-od-farm" title="Link to this heading"></a></h3>
+<p>Landwirtschaftlicher Betrieb (Bauernhof): Muss ebenfalls innerhalb des Abwassereinzugsgebiets angegeben werden (d.h. auch dann, wenn sich der Betrieb innerhalb der Teileinzugsgebiete des Allgemeinen Entwässerungsplans (GEP) befindet).</p>
 </section>
 <section id="disposal-tww-od-disposal">
-<h3>Disposal <code class="docutils literal notranslate"><span class="pre">tww_od.disposal</span></code><a class="headerlink" href="#disposal-tww-od-disposal" title="Link to this heading"></a></h3>
-<p>Information on the disposal of wastewater from building complexes (treatment/sludge disposal)</p>
+<h3>Entsorgung <code class="docutils literal notranslate"><span class="pre">tww_od.disposal</span></code><a class="headerlink" href="#disposal-tww-od-disposal" title="Link to this heading"></a></h3>
+<p>Informationen zur Abwasserentsorgung aus Gebäudekomplexen (Behandlung/Schlammentsorgung)</p>
 </section>
 <section id="building-group-baugwr-tww-od-building-group-baugwr">
-<h3>Building_group_BAUGWR <code class="docutils literal notranslate"><span class="pre">tww_od.building_group_baugwr</span></code><a class="headerlink" href="#building-group-baugwr-tww-od-building-group-baugwr" title="Link to this heading"></a></h3>
-<p>Intermediate table for resolving the n-n relationship between building groups and building details (in BAU/GWR)</p>
+<h3>Gebäudegruppe_BAUGWR <code class="docutils literal notranslate"><span class="pre">tww_od.building_group_baugwr</span></code><a class="headerlink" href="#building-group-baugwr-tww-od-building-group-baugwr" title="Link to this heading"></a></h3>
+<p>Zwischentabelle zur Auflösung der n-n-Beziehung zwischen Gebäudegruppen und Gebäudedetails (in BAU/GWR)</p>
 </section>
 <section id="re-building-group-disposal-tww-od-re-building-group-disposal">
 <h3>re_building_group_disposal <code class="docutils literal notranslate"><span class="pre">tww_od.re_building_group_disposal</span></code><a class="headerlink" href="#re-building-group-disposal-tww-od-re-building-group-disposal" title="Link to this heading"></a></h3>
-<p>Relationship table for n:m relationship between building_group and disposal</p>
+<p>Beziehungstabelle für die n:m-Beziehung zwischen Gebäudegruppe und Entsorgung</p>
 </section>
 </section>
 <section id="log-card">
-<h2>Log card<a class="headerlink" href="#log-card" title="Link to this heading"></a></h2>
+<h2>Stammkarte<a class="headerlink" href="#log-card" title="Link to this heading"></a></h2>
 <section id="log-card-tww-od-vw-tww-log-card">
-<h3>Log card <code class="docutils literal notranslate"><span class="pre">tww_od.vw_tww.log_card</span></code><a class="headerlink" href="#log-card-tww-od-vw-tww-log-card" title="Link to this heading"></a></h3>
-<p>Log card for special structures: Hydraulically specialized wastewater structures, e.g., storm water basins, storm water overflows, or pumping stations. Most special structures are also specialized structures. However, special structures such as separation structures or small pumping stations are often designed as standard shafts.</p>
+<h3>Stammkarte <code class="docutils literal notranslate"><span class="pre">tww_od.vw_tww.log_card</span></code><a class="headerlink" href="#log-card-tww-od-vw-tww-log-card" title="Link to this heading"></a></h3>
+<p>Stammkarte für Sonderbauwerke: Hydraulisch-spezielle Abwasserbauwerke, z. B. Regenrückhaltebecken, Regenüberläufe oder Pumpwerke. Die meisten Sonderbauwerke sind auch Spezialbauwerke. Allerdings werden Sonderbauwerke wie Trennschächte oder kleine Pumpwerke häufig als Normschächte ausgeführt.</p>
 <div class="versionadded">
 <p><span class="versionmodified added">Added in version 2025.0.</span></p>
 </div>
 <p>Creating and editing a log_card:</p>
 <ul class="simple">
-<li><p>Add a new point record in layer vw_tww_log_card by clicking anywhere an the map with the QGIS Add Point Feature -Tool.</p></li>
+<li><p>Fügen Sie einen neuen Punktdatensatz in der Ebene vw_tww_Stammkarte hinzu, indem Sie mit dem QGIS-Werkzeug „Punkt hinzufügen“ irgendwo auf die Karte klicken.</p></li>
 <li><p>Select the wastewater_node of the log_card on the map.</p></li>
 <li><p>Do not try editing the identifier of the log_card: the identifier will be set by default equal to the identifier of the wastewater_node.</p></li>
 <li><p>Select fk_agency (is mandatory because this value is mandatory in DSS-mini).</p></li>
@@ -381,7 +381,7 @@ The fields of this layer (population, surface_area,…) are not calculated autom
 </section>
 <section id="hydraulic-char-data-tww-od-hydraulic-char-data">
 <h3>Hydraulic char data <code class="docutils literal notranslate"><span class="pre">tww_od.hydraulic_char_data</span></code><a class="headerlink" href="#hydraulic-char-data-tww-od-hydraulic-char-data" title="Link to this heading"></a></h3>
-<p>Aggregated hydraulic characteristics</p>
+<p>Aggregierte Hydr_Kennwerte</p>
 </section>
 </section>
 </section>

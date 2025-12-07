@@ -54,10 +54,10 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">TWW-Projekt Eigenschaften und Einstellungen</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#project-properties">Projekteigenschaften</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#map-themes">Kartenthemen</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#multisymbol-stiles">Multisymbol Stiles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#multisymbol-stiles">Multisymbol Stile</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#layer-order">Layerreihenfolge</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#context-hints-for-values">Context-Hints for values</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#context-hints-for-fields">Context-Hints for fields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#context-hints-for-values">Kontexthilfe für Werte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#context-hints-for-fields">Kontexthilfe für Felder</a></li>
 </ul>
 </li>
 </ul>
@@ -132,7 +132,7 @@
 <p><strong>Projekt-Beziehungen</strong> erlauben es, die Verknüpfung zwischen zwei Objekten vollständig zu nutzen (Eltern und Kind(er)) und einen Datensatz auf der Karte zu verlinken. Bei grossen Datensätzen ist die Projekt-Beziehung schneller als die Wertbeziehung.</p>
 <div class="admonition attention">
 <p class="admonition-title">Achtung</p>
-<p>With QGIS Version before 3.40: Using Multiedit with projet relations widgets encounters some bugs on QGIS side, handle with care when altering theses attributes.</p>
+<p>QGIS Versionen vor 3.40: Bei der Verwendung von Multiedit mit Projektbeziehungen treten in QGIS Fehler auf (ungewollte Datenänderungen). Gehen Sie daher beim Ändern dieser Attribute vorsichtig vor.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
@@ -157,7 +157,7 @@
 </div>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>use the tww_is_primary-fields to search or symbolize with values of field function_hierarchic.</p>
+<p>Verwenden Sie die tww_is_primary-Felder, um Werte des Feldes Funktion_Hierarchisch einfacher zu suchen oder zu symbolisieren.</p>
 </div>
 <p><strong>Variablen um Massstabsgrenzen zu definieren, an denen ein Symbolisierung ändern soll</strong></p>
 <p>In der VSA-DSS sind 5 Plantypen definiert (Leitungskataster, Werkplan, 3 Übersichtspläne). Jeder Plantyp hat andere Regeln für die Beschriftung und Symbolisierung. Deshalb müssen die Grenzen definiert werden, welcher Plantyp bei welchem Massstab benutzt wird. Diese „Grenzmassstäbe“ werden in Haltungs- und Schacht-Beschriftungen und in Haltungs- und Schacht-Symbolisierungen benutzt (mit verschiedenen unterschiedlichen Stilen in jedem Layer). Wenn mit Variablen gearbeitet wird, können diese „Grenzmassstäbe“ einfach geändert werden.</p>
@@ -220,24 +220,24 @@
 </figure>
 </section>
 <section id="multisymbol-stiles">
-<h2>Multisymbol Stiles<a class="headerlink" href="#multisymbol-stiles" title="Link to this heading"></a></h2>
+<h2>Multisymbol Stile<a class="headerlink" href="#multisymbol-stiles" title="Link to this heading"></a></h2>
 <div class="versionchanged">
 <p><span class="versionmodified changed">Geändert in Version 2025.0.</span></p>
 </div>
-<p>Why multi-symbol-styles?</p>
-<p>Because different representations are necessary for the important layers during GEP, a new style can be created for each symbology. However, with each new style, the entire labeling definition, the configuration of the attribute forms, and the field aliases are also copied. When translating the project file for a German or French version, only the field aliases in the active style are adjusted.</p>
-<p>So there are many disadvantages just because we need different symbologies…</p>
-<p>The solution: multi-symbol-styles</p>
-<p>Create rule-based symbols and group them for different themes like network plan, overview, renovation necessity, etc.</p>
+<p>Warum Multisymbol Style?</p>
+<p>Während der GEP-Bearbeitung sind für die wichtigen Layer unterschiedliche Darstellungen erforderlich. Es kann für jede Symbolisierung ein neuer Stil erstellt werden. Mit jedem neuen Stil werden jedoch auch die gesamte Beschriftungsdefinition, die Konfiguration der Attributformulare und die Feldaliase kopiert. Bei der Übersetzung der Projektdatei für eine deutsche oder französische Version werden aber nur die Feldaliase im aktiven Stil angepasst.</p>
+<p>Es gibt also viele Nachteile, nur weil wir unterschiedliche Symbolisierungen benötigen…</p>
+<p>Die Lösung: Multisymbole Stile</p>
+<p>Erstellen Sie regelbasierte Symbole und gruppieren Sie diese für verschiedene Themen wie Werkplan, Übersichtsplan, Sanierungsbedarf usw.</p>
 <p>How to do:</p>
 <ul class="simple">
-<li><p>Go to layer/properties/symbology and choose “Rule-based”</p></li>
-<li><p>Add a new rule with the + button</p></li>
-<li><p>Set the name of your new symbol-group as Label of the rule</p></li>
-<li><p>Do not enter a filter and unselect the symbol -&gt; you have now a new “group-folder”</p></li>
-<li><p>Create symbols in this group-folder by using “Refine Selected Rules” or just with the + Button and move the new rule in the group-folder or copy/paste another existing rule…</p></li>
+<li><p>Gehe zu Layer/Eigenschaften/Symbolisierung und wähle „Regelbasierend“.</p></li>
+<li><p>Erstelle eine neue Regel mit dem + Knopf</p></li>
+<li><p>Legen Sie den Namen Ihrer neuen Symbolgruppe als Beschriftung der Regel fest.</p></li>
+<li><p>Lassen sie den Filter leerin und deaktivieren Sie das Symbol -&gt; Sie haben damit einen neuen „Gruppenordner“.</p></li>
+<li><p>Erstellen Sie Symbole in diesem Gruppenordner, indem Sie „Gewählte Regeln verfeinern“ oder einfach die Schaltfläche „+“ verwenden und die nächste neue Regel in den Gruppenordner verschieben oder eine andere vorhandene Regel kopieren und einfügen…</p></li>
 </ul>
-<p>Instead of changing styles, you just turn on one group and turn off the not used group. Or you work with QGIS map-themes as before with the old styles.</p>
+<p>Statt den Stil zu wechseln, aktivieren Sie einfach eine Gruppe und deaktivieren die nicht verwendete. Und verwenden Sie die QGIS-Kartenthemen wie gewohnt.</p>
 </section>
 <section id="layer-order">
 <h2>Layerreihenfolge<a class="headerlink" href="#layer-order" title="Link to this heading"></a></h2>
@@ -248,22 +248,22 @@
 </figure>
 </section>
 <section id="context-hints-for-values">
-<h2>Context-Hints for values<a class="headerlink" href="#context-hints-for-values" title="Link to this heading"></a></h2>
+<h2>Kontexthilfe für Werte<a class="headerlink" href="#context-hints-for-values" title="Link to this heading"></a></h2>
 <div class="versionadded">
 <p><span class="versionmodified added">Added in version 2025.0.</span></p>
 </div>
-<p>Place your mouse over a value in the valuelist of an attribut and you get additional info for this value if there is an additionial discription on the VSA-DSS-Objektkatalog.</p>
+<p>Bewegen Sie den Mauszeiger über einen Wert in der Werteliste eines Attributs, und Sie erhalten zusätzliche Informationen zu diesem Wert, sofern im VSA-DSS-Objektkatalog eine zusätzliche Beschreibung vorhanden ist.</p>
 <figure class="align-default">
 <img alt="../../_images/hintvalue.jpg" src="../../_images/hintvalue.jpg" />
 </figure>
 </section>
 <section id="context-hints-for-fields">
-<h2>Context-Hints for fields<a class="headerlink" href="#context-hints-for-fields" title="Link to this heading"></a></h2>
+<h2>Kontexthilfe für Felder<a class="headerlink" href="#context-hints-for-fields" title="Link to this heading"></a></h2>
 <div class="versionadded">
 <p><span class="versionmodified added">Added in version 2025.0.</span></p>
 </div>
-<p>This works just for layers based directly from the tww_od - tables, not for views.</p>
-<p>Place your mouse over the name of the attribut and you get additional info for this field if there is an additionial discription on the VSA-DSS-Objektkatalog.</p>
+<p>Dies funktioniert leider nur für Layer, die direkt auf tww_od - Tabellen basieren, nicht für Views.</p>
+<p>Bewegen Sie den Mauszeiger über einem Feld-Namen, und Sie erhalten zusätzliche Informationen zu diesem Feld, sofern im VSA-DSS-Objektkatalog eine zusätzliche Beschreibung vorhanden ist.</p>
 <figure class="align-default">
 <img alt="../../_images/hintattribute.jpg" src="../../_images/hintattribute.jpg" />
 </figure>
