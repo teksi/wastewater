@@ -35,7 +35,7 @@ Changing attributes of point elements (manholes / special structures)
 ---------------------------------------------------------------------
 
  * To change an attribute you first need to select the **vw_tww_wastewater_structure** layer.
- * **Toogle Editing** to edit mode (or start the **TWW Wizard** and click on **Start Data Entry**).
+ * **Toogle Editing** or start the **TWW Wizard** and click on **Start Data Entry**.
  * Then click on the **Identify features** button and click on the element you want to edit.
 
  .. figure:: images/identify_feature_tool.jpg
