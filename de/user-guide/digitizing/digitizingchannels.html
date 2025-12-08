@@ -201,13 +201,20 @@
 </section>
 <section id="geometry-synchronization">
 <span id="reach-geometrysync"></span><h2>Geometrieabgleichung<a class="headerlink" href="#geometry-synchronization" title="Link to this heading"></a></h2>
-<p>Start- und Endpunkt der Linien-Geometrie bestimmen die Geometrie der Haltungspunkte. Die Höhe (Z Wert der Geometrie) des Start- und Endpunktes der hinzugefügten Linie wird über die Koten <cite>HP_von_Kote</cite> und <cite>HP_nach_Kote</cite> definiert. Das heisst, der Z Wert der Geometrie des Haltungspunktes wird ebenso über den Kote-Wert gesetzt. Diese Werte können über das „geschnappte“ Objekt gesetzt werden (wie im Bild oben gezeigt):</p>
-<p>Die geschnappten Haltungspunkte der neuen Haltung beziehen ihre Höhen von den Sohlenkote der Abwasserknoten des Schachtes newKS und von Schacht 1.030. Diese Werte werden vom wizard in die Attribute <cite>HP_von_Kote</cite> und <cite>HP_nach_Kote</cite> eingefügt und können dort von Benutzer verändert werden. Bei Änderung durch den Benutzer, werden die Z-Werte der digitalisierten Linien-Geometrie sowie der korrespondierenden Haltungspunkte auch geändert.</p>
-<div class="admonition note">
-<p class="admonition-title">Bemerkung</p>
-<p>Wenn die Kote eines Haltungpunktes ändert, ändert sich auch der Z Wert seiner Punkt-Geometrie und somit auch die Geometrie des Start- bzw. Endpunktes der Haltungslinie. Wenn der Z Wert der Geometrie der Haltung ändert, ändert auch die Geometrie und die Kote der Haltungspunkte. Wenn beide Werte gleichzeitig ändern, hat das Feld Kote Vorrang. Beim Einfügen ist es wie wenn beide Werte ändern. Also wird die Geometrie der Haltung gemäss der Koten der Haltungspunkte gesetzt und falls diese NULL sind, werden die Z Werte des Start- und Endpunktes der Haltung auf NaN gesetzt.</p>
-</div>
-<p>Synchronisation der Koten von Zwischenpunkten (Punkte zwischen den Haltungspunkten) funktioniert auch, wenn beim Digitalisieren auf 3D-Punkte auf einem anderen Layer geschnappt wird (z.B. ein Textfile als GPS-Messungen mit x,y,z Koordinaten, welches im QGIS-Projekt eingefügt wurde). Man hat dann einen 3D-Haltung, aber der Export zu INTERLIS kann diese Zwischenpunkt-Koten nicht exportieren, weil die VSA-DSS Version 2020 die 3D-Koordinaten für die Haltungsgeometrie nicht unterstützt.</p>
+<p>When inserting a new reach using the wizard, the start and end points of the line geometry determine the level of the corresponding reach points (as shown in the pictures above).
+These values can be overwritten before saving.
+Upon saving, the level values <cite>rp_from_level</cite> and <cite>rp_to_level</cite> are used to define the Z value of the first and last vertex of a reach.</p>
+<p>When updating a reach, there are several cases:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>The first/last reach geometry vertex was not changed, but the <cite>rp_from_level</cite> / <cite>rp_to_level</cite> was. In this case, the level value <cite>rp_from_level</cite> / <cite>rp_to_level</cite> is used to set the Z value of the first / last vertex of the reach</p></li>
+<li><p>The first/last reach geometry vertex was changed, but the <cite>rp_from_level</cite> / <cite>rp_to_level</cite> was not. In this case, the QGIS variable <cite>&#64;tww_update_lvl_by_geom</cite> defines whether the <cite>rp_from_level</cite> / <cite>rp_to_level</cite> is overwritten by the Z value of the first / last vertex of the reach</p></li>
+<li><p>Both the first/last reach geometry vertex and the <cite>rp_from_level</cite> / <cite>rp_to_level</cite> were changed. The <cite>rp_from_level</cite> / <cite>rp_to_level</cite> take precendence</p></li>
+<li><p>Neither the first/last reach geometry vertex nor the <cite>rp_from_level</cite> / <cite>rp_to_level</cite> was changed. No changes occur</p></li>
+</ol>
+</div></blockquote>
+<p>Synchronization of levels also works when snapping on 3d points (e.g. a textfile as result of gps-measurement with x,y,z coordinates added to the QGIS-project) or line/polygon vertices of 3D geometries while digitizing.
+Be aware, that TEKSI stores 3d-reaches, but the generally used INTERLIS models VSA-DSS 2020.1 / SIA405 Abwasser 2020.1 drop the Z value on all vertices.</p>
 </section>
 </section>
 

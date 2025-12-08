@@ -205,13 +205,20 @@ and its subclass <strong>reach</strong> (<code class="docutils literal notransla
 </section>
 <section id="geometry-synchronization">
 <span id="reach-geometrysync"></span><h2>Synchronisation de la géométrie<a class="headerlink" href="#geometry-synchronization" title="Lien vers cette rubrique"></a></h2>
-<p>The start- and the end-point of the added feature’s geometry defines the reach point’s geometries. The altitude (Z value of geometry) of the added feature’s start- and the end-point is defined by the level values <cite>rp_from_level</cite> and <cite>rp_to_level</cite>. This means, the Z values of the reach point’s geometry is set by the level as well. These values could be filled up by the snapped features (as shown in the pictures above):</p>
-<p>The snapped reachpoint of the new reach have the altitude from the wastewater node bottom_level of manhole new KS and manhole 1.030. These leveös are copied by teh wizard into the attributes <cite>rp_from_level</cite> and <cite>rp_to_level</cite> and can be edited there by the user. When the user changes these values, the Z value of the geometry of the digitized feature and its reach points will be changed as well.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Si le niveau d’un point de tronçon change, la valeur Z de sa géométrie change, ainsi que le point de départ ou d’arrivée du tronçon. Quant la valeur Z de la géométrie du tronçon change, la géométrie du point de tronçon et son niveau sont ajustés également. Si les deux valeurs changent, le niveau est prédominant. Lors d’une insertion, c’est comme lorsque les deux valeurs changent. Cela signifie que la géométrie du tronçon est définie selon les niveaux des points de tronçon et que s’ils sont NULL, les valeurs Z du départ et de la fin du tronçon sont définis à NaN.</p>
-</div>
-<p>Synchronization of levels works also for intermediate points (points between the reachpoints), if you snap while digitizing to 3d-points on another layer (e.g. a textfile as result of gps-measurement with x,y,z coordinates added to the QGIS-project). Be aware, that you have then a full 3d-reach, but on the export to INTERLIS these intermediate-levels will be lost, because VSA-DSS version 2020 does not support 3d for reach-geometry.</p>
+<p>When inserting a new reach using the wizard, the start and end points of the line geometry determine the level of the corresponding reach points (as shown in the pictures above).
+These values can be overwritten before saving.
+Upon saving, the level values <cite>rp_from_level</cite> and <cite>rp_to_level</cite> are used to define the Z value of the first and last vertex of a reach.</p>
+<p>When updating a reach, there are several cases:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>The first/last reach geometry vertex was not changed, but the <cite>rp_from_level</cite> / <cite>rp_to_level</cite> was. In this case, the level value <cite>rp_from_level</cite> / <cite>rp_to_level</cite> is used to set the Z value of the first / last vertex of the reach</p></li>
+<li><p>The first/last reach geometry vertex was changed, but the <cite>rp_from_level</cite> / <cite>rp_to_level</cite> was not. In this case, the QGIS variable <cite>&#64;tww_update_lvl_by_geom</cite> defines whether the <cite>rp_from_level</cite> / <cite>rp_to_level</cite> is overwritten by the Z value of the first / last vertex of the reach</p></li>
+<li><p>Both the first/last reach geometry vertex and the <cite>rp_from_level</cite> / <cite>rp_to_level</cite> were changed. The <cite>rp_from_level</cite> / <cite>rp_to_level</cite> take precendence</p></li>
+<li><p>Neither the first/last reach geometry vertex nor the <cite>rp_from_level</cite> / <cite>rp_to_level</cite> was changed. No changes occur</p></li>
+</ol>
+</div></blockquote>
+<p>Synchronization of levels also works when snapping on 3d points (e.g. a textfile as result of gps-measurement with x,y,z coordinates added to the QGIS-project) or line/polygon vertices of 3D geometries while digitizing.
+Be aware, that TEKSI stores 3d-reaches, but the generally used INTERLIS models VSA-DSS 2020.1 / SIA405 Abwasser 2020.1 drop the Z value on all vertices.</p>
 </section>
 </section>
 
