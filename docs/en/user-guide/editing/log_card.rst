@@ -34,7 +34,7 @@ In vw_tww_catchment_area.fk_special_building_* are log_cards selectable, that be
 Control the connected catchment_area in layer ``vw_tww_catchment_area_totals`` (polygon)
 ----------------------------------------------------------------------------------------
 
-The connected catchment_areas with fk_special_building_ww_current will be displayed in layer vw_tww_catchment_area_totals (polygon) after clicking the TWW-SQL-Button (Refresch network topology).
+The connected catchment_areas with fk_special_building_ww_current will be displayed in layer vw_tww_catchment_area_totals (polygon) after clicking the TWW-SQL-Button (Refresh network topology).
 The fields of this layer (population, surface_area,...) are not calculated automatically in the actual version (2025.02). Use statistic functions to get the necessary values.
 In version 2025.02 is no visualization of of the other connections (fk_special_building_ww_planned or fk_special_building_rw_current/planned).
 
