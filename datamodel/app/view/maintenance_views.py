@@ -74,7 +74,7 @@ def mvw_tww_channel(
             JOIN reach_start_end_points re ON re.fk_wastewater_structure = cg.obj_id AND st_equals(re.reach_end_point, cg.channel_end_point)
         ), re_agg as(
         select ne.fk_wastewater_structure,
-            st_multi(st_forcecurve(st_linemerge(st_collect(re.progression2d_geometry))))::geometry(MultiCurve,2056) AS progression2d_geometry,
+            st_multi(st_forcecurve(st_linemerge(st_collect(re.progression2d_geometry))))::geometry(MultiCurve, {{srid}}) AS progression2d_geometry,
             min(re.clear_height) AS _re_min_height,
             max(re.clear_height) AS _re_max_height,
             sum(re.length_effective) AS _re_length_effective,
