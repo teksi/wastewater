@@ -1,0 +1,161 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="de" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adding or Editing of Log Cards &mdash; TWW dev Dokumentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=419ed147"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/translations.js?v=9bf55d28"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Stichwortverzeichnis" href="../../genindex.html" />
+    <link rel="search" title="Suche" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            TWW
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Dokumentation durchsuchen" aria-label="Dokumentation durchsuchen" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">TEKSI Abwasser (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Benutzerhandbuch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">Administratorhandbuch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extensions-guide/index.html">Offizielle TWW-Erweiterungen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">Übersetzungen</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">TWW</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Adding or Editing of Log Cards</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/user-guide/editing/log_card.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <blockquote>
+<div></div></blockquote>
+<section id="adding-or-editing-of-log-cards">
+<span id="log-cards"></span><h1>Adding or Editing of Log Cards<a class="headerlink" href="#adding-or-editing-of-log-cards" title="Link to this heading"></a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2025.0.</span></p>
+</div>
+<p>This represents a guide on how to add or edit Log Card data in TWW.</p>
+<section id="creating-editing-log-cards">
+<h2>Creating / editing log_cards<a class="headerlink" href="#creating-editing-log-cards" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Fügen Sie einen neuen Punktdatensatz in der Ebene vw_tww_Stammkarte hinzu, indem Sie mit dem QGIS-Werkzeug „Punkt hinzufügen“ irgendwo auf die Karte klicken.</p></li>
+<li><p>Select the wastewater_node of the log_card on the map.</p></li>
+<li><p>Do not try editing the identifier of the log_card: the identifier will be set by default equal to the identifier of the wastewater_node.</p></li>
+<li><p>Select fk_agency (is mandatory because this value is mandatory in DSS-mini).</p></li>
+<li><p>Choose OK.</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/new_log_card.jpg" src="../../_images/new_log_card.jpg" />
+</figure>
+</section>
+<section id="connect-the-catchment-area-to-the-log-card">
+<h2>Connect the catchment_area to the log_card<a class="headerlink" href="#connect-the-catchment-area-to-the-log-card" title="Link to this heading"></a></h2>
+<p>The database is now ready to connect the catchment_area-records to the log_card.
+In vw_tww_catchment_area.fk_special_building_* are log_cards selectable, that belong to a special_structure. Use multiedit or field-calculator to edit the fk_special_building-fields.</p>
+<figure class="align-default">
+<img alt="../../_images/connect_ca_to_log_card.jpg" src="../../_images/connect_ca_to_log_card.jpg" />
+</figure>
+</section>
+<section id="control-the-connected-catchment-area-in-layer-vw-tww-catchment-area-totals-polygon">
+<h2>Control the connected catchment_area in layer <code class="docutils literal notranslate"><span class="pre">vw_tww_catchment_area_totals</span></code> (polygon)<a class="headerlink" href="#control-the-connected-catchment-area-in-layer-vw-tww-catchment-area-totals-polygon" title="Link to this heading"></a></h2>
+<p>The connected catchment_areas with fk_special_building_ww_current will be displayed in layer vw_tww_catchment_area_totals (polygon) after clicking the TWW-SQL-Button (Refresh network topology).
+The fields of this layer (population, surface_area,…) are not calculated automatically in the actual version (2025.0.2). Use statistic functions to get the necessary values.
+In version 2025.0.2, there is no visualization of the other connections (fk_special_building_ww_planned or fk_special_building_rw_current/planned).</p>
+</section>
+<section id="edit-hydraulic-char-data">
+<h2>Edit hydraulic_char_data<a class="headerlink" href="#edit-hydraulic-char-data" title="Link to this heading"></a></h2>
+<p>To edit the hydraulic_char_data, edit again the record in layer vw_tww_log_card.
+In Tab hydraulic char data add a new record and choose a status.
+Identifier of hydraulic_char_record is set autmatically to identifier of log_card-status (problem: if the wastewater_node_identifier is to long -&gt; log_card.idenitifer is long -&gt; hydraulic_char_data is too long!).</p>
+<p>The fields that are editable depend on the function of the special_structure: pump-attributes are only visible for pumps, weir-attributes (also overflow_results) are only visible for special_structures with overflow.</p>
+<figure class="align-default">
+<img alt="../../_images/new_hydraulic_char_data.jpg" src="../../_images/new_hydraulic_char_data.jpg" />
+</figure>
+</section>
+<section id="edit-catchment-area-totals">
+<h2>Edit catchment_area_totals<a class="headerlink" href="#edit-catchment-area-totals" title="Link to this heading"></a></h2>
+<p>Also the catchment_area_totals are edited in the record in layer vw_tww_log_card. Select the hydraulic char data, use tab catchment_area_totals and add a new record. Identifier should be set to identifier of hydraulic_char_data. The values has to be written manually actually (2025.02).</p>
+<figure class="align-default">
+<img alt="../../_images/new_catchment_area_totals.jpg" src="../../_images/new_catchment_area_totals.jpg" />
+</figure>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, The TWW Project www.teksi.ch.</p>
+  </div>
+
+  Erstellt mit <a href="https://www.sphinx-doc.org/">Sphinx</a> mit einem
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    bereitgestellt von <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

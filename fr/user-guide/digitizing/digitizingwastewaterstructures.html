@@ -55,6 +55,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#digitizing">Numérisation</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#further-attributes-and-classes">Autres classes et attributs</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#geometry-synchronization">Synchronisation de la géométrie</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#digitizing-additional-wastewater-structures">Digitizing Additional Wastewater Structures</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="digitizingdetailedgeometry.html">Numérisation de géométries détaillées</a></li>
@@ -132,6 +133,10 @@
 <li><p>point_deversement</p></li>
 <li><p>installation_infiltration</p></li>
 </ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Other wastewater_structure subtypes (wwtp_structure, small_treatment_plant, drainless_toilet) are not part of the SIA405-datamodel and therefore not part of vw_tww_wastewater_structure. In TWW version 2025 exists another layer <code class="docutils literal notranslate"><span class="pre">vw_tww_additional_ws</span></code> for these subclasses.</p>
+</div>
 <p>Selon le <strong>ws_type</strong>, vous aurez différents champs et onglets dans le formulaire.</p>
 <p>Ajoutez ensuite l’identifiant (il s’agit de l’attribut qui sera affiché sur la carte)</p>
 <div class="admonition note">
@@ -188,6 +193,17 @@ When the level of the cover <cite>co_level</cite> is entered, this value is adap
 <p class="admonition-title">Note</p>
 <p>If a cover level changes, the Z value of the cover’s geometry will be adjusted. When the geometry changes, the co_level attribut is adjusted as well. If both values change, the level takes precedence. On an insert it’s like when both value change. Means the cover’s geometry is set according to the cover level and if it’s NULL, the Z value is set to NaN. The same situation is on editing the wastewater node directly.</p>
 </div>
+</section>
+<section id="digitizing-additional-wastewater-structures">
+<h2>Digitizing Additional Wastewater Structures<a class="headerlink" href="#digitizing-additional-wastewater-structures" title="Lien vers cette rubrique"></a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">Ajouté dans la version 2025.0.</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">vw_tww_additional_ws</span></code> is a view for working with subclasses wwtp_structure, small_treatment_plant, drainless_toilet. This subclasses are not part of the SIA405 datamodel.</p>
+<p>These subclasses are not digitized using the TWW Wizard, but with the QGIS <strong>Add Point Feature</strong> tool.
+Similar to the digitizing of manholes or special structures, when creating a new record, also a cover and a wastewater node is created. The identifier of the wastewater_structure is duplicated into cover.identifier and node.identifier.
+Unlike the digitizing in vw_tww_wastewater_structure, there is no main_node or main_cover. vw_tww_additional_ws is not configured to add a second cover or a second node.
+With the TWW-tool <strong>connect wastwater networkelements</strong> you can connect reaches also to this additional wastewater structures.</p>
 </section>
 </section>
 

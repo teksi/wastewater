@@ -95,5 +95,19 @@ When updating a reach, there are several cases:
   3. Both the first/last reach geometry vertex and the `rp_from_level` / `rp_to_level` were changed. The `rp_from_level` / `rp_to_level` take precendence
   4. Neither the first/last reach geometry vertex nor the `rp_from_level` / `rp_to_level` was changed. No changes occur
 
-Synchronization of levels also works when snapping on 3d points (e.g. a textfile as result of gps-measurement with x,y,z coordinates added to the QGIS-project) or line/polygon vertices of 3D geometries while digitizing.
-Be aware, that TEKSI stores 3d-reaches, but the generally used INTERLIS models VSA-DSS 2020.1 / SIA405 Abwasser 2020.1 drop the Z value on all vertices.
+Synchronization of levels works also for intermediate points (points between the reachpoints), if you snap while digitizing to 3d-points on another layer (e.g. a textfile as result of gps-measurement with x,y,z coordinates added to the QGIS-project). Be aware, that you have then a full 3d-reach, but on the export to INTERLIS these intermediate-levels will be lost, because VSA-DSS version 2020 does not support 3d for reach-geometry.
+
+
+Digitizing flushing nozzle
+---------------------------
+
+.. versionadded:: 2025.0
+
+TWW is configured to digitize flushing nozzles as structure part of the channel.
+
+You can digitize a flushing nozzle
+
+* starting on the Feature Attribut window of vw_tww_reach with tab **Structure Parts**. Add point child feature and digitize the point on the map. Or
+* create a new point on vw_flushing_nozzle and choose the connected channel for field fk_wastewater_structure on the map.
+
+.. note:: A flushing nozzle is connected to a wastewater_structure, but it's geometry is totally independent of the wastewater_structure-geometry. If you move the channel, you have to move the flushing nozzle manually.

@@ -154,7 +154,7 @@
 <blockquote>
 <div><ul class="simple">
 <li><p>Um einen Attribut zu ändern müssen Sie zuerst den <strong>vw_tww_wastewater_structure</strong> Layer auswählen.</p></li>
-<li><p>Aktivieren sie den Bearbeitungsmodus oder starten Sie den <strong>TWW Wizard</strong> und klicken sie auf <strong>Start Data Entry</strong>.</p></li>
+<li><p><strong>Toogle Editing</strong> or start the <strong>TWW Wizard</strong> and click on <strong>Start Data Entry</strong>.</p></li>
 <li><p>Dann klicken Sie auf den <strong>Objekte abfragen</strong> Knopf und wählen das Element, welches Sie bearbeiten wollen, mit einem Klick</p></li>
 </ul>
 <figure class="align-default">
@@ -169,7 +169,7 @@
 <ul class="simple">
 <li><p>Auf dem ersten Reiter (Allgemein) können Sie die am häufigsten benutzten Attribute erfassen</p></li>
 <li><p>Hauptdeckel und Hauptknoten ist der erste Deckel resp. Knoten, welcher für den Schacht erstellt wurde.</p></li>
-<li><p>Zusätzliche Attribute der Tabelle Abwasserbauwerk und  der zugehörigen Subklasse können im Tab Abwasserbauwerk editiert werden</p></li>
+<li><p>Additional attributes of table wastewater structure and for the selected subclass can be changed on tab Wastewater structure</p></li>
 <li><p>Um die Attribute verknüpfter Klassen (z.B. Deckel) zu ändern muss der entsprechende Reiter gewählt werden.</p></li>
 <li><p>Unter dem Reiter <strong>Bauwerkteile/structure parts</strong> können Sie weitere Bauwerksteile wie zum Beispiel <strong>Einstiegshilfen/access aids</strong>, <strong>Rückstausicherung/backflow prevention</strong>, <strong>Trockenwetterrinne/dryweather flume</strong> etc. hinzufügen</p></li>
 </ul>
@@ -358,20 +358,17 @@
 <h2>Mehrere Datensätze gleichzeitig ändern<a class="headerlink" href="#change-multiple-records-at-once" title="Link to this heading"></a></h2>
 <p>In QGIS gibt es mehrere Möglichkeiten, um mehrere Datensätze auf einmal zu ändern. QGIS <strong>Multiedit</strong> ändert sogar mehrere Attribute von mehreren Datensätzen gleichzeitig, aber es gibt keine Fortschrittsanzeige. Mit dem QGIS <strong>Feldrechner</strong> kann ein Feld für mehrere Datensätze geändert werden und hier gibt es eine Fortschrittsanzeige.</p>
 <p>Bei sehr vielen Datensätzen (mehrere Hundert bis mehrere Tausend) kann eine mehrfache Datensatzänderung sehr lange dauern (mehrere Minuten), wenn es sehr viele Datensätze sind und wenn Layer geändert werden, die viele Felder aus unterschiedlichen Tabellen haben. Besonders die TWW-Hauptlayer (vw_tww_Abwasserbauwerk und vw_tww_Haltung) haben dieses Problem. Daher ist es immer besser, nicht diese großen Layer mehrfach zu bearbeiten, sondern die betreffende Tabelle direkt zu bearbeiten, wenn eine große Anzahl von Datensätzen gleichzeitig geändert werden soll. Deshalb ist es gut zu wissen, in welcher Tabelle sich unser Feld befindet (vielleicht hilft das Feldnamen-Präfix). Möglicherweise muss diese Tabelle noch zum TWW-Projekt hinzugefügt werden. Um zu verdeutlichen, dass es wirklich wichtig ist, gab es den folgenden Test:</p>
-<p>Ändere für 500 von 10.122 Haltungen das Feld WBW_Bauart. Es ist ein Feld mit einer Werteliste. In vw_tww_Haltung ist der Feldname BW_WBW_Bauart, d. h. die Tabelle des Felds ist Abwasserbauwerk (BW).</p>
+<p>Change for 500 reaches out of 1’653 the field rv_construction_type. It’s a field with a value list. In vw_tww_reach, the fields name is ws_rv_construction_type, means the table of the field is wastewater_structure (ws).</p>
 <p>Wie lang dauert es:</p>
 <ul class="simple">
-<li><p>QGIS-Feldrechner und vw_tww_Haltung: mehr als 25 Minuten!</p></li>
-<li><p>Multiedit mit vw_tww_Haltung: Mehr als 5 Minuten.</p></li>
-<li><p>QGIS-Feldrechner und vw_Kanal: 1 Minute und 3 Sekunden.</p></li>
-<li><p>QGIS-Feldrechner und Tabelle Abwasserbauwerk: 5 Sekunden.</p></li>
+<li><p>Use field calculator with vw_tww_reach: more than 2:24 minutes!</p></li>
+<li><p>Use field calculator with vw_channel: 33 seconds</p></li>
 </ul>
-<p>Warum ist vw_tww_Haltung so langsam: es gibt Trigger in der Datenbank, die bei jedem Datensatz die berechneten Felder der angeschlossenen Schächte und Knoten aktualisieren, damit die Symbologie dieser Themen immer auf dem neuesten Stand ist. Mit: <code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">tww_sys.disable_symbology_triggers();</span></code> können diese Trigger gestoppt werden. Wenn die Trigger gestoppt werden, sind auch die HauptLayer schnell:</p>
+<p>Why is vw_tww_reach so slow: there are triggers in the database, that updates for every record the calculated fields of the connected manholes and nodes, that this themes symbology is always up-to-date.</p>
+<p>TWW has a function to disable / enable symbology triggers (chapter how to)</p>
 <ul class="simple">
-<li><p>QGIS-Feldrechner und vw_tww_Haltung: 8 Sekunden.</p></li>
+<li><p>Use field calculator with vw_tww_reach, symbology trigger disabled: about 15 seconds.</p></li>
 </ul>
-<p>Nicht vergessen: die Symbologie-Trigger nach den Berechnungen wieder aktivieren: <code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">tww_sys.enable_symbology_triggers();</span></code> (und die Symbologie-Trigger bei Bedarf mit dem neuen Befehl <strong>Update symbology</strong> manuell für alle Datensätze ausführen!).</p>
-<p>To do: verify these tests with TWW</p>
 </section>
 <section id="saving-changes">
 <h2>Änderungen Speichern<a class="headerlink" href="#saving-changes" title="Link to this heading"></a></h2>
@@ -382,10 +379,6 @@
 <section id="changing-wastewater-structure-type-ws-type">
 <h2>Abwasserbauwerk Typ ändern (ws_type)<a class="headerlink" href="#changing-wastewater-structure-type-ws-type" title="Link to this heading"></a></h2>
 <p>Im vw_tww_Abwasserbauwerk Formular kann die Subklasse das Abwasserbauwerks geändert werden (z.B. von Normschacht zu Spezialbauwerk oder Versickerungsanlage). Der alte Subklassen-Datensatz wird dabei gelöscht und die Subklassen-spezifischen Felder müssen neu eingegeben werden. Aber alle Verknüpfungen (die beziehen sich auf die Klasse Abwasserbauwerk und nicht auf die Subklasse) und auch die Obj_ID oder die Bezeichnung bleiben unverändert.</p>
-<div class="admonition note">
-<p class="admonition-title">Bemerkung</p>
-<p>Derzeit werden nur vier Unterklassen unterstützt: manhole, special_structure, infiltration_installation, discharge_point. Andere Unterklassen (wwtp_structure, small_treatment_plant, drainless_toilett) werden in einer nächsten Version von TWW unterstützt.</p>
-</div>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
 <p>Ein Schacht-Abwasserbauwerk kann nicht in ein Kanal-Abwasserbauwerk geändert werden oder umgekehrt.</p>
