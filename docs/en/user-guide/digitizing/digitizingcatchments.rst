@@ -49,6 +49,11 @@ Digitizing
 
 .. note:: To connect the area with wastewater nodes, see chapter :ref:`connect-wastewater-network-elements`.
 
+.. versionadded:: 2025.0
+
+.. note:: The tab fk_log_card can only be used after creating the log_cards first, see chapter Editing /Log Cards .
+
+
 Editing
 -------
 
