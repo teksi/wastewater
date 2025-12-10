@@ -169,7 +169,7 @@
 <ul class="simple">
 <li><p>Auf dem ersten Reiter (Allgemein) können Sie die am häufigsten benutzten Attribute erfassen</p></li>
 <li><p>Hauptdeckel und Hauptknoten ist der erste Deckel resp. Knoten, welcher für den Schacht erstellt wurde.</p></li>
-<li><p>Additional attributes of table wastewater structure and for the selected subclass can be changed on tab Wastewater structure</p></li>
+<li><p>Zusätzliche Attribute der Tabelle Abwasserbauwerk und  der zugehörigen Subklasse können im Tab Abwasserbauwerk editiert werden</p></li>
 <li><p>Um die Attribute verknüpfter Klassen (z.B. Deckel) zu ändern muss der entsprechende Reiter gewählt werden.</p></li>
 <li><p>Unter dem Reiter <strong>Bauwerkteile/structure parts</strong> können Sie weitere Bauwerksteile wie zum Beispiel <strong>Einstiegshilfen/access aids</strong>, <strong>Rückstausicherung/backflow prevention</strong>, <strong>Trockenwetterrinne/dryweather flume</strong> etc. hinzufügen</p></li>
 </ul>
@@ -358,13 +358,13 @@
 <h2>Mehrere Datensätze gleichzeitig ändern<a class="headerlink" href="#change-multiple-records-at-once" title="Link to this heading"></a></h2>
 <p>In QGIS gibt es mehrere Möglichkeiten, um mehrere Datensätze auf einmal zu ändern. QGIS <strong>Multiedit</strong> ändert sogar mehrere Attribute von mehreren Datensätzen gleichzeitig, aber es gibt keine Fortschrittsanzeige. Mit dem QGIS <strong>Feldrechner</strong> kann ein Feld für mehrere Datensätze geändert werden und hier gibt es eine Fortschrittsanzeige.</p>
 <p>Bei sehr vielen Datensätzen (mehrere Hundert bis mehrere Tausend) kann eine mehrfache Datensatzänderung sehr lange dauern (mehrere Minuten), wenn es sehr viele Datensätze sind und wenn Layer geändert werden, die viele Felder aus unterschiedlichen Tabellen haben. Besonders die TWW-Hauptlayer (vw_tww_Abwasserbauwerk und vw_tww_Haltung) haben dieses Problem. Daher ist es immer besser, nicht diese großen Layer mehrfach zu bearbeiten, sondern die betreffende Tabelle direkt zu bearbeiten, wenn eine große Anzahl von Datensätzen gleichzeitig geändert werden soll. Deshalb ist es gut zu wissen, in welcher Tabelle sich unser Feld befindet (vielleicht hilft das Feldnamen-Präfix). Möglicherweise muss diese Tabelle noch zum TWW-Projekt hinzugefügt werden. Um zu verdeutlichen, dass es wirklich wichtig ist, gab es den folgenden Test:</p>
-<p>Change for 500 reaches out of 1’653 the field rv_construction_type. It’s a field with a value list. In vw_tww_reach, the fields name is ws_rv_construction_type, means the table of the field is wastewater_structure (ws).</p>
+<p>Ändere für 500 von 1’653 Haltungen das Feld WBW_Bauart. Es ist ein Feld mit einer Werteliste. In vw_tww_Haltung ist der Feldname BW_WBW_Bauart, d. h. die Tabelle des Felds ist Abwasserbauwerk (BW).</p>
 <p>Wie lang dauert es:</p>
 <ul class="simple">
 <li><p>Use field calculator with vw_tww_reach: more than 2:24 minutes!</p></li>
 <li><p>Use field calculator with vw_channel: 33 seconds</p></li>
 </ul>
-<p>Why is vw_tww_reach so slow: there are triggers in the database, that updates for every record the calculated fields of the connected manholes and nodes, that this themes symbology is always up-to-date.</p>
+<p>Warum ist vw_tww_Haltung so langsam: es gibt Trigger in der Datenbank, die bei jedem Datensatz die berechneten Felder der angeschlossenen Schächte und Knoten aktualisieren, damit die Symbologie dieser Themen immer auf dem neuesten Stand ist.</p>
 <p>TWW has a function to disable / enable symbology triggers (chapter how to)</p>
 <ul class="simple">
 <li><p>Use field calculator with vw_tww_reach, symbology trigger disabled: about 15 seconds.</p></li>
