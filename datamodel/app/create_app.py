@@ -477,6 +477,14 @@ if __name__ == "__main__":
         default="en",
         choices=["en", "fr", "de", "it", "ro"],
     )
+
+    parser.add_argument(
+        "-w",
+        "--webgis",
+        action="store_true",
+        default=False,
+        help="load webgis modification on app schema",
+    )
     parser.add_argument("-m", "--modification_yaml", help="path to modification yaml", type=Path)
     args = parser.parse_args()
 
