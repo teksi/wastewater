@@ -40,7 +40,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         self.update("vw_manhole", row, obj_id)
 
         # it should be calculated correctly in the live table tww_od.wastewater_structure
-        row = self.select("wastewater_structure", obj_id, "tww_od")
+        row = self.select("wastewater_structure", obj_id, schema="tww_od")
         self.assertNotEqual(row["_depth"], decimal.Decimal("12.220"))
 
         # it should be visible in the vw_manhole view
@@ -74,7 +74,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         self.update("vw_manhole", row, obj_id, "tww_app")
 
         # it should be calculated correctly in the live view tww_od.vw_tww_wastewater_structure
-        row = self.select("vw_tww_wastewater_structure", obj_id, "tww_od")
+        row = self.select("vw_tww_wastewater_structure", obj_id, schema="tww_od")
         self.assertEqual(row["_depth"], decimal.Decimal("2.220"))
         self.assertEqual(row["co_level"], decimal.Decimal("22.220"))
         self.assertEqual(row["wn_bottom_level"], decimal.Decimal("20"))
@@ -86,7 +86,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         self.assertEqual(row["wn_bottom_level"], decimal.Decimal("20"))
 
         # it shouldn't be in the quarantine import_manhole_quarantine
-        row = self.select("import_manhole_quarantine", obj_id, "tww_od")
+        row = self.select("import_manhole_quarantine", obj_id, schema="tww_od")
         self.assertIsNone(row)
 
     # - cover level calculation
@@ -110,20 +110,20 @@ class TestImport(unittest.TestCase, DbTestBase):
         self.update("import_vw_manhole", row, obj_id, "tww_app")
 
         # it should be calculated correctly in the live view vw_tww_wastewater_structure
-        row = self.select("vw_tww_wastewater_structure", obj_id, "tww_app")
+        row = self.select("vw_tww_wastewater_structure", obj_id, schema="tww_app")
         self.assertIsNotNone(row)
         self.assertEqual(row["_depth"], decimal.Decimal("7.780"))
         self.assertEqual(row["co_level"], decimal.Decimal("30"))
         self.assertEqual(row["wn_bottom_level"], decimal.Decimal("22.220"))
 
         # it should be visible in the vw_manhole view
-        row = self.select("vw_manhole", obj_id, "tww_app")
+        row = self.select("vw_manhole", obj_id, schema="tww_app")
         self.assertEqual(row["_depth"], decimal.Decimal("7.780"))
         self.assertEqual(row["co_level"], decimal.Decimal("30"))
         self.assertEqual(row["wn_bottom_level"], decimal.Decimal("22.220"))
 
         # it shouldn't be in the quarantine import_manhole_quarantine
-        row = self.select("import_manhole_quarantine", obj_id, "tww_od")
+        row = self.select("import_manhole_quarantine", obj_id, schema="tww_od")
         self.assertIsNone(row)
 
     # - delete of structure
@@ -140,7 +140,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         self.update("vw_manhole", row, obj_id)
 
         # it should be deleted in the live table tww_od.wastewater_structure
-        row = self.select("wastewater_structure", obj_id, "tww_od")
+        row = self.select("wastewater_structure", obj_id, schema="tww_od")
         self.assertIsNone(row)
 
         # it should not be visible anymore in the vw_manhole view
@@ -162,7 +162,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         self.update("vw_manhole", row, obj_id)
 
         # it should not be deleted in the live table tww_od.wastewater_structure
-        row = self.select("wastewater_structure", obj_id, "tww_od")
+        row = self.select("wastewater_structure", obj_id, schema="tww_od")
         self.assertIsNotNone(row)
 
         # it should still be visible anymore in the vw_manhole view
@@ -195,7 +195,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         self.update("vw_manhole", row, obj_id)
 
         # it should be in the live table tww_od.wastewater_structure
-        row = self.select("wastewater_structure", obj_id, "tww_od")
+        row = self.select("wastewater_structure", obj_id, schema="tww_od")
         self.assertIsNotNone(row)
         self.assertEqual(row["remark"], "Strassenauslauf")
 
@@ -225,7 +225,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         self.assertEqual(row["level"], decimal.Decimal("301.700"))
 
         # the photo should be in the live table tww_od.file
-        row = self.select("file", obj_id, "tww_od")
+        row = self.select("file", obj_id, schema="tww_od")
         cur = self.cursor()
         cur.execute(
             psycopg.sql.SQL(
