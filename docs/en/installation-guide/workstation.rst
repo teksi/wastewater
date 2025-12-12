@@ -160,7 +160,7 @@ Install the demo project
 
 * Configure and download the qgs project file and its translations so it fits your pg_config setting
 
-* If you leave the teksi_wastewater_[language].qm files in the same directory as the teksi_wastewater.qgs file and start QGIS with one of these languages, your project will be translated to that langue when you start the project. E.g. you start teksi_wastewater.qgs with a QGIS Installation that is set to German, then the teksi_wastewater.qgs project will appear in German.
+* If you leave the teksi_wastewater_[language].qm files in the same directory as the teksi_wastewater.qgs file and start QGIS with one of these languages, your project will be translated to that language when you start the project. E.g. you start teksi_wastewater.qgs with a QGIS installation that is set to German, then the teksi_wastewater.qgs project will appear in German.
 
 .. note:: You need to explicitly set the language in QGIS in settings. If QGIS is configured to take the system language, the TWW translation is not loaded.
 
