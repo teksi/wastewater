@@ -45,7 +45,7 @@ Install data model with or without demodata
 
 See the current `TMMT Documentation for a step by step help <https://github.com/teksi/TMMT/discussions/34>`_
 
-After you have setup successfully the database with or without demodata, you can check the schemata via pgAdmin 
+After you have setup successfully the database with or without demodata, you can check the schemata via pgAdmin
 
 There will be 6 `schemas <https://teksi.github.io/wastewater/en/user-guide/layerexplanations/namingconventions.html#schemas-in-the-tww-database>`_ in the database
 

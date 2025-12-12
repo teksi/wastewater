@@ -13,4 +13,3 @@ The base installation of TWW defines the following group roles (choose this opti
 * **tww_sysadmin**: superuser of TWW database, can edit TWW system tables (`tww_sys` schema).
 
 Data in TWW are stored in 3 schemas with default permissions for all of these users.
-
