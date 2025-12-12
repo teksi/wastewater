@@ -41,10 +41,12 @@ class TestImport(unittest.TestCase, DbTestBase):
 
         # it should be calculated correctly in the live table tww_od.wastewater_structure
         row = self.select("wastewater_structure", obj_id, schema="tww_od")
+        self.assertIsNotNone(row["_depth"])
         self.assertNotEqual(row["_depth"], decimal.Decimal("12.220"))
 
         # it should be visible in the import_vw_manhole view
         row = self.select("import_vw_manhole", obj_id)
+        self.assertIsNotNone(row["_depth"])
         self.assertNotEqual(row["_depth"], decimal.Decimal("12.220"))
 
         # it shouldn't be in the quarantine import_manhole_quarantine
@@ -75,12 +77,14 @@ class TestImport(unittest.TestCase, DbTestBase):
 
         # it should be calculated correctly in the live view tww_od.vw_tww_wastewater_structure
         row = self.select("vw_tww_wastewater_structure", obj_id)
+        self.assertIsNotNone(row["_depth"])
         self.assertEqual(row["_depth"], decimal.Decimal("2.220"))
         self.assertEqual(row["co_level"], decimal.Decimal("22.220"))
         self.assertEqual(row["wn_bottom_level"], decimal.Decimal("20"))
 
         # it should be visible in the import_vw_manhole view
         row = self.select("import_vw_manhole", obj_id)
+        self.assertIsNotNone(row["_depth"])
         self.assertEqual(row["_depth"], decimal.Decimal("2.220"))
         self.assertEqual(row["co_level"], decimal.Decimal("22.220"))
         self.assertEqual(row["wn_bottom_level"], decimal.Decimal("20"))
@@ -111,13 +115,14 @@ class TestImport(unittest.TestCase, DbTestBase):
 
         # it should be calculated correctly in the live view vw_tww_wastewater_structure
         row = self.select("vw_tww_wastewater_structure", obj_id, schema="tww_app")
-        self.assertIsNotNone(row)
+        self.assertIsNotNone(row["_depth"])
         self.assertEqual(row["_depth"], decimal.Decimal("7.780"))
         self.assertEqual(row["co_level"], decimal.Decimal("30"))
         self.assertEqual(row["wn_bottom_level"], decimal.Decimal("22.220"))
 
         # it should be visible in the import_vw_manhole view
         row = self.select("import_vw_manhole", obj_id, schema="tww_app")
+        self.assertIsNotNone(row["_depth"])
         self.assertEqual(row["_depth"], decimal.Decimal("7.780"))
         self.assertEqual(row["co_level"], decimal.Decimal("30"))
         self.assertEqual(row["wn_bottom_level"], decimal.Decimal("22.220"))
