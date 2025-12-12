@@ -37,14 +37,14 @@ class TestImport(unittest.TestCase, DbTestBase):
         }
 
         # update
-        self.update("vw_manhole", row, obj_id)
+        self.update("import_vw_manhole", row, obj_id)
 
         # it should be calculated correctly in the live table tww_od.wastewater_structure
         row = self.select("wastewater_structure", obj_id, schema="tww_od")
         self.assertNotEqual(row["_depth"], decimal.Decimal("12.220"))
 
-        # it should be visible in the vw_manhole view
-        row = self.select("vw_manhole", obj_id)
+        # it should be visible in the import_vw_manhole view
+        row = self.select("import_vw_manhole", obj_id)
         self.assertNotEqual(row["_depth"], decimal.Decimal("12.220"))
 
         # it shouldn't be in the quarantine import_manhole_quarantine
@@ -71,7 +71,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         }
 
         # update
-        self.update("vw_manhole", row, obj_id, "tww_app")
+        self.update("import_vw_manhole", row, obj_id, "tww_app")
 
         # it should be calculated correctly in the live view tww_od.vw_tww_wastewater_structure
         row = self.select("vw_tww_wastewater_structure", obj_id, schema="tww_od")
@@ -79,8 +79,8 @@ class TestImport(unittest.TestCase, DbTestBase):
         self.assertEqual(row["co_level"], decimal.Decimal("22.220"))
         self.assertEqual(row["wn_bottom_level"], decimal.Decimal("20"))
 
-        # it should be visible in the vw_manhole view
-        row = self.select("vw_manhole", obj_id)
+        # it should be visible in the import_vw_manhole view
+        row = self.select("import_vw_manhole", obj_id)
         self.assertEqual(row["_depth"], decimal.Decimal("2.220"))
         self.assertEqual(row["co_level"], decimal.Decimal("22.220"))
         self.assertEqual(row["wn_bottom_level"], decimal.Decimal("20"))
@@ -116,8 +116,8 @@ class TestImport(unittest.TestCase, DbTestBase):
         self.assertEqual(row["co_level"], decimal.Decimal("30"))
         self.assertEqual(row["wn_bottom_level"], decimal.Decimal("22.220"))
 
-        # it should be visible in the vw_manhole view
-        row = self.select("vw_manhole", obj_id, schema="tww_app")
+        # it should be visible in the import_vw_manhole view
+        row = self.select("import_vw_manhole", obj_id, schema="tww_app")
         self.assertEqual(row["_depth"], decimal.Decimal("7.780"))
         self.assertEqual(row["co_level"], decimal.Decimal("30"))
         self.assertEqual(row["wn_bottom_level"], decimal.Decimal("22.220"))
@@ -137,14 +137,14 @@ class TestImport(unittest.TestCase, DbTestBase):
         row = {"deleted": True, "verified": True}
 
         # update
-        self.update("vw_manhole", row, obj_id)
+        self.update("import_vw_manhole", row, obj_id)
 
         # it should be deleted in the live table tww_od.wastewater_structure
         row = self.select("wastewater_structure", obj_id, schema="tww_od")
         self.assertIsNone(row)
 
-        # it should not be visible anymore in the vw_manhole view
-        row = self.select("vw_manhole", obj_id)
+        # it should not be visible anymore in the import_vw_manhole view
+        row = self.select("import_vw_manhole", obj_id)
         self.assertIsNone(row)
 
     # - delete of structure but have verified at false
@@ -159,14 +159,14 @@ class TestImport(unittest.TestCase, DbTestBase):
         row = {"deleted": True, "verified": False}
 
         # update
-        self.update("vw_manhole", row, obj_id)
+        self.update("import_vw_manhole", row, obj_id)
 
         # it should not be deleted in the live table tww_od.wastewater_structure
         row = self.select("wastewater_structure", obj_id, schema="tww_od")
         self.assertIsNotNone(row)
 
-        # it should still be visible anymore in the vw_manhole view
-        row = self.select("vw_manhole", obj_id)
+        # it should still be visible anymore in the import_vw_manhole view
+        row = self.select("import_vw_manhole", obj_id)
         self.assertIsNotNone(row)
 
     # - correct update with 1 old outlet and 1 new outlet and 0 old inlet and 0 new inlet
@@ -192,15 +192,15 @@ class TestImport(unittest.TestCase, DbTestBase):
         }
 
         # update
-        self.update("vw_manhole", row, obj_id)
+        self.update("import_vw_manhole", row, obj_id)
 
         # it should be in the live table tww_od.wastewater_structure
         row = self.select("wastewater_structure", obj_id, schema="tww_od")
         self.assertIsNotNone(row)
         self.assertEqual(row["remark"], "Strassenauslauf")
 
-        # it should be in the view vw_manhole
-        row = self.select("vw_manhole", obj_id)
+        # it should be in the view import_vw_manhole
+        row = self.select("import_vw_manhole", obj_id)
         self.assertIsNotNone(row)
         self.assertEqual(row["co_material"], 3015)
         self.assertEqual(row["remark"], "Strassenauslauf")
@@ -278,7 +278,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         self.assertIsNotNone(row)
         self.assertEqual(row["material"], 5081)
 
-        # it shouldn't be updated in the view vw_manhole
+        # it shouldn't be updated in the view import_vw_manhole
         row = self.select("import_vw_manhole", obj_id, schema="tww_app")
         self.assertNotEqual(row["co_material"], 666)
 
@@ -295,8 +295,8 @@ class TestImport(unittest.TestCase, DbTestBase):
         # update
         self.update("import_manhole_quarantine", row, obj_id, schema="tww_od")
 
-        # it should be updated in the view vw_manhole
-        row = self.select("vw_manhole", obj_id)
+        # it should be updated in the view import_vw_manhole
+        row = self.select("import_vw_manhole", obj_id)
         self.assertEqual(row["co_material"], 5547)
 
         # it shouldn't be anymore in the quarantine tww_od.import_manhole_quarantine
@@ -331,7 +331,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         # update
         self.update("import_vw_manhole", row, obj_id, schema="tww_app")
 
-        # it should be in the view vw_manhole
+        # it should be in the view import_vw_manhole
         row = self.select("import_vw_manhole", obj_id, schema="tww_app")
         self.assertIsNotNone(row)
         self.assertEqual(row["co_material"], 3015)
@@ -386,7 +386,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         # update
         self.update("import_vw_manhole", row, obj_id, schema="tww_od")
 
-        # it should be in the view vw_manhole
+        # it should be in the view import_vw_manhole
         row = self.select("import_vw_manhole", obj_id, schema="tww_od")
         self.assertIsNotNone(row)
         self.assertEqual(row["co_material"], 3015)
@@ -432,10 +432,10 @@ class TestImport(unittest.TestCase, DbTestBase):
         }
 
         # update
-        self.update("vw_manhole", row, obj_id)
+        self.update("import_vw_manhole", row, obj_id)
 
-        # it should be in the view vw_manhole
-        row = self.select("vw_manhole", obj_id)
+        # it should be in the view import_vw_manhole
+        row = self.select("import_vw_manhole", obj_id)
         self.assertIsNotNone(row)
         self.assertEqual(row["co_material"], 3015)
         self.assertEqual(row["remark"], "E10")
