@@ -49,7 +49,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         # delete it manually
         self.delete("import_manhole_quarantine", obj_id, schema="tww_od")
 
-    # - level calculation failing because only no reference level
+    # - level calculation failing because no reference level
     #   -> not updated structure with calculated values
     #   -> still in quarantine
     # @unittest.skip("This test needs the demo data to work")
@@ -65,29 +65,27 @@ class TestImport(unittest.TestCase, DbTestBase):
         }
 
         obj_id = self.insert_check("vw_tww_wastewater_structure", row)
+        self.assertIsNotNone(row["co_obj_id"]) # verify creation of cover
 
         row = {
             "_depth": 12.220,
             "co_level": None,
             "wn_bottom_level": None,
-            "outlet_1_material": 5081,
             "verified": True,
         }
 
         # update
         self.update("import_vw_manhole", row, obj_id)
 
-        # it should be calculated correctly in the live table tww_od.wastewater_structure
+        # it should be none in the live table tww_od.wastewater_structure
         row = self.select("wastewater_structure", obj_id, schema="tww_od")
-        self.assertIsNotNone(row["_depth"])
-        self.assertNotEqual(row["_depth"], decimal.Decimal("12.220"))
+        self.assertIsNone(row["_depth"])
 
         # it should be visible in the import_vw_manhole view
         row = self.select("import_vw_manhole", obj_id)
-        self.assertIsNotNone(row["_depth"])
-        self.assertNotEqual(row["_depth"], decimal.Decimal("12.220"))
+        self.assertIsNone(row["_depth"])
 
-        # it shouldn't be in the quarantine import_manhole_quarantine
+        # it should be in the quarantine import_manhole_quarantine
         row = self.select("import_manhole_quarantine", obj_id, schema="tww_od")
         self.assertIsNotNone(row)
 
@@ -114,8 +112,6 @@ class TestImport(unittest.TestCase, DbTestBase):
             "_depth": 2.220,
             "wn_bottom_level": None,
             "co_level": 22.220,
-            "inlet_3_material": 5081,
-            "outlet_1_material": 5081,
             "verified": True,
         }
 
