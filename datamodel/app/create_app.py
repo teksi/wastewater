@@ -96,6 +96,14 @@ class Hook(HookBase):
                 "value": f"display_{lang_code}",
                 "type": "identifier",
             },
+            "user_role": {
+                "value": "tww_user",
+                "type": "identifier",
+            },
+            "viewer_role": {
+                "value": "tww_viewer",
+                "type": "identifier",
+            },
             "name_lang": {
                 "value": f"name_{lang_code}",
                 "type": "identifier",
