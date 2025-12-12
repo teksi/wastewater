@@ -60,7 +60,7 @@ class TestImport(unittest.TestCase, DbTestBase):
             "ma_function": 8736,
             "co_brand": "BrandNewCovers",  # necessary to create the cover
             "situation3d_geometry": self.execute(
-                "ST_SetSRID(ST_MakePoint(2600000, 1200001, 0), 2056)"
+                "ST_SetSRID(ST_MakePoint(2600000, 1200001), 2056)"
             ),
         }
 
@@ -105,7 +105,7 @@ class TestImport(unittest.TestCase, DbTestBase):
             "ma_function": 8736,
             "co_brand": "BrandNewCovers",  # necessary to create the cover
             "situation3d_geometry": self.execute(
-                "ST_SetSRID(ST_MakePoint(2600001, 1200001, 0), 2056)"
+                "ST_SetSRID(ST_MakePoint(2600001, 1200001), 2056)"
             ),
         }
         obj_id = self.insert_check("vw_tww_wastewater_structure", row)
@@ -150,7 +150,7 @@ class TestImport(unittest.TestCase, DbTestBase):
             "ws_type": "manhole",
             "ma_function": 8736,
             "situation3d_geometry": self.execute(
-                "ST_SetSRID(ST_MakePoint(2600002, 1200002, 0), 2056)"
+                "ST_SetSRID(ST_MakePoint(2600002, 1200002), 2056)"
             ),
         }
         obj_id = self.insert_check("vw_tww_wastewater_structure", row)
@@ -193,7 +193,7 @@ class TestImport(unittest.TestCase, DbTestBase):
             "ws_type": "manhole",
             "ma_function": 8736,
             "situation3d_geometry": self.execute(
-                "ST_SetSRID(ST_MakePoint(2600003, 1200003, 0), 2056)"
+                "ST_SetSRID(ST_MakePoint(2600003, 1200003), 2056)"
             ),
         }
         obj_id = self.insert_check(
@@ -224,7 +224,7 @@ class TestImport(unittest.TestCase, DbTestBase):
             "ws_type": "manhole",
             "ma_function": 8736,
             "situation3d_geometry": self.execute(
-                "ST_SetSRID(ST_MakePoint(2600004, 1200004, 0), 2056)"
+                "ST_SetSRID(ST_MakePoint(2600004, 1200004), 2056)"
             ),
         }
         obj_id = self.insert_check("vw_tww_wastewater_structure", row)
@@ -258,7 +258,7 @@ class TestImport(unittest.TestCase, DbTestBase):
             "ma_function": 8736,
             "co_level": 456.123,
             "situation3d_geometry": self.execute(
-                "ST_SetSRID(ST_MakePoint(2600005, 1200005, 0), 2056)"
+                "ST_SetSRID(ST_MakePoint(2600005, 1200005), 2056)"
             ),
         }
         obj_id = self.insert_check("vw_tww_wastewater_structure", ws_row)
@@ -357,7 +357,7 @@ class TestImport(unittest.TestCase, DbTestBase):
             "co_level": 456.123,
             "co_material": 5547,
             "situation3d_geometry": self.execute(
-                "ST_SetSRID(ST_MakePoint(2600006, 1200006, 0), 2056)"
+                "ST_SetSRID(ST_MakePoint(2600006, 1200006), 2056)"
             ),
         }
         obj_id = self.insert_check("vw_tww_wastewater_structure", ws_row)
@@ -427,7 +427,7 @@ class TestImport(unittest.TestCase, DbTestBase):
             "co_level": 456.123,
             "co_material": 233,
             "situation3d_geometry": self.execute(
-                "ST_SetSRID(ST_MakePoint(2600007, 1200007, 0), 2056)"
+                "ST_SetSRID(ST_MakePoint(2600007, 1200007), 2056)"
             ),
         }
         obj_id = self.insert_check("vw_tww_wastewater_structure", ws_row)
@@ -515,7 +515,7 @@ class TestImport(unittest.TestCase, DbTestBase):
             "co_level": 456.123,
             "co_material": 233,
             "situation3d_geometry": self.execute(
-                "ST_SetSRID(ST_MakePoint(2600008, 1200008, 0), 2056)"
+                "ST_SetSRID(ST_MakePoint(2600008, 1200008), 2056)"
             ),
         }
         obj_id = self.insert_check("vw_tww_wastewater_structure", ws_row)
@@ -575,7 +575,7 @@ class TestImport(unittest.TestCase, DbTestBase):
             "co_level": 456.123,
             "co_material": 233,
             "situation3d_geometry": self.execute(
-                "ST_SetSRID(ST_MakePoint(2600009, 1200009, 0), 2056)"
+                "ST_SetSRID(ST_MakePoint(2600009, 1200009), 2056)"
             ),
         }
         obj_id = self.insert_check("vw_tww_wastewater_structure", ws_row)
