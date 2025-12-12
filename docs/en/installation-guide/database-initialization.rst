@@ -47,13 +47,14 @@ See the current `TMMT Documentation for a step by step help <https://github.com/
 
 After you have setup successfully the database with or without demodata, you can check the schemata via pgAdmin
 
-There will be 6 `schemas <https://teksi.github.io/wastewater/en/user-guide/layerexplanations/namingconventions.html#schemas-in-the-tww-database>`_ in the database
+There will be 7 `schemas <https://teksi.github.io/wastewater/en/user-guide/layerexplanations/namingconventions.html#schemas-in-the-tww-database>`_ in the database
 
 + public
 + tww_app
 + tww_od
 + tww_sys
 + tww_vl
++ pg2ili_abwasser
 
 
 - Viewer: Can consult tables and views.

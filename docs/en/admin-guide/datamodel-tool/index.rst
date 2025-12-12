@@ -22,4 +22,4 @@ Troubleshooting
 In case you encounter issues or errors when using TMMT, make sure to look at the
 logs, as it may contain useful information (including errors returned by underlying tools).
 
-Make sure to include this information if `submitting a bug report <https://github.com/teksi/TMMT/issues>`_ or asking for support.
+Make sure to include this information if `submitting a bug report <https://github.com/teksi/TMMT/issues>`_ or `asking for support https://www.teksi.ch/modules/#prestataires`_.
