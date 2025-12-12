@@ -22,11 +22,11 @@ class TestImport(unittest.TestCase, DbTestBase):
 
     def test_import_insert(self):
         row = {
-            "identifier": "foobarbaz",
+            "identifier": "import_10",
             "co_level": 123.456,
             "wn_bottom_level": 120.456,
             "verified": True,
-            "situation_geometry": self.execute("ST_SetSRID(ST_MakePoint(2600000, 1200000), 2056)"),
+            "situation_geometry": self.execute("ST_SetSRID(ST_MakePoint(2600000, 1200000, 0), 2056)"),
         }
 
         # update
@@ -52,13 +52,13 @@ class TestImport(unittest.TestCase, DbTestBase):
     #   -> still in quarantine
     # @unittest.skip("This test needs the demo data to work")
     def test_calculation_level_fail(self):
-        # obj_id from the test data
         row = {
             "identifier": "import_20",
             "ws_type": "manhole",
             "ma_function": 8736,
+            "co_brand": "BrandNewCovers", # necessary to create the cover
             "situation3d_geometry": self.execute(
-                "ST_SetSRID(ST_GeomFromText('POINT(2600000 1200000)'), 2056)"
+                "ST_SetSRID(ST_MakePoint(2600000, 1200001, 0), 2056)"
             ),
         }
 
@@ -101,8 +101,9 @@ class TestImport(unittest.TestCase, DbTestBase):
             "identifier": "import_30",
             "ws_type": "manhole",
             "ma_function": 8736,
+            "co_brand": "BrandNewCovers", # necessary to create the cover
             "situation3d_geometry": self.execute(
-                "ST_SetSRID(ST_GeomFromText('POINT(2600001 1200001)'), 2056)"
+                "ST_SetSRID(ST_MakePoint(2600001, 1200001, 0), 2056)"
             ),
         }
         obj_id = self.insert_check("vw_tww_wastewater_structure", row)
@@ -147,7 +148,7 @@ class TestImport(unittest.TestCase, DbTestBase):
             "ws_type": "manhole",
             "ma_function": 8736,
             "situation3d_geometry": self.execute(
-                "ST_SetSRID(ST_GeomFromText('POINT(2600002 1200002)'), 2056)"
+                "ST_SetSRID(ST_MakePoint(2600002, 1200002, 0), 2056)"
             ),
         }
         obj_id = self.insert_check("vw_tww_wastewater_structure", row)
@@ -156,8 +157,6 @@ class TestImport(unittest.TestCase, DbTestBase):
             "_depth": 7.780,
             "wn_bottom_level": 22.220,
             "co_level": None,
-            "inlet_3_material": 5081,
-            "outlet_1_material": 5081,
             "verified": True,
         }
 
@@ -192,7 +191,7 @@ class TestImport(unittest.TestCase, DbTestBase):
             "ws_type": "manhole",
             "ma_function": 8736,
             "situation3d_geometry": self.execute(
-                "ST_SetSRID(ST_GeomFromText('POINT(2600003 1200003)'), 2056)"
+                "ST_SetSRID(ST_MakePoint(2600003, 1200003, 0), 2056)"
             ),
         }
         obj_id = self.insert_check(
@@ -223,7 +222,7 @@ class TestImport(unittest.TestCase, DbTestBase):
             "ws_type": "manhole",
             "ma_function": 8736,
             "situation3d_geometry": self.execute(
-                "ST_SetSRID(ST_GeomFromText('POINT(2600004 1200004)'), 2056)"
+                "ST_SetSRID(ST_MakePoint(2600004, 1200004, 0), 2056)"
             ),
         }
         obj_id = self.insert_check("vw_tww_wastewater_structure", row)
@@ -257,7 +256,7 @@ class TestImport(unittest.TestCase, DbTestBase):
             "ma_function": 8736,
             "co_level": 456.123,
             "situation3d_geometry": self.execute(
-                "ST_SetSRID(ST_GeomFromText('POINT(2600005 1200005)'), 2056)"
+                "ST_SetSRID(ST_MakePoint(2600005, 1200005, 0), 2056)"
             ),
         }
         obj_id = self.insert_check("vw_tww_wastewater_structure", ws_row)
@@ -356,7 +355,7 @@ class TestImport(unittest.TestCase, DbTestBase):
             "co_level": 456.123,
             "co_material": 5547,
             "situation3d_geometry": self.execute(
-                "ST_SetSRID(ST_GeomFromText('POINT(2600006 1200006)'), 2056)"
+                "ST_SetSRID(ST_MakePoint(2600006, 1200006, 0), 2056)"
             ),
         }
         obj_id = self.insert_check("vw_tww_wastewater_structure", ws_row)
@@ -426,7 +425,7 @@ class TestImport(unittest.TestCase, DbTestBase):
             "co_level": 456.123,
             "co_material": 233,
             "situation3d_geometry": self.execute(
-                "ST_SetSRID(ST_GeomFromText('POINT(2600007 1200007)'), 2056)"
+                "ST_SetSRID(ST_MakePoint(2600007, 1200007, 0), 2056)"
             ),
         }
         obj_id = self.insert_check("vw_tww_wastewater_structure", ws_row)
@@ -514,7 +513,7 @@ class TestImport(unittest.TestCase, DbTestBase):
             "co_level": 456.123,
             "co_material": 233,
             "situation3d_geometry": self.execute(
-                "ST_SetSRID(ST_GeomFromText('POINT(2600008 1200008)'), 2056)"
+                "ST_SetSRID(ST_MakePoint(2600008, 1200008, 0), 2056)"
             ),
         }
         obj_id = self.insert_check("vw_tww_wastewater_structure", ws_row)
@@ -574,7 +573,7 @@ class TestImport(unittest.TestCase, DbTestBase):
             "co_level": 456.123,
             "co_material": 233,
             "situation3d_geometry": self.execute(
-                "ST_SetSRID(ST_GeomFromText('POINT(2600009 12000097)'), 2056)"
+                "ST_SetSRID(ST_MakePoint(2600009, 1200009, 0), 2056)"
             ),
         }
         obj_id = self.insert_check("vw_tww_wastewater_structure", ws_row)
