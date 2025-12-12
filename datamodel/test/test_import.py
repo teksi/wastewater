@@ -26,7 +26,9 @@ class TestImport(unittest.TestCase, DbTestBase):
             "co_level": 123.456,
             "wn_bottom_level": 120.456,
             "verified": True,
-            "situation_geometry": self.execute("ST_SetSRID(ST_MakePoint(2600000, 1200000, 0), 2056)"),
+            "situation_geometry": self.execute(
+                "ST_SetSRID(ST_MakePoint(2600000, 1200000, 0), 2056)"
+            ),
         }
 
         # update
@@ -56,7 +58,7 @@ class TestImport(unittest.TestCase, DbTestBase):
             "identifier": "import_20",
             "ws_type": "manhole",
             "ma_function": 8736,
-            "co_brand": "BrandNewCovers", # necessary to create the cover
+            "co_brand": "BrandNewCovers",  # necessary to create the cover
             "situation3d_geometry": self.execute(
                 "ST_SetSRID(ST_MakePoint(2600000, 1200001, 0), 2056)"
             ),
@@ -101,7 +103,7 @@ class TestImport(unittest.TestCase, DbTestBase):
             "identifier": "import_30",
             "ws_type": "manhole",
             "ma_function": 8736,
-            "co_brand": "BrandNewCovers", # necessary to create the cover
+            "co_brand": "BrandNewCovers",  # necessary to create the cover
             "situation3d_geometry": self.execute(
                 "ST_SetSRID(ST_MakePoint(2600001, 1200001, 0), 2056)"
             ),
