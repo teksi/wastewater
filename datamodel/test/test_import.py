@@ -65,7 +65,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         }
 
         obj_id = self.insert_check("vw_tww_wastewater_structure", row)
-        self.assertIsNotNone(row["co_obj_id"]) # verify creation of cover
+        self.assertIsNotNone(row["co_obj_id"])  # verify creation of cover
 
         row = {
             "_depth": 12.220,
