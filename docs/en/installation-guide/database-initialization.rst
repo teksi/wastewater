@@ -54,8 +54,3 @@ There will be 6 `schemas <https://teksi.github.io/wastewater/en/user-guide/layer
 + tww_vl
 + pg2ili_abwasser
 
-
-- Viewer: Can consult tables and views.
-- User: Can edit data.
-- Manager: Can edit data and value lists.
-- Admin: Database administrator.
