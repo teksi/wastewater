@@ -34,9 +34,7 @@ See the current `TMMT Documentation for a step by step help <https://github.com/
 
 It is highly recommended to use these when using TWW in a production environment.
 
-Copy paste and run the .sql files content in the query editor of pgAdmin (Tools > Query Tool).
-
-.. _restore-datamodel-demodata:
+.. _install-datamodel-demodata:
 
 Install data model with or without demodata
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -47,7 +45,7 @@ See the current `TMMT Documentation for a step by step help <https://github.com/
 
 After you have setup successfully the database with or without demodata, you can check the schemata via pgAdmin
 
-There will be 7 `schemas <https://teksi.github.io/wastewater/en/user-guide/layerexplanations/namingconventions.html#schemas-in-the-tww-database>`_ in the database
+There will be 6 `schemas <https://teksi.github.io/wastewater/en/user-guide/layerexplanations/namingconventions.html#schemas-in-the-tww-database>`_ in the database
 
 + public
 + tww_app
