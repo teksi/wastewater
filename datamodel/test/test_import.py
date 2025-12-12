@@ -23,7 +23,7 @@ class TestImport(unittest.TestCase, DbTestBase):
     # - level calculation failing because only no reference level
     #   -> not updated structure with calculated values
     #   -> still in quarantine
-    @unittest.skip("This test needs the demo data to work")
+    # @unittest.skip("This test needs the demo data to work")
     def test_calculation_level_fail(self):
         # obj_id from the test data
         obj_id = "ch13p7mzMA000011"
@@ -56,7 +56,7 @@ class TestImport(unittest.TestCase, DbTestBase):
 
     # - ws bottom level calculation
     #   -> updated structure with calculated values
-    @unittest.skip("This test needs the demo data to work")
+    # @unittest.skip("This test needs the demo data to work")
     def test_calculation_wn_bottom_level(self):
         # obj_id from the test data
         obj_id = "ch13p7mzMA000071"
@@ -92,7 +92,7 @@ class TestImport(unittest.TestCase, DbTestBase):
     # - cover level calculation
     #   -> updated structure with calculated values
     #   -> deleted in quarantine
-    @unittest.skip("This test needs the demo data to work")
+    # @unittest.skip("This test needs the demo data to work")
     def test_calculation_co_level(self):
         # obj_id from the test data
         obj_id = "ch13p7mzMA000071"
@@ -128,7 +128,7 @@ class TestImport(unittest.TestCase, DbTestBase):
 
     # - delete of structure
     #   -> delete in live
-    @unittest.skip("This test needs the demo data to work")
+    # @unittest.skip("This test needs the demo data to work")
     def test_delete_structure(self):
         # obj_id from the test data
         obj_id = "ch13p7mzMA000037"
@@ -149,7 +149,7 @@ class TestImport(unittest.TestCase, DbTestBase):
 
     # - delete of structure but have verified at false
     #   -> do not delete in live
-    @unittest.skip("This test needs the demo data to work")
+    # @unittest.skip("This test needs the demo data to work")
     def test_delete_structure_failing(self):
         # obj_id from the test data
         obj_id = "ch13p7mzMA000044"
@@ -174,7 +174,7 @@ class TestImport(unittest.TestCase, DbTestBase):
     #   -> updated reach
     #   -> updated reach_point
     #   -> deleted in quarantene
-    @unittest.skip("This test needs the demo data to work")
+    # @unittest.skip("This test needs the demo data to work")
     def test_update_with_outlet(self):
         # obj_id from the test data
         obj_id = "ch13p7mzMA000012"
@@ -249,7 +249,7 @@ class TestImport(unittest.TestCase, DbTestBase):
     #   - update material
     #     -> updated structure
     #     -> deleted in quarantene
-    @unittest.skip("This test needs the demo data to work")
+    # @unittest.skip("This test needs the demo data to work")
     def test_update_with_wrong_material(self):
         # obj_id from the test data
         obj_id = "ch13p7mzMA000012"
@@ -309,7 +309,7 @@ class TestImport(unittest.TestCase, DbTestBase):
     #   -> still in quarantene
     #   - update inlet_okay true
     #     -> deleted in quarantene
-    @unittest.skip("This test needs the demo data to work")
+    # @unittest.skip("This test needs the demo data to work")
     def test_update_with_unexpected_inlet(self):
         # obj_id from the test data
         obj_id = "ch13p7mzMA000012"
@@ -374,7 +374,7 @@ class TestImport(unittest.TestCase, DbTestBase):
     #   -> still in quarantene
     #   - update outlet_okay true
     #     -> deleted in quarantene
-    @unittest.skip("This test needs the demo data to work")
+    # @unittest.skip("This test needs the demo data to work")
     def test_update_with_unexpected_outlet(self):
         # obj_id from the test data
         obj_id = "ch13p7mzMA000012"
@@ -411,7 +411,7 @@ class TestImport(unittest.TestCase, DbTestBase):
     #   -> still in quarantene
     #   - update inlet_okay true
     #     -> deleted in quarantene
-    @unittest.skip("This test needs the demo data to work")
+    # @unittest.skip("This test needs the demo data to work")
     def test_update_with_multiple_inlets(self):
         # obj_id from the test data
         obj_id = "ch13p7mzMA005266"
@@ -473,7 +473,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         self.assertIsNone(row)
 
     # - general test
-    @unittest.skip("This test needs the demo data to work")
+    # @unittest.skip("This test needs the demo data to work")
     def test_general(self):
         # it should be in the live table tww_od.reach and tww_od.reach_point
         cur = self.cursor()
