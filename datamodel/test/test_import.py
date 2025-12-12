@@ -74,7 +74,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         self.update("import_vw_manhole", row, obj_id, "tww_app")
 
         # it should be calculated correctly in the live view tww_od.vw_tww_wastewater_structure
-        row = self.select("vw_tww_wastewater_structure", obj_id, schema="tww_od")
+        row = self.select("vw_tww_wastewater_structure", obj_id)
         self.assertEqual(row["_depth"], decimal.Decimal("2.220"))
         self.assertEqual(row["co_level"], decimal.Decimal("22.220"))
         self.assertEqual(row["wn_bottom_level"], decimal.Decimal("20"))
@@ -384,10 +384,10 @@ class TestImport(unittest.TestCase, DbTestBase):
         row = {"remark": "Strassenauslauf", "co_material": 3015, "verified": True}
 
         # update
-        self.update("import_vw_manhole", row, obj_id, schema="tww_od")
+        self.update("import_vw_manhole", row, obj_id, schema="tww_app")
 
         # it should be in the view import_vw_manhole
-        row = self.select("import_vw_manhole", obj_id, schema="tww_od")
+        row = self.select("import_vw_manhole", obj_id, schema="tww_app")
         self.assertIsNotNone(row)
         self.assertEqual(row["co_material"], 3015)
         self.assertEqual(row["remark"], "Strassenauslauf")
