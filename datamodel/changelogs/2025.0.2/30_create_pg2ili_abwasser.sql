@@ -1,4 +1,4 @@
-DROP SCHEMA IF EXISTS pg2ili_abwasser;
+DROP SCHEMA IF EXISTS pg2ili_abwasser CASCADE;
 CREATE SCHEMA pg2ili_abwasser;
 
 GRANT ALL ON SCHEMA pg2ili_abwasser TO tww_user;
