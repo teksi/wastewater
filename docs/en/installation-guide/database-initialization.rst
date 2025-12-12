@@ -53,4 +53,3 @@ There will be 6 `schemas <https://teksi.github.io/wastewater/en/user-guide/layer
 + tww_sys
 + tww_vl
 + pg2ili_abwasser
-
