@@ -58,7 +58,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#digitizing">Digitalisieren</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#further-attributes-and-classes">Weitere Attribute und Klassen</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#geometry-synchronization">Geometrieabgleichung</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#digitizing-flushing-nozzle">Digitizing flushing nozzle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#digitizing-flushing-nozzle">Digitalisieren von Spülstutzen</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="deletingobjects.html">Objekte löschen</a></li>
@@ -202,34 +202,32 @@
 </section>
 <section id="geometry-synchronization">
 <span id="reach-geometrysync"></span><h2>Geometrieabgleichung<a class="headerlink" href="#geometry-synchronization" title="Link to this heading"></a></h2>
-<p>When inserting a new reach using the wizard, the start and end points of the line geometry determine the level of the corresponding reach points (as shown in the pictures above).
-These values can be overwritten before saving.
-Upon saving, the level values <cite>rp_from_level</cite> and <cite>rp_to_level</cite> are used to define the Z value of the first and last vertex of a reach.</p>
-<p>When updating a reach, there are several cases:</p>
+<p>Beim Einfügen einer neuen Haltung mithilfe des Wizard bestimmen die Start- und Endpunkte der Liniengeometrie die Höhe der entsprechenden Haltungspunkte (siehe Abbildungen oben). Diese Werte können vor dem Speichern überschrieben werden. Beim Speichern werden die Höhenwerte <cite>HP_von_Kote</cite> und <cite>HP_nach_Kote</cite> verwendet, um den Z-Wert des ersten und letzten Eckpunkts einer Haltung zu definieren.</p>
+<p>Beim Aktualisieren einer Haltung gibt es mehrere Fälle:</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li><p>The first/last reach geometry vertex was not changed, but the <cite>rp_from_level</cite> / <cite>rp_to_level</cite> was. In this case, the level value <cite>rp_from_level</cite> / <cite>rp_to_level</cite> is used to set the Z value of the first / last vertex of the reach</p></li>
-<li><p>The first/last reach geometry vertex was changed, but the <cite>rp_from_level</cite> / <cite>rp_to_level</cite> was not. In this case, the QGIS variable <cite>&#64;tww_update_lvl_by_geom</cite> defines whether the <cite>rp_from_level</cite> / <cite>rp_to_level</cite> is overwritten by the Z value of the first / last vertex of the reach</p></li>
-<li><p>Both the first/last reach geometry vertex and the <cite>rp_from_level</cite> / <cite>rp_to_level</cite> were changed. The <cite>rp_from_level</cite> / <cite>rp_to_level</cite> take precendence</p></li>
-<li><p>Neither the first/last reach geometry vertex nor the <cite>rp_from_level</cite> / <cite>rp_to_level</cite> was changed. No changes occur</p></li>
+<li><p>Der erste/letzte Geometriepunkt der Haltung wurde nicht verändert, wohl aber <cite>HP_von_Kote</cite> / <cite>HP_nach_Kote</cite>. In diesem Fall wird der Wert <cite>HP_von_Kote</cite> / <cite>HP_nach_Kote</cite> verwendet, um den Z-Wert des ersten/letzten Punkts der Haltung festzulegen.</p></li>
+<li><p>Der erste/letzte Geometriepunkt der Haltung wurde geändert, die Werte für <cite>HP_von_Kote</cite> und <cite>HP_nach_Kote</cite> jedoch nicht. In diesem Fall legt die QGIS-Variable <cite>&#64;tww_update_lvl_by_geom</cite> fest, ob die Werte für <cite>HP_von_Kote</cite> und <cite>HP_nach_Kote</cite> durch den Z-Wert des ersten/letzten Geometriepunkts der Haltung überschrieben werden.</p></li>
+<li><p>Sowohl der erste/letzte Geometriepunkt als auch <cite>HP_von_Kote</cite> / <cite>HP_nach_Kote</cite> wurden geändert. <cite>HP_von_Kote</cite> / <cite>HP_nach_Kote</cite> haben Vorrang.</p></li>
+<li><p>Weder der erste/letzte Geometrie-Vertex der Haltung noch <cite>HP_von_Kote</cite> / <cite>HP_nach_Kote</cite> wurden geändert. Es gibt keine Änderungen.</p></li>
 </ol>
 </div></blockquote>
 <p>Synchronisation der Koten von Zwischenpunkten (Punkte zwischen den Haltungspunkten) funktioniert auch, wenn beim Digitalisieren auf 3D-Punkte auf einem anderen Layer geschnappt wird (z.B. ein Textfile als GPS-Messungen mit x,y,z Koordinaten, welches im QGIS-Projekt eingefügt wurde). Man hat dann einen 3D-Haltung, aber der Export zu INTERLIS kann diese Zwischenpunkt-Koten nicht exportieren, weil die VSA-DSS Version 2020 die 3D-Koordinaten für die Haltungsgeometrie nicht unterstützt.</p>
 </section>
 <section id="digitizing-flushing-nozzle">
-<h2>Digitizing flushing nozzle<a class="headerlink" href="#digitizing-flushing-nozzle" title="Link to this heading"></a></h2>
+<h2>Digitalisieren von Spülstutzen<a class="headerlink" href="#digitizing-flushing-nozzle" title="Link to this heading"></a></h2>
 <div class="versionadded">
 <p><span class="versionmodified added">Added in version 2025.0.</span></p>
 </div>
-<p>TWW is configured to digitize flushing nozzles as structure part of the channel.</p>
-<p>You can digitize a flushing nozzle</p>
+<p>TWW ist so konfiguriert, dass Spülstutzen als Bauwerksteil von Kanälen erfasst werden.</p>
+<p>Ein Spülstutzen kann erstellt werden</p>
 <ul class="simple">
-<li><p>starting on the Feature Attribut window of vw_tww_reach with tab <strong>Structure Parts</strong>. Add point child feature and digitize the point on the map. Or</p></li>
-<li><p>create a new point on vw_flushing_nozzle and choose the connected channel for field fk_wastewater_structure on the map.</p></li>
+<li><p>im Fenster „Feature-Attribute“ von vw_tww_Haltung mit dem Tab „Bauteile“. Fügen Sie ein Punkt-Kind_Objekt hinzu und digitalisieren Sie den Punkt auf der Karte. Oder</p></li>
+<li><p>digitalisieren Sie einen neuen Punkt auf vw_Spülstutzen und wählen Sie den verbundenen Kanal für das Feld FS_Abwasserbauwerk auf der Karte aus.</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>A flushing nozzle is connected to a wastewater_structure, but it’s geometry is totally independent of the wastewater_structure-geometry. If you move the channel, you have to move the flushing nozzle manually.</p>
+<p>Eine Spülstutzen ist mit einem Abwasserbauwerk verbunden, die Geometrie ist jedoch völlig unabhängig von der Geometrie des Abwasserbauwerks. Wenn der Kanal verschoben wird, muss der Spülstutzen manuell mit verschoben werden.</p>
 </div>
 </section>
 </section>

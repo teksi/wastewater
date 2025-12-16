@@ -55,7 +55,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#digitizing">Digitalisieren</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#further-attributes-and-classes">Weitere Attribute und Klassen</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#geometry-synchronization">Geometrieabgleichung</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#digitizing-additional-wastewater-structures">Digitizing Additional Wastewater Structures</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#digitizing-additional-wastewater-structures">In vw_tww_weitere_Abwasserbauwerke digitalisieren</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="digitizingdetailedgeometry.html">Digitalisieren detaillierter Geometrie</a></li>
@@ -135,7 +135,7 @@
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>Other wastewater_structure subtypes (wwtp_structure, small_treatment_plant, drainless_toilet) are not part of the SIA405-datamodel and therefore not part of vw_tww_wastewater_structure. In TWW version 2025 exists another layer <code class="docutils literal notranslate"><span class="pre">vw_tww_additional_ws</span></code> for these subclasses.</p>
+<p>Andere Abwasserbauwerk-Subtypen (ARA-Bauteil, Kleinkläranlage, abflusslose Toilette) sind nicht Teil des SIA405-Datenmodells und daher auch nicht Teil von vw_tww_Abwasserbauwerk. In TWW Version 2025 existiert für diese Unterklassen ein weitere Layer „vw_tww_additional_ws“.</p>
 </div>
 <p>Abhängig von <strong>ws_type</strong> gibt es unterschiedliche Felder und Reiter im Formular.</p>
 <p>Fügen Sie dann die Bezeichnung (identifier) hinzu (dies ist das Attribut, das auf der Karte angezeigt wird).</p>
@@ -192,15 +192,12 @@
 </div>
 </section>
 <section id="digitizing-additional-wastewater-structures">
-<h2>Digitizing Additional Wastewater Structures<a class="headerlink" href="#digitizing-additional-wastewater-structures" title="Link to this heading"></a></h2>
+<h2>In vw_tww_weitere_Abwasserbauwerke digitalisieren<a class="headerlink" href="#digitizing-additional-wastewater-structures" title="Link to this heading"></a></h2>
 <div class="versionadded">
 <p><span class="versionmodified added">Added in version 2025.0.</span></p>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">vw_tww_additional_ws</span></code> is a view for working with subclasses wwtp_structure, small_treatment_plant, drainless_toilet. This subclasses are not part of the SIA405 datamodel.</p>
-<p>These subclasses are not digitized using the TWW Wizard, but with the QGIS <strong>Add Point Feature</strong> tool.
-Similar to the digitizing of manholes or special structures, when creating a new record, also a cover and a wastewater node is created. The identifier of the wastewater_structure is duplicated into cover.identifier and node.identifier.
-Unlike the digitizing in vw_tww_wastewater_structure, there is no main_node or main_cover. vw_tww_additional_ws is not configured to add a second cover or a second node.
-With the TWW-tool <strong>connect wastwater networkelements</strong> you can connect reaches also to this additional wastewater structures.</p>
+<p>„vw_tww_weitere_Abwasserbauwerke“ ist eine View für die Arbeit mit den Subklassen ARA_Bauwerk, Kleinkläranlage und abflusslose_Toilette. Diese Subklassen sind nicht Teil des SIA405-Datenmodells.</p>
+<p>Diese Subklassen werden nicht mit dem TWW-Wizard, sondern mit dem QGIS-Werkzeug „Punkt-Feature hinzufügen“ digitalisiert. Ähnlich wie bei der Digitalisierung von Schächten oder Sonderbauwerken werden beim Anlegen eines neuen Datensatzes auch ein Deckel und ein Abwasserknoten erstellt. Die Bezeichnung des Abwasserbauwerks wird in „Deckel.Bezeichnung“ und „Abwasserknoten.Bezeichnung“ dupliziert. Im Gegensatz zur Digitalisierung in „vw_tww_Abwasserbauwerk“ gibt es keinen Hauptknoten und keinen Hauptdeckel. „vw_tww_weitere Abwasserbauwerke“ ist nicht für das Hinzufügen eines zweiten Deckels oder eines zweiten Knotens konfiguriert. Mit dem TWW-Werkzeug „Abwassernetzelemente verbinden“ können Sie auch Haltungen mit diesen weiteren Abwasserbauwerken verbinden.</p>
 </section>
 </section>
 
