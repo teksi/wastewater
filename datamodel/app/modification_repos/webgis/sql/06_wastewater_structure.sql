@@ -66,3 +66,8 @@ AS
      LEFT JOIN tww_vl.wastewater_structure_structure_condition ws_sc ON ws_sc.code = ws.structure_condition
      LEFT JOIN tww_sys.dictionary_od_table dot_dp on dot_dp.tablename = 'discharge_point'
   WHERE ch.obj_id IS NULL;
+
+CREATE UNIQUE INDEX in_app_mvw_web_wastewater_structure_obj_id
+    ON tww_app.mvw_web_wastewater_structure USING btree
+    (obj_id COLLATE pg_catalog."default")
+    TABLESPACE pg_default;
