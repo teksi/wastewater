@@ -41,12 +41,12 @@ BEGIN
         BEGIN
             EXECUTE format('SELECT COUNT(*) FROM %I.%I', mv_record.schemaname, mv_record.matviewname) INTO cnt;
             IF cnt > 0 THEN
-                EXECUTE format('REFRESH MATERIALIZED VIEW CONCURRENTLY %I.%I WITH DATA', 
-                    mv_record.schemaname, 
+                EXECUTE format('REFRESH MATERIALIZED VIEW CONCURRENTLY %I.%I WITH DATA',
+                    mv_record.schemaname,
                     mv_record.matviewname);
             ELSE
-                EXECUTE format('REFRESH MATERIALIZED VIEW %I.%I WITH DATA', 
-                    mv_record.schemaname, 
+                EXECUTE format('REFRESH MATERIALIZED VIEW %I.%I WITH DATA',
+                    mv_record.schemaname,
                     mv_record.matviewname);
             END IF;
             RAISE NOTICE '%',format('Refreshed materialized view: %s.%s', mv_record.schemaname, mv_record.matviewname);
