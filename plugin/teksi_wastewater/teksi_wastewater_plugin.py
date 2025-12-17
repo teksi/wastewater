@@ -29,7 +29,7 @@ import os
 import shutil
 
 from qgis.core import Qgis, QgsApplication
-from qgis.PyQt.QtCore import QLocale, QSettings, Qt
+from qgis.PyQt.QtCore import QObject, QLocale, QSettings, Qt
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QApplication, QMessageBox, QToolBar
 from qgis.utils import qgsfunction
@@ -107,16 +107,6 @@ class TeksiWastewaterPlugin:
         self.initLogger()
         setup_i18n()
 
-    def tr(self, source_text):
-        """
-        This does not inherit from QObject but for the translation to work (in particular to have translatable strings
-        picked up) we need a tr method.
-        :rtype : unicode
-        :param source_text: The text to translate
-        :return: The translated text
-        """
-        return QApplication.translate("TwwPlugin", source_text)
-
     def initLogger(self):
         """
         Initializes the logger
@@ -176,30 +166,30 @@ class TeksiWastewaterPlugin:
         # Create toolbar button
         # self.profileAction = QAction(
         #     QIcon(os.path.join(plugin_root_path(), "icons/wastewater-profile.svg")),
-        #     self.tr("Profile"),
+        #     QObject.tr("Profile"),
         #     self.iface.mainWindow(),
         # )
-        # self.profileAction.setWhatsThis(self.tr("Reach trace"))
+        # self.profileAction.setWhatsThis(QObject.tr("Reach trace"))
         # self.profileAction.setEnabled(False)
         # self.profileAction.setCheckable(True)
         # self.profileAction.triggered.connect(self.profileToolClicked)
 
         self.downstreamAction = QAction(
             QIcon(os.path.join(plugin_root_path(), "icons/wastewater-downstream.svg")),
-            self.tr("Downstream"),
+            QObject.tr("Downstream"),
             self.iface.mainWindow(),
         )
-        self.downstreamAction.setWhatsThis(self.tr("Downstream reaches"))
+        self.downstreamAction.setWhatsThis(QObject.tr("Downstream reaches"))
         self.downstreamAction.setEnabled(False)
         self.downstreamAction.setCheckable(True)
         self.downstreamAction.triggered.connect(self.downstreamToolClicked)
 
         self.upstreamAction = QAction(
             QIcon(os.path.join(plugin_root_path(), "icons/wastewater-upstream.svg")),
-            self.tr("Upstream"),
+            QObject.tr("Upstream"),
             self.iface.mainWindow(),
         )
-        self.upstreamAction.setWhatsThis(self.tr("Upstream reaches"))
+        self.upstreamAction.setWhatsThis(QObject.tr("Upstream reaches"))
         self.upstreamAction.setEnabled(False)
         self.upstreamAction.setCheckable(True)
         self.upstreamAction.triggered.connect(self.upstreamToolClicked)
@@ -209,7 +199,7 @@ class TeksiWastewaterPlugin:
             "Wizard",
             self.iface.mainWindow(),
         )
-        self.wizardAction.setWhatsThis(self.tr("Create new manholes and reaches"))
+        self.wizardAction.setWhatsThis(QObject.tr("Create new manholes and reaches"))
         self.wizardAction.setEnabled(False)
         self.wizardAction.setCheckable(True)
         self.wizardAction.triggered.connect(self.wizard)
@@ -228,65 +218,65 @@ class TeksiWastewaterPlugin:
             "Refresh network topology",
             self.iface.mainWindow(),
         )
-        self.refreshNetworkTopologyAction.setWhatsThis(self.tr("Refresh network topology"))
+        self.refreshNetworkTopologyAction.setWhatsThis(QObject.tr("Refresh network topology"))
         self.refreshNetworkTopologyAction.setEnabled(False)
         self.refreshNetworkTopologyAction.setCheckable(False)
         self.refreshNetworkTopologyAction.triggered.connect(
             self.refreshNetworkTopologyActionClicked
         )
 
-        self.updateSymbologyAction = QAction(self.tr("Update symbology"), self.iface.mainWindow())
+        self.updateSymbologyAction = QAction(QObject.tr("Update symbology"), self.iface.mainWindow())
         self.updateSymbologyAction.triggered.connect(self.updateSymbology)
 
-        self.validityCheckAction = QAction(self.tr("Validity check"), self.iface.mainWindow())
+        self.validityCheckAction = QAction(QObject.tr("Validity check"), self.iface.mainWindow())
         self.validityCheckAction.triggered.connect(self.tww_validity_check_action)
 
         self.enableSymbologyTriggersAction = QAction(
-            self.tr("Enable symbology triggers"), self.iface.mainWindow()
+            QObject.tr("Enable symbology triggers"), self.iface.mainWindow()
         )
         self.enableSymbologyTriggersAction.triggered.connect(self.enable_symbology_triggers)
 
         self.disableSymbologyTriggersAction = QAction(
-            self.tr("Disable symbology triggers"), self.iface.mainWindow()
+            QObject.tr("Disable symbology triggers"), self.iface.mainWindow()
         )
         self.disableSymbologyTriggersAction.triggered.connect(self.disable_symbology_triggers)
 
         self.settingsAction = QAction(
             QIcon(QgsApplication.getThemeIcon("/mActionOptions.svg")),
-            self.tr("Settings"),
+            QObject.tr("Settings"),
             self.iface.mainWindow(),
         )
         self.settingsAction.triggered.connect(self.showSettings)
 
         self.aboutAction = QAction(
             QIcon(os.path.join(plugin_root_path(), "icons/teksi-abwasser-logo.svg")),
-            self.tr("About"),
+            QObject.tr("About"),
             self.iface.mainWindow(),
         )
         self.aboutAction.triggered.connect(self.about)
 
         self.importAction = QAction(
             QIcon(os.path.join(plugin_root_path(), "icons/interlis_import.svg")),
-            self.tr("Import from interlis"),
+            QObject.tr("Import from interlis"),
             self.iface.mainWindow(),
         )
-        self.importAction.setWhatsThis(self.tr("Import from INTERLIS"))
+        self.importAction.setWhatsThis(QObject.tr("Import from INTERLIS"))
         self.importAction.setEnabled(False)
         self.importAction.setCheckable(False)
         self.importAction.triggered.connect(self.actionImportClicked)
 
         self.exportAction = QAction(
             QIcon(os.path.join(plugin_root_path(), "icons/interlis_export.svg")),
-            self.tr("Export to interlis"),
+            QObject.tr("Export to interlis"),
             self.iface.mainWindow(),
         )
-        self.exportAction.setWhatsThis(self.tr("Export to INTERLIS"))
+        self.exportAction.setWhatsThis(QObject.tr("Export to INTERLIS"))
         self.exportAction.setEnabled(False)
         self.exportAction.setCheckable(False)
         self.exportAction.triggered.connect(self.actionExportClicked)
 
         # Add toolbar button and menu item
-        self.toolbar = QToolBar(self.tr("TEKSI Wastewater"))
+        self.toolbar = QToolBar(QObject.tr("TEKSI Wastewater"))
         self.toolbar.setObjectName(self.toolbar.windowTitle())
         # self.toolbar.addAction(self.profileAction)
         self.toolbar.addAction(self.upstreamAction)
@@ -362,7 +352,7 @@ class TeksiWastewaterPlugin:
             messages = DatabaseUtils.get_validity_check_issues()
 
         except Exception as exception:
-            messages.append(self.tr(f"Could not check database validity: {exception}"))
+            messages.append(QObject.tr(f"Could not check database validity: {exception}"))
 
         for message in messages:
             self.iface.messageBar().pushMessage(
@@ -377,13 +367,13 @@ class TeksiWastewaterPlugin:
             messages = DatabaseUtils.get_validity_check_issues()
 
         except Exception as exception:
-            messages.append(self.tr(f"Could not check database validity: {exception}"))
+            messages.append(QObject.tr(f"Could not check database validity: {exception}"))
 
         if len(messages) == 0:
             QMessageBox.information(
                 self.iface.mainWindow(),
                 self.validityCheckAction.text(),
-                self.tr("There are no database validity issues."),
+                QObject.tr("There are no database validity issues."),
             )
             return
 
@@ -391,7 +381,7 @@ class TeksiWastewaterPlugin:
         QMessageBox.critical(
             self.iface.mainWindow(),
             self.validityCheckAction.text(),
-            self.tr(f"Database has following validity issues:\n\n{messagesText}"),
+            QObject.tr(f"Database has following validity issues:\n\n{messagesText}"),
         )
 
     def enable_symbology_triggers(self):
@@ -400,14 +390,14 @@ class TeksiWastewaterPlugin:
             QMessageBox.information(
                 self.iface.mainWindow(),
                 self.enableSymbologyTriggersAction.text(),
-                self.tr("Symbology triggers have been successfully enabled"),
+                QObject.tr("Symbology triggers have been successfully enabled"),
             )
 
         except Exception as exception:
             QMessageBox.critical(
                 self.iface.mainWindow(),
                 self.enableSymbologyTriggersAction.text(),
-                self.tr(f"Symbology triggers cannot be enabled:\n\n{exception}"),
+                QObject.tr(f"Symbology triggers cannot be enabled:\n\n{exception}"),
             )
 
     def disable_symbology_triggers(self):
@@ -416,14 +406,14 @@ class TeksiWastewaterPlugin:
             QMessageBox.information(
                 self.iface.mainWindow(),
                 self.disableSymbologyTriggersAction.text(),
-                self.tr("Symbology triggers have been successfully disabled"),
+                QObject.tr("Symbology triggers have been successfully disabled"),
             )
 
         except Exception as exception:
             QMessageBox.critical(
                 self.iface.mainWindow(),
                 self.disableSymbologyTriggersAction.text(),
-                self.tr(f"Symbology triggers cannot be disabled:\n\n{exception}"),
+                QObject.tr(f"Symbology triggers cannot be disabled:\n\n{exception}"),
             )
 
     def unload(self):
@@ -574,14 +564,14 @@ class TeksiWastewaterPlugin:
             QMessageBox.information(
                 self.iface.mainWindow(),
                 self.updateSymbologyAction.text(),
-                self.tr("Symbology has been successfully updated"),
+                QObject.tr("Symbology has been successfully updated"),
             )
 
         except Exception as exception:
             QMessageBox.critical(
                 self.iface.mainWindow(),
                 self.updateSymbologyAction.text(),
-                self.tr(f"Symbology update failed:\n\n{exception}"),
+                QObject.tr(f"Symbology update failed:\n\n{exception}"),
             )
 
     def showSettings(self):
