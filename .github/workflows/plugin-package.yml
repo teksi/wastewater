@@ -22,10 +22,6 @@ on:
         description: 'Release tag to upload plugin as GitHub Release asset'
         default: ''
         type: string
-    secrets:
-      TX_TOKEN:
-        description: 'Transifex token passed by the caller when using workflow_call'
-        required: false
 
 jobs:
   plugin-package:
