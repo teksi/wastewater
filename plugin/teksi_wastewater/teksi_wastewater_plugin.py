@@ -29,7 +29,7 @@ import os
 import shutil
 
 from qgis.core import Qgis, QgsApplication
-from qgis.PyQt.QtCore import QObject, QLocale, QSettings, Qt
+from qgis.PyQt.QtCore import QLocale, QObject, QSettings, Qt
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QApplication, QMessageBox, QToolBar
 from qgis.utils import qgsfunction
@@ -225,7 +225,9 @@ class TeksiWastewaterPlugin:
             self.refreshNetworkTopologyActionClicked
         )
 
-        self.updateSymbologyAction = QAction(QObject.tr("Update symbology"), self.iface.mainWindow())
+        self.updateSymbologyAction = QAction(
+            QObject.tr("Update symbology"), self.iface.mainWindow()
+        )
         self.updateSymbologyAction.triggered.connect(self.updateSymbology)
 
         self.validityCheckAction = QAction(QObject.tr("Validity check"), self.iface.mainWindow())
