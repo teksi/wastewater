@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Data model tool &mdash; Documentation TWW dev</title>
+  <title>TEKSI Module Management Tool &mdash; Documentation TWW dev</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
@@ -53,10 +53,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../security/index.html">User Roles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../interlis-io/index.html">Échange de données INTERLIS</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../db-customization/index.html">Personnalisation du modèle de données</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Data model tool</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#setup">Setup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#main-dialog">Main dialog</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">TEKSI Module Management Tool</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#documentation">Documentation</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#troubleshooting">Troubleshooting</a></li>
 </ul>
 </li>
@@ -86,7 +84,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Guide d’administration</a></li>
-      <li class="breadcrumb-item active">Data model tool</li>
+      <li class="breadcrumb-item active">TEKSI Module Management Tool</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/admin-guide/datamodel-tool/index.rst.txt" rel="nofollow"> Afficher la source de la page</a>
       </li>
@@ -98,81 +96,21 @@
              
   <blockquote>
 <div></div></blockquote>
-<section id="data-model-tool">
-<h1>Data model tool<a class="headerlink" href="#data-model-tool" title="Lien vers cette rubrique"></a></h1>
-<p>Data model tool not yet integrated in TEKSI wastewater</p>
-<p>The plugin contains a data model tool capable of initializing and upgrading a TWW database.</p>
+<section id="teksi-module-management-tool">
+<h1>TEKSI Module Management Tool<a class="headerlink" href="#teksi-module-management-tool" title="Lien vers cette rubrique"></a></h1>
+<p>This replaces the Data model tool that has been part of QGEP</p>
+<p>The new plugin contains an advanced tool capable of initializing (and in future also upgrading) a TWW database.</p>
 <p>It is aimed at system administrators and power users, and should not be used by end users, as it
 could lead to data loss if not used properly.</p>
 <p>For advanced cases, it is also possible to <a class="reference external" href="../db-update-pum/index.html">upgrade your database manually</a></p>
-<section id="setup">
-<h2>Setup<a class="headerlink" href="#setup" title="Lien vers cette rubrique"></a></h2>
-<p>The data model tool is hidden by default. To make it visible, you must first enable <code class="docutils literal notranslate"><span class="pre">Admin</span> <span class="pre">mode</span></code>
-in the plugin settings :</p>
-<ul class="simple">
-<li><p>Go to <code class="docutils literal notranslate"><span class="pre">Plugin</span> <span class="pre">&gt;</span> <span class="pre">TWW</span> <span class="pre">&gt;</span> <span class="pre">Settings</span></code></p></li>
-<li><p>Switch to the <code class="docutils literal notranslate"><span class="pre">Developer</span> <span class="pre">options</span></code> tab</p></li>
-<li><p>Check <code class="docutils literal notranslate"><span class="pre">Admin</span> <span class="pre">mode</span></code></p></li>
-<li><p>Restart QGIS</p></li>
-</ul>
-<p>The data model tool should now appear under <code class="docutils literal notranslate"><span class="pre">Plugin</span> <span class="pre">&gt;</span> <span class="pre">TWW</span> <span class="pre">&gt;</span> <span class="pre">Data</span> <span class="pre">model</span> <span class="pre">tool</span></code></p>
-</section>
-<section id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Lien vers cette rubrique"></a></h2>
-<section id="main-dialog">
-<h3>Main dialog<a class="headerlink" href="#main-dialog" title="Lien vers cette rubrique"></a></h3>
-<p>The main dialog looks like this.</p>
-<figure class="align-default">
-<img alt="../../_images/datamodel-tool.png" src="../../_images/datamodel-tool.png" />
-</figure>
-<ul>
-<li><p><strong>Release</strong>:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><strong>Version</strong>: the version to retrieve the files from. Unless <code class="docutils literal notranslate"><span class="pre">developer</span> <span class="pre">mode</span></code> is enabled in the TWW settings, only the latest stable version is available. Selecting anything different from the latest stable version should only ever be used on a testing database, as it could upgrade the database to an inconsistent state.</p></li>
-</ul>
-</div></blockquote>
-</li>
-<li><p><strong>Dependencies</strong>:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><strong>Python requirements</strong>: If there are missing python requirements, click on the <strong>install button</strong> to try to install them automatically. Note that this will not work on all systems. If it fails, you can try to start QGIS with administrator privileges, or <a class="reference external" href="../db-update-pum/index.html#requirements">install the dependencies manually</a>.</p></li>
-</ul>
-</div></blockquote>
-</li>
-<li><p><strong>Postgres service configurations</strong>:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><strong>File location</strong>: shows the location of the <code class="docutils literal notranslate"><span class="pre">pg_service.conf</span></code> file being used</p></li>
-<li><p><strong>PG Config</strong>: allows to select the postgres service configuration of the database on which you want to operate. <strong>WARNING</strong>: by default, the first entry is selected, which may not match the database used by your currently open TWW project.</p></li>
-<li><p><strong>``+`` button</strong>: opens an utility to add or edit entries from your <code class="docutils literal notranslate"><span class="pre">pg_service.conf</span></code> file directly.</p></li>
-</ul>
-<p>Refer to the <a class="reference external" href="../../installation-guide/workstation.html">installation guide</a> to know more about the <code class="docutils literal notranslate"><span class="pre">pg_service.conf</span></code> file.</p>
-</div></blockquote>
-</li>
-<li><p><strong>Data model</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><p><strong>Current version</strong>: shows the current version of the datamodel found in the selected database</p></li>
-<li><p><strong>SRID</strong>: allows to customize the SRID (this is only supported on database initialization)</p></li>
-<li><p><strong>Action</strong>: allows to initialize or upgrade a datamodel to a specific version. WARNING: this will alter the datamodel in the specified database. Make sure you have a full and working backup of your database before performing an upgrade.</p></li>
-</ul>
-</div></blockquote>
-</li>
-<li><p><strong>QGIS project</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><p><strong>Load</strong>: opens the template QGIS project, already configured to work on the database selected above</p></li>
-</ul>
-</div></blockquote>
-</li>
-</ul>
-</section>
+<section id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Lien vers cette rubrique"></a></h2>
+<p>See the current <a class="reference external" href="https://github.com/teksi/TMMT/discussions/34">TMMT Documentation for a step by step help</a></p>
 <section id="troubleshooting">
 <h3>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Lien vers cette rubrique"></a></h3>
-<p>In case you encounter issues or errors when using the data model tool, make sure to look at the
-TWW tab in the logs, as it may contain useful information (including errors returned by underlying tools).</p>
-<p>Make sure to include this information if submitting a bug report or asking for support.</p>
+<p>In case you encounter issues or errors when using TMMT, make sure to look at the
+logs, as it may contain useful information (including errors returned by underlying tools).</p>
+<p>Make sure to include this information if <a class="reference external" href="https://github.com/teksi/TMMT/issues">submitting a bug report</a> or <a href="#id1"><span class="problematic" id="id2">`asking for support https://www.teksi.ch/modules/#prestataires`_</span></a>.</p>
 </section>
 </section>
 </section>

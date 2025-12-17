@@ -53,7 +53,7 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">User Roles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../interlis-io/index.html">Échange de données INTERLIS</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../db-customization/index.html">Personnalisation du modèle de données</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../datamodel-tool/index.html">Data model tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datamodel-tool/index.html">TEKSI Module Management Tool</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../db-update-pum/index.html">Manual update of the datamodel</a></li>
 </ul>
 </li>
@@ -93,7 +93,7 @@
 <section id="user-roles">
 <span id="security"></span><h1>User Roles<a class="headerlink" href="#user-roles" title="Lien vers cette rubrique"></a></h1>
 <p>TWW comes with a set of predefined roles for a multi user configuration.</p>
-<p>The base installation of TWW defines the following group roles :</p>
+<p>The base installation of TWW defines the following group roles (choose this option in TMMT when you install the first database in your cluster):</p>
 <ul class="simple">
 <li><p><strong>tww_viewer</strong>: has the rights for project consultation, can select entities of TWW, view values lists.</p></li>
 <li><p><strong>tww_user</strong>: main TWW user, can edit entities (<cite>tww_od</cite> schema), view values lists.</p></li>
@@ -101,10 +101,6 @@
 <li><p><strong>tww_sysadmin</strong>: superuser of TWW database, can edit TWW system tables (<cite>tww_sys</cite> schema).</p></li>
 </ul>
 <p>Data in TWW are stored in 3 schemas with default permissions for all of these users.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The SQL related to these roles is stored <a class="reference external" href="https://github.com/teksi/wastewater/tree/main/datamodel/12_0_roles.sql">here</a> and <a class="reference external" href="https://github.com/teksi/wastewater/tree/main/datamodel/12_1_roles.sql">here</a></p>
-</div>
 </section>
 
 
