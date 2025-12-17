@@ -327,24 +327,24 @@ Der Layer vw_network_segment kann benutzt werden, um die Fliessrichtung darzuste
 <p>Stammkarte für Sonderbauwerke: Hydraulisch-spezielle Abwasserbauwerke, z. B. Regenrückhaltebecken, Regenüberläufe oder Pumpwerke. Die meisten Sonderbauwerke sind auch Spezialbauwerke. Allerdings werden Sonderbauwerke wie Trennschächte oder kleine Pumpwerke häufig als Normschächte ausgeführt.</p>
 </section>
 <section id="catchment-area-totals-tww-app-catchment-area-totals">
-<h3>Catchment area totals <code class="docutils literal notranslate"><span class="pre">tww_app.catchment_area_totals</span></code><a class="headerlink" href="#catchment-area-totals-tww-app-catchment-area-totals" title="Link to this heading"></a></h3>
-<p>Information on the attached catchment area (total), water volumes, and discharge point of the storm overflow or storm overflow basin. Direct catchment area only needs to be filled in if the discharge is activated during the design event or if it is unknown whether it will be activated. All information must be provided for both the actual and planned status. All information must be provided manually (Version 2025.02).</p>
-<p><code class="docutils literal notranslate"><span class="pre">tww_app.vw_catchment_area_totals</span></code> is based on the materialized view <code class="docutils literal notranslate"><span class="pre">tww_app.mvw_catchment_area_totals</span></code>.</p>
-<p><code class="docutils literal notranslate"><span class="pre">tww_app.mvw_catchment_area_totals</span></code> aggregates the geometry of the catchment areas by log card.</p>
-<p><code class="docutils literal notranslate"><span class="pre">tww_app.vw_catchment_area_totals</span></code> adds the values of <code class="docutils literal notranslate"><span class="pre">tww_od.catchment_area_totals</span></code> and <code class="docutils literal notranslate"><span class="pre">tww_app.hydr_char_data</span></code> to the aggregated geometries</p>
+<h3>Gesamteinzugsgebiet <code class="docutils literal notranslate"><span class="pre">tww_app.catchment_area_totals</span></code><a class="headerlink" href="#catchment-area-totals-tww-app-catchment-area-totals" title="Link to this heading"></a></h3>
+<p>Informationen zum zugehörigen Einzugsgebietsflächen (Total), den Wassermengen und dem Einleitstellen des Regenüberlaufs bzw. des Regenbeckens. Die direkte Einzugsgebietfläche muss nur angegeben werden, wenn der Überlauf während des Bemessungsereignisses anspringt oder wenn das Anspringen unsicher ist. Alle Angaben müssen für den Ist- und den Planungszustand gemacht werden. Die Eingabe aller Informationen erfolgt manuell (Version 2025.02).</p>
+<p><code class="docutils literal notranslate"><span class="pre">tww_app.vw_catchment_area_totals</span></code> basiert auf der  Materialized view <code class="docutils literal notranslate"><span class="pre">tww_app.mvw_catchment_area_totals</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">tww_app.mvw_catchment_area_totals</span></code> fasst die Flächen der Einzugsgebiete pro Stammkarte zusammen.</p>
+<p><code class="docutils literal notranslate"><span class="pre">tww_app.vw_catchment_area_totals</span></code> fügt die Werte von <code class="docutils literal notranslate"><span class="pre">tww_od.catchment_area_totals</span></code> und <code class="docutils literal notranslate"><span class="pre">tww_app.hydr_char_data</span></code> zu den zusammengefassten Einzugsgebieten hinzu</p>
 </section>
 <section id="catchment-area-totals-aggregated-tww-app-vw-catchment-area-totals-aggregated">
-<h3>Catchment area totals aggregated <code class="docutils literal notranslate"><span class="pre">tww_app.vw_catchment_area_totals_aggregated</span></code><a class="headerlink" href="#catchment-area-totals-aggregated-tww-app-vw-catchment-area-totals-aggregated" title="Link to this heading"></a></h3>
-<p>It is not to be confused with <code class="docutils literal notranslate"><span class="pre">tww_app.vw_catchment_area_totals</span></code>.</p>
-<p>This view aggregates a set of values from the catchment areas, sometime including catchment areas on previous log cards</p>
+<h3>Zusammengefasste Gesamteinzugsgebiete <code class="docutils literal notranslate"><span class="pre">tww_app.vw_catchment_area_totals_aggregated</span></code><a class="headerlink" href="#catchment-area-totals-aggregated-tww-app-vw-catchment-area-totals-aggregated" title="Link to this heading"></a></h3>
+<p>Nicht zu verwechseln mit <code class="docutils literal notranslate"><span class="pre">tww_app.vw_catchment_area_totals</span></code>.</p>
+<p>Diese View fasst eine Reihe von Werten aus den Einzugsgebieten zusammen und schließt dabei fallweise auch Einzugsgebiete von vorherigen Stammkarten ein.</p>
 <ol class="loweralpha simple">
-<li><p>population includes upstream log cards</p></li>
-<li><p>surface_area includes direct only</p></li>
-<li><p>surface_imp includes direct only</p></li>
-<li><p>surface_red includes direct only</p></li>
-<li><p>sewer_infiltration_water includes upstream log cards</p></li>
-<li><p>waste_water_production includes upstream log cards</p></li>
-<li><p>_dim values respectively</p></li>
+<li><p>Einwohner summiert auch die Werte der oberliegenden Stammkarten</p></li>
+<li><p>Flaeche summiert nur die direkt angeschlossenen</p></li>
+<li><p>Flaeche_Bef summiert nur die direkt angeschlossenen</p></li>
+<li><p>Flaeche_red summiert nur die direkt angeschlossenen</p></li>
+<li><p>Fremdwasseranfall summiert auch die Werte der oberliegenden Stammkarten</p></li>
+<li><p>Schmutzwasseranfall summiert auch die Werte der oberliegenden Stammkarten</p></li>
+<li><p>resp. die _dim Werte</p></li>
 </ol>
 <p>Both views map <code class="docutils literal notranslate"><span class="pre">catchment_area</span></code> and <code class="docutils literal notranslate"><span class="pre">log_card</span></code> via the following procedure:</p>
 <p><code class="docutils literal notranslate"><span class="pre">[catchment_area.fk_special_building_xx_yy]</span> <span class="pre">-</span> <span class="pre">&gt;</span> <span class="pre">(log_card.obj_id)</span></code></p>
@@ -354,7 +354,7 @@ Der Layer vw_network_segment kann benutzt werden, um die Fliessrichtung darzuste
 <p><code class="docutils literal notranslate"><span class="pre">(hydr_char_data.obj_id)</span> <span class="pre">&lt;-</span> <span class="pre">[catchment_area_totals.fk_hydr_char_data]</span></code></p>
 </section>
 <section id="hydraulic-char-data-tww-od-hydraulic-char-data">
-<h3>Hydraulic char data <code class="docutils literal notranslate"><span class="pre">tww_od.hydraulic_char_data</span></code><a class="headerlink" href="#hydraulic-char-data-tww-od-hydraulic-char-data" title="Link to this heading"></a></h3>
+<h3>Hydr Kennwerte <code class="docutils literal notranslate"><span class="pre">tww_od.hydraulic_char_data</span></code><a class="headerlink" href="#hydraulic-char-data-tww-od-hydraulic-char-data" title="Link to this heading"></a></h3>
 <p>Aggregierte Hydr_Kennwerte</p>
 </section>
 </section>

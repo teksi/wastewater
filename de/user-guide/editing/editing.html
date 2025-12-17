@@ -70,7 +70,7 @@
 <li class="toctree-l3"><a class="reference internal" href="moving.html">Verschieben von Abwasserbauwerken zusammen mit Haltungen, Deckeln und Knoten</a></li>
 <li class="toctree-l3"><a class="reference internal" href="maintenance_events.html">Hinzufügen oder bearbeiten von Erhaltungsereignissen</a></li>
 <li class="toctree-l3"><a class="reference internal" href="connect_wastewater_network_elements.html">Abwassernetz Elemente verbinden</a></li>
-<li class="toctree-l3"><a class="reference internal" href="log_card.html">Adding or Editing of Log Cards</a></li>
+<li class="toctree-l3"><a class="reference internal" href="log_card.html">Hinzufügen oder Bearbeiten von Stammkarten</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">Längsschnitte</a></li>
@@ -155,7 +155,7 @@
 <blockquote>
 <div><ul class="simple">
 <li><p>Um einen Attribut zu ändern müssen Sie zuerst den <strong>vw_tww_wastewater_structure</strong> Layer auswählen.</p></li>
-<li><p><strong>Toogle Editing</strong> or start the <strong>TWW Wizard</strong> and click on <strong>Start Data Entry</strong>.</p></li>
+<li><p>Aktivieren sie den Bearbeitungsmodus oder starten Sie den <strong>TWW Wizard</strong> und klicken sie auf <strong>Start Data Entry</strong>.</p></li>
 <li><p>Dann klicken Sie auf den <strong>Objekte abfragen</strong> Knopf und wählen das Element, welches Sie bearbeiten wollen, mit einem Klick</p></li>
 </ul>
 <figure class="align-default">
@@ -362,13 +362,13 @@
 <p>Ändere für 500 von 1’653 Haltungen das Feld WBW_Bauart. Es ist ein Feld mit einer Werteliste. In vw_tww_Haltung ist der Feldname BW_WBW_Bauart, d. h. die Tabelle des Felds ist Abwasserbauwerk (BW).</p>
 <p>Wie lang dauert es:</p>
 <ul class="simple">
-<li><p>Use field calculator with vw_tww_reach: more than 2:24 minutes!</p></li>
-<li><p>Use field calculator with vw_channel: 33 seconds</p></li>
+<li><p>QGIS-Feldrechner und vw_tww_Haltung: mehr als 2:24 Minuten!</p></li>
+<li><p>QGIS-Feldrechner und vw_Kanal: 33 Sekunden.</p></li>
 </ul>
 <p>Warum ist vw_tww_Haltung so langsam: es gibt Trigger in der Datenbank, die bei jedem Datensatz die berechneten Felder der angeschlossenen Schächte und Knoten aktualisieren, damit die Symbologie dieser Themen immer auf dem neuesten Stand ist.</p>
-<p>TWW has a function to disable / enable symbology triggers (chapter how to)</p>
+<p>TWW verfügt über eine Funktion zum Deaktivieren/Aktivieren von Symbolisierungs-Trigger (siehe Kapitel „How to“).</p>
 <ul class="simple">
-<li><p>Use field calculator with vw_tww_reach, symbology trigger disabled: about 15 seconds.</p></li>
+<li><p>QGIS-Feldrechner und vw_tww_Haltung, Symbolisierungs-Trigger ausgeschaltet: 15 Sekunden.</p></li>
 </ul>
 </section>
 <section id="saving-changes">
