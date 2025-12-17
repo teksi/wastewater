@@ -119,7 +119,7 @@ class DatabaseUtils:
             PG_CONFIG_PATH = os.path.join(os.environ.get("PGSYSCONFDIR"), "pg_service.conf")
             logger.debug(f"PGSYSCONFDIR:  {PG_CONFIG_PATH}")
         else:
-            if os.name == 'nt':  # Windows
+            if os.name == "nt":  # Windows
                 config_file = "pg_service.conf"
             else:  # Unix-like (Linux, macOS)
                 config_file = ".pg_service.conf"
