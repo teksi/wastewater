@@ -140,12 +140,12 @@ def mvw_tww_channel(
 
     matview_sql = psycopg.sql.SQL(matview_sql).format(srid=psycopg.sql.Literal(srid))
     cursor.execute(matview_sql)
-    extras = """CREATE UNIQUE INDEX in_app_mvw_tww_channel_unique "
-    "ON tww_app.mvw_tww_channel USING btreee
+    extras ="""CREATE UNIQUE INDEX in_app_mvw_tww_channel_unique 
+    ON tww_app.mvw_tww_channel USING btreee
     (obj_id COLLATE pg_catalog."default")
     TABLESPACE pg_default;"""
 
-    extras_sql = psycopg.sql.SQL(extras)
+    extras_sql=psycopg.sql.SQL(extras)
     cursor.execute(extras_sql)
 
 
