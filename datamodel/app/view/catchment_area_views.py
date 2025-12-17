@@ -201,14 +201,16 @@ CREATE MATERIALIZED VIEW tww_app.mvw_catchment_area_totals
           GROUP BY collector.obj_id) ca_agg ON ca_agg.obj_id::text = lc.obj_id::text
 WITH DATA;
 
-
-CREATE UNIQUE INDEX in_app_mvw_catchment_area_totals__obj_id
-    ON tww_app.mvw_catchment_area_totals USING btree
-    (_obj_id COLLATE pg_catalog."default")
-    TABLESPACE pg_default;
 """
 
     cursor.execute(mview_sql)
+
+    extras ="""CREATE UNIQUE INDEX in_app_mvw_catchment_area_totals__obj_id
+    ON tww_app.mvw_catchment_area_totals USING btree
+    (_obj_id COLLATE pg_catalog."default")
+    TABLESPACE pg_default;"""
+    extras_sql=psycopg.sql.SQL(extras)
+    cursor.execute(extras_sql)
 
     view_sql = """
     DROP VIEW IF EXISTS tww_app.vw_tww_catchment_area_totals;
