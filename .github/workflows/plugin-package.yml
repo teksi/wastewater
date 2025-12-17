@@ -22,6 +22,10 @@ on:
         description: 'Release tag to upload plugin as GitHub Release asset'
         default: ''
         type: string
+    secrets:
+      TX_TOKEN:
+        description: 'Transifex token passed by the caller when using workflow_call'
+        required: false
 
 jobs:
   plugin-package:
@@ -66,12 +70,12 @@ jobs:
       - uses: actions/upload-artifact@v5
         with:
           name: teksi_wastewater_plugin_dev
-          path: plugin/teksi_wastewater.0.0.0.zip
+          path: plugin/teksi_wastewater.${{ inputs.release_tag || '0.0.0' }}.zip
           if-no-files-found: error
 
       - name: Upload plugin as GitHub Release asset
         if: ${{ inputs.release_tag != '' }}
-        run: gh release upload "${{ inputs.release_tag }}" plugin/teksi_wastewater.0.0.0.zip#oqtopus.plugin --repo "$GITHUB_REPOSITORY"
+        run: gh release upload "${{ inputs.release_tag }}" plugin/teksi_wastewater.${{ inputs.release_tag || '0.0.0' }}.zip#oqtopus.plugin --repo "$GITHUB_REPOSITORY"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ github.ref_name }}
