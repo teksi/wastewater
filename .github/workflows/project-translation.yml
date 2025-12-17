@@ -47,9 +47,11 @@ jobs:
           curl -OL https://github.com/transifex/cli/releases/download/v1.6.10/tx-linux-amd64.tar.gz
           tar -xvzf tx-linux-amd64.tar.gz
 
-      - name: Start Docker compose
+      - name: Docker build
+        run: docker compose --profile qgis up -d --build
+
+      - name: Initialize container
         run: |
-          docker compose up --build -d
           until docker compose exec db pg_isready -U postgres; do
             echo "Waiting for PostgreSQL to be ready..."
             sleep 2
