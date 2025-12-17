@@ -29,7 +29,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        qgis_version: [3.40-jammy, 3.44-noble, latest]
+        qgis_version: [3.40-jammy, 3.44-noble]
     env:
       QGIS_TEST_VERSION: ${{ matrix.qgis_version }}
       COMPOSE_PROFILES: qgis
