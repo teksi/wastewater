@@ -205,11 +205,11 @@ WITH DATA;
 
     cursor.execute(mview_sql)
 
-    extras ="""CREATE UNIQUE INDEX in_app_mvw_catchment_area_totals__obj_id
+    extras = """CREATE UNIQUE INDEX in_app_mvw_catchment_area_totals__obj_id
     ON tww_app.mvw_catchment_area_totals USING btree
     (_obj_id COLLATE pg_catalog."default")
     TABLESPACE pg_default;"""
-    extras_sql=psycopg.sql.SQL(extras)
+    extras_sql = psycopg.sql.SQL(extras)
     cursor.execute(extras_sql)
 
     view_sql = """
