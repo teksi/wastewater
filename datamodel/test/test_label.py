@@ -85,7 +85,7 @@ class TestViews(unittest.TestCase, DbTestBase):
             data["rp_to_fk_wastewater_networkelement"] = to_id
         self.update("vw_tww_reach", data, reach_id)
 
-    def test_simpe_labels(self):
+    def test_simple_labels(self):
         manholes = {
             "main": {"obj_id": None, "wn_obj_id": None, "coords": [2600000, 1200000]},
             "N": {"obj_id": None, "wn_obj_id": None, "coords": [2600000, 1200001]},
@@ -129,13 +129,17 @@ class TestViews(unittest.TestCase, DbTestBase):
             "main": {"obj_id": None, "wn_obj_id": None, "coords": [2600000, 1200000]},
             "N": {"obj_id": None, "wn_obj_id": None, "coords": [2600000, 1200001]},
             "S": {"obj_id": None, "wn_obj_id": None, "coords": [2600000, 1199999]},
+            "E": {"obj_id": None, "wn_obj_id": None, "coords": [2600001, 1200000]},
         }
         self.insert_manholes(manholes)
         reaches = {
             "input": [
-                {"mh_id": "N", "rp_to_level": 1011, "mid_point": [2600000.5, 1199999.5]},
-                {"mh_id": "S", "rp_to_level": 1012, "mid_point": [2600000.5, 1200000.5]},
-            ]
+                {"mh_id": "N", "rp_to_level": 1011, "mid_point": [2600000, 1199999.5]},
+                {"mh_id": "S", "rp_to_level": 1012, "mid_point": [2600000, 1200000.5]},
+            ],
+            "output": [
+                {"mh_id": "E", "rp_from_level": 1010,  "mid_point": [2600000.5, 1200000]},
+            ],
         }
         self.insert_reaches(reaches, manholes)
         self.assertEqual(
