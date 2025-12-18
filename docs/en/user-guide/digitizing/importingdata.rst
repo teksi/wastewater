@@ -1,6 +1,9 @@
 Importing data
 ==============
 
+.. note:: This chapter is about importing non-INTERLIS-data. Import and Export of INTERLIS-data is described in the administration chapter.
+
+
 It is quite easy to import data (geometry and attributes) from an external software.
 Here is a general description and a specific example.
 
