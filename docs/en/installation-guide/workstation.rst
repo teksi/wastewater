@@ -109,6 +109,8 @@ Install TWW plugin
 
 Plugin requirements:
 
+Please check if the following python libraries are installed
+
 - `networkx <https://pypi.org/project/networkx/>`_ >= 3.3
 
 You can install them on Debian based systems with::
@@ -119,6 +121,9 @@ You can install them on Debian based systems with::
 Or for Windows users, directly in QGIS via the Python Console with::
 
  import pip; pip.main(["install", "networkx"])
+
+
+Plugin installation from QGIS Plugins Menu:
 
 * Open QGIS
 
@@ -141,6 +146,20 @@ Or for Windows users, directly in QGIS via the Python Console with::
 .. figure:: images/001_searchplugin.jpeg
 
    **Add the TWW plugin**
+
+* When the installation was successfull, you should see the TWW Toolbar:
+
+.. figure:: images/tww_plugin_toolbar_ok.png
+
+   * If the toolbar is greyed out, you have to restart QGIS:
+
+.. figure:: images/tww_plugin_toolbar_grey.png
+
+* Configuration of the plugin:
+
+  * Plugin - TEKSI Wastewater - Settings
+  * Check the Admin Guide to see how to enable `INTERLIS Import / Export options <https://teksi.github.io/wastewater/admin-guide/interlis-io/index.html#enable-admin-mode>`_
+
 
 Optional plugin
 ~~~~~~~~~~~~~~~
