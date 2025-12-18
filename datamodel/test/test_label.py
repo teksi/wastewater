@@ -138,7 +138,7 @@ class TestViews(unittest.TestCase, DbTestBase):
                 {"mh_id": "S", "rp_to_level": 1012, "mid_point": [2600000, 1200000.5]},
             ],
             "output": [
-                {"mh_id": "E", "rp_from_level": 1010,  "mid_point": [2600000.5, 1200000]},
+                {"mh_id": "E", "rp_from_level": 1010, "mid_point": [2600000.5, 1200000]},
             ],
         }
         self.insert_reaches(reaches, manholes)
