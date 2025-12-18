@@ -151,7 +151,7 @@ Plugin installation from QGIS Plugins Menu:
 
 .. figure:: images/tww_plugin_toolbar_ok.png
 
-   * If the toolbar is greyed out, you have to restart QGIS:
+   * If the toolbar is greyed out, you have to restart QGIS respectively re-load the project:
 
 .. figure:: images/tww_plugin_toolbar_grey.png
 
