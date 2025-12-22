@@ -37,6 +37,13 @@ Main features
 
    .. figure:: images/interlis_export_precheck_results.png
 
+ - INTERLIS Export option to export extra organisations
+
+   .. figure:: images/interlis_export_extra_organisations.jpg
+
+ - And a lot of details added in the documentation. If you 
+
+
 Installation
 ----------------
 
