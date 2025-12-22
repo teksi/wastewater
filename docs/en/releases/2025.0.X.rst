@@ -22,10 +22,10 @@ Main features
   .. figure:: images/new_layers1.jpg
 
  - Project colors for styles
- 
+
    .. figure:: images/properties_projectcolors.jpg
 
-   `More ...<https://teksi.github.io/wastewater/user-guide/layerexplanations/twwproject.html#styles-project-colors>`__ 
+   `More ...<https://teksi.github.io/wastewater/user-guide/layerexplanations/twwproject.html#styles-project-colors>`__
 
  - Extended translation support for French and German
 
@@ -36,7 +36,7 @@ Main features
   .. figure:: images/tmmt_tww_2025_0_2.jpg
 
  - Improved checks for INTERLIS Export
- 
+
    .. figure:: interlis_export_precheck_results.png
 
 Installation
@@ -68,6 +68,7 @@ Do not forget to migrate your **oid-prefix**, your **default-values** for dataow
       .. figure:: interlis_import3.jpg
 
       .. figure:: interlis_import4.jpg
+
 
 In the future, TMMT will propose updates directly from the changelogs provided in the releases and should be able to handle upgrades with no migration required.
 
