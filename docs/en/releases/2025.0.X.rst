@@ -7,13 +7,13 @@ Main features
 ---------------
 
  - First version of TEKSI wastewater module for QGIS 3.40 LTR and initialized via the PostgreSQL Update Manager (PUM) and the TEKSI Module Management Tool (TMMT).
- Check the `installation guide <../installation-guide/index.html>`__ for more information on how to install TEKSI wastewater module via TMMT.
+   Check the `installation guide <../installation-guide/index.html>`__ for more information on how to install TEKSI wastewater module via TMMT.
 
   .. figure:: images/tmmt_menu.jpg
 
   .. figure:: images/tmmt_tww_2025_0_2_success.jpg
 
-  - Improved user interface for better usability and accessibility.
+ - Improved user interface for better usability and accessibility.
 
   .. figure:: images/new_layers1.jpg
 
@@ -44,22 +44,21 @@ Installation
 
  - As this release is published after the development of the TEKSI Module Management Tool plugin (TMMT), check the
  `installation guide <../installation-guide/index.html>`__ for more information on how to install TEKSI wastewater module via TMMT.
-TODO : adapt installation instructions.
 
 Migration from 2024.X to 2025.X
 ---------------------------------
 
  - As this release introduces a new database structure, a migration from 2024.X to 2025.X is required.
 
-A simple way to migrate your data is to export it from the 2024.X database in INTERLIS format
+   A simple way to migrate your data is to export it from the 2024.X database in INTERLIS format
 
    .. figure:: tww_interlis_dss_export.jpg
 
    .. figure:: tww_interlis_dss_export_success.jpg
 
-and import it into a new empty 2025.X database.
+   and import it into a new empty 2025.X database.
 
-Do not forget to migrate your **oid-prefix**, your **default-values** for dataowner and provider and to adjust the **sequences** for correct obj_id's.
+   Do not forget to migrate your **oid-prefix**, your **default-values** for dataowner and provider and to adjust the **sequences** for correct obj_id's.
 
       .. figure:: interlis_import.jpg
 
@@ -69,8 +68,7 @@ Do not forget to migrate your **oid-prefix**, your **default-values** for dataow
 
       .. figure:: interlis_import4.jpg
 
-
-In the future, TMMT will propose updates directly from the changelogs provided in the releases and should be able to handle upgrades with no migration required.
+   In the future, TMMT will propose updates directly from the changelogs provided in the releases and should be able to handle upgrades with no migration required.
 
 Bug fixes and performance improvements
 -----------------------------------------
