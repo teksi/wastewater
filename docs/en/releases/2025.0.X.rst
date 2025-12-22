@@ -9,13 +9,11 @@ Main features
  - First version of TEKSI wastewater module for QGIS 3.40 LTR and initialized via the PostgreSQL Update Manager (PUM) and the TEKSI Module Management Tool (TMMT).
    Check the `installation guide <../installation-guide/index.html>`__ for more information on how to install TEKSI wastewater module via TMMT.
 
+ - Improved user interface for better usability and accessibility.
+
   .. figure:: images/tmmt_menu.jpg
 
   .. figure:: images/tmmt_tww_2025_0_2_success.jpg
-
- - Improved user interface for better usability and accessibility.
-
-  .. figure:: images/new_layers1.jpg
 
  - New styles and symbology
 
@@ -25,7 +23,7 @@ Main features
 
    .. figure:: images/properties_projectcolors.jpg
 
-   `More ...<https://teksi.github.io/wastewater/user-guide/layerexplanations/twwproject.html#styles-project-colors>`__
+   `More ... <https://teksi.github.io/wastewater/user-guide/layerexplanations/twwproject.html#styles-project-colors>`__
 
  - Extended translation support for French and German
 
