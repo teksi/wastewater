@@ -47,7 +47,7 @@ Main features
 
    .. figure:: images/new_layers_measures_log_cards_rural.jpg
 
- - And a lot of details added in the documentation. If you 
+ - And a lot of details added in the documentation. If you like a new feature please add it here!
 
 
 Installation
@@ -85,6 +85,8 @@ Bug fixes and performance improvements
 -----------------------------------------
 
  - Various bug fixes for SWMM export
+ - Improved tests
+ - Improved hints for classes, attributes and values
 
 
 Resources
