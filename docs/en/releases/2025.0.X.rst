@@ -43,7 +43,7 @@ Main features
 
    .. figure:: images/interlis_export_extra_organisations.jpg
 
- - And a lot of details added in the documentation. If you 
+ - And a lot of details added in the documentation. If you
 
 
 Installation
