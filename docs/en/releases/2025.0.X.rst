@@ -51,7 +51,7 @@ Migration from 2024.X to 2025.X
 
  - As this release introduces a new database structure, a migration from 2024.X to 2025.X is required.
 
-A simple way to migrate your data is to export it from the 2024.X database in INTERLIS format 
+A simple way to migrate your data is to export it from the 2024.X database in INTERLIS format
 
    .. figure:: tww_interlis_dss_export.jpg
 
