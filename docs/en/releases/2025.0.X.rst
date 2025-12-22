@@ -3,6 +3,8 @@
 2025.0.X
 ===============
 
+  .. figure:: images/tww_2025_0_2.jpg
+
 Main features
 ---------------
 
