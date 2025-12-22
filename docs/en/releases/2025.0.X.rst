@@ -11,7 +11,7 @@ Main features
 
   .. figure:: images/tmmt_menu.jpg
 
-  .. figure:: images/tmmt_window.jpg
+  .. figure:: images/tmmt_tww_2025_0_2_success.jpg
 
  -- Improved user interface for better usability and accessibility.
 
@@ -19,15 +19,25 @@ Main features
 
  - New styles and symbology
 
-TODO : add a screenshot of the new styles.
+  .. figure:: images/new_layers1.jpg
 
- - Extended translation support for french and german
+ - Project colors for styles
+ 
+   .. figure:: images/properties_projectcolors.jpg
 
- TODO : add a screenshot showing translated project for french and german.
+   `More ...<https://teksi.github.io/wastewater/user-guide/layerexplanations/twwproject.html#styles-project-colors>`__ 
 
- - Demo data initialization via TMMT.
+ - Extended translation support for French and German
 
-TODO : Add a screenshot of the demo data initialization process via TMMT.
+   .. figure:: images/project_en_de.jpg
+
+ - Demo data initialization via TMMT
+
+  .. figure:: images/tmmt_tww_2025_0_2.jpg
+
+ - Improved checks for INTERLIS Export
+ 
+   .. figure:: interlis_export_precheck_results.png
 
 Installation
 ----------------
@@ -43,8 +53,16 @@ Migration from 2024.X to 2025.X
 
 A simple way to migrate your data is to export it from the 2024.X database in INTERLIS format and import it into a new 2025.X database.
 
-TODO : Add a screenshot of the migration process.
+   .. figure:: tww_interlis_dss_export.jpg
 
+   .. figure:: tww_interlis_dss_export_success.jpg
+
+      .. figure:: interlis_import.jpg
+
+      .. figure:: interlis_import2.jpg
+
+      .. figure:: interlis_import3.jpg
+   
 Do not forget to migrate your **oid-prefix**, your **default-values** for dataowner and provider and to adjust the **sequences** for correct obj_id's.
 
 In the future, TMMT will propose updates directly from the changelogs provided in the releases and should be able to handle upgrades with no migration required.
@@ -53,3 +71,8 @@ Bug fixes and performance improvements
 -----------------------------------------
 
  - Various bug fixes for SWMM export
+
+
+Resources
+----------------
+ - Release page: https://github.com/teksi/wastewater/releases/tag/2025.0.2
