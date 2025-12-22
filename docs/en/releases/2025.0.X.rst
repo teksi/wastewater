@@ -47,6 +47,11 @@ Main features
 
    .. figure:: images/new_layers_measures_log_cards_rural.jpg
 
+ - New documentation on `adding log cards <https://teksi.github.io/wastewater/user-guide/editing/log_card.html>`__
+
+   .. figure:: images/new_log_card.jpg
+
+
  - And a lot of details added in the documentation. If you like a new feature please add it here!
 
 
