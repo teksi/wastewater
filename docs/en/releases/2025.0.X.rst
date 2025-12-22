@@ -1,9 +1,7 @@
-.. _2025.X:
+.. _2025.0.X:
 
-2025.X
+2025.0.X
 ===============
-
-Here you can find information about the 2025.X release of TEKSI wastewater
 
 Main features
 ---------------
