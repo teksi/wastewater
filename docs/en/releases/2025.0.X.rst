@@ -51,19 +51,23 @@ Migration from 2024.X to 2025.X
 
  - As this release introduces a new database structure, a migration from 2024.X to 2025.X is required.
 
-A simple way to migrate your data is to export it from the 2024.X database in INTERLIS format and import it into a new 2025.X database.
+A simple way to migrate your data is to export it from the 2024.X database in INTERLIS format 
 
    .. figure:: tww_interlis_dss_export.jpg
 
    .. figure:: tww_interlis_dss_export_success.jpg
+
+and import it into a new empty 2025.X database.
+
+Do not forget to migrate your **oid-prefix**, your **default-values** for dataowner and provider and to adjust the **sequences** for correct obj_id's.
 
       .. figure:: interlis_import.jpg
 
       .. figure:: interlis_import2.jpg
 
       .. figure:: interlis_import3.jpg
-   
-Do not forget to migrate your **oid-prefix**, your **default-values** for dataowner and provider and to adjust the **sequences** for correct obj_id's.
+
+      .. figure:: interlis_import4.jpg
 
 In the future, TMMT will propose updates directly from the changelogs provided in the releases and should be able to handle upgrades with no migration required.
 
