@@ -43,6 +43,10 @@ Main features
 
    .. figure:: images/interlis_export_extra_organisations.jpg
 
+ - New layer configurations for GEP themes : measures events, log cards and rural
+
+   .. figure:: images/new_layers_measures_log_cards_rural.jpg
+
  - And a lot of details added in the documentation. If you 
 
 
