@@ -13,7 +13,7 @@ Main features
 
   .. figure:: images/tmmt_tww_2025_0_2_success.jpg
 
- -- Improved user interface for better usability and accessibility.
+  - Improved user interface for better usability and accessibility.
 
   .. figure:: images/new_layers1.jpg
 
