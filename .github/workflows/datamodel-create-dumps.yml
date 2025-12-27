@@ -27,7 +27,7 @@ on:
 jobs:
   datamodel-dumps:
     name: Create dumps and schemaspy of datamodel
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     env:
       PGSERVICE: pg_tww
       DB_NAME: tww
@@ -40,9 +40,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v6
-
-      - name: Setup env
-        run: cp .env.example .env
 
       - name: Initialize container
         run: |
