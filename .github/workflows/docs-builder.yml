@@ -25,7 +25,7 @@ jobs:
   datamodel-documentation:
     # Skip generating datamodel docs on PRs labeled PR-fast-doc
     if: ${{ !(github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'PR-fast-doc')) }}
-    uses: ./.github/workflows/datamodel-create-dumps.yml
+    uses: ./.github/workflows/datamodel-dumps-documentation.yml
 
   build:
     needs: datamodel-documentation

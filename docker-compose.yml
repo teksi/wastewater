@@ -1,32 +1,28 @@
 
 services:
   db:
-    build:
-      context: .
-      dockerfile: ./datamodel/.docker/db.Dockerfile
+    image: postgis/postgis:16-3.5
+    platform: linux/amd64
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
     ports:
       # making the postgres database accessible for debugging
       - ${PG_CONTAINER_PORT:-5432}:5432
     volumes:
+      - .:/usr/src
       - dump-data:/dump
       - db-data:/var/lib/postgresql/data
 
   pum:
-    build:
-      context: .
-      dockerfile: ./datamodel/.docker/pum.Dockerfile
-      args:
-        - RUN_TESTS=${RUN_TESTS:-False}
-        - TEST_PACKAGES=
-    image: opengisch/pum:${DOCKER_TAG:-unstable}
+    image: opengisch/pum:${PUM_VERSION:-latest}
+    tty: true
+    stdin_open: true
+    platform: linux/amd64
     environment:
       - PGSERVICE=${PGSERVICE:-pg_tww}
-    working_dir: /usr/src
     volumes:
-      - .:/usr/src
-      - ${PGSERVICEFILE:-./datamodel/.docker/.pg_service.conf}:/etc/postgresql-common/pg_service.conf:ro
+      - .:/pum
+      - ${PGSERVICEFILE:-./datamodel/.docker/.pg_service.conf}:/.pg_service.conf:ro
     depends_on:
       - db
 

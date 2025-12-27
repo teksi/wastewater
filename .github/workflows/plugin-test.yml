@@ -62,7 +62,7 @@ jobs:
           done
           # create the database
           docker compose exec db sh -c "createdb -U postgres ${DB_NAME}"
-          docker compose run --rm pum pum -s ${PGSERVICE} -d datamodel install -p SRID 2056 --roles --grant
+          docker compose run pum -s ${PGSERVICE} -d datamodel install -p SRID 2056 --roles --grant
 
       - name: Test on QGIS
         run: docker compose exec qgis /usr/src/plugin/.docker/run-docker-tests.sh --deselect teksi_wastewater/tests/test_interlis.py::TestInterlis::test_dss_dataset_import_export
@@ -71,7 +71,7 @@ jobs:
         run: |
           docker compose exec db sh -c "dropdb -U postgres ${DB_NAME}"
           docker compose exec db sh -c "createdb -U postgres ${DB_NAME}"
-          docker compose run --rm pum pum -s ${PGSERVICE} -d datamodel install -p SRID 2056 --roles --grant
+          docker compose run pum -s ${PGSERVICE} -d datamodel install -p SRID 2056 --roles --grant
 
       - name: Test on QGIS DSS dataset
         run: docker compose exec qgis /usr/src/plugin/.docker/run-docker-tests.sh teksi_wastewater/tests/test_interlis.py::TestInterlis::test_dss_dataset_import_export
@@ -80,7 +80,7 @@ jobs:
         run: |
           docker compose exec db sh -c "dropdb -U postgres ${DB_NAME}"
           docker compose exec db sh -c "createdb -U postgres ${DB_NAME}"
-          docker compose run --rm pum pum -s ${PGSERVICE} -d datamodel install -p SRID 2056 --roles --grant
+          docker compose run pum -s ${PGSERVICE} -d datamodel install -p SRID 2056 --roles --grant
 
       - name: Test command line import orgs
         run: docker compose exec qgis sh -c "xvfb-run /usr/src/plugin/tww_cmd.py interlis_import --xtf_file /usr/src/plugin/teksi_wastewater/tests/data/minimal-dataset-organisation-arbon-only.xtf --pghost db --pgdatabase ${DB_NAME} --pguser postgres --pgpass postgres --pgport 5432"

@@ -5,9 +5,9 @@ on:
     types: [published]
 
 jobs:
-  datamodel-create-dumps:
+  datamodel-dumps-documentation:
     name: Call Datamodel Create Dumps Workflow
-    uses: ./.github/workflows/datamodel-create-dumps.yml
+    uses: ./.github/workflows/datamodel-dumps-documentation.yml
     with:
       release_tag: ${{ github.event.release.tag_name }}
 
