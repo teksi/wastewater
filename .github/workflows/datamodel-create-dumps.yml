@@ -29,6 +29,8 @@ jobs:
     name: Create dumps and schemaspy of datamodel
     runs-on: ubuntu-24.04
     env:
+      PGSERVICE: pg_tww
+      DB_NAME: tww
       COMPOSE_PROFILES: schemaspy
       COMPOSE_PROJECT_NAME: wastewater
 
@@ -41,17 +43,15 @@ jobs:
       - name: Setup env
         run: cp .env.example .env
 
-      - name: Docker build
-        run: docker compose up -d --build
-
       - name: Initialize container
         run: |
+          docker compose up -d --build
           until docker compose exec db pg_isready -U postgres; do
             echo "Waiting for PostgreSQL to be ready..."
             sleep 2
           done
-          docker compose exec db createdb -U postgres tww
-          docker compose exec db pum -vvv -s pg_tww -d datamodel install -p SRID 2056 --roles --grant
+          docker compose exec db createdb -U postgres ${DB_NAME}
+          docker compose exec db pum -vvv -s ${PGSERVICE} -d datamodel install -p SRID 2056 --roles --grant
 
       - name: Create dumps
         run: docker compose exec db /usr/src/datamodel/scripts/create-dumps.py
