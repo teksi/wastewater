@@ -2,7 +2,7 @@
 host = https://www.transifex.com
 
 [o:teksi:p:tww-qgis-project:r:tww-qgis-project]
-file_filter = teksi_wastewater_<lang>.ts
-source_file = teksi_wastewater.ts
+file_filter = project/teksi_wastewater_<lang>.ts
+source_file = project/teksi_wastewater.ts
 source_lang = fr
 type = QT
