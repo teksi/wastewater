@@ -46,7 +46,7 @@ fi
 
 docker compose up -d
 
-docker compose run --rm pum sh -c 'pum --version'
+docker compose run --rm pum --version
 
 until docker compose exec db pg_isready -U postgres; do
   echo "Waiting for PostgreSQL to be ready..."
@@ -55,4 +55,4 @@ done
 
 echo "Creating database ${DB_NAME}"
 docker compose exec db sh -c "createdb -U postgres ${DB_NAME}"
-docker compose run --rm pum pum -vvv -s ${PGSERVICE} -d datamodel install -p SRID 2056 --roles --grant ${DEMO_DATA}
+docker compose run --rm pum -vvv -s ${PGSERVICE} -d datamodel install -p SRID 2056 --roles --grant ${DEMO_DATA}

@@ -51,10 +51,10 @@ jobs:
             sleep 2
           done
           docker compose exec db createdb -U postgres ${DB_NAME}
-          docker compose run --rm pum pum -vvv -s ${PGSERVICE} -d datamodel install -p SRID 2056 --roles --grant
+          docker compose run pum -vvv -s ${PGSERVICE} -d datamodel install -p SRID 2056 --roles --grant
 
       - name: Create dumps
-        run: docker compose run --rm pum /usr/src/datamodel/scripts/create-dumps.py
+        run: docker compose run --entrypoint datamodel/scripts/create-dumps.py pum
 
       - name: Schemaspy
         run:  docker compose up schemaspy

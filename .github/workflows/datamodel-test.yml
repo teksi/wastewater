@@ -103,15 +103,15 @@ jobs:
           done
           # create the database
           docker compose exec db sh -c "createdb -U postgres ${DB_NAME}"
-          docker compose run --rm pum \
-              pum -vvv -s ${PGSERVICE} -d datamodel install \
+          docker compose run pum \
+              -vvv -s ${PGSERVICE} -d datamodel install \
               -p modification_ci ${{ matrix.modification_ci}} \
               -p modification_agxx ${{ matrix.modification_agxx}} \
               -p webgis ${{ matrix.webgis}} \
               -p SRID 2056 --roles --grant
 
       - name: Run tests
-        run:  docker compose run --rm pum pytest datamodel
+        run:  docker compose run --entrypoint pytest pum datamodel
 
       - name: Docker logs
         if: failure()
