@@ -49,7 +49,7 @@ jobs:
           docker compose up -d --build
           until docker compose exec db pg_isready -U postgres; do
             echo "Waiting for PostgreSQL to be ready..."
-            sleep 2
+            sleep 3
           done
           docker compose exec db createdb -U postgres ${DB_NAME}
           docker compose exec db createdb -U postgres ${DB_NAME}_demo
