@@ -41,6 +41,9 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      - name: Setup env
+        run: cp .env.example .env
+
       - name: Initialize container
         run: |
           docker compose up -d --build
@@ -58,7 +61,7 @@ jobs:
           VERSION=${{ inputs.release_tag || github.event.release.tag_name || 'dev' }}
           docker compose exec db pg_dump -U postgres --format custom --exclude-schema=public --blobs --compress 5 --file /dump/${DB_NAME}-${VERSION}-db-dump.backup ${DB_NAME}
           docker compose exec db pg_dump -U postgres --format plain --exclude-schema=public --file /dump/${DB_NAME}-${VERSION}-db-dump.sql ${DB_NAME}
-          docker compose exec db pg_dump -U postgres --format plain --schema=signalo_app --file /dump/${DB_NAME}-${VERSION}-db-app.sql ${DB_NAME}
+          docker compose exec db pg_dump -U postgres --format plain --schema=${DB_NAME}_app --file /dump/${DB_NAME}-${VERSION}-db-app.sql ${DB_NAME}
           docker compose exec db pg_dump -U postgres --format custom --exclude-schema=public --blobs --compress 5 --file /dump/${DB_NAME}-${VERSION}-db-dump-with-demo.backup ${DB_NAME}_demo
           docker compose exec db pg_dump -U postgres --format plain --exclude-schema=public --file /dump/${DB_NAME}-${VERSION}-db-dump-with-demo.sql ${DB_NAME}_demo
           mkdir -p datamodel/artifacts/
