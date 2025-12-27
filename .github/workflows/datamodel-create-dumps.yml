@@ -54,7 +54,7 @@ jobs:
           docker compose run pum -vvv -s ${PGSERVICE} -d datamodel install -p SRID 2056 --roles --grant
 
       - name: Create dumps
-        run: docker compose run --entrypoint datamodel/scripts/create-dumps.py pum
+        run: docker compose run db /usr/src/datamodel/scripts/create-dumps.py
 
       - name: Schemaspy
         run:  docker compose up schemaspy

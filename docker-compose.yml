@@ -9,6 +9,7 @@ services:
       # making the postgres database accessible for debugging
       - ${PG_CONTAINER_PORT:-5432}:5432
     volumes:
+      - .:/usr/src
       - dump-data:/dump
       - db-data:/var/lib/postgresql/data
 
