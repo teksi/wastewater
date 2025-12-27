@@ -51,8 +51,8 @@ jobs:
             echo "Waiting for PostgreSQL to be ready..."
             sleep 2
           done
-          docker compose exec db createdb -U postgres ${DB_NAME}
-          docker compose exec db createdb -U postgres ${DB_NAME}_demo
+          docker compose exec db sh -c "createdb -U postgres ${DB_NAME}"
+          docker compose exec db sh -c "createdb -U postgres ${DB_NAME}_demo"
           docker compose run pum -vvv -s ${PGSERVICE} -d datamodel install -p SRID 2056 --roles --grant
           docker compose run pum -vvv -s ${PGSERVICE}_demo -d datamodel install -p SRID 2056 --demo-data ${DEMO_DATA} --roles --grant
 
