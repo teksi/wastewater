@@ -102,7 +102,7 @@ jobs:
             sleep 2
           done
           # create the database
-          docker compose exec db sh -c "createdb -U postgres ${DB_NAME}"
+          docker compose exec db createdb -U postgres ${DB_NAME}
           docker compose run pum \
               -vvv -s ${PGSERVICE} -d datamodel install \
               -p modification_ci ${{ matrix.modification_ci}} \
