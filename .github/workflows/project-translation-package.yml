@@ -76,7 +76,7 @@ jobs:
       - uses: actions/upload-artifact@v5
         with:
           name: project-translations
-          path: project/${QGS_PROJECT_FILE}*
+          path: project/${{ env.QGS_PROJECT_FILE }}*
           if-no-files-found: error
 
       - name: set project version + create project archive
