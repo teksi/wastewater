@@ -3,23 +3,32 @@ services:
   db:
     build:
       context: .
-      dockerfile: datamodel/.docker/Dockerfile
-      args:
-        POSTGIS_IMAGE: ${POSTGIS_IMAGE:-postgis/postgis:16-3.5-alpine}
-        DB_NAME: ${DB_NAME:-tww}
-        PG_SERVICE: ${PG_SERVICE:-pg_tww}
-    image: teksi/tww:${DOCKER_TAG:-unstable}
-    working_dir: /usr/src
+      dockerfile: ./datamodel/.docker/db.Dockerfile
     environment:
-      - EXTENSION_CI
-      - EXTENSION_AGXX
-      - EXTENSION_ZIP
-      - LANG_CODE
-    volumes:
-      - .:/usr/src
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
     ports:
       # making the postgres database accessible for debugging
-      - ${PG_CONTAINER_PORT:-5432}:${PG_CONTAINER_PORT:-5432}
+      - ${PG_CONTAINER_PORT:-5432}:5432
+    volumes:
+      - dump-data:/dump
+      - db-data:/var/lib/postgresql/data
+
+  pum:
+    build:
+      context: .
+      dockerfile: ./datamodel/.docker/pum.Dockerfile
+      args:
+        - RUN_TESTS=${RUN_TESTS:-False}
+        - TEST_PACKAGES=
+    image: opengisch/pum:${DOCKER_TAG:-unstable}
+    environment:
+      - PGSERVICE=${PGSERVICE:-pg_tww}
+    working_dir: /usr/src
+    volumes:
+      - .:/usr/src
+      - ${PGSERVICEFILE:-./datamodel/.docker/.pg_service.conf}:/etc/postgresql-common/pg_service.conf:ro
+    depends_on:
+      - db
 
   qgis:
     build:
@@ -31,7 +40,7 @@ services:
     platform: linux/amd64
     volumes:
       - .:/usr/src
-    depends_on:
+    links:
       - db
     profiles:
       - qgis
@@ -43,6 +52,7 @@ services:
       - ./datamodel/schemaspy.properties:/schemaspy.properties
     depends_on:
       - db
+    network_mode: "service:db"
     command: [
       "-configFile",
       "/schemaspy.properties"
@@ -50,3 +60,7 @@ services:
     user: "${UID}:${GID}"
     profiles:
       - schemaspy
+
+volumes:
+  db-data:
+  dump-data:
