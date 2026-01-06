@@ -196,6 +196,7 @@ choose <em>advanced installation</em> and install qgis-dev.</p></li>
 <section id="install-tww-plugin">
 <h2>Install TWW plugin<a class="headerlink" href="#install-tww-plugin" title="Lien vers cette rubrique"></a></h2>
 <p>Exigences du plugin;</p>
+<p>Please check if the following python libraries are installed</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://pypi.org/project/networkx/">networkx</a> &gt;= 3.3</p></li>
 </ul>
@@ -208,6 +209,7 @@ choose <em>advanced installation</em> and install qgis-dev.</p></li>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pip</span><span class="p">;</span> <span class="n">pip</span><span class="o">.</span><span class="n">main</span><span class="p">([</span><span class="s2">&quot;install&quot;</span><span class="p">,</span> <span class="s2">&quot;networkx&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
+<p>Plugin installation from QGIS Plugins Menu:</p>
 <ul class="simple">
 <li><p>Ouvrir QGIS</p></li>
 <li><p>Aller à « plugins »</p>
@@ -234,6 +236,23 @@ choose <em>advanced installation</em> and install qgis-dev.</p></li>
 <p><span class="caption-text"><strong>Add the TWW plugin</strong></span><a class="headerlink" href="#id13" title="Lien vers cette image"></a></p>
 </figcaption>
 </figure>
+<ul class="simple">
+<li><p>When the installation was successfull, you should see the TWW Toolbar:</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../_images/tww_plugin_toolbar_ok.png" src="../_images/tww_plugin_toolbar_ok.png" />
+</figure>
+<figure class="align-default">
+<img alt="../_images/tww_plugin_toolbar_grey.png" src="../_images/tww_plugin_toolbar_grey.png" />
+</figure>
+<ul class="simple">
+<li><p>Configuration of the plugin:</p>
+<ul>
+<li><p>Plugin - TEKSI Wastewater - Settings</p></li>
+<li><p>Check the Admin Guide to see how to enable <a class="reference external" href="https://teksi.github.io/wastewater/admin-guide/interlis-io/index.html#enable-admin-mode">INTERLIS Import / Export options</a></p></li>
+</ul>
+</li>
+</ul>
 <p>TWW uses a data historization process. The <code class="docutils literal notranslate"><span class="pre">pg</span> <span class="pre">history</span> <span class="pre">viewer</span></code> <a class="reference external" href="http://plugins.qgis.org/plugins/pg_history_viewer/">plugin</a> allows you to view the changes made and replay some of them.</p>
 </section>
 <section id="install-the-demo-data">
