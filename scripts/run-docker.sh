@@ -12,13 +12,11 @@ elif [ -f .env.example ]; then
   export $(grep -v '^#' .env.example | xargs)
 fi
 
-
-PUM_GH_SHA=${PUM_GH_SHA:-}
-
 BUILD=0
 DEMO_DATA=
+RUN_TESTS=0
 
-while getopts 'bdp:' opt; do
+while getopts 'bdt' opt; do
   case "$opt" in
     b)
       echo "Rebuild docker image"
@@ -28,6 +26,11 @@ while getopts 'bdp:' opt; do
     d)
       echo "Load demo data"
       DEMO_DATA="-d ${DEMO_DATA_NAME}"
+      ;;
+
+    t)
+      echo "Run tests"
+      RUN_TESTS=1
       ;;
 
     ?|h)
@@ -44,6 +47,8 @@ if [[ $BUILD -eq 1 ]]; then
   docker compose build --no-cache
 fi
 
+docker pull opengisch/pum:latest
+
 docker compose up -d
 
 docker compose run --rm pum --version
@@ -56,3 +61,7 @@ done
 echo "Creating database ${DB_NAME}"
 docker compose exec db sh -c "createdb -U postgres ${DB_NAME}"
 docker compose run --rm pum -vvv -s ${PGSERVICE} -d datamodel install -p SRID 2056 --roles --grant ${DEMO_DATA}
+if [[ $RUN_TESTS -eq 1 ]]; then
+  echo "Running tests"
+  docker compose run --rm --entrypoint pytest pum datamodel
+fi
