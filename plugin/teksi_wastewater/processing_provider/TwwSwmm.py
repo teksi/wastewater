@@ -3,6 +3,7 @@
  TWW-swmm processing provider
                               -------------------
         begin                : 07.2019
+        updated              : 01.2025 sjib
         copyright            : (C) 2019 by ig-group.ch
         email                : timothee.produit@ig-group.ch
  ***************************************************************************/
@@ -197,7 +198,7 @@ class TwwSwmm:
             where_clauses.append(f"""hierarchy = '{hierarchy}'""")
 
         sql = """
-        select * from tww_swmm.vw_{table_name}
+        select * from tww_app.swmm_vw_{table_name}
         """.format(
             table_name=table_name
         )
@@ -1268,7 +1269,7 @@ class TwwSwmm:
         sql = """
         UPDATE tww_od.reach r
         SET swmm_default_coefficient_of_friction = f.coefficient_of_friction
-        FROM tww_swmm.reach_coefficient_of_friction f
+        FROM tww_od.reach_coefficient_of_friction f
         WHERE r.swmm_default_coefficient_of_friction isnull AND f.fk_material = r.material;
         """
         try:
@@ -1292,7 +1293,7 @@ class TwwSwmm:
         sql = """
         UPDATE tww_od.reach r
         SET swmm_default_coefficient_of_friction = f.coefficient_of_friction
-        FROM tww_swmm.reach_coefficient_of_friction f
+        FROM tww_od.reach_coefficient_of_friction f
         WHERE f.fk_material = r.material;
         """
         try:

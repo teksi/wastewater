@@ -1,0 +1,18 @@
+joins:
+  file:
+    table: tww_od.file
+    alias: fi
+    join_on: "fi.object = ov.obj_id"
+    skip_columns: ["object"]
+    prefix: fi_
+    read_only: true
+  overflow_char:
+    table: tww_od.overflow_char
+    alias: oc
+    join_on: "oc.obj_id = ov.fk_overflow_char"
+    skip_columns: ["obj_id"]
+    remap_columns:
+      fk_provider: fk_provider
+    prefix: oc_
+    read_only: false
+    where_clause: "oc.obj_id = OLD.fk_overflow_char"

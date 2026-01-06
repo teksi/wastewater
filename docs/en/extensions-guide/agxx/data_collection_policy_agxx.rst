@@ -255,6 +255,10 @@ Infrastrukturhaltung/GEPHaltung
 
 Apart from street water and square water, the NutzungsartAG are not modelled as a value list extensions. Use the backwards relation instead.
 
+Handling of reach-reach connections
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AG-64/96 does not support reach-reach connections. If needed, the DSS topology is overridden on AG-64/96 export by a foreign key on ``tww_od.agxx_reach_point.ag64_fk_wastewater_node`` that points to ``tww_od.agxx_unconnected_node_bwrel``.  are defined in the datamodel as Infrastrukturknoten/GEPKnoten with funktionag "Anschluss". When this foreign key is not set, reach-reach connections throw an error on export.
+
 
 Ueberlauf_Foerderaggregat
 ---------------------------------

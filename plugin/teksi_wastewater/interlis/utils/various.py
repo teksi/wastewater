@@ -5,14 +5,23 @@ import subprocess
 import tempfile
 import uuid
 
-from qgis.core import QgsExpression
-
 from ...utils.database_utils import DatabaseUtils
 from ...utils.plugin_utils import logger
 
 
 class CmdException(BaseException):
     pass
+
+
+class InterlisImporterExporterStopped(Exception):
+    pass
+
+
+class InterlisImporterExporterError(Exception):
+    def __init__(self, error, additional_text, log_path):
+        self.error = error
+        self.additional_text = additional_text
+        self.log_path = log_path
 
 
 def execute_subprocess(command, check=True, output_content=False):
@@ -61,6 +70,9 @@ def get_pgconf_as_ili_args() -> list[str]:
                 f.write(param + "\n")
         args.extend(["--dbparams", '"' + os.path.join(dbparams_path, "dbparams.txt") + '"'])
     if not pgconf["user"]:
+        # only import now to facilitate imports without QGIS
+        from qgis.core import QgsExpression
+
         # allow loading PGUSER from overriden env variables
         expression = QgsExpression("@PGUSER")
         pguser = expression.evaluate()

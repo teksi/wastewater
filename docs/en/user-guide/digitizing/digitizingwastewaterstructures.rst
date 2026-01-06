@@ -29,6 +29,8 @@ Select the ws_type you want (preselected is 'manhole'):
 - discharge_point
 - infiltration_installation
 
+.. note:: Other wastewater_structure subtypes (wwtp_structure, small_treatment_plant, drainless_toilet) are not part of the SIA405-datamodel and therefore not part of vw_tww_wastewater_structure. In TWW version 2025 exists another layer ``vw_tww_additional_ws`` for these subclasses.
+
 Depending on the **ws_type**, you will have different fields and tabs in the form.
 
 Then add the identifier (this is the attribute that will be displayed on the map).
@@ -65,7 +67,7 @@ a) an new object in the class wastewater structure is added
 
 b) a new object in the respective subclass [discharge_point, infiltration_installation, manhole, special_structure] is added and linked
 
-c) a new cover object is added and linked to the wastewater structure
+c) a new cover object is added and linked to the wastewater structure if at least one cover attribute other than co_obj_id and co_identifier is filled out
 
 d) a new wastewater node object is generated (in wastewater network elements and its subclass wastewater nodes) and linked to the wastewater structure
 
@@ -73,7 +75,8 @@ e) the new cover and node are referred as main cover and main node of the wastew
 
 .. note:: The main node is the place, where the symbol of the wastewater structure is shown in TWW.
 
-.. note:: delete this note?? To add a second cover or a second wastewater node to a wastewater structure, see the :ref:`editing-data` chapter.
+.. note:: To add a (second) cover or a second wastewater node to a wastewater structure, see the :ref:`editing-data` chapter.
+
 
 
 Geometry synchronization
@@ -83,3 +86,16 @@ The added feature's geometry defines the geometry of the connected tables like c
 When the level of the cover `co_level` is entered, this value is adapted to the Z value of the cover's geometry. The bottom level of the wastewater node `wn_bottom_level` defines the Z value of the wastewater node's geometry.
 
 .. note:: If a cover level changes, the Z value of the cover's geometry will be adjusted. When the geometry changes, the co_level attribut is adjusted as well. If both values change, the level takes precedence. On an insert it's like when both value change. Means the cover's geometry is set according to the cover level and if it's NULL, the Z value is set to NaN. The same situation is on editing the wastewater node directly.
+
+
+Digitizing Additional Wastewater Structures
+-------------------------------------------
+
+.. versionadded:: 2025.0
+
+``vw_tww_additional_ws`` is a view for working with subclasses wwtp_structure, small_treatment_plant, drainless_toilet. This subclasses are not part of the SIA405 datamodel.
+
+These subclasses are not digitized using the TWW Wizard, but with the QGIS **Add Point Feature** tool.
+Similar to the digitizing of manholes or special structures, when creating a new record, also a cover and a wastewater node is created. The identifier of the wastewater_structure is duplicated into cover.identifier and node.identifier.
+Unlike the digitizing in vw_tww_wastewater_structure, there is no main_node or main_cover. vw_tww_additional_ws is not configured to add a second cover or a second node.
+With the TWW-tool **connect wastwater networkelements** you can connect reaches also to this additional wastewater structures.

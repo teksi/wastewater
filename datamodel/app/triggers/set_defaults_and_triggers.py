@@ -4,12 +4,30 @@ import psycopg
 from pum import SqlContent
 
 
+def check_owner(connection: psycopg.Connection, table_schema: str, table_name: str):
+    try:
+        cursor = SqlContent(
+            " SELECT rolname FROM pg_roles WHERE pg_has_role( CURRENT_USER, oid, 'member');"
+        ).execute(connection)
+        roles = cursor.fetchall()
+
+        cursor = SqlContent(
+            f"SELECT tableowner from pg_tables WHERE tablename='{table_name}' and schemaname='{table_schema}';"
+        ).execute(connection)
+        owner = cursor.fetchone()
+
+        is_owner = True if owner in roles else False
+    except Exception as e:
+        print("An error occurred:", e)
+    return is_owner
+
+
 def create_last_modification_trigger(tbl: str, parent_tbl: str = None):
     parent = (
         f"_parent('tww_od.{parent_tbl}')" if parent_tbl else "()"
     )  # as parent:_tbl is a tuple, we don't need additional brackets
     query = f"""
-    CREATE TRIGGER
+    CREATE OR REPLACE TRIGGER
     update_last_modified_{tbl}
     BEFORE UPDATE OR INSERT ON
      tww_od.{tbl}
@@ -64,9 +82,13 @@ def set_defaults_and_triggers(
             ).execute(connection)
             found = cursor.fetchone()
             if found:
-                query = create_last_modification_trigger(entry[0], SingleInheritances[entry[0]])
-                SqlContent(query).execute(connection)
-
+                if check_owner(connection, "tww_od", entry[0]):
+                    query = create_last_modification_trigger(
+                        entry[0], SingleInheritances[entry[0]]
+                    )
+                    SqlContent(query).execute(connection)
+                else:
+                    raise Exception(f"Must be owner of tww_od.{entry[0]} to create triggers")
         else:
             cursor = SqlContent(
                 f"""select 1 from information_schema.columns
@@ -76,5 +98,8 @@ def set_defaults_and_triggers(
             ).execute(connection)
             found = cursor.fetchone()
             if found:
-                query = create_last_modification_trigger(entry[0])
-                SqlContent(query).execute(connection)
+                if check_owner(connection, "tww_od", entry[0]):
+                    query = create_last_modification_trigger(entry[0])
+                    SqlContent(query).execute(connection)
+                else:
+                    raise Exception(f"Must be owner of tww_od.{entry[0]} to create triggers")

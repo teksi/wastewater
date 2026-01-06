@@ -7,8 +7,15 @@ import os
 
 import psycopg
 import psycopg.sql
-from pirogue.utils import insert_command, select_columns, table_parts, update_command
+from pirogue.utils import insert_command, select_columns, update_command
 from yaml import safe_load
+
+from .utils.extra_definition_utils import (
+    extra_cols,
+    extra_joins,
+    insert_extra,
+    update_extra,
+)
 
 
 def vw_tww_infiltration_installation(
@@ -52,9 +59,10 @@ def vw_tww_infiltration_installation(
         , {wn_cols}
         , {ne_cols}
 
+
         , wns._usage_current AS _channel_usage_current
         , wns._function_hierarchic AS _channel_function_hierarchic
-
+        , vl_fh.tww_is_primary
 
       FROM tww_od.infiltration_installation ii
         LEFT JOIN tww_od.wastewater_structure ws ON ii.obj_id = ws.obj_id
@@ -65,23 +73,9 @@ def vw_tww_infiltration_installation(
         LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = ws.fk_main_wastewater_node
         LEFT JOIN tww_od.wastewater_node wn ON wn.obj_id = ws.fk_main_wastewater_node
         LEFT JOIN tww_od.tww_wastewater_node_symbology wns ON wns.fk_wastewater_node = ws.fk_main_wastewater_node
+        LEFT JOIN tww_vl.channel_function_hierarchic vl_fh ON vl_fh.code = wns._function_hierarchic
         {extra_joins};
     """.format(
-        extra_cols="\n    ".join(
-            [
-                select_columns(
-                    connection=connection,
-                    table_schema=table_parts(table_def["table"])[0],
-                    table_name=table_parts(table_def["table"])[1],
-                    skip_columns=table_def.get("skip_columns", []),
-                    remap_columns=table_def.get("remap_columns", {}),
-                    prefix=table_def.get("prefix", None),
-                    table_alias=table_def.get("alias", None),
-                )
-                + ","
-                for table_def in extra_definition.get("joins", {}).values()
-            ]
-        ),
         ws_cols=select_columns(
             connection=connection,
             table_schema="tww_od",
@@ -167,16 +161,12 @@ def vw_tww_infiltration_installation(
             prefix="wn_",
             remap_columns={},
         ),
-        extra_joins="\n    ".join(
-            [
-                "LEFT JOIN {tbl} {alias} ON {jon}".format(
-                    tbl=table_def["table"],
-                    alias=table_def.get("alias", ""),
-                    jon=table_def["join_on"],
-                )
-                for table_def in extra_definition.get("joins", {}).values()
-            ]
+        extra_cols=(
+            ""
+            if not extra_definition
+            else extra_cols(connection=connection, extra_definition=extra_definition)
         ),
+        extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
     )
 
     view_sql = psycopg.sql.SQL(view_sql).format(srid=psycopg.sql.Literal(srid))
@@ -197,12 +187,12 @@ def vw_tww_infiltration_installation(
     {insert_ii}
 
 
-    CASE WHEN NOT tww_app.check_all_nulls(NEW,'mp') THEN
+    CASE WHEN NOT tww_app.check_all_nulls(to_jsonb(NEW),'mp') THEN
     {insert_mp}
     ELSE NULL;
     END CASE;
 
-    CASE WHEN NOT tww_app.check_all_nulls(NEW,'rb') THEN
+    CASE WHEN NOT tww_app.check_all_nulls(to_jsonb(NEW),'rb') THEN
     {insert_rb}
     ELSE NULL;
     END CASE;
@@ -213,7 +203,7 @@ def vw_tww_infiltration_installation(
         SET fk_main_wastewater_node = NEW.wn_obj_id
         WHERE obj_id = NEW.obj_id;
 
-    CASE WHEN NOT tww_app.check_all_nulls(NEW,'co') THEN
+    CASE WHEN NOT tww_app.check_all_nulls(to_jsonb(NEW),'co') THEN
     {insert_vw_cover}
 
       UPDATE tww_od.wastewater_structure
@@ -221,7 +211,7 @@ def vw_tww_infiltration_installation(
         WHERE obj_id = NEW.obj_id;
     ELSE NULL;
     END CASE;
-
+    {insert_extra}
       RETURN NEW;
     END; $BODY$ LANGUAGE plpgsql VOLATILE;
 
@@ -324,6 +314,7 @@ def vw_tww_infiltration_installation(
                 "fk_wastewater_structure": "NEW.obj_id",
             },
         ),
+        insert_extra=insert_extra(connection=connection, extra_definition=extra_definition),
     )
 
     trigger_insert_sql = psycopg.sql.SQL(trigger_insert_sql).format(srid=psycopg.sql.Literal(srid))
@@ -340,7 +331,7 @@ def vw_tww_infiltration_installation(
       {update_ii}
       {update_co}
       IF NOT FOUND THEN
-        CASE WHEN NOT tww_app.check_all_nulls(NEW,'co') THEN -- no cover entries
+        CASE WHEN NOT tww_app.check_all_nulls(to_jsonb(NEW),'co') THEN -- no cover entries
           {insert_vw_cover}
         ELSE
           PERFORM pg_notify('vw_tww_ws_no_cover', format('Wastewater Structure %s: no cover created. If you want to add a cover please fill in at least one cover attribute value.',NEW.identifier));
@@ -350,7 +341,7 @@ def vw_tww_infiltration_installation(
       {update_ws}
       {update_wn}
       {update_ne}
-
+      {update_extra}
 
       -- Cover geometry has been moved
       IF NOT ST_Equals( OLD.situation3d_geometry, NEW.situation3d_geometry) THEN
@@ -535,6 +526,7 @@ def vw_tww_infiltration_installation(
             },
             returning="obj_id INTO OLD.co_obj_id",
         ),
+        update_extra=update_extra(connection=connection, extra_definition=extra_definition),
     )
 
     update_trigger_sql = psycopg.sql.SQL(update_trigger_sql).format(srid=psycopg.sql.Literal(srid))

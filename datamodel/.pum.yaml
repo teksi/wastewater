@@ -1,14 +1,14 @@
 
 pum:
   migration_table_schema: tww_sys
-  minimum_version: 1.1.7
+  minimum_version: 1.1.14
 
 roles:
   - name: tww_viewer
     description: Role for users who can view the TWW data.
     permissions:
       - type: read
-        schemas: [tww_od, tww_vl, tww_sys, tww_app, tww_cfg]
+        schemas: [tww_od, tww_vl, tww_sys, tww_app]
 
   - name: tww_user
     description: Role for users who can view and edit the TWW data.
@@ -22,7 +22,7 @@ roles:
     inherit: tww_user
     permissions:
       - type: write
-        schemas: [tww_vl, tww_cfg]
+        schemas: [tww_vl]
 
   - name: tww_sysadmin
     description: Role for system administrators who can manage the TWW application and its configuration.
@@ -38,25 +38,29 @@ parameters:
     default: 2056
     description: Coordinate Reference System (CRS) to use for the data. This is used for the geometry column in the database. Default is 2056 (CH1903+ / LV95).
 
-  - name: tww_reach_extra
-    type: text
-    description: YAML file with extra information for the tww_reach view.
+  - name: modification_ci
+    type: boolean
+    default: false
+    description: load ci modification
 
-  - name: tww_wastewater_structure_extra
-    type: text
-    description: YAML file with extra information for the tww_wastewater_structure view.
+  - name: modification_agxx
+    type: boolean
+    default: false
+    description: enable AG-64/96 app modification
 
-  - name: tww_ii_extra
-    type: text
-    description: YAML file with extra information for the vw_tww_infiltration_installation_extra view.
+  - name: webgis
+    type: boolean
+    default: false
+    description: enable WebGIS app modification
 
-  - name: wastewater_structure_extra
-    type: text
-    description: YAML file with extra information for the wastewater_structure view.
+  - name: modification_yaml
+    type: path
+    description: yaml file with app modification definitions
 
-  - name: tww_channel_extra
+  - name: lang_code
     type: text
-    description: YAML file with extra information for the vw_tww_channel_extra view.
+    default: en
+    description: language code for the creation of custom views
 
 dependencies:
   - name: pirogue

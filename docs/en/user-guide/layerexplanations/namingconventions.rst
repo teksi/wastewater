@@ -4,7 +4,7 @@ Naming conventions
 Schemas in the TWW-Database
 ----------------------------
 Schema in TEKSI-Databases will follow all the same rules. To destinguish, every infrastructre has his own shortcut (3 letters). TWW (TEKSI wastewater) is the shortcut for module wastewater network management.
-The TWW-Database has five tww-schemas:
+The TWW-Database has four tww-schemas:
 
 * tww_od: in this schema you find the tables that are stored persistently. They mainly correspond to the VSA-DSS-datamodel (cover, wastewater_node, channel, etc.), but also include some layers needed for symbology and labeling.  Also for sequences of these tables. Because of the new update-management, the views are no more in the *_od-schema, but in the *_app-schema.
 
@@ -13,8 +13,6 @@ The TWW-Database has five tww-schemas:
 * tww_app: schema for all module-specific views, materialized views, functions, triggers, etc. Also for views and function of additional plugins (SWMM, QField). In case of an update of the database, this schema will overwritten.
 
 * tww_sys: special tables for administration of the database. As a TWW-User you can not edit these tables.
-
-* tww_cfg: to do: good explanantion
 
 If INTERLIS-import or -export is used, then there will be additional schema like "pg2ili_abwasser". The are recreated with every import or export. Do not add these schema to the tww-project.
 

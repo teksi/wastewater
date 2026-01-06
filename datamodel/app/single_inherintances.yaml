@@ -1,0 +1,51 @@
+# Structure parts
+access_aid: "structure_part"
+benching: "structure_part"
+backflow_prevention: "structure_part"
+dryweather_downspout: "structure_part"
+cover: "structure_part"
+dryweather_flume: "structure_part"
+tank_emptying: "structure_part"
+tank_cleaning: "structure_part"
+electric_equipment: "structure_part"
+electromechanical_equipment: "structure_part"
+solids_retention: "structure_part"
+flushing_nozzle: "structure_part"
+
+# Wastewater structures
+channel: "wastewater_structure"
+manhole: "wastewater_structure"
+special_structure: "wastewater_structure"
+infiltration_installation: "wastewater_structure"
+discharge_point: "wastewater_structure"
+wwtp_structure: "wastewater_structure"
+drainless_toilet: "wastewater_structure"
+small_treatment_plant: "wastewater_structure"
+
+# Wastewater network elements
+wastewater_node: "wastewater_networkelement"
+reach: "wastewater_networkelement"
+
+# Connection objects
+building: "connection_object"
+reservoir: "connection_object"
+individual_surface: "connection_object"
+fountain: "connection_object"
+
+# Surface runoff parameters
+param_ca_general: "surface_runoff_parameters"
+param_ca_mouse1: "surface_runoff_parameters"
+
+# Overflow
+leapingweir: "overflow"
+prank_weir: "overflow"
+pump: "overflow"
+
+# Maintenance events
+bio_ecol_assessment: "maintenance_event"
+examination: "maintenance_event"
+maintenance: "maintenance_event"
+
+# Zone
+infiltration_zone: "zone"
+drainage_system: "zone"

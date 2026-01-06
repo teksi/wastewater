@@ -2,7 +2,7 @@ name: 🔌 Plugin | Package and release
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name != 'workflow_call' }}
 
 on:
   push:
@@ -13,12 +13,14 @@ on:
       - main
     paths:
       - plugin/**
-      - '.github/workflows/datamodel-create-dumps.yml'
+      - '.github/workflows/plugin-package.yml'
   workflow_dispatch:
   workflow_call: # Allows this workflow to be called by other workflows
     inputs:
       release_tag:
-        required: true
+        required: false
+        description: 'Release tag to upload plugin as GitHub Release asset'
+        default: ''
         type: string
 
 jobs:
@@ -27,10 +29,10 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.12'
 
@@ -54,22 +56,22 @@ jobs:
 
       - name: Package
         run: |
-          VERSION=0.0.0
+          VERSION=${{ inputs.release_tag || '0.0.0' }}
           qgis-plugin-ci -v package ${VERSION} \
             --allow-uncommitted-changes \
             --asset-path plugin/teksi_wastewater/libs \
             --asset-path plugin/teksi_wastewater/interlis/bin \
             --transifex-token "${{ secrets.TX_TOKEN }}"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: teksi_wastewater_plugin_dev
-          path: plugin/teksi_wastewater.0.0.0.zip
+          path: plugin/teksi_wastewater.${{ inputs.release_tag || '0.0.0' }}.zip
           if-no-files-found: error
 
       - name: Upload plugin as GitHub Release asset
         if: ${{ inputs.release_tag != '' }}
-        run: gh release upload "${{ inputs.release_tag }}" plugin/teksi_wastewater.0.0.0.zip#oqtopus.plugin --repo "$GITHUB_REPOSITORY"
+        run: gh release upload "${{ inputs.release_tag }}" plugin/teksi_wastewater.${{ inputs.release_tag || '0.0.0' }}.zip#oqtopus.plugin --repo "$GITHUB_REPOSITORY"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ github.ref_name }}
