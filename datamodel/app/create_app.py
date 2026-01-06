@@ -177,7 +177,9 @@ Running modification {modification.get('id')}
             ),
         )
         vw_tww_wastewater_node(
-            connection=connection, srid=SRID, extra_definition=(
+            connection=connection,
+            srid=SRID,
+            extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_wastewater_node"])
                 if self.extra_definitions.get("vw_tww_wastewater_node")
                 else {}
