@@ -1,0 +1,279 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="de" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2025.0.X &mdash; TWW dev Dokumentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=419ed147"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/translations.js?v=9bf55d28"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Stichwortverzeichnis" href="../genindex.html" />
+    <link rel="search" title="Suche" href="../search.html" />
+    <link rel="next" title="2026.X (Zukunft)" href="2026.X.html" />
+    <link rel="prev" title="Releases" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            TWW
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Dokumentation durchsuchen" aria-label="Dokumentation durchsuchen" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">TEKSI Abwasser (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation-guide/index.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">Benutzerhandbuch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">Administratorhandbuch</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Releases</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2025.0.X</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#main-features">Die wichtigsten Merkmale</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#migration-from-2024-x-to-2025-x">Migration von 2024.X zu 2025.X</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bug-fixes-and-performance-improvements">Fehlerbehebungen und Leistungsverbesserungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#resources">Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="2026.X.html">2026.X (Zukunft)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions-guide/index.html">Offizielle TWW-Erweiterungen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tww_swmm/index.html">SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">Übersetzungen</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">TWW</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Releases</a></li>
+      <li class="breadcrumb-item active">2025.0.X</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/releases/2025.0.X.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <blockquote>
+<div></div></blockquote>
+<section id="x">
+<span id="id1"></span><h1>2025.0.X<a class="headerlink" href="#x" title="Link to this heading"></a></h1>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../_images/tww_2025_0_2.jpg" src="../_images/tww_2025_0_2.jpg" />
+</figure>
+</div></blockquote>
+<section id="main-features">
+<h2>Die wichtigsten Merkmale<a class="headerlink" href="#main-features" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>First version of TEKSI wastewater module for QGIS 3.40 LTR and initialized via the PostgreSQL Update Manager (PUM) and the TEKSI Module Management Tool (TMMT).
+Check the <a class="reference external" href="../installation-guide/index.html">installation guide</a> for more information on how to install TEKSI wastewater module via TMMT.</p></li>
+</ul>
+</div></blockquote>
+<dl>
+<dt>note::</dt><dd><blockquote>
+<div><p>Check the new <a href="#id2"><span class="problematic" id="id3">`release video https://vimeo.com/1149117501?fl=pl&amp;fe=cm&gt;`__</span></a> to see how these features support ‚Clean waters and an environment worth living in!‘</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>Verbesserte Benutzeroberfläche für bessere Bedienbarkeit und Zugänglichkeit.</p></li>
+</ul>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../_images/tmmt_menu.jpg" src="../_images/tmmt_menu.jpg" />
+</figure>
+<figure class="align-default">
+<img alt="../_images/tmmt_tww_2025_0_2_success.jpg" src="../_images/tmmt_tww_2025_0_2_success.jpg" />
+</figure>
+</div></blockquote>
+<ul class="simple">
+<li><p>Neue Stile und Symbolisierungen</p></li>
+</ul>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../_images/new_layers1.jpg" src="../_images/new_layers1.jpg" />
+</figure>
+</div></blockquote>
+<ul>
+<li><p>Project colors for styles</p>
+<figure class="align-default">
+<img alt="../_images/properties_projectcolors.jpg" src="../_images/properties_projectcolors.jpg" />
+</figure>
+<p><a class="reference external" href="https://teksi.github.io/wastewater/user-guide/layerexplanations/twwproject.html#styles-project-colors">More …</a></p>
+</li>
+<li><p>Extended translation support for French and German</p>
+<figure class="align-default">
+<img alt="../_images/project_en_de.jpg" src="../_images/project_en_de.jpg" />
+</figure>
+</li>
+<li><p>Demo data initialization via TMMT</p></li>
+</ul>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../_images/tmmt_tww_2025_0_2.jpg" src="../_images/tmmt_tww_2025_0_2.jpg" />
+</figure>
+</div></blockquote>
+<ul>
+<li><p>Improved checks for INTERLIS Export</p>
+<figure class="align-default">
+<img alt="../_images/interlis_export_precheck_results1.png" src="../_images/interlis_export_precheck_results1.png" />
+</figure>
+</li>
+<li><p>INTERLIS Export option to export extra organisations</p>
+<figure class="align-default">
+<img alt="../_images/interlis_export_extra_organisations.jpg" src="../_images/interlis_export_extra_organisations.jpg" />
+</figure>
+</li>
+<li><p>New layer configurations for GEP themes : measures events, log cards and rural</p>
+<figure class="align-default">
+<img alt="../_images/new_layers_measures_log_cards_rural.jpg" src="../_images/new_layers_measures_log_cards_rural.jpg" />
+</figure>
+</li>
+<li><p>New documentation on <a class="reference external" href="https://teksi.github.io/wastewater/user-guide/editing/log_card.html">adding log cards</a></p>
+<figure class="align-default">
+<img alt="../_images/new_log_card.jpg" src="../_images/new_log_card.jpg" />
+</figure>
+</li>
+<li><p>And a lot of details added in the documentation. If you like a new feature please add it here!</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>Da diese Version nach der Entwicklung des TEKSI Module Management Tool-Plugins (TMMT) veröffentlicht wird, überprüfen Sie bitte Folgendes:</p></li>
+</ul>
+<p><a class="reference external" href="../installation-guide/index.html">installation guide</a> für weitere Infos zur Installation von TEKSI Abwasser via TMMT.</p>
+</div></blockquote>
+</section>
+<section id="migration-from-2024-x-to-2025-x">
+<h2>Migration von 2024.X zu 2025.X<a class="headerlink" href="#migration-from-2024-x-to-2025-x" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul>
+<li><p>Da mit dieser Version eine neue Datenbankstruktur eingeführt wird, ist eine Migration von 2024.X auf 2025.X erforderlich.</p>
+<p>A simple way to migrate your data is to export it from the 2024.X database in INTERLIS format.</p>
+</li>
+</ul>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Bemerkung</p>
+<p>Please install the 2025.X TWW Plugin in a separate QGIS profile and use the 2025.X Release instead of the latest 2024.X release to export the data to make sure, you get the complete VSA-DSS dataset. Release 2024.X of the plugin does <a class="reference external" href="https://github.com/teksi/wastewater/issues/902">have missing attributes that have been introduced with Release 2020</a> - a <a class="reference external" href="https://github.com/teksi/wastewater/pull/568">patch for this was only added in 20205</a>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Bemerkung</p>
+<p>In future this can be done directly within the database when the TMMT plugin will also support upgrading, not only installation of the database.</p>
+<figure class="align-default">
+<img alt="../_images/tww_interlis_dss_export.jpg" src="../_images/tww_interlis_dss_export.jpg" />
+</figure>
+<figure class="align-default">
+<img alt="../_images/tww_interlis_dss_export_success.jpg" src="../_images/tww_interlis_dss_export_success.jpg" />
+</figure>
+<p>and import it into a new empty 2025.X database (also use the latest 2025.X release for that).</p>
+<p>Vergessen Sie nicht, die**oid-Präfix**, die <strong>Default Values</strong> für Dateneigentümer und Datenlieferant zu migrieren und die <strong>Sequenzen</strong> für korrekte obj_ids anzupassen.</p>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../_images/interlis_import.jpg" src="../_images/interlis_import.jpg" />
+</figure>
+<figure class="align-default">
+<img alt="../_images/interlis_import2.jpg" src="../_images/interlis_import2.jpg" />
+</figure>
+<figure class="align-default">
+<img alt="../_images/interlis_import3.jpg" src="../_images/interlis_import3.jpg" />
+</figure>
+<figure class="align-default">
+<img alt="../_images/interlis_import4.jpg" src="../_images/interlis_import4.jpg" />
+</figure>
+</div></blockquote>
+<p>Zukünftig wird TMMT Aktualisierungen direkt aus den in den Releases bereitgestellten Änderungsprotokollen vorschlagen und sollte in der Lage sein, Upgrades ohne erforderliche Migration durchzuführen.</p>
+</div>
+</section>
+<section id="bug-fixes-and-performance-improvements">
+<h2>Fehlerbehebungen und Leistungsverbesserungen<a class="headerlink" href="#bug-fixes-and-performance-improvements" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>Verschiedene Fehlerbehebungen für SWMM Export</p></li>
+<li><p>Improved tests</p></li>
+<li><p>Improved hints for classes, attributes and values</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="resources">
+<h2>Resources<a class="headerlink" href="#resources" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>Release page: <a class="reference external" href="https://github.com/teksi/wastewater/releases/tag/2025.0.2">https://github.com/teksi/wastewater/releases/tag/2025.0.2</a></p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Releases" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
+        <a href="2026.X.html" class="btn btn-neutral float-right" title="2026.X (Zukunft)" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, The TWW Project www.teksi.ch.</p>
+  </div>
+
+  Erstellt mit <a href="https://www.sphinx-doc.org/">Sphinx</a> mit einem
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    bereitgestellt von <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
