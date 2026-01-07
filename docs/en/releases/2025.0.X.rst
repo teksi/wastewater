@@ -66,7 +66,7 @@ Migration from 2024.X to 2025.X
 
  - As this release introduces a new database structure, a migration from 2024.X to 2025.X is required.
 
-   A simple way to migrate your data is to export it from the 2024.X database in INTERLIS format. 
+   A simple way to migrate your data is to export it from the 2024.X database in INTERLIS format.
 
 .. note::
    Please install the 2025.X TWW Plugin in a separate QGIS profile and use the 2025.X Release instead of the latest 2024.X release to export the data to make sure, you get the complete VSA-DSS dataset. Release 2024.X of the plugin does `have missing attributes that have been introduced with Release 2020 <https://github.com/teksi/wastewater/issues/902>`__ - a `patch for this was only added in 20205 <https://github.com/teksi/wastewater/pull/568>`__.
