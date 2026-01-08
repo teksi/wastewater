@@ -45,9 +45,6 @@ jobs:
       - name: Setup env
         run: cp .env.example .env
 
-      - name: Package PyPI Packages
-        run: sudo ./plugin/scripts/package-pip-packages.sh
-
       - name: Download Interlis libs
         run: sudo ./plugin/scripts/download-interlis-libs.sh
 
