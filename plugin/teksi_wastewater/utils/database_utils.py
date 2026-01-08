@@ -193,9 +193,9 @@ class DatabaseUtils:
         with DatabaseUtils.PsycopgConnection() as connection:
             cursor = connection.cursor()
 
-            logger.info("update_wastewater_node_symbology for all datasets - please be patient")
+            logger.info("update_wastewater_node symbology for all datasets - please be patient")
             cursor.execute("SELECT tww_app.update_wastewater_node_symbology(NULL, True);")
-            logger.info("update_wastewater_structure_label for all datasets - please be patient")
+            logger.info("update_wastewater_structure label for all datasets - please be patient")
             cursor.execute("SELECT tww_app.update_wastewater_structure_label(NULL, True);")
 
     @staticmethod
