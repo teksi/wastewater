@@ -52,7 +52,7 @@ def setup_i18n(the_preferred_locale=None):
     # the same translation twice)
     translator = QTranslator(QCoreApplication.instance())
 
-    my_translator_file = "teksi_wastewater_" + my_locale_name
+    my_translator_file = "tww-plugin_" + my_locale_name
     my_translator_path = os.path.join(
         os.path.dirname(os.path.dirname(__file__)), "i18n", my_translator_file
     )

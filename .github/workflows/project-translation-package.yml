@@ -1,0 +1,102 @@
+name: 🌎 Update project translations and package project
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name != 'workflow_call' }}
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - project/**
+      - '.github/workflows/project-translation-package.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - project/**
+      - '.github/workflows/project-translation-package.yml'
+  schedule:
+    - cron: "30 04 * * *"
+  workflow_dispatch:
+  workflow_call: # Allows this workflow to be called by other workflows
+    inputs:
+      release_tag:
+        required: false
+        description: 'Release tag to upload project translations as GitHub Release asset'
+        default: ''
+        type: string
+
+jobs:
+  build:
+    name: Update project translations
+    runs-on: ubuntu-24.04
+
+    env:
+      TX_TOKEN: ${{ secrets.TX_TOKEN }}
+      COMPOSE_PROFILES: qgis
+      MODULE_NAME: tww
+      QGS_PROJECT_TITLE: TWW
+      QGS_PROJECT_FILE: teksi_wastewater
+      PGSERVICE: pg_tww
+      DB_NAME: tww
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Install Transifex
+        working-directory: project
+        run: |
+          curl -OL https://github.com/transifex/cli/releases/download/v1.6.10/tx-linux-amd64.tar.gz
+          tar -xvzf tx-linux-amd64.tar.gz
+
+      - name: Start Docker compose
+        run: |
+          docker compose up --build -d
+          until docker compose exec db pg_isready -U postgres; do
+            echo "Waiting for PostgreSQL to be ready..."
+            sleep 2
+          done
+          docker compose exec db createdb -U postgres ${DB_NAME}
+          docker compose run pum -vvv -s ${PGSERVICE} -d datamodel install -p SRID 2056 --roles --grant
+
+      - name: Translate (create sources)
+        run: docker compose exec qgis sh -c "xvfb-run /usr/src/project/scripts/project-translation-create-source.py /usr/src/project/${QGS_PROJECT_FILE}.qgs"
+
+      - name: Push to TX
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        working-directory: project
+        run: ./tx push --source
+
+      - name: Compile Translations (fetch translated content)
+        working-directory: project
+        run: |
+          ./tx pull -a
+          docker compose exec qgis sh -c "/usr/src/project/scripts/project-translation-compile.sh /usr/src/project/${QGS_PROJECT_FILE}.qgs"
+
+      - uses: actions/upload-artifact@v6
+        with:
+          name: project-translations
+          path: project/${{ env.QGS_PROJECT_FILE }}*
+          if-no-files-found: error
+
+      - name: set project version + create project archive
+        run: |
+          sed -i "s|<title>${QGS_PROJECT_TITLE} - Demo</title>|<title>${QGS_PROJECT_TITLE} - v${{ github.event.release.tag_name }}</title>|" project/${QGS_PROJECT_FILE}.qgs
+          sed -i "s|projectname=\"${QGS_PROJECT_TITLE} - Demo\"|projectname=\"${QGS_PROJECT_TITLE} - v${{ github.event.release.tag_name }}\"|" project/${QGS_PROJECT_FILE}.qgs
+          sed "s/${PGSERVICE}/${PGSERVICE}_dev/g" project/${QGS_PROJECT_FILE}.qgs > project/${QGS_PROJECT_TITLE}_dev.qgs
+          sed "s/${PGSERVICE}/${PGSERVICE}_prod/g" project/${QGS_PROJECT_FILE}.qgs > project/${QGS_PROJECT_TITLE}_prod.qgs
+          zip -r ${MODULE_NAME}-${{ github.event.release.tag_name }}-project.zip project README.md
+
+      - name: Zip project translations
+        run: zip -r project-translations.zip project/${QGS_PROJECT_FILE}*
+
+      - name: Upload project translations as GitHub Release asset
+        if: ${{ inputs.release_tag != '' }}
+        run: |
+          gh release upload "${{ inputs.release_tag }}" project-translations.zip#oqtopus.project --repo "$GITHUB_REPOSITORY"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.ref_name }}
