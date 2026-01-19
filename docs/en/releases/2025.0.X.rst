@@ -12,7 +12,7 @@ Main features
    Check the `installation guide <../installation-guide/index.html>`__ for more information on how to install TEKSI wastewater module via TMMT.
 
 .. note::
-   Check the new `release video https://vimeo.com/1149117501`__ to see how these features support 'Clean waters and an environment worth living in!'
+   Check the new `release video <https://vimeo.com/1149117501>`__ to see how these features support 'Clean waters and an environment worth living in!'
 
 
  - Improved user interface for better usability and accessibility.
