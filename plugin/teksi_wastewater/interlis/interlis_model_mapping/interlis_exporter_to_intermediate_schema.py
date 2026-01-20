@@ -520,7 +520,7 @@ class InterlisExporterToIntermediateSchema:
     def _set_tid_iterator(self):
         # set tidMaker
         max_tid = self.abwasser_session.execute(
-            text("SELECT last_value from pg2ili_abwasser.t_ili2db_seq;")
+            text(f"SELECT last_value from {config.ABWASSER_SCHEMA}.t_ili2db_seq;")
         ).fetchone()
         for _ in range(max_tid.last_value + 1):
             self.tid_maker.next_tid()

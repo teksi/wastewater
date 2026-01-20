@@ -8,14 +8,14 @@ roles:
     description: Role for users who can view the TWW data.
     permissions:
       - type: read
-        schemas: [tww_od, tww_vl, tww_sys, tww_app]
+        schemas: [tww_od, tww_vl, tww_sys, tww_app, tww_app_pg2ili]
 
   - name: tww_user
     description: Role for users who can view and edit the TWW data.
     inherit: tww_viewer
     permissions:
       - type: write
-        schemas: [tww_od]
+        schemas: [tww_od, tww_app_pg2ili]
 
   - name: tww_manager
     description: Role for users who can view and edit the TWW data, and manage the TWW application.
@@ -69,6 +69,7 @@ dependencies:
 migration_hooks:
   pre:
     - code: DROP SCHEMA IF EXISTS tww_app CASCADE;
+    - code: DROP SCHEMA IF EXISTS tww_app_pg2ili CASCADE;
   post:
     - file: app/create_app.py
 
