@@ -346,7 +346,7 @@ Der Layer vw_network_segment kann benutzt werden, um die Fliessrichtung darzuste
 <li><p>Schmutzwasseranfall summiert auch die Werte der oberliegenden Stammkarten</p></li>
 <li><p>resp. die _dim Werte</p></li>
 </ol>
-<p>Both views map <code class="docutils literal notranslate"><span class="pre">catchment_area</span></code> and <code class="docutils literal notranslate"><span class="pre">log_card</span></code> via the following procedure:</p>
+<p>Beide Views ordnen <code class="docutils literal notranslate"><span class="pre">catchment_area</span></code> und <code class="docutils literal notranslate"><span class="pre">log_card</span></code> wie folgt zu:</p>
 <p><code class="docutils literal notranslate"><span class="pre">[catchment_area.fk_special_building_xx_yy]</span> <span class="pre">-</span> <span class="pre">&gt;</span> <span class="pre">(log_card.obj_id)</span></code></p>
 <p><code class="docutils literal notranslate"><span class="pre">[log_card..fk_main_structure]</span> <span class="pre">-</span> <span class="pre">&gt;</span> <span class="pre">(log_card.obj_id)</span> <span class="pre">--optional</span></code></p>
 <p><code class="docutils literal notranslate"><span class="pre">[log_card.fk_pwwf_wastewater_node]</span> <span class="pre">-</span> <span class="pre">&gt;</span> <span class="pre">(wastewater_node.obj_id)</span></code></p>

@@ -103,8 +103,7 @@
 <h2>Die wichtigsten Merkmale<a class="headerlink" href="#main-features" title="Link to this heading"></a></h2>
 <blockquote>
 <div><ul class="simple">
-<li><p>First version of TEKSI wastewater module for QGIS 3.40 LTR and initialized via the PostgreSQL Update Manager (PUM) and the TEKSI Module Management Tool (TMMT).
-Check the <a class="reference external" href="../installation-guide/index.html">installation guide</a> for more information on how to install TEKSI wastewater module via TMMT.</p></li>
+<li><p>Erste Version von TEKSI Abwasser für QGIS 3.40 LTR und installiert über den PostgreSQL Update Manager (PUM) und das TEKSI Module Management Tool (TMMT). Siehe <a class="reference external" href="../installation-guide/index.html">installation guide</a> für mehr Informationen wie TEKSI Abwasser vis TMMT installiert wird.</p></li>
 </ul>
 </div></blockquote>
 <dl>
@@ -131,18 +130,18 @@ Check the <a class="reference external" href="../installation-guide/index.html">
 </figure>
 </div></blockquote>
 <ul>
-<li><p>Project colors for styles</p>
+<li><p>Projektfarben für Stile (Layer Symbolisierung)</p>
 <figure class="align-default">
 <img alt="../_images/properties_projectcolors.jpg" src="../_images/properties_projectcolors.jpg" />
 </figure>
-<p><a class="reference external" href="https://teksi.github.io/wastewater/user-guide/layerexplanations/twwproject.html#styles-project-colors">More …</a></p>
+<p><a class="reference external" href="https://teksi.github.io/wastewater/user-guide/layerexplanations/twwproject.html#styles-project-colors">mehr…</a></p>
 </li>
-<li><p>Extended translation support for French and German</p>
+<li><p>Erweiterte Übersetzungsunterstützung für Französisch und Deutsch</p>
 <figure class="align-default">
 <img alt="../_images/project_en_de.jpg" src="../_images/project_en_de.jpg" />
 </figure>
 </li>
-<li><p>Demo data initialization via TMMT</p></li>
+<li><p>Demo-Daten Installation mit TMMT</p></li>
 </ul>
 <blockquote>
 <div><figure class="align-default">
@@ -150,27 +149,27 @@ Check the <a class="reference external" href="../installation-guide/index.html">
 </figure>
 </div></blockquote>
 <ul>
-<li><p>Improved checks for INTERLIS Export</p>
+<li><p>Erweiterte Tests beim INTERLIS Export</p>
 <figure class="align-default">
 <img alt="../_images/interlis_export_precheck_results1.png" src="../_images/interlis_export_precheck_results1.png" />
 </figure>
 </li>
-<li><p>INTERLIS Export option to export extra organisations</p>
+<li><p>INTERLIS Exportoption für den Export von zusätzlichen Organisationen</p>
 <figure class="align-default">
 <img alt="../_images/interlis_export_extra_organisations.jpg" src="../_images/interlis_export_extra_organisations.jpg" />
 </figure>
 </li>
-<li><p>New layer configurations for GEP themes : measures events, log cards and rural</p>
+<li><p>Vorkonfigurierte Layer für GEP Themen: Massnahmen, Erhaltungsereignisse, Stammkarten und ALR (Abwasser im Ländlichen Raum)</p>
 <figure class="align-default">
 <img alt="../_images/new_layers_measures_log_cards_rural.jpg" src="../_images/new_layers_measures_log_cards_rural.jpg" />
 </figure>
 </li>
-<li><p>New documentation on <a class="reference external" href="https://teksi.github.io/wastewater/user-guide/editing/log_card.html">adding log cards</a></p>
+<li><p>Neue Anleitung <a class="reference external" href="https://teksi.github.io/wastewater/user-guide/editing/log_card.html">Stammkarten erstellen</a></p>
 <figure class="align-default">
 <img alt="../_images/new_log_card.jpg" src="../_images/new_log_card.jpg" />
 </figure>
 </li>
-<li><p>And a lot of details added in the documentation. If you like a new feature please add it here!</p></li>
+<li><p>Die Dokumentation wurde um viele Details ergänzt. Wenn Ihnen eine neue Funktion gefällt, tragen Sie sie bitte hier ein!</p></li>
 </ul>
 </dd>
 </dl>
@@ -189,17 +188,17 @@ Check the <a class="reference external" href="../installation-guide/index.html">
 <blockquote>
 <div><ul>
 <li><p>Da mit dieser Version eine neue Datenbankstruktur eingeführt wird, ist eine Migration von 2024.X auf 2025.X erforderlich.</p>
-<p>A simple way to migrate your data is to export it from the 2024.X database in INTERLIS format.</p>
+<p>Eine einfache Möglichkeit zur Datenmigration besteht darin, die Daten aus der 2024.X-Datenbank im INTERLIS-Format zu exportieren.</p>
 </li>
 </ul>
 </div></blockquote>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>Please install the 2025.X TWW Plugin in a separate QGIS profile and use the 2025.X Release instead of the latest 2024.X release to export the data to make sure, you get the complete VSA-DSS dataset. Release 2024.X of the plugin does <a class="reference external" href="https://github.com/teksi/wastewater/issues/902">have missing attributes that have been introduced with Release 2020</a> - a <a class="reference external" href="https://github.com/teksi/wastewater/pull/568">patch for this was only added in 20205</a>.</p>
+<p>Bitte installieren Sie das TWW-Plugin 2025.X in einem separaten QGIS-Profil und verwenden Sie die Version 2025.X anstelle der letzten Version 2024.X für den Datenexport, um sicherzustellen, dass Sie den vollständigen VSA-DSS-Datensatz erhalten. Die Version 2024.X des Plugins weist fehlende Attribute auf, die mit Der DSS-Version 2020 eingeführt wurden (<a class="reference external" href="https://github.com/teksi/wastewater/issues/902">https://github.com/teksi/wastewater/issues/902</a>). Ein Patch hierfür wurde erst in TWW Version 2025 hinzugefügt (<a class="reference external" href="https://github.com/teksi/wastewater/pull/568">https://github.com/teksi/wastewater/pull/568</a>).</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>In future this can be done directly within the database when the TMMT plugin will also support upgrading, not only installation of the database.</p>
+<p>Zukünftig kann dies direkt innerhalb der Datenbank erfolgen, wenn das TMMT-Plugin neben der Installation der Datenbank auch Aktualisierungen unterstützt.</p>
 <figure class="align-default">
 <img alt="../_images/tww_interlis_dss_export.jpg" src="../_images/tww_interlis_dss_export.jpg" />
 </figure>
@@ -230,8 +229,8 @@ Check the <a class="reference external" href="../installation-guide/index.html">
 <blockquote>
 <div><ul class="simple">
 <li><p>Verschiedene Fehlerbehebungen für SWMM Export</p></li>
-<li><p>Improved tests</p></li>
-<li><p>Improved hints for classes, attributes and values</p></li>
+<li><p>Verbesserte Tests</p></li>
+<li><p>Verbesserte Hinweise zu Klassen, Feldern und Werten der DSS während der Datenerfassung</p></li>
 </ul>
 </div></blockquote>
 </section>

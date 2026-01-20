@@ -117,7 +117,7 @@
 <p>Wenn der folgende Fehler beim Start des TEKSI Projektes erscheint während dem ‚Database production ready check‘:</p>
 <div class="admonition warning">
 <p class="admonition-title">Warnung</p>
-<p>fk_provider or fk_dataowner not set in tww_od.default_values</p>
+<p>FS_Datenlieferant (fk_provider) oder FS_Datenherr (fk_dataowner) nicht erfasst in tww_od.default_values</p>
 </div>
 <p>dann ist Datenbank noch nicht korrekt einsatzbereit.</p>
 <p>Es können Standardwerte für mehrfach genutzte Felder wie FS_Datenlieferant oder FS_Datenherr definiert werden, so dass die Werte nicht bei jedem neuen Datensatz manuell eingefügt werden müssen.</p>
@@ -151,8 +151,7 @@
 </div>
 <p>damit der Prefix für das Projekt korrekt gesetzt wird.</p>
 <p>Für mehr Informationen vgl. <a class="reference internal" href="../../admin-guide/db-production-readiness/index.html#productionreadiness"><span class="std std-ref">Prepare database for production</span></a></p>
-<p>Connect all occurences of your field name to <code class="docutils literal notranslate"><span class="pre">tww_app.get_default_values(field_name)</span></code>.
-Per default, the fields <code class="docutils literal notranslate"><span class="pre">fk_provider</span></code> and <code class="docutils literal notranslate"><span class="pre">fk_dataowner</span></code> are already connected to the function <code class="docutils literal notranslate"><span class="pre">tww_app.get_default_values(field_name)</span></code>.</p>
+<p>Verknüpfen Sie alle Vorkommen Ihres Feldnamens mit <code class="docutils literal notranslate"><span class="pre">tww_app.get_default_values(field_name)</span></code>. Standardmäßig sind die Felder <code class="docutils literal notranslate"><span class="pre">fk_provider</span></code> und <code class="docutils literal notranslate"><span class="pre">fk_dataowner</span></code> bereits mit der Funktion <code class="docutils literal notranslate"><span class="pre">tww_app.get_default_values(field_name)</span></code> verknüpft.</p>
 <p>Ein Beispiel für ein SQL Skript, um einen Standardwert in allen Vorkommen eines Feldes einzusetzen, ist <a class="reference external" href="https://github.com/teksi/wastewater/blob/main/datamodel/changelogs/0001/14_default_values.sql">hier</a>)</p>
 </section>
 <section id="increase-speed-of-calculations-and-update-symbology-and-labels">
