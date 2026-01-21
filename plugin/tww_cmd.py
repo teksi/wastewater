@@ -3,18 +3,12 @@
 import argparse
 import sys
 
-from qgis.core import QgsApplication
 from teksi_wastewater.interlis import config
 from teksi_wastewater.interlis.interlis_importer_exporter import (
     InterlisImporterExporter,
     InterlisImporterExporterError,
 )
-from teksi_wastewater.interlis.processing_algs.extractlabels_interlis import (
-    ExtractlabelsInterlisAlgorithm,
-)
 from teksi_wastewater.utils.database_utils import DatabaseUtils
-
-QgsApplication.setPrefixPath("/usr", True)
 
 
 class TeksiWastewaterCmd:
@@ -24,11 +18,6 @@ class TeksiWastewaterCmd:
     def __init__(self):
         self.parser = argparse.ArgumentParser()
         self.args = None
-
-        self.parser.add_argument(
-            "--qgs_app_prefix_path",
-            help="QGIS Application prefix path",
-        )
 
         self.parser.add_argument(
             "--srid",
@@ -179,11 +168,6 @@ class TeksiWastewaterCmd:
             exit(1)
 
     def execute_interlis_import(self):
-        if self.args.qgs_app_prefix_path:
-            QgsApplication.setPrefixPath(self.args.qgs_app_prefix_path, True)
-        qgs = QgsApplication([], False)
-        qgs.initQgis()
-
         DatabaseUtils.databaseConfig.PGSERVICE = self.args.pgservice
         DatabaseUtils.databaseConfig.PGHOST = self.args.pghost
         DatabaseUtils.databaseConfig.PGPORT = self.args.pgport
@@ -210,18 +194,10 @@ class TeksiWastewaterCmd:
                 print(f"Additional details: {exception.additional_text}", file=sys.stderr)
             if exception.log_path:
                 print(f"Log file: {exception.log_path}", file=sys.stderr)
-
         except Exception as exception:
-            qgs.exitQgis()
             raise exception
 
-        qgs.exitQgis()
-
     def execute_interlis_export(self):
-        if self.args.qgs_app_prefix_path:
-            QgsApplication.setPrefixPath(self.args.qgs_app_prefix_path, True)
-        qgs = QgsApplication([], False)
-        qgs.initQgis()
 
         DatabaseUtils.databaseConfig.PGSERVICE = self.args.pgservice
         DatabaseUtils.databaseConfig.PGHOST = self.args.pghost
@@ -230,21 +206,7 @@ class TeksiWastewaterCmd:
         DatabaseUtils.databaseConfig.PGUSER = self.args.pguser
         DatabaseUtils.databaseConfig.PGPASS = self.args.pgpass
 
-        label_scales = []
-        if self.args.label_scale_pipeline_registry_1_1000:
-            label_scales.append(
-                ExtractlabelsInterlisAlgorithm.AVAILABLE_SCALE_PIPELINE_REGISTRY_1_1000
-            )
-        if self.args.label_scale_network_plan_1_250:
-            label_scales.append(ExtractlabelsInterlisAlgorithm.AVAILABLE_SCALE_NETWORK_PLAN_1_250)
-        if self.args.label_scale_network_plan_1_500:
-            label_scales.append(ExtractlabelsInterlisAlgorithm.AVAILABLE_SCALE_NETWORK_PLAN_1_500)
-        if self.args.label_scale_overviewmap_1_10000:
-            label_scales.append(ExtractlabelsInterlisAlgorithm.AVAILABLE_SCALE_OVERVIEWMAP_1_10000)
-        if self.args.label_scale_overviewmap_1_5000:
-            label_scales.append(ExtractlabelsInterlisAlgorithm.AVAILABLE_SCALE_OVERVIEWMAP_1_5000)
-        if self.args.label_scale_overviewmap_1_2000:
-            label_scales.append(ExtractlabelsInterlisAlgorithm.AVAILABLE_SCALE_OVERVIEWMAP_1_2000)
+        label_scales = self.get_label_scales()
 
         selected_ids = []
         if self.args.selected_ids:
@@ -269,12 +231,38 @@ class TeksiWastewaterCmd:
                 print(f"Additional details: {exception.additional_text}", file=sys.stderr)
             if exception.log_path:
                 print(f"Log file: {exception.log_path}", file=sys.stderr)
-
         except Exception as exception:
-            qgs.exitQgis()
             raise exception
 
-        qgs.exitQgis()
+    def get_label_scales(self):
+        """Return a list of label scales based on boolean flags in `args`."""
+        label_scales = []
+
+        # must be written as in extractlabel_interlis algorithm. Not directly linked to avoid qgis dependency
+        available_scales = {
+            "pipeline_registry_1_1000": "Leitungskataster",
+            "network_plan_1_250": "Werkplan.250",
+            "network_plan_1_500": "Werkplan.500",
+            "overviewmap_1_10000": "Uebersichtsplan.UeP10",
+            "overviewmap_1_5000": "Uebersichtsplan.UeP5",
+            "overviewmap_1_2000": "Uebersichtsplan.UeP2",
+        }
+
+        # Append scales based on `args` flags
+        if self.args.label_scale_pipeline_registry_1_1000:
+            label_scales.append(available_scales["pipeline_registry_1_1000"])
+        if self.args.label_scale_network_plan_1_250:
+            label_scales.append(available_scales["network_plan_1_250"])
+        if self.args.label_scale_network_plan_1_500:
+            label_scales.append(available_scales["network_plan_1_500"])
+        if self.args.label_scale_overviewmap_1_10000:
+            label_scales.append(available_scales["overviewmap_1_10000"])
+        if self.args.label_scale_overviewmap_1_5000:
+            label_scales.append(available_scales["overviewmap_1_5000"])
+        if self.args.label_scale_overviewmap_1_2000:
+            label_scales.append(available_scales["overviewmap_1_2000"])
+
+        return label_scales
 
 
 if __name__ == "__main__":
