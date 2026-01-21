@@ -47,3 +47,8 @@ AS
             st_unaryunion(st_collect(collector.geom)) AS perimeter_geometry
            FROM collector
           GROUP BY collector.obj_id, collector.fk_pwwf_wastewater_node) ca_agg ON ca_agg.fk_pwwf_wastewater_node::text = wn.obj_id::text;
+
+CREATE UNIQUE INDEX in_app_mvw_web_catchment_area_totals_obj_id
+    ON tww_app.mvw_web_catchment_area_totals USING btree
+    (obj_id COLLATE pg_catalog."default")
+    TABLESPACE pg_default;
