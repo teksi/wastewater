@@ -21,7 +21,7 @@
     <link rel="index" title="Stichwortverzeichnis" href="../genindex.html" />
     <link rel="search" title="Suche" href="../search.html" />
     <link rel="next" title="Datenbankserver aufsetzen" href="server.html" />
-    <link rel="prev" title="Installation Guide" href="index.html" /> 
+    <link rel="prev" title="Installationsanleitung" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -45,11 +45,11 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">TEKSI Abwasser (TWW)</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Installation Guide</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Installationsanleitung</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Voraussetzungen</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#provider-side">Provider Side</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#client-side">Client Side</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#postgresql-server-side">PostgreSQL Server side :</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#provider-side">Anbieterseite</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#client-side">Clientseite</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#postgresql-server-side">PostgreSQL Server seitig :</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="server.html">Datenbankserver aufsetzen</a></li>
@@ -79,7 +79,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">Installation Guide</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Installationsanleitung</a></li>
       <li class="breadcrumb-item active">Voraussetzungen</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/installation-guide/requirements.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
@@ -95,28 +95,26 @@
 <section id="requirements">
 <span id="id1"></span><h1>Voraussetzungen<a class="headerlink" href="#requirements" title="Link to this heading"></a></h1>
 <section id="provider-side">
-<h2>Provider Side<a class="headerlink" href="#provider-side" title="Link to this heading"></a></h2>
-<p>In order to install the TEKSI Wastewater module, you will need to install :</p>
+<h2>Anbieterseite<a class="headerlink" href="#provider-side" title="Link to this heading"></a></h2>
+<p>Zur Installation von TEKSI-Abwasser ist Folgendes erforderlich:</p>
 <ul class="simple">
-<li><p>A PostgreSQL instance with PostGIS extension (check the <a class="reference external" href="https://github.com/teksi/Home/wiki/TEKSI-modules-releases-and-roadmap">roadmap</a> for supported versions)</p></li>
+<li><p>Eine PostgreSQL-Datenbank mit PostGIS-Erweiterung (unterstützte Versionen finden Sie in der Roadmap &lt;<a class="reference external" href="https://github.com/teksi/Home/wiki/TEKSI-modules-releases-and-roadmap">https://github.com/teksi/Home/wiki/TEKSI-modules-releases-and-roadmap</a>&gt;).</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>TEKSI Wastewater uses a PostgreSQL with postgis Extension database, you need to install these on your server :
-Recommended is to use the <a class="reference external" href="https://www.enterprisedb.com/downloads/postgres-postgresql-downloads">EnterpriseDB</a> to make sure your
-postgreSQL version matches your postgis version and is installed at the right place.</p>
+<p>TEKSI Abwasser verwendet eine PostgreSQL-Datenbank mit PostGIS-Erweiterung. Sie müssen diese auf Ihrem Server installieren: Es wird empfohlen, die <cite>EnterpriseDB &lt;https://www.enterprisedb.com/downloads/postgres-postgresql-downloads&gt;</cite> zu verwenden, um sicherzustellen, dass Ihre PostgreSQL-Version mit Ihrer PostGIS-Version übereinstimmt und am richtigen Ort installiert ist.</p>
 </div>
 <ul class="simple">
-<li><p>Python 3.12+ (installed via OSGEO4W or using <a class="reference external" href="https://www.python.org/downloads/">python.org</a>)</p></li>
+<li><p>Python 3.12+ (installiert via OSGEO4W oder mit <a class="reference external" href="https://www.python.org/downloads/">python.org</a>)</p></li>
 <li><dl class="simple">
-<dt>QGIS installed with the latest LTR version</dt><dd><p>Recommanded is to install it with the OSGEO4W installer directly with all python packages listed.</p>
+<dt>QGIS installiert mit der neuesten LTR-Version (LongTimeRelease)</dt><dd><p>Es ist empfohlen, direkt mit dem OSGEO4W-Installer und allen aufgelisteten Python-Paketen zu installieren.</p>
 </dd>
 </dl>
 </li>
-<li><p>A working pg_service file and a connexion secured to your database server (hosted or local)</p></li>
-<li><p>TEKSI Module Management Tool (<a class="reference external" href="https://plugins.qgis.org/plugins/teksi_module_management_tool">TMMT</a>) plugin installed from the QGIS plugin repository</p></li>
+<li><p>Eine funktionierende pg_service-Datei und eine sichere Verbindung zu Ihrem Datenbankserver (gehostet oder lokal).</p></li>
+<li><p>Das TEKSI Module Management Tool (TMMT-Plugin &lt;<a class="reference external" href="https://plugins.qgis.org/plugins/teksi_module_management_tool">https://plugins.qgis.org/plugins/teksi_module_management_tool</a>&gt;) installiert aus dem QGIS-Plugin-Repository.</p></li>
 </ul>
-<p>The following Python packages (installed via OSGEO4W or using <a class="reference external" href="https://pypi.org/project/pip/">pip</a>) are required:</p>
+<p>Folgende Python-Pakete (installiert über OSGEO4W oder mit <a class="reference external" href="https://pypi.org/project/pip/">pip</a>) werden benötigt:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://www.psycopg.org/">Psycopg</a> as database adapter</p></li>
 <li><p><a class="reference external" href="https://pydantic.dev/">Pydantic</a> for data validation</p></li>
@@ -124,40 +122,39 @@ postgreSQL version matches your postgis version and is installed at the right pl
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>PUM python package is automatically installed with the TMMT plugin.</p>
+<p>Das PUM-Python-Paket wird automatisch mit dem TMMT-Plugin installiert.</p>
 </div>
 </section>
 <section id="client-side">
-<h2>Client Side<a class="headerlink" href="#client-side" title="Link to this heading"></a></h2>
-<p>For each client (workstation), you will need :</p>
+<h2>Clientseite<a class="headerlink" href="#client-side" title="Link to this heading"></a></h2>
+<p>Für jeden Client (Arbeitsplatz) benötigen Sie:</p>
 <ul class="simple">
 <li><dl class="simple">
-<dt>QGIS installed with the latest LTR version</dt><dd><p>Recommanded is to intall it with the OSGEO4W installer directly with all python packages listed.</p>
+<dt>QGIS installiert mit der neuesten LTR-Version (LongTimeRelease)</dt><dd><p>Es ist empfohlen, direkt mit dem OSGEO4W-Installer und allen aufgelisteten Python-Paketen zu installieren.</p>
 </dd>
 </dl>
 </li>
-<li><p>A working pg_service file and a connexion secured to your database server (hosted or local)</p></li>
+<li><p>Eine funktionierende pg_service-Datei und eine sichere Verbindung zu Ihrem Datenbankserver (gehostet oder lokal).</p></li>
 <li><p>TEKSI Wastewater <a class="reference external" href="https://github.com/teksi/wastewater/releases/latest/">plugin</a> (.zip file)</p></li>
 <li><p>TEKSI Wastewater <a class="reference external" href="https://github.com/teksi/wastewater/releases/latest/">project</a> (.qgs file)</p></li>
 </ul>
-<p>The following Python packages (installed via OSGEO4W or using <a class="reference external" href="https://pypi.org/project/pip/">pip</a>) are required:</p>
+<p>Folgende Python-Pakete (installiert über OSGEO4W oder mit <a class="reference external" href="https://pypi.org/project/pip/">pip</a>) werden benötigt:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://www.psycopg.org/">Psycopg</a> as database adapter</p></li>
-<li><p><a class="reference external" href="https://github.com/sqlalchemy/sqlalchemy">sqlalchemy</a> for INTERLIS imports and exports</p></li>
-<li><p><a class="reference external" href="https://github.com/geoalchemy/geoalchemy2">geoalchemy2</a> for INTERLIS imports and exports</p></li>
+<li><p><a class="reference external" href="https://github.com/sqlalchemy/sqlalchemy">sqlalchemy</a> für INTERLIS Im- und Exporte</p></li>
+<li><p><a class="reference external" href="https://github.com/geoalchemy/geoalchemy2">geoalchemy2</a> für INTERLIS Im- und Exporte</p></li>
 </ul>
 </section>
 <section id="postgresql-server-side">
-<h2>PostgreSQL Server side :<a class="headerlink" href="#postgresql-server-side" title="Link to this heading"></a></h2>
-<p>Allow the connexion of your clients through the <cite>postgresql.conf</cite> file and make sure your client
-is allowed to reach the server postgresql port (default is 5432).</p>
-<p>TEKSI Wastewater requires PostGIS functions that did not function properly in a set of releases:</p>
+<h2>PostgreSQL Server seitig :<a class="headerlink" href="#postgresql-server-side" title="Link to this heading"></a></h2>
+<p>Erlauben Sie die Verbindung Ihrer Clients über die Datei <cite>postgresql.conf</cite> und stellen Sie sicher, dass Ihr Client den PostgreSQL-Server-Port erreichen darf (Standard ist 5432).</p>
+<p>TEKSI Abwasser benötigt PostGIS-Funktionen, die in einer Reihe von Releases nicht ordnungsgemäß funktionierten:</p>
 <ul class="simple">
-<li><p>Versions before PostGIS 3.2 are not affected</p></li>
-<li><p>When using PostGIS 3.2, the bug is fixed in Version 3.2.7</p></li>
-<li><p>When using PostGIS 3.3, the bug is fixed in Version 3.3.6</p></li>
-<li><p>When using PostGIS 3.4, the bug is fixed in Version 3.4.2</p></li>
-<li><p>Versions of PostGIS 3.5 or later are not affected</p></li>
+<li><p>Versionen vor PostGIS 3.2 sind nicht betroffen.</p></li>
+<li><p>Bei Verwendung von PostGIS 3.2 wurde der Fehler in Version 3.2.7 behoben.</p></li>
+<li><p>Bei Verwendung von PostGIS 3.3 wurde der Fehler in Version 3.3.6 behoben.</p></li>
+<li><p>Bei Verwendung von PostGIS 3.4 wurde der Fehler in Version 3.4.2 behoben.</p></li>
+<li><p>Versionen PostGIS 3.5 sind nicht betroffen.</p></li>
 </ul>
 </section>
 </section>
@@ -166,7 +163,7 @@ is allowed to reach the server postgresql port (default is 5432).</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="Installation Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Installationsanleitung" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
         <a href="server.html" class="btn btn-neutral float-right" title="Datenbankserver aufsetzen" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

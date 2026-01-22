@@ -45,7 +45,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">TEKSI Abwasser (TWW)</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Installation Guide</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Installationsanleitung</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="requirements.html">Voraussetzungen</a></li>
 <li class="toctree-l2"><a class="reference internal" href="server.html">Datenbankserver aufsetzen</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database-initialization.html">Initialisierung der Datenbank</a></li>
@@ -57,7 +57,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#install-qgis">QGIS installieren</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#install-tww-plugin">Install TWW plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-tww-plugin">Installation des TWW Plugins</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#install-the-demo-data">Demodaten installieren</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#install-the-demo-project">Das Demo Projekt installieren</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#if-you-are-a-data-owner-add-your-own-oid-to-the-project">Wenn Sie Datenherr sind: Die eigene OID in das Projekt eintragen</a></li>
@@ -88,7 +88,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">Installation Guide</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Installationsanleitung</a></li>
       <li class="breadcrumb-item active">Arbeitsplatzrechner Einrichten</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/installation-guide/workstation.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
@@ -105,10 +105,7 @@
 <h1>Arbeitsplatzrechner Einrichten<a class="headerlink" href="#setup-workstation" title="Link to this heading"></a></h1>
 <section id="database-configuration">
 <h2>Konfiguration der Datenbank<a class="headerlink" href="#database-configuration" title="Link to this heading"></a></h2>
-<p>To tell a workstation, where the database is (on the local system or on a
-network server) you will have to create some files initially on every device on
-which you will have QGIS/TWW running (client). It is not required to do that on the
-server itself.</p>
+<p>Um einer Workstation den Speicherort der Datenbank (lokal oder auf einem Netzwerkserver) mitzuteilen, müssen Sie zunächst auf jedem Gerät, auf dem QGIS/TWW ausgeführt wird (Client), einige Dateien erstellen. Dies ist auf dem Server selbst nicht erforderlich.</p>
 <p>Diese Anweisungen sind abhängig vom Betriebssystem.</p>
 <section id="windows-pg-service">
 <h3>Windows pg_service<a class="headerlink" href="#windows-pg-service" title="Link to this heading"></a></h3>
@@ -180,30 +177,27 @@ server itself.</p>
 <section id="install-qgis">
 <h2>QGIS installieren<a class="headerlink" href="#install-qgis" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>Minimum requirement 3.34.8</p></li>
-<li><p>We recommend using the latest master build (called qgis-dev on Windows)
-which often offers a better experience in combination with TWW.
-For Windows installation, download the <a class="reference external" href="http://download.osgeo.org/osgeo4w/osgeo4w-setup-x86_64.exe">OSGeo4W Installer</a>
-choose <em>advanced installation</em> and install qgis-dev.</p></li>
+<li><p>Minimale Version 3.34.8</p></li>
+<li><p>Wir empfehlen die Verwendung des aktuellsten master builds (unter Windows sind diese als <cite>qgis-dev</cite> verfügbar). Diese offerieren oft die beste Integration in Kombination mit TWW. Für die Windows Installation, lade den <a class="reference external" href="http://download.osgeo.org/osgeo4w/osgeo4w-setup-x86_64.exe">OSGeo4W Installer</a> runter und wähle <em>advanced Installation</em> und installiere qgis-dev.</p></li>
 </ul>
 </section>
 <section id="install-tww-plugin">
-<h2>Install TWW plugin<a class="headerlink" href="#install-tww-plugin" title="Link to this heading"></a></h2>
+<h2>Installation des TWW Plugins<a class="headerlink" href="#install-tww-plugin" title="Link to this heading"></a></h2>
 <p>Plugin Voraussetzungen</p>
-<p>Please check if the following python libraries are installed</p>
+<p>Bitte prüfen Sie, ob die folgenden Python-Bibliotheken installiert sind</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://pypi.org/project/networkx/">networkx</a> &gt;= 3.3</p></li>
 </ul>
-<p>You can install them on Debian based systems with:</p>
+<p>Sie können sie auf Debian-basierten Systemen installieren mit:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">networkx</span>
 <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">libqt4</span><span class="o">-</span><span class="n">sql</span><span class="o">-</span><span class="n">psql</span>
 </pre></div>
 </div>
-<p>Or for Windows users, directly in QGIS via the Python Console with:</p>
+<p>Oder für Windows-Benutzer direkt in QGIS über die Python-Konsole mit:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pip</span><span class="p">;</span> <span class="n">pip</span><span class="o">.</span><span class="n">main</span><span class="p">([</span><span class="s2">&quot;install&quot;</span><span class="p">,</span> <span class="s2">&quot;networkx&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
-<p>Plugin installation from QGIS Plugins Menu:</p>
+<p>Plugin-Installation über das QGIS-Plugin-Menü:</p>
 <ul class="simple">
 <li><p>QGIS öffnen</p></li>
 <li><p>Gehen sie zu <code class="docutils literal notranslate"><span class="pre">Erweiterungen</span></code></p>
@@ -217,7 +211,7 @@ choose <em>advanced installation</em> and install qgis-dev.</p></li>
 <li><p>Plugin aktivieren (siehe untenstehendes Bild)</p></li>
 <li><p>Alle</p>
 <ul>
-<li><p>Search <cite>TWW</cite></p></li>
+<li><p><cite>TWW</cite> suchen</p></li>
 <li><p>Aktivieren Sie das Kontrollkästchen daneben</p></li>
 </ul>
 </li>
@@ -227,11 +221,11 @@ choose <em>advanced installation</em> and install qgis-dev.</p></li>
 <figure class="align-default" id="id13">
 <img alt="../_images/001_searchplugin.jpeg" src="../_images/001_searchplugin.jpeg" />
 <figcaption>
-<p><span class="caption-text"><strong>Add the TWW plugin</strong></span><a class="headerlink" href="#id13" title="Link to this image"></a></p>
+<p><span class="caption-text"><strong>TWW Plugin hinzufügen</strong></span><a class="headerlink" href="#id13" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <ul class="simple">
-<li><p>When the installation was successfull, you should see the TWW Toolbar:</p></li>
+<li><p>Nach erfolgreicher Installation sollte die TWW-Werkzeugleiste angezeigt werden:</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../_images/tww_plugin_toolbar_ok.png" src="../_images/tww_plugin_toolbar_ok.png" />
@@ -240,25 +234,25 @@ choose <em>advanced installation</em> and install qgis-dev.</p></li>
 <img alt="../_images/tww_plugin_toolbar_grey.png" src="../_images/tww_plugin_toolbar_grey.png" />
 </figure>
 <ul class="simple">
-<li><p>Configuration of the plugin:</p>
+<li><p>Konfiguration des Plugin</p>
 <ul>
-<li><p>Plugin - TEKSI Wastewater - Settings</p></li>
-<li><p>Check the Admin Guide to see how to enable <a class="reference external" href="https://teksi.github.io/wastewater/admin-guide/interlis-io/index.html#enable-admin-mode">INTERLIS Import / Export options</a></p></li>
+<li><p>Erweiterungen - TEKSI Wastewater - Einstellungen</p></li>
+<li><p>Im Administratorhandbuch finden Sie Informationen zum Aktivieren der <cite>INTERLIS Import-/Exportoptionen &lt;https://teksi.github.io/wastewater/admin-guide/interlis-io/index.html#enable-admin-mode&gt;</cite>.</p></li>
 </ul>
 </li>
 </ul>
-<p>TWW uses a data historization process. The <code class="docutils literal notranslate"><span class="pre">pg</span> <span class="pre">history</span> <span class="pre">viewer</span></code> <a class="reference external" href="http://plugins.qgis.org/plugins/pg_history_viewer/">plugin</a> allows you to view the changes made and replay some of them.</p>
+<p>TWW verwendet einen Datenhistorisierungsprozess. Das <code class="docutils literal notranslate"><span class="pre">pg</span> <span class="pre">history</span> <span class="pre">viewer</span></code> <a class="reference external" href="http://plugins.qgis.org/plugins/pg_history_viewer/">plugin</a> ermöglicht es Ihnen, die vorgenommenen Änderungen zu sehen und einige von ihnen wiederzugeben.</p>
 </section>
 <section id="install-the-demo-data">
 <h2>Demodaten installieren<a class="headerlink" href="#install-the-demo-data" title="Link to this heading"></a></h2>
-<p>See the current <a class="reference external" href="https://github.com/teksi/TMMT/discussions/34">TMMT Documentation for a step by step help</a></p>
+<p>Siehe die aktuelle <a class="reference external" href="https://github.com/teksi/TMMT/discussions/34">TMMT Documentation for a step by step help</a></p>
 </section>
 <section id="install-the-demo-project">
 <h2>Das Demo Projekt installieren<a class="headerlink" href="#install-the-demo-project" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>See the current <a class="reference external" href="https://github.com/teksi/TMMT/discussions/34">TMMT Documentation for a step by step help</a></p></li>
-<li><p>Configure and download the qgs project file and its translations so it fits your pg_config setting</p></li>
-<li><p>If you leave the teksi_wastewater_[language].qm files in the same directory as the teksi_wastewater.qgs file and start QGIS with one of these languages, your project will be translated to that language when you start the project. E.g. you start teksi_wastewater.qgs with a QGIS installation that is set to German, then the teksi_wastewater.qgs project will appear in German.</p></li>
+<li><p>Siehe die aktuelle <a class="reference external" href="https://github.com/teksi/TMMT/discussions/34">TMMT Documentation for a step by step help</a></p></li>
+<li><p>Konfigurieren und laden Sie die QGS-Projektdatei und ihre Übersetzungen so herunter, dass sie zu Ihrer pg_config-Einstellung passt.</p></li>
+<li><p>Wenn Sie die Dateien „teksi_wastewater_[Sprache].qm“ im selben Verzeichnis wie die Datei „teksi_wastewater.qgs“ belassen und QGIS mit einer dieser Sprachen starten, wird Ihr Projekt beim Start in diese Sprache übersetzt. Wenn Sie beispielsweise teksi_wastewater.qgs mit einer auf Deutsch eingestellten QGIS-Installation starten, wird das Projekt teksi_wastewater.qgs in Deutsch angezeigt.</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
@@ -266,18 +260,18 @@ choose <em>advanced installation</em> and install qgis-dev.</p></li>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>You may need to set for example the qm file to teksi_wastewater_de_CH.qm to fit the Swiss regional settings. The same for <a href="#id4"><span class="problematic" id="id5">*</span></a>_fr_CH in French instead of just <a href="#id6"><span class="problematic" id="id7">*</span></a>_fr.</p>
+<p>Beispielsweise müssen Sie die QM-Datei auf teksi_wastewater_de_CH.qm setzen, um sie an die Schweizer Regionaleinstellungen anzupassen. Dasselbe gilt für <a href="#id1"><span class="problematic" id="id2">*</span></a>_fr_CH in Französisch anstelle von nur <a href="#id3"><span class="problematic" id="id4">*</span></a>_fr.</p>
 </div>
 <figure class="align-default">
 <img alt="../_images/tww_project_qm_language_files.jpg" src="../_images/tww_project_qm_language_files.jpg" />
 </figure>
 <ul class="simple">
-<li><p>Open <cite>teksi_wastewater.qgs</cite> with QGIS</p></li>
+<li><p>Starte <cite>teksi_wastewater.qgs</cite> mit QGIS</p></li>
 <li><p>Wenn Sie das Projekt speichern, wird die Sprache beibehalten und kann nicht mehr auf dieselbe Weise geändert werden.</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>It is recommended to use the QGIS settings that save the project files as <a href="#id8"><span class="problematic" id="id9">*</span></a>.qgs and not as <a href="#id10"><span class="problematic" id="id11">*</span></a>.qgz.</p>
+<p>Es wird empfohlen, die QGIS-Einstellungen zu verwenden, die die Projektdateien als <a href="#id1"><span class="problematic" id="id2">*</span></a>.qgs und nicht als <a href="#id3"><span class="problematic" id="id4">*</span></a>.qgz speichern.</p>
 </div>
 </section>
 <section id="if-you-are-a-data-owner-add-your-own-oid-to-the-project">

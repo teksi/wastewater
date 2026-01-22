@@ -45,7 +45,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">TEKSI Abwasser (TWW)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">Installationsanleitung</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user-guide/index.html">Benutzerhandbuch</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Administratorhandbuch</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../datamodel.html">Datenmodell</a></li>
@@ -144,32 +144,32 @@ Linux : use the package manager</p>
 <section id="python-libraries">
 <h3>Python Bibliotheken<a class="headerlink" href="#python-libraries" title="Link to this heading"></a></h3>
 <p>Sie benötigen <cite>sqlalchemy</cite> und <cite>geoalchemy2</cite>.</p>
-<p>To install : before launching QGIS, open OSGeo4W Shell</p>
+<p>Zum Installieren : Bevor Sie QGIS starten, öffnen Sie OSGeo4W Shell</p>
 <figure class="align-default">
 <img alt="../../_images/osgeo4wshell.jpg" src="../../_images/osgeo4wshell.jpg" />
 </figure>
-<p>and type:</p>
+<p>und schreibe:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pip3</span> <span class="n">install</span> <span class="s2">&quot;sqlalchemy~=2.0.36&quot;</span> <span class="s2">&quot;geoalchemy2&gt;=0.14.7&quot;</span>
 </pre></div>
 </div>
-<p>If the command fails, try:</p>
+<p>Falls der Befehl nicht funktioniert, versuchen Sie Folgendes:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pip3</span> <span class="n">install</span> <span class="o">--</span><span class="n">upgrade</span> <span class="n">pip</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>If pip cannot be found, make sure you’ve installed the python3-pip package using the OSGeo4W network installer (if you’ve installed the standalone version of QGIS, it should be included).</p>
+<p>Falls pip nicht gefunden werden kann, stellen Sie sicher, dass Sie das Paket python3-pip mithilfe des OSGeo4W-Netzwerkinstallers installiert haben (wenn Sie die Standalone-Version von QGIS installiert haben, sollte es enthalten sein).</p>
 </div>
-<p>If this command still fails, try:</p>
+<p>Falls der Befehl immer noch fehlschlägt, versuchen Sie Folgendes:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pip3</span> <span class="n">install</span> <span class="o">--</span><span class="n">target</span><span class="o">=</span><span class="n">c</span><span class="p">:</span>\<span class="n">somewhere</span>\<span class="n">other</span>\<span class="n">than</span>\<span class="n">the</span>\<span class="n">default</span> <span class="o">--</span><span class="n">upgrade</span> <span class="n">pip</span>
 </pre></div>
 </div>
-<p>where <code class="docutils literal notranslate"><span class="pre">c:\somewhere\other\than\the\default</span></code> is the path to your current pip package</p>
-<p>The same <cite>–target</cite> flag can be added to install <cite>sqlalchemy</cite> and <cite>geoalchemy2</cite> in another location.</p>
+<p>wo <code class="docutils literal notranslate"><span class="pre">c:\somewhere\other\than\the\default</span></code> der Pfad zu ihrem aktuellen pip Paket ist</p>
+<p>Mit dem gleichen <cite>–Ziel</cite>-Flag können <cite>sqlalchemy</cite> und <cite>geoalchemy2</cite> an einem anderen Ort installiert werden.</p>
 </section>
 <section id="tww-version">
 <h3>TWW Version<a class="headerlink" href="#tww-version" title="Link to this heading"></a></h3>
-<p>The export only supports up-to-date TWW data model (<a class="reference external" href="https://www.vsa.ch/models/2020_1">2020.1</a> at the time of writing). Ensure your TWW data model is fully updated before trying to import/export.</p>
+<p>Der Export unterstützt nur das aktuelle TWW-Datenmodell (Version 2020.1 &lt;<a class="reference external" href="https://www.vsa.ch/models/2020_1">https://www.vsa.ch/models/2020_1</a>&gt;, Stand: [Ende 2025]). Stellen Sie sicher, dass Ihr TWW-Datenmodell vollständig aktualisiert ist, bevor Sie einen Import/Export durchführen.</p>
 </section>
 </section>
 <section id="usage-gui">
@@ -228,9 +228,9 @@ Linux : use the package manager</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>More information on <a href="#id7"><span class="problematic" id="id8">`QGIS label export https://docs.qgis.org/3.44/en/docs/user_manual/processing_algs/qgis/cartography.html#extract-labels`_</span></a></p>
+<p>Mehr Information zum`QGIS label export <a class="reference external" href="https://docs.qgis.org/3.44/en/docs/user_manual/processing_algs/qgis/cartography.html#extract">https://docs.qgis.org/3.44/en/docs/user_manual/processing_algs/qgis/cartography.html#extract</a>-labels`_</p>
 </div>
-<p>The following validations are run as pre-process:</p>
+<p>Folgende Validierungen werden als Vorverarbeitungsschritt durchgeführt:</p>
 <ul class="simple">
 <li><p>Subklassen vor dem Export prüfen (_check_subclass_counts): Die Summe der Einträge in den Subklassen über alle Subklassen hinweg muss der Anzahl der Einträge in der Superklasse entsprechen.</p></li>
 <li><p>Prüfung auf NULL-Werte für Bezeichnungen (_check_identifier_null): Da Bezeichnungen in den INTERLIS-Modellen obligatorisch sind, wird geprüft, ob jedes Bezeichnung-Feld einen Eintrag (NOT NULL) enthält. Wenn Sie Daten haben, für die Sie keine eigenen Bezeichnungen erstellen möchten, kopieren Sie die obj_id als Bezeichnungen (z. B. für Haltungspunkte). Dies ist auch das Standardverhalten beim Hinzufügen neuer Daten. Wenn Sie Daten von anderen Quellen kopiert haben (die nicht in TEKSI erstellt wurden), müssen Sie diese möglicherweise bereinigen, da sonst der INTERLIS-Export abgebrochen wird.</p></li>
@@ -253,9 +253,9 @@ Linux : use the package manager</p>
 <col style="width: 25.0%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head"><p>Heading Export step</p></th>
-<th class="head"><p>Heading Description</p></th>
-<th class="head"><p>Heading Log File</p></th>
+<tr class="row-odd"><th class="head"><p>Exportschritt</p></th>
+<th class="head"><p>Beschreibung</p></th>
+<th class="head"><p>Log File</p></th>
 </tr>
 </thead>
 <tbody>
@@ -440,7 +440,7 @@ Linux : use the package manager</p>
 <figure class="align-default">
 <img alt="https://vsa.ch/wp-content/uploads/2020/04/Daten-checker-d-f-it.jpg" src="https://vsa.ch/wp-content/uploads/2020/04/Daten-checker-d-f-it.jpg" />
 </figure>
-<p><a class="reference external" href="https://vsa.ch/fachbereiche-cc/siedlungsentwaesserung/generelle-entwaesserungsplanung/datenmanagement/#GEP-Datachecker">For details see explanation on the VSA Homepage</a></p>
+<p><a class="reference external" href="https://vsa.ch/fachbereiche-cc/siedlungsentwaesserung/generelle-entwaesserungsplanung/datenmanagement/#GEP-Datachecker">Für Details siehe die  VSA Homepage</a></p>
 <p>Informationen zu Zugriff und Lizenzierung finden Sie hier &lt;<a class="reference external" href="https://vsa.ch/Mediathek/gep-datachecker-jahresgebuehr/?media_filter_two=lizenzen-software">https://vsa.ch/Mediathek/gep-datachecker-jahresgebuehr/?media_filter_two=lizenzen-software</a>&gt;_</p>
 </section>
 </section>

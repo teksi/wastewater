@@ -45,13 +45,13 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">TEKSI Abwasser (TWW)</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Installation Guide</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Installationsanleitung</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="requirements.html">Voraussetzungen</a></li>
 <li class="toctree-l2"><a class="reference internal" href="server.html">Datenbankserver aufsetzen</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Initialisierung der Datenbank</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#process">Vorgehen</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#create-minimal-roles-and-access">Rollen und Zugriffsrechte erstellen</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#install-data-model-with-or-without-demodata">Install data model with or without demodata</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#install-data-model-with-or-without-demodata">Datenmodell mit oder ohne Demodaten installieren</a></li>
 </ul>
 </li>
 </ul>
@@ -81,7 +81,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">Installation Guide</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Installationsanleitung</a></li>
       <li class="breadcrumb-item active">Initialisierung der Datenbank</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/installation-guide/database-initialization.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
@@ -112,15 +112,15 @@
 As proposed in <a class="reference external" href="https://stackoverflow.com/questions/2878248/postgresql-naming-conventions">https://stackoverflow.com/questions/2878248/postgresql-naming-conventions</a></p>
 <section id="create-minimal-roles-and-access">
 <h3>Rollen und Zugriffsrechte erstellen<a class="headerlink" href="#create-minimal-roles-and-access" title="Link to this heading"></a></h3>
-<p>TWW can be installed per database cluster using the new TEKSI Module Management Tool. They only have to be installed once!</p>
-<p>See the current <a class="reference external" href="https://github.com/teksi/TMMT/discussions/34">TMMT Documentation for a step by step help</a></p>
-<p>It is highly recommended to use these when using TWW in a production environment.</p>
+<p>TWW kann mithilfe des neuen TEKSI Module Management Tools pro Datenbankcluster installiert werden. Die Installation muss nur einmal erfolgen!</p>
+<p>Siehe die aktuelle <a class="reference external" href="https://github.com/teksi/TMMT/discussions/34">TMMT Documentation for a step by step help</a></p>
+<p>Es wird dringend empfohlen, dieses zu verwenden, wenn TWW in einer Produktionsumgebung eingesetzt wird.</p>
 </section>
 <section id="install-data-model-with-or-without-demodata">
-<span id="install-datamodel-demodata"></span><h3>Install data model with or without demodata<a class="headerlink" href="#install-data-model-with-or-without-demodata" title="Link to this heading"></a></h3>
-<p>See the current <a class="reference external" href="https://github.com/teksi/TMMT/discussions/34">TMMT Documentation for a step by step help</a></p>
-<p>After you have setup successfully the database with or without demodata, you can check the schemata via pgAdmin</p>
-<p>There will be 6 <a class="reference external" href="https://teksi.github.io/wastewater/en/user-guide/layerexplanations/namingconventions.html#schemas-in-the-tww-database">schemas</a> in the database</p>
+<span id="install-datamodel-demodata"></span><h3>Datenmodell mit oder ohne Demodaten installieren<a class="headerlink" href="#install-data-model-with-or-without-demodata" title="Link to this heading"></a></h3>
+<p>Siehe die aktuelle <a class="reference external" href="https://github.com/teksi/TMMT/discussions/34">TMMT Documentation for a step by step help</a></p>
+<p>Nachdem Sie die Datenbank mit oder ohne Demodaten erfolgreich eingerichtet haben, können Sie die Schemata über pgAdmin überprüfen.</p>
+<p>Es gibt 6 <a class="reference external" href="https://teksi.github.io/wastewater/en/user-guide/layerexplanations/namingconventions.html#schemas-in-the-tww-database">Schemas</a> in der Datenbank</p>
 <ul class="simple">
 <li><p>public</p></li>
 <li><p>tww_app</p></li>
