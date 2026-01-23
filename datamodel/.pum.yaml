@@ -67,11 +67,11 @@ dependencies:
   - name: pirogue
     minimum_version: 3.0.0
 
-migration_hooks:
-  pre:
+application:
+  drop:
     - code: DROP SCHEMA IF EXISTS tww_app CASCADE;
     - code: DROP SCHEMA IF EXISTS tww_app_pg2ili CASCADE;
-  post:
+  create:
     - file: app/create_app.py
 
 demo_data:
