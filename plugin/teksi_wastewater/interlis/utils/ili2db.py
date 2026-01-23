@@ -84,7 +84,8 @@ class InterlisTools:
                 [
                     f'"{self.java_executable_path}"',
                     "-jar",
-                    "{config.ILIVALIDATOR}",
+                    # why do we have the call with config here? "{config.ILIVALIDATOR}",
+                    f'"{self.ili2pg_executable_path}"',
                     "--refdata",
                     "{config.EXTERNAL_ORGANISATION}",
                     "--allObjectsAccessible",
