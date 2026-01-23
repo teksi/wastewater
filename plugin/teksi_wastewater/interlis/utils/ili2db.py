@@ -6,7 +6,6 @@ from types import SimpleNamespace
 from sqlalchemy.ext.automap import AutomapBase
 
 from ...libs.modelbaker.iliwrapper import globals, ili2dbutils
-from .. import config
 from .various import execute_subprocess, get_pgconf_as_ili_args, logger
 
 
@@ -88,11 +87,11 @@ class InterlisTools:
                     "{config.ILIVALIDATOR}",
                     "--log",
                     "--refdata",
-"                    {config.EXTERNAL_ORGANISATION}",
+                    "                    {config.EXTERNAL_ORGANISATION}",
                     "--allObjectsAccessible",
                     f'"{log_path}"',
                     f'"{xtf_file}"',
-                 ]
+                ]
             )
         )
 
