@@ -83,7 +83,7 @@ class InterlisTools:
         execute_subprocess(
             " ".join(
                 [
-                    f'"{self.java_executable_path}",
+                    f'"{self.java_executable_path}"',
                     "-jar",
                     "{config.ILIVALIDATOR}",
                     "--log",
