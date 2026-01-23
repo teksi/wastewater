@@ -85,10 +85,10 @@ class InterlisTools:
                 [
                     f'"{self.java_executable_path}"',
                     "-jar",
-                    "{config.ILIVALIDATOR}",
+                    f'"{config.ILIVALIDATOR}"',
                     "--log",
                     "--refdata",
-"                    {config.EXTERNAL_ORGANISATION}",
+"                   f'"{config.EXTERNAL_ORGANISATION}"',
                     "--allObjectsAccessible",
                     f'"{log_path}"',
                     f'"{xtf_file}"',
