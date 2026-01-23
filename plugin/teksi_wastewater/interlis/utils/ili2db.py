@@ -82,7 +82,7 @@ class InterlisTools:
         logger.info("VALIDATING XTF DATA...")
         execute_subprocess(
             # f'"{self.java_executable_path}" -jar "{config.ILIVALIDATOR}" --log "{log_path}" "{xtf_file}"'
-            f'"{self.java_executable_path}" -jar "{config.ILIVALIDATOR}" --refdata "{config.EXTERNAL_ORGANISATION}" --allObjectsAccessible --log "{log_path}" "{xtf_file}"'
+            f'"{self.java_executable_path}" -jar "{config.ILIVALIDATOR}" --allObjectsAccessible --refdata "{config.EXTERNAL_ORGANISATION}" --log "{log_path}" "{xtf_file}"'
             # " ".join(
             # [
             # f'"{self.java_executable_path}"',
