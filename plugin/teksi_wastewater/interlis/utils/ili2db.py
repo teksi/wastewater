@@ -79,21 +79,23 @@ class InterlisTools:
 
     def validate_xtf_data(self, xtf_file, log_path):
         logger.info("VALIDATING XTF DATA...")
-        #             f'"{self.java_executable_path}" -jar "{config.ILIVALIDATOR}" --log "{log_path}" "{xtf_file}"'
         execute_subprocess(
-            " ".join(
-                [
-                    f'"{self.java_executable_path}"',
-                    "-jar ",
-                    """{config.ILIVALIDATOR}""",
-                    "--refdata ",
-                    """{config.EXTERNAL_ORGANISATION}""",
-                    "--allObjectsAccessible",
-                    "--log",
-                    f'"{log_path}"',
-                    f'"{xtf_file}"',
-                ]
-            )
+        # f'"{self.java_executable_path}" -jar "{config.ILIVALIDATOR}" --log "{log_path}" "{xtf_file}"'
+        f'"{self.java_executable_path}" -jar "{config.ILIVALIDATOR}" --refdata "{config.EXTERNAL_ORGANISATION}" --allObjectsAccessible --log "{log_path}" "{xtf_file}"'
+        
+            # " ".join(
+                # [
+                    # f'"{self.java_executable_path}"',
+                    # "-jar ",
+                    # """{config.ILIVALIDATOR}""",
+                    # "--refdata ",
+                    # """{config.EXTERNAL_ORGANISATION}""",
+                    # "--allObjectsAccessible",
+                    # "--log",
+                    # f'"{log_path}"',
+                    # f'"{xtf_file}"',
+                # ]
+            # )
         )
 
     def import_xtf_data(self, schema, xtf_file, log_path, srid=2056):
