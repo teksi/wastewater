@@ -28,3 +28,5 @@ TOPIC_NAME_AG96 = "Genereller_Entwaesserungsplan_AG.AG96"
 TOPIC_NAME_AG64 = "Abwasserkataster_AG_V2_LV95.AG64"
 TOPIC_NAME_CABLE = "SIA405_FERNWIRKKABEL_2015_LV95.SIA405_Fernwirkkabel"
 TOPIC_NAME_PROTECTION_TUBE = "SIA405_SCHUTZROHR_2015_LV95.SIA405_Schutzrohr"
+
+EXTERNAL_ORGANISATION = "https://www.vsa.ch/models/organisation/vsa_organisationen_2020_1.xtf"
