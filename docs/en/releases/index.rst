@@ -8,6 +8,6 @@ Here you can find information about the different TEKSI wastewater releases, inc
 .. toctree::
    :maxdepth: 3
 
-   2024.0.x
-   2025.0.X
-   2026.X
+   2024
+   2025
+   2026
