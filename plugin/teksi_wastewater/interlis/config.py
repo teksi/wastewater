@@ -2,7 +2,7 @@ import os
 
 BASE = os.path.dirname(__file__)
 
-ILIVALIDATOR = os.path.join(BASE, "bin", "ilivalidator-1.14.8", "ilivalidator-1.14.8.jar")
+ILIVALIDATOR = os.path.join(BASE, "bin", "ilivalidator-1.15.0", "ilivalidator-1.15.0.jar")
 
 TWW_DEFAULT_PGSERVICE = "pg_tww"
 TWW_OD_SCHEMA = "tww_od"
