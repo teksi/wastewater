@@ -74,6 +74,13 @@ application:
   create:
     - file: app/create_app.py
 
+uninstall:
+  - code: DROP SCHEMA IF EXISTS tww_od CASCADE;
+  - code: DROP SCHEMA IF EXISTS tww_vl CASCADE;
+  - code: DROP SCHEMA IF EXISTS tww_sys CASCADE;
+  - code: DROP SCHEMA IF EXISTS tww_app CASCADE;
+  - code: DROP SCHEMA IF EXISTS tww_app_pg2ili CASCADE;
+
 demo_data:
   - name: Aletsch
     file: demo_data/demo_data_aletsch.sql
