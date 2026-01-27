@@ -1,6 +1,6 @@
 CREATE TABLE tww_od.import_ws_quarantine(
   id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-  ws_obj_id character varying(16) DEFAULT tww_app.generate_oid('tww_od'::text, 'wastewater_structure'::text),
+  ws_obj_id character varying(16),
   ws_type text,
   ws_accessibility integer,
   ws_identifier character varying(20),
@@ -59,9 +59,10 @@ COMMENT ON COLUMN tww_od.import_ws_quarantine.tww_level_measurement_kind
 CREATE TABLE  tww_od.import_picture_quarantine
 (
   id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-  obj_id character varying(16) DEFAULT tww_app.generate_oid('tww_od'::text, 'file'::text),
+  obj_id character varying(16),
   identifier text,
   fk_import_ex_quarantine uuid, --instead of object reference
+  fk_data_media character varying(16),
   path_relative text,
   remark text
 );
@@ -69,7 +70,7 @@ CREATE TABLE  tww_od.import_picture_quarantine
 
 CREATE TABLE tww_od.import_examination_quarantine (
   id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-  obj_id character varying(16) DEFAULT tww_app.generate_oid('tww_od'::text, 'examination'::text),
+  obj_id character varying(16),
   operator text,
   result text,
   status integer,
@@ -83,7 +84,7 @@ CREATE TABLE tww_od.import_examination_quarantine (
 
 CREATE TABLE tww_od.import_damage_ws_quarantine (
   id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-  dm_obj_id character varying(16)  DEFAULT tww_app.generate_oid('tww_od'::text, 'damage_manhole'::text),
+  dm_obj_id character varying(16),
   da_fk_examination character varying(16),
   da_comments text,
   da_single_damage_class integer,
@@ -100,20 +101,20 @@ CREATE TABLE tww_od.import_reach_point_quarantine
   obj_id character varying(16) ,
   elevation_accuracy integer,
   identifier text,
-  tww_level_measurement_kind smallint,
   level numeric(7,3),
-  co_depth numeric(7,3),
-  ss_upper_elevation_depth numeric(7,3),
   outlet_shape integer,
   pipe_closure integer,
   position_of_connection smallint,
-  ws_status integer,
-  tww_is_inflow bool default true,
-  tww_position_in_structure smallint,
   remark text,
   fk_import_ws_quarantine uuid,
+  co_depth numeric(7,3),
+  ss_upper_elevation_depth numeric(7,3),
+  ws_status integer,
   re_material integer,
   re_clear_height integer,
+  tww_is_inflow bool default true,
+  tww_position_in_structure smallint,
+  tww_level_measurement_kind smallint,
   tww_is_okay boolean DEFAULT false
 );
 
@@ -132,7 +133,7 @@ COMMENT ON COLUMN tww_od.import_reach_point_quarantine.tww_position_in_structure
 CREATE TABLE tww_od.import_reach_quarantine
 (
   id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-  obj_id character varying(16) DEFAULT tww_app.generate_oid('tww_od'::text, 'reach'::text),
+  obj_id character varying(16),
   clear_height integer,
   elevation_determination integer,
   horizontal_positioning integer,
