@@ -102,6 +102,7 @@ class Hook(HookBase):
             },
         }
         self.execute("CREATE SCHEMA tww_app;")
+        self.execute("CREATE SCHEMA tww_app_pg2ili;")
         self.run_sql_files_in_folder(self.cwd / "sql_functions")
         self.app_modifications = [
             entry
