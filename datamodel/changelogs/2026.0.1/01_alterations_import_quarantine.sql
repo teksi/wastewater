@@ -158,4 +158,4 @@ CREATE TABLE tww_od.import_reach_quarantine
 COMMENT ON COLUMN tww_od.import_reach_quarantine.tww_delta_measurement
     IS 'TEKSI Wastewater extension, delta between measured elevation and reach bottom level /
     Erweiterung TEKSI Wastewater, Delta zwischen gemessener Höhe und Sohlenkote der Leitung /
-    Extension TEKSI Wastewater, Différence entre la hauteur mesurée et la cote radier du tronçon');
+    Extension TEKSI Wastewater, Différence entre la hauteur mesurée et la cote radier du tronçon';
