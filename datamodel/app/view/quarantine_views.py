@@ -267,6 +267,212 @@ def vw_tww_import_manhole(
     """
     cursor.execute(defaults)
 
+def vw_tww_import_reach_point(
+    connection: psycopg.Connection, srid: psycopg.sql.Literal
+):
+    """
+    Creates vw_tww_import_reach_point view
+    :param connection: a psycopg connection object
+    :param srid: EPSG code for geometries
+    """
+
+
+    cursor = connection.cursor()
+
+    view_sql = """
+    DROP VIEW IF EXISTS tww_app.vw_tww_import_reach_point;
+
+    CREATE OR REPLACE VIEW tww_app.vw_tww_import_reach_point AS
+    WITH outlets AS (
+    SELECT
+        ne.fk_wastewater_structure ws,
+        rp.obj_id,
+        False AS tww_is_inflow,
+        ROW_NUMBER() OVER(
+            PARTITION BY ne.fk_wastewater_structure
+            ORDER BY
+                fh.tww_symbology_order,
+                uc.tww_symbology_order,
+                ST_Azimuth(rp.situation3d_geometry, ST_PointN(re_from.progression3d_geometry, 2)) ASC
+        ) AS idx,
+        degrees(ST_Azimuth(rp.situation3d_geometry, ST_PointN(re_from.progression3d_geometry, 2))) AS azimuth
+    FROM tww_od.reach_point rp
+    LEFT JOIN tww_od.wastewater_networkelement ne ON rp.fk_wastewater_networkelement = ne.obj_id
+    INNER JOIN tww_od.reach re_from ON rp.obj_id = re_from.fk_reach_point_from
+    LEFT JOIN tww_od.wastewater_networkelement ne_re ON ne_re.obj_id::text = re_from.obj_id::text
+    LEFT JOIN tww_od.wastewater_structure ws ON ne_re.fk_wastewater_structure::text = ws.obj_id::text
+    LEFT JOIN tww_od.channel ch ON ch.obj_id::text = ws.obj_id::text
+    LEFT JOIN tww_vl.channel_function_hierarchic fh ON ch.function_hierarchic = fh.code
+    LEFT JOIN tww_vl.channel_usage_current uc ON ch.usage_current = uc.code
+    WHERE NOT EXISTS (SELECT 1 FROM tww_od.channel ch_1 WHERE ch_1.obj_id = ne.fk_wastewater_structure)
+    AND ne.fk_wastewater_structure IS NOT NULL
+), rp_azi AS(
+SELECT
+    rp.obj_id,
+    MOD(FLOOR((degrees(ST_Azimuth(rp.situation3d_geometry, 
+	ST_PointN(re_to.progression3d_geometry, -2)))
+	- outs.azimuth + 375) / 30)::integer, 12) + 1 AS tww_position_in_structure
+FROM tww_od.reach_point rp
+LEFT JOIN tww_od.wastewater_networkelement ne ON rp.fk_wastewater_networkelement = ne.obj_id
+INNER JOIN tww_od.reach re_to ON rp.obj_id = re_to.fk_reach_point_to
+INNER JOIN outlets outs ON outs.ws = ne.fk_wastewater_structure AND outs.idx = 1
+
+UNION ALL
+
+SELECT
+    obj_id,
+    12 AS tww_position_in_structure
+FROM outlets
+WHERE idx = 1
+
+UNION ALL
+
+SELECT
+    secondary.obj_id,
+	MOD(FLOOR((secondary.azimuth - main.azimuth + 375) / 30)::integer, 12) + 1 AS tww_position_in_structure
+FROM outlets secondary
+INNER JOIN outlets main ON main.ws = secondary.ws AND main.idx = 1
+WHERE secondary.idx > 1)
+  SELECT
+        coalesce(q.id,uuid_generate_v4()) as id
+		, {rp_columns}
+        , NULL::smallint as tww_level_measurement_kind
+		, co.level - rp.level as co_depth
+        , ss.upper_elevation - rp.level as co_depth
+		, ws.status as ws_status
+        , CASE 
+          WHEN re_from.obj_id IS NOT NULL THEN False
+          WHEN re_to.obj_id IS NOT NULL THEN True
+          ELSE NULL
+          END AS tww_is_inflow
+        , coalesce(q.tww_position_in_structure,rp_azi.tww_position_in_structure) as tww_position_in_structure
+        , coalesce(re_from.material,re_to.material) as re_material
+        , coalesce(re_from.clear_height,re_to.clear_height) as re_clear_height
+        , q_ws.id as fk_import_ws_quarantine
+        , NULL::boolean as tww_is_okay
+        , (q.id IS NOT NULL) AS in_quarantine
+
+        FROM tww_od.reach_point rp
+        INNER JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = rp.fk_wastewater_networkelement
+        INNER JOIN tww_od.wastewater_node wn ON wn.obj_id = ne.obj_id
+        INNER JOIN tww_od.wastewater_structure ws ON ws.obj_id = ne.fk_wastewater_structure
+		LEFT JOIN tww_od.reach re_from on re.fk_reach_point_from =rp.obj_id
+		LEFT JOIN tww_od.reach re_to on re.fk_reach_point_to =rp.obj_id
+        LEFT JOIN tww_od.cover co ON co.obj_id = ws.fk_main_cover
+        LEFT JOIN tww_od.special_structure ss ON ss.obj_id = ws.obj_id
+        LEFT JOIN (
+            SELECT obj_id
+            , id
+            FROM tww_od.import_reach_point_quarantine
+            ) q ON q.obj_id = rp.obj_id
+        LEFT JOIN (
+            SELECT obj_id
+            , id
+            , tww_deleted
+            FROM tww_od.import_ws_quarantine
+            ) q_ws ON q_ws.obj_id = ws.obj_id
+        WHERE q_ws.tww_deleted IS NOT TRUE;
+    """.format(
+        rp=select_columns(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="reach_point",
+            table_alias="rp",
+            remove_pkey=False,
+            indent=4,
+            skip_columns=["situation3d_geometry","last_modification","fk_dataowner","fk_provider","fk_wastewater_networkelement"],
+            remap_columns={"cover_shape": "co_shape"},
+            columns_at_end=["obj_id"],
+        )
+    )
+
+    view_sql = psycopg.sql.SQL(view_sql).format(srid=psycopg.sql.Literal(srid))
+
+    try:
+        cursor.execute(view_sql)
+    except psycopg.errors.SyntaxError as e:
+        raise PumHookError(f"Error creating view with code: {view_sql}: {e}")
+
+    trigger_insert_sql = """
+    CREATE OR REPLACE FUNCTION tww_app.ft_vw_tww_import_reach_point_INSERT()
+      RETURNS trigger AS
+    $BODY$
+    BEGIN
+      {insert_rpq}
+      RETURN NEW;
+    END; $BODY$ LANGUAGE plpgsql VOLATILE;
+
+    DROP TRIGGER IF EXISTS vw_tww_import_reach_point_INSERT ON tww_app.vw_tww_import_reach_point;
+
+    CREATE TRIGGER vw_tww_import_reach_point_INSERT INSTEAD OF INSERT ON tww_app.vw_tww_import_reach_point
+      FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vvw_tww_import_reach_point_INSERT();
+    """.format(
+        insert_wsq=insert_command(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="import_reach_point_quarantine",
+            remove_pkey=False,
+            indent=2,
+            skip_columns=["tww_okay"],
+        ),
+    )
+
+    trigger_insert_sql = psycopg.sql.SQL(trigger_insert_sql)
+
+    cursor.execute(trigger_insert_sql)
+
+    update_trigger_sql = """
+    CREATE OR REPLACE FUNCTION tww_app.ft_vw_tww_import_reach_point_UPDATE()
+      RETURNS trigger AS
+    $BODY$
+    BEGIN
+      CASE WHEN NEW.in_quarantine THEN
+        {update_rpq}
+      ELSE
+        {insert_rpq}
+      END CASE;
+      RETURN NEW;
+    END;
+    $BODY$
+    LANGUAGE plpgsql;
+
+
+    DROP TRIGGER IF EXISTS vw_tww_import_reach_point_UPDATE ON tww_app.vw_tww_import_reach_point;
+
+    CREATE TRIGGER vw_tww_import_reach_point_UPDATE INSTEAD OF UPDATE ON tww_app.vw_tww_import_reach_point
+      FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_import_reach_point_UPDATE();
+    """.format(
+        insert_wsq=insert_command(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="import_reach_point_quarantine",
+            remove_pkey=False,
+            indent=6,
+            skip_columns=["tww_okay"],
+        ),
+        update_wsq=update_command(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="import_reach_point_quarantine",
+            remove_pkey=False,
+            indent=6,
+            skip_columns=["tww_okay"],
+        ),
+    )
+
+    update_trigger_sql = psycopg.sql.SQL(update_trigger_sql)
+
+    cursor.execute(update_trigger_sql)
+
+    defaults = """
+    ALTER VIEW tww_app.vw_tww_import_reach_point ALTER id SET DEFAULT uuid_generate_v4();
+    """
+    cursor.execute(defaults)
+
+
+def tww_import_logic(
+    connection: psycopg.Connection, srid: psycopg.sql.Literal
+):
     wsq_skip_cols=["tww_okay",
                    "tww_deleted",
                    "aa_renovation_demand",
