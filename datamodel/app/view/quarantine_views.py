@@ -168,7 +168,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection, srid: psycopg.sql.Lite
             remap_columns={},
             columns_at_end=["obj_id"],
         ),
-        aa_columns=select_columns(
+        aa_cols=select_columns(
             connection=connection,
             table_schema="tww_od",
             table_name="access_aid",
@@ -179,7 +179,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection, srid: psycopg.sql.Lite
             prefix="aa_",
             remap_columns={},
         ),
-        be_columns=select_columns(
+        be_cols=select_columns(
             connection=connection,
             table_schema="tww_od",
             table_name="benching",
@@ -190,7 +190,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection, srid: psycopg.sql.Lite
             prefix="be_",
             remap_columns={},
         ),
-        dd_columns=select_columns(
+        dd_cols=select_columns(
             connection=connection,
             table_schema="tww_od",
             table_name="dryweather_downspout",
@@ -201,7 +201,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection, srid: psycopg.sql.Lite
             prefix="dd_",
             remap_columns={},
         ),
-        df_columns=select_columns(
+        df_cols=select_columns(
             connection=connection,
             table_schema="tww_od",
             table_name="dryweather_flume",
@@ -401,7 +401,7 @@ WHERE secondary.idx > 1)
             ) q_ws ON q_ws.obj_id = ws.obj_id
         WHERE q_ws.tww_deleted IS NOT TRUE;
     """.format(
-        rp_colums=select_columns(
+        rp_columns=select_columns(
             connection=connection,
             table_schema="tww_od",
             table_name="reach_point",
@@ -441,7 +441,7 @@ WHERE secondary.idx > 1)
     CREATE TRIGGER vw_tww_import_reach_point_INSERT INSTEAD OF INSERT ON tww_app.vw_tww_import_reach_point
       FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vvw_tww_import_reach_point_INSERT();
     """.format(
-        insert_wsq=insert_command(
+        insert_rpq=insert_command(
             connection=connection,
             table_schema="tww_od",
             table_name="import_reach_point_quarantine",
@@ -476,7 +476,7 @@ WHERE secondary.idx > 1)
     CREATE TRIGGER vw_tww_import_reach_point_UPDATE INSTEAD OF UPDATE ON tww_app.vw_tww_import_reach_point
       FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_import_reach_point_UPDATE();
     """.format(
-        insert_wsq=insert_command(
+        insert_rpq=insert_command(
             connection=connection,
             table_schema="tww_od",
             table_name="import_reach_point_quarantine",
@@ -484,7 +484,7 @@ WHERE secondary.idx > 1)
             indent=6,
             skip_columns=["tww_okay"],
         ),
-        update_wsq=update_command(
+        update_rpq=update_command(
             connection=connection,
             table_schema="tww_od",
             table_name="import_reach_point_quarantine",
@@ -505,6 +505,9 @@ WHERE secondary.idx > 1)
 
 
 def tww_import_logic(connection: psycopg.Connection, srid: psycopg.sql.Literal):
+    
+    cursor = connection.cursor()
+
     wsq_skip_cols = (
         [
             "tww_okay",
@@ -547,7 +550,7 @@ def tww_import_logic(connection: psycopg.Connection, srid: psycopg.sql.Literal):
                 table_name="dryweather_downspout",
             )
         )
-    )
+        )
 
     rp_skip_cols = [
         "tww_level_measurement_kind",
@@ -594,7 +597,7 @@ def tww_import_logic(connection: psycopg.Connection, srid: psycopg.sql.Literal):
         RETURN calc_lvl;
     END;
     $$;
-"""
+    """
     rp_lvl_sql = psycopg.sql.SQL(rp_lvl_sql)
     cursor.execute(rp_lvl_sql)
 
@@ -692,164 +695,164 @@ def tww_import_logic(connection: psycopg.Connection, srid: psycopg.sql.Literal):
     structure_part_sql = """
     CREATE OR REPLACE FUNCTION tww_app.set_structure_parts_from_quarantine(
     ws_row tww_od.import_ws_quarantine
-)
-RETURNS VOID
-LANGUAGE plpgsql
-AS $$
-DECLARE
-    has_data BOOLEAN;
-BEGIN
-    -- Access Aid
-    IF ws_row.aa_obj_id IS NOT NULL THEN
-        IF EXISTS (
-            SELECT 1 FROM tww_app.access_aid
-            WHERE fk_wastewater_structure = ws_row.ws_obj_id
-        ) THEN
-            -- Update existing record
-            UPDATE tww_app.access_aid
-            SET
-                renovation_demand = ws_row.aa_renovation_demand,
-                remark = ws_row.aa_remark,
-                kind = ws_row.aa_kind
-            WHERE fk_wastewater_structure = ws_row.ws_obj_id;
-        ELSE
-            -- Check if any attribute is not NULL
-            has_data := (ws_row.aa_renovation_demand IS NOT NULL)
-                     OR (ws_row.aa_remark IS NOT NULL)
-                     OR (ws_row.aa_kind IS NOT NULL);
-            IF has_data THEN
-                -- Insert new record
-                INSERT INTO tww_app.access_aid (
-                    obj_id,
-                    fk_wastewater_structure,
-                    renovation_demand,
-                    remark,
-                    kind
-                ) VALUES (
-                    ws_row.aa_obj_id,
-                    ws_row.ws_obj_id,
-                    ws_row.aa_renovation_demand,
-                    ws_row.aa_remark,
-                    ws_row.aa_kind
-                );
+    )
+    RETURNS VOID
+    LANGUAGE plpgsql
+    AS $$
+    DECLARE
+        has_data BOOLEAN;
+    BEGIN
+        -- Access Aid
+        IF ws_row.aa_obj_id IS NOT NULL THEN
+            IF EXISTS (
+                SELECT 1 FROM tww_app.access_aid
+                WHERE fk_wastewater_structure = ws_row.ws_obj_id
+            ) THEN
+                -- Update existing record
+                UPDATE tww_app.access_aid
+                SET
+                    renovation_demand = ws_row.aa_renovation_demand,
+                    remark = ws_row.aa_remark,
+                    kind = ws_row.aa_kind
+                WHERE fk_wastewater_structure = ws_row.ws_obj_id;
+            ELSE
+                -- Check if any attribute is not NULL
+                has_data := (ws_row.aa_renovation_demand IS NOT NULL)
+                        OR (ws_row.aa_remark IS NOT NULL)
+                        OR (ws_row.aa_kind IS NOT NULL);
+                IF has_data THEN
+                    -- Insert new record
+                    INSERT INTO tww_app.access_aid (
+                        obj_id,
+                        fk_wastewater_structure,
+                        renovation_demand,
+                        remark,
+                        kind
+                    ) VALUES (
+                        ws_row.aa_obj_id,
+                        ws_row.ws_obj_id,
+                        ws_row.aa_renovation_demand,
+                        ws_row.aa_remark,
+                        ws_row.aa_kind
+                    );
+                END IF;
             END IF;
         END IF;
-    END IF;
 
-    -- Benching
-    IF ws_row.be_obj_id IS NOT NULL THEN
-        IF EXISTS (
-            SELECT 1 FROM tww_app.vw_benching
-            WHERE fk_wastewater_structure = ws_row.ws_obj_id
-        ) THEN
-            -- Update existing record
-            UPDATE tww_app.vw_benching
-            SET
-                kind = ws_row.be_kind,
-                renovation_demand = ws_row.be_renovation_demand,
-                remark = ws_row.be_remark
-            WHERE fk_wastewater_structure = ws_row.ws_obj_id;
-        ELSE
-            -- Check if any attribute is not NULL
-            has_data := (ws_row.be_kind IS NOT NULL)
-                     OR (ws_row.be_renovation_demand IS NOT NULL)
-                     OR (ws_row.be_remark IS NOT NULL);
-            IF has_data THEN
-                -- Insert new record
-                INSERT INTO tww_app.vw_benching (
-                    obj_id,
-                    fk_wastewater_structure,
-                    kind,
-                    renovation_demand,
-                    remark
-                ) VALUES (
-                    ws_row.be_obj_id,
-                    ws_row.ws_obj_id,
-                    ws_row.be_kind,
-                    ws_row.be_renovation_demand,
-                    ws_row.be_remark
-                );
+        -- Benching
+        IF ws_row.be_obj_id IS NOT NULL THEN
+            IF EXISTS (
+                SELECT 1 FROM tww_app.vw_benching
+                WHERE fk_wastewater_structure = ws_row.ws_obj_id
+            ) THEN
+                -- Update existing record
+                UPDATE tww_app.vw_benching
+                SET
+                    kind = ws_row.be_kind,
+                    renovation_demand = ws_row.be_renovation_demand,
+                    remark = ws_row.be_remark
+                WHERE fk_wastewater_structure = ws_row.ws_obj_id;
+            ELSE
+                -- Check if any attribute is not NULL
+                has_data := (ws_row.be_kind IS NOT NULL)
+                        OR (ws_row.be_renovation_demand IS NOT NULL)
+                        OR (ws_row.be_remark IS NOT NULL);
+                IF has_data THEN
+                    -- Insert new record
+                    INSERT INTO tww_app.vw_benching (
+                        obj_id,
+                        fk_wastewater_structure,
+                        kind,
+                        renovation_demand,
+                        remark
+                    ) VALUES (
+                        ws_row.be_obj_id,
+                        ws_row.ws_obj_id,
+                        ws_row.be_kind,
+                        ws_row.be_renovation_demand,
+                        ws_row.be_remark
+                    );
+                END IF;
             END IF;
         END IF;
-    END IF;
 
-    -- Dryweather Flume
-    IF ws_row.df_obj_id IS NOT NULL THEN
-        IF EXISTS (
-            SELECT 1 FROM tww_app.vw_dryweather_flume
-            WHERE fk_wastewater_structure = ws_row.ws_obj_id
-        ) THEN
-            -- Update existing record
-            UPDATE tww_app.vw_dryweather_flume
-            SET
-                material = ws_row.df_material,
-                renovation_demand = ws_row.df_renovation_demand,
-                remark = ws_row.df_remark
-            WHERE fk_wastewater_structure = ws_row.ws_obj_id;
-        ELSE
-            -- Check if any attribute is not NULL
-            has_data := (ws_row.df_material IS NOT NULL)
-                     OR (ws_row.df_renovation_demand IS NOT NULL)
-                     OR (ws_row.df_remark IS NOT NULL);
-            IF has_data THEN
-                -- Insert new record
-                INSERT INTO tww_app.vw_dryweather_flume (
-                    obj_id,
-                    fk_wastewater_structure,
-                    material,
-                    renovation_demand,
-                    remark
-                ) VALUES (
-                    ws_row.df_obj_id,
-                    ws_row.ws_obj_id,
-                    ws_row.df_material,
-                    ws_row.df_renovation_demand,
-                    ws_row.df_remark
-                );
+        -- Dryweather Flume
+        IF ws_row.df_obj_id IS NOT NULL THEN
+            IF EXISTS (
+                SELECT 1 FROM tww_app.vw_dryweather_flume
+                WHERE fk_wastewater_structure = ws_row.ws_obj_id
+            ) THEN
+                -- Update existing record
+                UPDATE tww_app.vw_dryweather_flume
+                SET
+                    material = ws_row.df_material,
+                    renovation_demand = ws_row.df_renovation_demand,
+                    remark = ws_row.df_remark
+                WHERE fk_wastewater_structure = ws_row.ws_obj_id;
+            ELSE
+                -- Check if any attribute is not NULL
+                has_data := (ws_row.df_material IS NOT NULL)
+                        OR (ws_row.df_renovation_demand IS NOT NULL)
+                        OR (ws_row.df_remark IS NOT NULL);
+                IF has_data THEN
+                    -- Insert new record
+                    INSERT INTO tww_app.vw_dryweather_flume (
+                        obj_id,
+                        fk_wastewater_structure,
+                        material,
+                        renovation_demand,
+                        remark
+                    ) VALUES (
+                        ws_row.df_obj_id,
+                        ws_row.ws_obj_id,
+                        ws_row.df_material,
+                        ws_row.df_renovation_demand,
+                        ws_row.df_remark
+                    );
+                END IF;
             END IF;
         END IF;
-    END IF;
 
-    -- Dryweather Downspout
-    IF ws_row.dd_obj_id IS NOT NULL THEN
-        IF EXISTS (
-            SELECT 1 FROM tww_app.dryweather_downspout
-            WHERE fk_wastewater_structure = ws_row.ws_obj_id
-        ) THEN
-            -- Update existing record
-            UPDATE tww_app.dryweather_downspout
-            SET
-                diameter = ws_row.dd_diameter,
-                renovation_demand = ws_row.dd_renovation_demand,
-                remark = ws_row.dd_remark
-            WHERE fk_wastewater_structure = ws_row.ws_obj_id;
-        ELSE
-            -- Check if any attribute is not NULL
-            has_data := (ws_row.dd_diameter IS NOT NULL)
-                     OR (ws_row.dd_renovation_demand IS NOT NULL)
-                     OR (ws_row.dd_remark IS NOT NULL);
-            IF has_data THEN
-                -- Insert new record
-                INSERT INTO tww_app.dryweather_downspout (
-                    obj_id,
-                    fk_wastewater_structure,
-                    diameter,
-                    renovation_demand,
-                    remark
-                ) VALUES (
-                    ws_row.dd_obj_id,
-                    ws_row.ws_obj_id,
-                    ws_row.dd_diameter,
-                    ws_row.dd_renovation_demand,
-                    ws_row.dd_remark
-                );
+        -- Dryweather Downspout
+        IF ws_row.dd_obj_id IS NOT NULL THEN
+            IF EXISTS (
+                SELECT 1 FROM tww_app.dryweather_downspout
+                WHERE fk_wastewater_structure = ws_row.ws_obj_id
+            ) THEN
+                -- Update existing record
+                UPDATE tww_app.dryweather_downspout
+                SET
+                    diameter = ws_row.dd_diameter,
+                    renovation_demand = ws_row.dd_renovation_demand,
+                    remark = ws_row.dd_remark
+                WHERE fk_wastewater_structure = ws_row.ws_obj_id;
+            ELSE
+                -- Check if any attribute is not NULL
+                has_data := (ws_row.dd_diameter IS NOT NULL)
+                        OR (ws_row.dd_renovation_demand IS NOT NULL)
+                        OR (ws_row.dd_remark IS NOT NULL);
+                IF has_data THEN
+                    -- Insert new record
+                    INSERT INTO tww_app.dryweather_downspout (
+                        obj_id,
+                        fk_wastewater_structure,
+                        diameter,
+                        renovation_demand,
+                        remark
+                    ) VALUES (
+                        ws_row.dd_obj_id,
+                        ws_row.ws_obj_id,
+                        ws_row.dd_diameter,
+                        ws_row.dd_renovation_demand,
+                        ws_row.dd_remark
+                    );
+                END IF;
             END IF;
         END IF;
-    END IF;
-END;
-$$;
+    END;
+    $$;
 
-"""
+    """
 
     structure_part_sql = psycopg.sql.SQL(structure_part_sql)
     cursor.execute(structure_part_sql)
