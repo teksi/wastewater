@@ -20,7 +20,7 @@ BEGIN
     END LOOP;
 
 END;
-$BODY$
+$BODY$;
 
 ALTER TABLE tww_od.import_damage_ws_quarantine ALTER COLUMN obj_id DEFAULT tww_app.generate_oid('tww_od'::text, 'damage_manhole'::text);
 ALTER TABLE tww_od.import_examination_quarantine ALTER COLUMN obj_id DEFAULT tww_app.generate_oid('tww_od'::text, 'examination'::text);
