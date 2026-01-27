@@ -37,14 +37,14 @@ def vw_tww_import_manhole(connection: psycopg.Connection, srid: psycopg.sql.Lite
           WHEN ss.obj_id IS NOT NULL THEN 'special_structure'
           ELSE 'unknown'
         END AS ws_type
-		, ws.obj_id as ws_obj_id
+        , ws.obj_id as ws_obj_id
         , ws._depth as ws__depth
         , ws.accessibility as ws_accessibility
         , ws.identifier as ws_identifier
         , ws.remark as ws_remark
-		, ws.status as ws_status
+        , ws.status as ws_status
         , wn.obj_id as wn_obj_id
-		, wn.bottom_level as wn_bottom_level
+        , wn.bottom_level as wn_bottom_level
         , wn._function_hierarchic
         , wn._usage_current
 
@@ -173,12 +173,50 @@ def vw_tww_import_manhole(connection: psycopg.Connection, srid: psycopg.sql.Lite
             remap_columns={},
             columns_at_end=["obj_id"],
         ),
-        extra_cols=(
-            ""
-            if not extra_definition
-            else ", " + extra_cols(connection=connection, extra_definition=extra_definition)
+        aa_columns=select_columns(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="access_aid",
+            table_alias="aa",
+            remove_pkey=False,
+            indent=4,
+            skip_columns=[],
+            prefix="aa_",
+            remap_columns={},
         ),
-        extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
+        be_columns=select_columns(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="benching",
+            table_alias="be",
+            remove_pkey=False,
+            indent=4,
+            skip_columns=[],
+            prefix="be_",
+            remap_columns={},
+        ),
+        dd_columns=select_columns(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="dryweather_downspout",
+            table_alias="dd",
+            remove_pkey=False,
+            indent=4,
+            skip_columns=[],
+            prefix="dd_",
+            remap_columns={},
+        ),
+        df_columns=select_columns(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="dryweather_flume",
+            table_alias="df",
+            remove_pkey=False,
+            indent=4,
+            skip_columns=[],
+            prefix="df_",
+            remap_columns={},
+        ),
     )
 
     view_sql = psycopg.sql.SQL(view_sql).format(srid=psycopg.sql.Literal(srid))
@@ -305,8 +343,8 @@ def vw_tww_import_reach_point(connection: psycopg.Connection, srid: psycopg.sql.
 SELECT
     rp.obj_id,
     MOD(FLOOR((degrees(ST_Azimuth(rp.situation3d_geometry,
-	ST_PointN(re_to.progression3d_geometry, -2)))
-	- outs.azimuth + 375) / 30)::integer, 12) + 1 AS tww_position_in_structure
+    ST_PointN(re_to.progression3d_geometry, -2)))
+    - outs.azimuth + 375) / 30)::integer, 12) + 1 AS tww_position_in_structure
 FROM tww_od.reach_point rp
 LEFT JOIN tww_od.wastewater_networkelement ne ON rp.fk_wastewater_networkelement = ne.obj_id
 INNER JOIN tww_od.reach re_to ON rp.obj_id = re_to.fk_reach_point_to
@@ -324,17 +362,17 @@ UNION ALL
 
 SELECT
     secondary.obj_id,
-	MOD(FLOOR((secondary.azimuth - main.azimuth + 375) / 30)::integer, 12) + 1 AS tww_position_in_structure
+    MOD(FLOOR((secondary.azimuth - main.azimuth + 375) / 30)::integer, 12) + 1 AS tww_position_in_structure
 FROM outlets secondary
 INNER JOIN outlets main ON main.ws = secondary.ws AND main.idx = 1
 WHERE secondary.idx > 1)
   SELECT
         coalesce(q.id,uuid_generate_v4()) as id
-		, {rp_columns}
+        , {rp_columns}
         , NULL::smallint as tww_level_measurement_kind
-		, co.level - rp.level as co_depth
+        , co.level - rp.level as co_depth
         , ss.upper_elevation - rp.level as co_depth
-		, ws.status as ws_status
+        , ws.status as ws_status
         , CASE
           WHEN re_from.obj_id IS NOT NULL THEN False
           WHEN re_to.obj_id IS NOT NULL THEN True
@@ -351,8 +389,8 @@ WHERE secondary.idx > 1)
         INNER JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = rp.fk_wastewater_networkelement
         INNER JOIN tww_od.wastewater_node wn ON wn.obj_id = ne.obj_id
         INNER JOIN tww_od.wastewater_structure ws ON ws.obj_id = ne.fk_wastewater_structure
-		LEFT JOIN tww_od.reach re_from on re.fk_reach_point_from =rp.obj_id
-		LEFT JOIN tww_od.reach re_to on re.fk_reach_point_to =rp.obj_id
+        LEFT JOIN tww_od.reach re_from on re.fk_reach_point_from =rp.obj_id
+        LEFT JOIN tww_od.reach re_to on re.fk_reach_point_to =rp.obj_id
         LEFT JOIN tww_od.cover co ON co.obj_id = ws.fk_main_cover
         LEFT JOIN tww_od.special_structure ss ON ss.obj_id = ws.obj_id
         LEFT JOIN (
@@ -368,7 +406,7 @@ WHERE secondary.idx > 1)
             ) q_ws ON q_ws.obj_id = ws.obj_id
         WHERE q_ws.tww_deleted IS NOT TRUE;
     """.format(
-        rp=select_columns(
+        rp_colums=select_columns(
             connection=connection,
             table_schema="tww_od",
             table_name="reach_point",
