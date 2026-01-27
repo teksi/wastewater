@@ -11,11 +11,6 @@ from pirogue.utils import insert_command, select_columns, update_command
 from pum.exceptions import PumHookError
 from yaml import safe_load
 
-from .utils.extra_definition_utils import (
-    extra_cols,
-    extra_joins,
-)
-
 
 def vw_tww_import_manhole(connection: psycopg.Connection, srid: psycopg.sql.Literal):
     """
