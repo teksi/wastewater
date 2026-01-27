@@ -151,23 +151,6 @@ def vw_tww_import_manhole(connection: psycopg.Connection, srid: psycopg.sql.Lite
             prefix="ss_",
             remap_columns={},
         ),
-        wn_cols=select_columns(
-            connection=connection,
-            table_schema="tww_od",
-            table_name="wastewater_node",
-            table_alias="wn",
-            remove_pkey=False,
-            indent=4,
-            skip_columns=[
-                "situation3d_geometry",
-                "_usage_current",
-                "_status",
-                "_function_hierarchic",
-            ],
-            prefix="wn_",
-            remap_columns={},
-            columns_at_end=["obj_id"],
-        ),
         aa_cols=select_columns(
             connection=connection,
             table_schema="tww_od",
