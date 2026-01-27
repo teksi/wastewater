@@ -505,7 +505,7 @@ WHERE secondary.idx > 1)
 
 
 def tww_import_logic(connection: psycopg.Connection, srid: psycopg.sql.Literal):
-    
+
     cursor = connection.cursor()
 
     wsq_skip_cols = (
@@ -550,7 +550,7 @@ def tww_import_logic(connection: psycopg.Connection, srid: psycopg.sql.Literal):
                 table_name="dryweather_downspout",
             )
         )
-        )
+    )
 
     rp_skip_cols = [
         "tww_level_measurement_kind",
