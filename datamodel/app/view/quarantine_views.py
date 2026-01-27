@@ -17,15 +17,12 @@ from .utils.extra_definition_utils import (
 )
 
 
-def vw_tww_import_manhole(
-    connection: psycopg.Connection, srid: psycopg.sql.Literal
-):
+def vw_tww_import_manhole(connection: psycopg.Connection, srid: psycopg.sql.Literal):
     """
     Creates vw_tww_import_manhole view
     :param connection: a psycopg connection object
     :param srid: EPSG code for geometries
     """
-
 
     cursor = connection.cursor()
 
@@ -84,7 +81,7 @@ def vw_tww_import_manhole(
         LEFT JOIN tww_od.special_structure ss ON ss.obj_id = ws.obj_id
         INNER JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = ws.fk_main_wastewater_node
         INNER JOIN tww_od.wastewater_node wn ON wn.obj_id = ws.fk_main_wastewater_node
-        
+
         LEFT JOIN (
           SELECT cls.*
           , sp.fk_wastewater_structure
@@ -211,7 +208,7 @@ def vw_tww_import_manhole(
             table_name="import_ws_quarantine",
             remove_pkey=False,
             indent=2,
-            skip_columns=["tww_okay","tww_deleted"],
+            skip_columns=["tww_okay", "tww_deleted"],
         ),
     )
 
@@ -246,7 +243,7 @@ def vw_tww_import_manhole(
             table_name="import_ws_quarantine",
             remove_pkey=False,
             indent=6,
-            skip_columns=["tww_okay","tww_deleted"],
+            skip_columns=["tww_okay", "tww_deleted"],
         ),
         update_wsq=update_command(
             connection=connection,
@@ -254,7 +251,7 @@ def vw_tww_import_manhole(
             table_name="import_ws_quarantine",
             remove_pkey=False,
             indent=6,
-            skip_columns=["tww_okay","tww_deleted"],
+            skip_columns=["tww_okay", "tww_deleted"],
         ),
     )
 
@@ -267,15 +264,13 @@ def vw_tww_import_manhole(
     """
     cursor.execute(defaults)
 
-def vw_tww_import_reach_point(
-    connection: psycopg.Connection, srid: psycopg.sql.Literal
-):
+
+def vw_tww_import_reach_point(connection: psycopg.Connection, srid: psycopg.sql.Literal):
     """
     Creates vw_tww_import_reach_point view
     :param connection: a psycopg connection object
     :param srid: EPSG code for geometries
     """
-
 
     cursor = connection.cursor()
 
@@ -309,7 +304,7 @@ def vw_tww_import_reach_point(
 ), rp_azi AS(
 SELECT
     rp.obj_id,
-    MOD(FLOOR((degrees(ST_Azimuth(rp.situation3d_geometry, 
+    MOD(FLOOR((degrees(ST_Azimuth(rp.situation3d_geometry,
 	ST_PointN(re_to.progression3d_geometry, -2)))
 	- outs.azimuth + 375) / 30)::integer, 12) + 1 AS tww_position_in_structure
 FROM tww_od.reach_point rp
@@ -340,7 +335,7 @@ WHERE secondary.idx > 1)
 		, co.level - rp.level as co_depth
         , ss.upper_elevation - rp.level as co_depth
 		, ws.status as ws_status
-        , CASE 
+        , CASE
           WHEN re_from.obj_id IS NOT NULL THEN False
           WHEN re_to.obj_id IS NOT NULL THEN True
           ELSE NULL
@@ -380,7 +375,13 @@ WHERE secondary.idx > 1)
             table_alias="rp",
             remove_pkey=False,
             indent=4,
-            skip_columns=["situation3d_geometry","last_modification","fk_dataowner","fk_provider","fk_wastewater_networkelement"],
+            skip_columns=[
+                "situation3d_geometry",
+                "last_modification",
+                "fk_dataowner",
+                "fk_provider",
+                "fk_wastewater_networkelement",
+            ],
             remap_columns={"cover_shape": "co_shape"},
             columns_at_end=["obj_id"],
         )
@@ -470,65 +471,72 @@ WHERE secondary.idx > 1)
     cursor.execute(defaults)
 
 
-def tww_import_logic(
-    connection: psycopg.Connection, srid: psycopg.sql.Literal
-):
-    wsq_skip_cols=["tww_okay",
-                   "tww_deleted",
-                   "aa_renovation_demand",
-                   "aa_remark",
-                   "be_renovation_demand",
-                   "be_remark",
-                   "df_renovation_demand",
-                   "df_remark",
-                   "dd_renovation_demand",
-                   "dd_remark",
-                   "in_quarantine",
-                   ].append(
-                       columns(
-                           connection=connection,
-                           table_schema="tww_od",
-                           table_name="access_aid",
-                           )
-                       ).append(
-                       columns(
-                           connection=connection,
-                           table_schema="tww_od",
-                           table_name="benching",
-                           )
-                       ).append(
-                       columns(
-                           connection=connection,
-                           table_schema="tww_od",
-                           table_name="dryweather_flume",
-                           )
-                       ).append(
-                       columns(
-                           connection=connection,
-                           table_schema="tww_od",
-                           table_name="dryweather_downspout",
-                           )
-                       )
+def tww_import_logic(connection: psycopg.Connection, srid: psycopg.sql.Literal):
+    wsq_skip_cols = (
+        [
+            "tww_okay",
+            "tww_deleted",
+            "aa_renovation_demand",
+            "aa_remark",
+            "be_renovation_demand",
+            "be_remark",
+            "df_renovation_demand",
+            "df_remark",
+            "dd_renovation_demand",
+            "dd_remark",
+            "in_quarantine",
+        ]
+        .append(
+            columns(
+                connection=connection,
+                table_schema="tww_od",
+                table_name="access_aid",
+            )
+        )
+        .append(
+            columns(
+                connection=connection,
+                table_schema="tww_od",
+                table_name="benching",
+            )
+        )
+        .append(
+            columns(
+                connection=connection,
+                table_schema="tww_od",
+                table_name="dryweather_flume",
+            )
+        )
+        .append(
+            columns(
+                connection=connection,
+                table_schema="tww_od",
+                table_name="dryweather_downspout",
+            )
+        )
+    )
 
-    rp_skip_cols=["tww_level_measurement_kind",
-                   "co_depth",
-                   "ss_upper_elevation_depth",
-                   "ws_status",
-                   "tww_is_inflow",
-                   "tww_position_in_structure",
-                   "fk_import_ws_quarantine",
-                   "re_material",
-                   "re_clear_height",
-                   "tww_is_okay",
-                   ]
-    
-    re_skip_cols=[ "tww_delta_measurement",
-                   "fk_import_rp_quarantine_from",
-                   "fk_import_rp_quarantine_to",
-                   "tww_is_okay",
-                   "tww_deleted",
-                   ]
-    
+    rp_skip_cols = [
+        "tww_level_measurement_kind",
+        "co_depth",
+        "ss_upper_elevation_depth",
+        "ws_status",
+        "tww_is_inflow",
+        "tww_position_in_structure",
+        "fk_import_ws_quarantine",
+        "re_material",
+        "re_clear_height",
+        "tww_is_okay",
+    ]
+
+    re_skip_cols = [
+        "tww_delta_measurement",
+        "fk_import_rp_quarantine_from",
+        "fk_import_rp_quarantine_to",
+        "tww_is_okay",
+        "tww_deleted",
+    ]
+
     rp_lvl_sql = """
     CREATE OR REPLACE FUNCTION tww_app.calculate_quarantine_rp_level(tww_level_measurement_kind smallint,
     rp_co_depth numeric(7,3),
@@ -536,7 +544,7 @@ def tww_import_logic(
     co_level numeric(7,3),
     ss_upper_elevation numeric(7,3),
     rp_ss_upper_elevation_depth numeric(7,3)
-    ): 
+    ):
     RETURNS numeric(7,3)
     LANGUAGE plpgsql
     AS $$
@@ -557,7 +565,7 @@ def tww_import_logic(
     rp_lvl_sql = psycopg.sql.SQL(rp_lvl_sql)
     cursor.execute(rp_lvl_sql)
 
-    autoupdate_sql=  """
+    autoupdate_sql = """
         CREATE OR REPLACE FUNCTION tww_app.try_quarantine_rp_insert()
         RETURNS trigger
         LANGUAGE plpgsql
@@ -574,13 +582,13 @@ def tww_import_logic(
 
                 CASE WHEN NEW.tww_is_inflow THEN
                     SELECT COUNT(rp.obj_id) INTO old_in_outlets
-                    FROM tww_od.wastewater_networkelement ne 
+                    FROM tww_od.wastewater_networkelement ne
                     INNER JOIN tww_od.reach_point rp on rp.fk_wastewater_networkelement =ne.obj_id
                     INNER JOIN tww_od.reach re on re.fk_reach_point_to = rp.obj_id
                     WHERE ne.fk_wastewater_structure = ws_record.ws_obj_id;
                 WHEN NOT NEW.tww_is_inflow THEN
                     SELECT COUNT(rp.obj_id) INTO old_in_outlets
-                    FROM tww_od.wastewater_networkelement ne 
+                    FROM tww_od.wastewater_networkelement ne
                     INNER JOIN tww_od.reach_point rp on rp.fk_wastewater_networkelement =ne.obj_id
                     INNER JOIN tww_od.reach re on re.fk_reach_point_from = rp.obj_id
                     WHERE ne.fk_wastewater_structure = ws_record.ws_obj_id;
@@ -606,7 +614,7 @@ def tww_import_logic(
 
                     {update_rp}
                     RETURN NULL;
-                ELSE 
+                ELSE
                     RAISE NOTICE 'no automatic mapping for tww_od.import_reach_point_quarantine for id %, manual editing needed', NEW.id;
                     RETURN NEW;
                 END IF;
@@ -629,26 +637,26 @@ def tww_import_logic(
             comment_skipped=False,
             update_values={
                 "level": """tww_app.calculate_quarantine_rp_level(
-                            rp_record.tww_level_measurement_kind, 
-                            rp_record.rp_co_depth, 
-                            rp_record.rp_level, 
-                            ws_record.co_level, 
+                            rp_record.tww_level_measurement_kind,
+                            rp_record.rp_co_depth,
+                            rp_record.rp_level,
+                            ws_record.co_level,
                             ws_record.ss_upper_elevation,
                             rp_record.ss_upper_elevation_depth)""",
-                },
+            },
             where_clause=""" obj_id = ( SELECT rp.obj_id
                     FROM tww_od.reach re
                     LEFT JOIN tww_od.reach_point rp ON (rp.obj_id = re.fk_reach_point_to AND NEW.tww_is_inflow)
                       OR (rp.obj_id = re.fk_reach_point_from AND NOT NEW.tww_is_inflow)
                     LEFT JOIN tww_od.wastewater_networkelement wn ON wn.obj_id = rp.fk_wastewater_networkelement
                     LEFT JOIN tww_app.vw_tww_wastewater_structure ws ON ws.obj_id = wn.fk_wastewater_structure
-                    WHERE ws.obj_id = NEW.obj_id )"""
-        ).replace('tww_od.import_reach_point_quarantine','tww_od.reach_point'),
-            )
+                    WHERE ws.obj_id = NEW.obj_id )""",
+        ).replace("tww_od.import_reach_point_quarantine", "tww_od.reach_point"),
+    )
     autoupdate_sql = psycopg.sql.SQL(autoupdate_sql)
     cursor.execute(autoupdate_sql)
 
-    structure_part_sql= """
+    structure_part_sql = """
     CREATE OR REPLACE FUNCTION tww_app.set_structure_parts_from_quarantine(
     ws_row tww_od.import_ws_quarantine
 )
@@ -813,8 +821,7 @@ $$;
     structure_part_sql = psycopg.sql.SQL(structure_part_sql)
     cursor.execute(structure_part_sql)
 
-
-    update_fnc_sql=    """
+    update_fnc_sql = """
     CREATE OR REPLACE FUNCTION tww_app.transfer_quarantine_to_live()
 LANGUAGE plpgsql
 AS $$
@@ -873,7 +880,7 @@ BEGIN
             RAISE NOTICE 'Skipping entry %: Not all children are set to ok', ws_record.obj_id;
             CONTINUE;
         END IF;
-            
+
             -- Step 1: Process import_ws_quarantine
             CASE WHEN ws_record.tww_level_measurement_kind  = 1 THEN
             _bottom_level :=  coalesce(NULLIF(ws_record.co_level,0) - NULLIF(ws_record.ws__depth,0),wn_bottom_level);
@@ -887,7 +894,7 @@ BEGIN
             IF EXISTS (
                 SELECT 1 FROM tww_od.manhole
                 WHERE obj_id = ws_record.ws_obj_id
-                UNION ALL 
+                UNION ALL
                 SELECT 1 from tww_od.special_structure
                 WHERE obj_id = ws_record.ws_obj_id
             ) THEN
@@ -986,15 +993,15 @@ BEGIN
                         RETURNING obj_id into vo_oid;
                             RAISE NOTICE  'Created new data_media (obj_id=%) for file import as data_media was not specified for file %, please edit manually',
                             , vo_oid, fi_record.path_relative;
-                        ELSE  
+                        ELSE
                             RAISE NOTICE  'Using data_media (obj_id=%) for file import as data_media was not specified for file %, please edit manually',
-                            , vo_oid, fi_record.path_relative;; 
+                            , vo_oid, fi_record.path_relative;;
                         END IF;
                         ELSE NULL;
-                    END IF; 
+                    END IF;
 
                     SELECT COALESCE(vo.path || fi_record.path_relative, fi_record.path_relative)
-                    INTO _url 
+                    INTO _url
                     FROM tww_od.data_media vo
                     WHERE vo.obj_id=fi_record.fk_data_media OR vo.obj_id=vo_oid;
 
@@ -1052,9 +1059,11 @@ $$;
             insert_values={
                 "ss_upper_elevation": "_upper_elevation",
                 "wn_bottom_level": "_bottom_level",
-                },
-            returning="obj_id into ws_oid"
-        ).replace('NEW.','ws_record.').replace('tww_od.import_ws_quarantine','tww_app.vw_tww_wastewater_structure'),
+            },
+            returning="obj_id into ws_oid",
+        )
+        .replace("NEW.", "ws_record.")
+        .replace("tww_od.import_ws_quarantine", "tww_app.vw_tww_wastewater_structure"),
         update_wsq=update_command(
             connection=connection,
             table_schema="tww_od",
@@ -1066,8 +1075,10 @@ $$;
             update_values={
                 "ss_upper_elevation": "_upper_elevation",
                 "wn_bottom_level": "_bottom_level",
-                },
-        ).replace('NEW.','ws_record.').replace('tww_od.import_ws_quarantine','tww_app.vw_tww_wastewater_structure'),
+            },
+        )
+        .replace("NEW.", "ws_record.")
+        .replace("tww_od.import_ws_quarantine", "tww_app.vw_tww_wastewater_structure"),
         insert_rp=insert_command(
             connection=connection,
             table_schema="tww_od",
@@ -1078,15 +1089,17 @@ $$;
             comment_skipped=False,
             insert_values={
                 "level": """tww_app.calculate_quarantine_rp_level(
-                            rp_record.tww_level_measurement_kind, 
-                            rp_record.rp_co_depth, 
-                            rp_record.rp_level, 
-                            ws_record.co_level, 
+                            rp_record.tww_level_measurement_kind,
+                            rp_record.rp_co_depth,
+                            rp_record.rp_level,
+                            ws_record.co_level,
                             ws_record.ss_upper_elevation,
                             rp_record.ss_upper_elevation_depth)""",
-                },
-            returning="obj_id INTO rp_oid"
-        ).replace('NEW.','rp_record.').replace('tww_od.import_reach_point_quarantine','tww_od.reach_point'),
+            },
+            returning="obj_id INTO rp_oid",
+        )
+        .replace("NEW.", "rp_record.")
+        .replace("tww_od.import_reach_point_quarantine", "tww_od.reach_point"),
         update_rp=update_command(
             connection=connection,
             table_schema="tww_od",
@@ -1097,14 +1110,16 @@ $$;
             comment_skipped=False,
             update_values={
                 "level": """tww_app.calculate_quarantine_rp_level(
-                            rp_record.tww_level_measurement_kind, 
-                            rp_record.rp_co_depth, 
-                            rp_record.rp_level, 
-                            ws_record.co_level, 
+                            rp_record.tww_level_measurement_kind,
+                            rp_record.rp_co_depth,
+                            rp_record.rp_level,
+                            ws_record.co_level,
                             ws_record.ss_upper_elevation,
                             rp_record.ss_upper_elevation_depth)""",
-                },
-        ).replace('NEW.','rp_record.').replace('tww_od.import_reach_point_quarantine','tww_od.reach_point'),
+            },
+        )
+        .replace("NEW.", "rp_record.")
+        .replace("tww_od.import_reach_point_quarantine", "tww_od.reach_point"),
         insert_re=insert_command(
             connection=connection,
             table_schema="tww_od",
@@ -1115,8 +1130,10 @@ $$;
             comment_skipped=False,
             insert_values={
                 "progression3d_geometry": "ST_Translate(re_record.progression3d_geometry,0,0,re_record.tww_delta_measurement)",
-                },
-        ).replace('NEW.','re_record.').replace('tww_od.import_reach_quarantine','tww_app.vw_tww_reach'),
+            },
+        )
+        .replace("NEW.", "re_record.")
+        .replace("tww_od.import_reach_quarantine", "tww_app.vw_tww_reach"),
         update_re=update_command(
             connection=connection,
             table_schema="tww_od",
@@ -1127,28 +1144,34 @@ $$;
             comment_skipped=False,
             update_values={
                 "progression3d_geometry": "ST_Translate(re_record.progression3d_geometry,0,0,re_record.tww_delta_measurement)",
-                },
-        ).replace('NEW.','re_record.').replace('tww_od.import_reach_quarantine','tww_app.vw_tww_reach'),
+            },
+        )
+        .replace("NEW.", "re_record.")
+        .replace("tww_od.import_reach_quarantine", "tww_app.vw_tww_reach"),
         insert_ex=insert_command(
             connection=connection,
             table_schema="tww_od",
             table_name="import_examination_quarantine",
             remove_pkey=True,
             indent=6,
-            skip_columns=['fk_import_ws_quarantine','tww_is_okay'],
+            skip_columns=["fk_import_ws_quarantine", "tww_is_okay"],
             comment_skipped=False,
-            returning="obj_id INTO ex_oid"
-        ).replace('NEW.','ex_record.').replace('tww_od.import_examination_quarantine','tww_app.vw_examination'),
+            returning="obj_id INTO ex_oid",
+        )
+        .replace("NEW.", "ex_record.")
+        .replace("tww_od.import_examination_quarantine", "tww_app.vw_examination"),
         update_ex=update_command(
             connection=connection,
             table_schema="tww_od",
             table_name="import_examination_quarantine",
             remove_pkey=True,
             indent=6,
-            skip_columns=['fk_import_ws_quarantine','tww_is_okay'],
+            skip_columns=["fk_import_ws_quarantine", "tww_is_okay"],
             comment_skipped=False,
-            returning="obj_id INTO ex_oid"
-        ).replace('NEW.','ex_record.').replace('tww_od.import_examination_quarantine','tww_app.vw_examination'),
+            returning="obj_id INTO ex_oid",
+        )
+        .replace("NEW.", "ex_record.")
+        .replace("tww_od.import_examination_quarantine", "tww_app.vw_examination"),
         insert_dm=insert_command(
             connection=connection,
             table_schema="tww_od",
@@ -1159,14 +1182,16 @@ $$;
             comment_skipped=False,
             insert_values={
                 "obj_id": "dm_record.dm_obj_id",
-                "fk_examination":"dm_record.da_fk_examination",
-                "comments":"dm_record.da_comments",
-                "single_damage_class":"dm_record.da_single_damage_class",
-                "shaft_area":"dm_record.dm_shaft_area",
-                "damage_code":"dm_record.dm_damage_code",
-                },
-            returning="obj_id INTO rp_oid"
-        ).replace('NEW.','dm_record.').replace('tww_od.import_damage_ws_quarantine','tww_app.vw_damage_manhole'),
+                "fk_examination": "dm_record.da_fk_examination",
+                "comments": "dm_record.da_comments",
+                "single_damage_class": "dm_record.da_single_damage_class",
+                "shaft_area": "dm_record.dm_shaft_area",
+                "damage_code": "dm_record.dm_damage_code",
+            },
+            returning="obj_id INTO rp_oid",
+        )
+        .replace("NEW.", "dm_record.")
+        .replace("tww_od.import_damage_ws_quarantine", "tww_app.vw_damage_manhole"),
         update_dm=update_command(
             connection=connection,
             table_schema="tww_od",
@@ -1177,13 +1202,15 @@ $$;
             comment_skipped=False,
             update_values={
                 "obj_id": "dm_record.dm_obj_id",
-                "fk_examination":"dm_record.da_fk_examination",
-                "comments":"dm_record.da_comments",
-                "single_damage_class":"dm_record.da_single_damage_class",
-                "shaft_area":"dm_record.dm_shaft_area",
-                "damage_code":"dm_record.dm_damage_code",
-                },
-        ).replace('NEW.','dm_record.').replace('tww_od.import_damage_ws_quarantine','tww_app.vw_damage_manhole'),
+                "fk_examination": "dm_record.da_fk_examination",
+                "comments": "dm_record.da_comments",
+                "single_damage_class": "dm_record.da_single_damage_class",
+                "shaft_area": "dm_record.dm_shaft_area",
+                "damage_code": "dm_record.dm_damage_code",
+            },
+        )
+        .replace("NEW.", "dm_record.")
+        .replace("tww_od.import_damage_ws_quarantine", "tww_app.vw_damage_manhole"),
         insert_fi=insert_command(
             connection=connection,
             table_schema="tww_app",
@@ -1194,25 +1221,24 @@ $$;
             comment_skipped=False,
             insert_values={
                 "_url": "_url",
-                }
-        ).replace('NEW.','fi_record.'),
+            },
+        ).replace("NEW.", "fi_record."),
         update_fi=update_command(
             connection=connection,
             table_schema="tww_app",
             table_name="vw_file",
             remove_pkey=False,
             indent=6,
-            skip_columns=["fk_dataowner","fk_provider"],
+            skip_columns=["fk_dataowner", "fk_provider"],
             comment_skipped=False,
             update_values={
                 "_url": "_url",
-                "object":"ex_record.obj_id",
-                },
-        ).replace('NEW.','fi_record.'),
+                "object": "ex_record.obj_id",
+            },
+        ).replace("NEW.", "fi_record."),
     )
     update_fnc_sql = psycopg.sql.SQL(update_fnc_sql)
     cursor.execute(update_fnc_sql)
-
 
 
 if __name__ == "__main__":

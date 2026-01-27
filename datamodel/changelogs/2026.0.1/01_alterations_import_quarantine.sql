@@ -52,8 +52,8 @@ CREATE TABLE tww_od.import_ws_quarantine(
 ;
 
 COMMENT ON COLUMN tww_od.import_ws_quarantine.tww_level_measurement_kind
-    IS 'TEKSI Wastewater extension, type of depth measurement. 1 = depth from main cover, 2 = level measurement from sea level / 
-    Erweiterung TEKSI Wastewater, Art der Höhenermittlung. 1 = Abstich vom Hauptdeckel,  2 = Kotenmessung (Meereshöhe) / 
+    IS 'TEKSI Wastewater extension, type of depth measurement. 1 = depth from main cover, 2 = level measurement from sea level /
+    Erweiterung TEKSI Wastewater, Art der Höhenermittlung. 1 = Abstich vom Hauptdeckel,  2 = Kotenmessung (Meereshöhe) /
     zzz_TEKSI Wastewater extension, type of depth measurement. 1 = depth from main cover, 2 = level measurement from sea level';
 
 CREATE TABLE  tww_od.import_picture_quarantine
@@ -118,8 +118,8 @@ CREATE TABLE tww_od.import_reach_point_quarantine
 );
 
 COMMENT ON COLUMN tww_od.import_reach_point_quarantine.tww_level_measurement_kind
-    IS 'TEKSI Wastewater extension, type of depth measurement. 1 = depth from main cover, 2 = depth from upper elevation, 3 = level measurement from sea level / 
-    Erweiterung TEKSI Wastewater, Art der Höhenermittlung. 1 = Abstich vom Hauptdeckel,  2 = Abstich von Decke, 3 = Kotenmessung (Meereshöhe) / 
+    IS 'TEKSI Wastewater extension, type of depth measurement. 1 = depth from main cover, 2 = depth from upper elevation, 3 = level measurement from sea level /
+    Erweiterung TEKSI Wastewater, Art der Höhenermittlung. 1 = Abstich vom Hauptdeckel,  2 = Abstich von Decke, 3 = Kotenmessung (Meereshöhe) /
     zzz_TEKSI Wastewater extension, type of depth measurement. 1 = depth from main cover, 2 = depth from upper elevation, 3 = level measurement from sea level';
 COMMENT ON COLUMN tww_od.import_reach_point_quarantine.tww_is_inflow
     IS 'TEKSI Wastewater extension, true if inflow / Erweiterung TEKSI Wastewater, Wahr wenn Einlauf / Extension TEKSI Wastewater, vrai pour des entrées dans la chambre';
