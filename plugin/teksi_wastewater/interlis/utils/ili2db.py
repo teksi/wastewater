@@ -78,7 +78,7 @@ class InterlisTools:
             )
         )
 
-    def validate_xtf_data(self, xtf_file, log_path, refdata=true):
+    def validate_xtf_data(self, xtf_file, log_path, refdata=True):
         if refdata:
             logger.info("VALIDATING XTF DATA... with refdata")
             execute_subprocess(
