@@ -177,7 +177,7 @@ class TestInterlis(unittest.TestCase):
         # Import minimal kek
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_KEK_MANHOLE_DAMAGE)
         interlisImporterExporter = InterlisImporterExporter()
-        interlisImporterExporter.interlis_import(xtf_file_input=xtf_file_input)
+        interlisImporterExporter.interlis_import(xtf_file_input=xtf_file_input, use_refdata=False)
 
         result = DatabaseUtils.fetchone(
             "SELECT fk_maintenance_event FROM tww_od.re_maintenance_event_wastewater_structure WHERE fk_wastewater_structure='ch000000WS000001';"
