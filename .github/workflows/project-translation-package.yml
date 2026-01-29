@@ -60,7 +60,7 @@ jobs:
             sleep 2
           done
           docker compose exec db createdb -U postgres ${DB_NAME}
-          docker compose run pum -vvv -s ${PGSERVICE} -d datamodel install -p SRID 2056 --roles --grant
+          docker compose run pum -vvv -p ${PGSERVICE} -d datamodel install -p SRID 2056 --roles --grant
 
       - name: Translate (create sources)
         run: docker compose exec qgis sh -c "xvfb-run /usr/src/project/scripts/project-translation-create-source.py /usr/src/project/${QGS_PROJECT_FILE}.qgs"

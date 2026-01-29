@@ -104,7 +104,7 @@ jobs:
           # create the database
           docker compose exec db createdb -U postgres ${DB_NAME}
           docker compose run pum \
-              -vvv -s ${PGSERVICE} -d datamodel install \
+              -vvv -p ${PGSERVICE} -d datamodel install \
               -p modification_ci ${{ matrix.modification_ci}} \
               -p modification_agxx ${{ matrix.modification_agxx}} \
               -p webgis ${{ matrix.webgis}} \
