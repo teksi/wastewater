@@ -108,7 +108,7 @@ jobs:
               -p modification_ci ${{ matrix.modification_ci}} \
               -p modification_agxx ${{ matrix.modification_agxx}} \
               -p webgis ${{ matrix.webgis}} \
-              -p SRID 2056 --roles --grant
+              -p SRID 2056
 
       - name: Run tests
         run:  docker compose run --entrypoint pytest pum datamodel
