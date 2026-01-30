@@ -104,11 +104,11 @@ jobs:
           # create the database
           docker compose exec db createdb -U postgres ${DB_NAME}
           docker compose run pum \
-              -vvv -s ${PGSERVICE} -d datamodel install \
+              -vvv -p ${PGSERVICE} -d datamodel install \
               -p modification_ci ${{ matrix.modification_ci}} \
               -p modification_agxx ${{ matrix.modification_agxx}} \
               -p webgis ${{ matrix.webgis}} \
-              -p SRID 2056 --roles --grant
+              -p SRID 2056
 
       - name: Run tests
         run:  docker compose run --entrypoint pytest pum datamodel
