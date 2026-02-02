@@ -1,4 +1,4 @@
-ALTER TABLE tww_od.import_damage_ws_quarantine ALTER COLUMN obj_id SET DEFAULT tww_app.generate_oid('tww_od'::text, 'damage_manhole'::text);
+ALTER TABLE tww_od.import_damage_ws_quarantine ALTER COLUMN dm_obj_id SET DEFAULT tww_app.generate_oid('tww_od'::text, 'damage_manhole'::text);
 ALTER TABLE tww_od.import_examination_quarantine ALTER COLUMN obj_id SET DEFAULT tww_app.generate_oid('tww_od'::text, 'examination'::text);
 ALTER TABLE tww_od.import_picture_quarantine ALTER COLUMN obj_id SET DEFAULT tww_app.generate_oid('tww_od'::text, 'file'::text);
 ALTER TABLE tww_od.import_ws_quarantine ALTER COLUMN ws_obj_id SET DEFAULT tww_app.generate_oid('tww_od'::text, 'wastewater_structure'::text);
