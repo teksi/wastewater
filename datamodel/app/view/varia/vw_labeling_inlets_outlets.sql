@@ -25,7 +25,7 @@ AS
         LEFT JOIN tww_vl.channel_usage_current usg_curr ON wn._usage_current = usg_curr.code
     WHERE re.progression3d_geometry IS NOT NULL AND wn.obj_id IS NOT NULL
     ORDER BY rp.level DESC
-), 
+),
 outlet AS (
     SELECT ne.obj_id AS obj_id_ne,
     ne.identifier AS network_element_identifier,
