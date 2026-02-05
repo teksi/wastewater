@@ -9,7 +9,6 @@ import psycopg
 from pirogue.information_schema import columns
 from pirogue.utils import insert_command, select_columns, update_command
 from pum.exceptions import PumHookError
-from yaml import safe_load
 
 
 def vw_tww_import_manhole(connection: psycopg.Connectionl):

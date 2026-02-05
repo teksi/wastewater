@@ -294,7 +294,6 @@ Running modification {modification.get('id')}
             connection=self._connection,
         )
 
-
         # TODO: Are these export views necessary? cymed 13.03.25
         for _, yaml_path in self.simple_joins_yaml.items():
             SimpleJoins(
