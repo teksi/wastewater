@@ -175,15 +175,15 @@
             <column ascending="true" name="id"/>
          </index>
       </table>
-      <table name="pum_migrations" remarks="version: 1 --  schema_migration table version" schema="tww_sys" type="TABLE">
+      <table name="pum_migrations" remarks="migration_table_version: 2" schema="tww_sys" type="TABLE">
          <column autoUpdated="false" defaultValue="gen_random_uuid()" digits="0" id="0" name="id" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
          <column autoUpdated="false" defaultValue="now()" digits="6" id="1" name="date_installed" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="module" nullable="true" remarks="" size="50" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="module" nullable="false" remarks="" size="50" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="version" nullable="false" remarks="" size="50" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="false" digits="0" id="4" name="beta_testing" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="changelog_files" nullable="true" remarks="" size="2147483647" type="_text" typeCode="2003"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="parameters" nullable="true" remarks="" size="2147483647" type="jsonb" typeCode="1111"/>
-         <column autoUpdated="false" defaultValue="'2025.0'::character varying" digits="0" id="7" name="migration_table_version" nullable="false" remarks="" size="50" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="2" digits="0" id="7" name="migration_table_version" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
          <primaryKey column="id" sequenceNumberInPK="1"/>
          <index name="pum_migrations_pkey" unique="true">
             <column ascending="true" name="id"/>

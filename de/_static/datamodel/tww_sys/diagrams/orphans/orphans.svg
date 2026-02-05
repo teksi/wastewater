@@ -557,7 +557,7 @@
 <polygon fill="none" stroke="black" points="985,-24 985,-46 1181,-46 1181,-24 985,-24"/>
 <text text-anchor="start" x="1005" y="-32.2" font-family="Helvetica,sans-Serif" font-size="11.00">migration_table_version</text>
 <polygon fill="none" stroke="black" points="1181,-24 1181,-46 1293,-46 1293,-24 1181,-24"/>
-<text text-anchor="start" x="1184" y="-32.2" font-family="Helvetica,sans-Serif" font-size="11.00">varchar[50]</text>
+<text text-anchor="start" x="1184" y="-32.2" font-family="Helvetica,sans-Serif" font-size="11.00">int4[10]</text>
 <polygon fill="#ffffff" stroke="transparent" points="985,-6 985,-24 1293,-24 1293,-6 985,-6"/>
 <polygon fill="none" stroke="black" points="985,-6 985,-24 1293,-24 1293,-6 985,-6"/>
 <polygon fill="#ffffff" stroke="transparent" points="986,-7 986,-23 1092,-23 1092,-7 986,-7"/>
