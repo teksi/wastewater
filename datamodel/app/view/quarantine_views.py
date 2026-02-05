@@ -11,7 +11,7 @@ from pirogue.utils import insert_command, select_columns, update_command
 from pum.exceptions import PumHookError
 
 
-def vw_tww_import_manhole(connection: psycopg.Connectionl):
+def vw_tww_import_manhole(connection: psycopg.Connection):
     """
     Creates vw_tww_import_manhole view
     :param connection: a psycopg connection object
