@@ -12,11 +12,10 @@ from pum.exceptions import PumHookError
 from yaml import safe_load
 
 
-def vw_tww_import_manhole(connection: psycopg.Connection, srid: psycopg.sql.Literal):
+def vw_tww_import_manhole(connection: psycopg.Connectionl):
     """
     Creates vw_tww_import_manhole view
     :param connection: a psycopg connection object
-    :param srid: EPSG code for geometries
     """
 
     cursor = connection.cursor()
@@ -26,7 +25,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection, srid: psycopg.sql.Lite
 
     CREATE OR REPLACE VIEW tww_app.vw_tww_import_manhole AS
   SELECT
-        coalesce(q.id,uuid_generate_v4()) as id
+        ws.uuidoid
         , CASE
           WHEN ma.obj_id IS NOT NULL THEN 'manhole'
           WHEN ss.obj_id IS NOT NULL THEN 'special_structure'
@@ -66,7 +65,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection, srid: psycopg.sql.Lite
         , {dd_cols}
         , dd.renovation_demand as dd_renovation_demand
         , dd.remark as dd_remark
-        , (q.id IS NOT NULL) AS in_quarantine
+        , (q.uuidoid IS NOT NULL) AS in_quarantine
 
 
         FROM tww_od.wastewater_structure ws
@@ -197,7 +196,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection, srid: psycopg.sql.Lite
         ),
     )
 
-    view_sql = psycopg.sql.SQL(view_sql).format(srid=psycopg.sql.Literal(srid))
+    view_sql = psycopg.sql.SQL(view_sql)
 
     try:
         cursor.execute(view_sql)
@@ -281,11 +280,10 @@ def vw_tww_import_manhole(connection: psycopg.Connection, srid: psycopg.sql.Lite
     cursor.execute(defaults)
 
 
-def vw_tww_import_reach_point(connection: psycopg.Connection, srid: psycopg.sql.Literal):
+def vw_tww_import_reach_point(connection: psycopg.Connection):
     """
     Creates vw_tww_import_reach_point view
     :param connection: a psycopg connection object
-    :param srid: EPSG code for geometries
     """
 
     cursor = connection.cursor()
@@ -345,8 +343,7 @@ FROM outlets secondary
 INNER JOIN outlets main ON main.ws = secondary.ws AND main.idx = 1
 WHERE secondary.idx > 1)
   SELECT
-        coalesce(q.id,uuid_generate_v4()) as id
-        , {rp_columns}
+          {rp_columns}
         , NULL::smallint as tww_level_measurement_kind
         , co.level - rp.level as co_depth
         , ss.upper_elevation - rp.level as co_depth
@@ -359,9 +356,9 @@ WHERE secondary.idx > 1)
         , coalesce(q.tww_position_in_structure,rp_azi.tww_position_in_structure) as tww_position_in_structure
         , coalesce(re_from.material,re_to.material) as re_material
         , coalesce(re_from.clear_height,re_to.clear_height) as re_clear_height
-        , q_ws.id as fk_import_ws_quarantine
+        , q_ws.uuidoid as fk_import_ws_quarantine
         , NULL::boolean as tww_is_okay
-        , (q.id IS NOT NULL) AS in_quarantine
+        , (q.uuidoid IS NOT NULL) AS in_quarantine
 
         FROM tww_od.reach_point rp
         INNER JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = rp.fk_wastewater_networkelement
@@ -399,11 +396,12 @@ WHERE secondary.idx > 1)
                 "fk_wastewater_networkelement",
             ],
             remap_columns={"cover_shape": "co_shape"},
+            columns_on_top=["uuidoid"],
             columns_at_end=["obj_id"],
         )
     )
 
-    view_sql = psycopg.sql.SQL(view_sql).format(srid=psycopg.sql.Literal(srid))
+    view_sql = psycopg.sql.SQL(view_sql)
 
     try:
         cursor.execute(view_sql)
@@ -487,7 +485,7 @@ WHERE secondary.idx > 1)
     cursor.execute(defaults)
 
 
-def tww_import_logic(connection: psycopg.Connection, srid: psycopg.sql.Literal):
+def tww_import_logic(connection: psycopg.Connection):
 
     cursor = connection.cursor()
 
@@ -597,7 +595,7 @@ def tww_import_logic(connection: psycopg.Connection, srid: psycopg.sql.Literal):
         BEGIN
             BEGIN
                 SELECT * FROM tww_od.import_ws_quarantine ws
-                INTO ws_record WHERE ws.id = NEW.fk_import_ws_quarantine;
+                INTO ws_record WHERE ws.uuidoid = NEW.fk_import_ws_quarantine;
 
                 CASE WHEN NEW.tww_is_inflow THEN
                     SELECT COUNT(rp.obj_id) INTO old_in_outlets
@@ -616,8 +614,8 @@ def tww_import_logic(connection: psycopg.Connection, srid: psycopg.sql.Literal):
 
                 SELECT COUNT(rp.obj_id) INTO new_in_outlets
                 FROM tww_od.import_ws_quarantine ws
-                INNER JOIN tww_od.import_reach_point_quarantine rp on rp.fk_import_ws_quarantine =ws.id
-                WHERE ws.id = NEW.fk_import_ws_quarantine and rp.tww_is_inflow = NEW.tww_is_inflow;
+                INNER JOIN tww_od.import_reach_point_quarantine rp on rp.fk_import_ws_quarantine =ws.uuidoid
+                WHERE ws.uuidoid = NEW.fk_import_ws_quarantine and rp.tww_is_inflow = NEW.tww_is_inflow;
 
                 IF old_in_outlets = 1 AND new_in_outlets = 1 THEN AND ws_record.obj_id IS NOT NULL THEN--auto-assignment possible
                     UPDATE tww_od.reach
@@ -634,7 +632,7 @@ def tww_import_logic(connection: psycopg.Connection, srid: psycopg.sql.Literal):
                     {update_rp}
                     RETURN NULL;
                 ELSE
-                    RAISE NOTICE 'no automatic mapping for tww_od.import_reach_point_quarantine for id %, manual editing needed', NEW.id;
+                    RAISE NOTICE 'no automatic mapping for tww_od.import_reach_point_quarantine for id %, manual editing needed', NEW.uuidoid;
                     RETURN NEW;
                 END IF;
 
@@ -873,25 +871,25 @@ BEGIN
         SELECT COUNT(*) INTO check_count
         FROM (
             SELECT 1 FROM tww_od.import_reach_point_quarantine rp
-            WHERE rp.fk_import_ws_quarantine = ws_record.id AND rp.tww_is_okay = false
+            WHERE rp.fk_import_ws_quarantine = ws_record.uuidoid AND rp.tww_is_okay = false
 
             UNION ALL
 
             SELECT 1 FROM tww_od.import_reach_quarantine re
             JOIN tww_od.import_reach_point_quarantine rp
-              ON re.fk_import_rp_quarantine_from = rp.id OR re.fk_import_rp_quarantine_to = rp.id
-            WHERE rp.fk_import_ws_quarantine = ws_record.id AND re.tww_is_okay = false
+              ON re.fk_import_rp_quarantine_from = rp.uuidoid OR re.fk_import_rp_quarantine_to = rp.uuidoid
+            WHERE rp.fk_import_ws_quarantine = ws_record.uuidoid AND re.tww_is_okay = false
 
             UNION ALL
 
             SELECT 1 FROM tww_od.import_examination_quarantine ex
-            WHERE ex.fk_import_ws_quarantine = ws_record.id AND ex.tww_is_okay = false
+            WHERE ex.fk_import_ws_quarantine = ws_record.uuidoid AND ex.tww_is_okay = false
 
             UNION ALL
 
             SELECT 1 FROM tww_od.import_damage_ws_quarantine dm
-            JOIN tww_od.import_examination_quarantine ex ON dm.fk_import_examination_quarantine = ex.id
-            WHERE ex.fk_import_ws_quarantine = ws_record.id AND dm.tww_is_okay = false
+            JOIN tww_od.import_examination_quarantine ex ON dm.fk_import_examination_quarantine = ex.uuidoid
+            WHERE ex.fk_import_ws_quarantine = ws_record.uuidoid AND dm.tww_is_okay = false
         ) AS subquery;
 
         -- Skip the loop if any related entries are not okay
@@ -928,7 +926,7 @@ BEGIN
             -- Step 2: Process import_reach_point_quarantine
             FOR rp_record IN
                 SELECT * FROM tww_od.import_reach_point_quarantine
-                WHERE fk_import_ws_quarantine = ws_record.id
+                WHERE fk_import_ws_quarantine = ws_record.uuidoid
             LOOP
                 -- Check if the record already exists in the live table
                 IF EXISTS (
@@ -939,11 +937,11 @@ BEGIN
 
                     UPDATE tww_od.import_reach_quarantine
                     SET fk_reach_point_from = rp_record.obj_id
-                    WHERE fk_import_rp_quarantine_from = rp_record.id;
+                    WHERE fk_import_rp_quarantine_from = rp_record.uuidoid;
 
                     UPDATE tww_od.import_reach_quarantine
                     SET fk_reach_point_to = rp_record.obj_id
-                    WHERE fk_import_rp_quarantine_to = rp_record.id;
+                    WHERE fk_import_rp_quarantine_to = rp_record.uuidoid;
                 ELSE
                     {insert_rp}
 
@@ -960,11 +958,11 @@ BEGIN
             -- Step 3: Process import_examination_quarantine
              UPDATE tww_od.import_damage_ws_quarantine
                     SET fk_wastewater_structure = ws_oid
-                    WHERE fk_import_ws_quarantine = ws_record.id;
+                    WHERE fk_import_ws_quarantine = ws_record.uuidoid;
 
             FOR ex_record IN
                 SELECT * FROM tww_od.import_examination_quarantine
-                WHERE fk_import_ws_quarantine = ws_record.id
+                WHERE fk_import_ws_quarantine = ws_record.uuidoid
             LOOP
                 -- Check if the record already exists in the live table
                 IF EXISTS (
@@ -980,11 +978,11 @@ BEGIN
                 -- Step 4: Process import_damage_ws_quarantine
                 UPDATE tww_od.import_damage_ws_quarantine
                     SET fk_examination = ex_oid
-                    WHERE fk_import_examination_quarantine = ex_record.id;
+                    WHERE fk_import_examination_quarantine = ex_record.uuidoid;
 
                 FOR dm_record IN
                     SELECT * FROM tww_od.import_examination_quarantine
-                    WHERE fk_import_examination_quarantine = ex_record.id
+                    WHERE fk_import_examination_quarantine = ex_record.uuidoid
                 LOOP
                     IF EXISTS (
                         SELECT 1 FROM tww_od.damage_manhole
@@ -1000,11 +998,11 @@ BEGIN
                 -- Step 5: Process import_picture_quarantine
                 UPDATE tww_od.import_picture_quarantine
                     SET fk_examination = ex_oid
-                    WHERE fk_import_ex_quarantine = ex_record.id;
+                    WHERE fk_import_ex_quarantine = ex_record.uuidoid;
 
                 FOR fi_record IN
                     SELECT * FROM tww_od.import_picture_quarantine
-                    WHERE fk_import_ex_quarantine = ex_record.id
+                    WHERE fk_import_ex_quarantine = ex_record.uuidoid
                 LOOP
                     IF fi_record.fk_data_media is NULL THEN
                         IF vo_oid IS NULL THEN
@@ -1263,18 +1261,10 @@ $$;
 if __name__ == "__main__":
     # create the top-level parser
     parser = argparse.ArgumentParser()
-    parser.add_argument("-s", "--srid", help="EPSG code for SRID")
     parser.add_argument("-p", "--pg_service", help="the PostgreSQL service name")
     args = parser.parse_args()
-    srid = psycopg.sql.Literal(args.srid or os.getenv("SRID"))
     pg_service = args.pg_service or os.getenv("PGSERVICE")
-    extra_definition = {}
-    if args.extra_definition:
-        with open(args.extra_definition) as f:
-            extra_definition = safe_load(f)
     with psycopg.connect(f"service={pg_service}") as conn:
         vw_tww_import_manhole(
             connection=conn,
-            srid=srid,
-            extra_definition=extra_definition,
         )

@@ -1,5 +1,5 @@
 CREATE TABLE tww_od.import_ws_quarantine(
-  id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  uuidoid uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
   ws_obj_id character varying(16),
   ws_type text,
   ws_accessibility integer,
@@ -58,7 +58,7 @@ COMMENT ON COLUMN tww_od.import_ws_quarantine.tww_level_measurement_kind
 
 CREATE TABLE  tww_od.import_picture_quarantine
 (
-  id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  uuidoid uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
   obj_id character varying(16),
   identifier text,
   fk_import_ex_quarantine uuid, --instead of object reference
@@ -69,7 +69,7 @@ CREATE TABLE  tww_od.import_picture_quarantine
 
 
 CREATE TABLE tww_od.import_examination_quarantine (
-  id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  uuidoid uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
   obj_id character varying(16),
   operator text,
   result text,
@@ -83,7 +83,7 @@ CREATE TABLE tww_od.import_examination_quarantine (
 
 
 CREATE TABLE tww_od.import_damage_ws_quarantine (
-  id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  uuidoid uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
   dm_obj_id character varying(16),
   da_fk_examination character varying(16),
   da_comments text,
@@ -97,7 +97,7 @@ CREATE TABLE tww_od.import_damage_ws_quarantine (
 
 CREATE TABLE tww_od.import_reach_point_quarantine
 (
-  id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  uuidoid uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
   obj_id character varying(16) ,
   elevation_accuracy integer,
   identifier text,
@@ -132,7 +132,7 @@ COMMENT ON COLUMN tww_od.import_reach_point_quarantine.tww_position_in_structure
 
 CREATE TABLE tww_od.import_reach_quarantine
 (
-  id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  uuidoid uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
   obj_id character varying(16),
   clear_height integer,
   elevation_determination integer,
