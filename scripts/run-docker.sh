@@ -44,10 +44,12 @@ shift "$(($OPTIND -1))"
 docker compose down -v  --remove-orphans || true
 
 if [[ $BUILD -eq 1 ]]; then
+  echo "PUM VERSION is set to '${PUM_VERSION:-latest}'"
+  if [[ "${PUM_VERSION:-latest}" == "latest" ]]; then
+    docker pull opengisch/pum:latest
+  fi
   docker compose build --no-cache
 fi
-
-docker pull opengisch/pum:latest
 
 docker compose up -d
 
@@ -55,13 +57,16 @@ docker compose run --rm pum --version
 
 until docker compose exec db pg_isready -U postgres; do
   echo "Waiting for PostgreSQL to be ready..."
-  sleep 2
+  sleep 3
 done
 
 echo "Creating database ${DB_NAME}"
 docker compose exec db sh -c "createdb -U postgres ${DB_NAME}"
-docker compose run --rm pum -vvv -s ${PGSERVICE} -d datamodel install -p SRID 2056 --roles --grant ${DEMO_DATA}
+echo "install"
+docker compose run --rm pum -p ${PGSERVICE} -d datamodel install -p SRID 2056 --max-version 2025.0.1 --skip-create-app ${DEMO_DATA}
+echo "upgrade"
+docker compose run --rm pum -v -p ${PGSERVICE} -d datamodel upgrade -p SRID 2056
 if [[ $RUN_TESTS -eq 1 ]]; then
   echo "Running tests"
-  docker compose run --rm --entrypoint pytest pum datamodel
+  docker compose run --rm --entrypoint pytest pum datamodel/test
 fi
