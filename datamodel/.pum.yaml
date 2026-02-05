@@ -1,21 +1,22 @@
 
 pum:
+  module: tww
   migration_table_schema: tww_sys
-  minimum_version: 1.1.14
+  minimum_version: 1.3.0
 
 roles:
   - name: tww_viewer
     description: Role for users who can view the TWW data.
     permissions:
       - type: read
-        schemas: [tww_od, tww_vl, tww_sys, tww_app]
+        schemas: [tww_od, tww_vl, tww_sys, tww_app, tww_app_pg2ili]
 
   - name: tww_user
     description: Role for users who can view and edit the TWW data.
     inherit: tww_viewer
     permissions:
       - type: write
-        schemas: [tww_od]
+        schemas: [tww_od, tww_app_pg2ili]
 
   - name: tww_manager
     description: Role for users who can view and edit the TWW data, and manage the TWW application.
@@ -66,11 +67,19 @@ dependencies:
   - name: pirogue
     minimum_version: 3.0.0
 
-migration_hooks:
-  pre:
+application:
+  drop:
     - code: DROP SCHEMA IF EXISTS tww_app CASCADE;
-  post:
+    - code: DROP SCHEMA IF EXISTS tww_app_pg2ili CASCADE;
+  create:
     - file: app/create_app.py
+
+uninstall:
+  - code: DROP SCHEMA IF EXISTS tww_od CASCADE;
+  - code: DROP SCHEMA IF EXISTS tww_vl CASCADE;
+  - code: DROP SCHEMA IF EXISTS tww_sys CASCADE;
+  - code: DROP SCHEMA IF EXISTS tww_app CASCADE;
+  - code: DROP SCHEMA IF EXISTS tww_app_pg2ili CASCADE;
 
 demo_data:
   - name: Aletsch
