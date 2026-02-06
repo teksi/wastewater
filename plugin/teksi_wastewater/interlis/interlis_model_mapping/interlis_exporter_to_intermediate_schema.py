@@ -237,7 +237,6 @@ class InterlisExporterToIntermediateSchema:
         self._export_organisation()
         self._check_for_stop()
 
-
     def _export_sia405_abwasser(self):
         self.current_basket = self.basket_topic_sia405_abwasser
 
@@ -316,7 +315,6 @@ class InterlisExporterToIntermediateSchema:
         logger.info("Exporting TWW.flushing_nozzle -> ABWASSER.spuelstutzen")
         self._export_flushing_nozzle()
         self._check_for_stop()
-
 
     def _export_dss(self):
         logger.info(
@@ -593,8 +591,8 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-            attrs={
-                           # FIELDS TO MAP TO ABWASSER.kanal
+            attrs = {
+                # FIELDS TO MAP TO ABWASSER.kanal
                 # --- kanal ---
                 "bettung_umhuellung": self.get_vl(row.bedding_encasement__REL),
                 "funktionhierarchisch": self.get_vl(row.function_hierarchic__REL),
@@ -610,10 +608,18 @@ class InterlisExporterToIntermediateSchema:
                 "verbindungsart": self.get_vl(row.connection_type__REL),
             }
             if self.is_3d_model:
-                attrs.update(self._wastewater_structure_common_3d(row,self.model_classes_interlis.kanal3d.__tablename__))
+                attrs.update(
+                    self._wastewater_structure_common_3d(
+                        row, self.model_classes_interlis.kanal3d.__tablename__
+                    )
+                )
                 kanal = self.model_classes_interlis.kanal3d(**attrs)
             else:
-                attrs.update(self.wastewater_structure_common(row, self.model_classes_interlis.kanal.__tablename__))
+                attrs.update(
+                    self.wastewater_structure_common(
+                        row, self.model_classes_interlis.kanal.__tablename__
+                    )
+                )
                 kanal = self.model_classes_interlis.kanal(**attrs)
             self.abwasser_session.add(kanal)
             print(".", end="")
@@ -628,7 +634,7 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-            attrs={
+            attrs = {
                 "amphibienausstieg": self.get_vl(row.amphibian_exit__REL),
                 "dimension1": row.dimension1,
                 "dimension2": row.dimension2,
@@ -641,13 +647,23 @@ class InterlisExporterToIntermediateSchema:
                 "oberflaechenzulauf": self.get_vl(row.surface_inflow__REL),
             }
             if self.is_3d_model:
-                attrs.update(self._wastewater_structure_common_3d(row,self.model_classes_interlis.normschacht3d.__tablename__))
-                attrs.update({
-                    "maechtigkeit": row._depth,
-                    })
+                attrs.update(
+                    self._wastewater_structure_common_3d(
+                        row, self.model_classes_interlis.normschacht3d.__tablename__
+                    )
+                )
+                attrs.update(
+                    {
+                        "maechtigkeit": row._depth,
+                    }
+                )
                 item = self.model_classes_interlis.normschacht3d(**attrs)
             else:
-                attrs.update(self.wastewater_structure_common(row, self.model_classes_interlis.normschacht.__tablename__))
+                attrs.update(
+                    self.wastewater_structure_common(
+                        row, self.model_classes_interlis.normschacht.__tablename__
+                    )
+                )
                 item = self.model_classes_interlis.normschacht(**attrs)
             self.abwasser_session.add(item)
             print(".", end="")
@@ -662,7 +678,7 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-            attrs={
+            attrs = {
                 "gewaesserabschnitt_kanton": row.water_course_segment_canton,
                 # new attribute gewaesserlaufnummer Release 2020
                 "gewaesserlaufnummer": row.water_course_number,
@@ -674,14 +690,24 @@ class InterlisExporterToIntermediateSchema:
                 "wasserspiegel_hydraulik": row.waterlevel_hydraulic,
             }
             if self.is_3d_model:
-                attrs.update(self._wastewater_structure_common_3d(row,self.model_classes_interlis.einleitstelle3d.__tablename__))
-                attrs.update({
-                    "maechtigkeit": row._depth,
-                    "deckenkote": row.upper_elevation,
-                    })
+                attrs.update(
+                    self._wastewater_structure_common_3d(
+                        row, self.model_classes_interlis.einleitstelle3d.__tablename__
+                    )
+                )
+                attrs.update(
+                    {
+                        "maechtigkeit": row._depth,
+                        "deckenkote": row.upper_elevation,
+                    }
+                )
                 item = self.model_classes_interlis.einleitstelle3d(**attrs)
             else:
-                attrs.update(self.wastewater_structure_common(row, self.model_classes_interlis.einleitstelle.__tablename__))
+                attrs.update(
+                    self.wastewater_structure_common(
+                        row, self.model_classes_interlis.einleitstelle.__tablename__
+                    )
+                )
                 item = self.model_classes_interlis.einleitstelle(**attrs)
             self.abwasser_session.add(item)
         logger.info("done")
@@ -695,7 +721,7 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-            attrs={
+            attrs = {
                 "amphibienausstieg": self.get_vl(row.amphibian_exit__REL),
                 "bypass": self.get_vl(row.bypass__REL),
                 # -- attribute 3D ---
@@ -709,14 +735,24 @@ class InterlisExporterToIntermediateSchema:
                 "regenbecken_anordnung": self.get_vl(row.stormwater_tank_arrangement__REL),
             }
             if self.is_3d_model:
-                attrs.update(self._wastewater_structure_common_3d(row,self.model_classes_interlis.spezialbauwerk3d.__tablename__))
-                attrs.update({
-                    "maechtigkeit": row._depth,
-                    "deckenkote": row.upper_elevation,
-                    })
+                attrs.update(
+                    self._wastewater_structure_common_3d(
+                        row, self.model_classes_interlis.spezialbauwerk3d.__tablename__
+                    )
+                )
+                attrs.update(
+                    {
+                        "maechtigkeit": row._depth,
+                        "deckenkote": row.upper_elevation,
+                    }
+                )
                 item = self.model_classes_interlis.spezialbauwerk3d(**attrs)
             else:
-                attrs.update(self.wastewater_structure_common(row, self.model_classes_interlis.spezialbauwerk.__tablename__))
+                attrs.update(
+                    self.wastewater_structure_common(
+                        row, self.model_classes_interlis.spezialbauwerk.__tablename__
+                    )
+                )
                 item = self.model_classes_interlis.spezialbauwerk(**attrs)
             self.abwasser_session.add(item)
             print(".", end="")
@@ -731,7 +767,7 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-            attrs={
+            attrs = {
                 "art": self.get_vl(row.kind__REL),
                 "beschriftung": self.get_vl(row.labeling__REL),
                 # -- attribute 3D ---
@@ -752,14 +788,24 @@ class InterlisExporterToIntermediateSchema:
                 "wirksameflaeche": row.effective_area,
             }
             if self.is_3d_model:
-                attrs.update(self._wastewater_structure_common_3d(row,self.model_classes_interlis.versickerungsanlage3d.__tablename__))
-                attrs.update({
-                    "maechtigkeit": row._depth,
-                    "deckenkote": row.upper_elevation,
-                    })
+                attrs.update(
+                    self._wastewater_structure_common_3d(
+                        row, self.model_classes_interlis.versickerungsanlage3d.__tablename__
+                    )
+                )
+                attrs.update(
+                    {
+                        "maechtigkeit": row._depth,
+                        "deckenkote": row.upper_elevation,
+                    }
+                )
                 item = self.model_classes_interlis.versickerungsanlage3d(**attrs)
             else:
-                attrs.update(self.wastewater_structure_common(row, self.model_classes_interlis.versickerungsanlage.__tablename__))
+                attrs.update(
+                    self.wastewater_structure_common(
+                        row, self.model_classes_interlis.versickerungsanlage.__tablename__
+                    )
+                )
                 item = self.model_classes_interlis.versickerungsanlage(**attrs)
             self.abwasser_session.add(item)
             print(".", end="")
@@ -954,7 +1000,7 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-            attrs={
+            attrs = {
                 "fliesszeit_trockenwetter": row.flow_time_dry_weather,
                 # -- attribute 3D ---
                 #  hoehenbestimmung": self.get_vl(row.elevation_determination__REL),
@@ -981,14 +1027,24 @@ class InterlisExporterToIntermediateSchema:
                 "wandrauhigkeit": row.wall_roughness,
             }
             if self.is_3d_model:
-                attrs.update(self.wastewater_networkelement_common(row,self.model_classes_interlis.haltung3d.__tablename__))
-                attrs.update({
-                    "verlauf3d": row.progression3d_geometry,
-                    "hoehenbestimmung": self.get_vl(row.elevation_determination__REL),
-                    })
+                attrs.update(
+                    self.wastewater_networkelement_common(
+                        row, self.model_classes_interlis.haltung3d.__tablename__
+                    )
+                )
+                attrs.update(
+                    {
+                        "verlauf3d": row.progression3d_geometry,
+                        "hoehenbestimmung": self.get_vl(row.elevation_determination__REL),
+                    }
+                )
                 item = self.model_classes_interlis.haltung3d(**attrs)
             else:
-                attrs.update(self.wastewater_networkelement_common(row, self.model_classes_interlis.haltung.__tablename__))
+                attrs.update(
+                    self.wastewater_networkelement_common(
+                        row, self.model_classes_interlis.haltung.__tablename__
+                    )
+                )
                 item = self.model_classes_interlis.haltung(**attrs)
             self.abwasser_session.add(item)
             print(".", end="")
@@ -1141,7 +1197,7 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-            attrs={
+            attrs = {
                 "deckelform": self.get_vl(row.cover_shape__REL),
                 "durchmesser": row.diameter,
                 "entlueftung": self.get_vl(row.venting__REL),
@@ -1156,13 +1212,23 @@ class InterlisExporterToIntermediateSchema:
                 "verschluss": self.get_vl(row.fastening__REL),
             }
             if self.is_3d_model:
-                attrs.update(self.structure_part_common(row,self.model_classes_interlis.deckel3d.__tablename__))
-                attrs.update({
-                    "maechtigkeit": row._depth,
-                    })
+                attrs.update(
+                    self.structure_part_common(
+                        row, self.model_classes_interlis.deckel3d.__tablename__
+                    )
+                )
+                attrs.update(
+                    {
+                        "maechtigkeit": row._depth,
+                    }
+                )
                 item = self.model_classes_interlis.deckel3d(**attrs)
             else:
-                attrs.update(self.structure_part_common(row, self.model_classes_interlis.deckel.__tablename__))
+                attrs.update(
+                    self.structure_part_common(
+                        row, self.model_classes_interlis.deckel.__tablename__
+                    )
+                )
                 item = self.model_classes_interlis.deckel(**attrs)
             self.abwasser_session.add(item)
             print(".", end="")
@@ -1379,15 +1445,25 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-            attrs={
+            attrs = {
                 "art": self.get_vl(row.kind__REL),
-                "abwasserreinigungsanlageref": self.get_tid(row.fk_waste_water_treatment_plant__REL),
+                "abwasserreinigungsanlageref": self.get_tid(
+                    row.fk_waste_water_treatment_plant__REL
+                ),
             }
             if self.is_3d_model:
-                attrs.update(self._wastewater_structure_common_3d(row,self.model_classes_interlis.arabauwerk3d.__tablename__))
+                attrs.update(
+                    self._wastewater_structure_common_3d(
+                        row, self.model_classes_interlis.arabauwerk3d.__tablename__
+                    )
+                )
                 item = self.model_classes_interlis.arabauwerk3d(**attrs)
             else:
-                attrs.update(self.wastewater_structure_common(row, self.model_classes_interlis.arabauwerk.__tablename__))
+                attrs.update(
+                    self.wastewater_structure_common(
+                        row, self.model_classes_interlis.arabauwerk.__tablename__
+                    )
+                )
                 item = self.model_classes_interlis.arabauwerk(**attrs)
             self.abwasser_session.add(item)
             print(".", end="")
@@ -1426,14 +1502,22 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-            attrs={
+            attrs = {
                 "art": self.get_vl(row.kind__REL),
             }
             if self.is_3d_model:
-                attrs.update(self._wastewater_structure_common_3d(row,self.model_classes_interlis.abflusslose_toilette3d.__tablename__))
+                attrs.update(
+                    self._wastewater_structure_common_3d(
+                        row, self.model_classes_interlis.abflusslose_toilette3d.__tablename__
+                    )
+                )
                 item = self.model_classes_interlis.abflusslose_toilette3d(**attrs)
             else:
-                attrs.update(self.wastewater_structure_common(row, self.model_classes_interlis.abflusslose_toilette.__tablename__))
+                attrs.update(
+                    self.wastewater_structure_common(
+                        row, self.model_classes_interlis.abflusslose_toilette.__tablename__
+                    )
+                )
                 item = self.model_classes_interlis.abflusslose_toilette(**attrs)
             self.abwasser_session.add(item)
             print(".", end="")
@@ -2157,17 +2241,25 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-            attrs={
+            attrs = {
                 "bewilligungsnummer": row.approval_number,
                 "funktion": self.get_vl(row.function__REL),
                 "anlagenummer": row.installation_number,
                 "fernueberwachung": self.get_vl(row.remote_monitoring__REL),
             }
             if self.is_3d_model:
-                attrs.update(self._wastewater_structure_common_3d(row,self.model_classes_interlis.klara3d.__tablename__))
+                attrs.update(
+                    self._wastewater_structure_common_3d(
+                        row, self.model_classes_interlis.klara3d.__tablename__
+                    )
+                )
                 item = self.model_classes_interlis.klara3d(**attrs)
             else:
-                attrs.update(self.wastewater_structure_common(row, self.model_classes_interlis.klara.__tablename__))
+                attrs.update(
+                    self.wastewater_structure_common(
+                        row, self.model_classes_interlis.klara.__tablename__
+                    )
+                )
                 item = self.model_classes_interlis.klara(**attrs)
             self.abwasser_session.add(item)
             print(".", end="")
@@ -2907,7 +2999,7 @@ class InterlisExporterToIntermediateSchema:
 
             if not dss_supported:
                 continue
-            
+
             if self.current_basket:
                 basket = self.current_basket.t_id
             else:
@@ -2944,7 +3036,7 @@ class InterlisExporterToIntermediateSchema:
                 basket = self.current_basket.t_id
             else:
                 basket = None
-            
+
             gebaeudegruppe_entsorgungassoc = self.model_classes_interlis.gebaeudegruppe_entsorgungassoc(
                 # FIELDS TO MAP TO ABWASSER.gebaeudegruppe_entsorgungassoc
                 # --- baseclass ---
@@ -2954,13 +3046,12 @@ class InterlisExporterToIntermediateSchema:
                 # --- gebaeudegruppe_entsorgungassoc ---
                 entsorgungref=self.get_tid(row.fk_disposal__REL),
                 gebaeudegruppe_entsorgungassocref=self.get_tid(row.fk_building_group__REL),
-                t_basket = basket,
+                t_basket=basket,
             )
             self.abwasser_session.add(gebaeudegruppe_entsorgungassoc)
             print(".", end="")
         logger.info("done")
         self.abwasser_session.flush()
-
 
     def get_tid(self, relation):
         """
