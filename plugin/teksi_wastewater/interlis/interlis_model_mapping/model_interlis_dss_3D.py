@@ -7,11 +7,11 @@ class ModelInterlisDss3D(ModelInterlisDss):
     def __init__(self):
         super().__init__()
 
-        class abflusslosetoilette3d(ModelInterlisDss.abflusslose_toilette):
+        class abflusslose_toilette3d(ModelInterlisDss.abflusslose_toilette):
             __tablename__ = "dss_3d__1_lv95siedlngswssrng_3d_abflusslose_toilette"
             __table_args__ = {"schema": config.ABWASSER_SCHEMA}
 
-        ModelInterlisDss3D.abflusslosetoilette3d = abflusslosetoilette3d
+        ModelInterlisDss3D.abflusslose_toilette3d = abflusslose_toilette3d
 
         class arabauwerk3d(ModelInterlisDss.arabauwerk):
             __tablename__ = "dss_3d__1_lv95siedlngswssrng_3d_arabauwerk"

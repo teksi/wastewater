@@ -94,6 +94,7 @@ class InterlisExporterToIntermediateSchema:
             self.abwasser_session.commit()
             self.close_sessions()
         except Exception as e:
+            enhanced_exc = None
             if hasattr(e, "pgcode") and e.pgcode == "23503":  # psycopg2/3
                 enhanced_exc = self.parse_fk_violation(e)
             self.close_sessions()
@@ -115,11 +116,12 @@ class InterlisExporterToIntermediateSchema:
             self._export_sia405_abwasser_base()
 
             if self.model != config.MODEL_NAME_SIA405_BASE_ABWASSER:
-                self._export_sia405_abwasser()
 
                 if self.model == config.MODEL_NAME_SIA405_ABWASSER_3D:
                     self.current_basket = self.basket_topic_sia405_abwasser_3d
-                    self._export_sia405_abwasser_3d()
+                else:
+                    self.current_basket = self.basket_topic_sia405_abwasser
+                self._export_sia405_abwasser()
 
                 if self.model == config.MODEL_NAME_DSS:
                     self.current_basket = self.basket_topic_dss
@@ -127,7 +129,7 @@ class InterlisExporterToIntermediateSchema:
 
                 if self.model == config.MODEL_NAME_DSS_3D:
                     self.current_basket = self.basket_topic_dss_3d
-                    self._export_dss_3d()
+                    self._export_dss()
 
                 if self.model == config.MODEL_NAME_VSA_KEK:
                     self.current_basket = self.basket_topic_kek
@@ -241,39 +243,6 @@ class InterlisExporterToIntermediateSchema:
         self._export_organisation()
         self._check_for_stop()
 
-    def _export_sia405_abwasser_3d(self):
-        if not self.model == config.MODEL_NAME_DSS_3D:
-            self.current_basket = self.basket_topic_sia405_abwasser_3d
-        else:
-            self.current_basket = self.basket_topic_dss_3d
-
-        logger.info("Exporting TWW.channel -> ABWASSER.kanal (3D)")
-        self._export_channel_3d()
-        self._check_for_stop()
-
-        logger.info("Exporting TWW.cover -> ABWASSER.deckel (3D)")
-        self._export_cover_3d()
-        self._check_for_stop()
-
-        logger.info("Exporting TWW.reach -> ABWASSER.haltung (3D)")
-        self._export_reach_3d()
-        self._check_for_stop()
-
-        logger.info("Exporting TWW.manhole -> ABWASSER.normschacht (3D)")
-        self._export_manhole_3d()
-        self._check_for_stop()
-
-        logger.info("Exporting TWW.discharge_point -> ABWASSER.einleitstelle (3D)")
-        self._export_discharge_point_3d()
-        self._check_for_stop()
-
-        logger.info("Exporting TWW.special_structure -> ABWASSER.spezialbauwerk (3D)")
-        self._export_special_structure_3d()
-        self._check_for_stop()
-
-        logger.info("Exporting TWW.infiltration_installation -> ABWASSER.versickerungsanlage (3D)")
-        self._export_infiltration_installation_3d()
-        self._check_for_stop()
 
     def _export_sia405_abwasser(self):
         self.current_basket = self.basket_topic_sia405_abwasser
@@ -354,20 +323,6 @@ class InterlisExporterToIntermediateSchema:
         self._export_flushing_nozzle()
         self._check_for_stop()
 
-    def _export_dss_3d(self):
-        self.current_basket = self.basket_topic_dss_3d
-
-        logger.info("Exporting TWW.wwtp_structure -> ABWASSER.arabauwerk (3D)")
-        self._export_wwtp_structure_3d()
-        self._check_for_stop()
-
-        logger.info("Exporting TWW.small_treatment_plant -> ABWASSER.KLARA (3D)")
-        self._export_small_treatment_plant_3d()
-        self._check_for_stop()
-
-        logger.info("Exporting TWW.drainless_toilet -> ABWASSER.Abflusslose_Toilette (3D)")
-        self._export_drainless_toilet_3d()
-        self._check_for_stop()
 
     def _export_dss(self):
         logger.info(
@@ -644,25 +599,28 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-
-            kanal = self.model_classes_interlis.kanal(
-                # FIELDS TO MAP TO ABWASSER.kanal
-                # --- abwasserbauwerk ---
-                **self.wastewater_structure_common(row, "kanal"),
+            attrs={
+                           # FIELDS TO MAP TO ABWASSER.kanal
                 # --- kanal ---
-                bettung_umhuellung=self.get_vl(row.bedding_encasement__REL),
-                funktionhierarchisch=self.get_vl(row.function_hierarchic__REL),
-                funktionhydraulisch=self.get_vl(row.function_hydraulic__REL),
+                "bettung_umhuellung": self.get_vl(row.bedding_encasement__REL),
+                "funktionhierarchisch": self.get_vl(row.function_hierarchic__REL),
+                "funktionhydraulisch": self.get_vl(row.function_hydraulic__REL),
                 # new attribute funktion_melioration release 2020
-                funktionmelioration=self.get_vl(row.function_amelioration__REL),
-                nutzungsart_geplant=self.get_vl(row.usage_planned__REL),
-                nutzungsart_ist=self.get_vl(row.usage_current__REL),
-                rohrlaenge=row.pipe_length,
+                "funktionmelioration": self.get_vl(row.function_amelioration__REL),
+                "nutzungsart_geplant": self.get_vl(row.usage_planned__REL),
+                "nutzungsart_ist": self.get_vl(row.usage_current__REL),
+                "rohrlaenge": row.pipe_length,
                 # new attribute sickerung release 2020
-                sickerung=self.get_vl(row.seepage__REL),
-                spuelintervall=row.jetting_interval,
-                verbindungsart=self.get_vl(row.connection_type__REL),
-            )
+                "sickerung": self.get_vl(row.seepage__REL),
+                "spuelintervall": row.jetting_interval,
+                "verbindungsart": self.get_vl(row.connection_type__REL),
+            }
+            if self.is_3d_model:
+                attrs.update(self._wastewater_structure_common_3d(row,self.model_classes_interlis.kanal3d.__tablename__))
+                kanal = self.model_classes_interlis.kanal3d(**attrs)
+            else:
+                attrs.update(self.wastewater_structure_common(row, self.model_classes_interlis.kanal.__tablename__))
+                kanal = self.model_classes_interlis.kanal(**attrs)
             self.abwasser_session.add(kanal)
             print(".", end="")
         logger.info("done")
@@ -676,23 +634,28 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-            normschacht = self.model_classes_interlis.normschacht(
-                # --- abwasserbauwerk ---
-                **self.wastewater_structure_common(row, "normschacht"),
-                # --- normschacht ---
-                # new attribute amphibienausstieg Release 2020
-                amphibienausstieg=self.get_vl(row.amphibian_exit__REL),
-                dimension1=row.dimension1,
-                dimension2=row.dimension2,
-                funktion=self.get_vl(row.function__REL),
+            attrs={
+                "amphibienausstieg": self.get_vl(row.amphibian_exit__REL),
+                "dimension1": row.dimension1,
+                "dimension2": row.dimension2,
+                "funktion": self.get_vl(row.function__REL),
                 # new attribute interventionsmoeglichkeit Release 2020
-                interventionsmoeglichkeit=self.get_vl(row.possibility_intervention__REL),
+                "interventionsmoeglichkeit": self.get_vl(row.possibility_intervention__REL),
                 # -- attribute 3D ---
                 # maechtigkeit=row.depth,
-                material=self.get_vl(row.material__REL),
-                oberflaechenzulauf=self.get_vl(row.surface_inflow__REL),
-            )
-            self.abwasser_session.add(normschacht)
+                "material": self.get_vl(row.material__REL),
+                "oberflaechenzulauf": self.get_vl(row.surface_inflow__REL),
+            }
+            if self.is_3d_model:
+                attrs.update(self._wastewater_structure_common_3d(row,self.model_classes_interlis.normschacht3d.__tablename__))
+                attrs.update({
+                    "maechtigkeit": row._depth,
+                    })
+                item = self.model_classes_interlis.normschacht3d(**attrs)
+            else:
+                attrs.update(self.wastewater_structure_common(row, self.model_classes_interlis.normschacht.__tablename__))
+                item = self.model_classes_interlis.normschacht(**attrs)
+            self.abwasser_session.add(item)
             print(".", end="")
         logger.info("done")
         self.abwasser_session.flush()
@@ -705,25 +668,28 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-            einleitstelle = self.model_classes_interlis.einleitstelle(
-                # --- abwasserbauwerk ---
-                **self.wastewater_structure_common(row, "einleitstelle"),
-                # --- einleitstelle ---
-                # -- attribute 3D ---
-                # deckenkote=row.upper_elevation,
-                # new attribute gewaesserabschnitt_kanton Release 2020
-                gewaesserabschnitt_kanton=row.water_course_segment_canton,
+            attrs={
+                "gewaesserabschnitt_kanton": row.water_course_segment_canton,
                 # new attribute gewaesserlaufnummer Release 2020
-                gewaesserlaufnummer=row.water_course_number,
-                hochwasserkote=row.highwater_level,
+                "gewaesserlaufnummer": row.water_course_number,
+                "hochwasserkote": row.highwater_level,
                 # -- attribute 3D ---
-                # maechtigkeit=row.depth,
-                relevanz=self.get_vl(row.relevance__REL),
-                terrainkote=row.terrain_level,
-                wasserspiegel_hydraulik=row.waterlevel_hydraulic,
-            )
-            self.abwasser_session.add(einleitstelle)
-            print(".", end="")
+                # maechtigkeit=row._depth,
+                "relevanz": self.get_vl(row.relevance__REL),
+                "terrainkote": row.terrain_level,
+                "wasserspiegel_hydraulik": row.waterlevel_hydraulic,
+            }
+            if self.is_3d_model:
+                attrs.update(self._wastewater_structure_common_3d(row,self.model_classes_interlis.einleitstelle3d.__tablename__))
+                attrs.update({
+                    "maechtigkeit": row._depth,
+                    "deckenkote": row.upper_elevation,
+                    })
+                item = self.model_classes_interlis.einleitstelle3d(**attrs)
+            else:
+                attrs.update(self.wastewater_structure_common(row, self.model_classes_interlis.einleitstelle.__tablename__))
+                item = self.model_classes_interlis.einleitstelle(**attrs)
+            self.abwasser_session.add(item)
         logger.info("done")
         self.abwasser_session.flush()
 
@@ -735,25 +701,30 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-            spezialbauwerk = self.model_classes_interlis.spezialbauwerk(
-                # FIELDS TO MAP TO ABWASSER.spezialbauwerk
-                # --- abwasserbauwerk ---
-                **self.wastewater_structure_common(row, "spezialbauwerk"),
-                # --- spezialbauwerk ---
-                # new attribute amphibienausstieg Release 2020
-                amphibienausstieg=self.get_vl(row.amphibian_exit__REL),
-                bypass=self.get_vl(row.bypass__REL),
+            attrs={
+                "amphibienausstieg": self.get_vl(row.amphibian_exit__REL),
+                "bypass": self.get_vl(row.bypass__REL),
                 # -- attribute 3D ---
-                # deckenkote=row.upper_elevation,
-                funktion=self.get_vl(row.function__REL),
+                # deckenkote": row.upper_elevation,
+                "funktion": self.get_vl(row.function__REL),
                 # new attribute interventionsmoeglichkeit Release 2020
-                interventionsmoeglichkeit=self.get_vl(row.possibility_intervention__REL),
+                "interventionsmoeglichkeit": self.get_vl(row.possibility_intervention__REL),
                 # -- attribute 3D ---
-                # maechtigkeit=row.depth,
-                notueberlauf=self.get_vl(row.emergency_overflow__REL),
-                regenbecken_anordnung=self.get_vl(row.stormwater_tank_arrangement__REL),
-            )
-            self.abwasser_session.add(spezialbauwerk)
+                # maechtigkeit": row._depth,
+                "notueberlauf": self.get_vl(row.emergency_overflow__REL),
+                "regenbecken_anordnung": self.get_vl(row.stormwater_tank_arrangement__REL),
+            }
+            if self.is_3d_model:
+                attrs.update(self._wastewater_structure_common_3d(row,self.model_classes_interlis.spezialbauwerk3d.__tablename__))
+                attrs.update({
+                    "maechtigkeit": row._depth,
+                    "deckenkote": row.upper_elevation,
+                    })
+                item = self.model_classes_interlis.spezialbauwerk3d(**attrs)
+            else:
+                attrs.update(self.wastewater_structure_common(row, self.model_classes_interlis.spezialbauwerk.__tablename__))
+                item = self.model_classes_interlis.spezialbauwerk(**attrs)
+            self.abwasser_session.add(item)
             print(".", end="")
         logger.info("done")
         self.abwasser_session.flush()
@@ -766,32 +737,37 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-            versickerungsanlage = self.model_classes_interlis.versickerungsanlage(
-                # FIELDS TO MAP TO ABWASSER.versickerungsanlage
-                # --- abwasserbauwerk ---
-                **self.wastewater_structure_common(row, "versickerungsanlage"),
-                # --- versickerungsanlage ---
-                # TODO : NOT MAPPED : upper_elevation
-                art=self.get_vl(row.kind__REL),
-                beschriftung=self.get_vl(row.labeling__REL),
+            attrs={
+                "art": self.get_vl(row.kind__REL),
+                "beschriftung": self.get_vl(row.labeling__REL),
                 # -- attribute 3D ---
-                # deckenkote=row.upper_elevation,
-                dimension1=row.dimension1,
-                dimension2=row.dimension2,
-                gwdistanz=row.distance_to_aquifer,
+                # deckenkote": row.upper_elevation,
+                "dimension1": row.dimension1,
+                "dimension2": row.dimension2,
+                "gwdistanz": row.distance_to_aquifer,
                 # -- attribute 3D ---
-                # maechtigkeit=row.depth,
+                # maechtigkeit": row.depth,
                 # neues attribut fuellmaterial release 2020
-                fuellmaterial=self.get_vl(row.filling_material__REL),
-                maengel=self.get_vl(row.defects__REL),
-                notueberlauf=self.get_vl(row.emergency_overflow__REL),
-                saugwagen=self.get_vl(row.vehicle_access__REL),
-                schluckvermoegen=row.absorption_capacity,
-                versickerungswasser=self.get_vl(row.seepage_utilization__REL),
-                wasserdichtheit=self.get_vl(row.watertightness__REL),
-                wirksameflaeche=row.effective_area,
-            )
-            self.abwasser_session.add(versickerungsanlage)
+                "fuellmaterial": self.get_vl(row.filling_material__REL),
+                "maengel": self.get_vl(row.defects__REL),
+                "notueberlauf": self.get_vl(row.emergency_overflow__REL),
+                "saugwagen": self.get_vl(row.vehicle_access__REL),
+                "schluckvermoegen": row.absorption_capacity,
+                "versickerungswasser": self.get_vl(row.seepage_utilization__REL),
+                "wasserdichtheit": self.get_vl(row.watertightness__REL),
+                "wirksameflaeche": row.effective_area,
+            }
+            if self.is_3d_model:
+                attrs.update(self._wastewater_structure_common_3d(row,self.model_classes_interlis.versickerungsanlage3d.__tablename__))
+                attrs.update({
+                    "maechtigkeit": row._depth,
+                    "deckenkote": row.upper_elevation,
+                    })
+                item = self.model_classes_interlis.versickerungsanlage3d(**attrs)
+            else:
+                attrs.update(self.wastewater_structure_common(row, self.model_classes_interlis.versickerungsanlage.__tablename__))
+                item = self.model_classes_interlis.versickerungsanlage(**attrs)
+            self.abwasser_session.add(item)
             print(".", end="")
         logger.info("done")
         self.abwasser_session.flush()
@@ -982,52 +958,43 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-            # AVAILABLE FIELDS IN TWW.reach
-
-            # --- wastewater_networkelement ---
-            # fk_dataowner, fk_provider, fk_wastewater_structure, identifier, last_modification, remark
-
-            # --- reach ---
-            # clear_height, coefficient_of_friction, elevation_determination, fk_pipe_profile, fk_reach_point_from, fk_reach_point_to, horizontal_positioning, inside_coating, length_effective, material, obj_id, progression3d_geometry, reliner_material, reliner_nominal_size, relining_construction, relining_kind, ring_stiffness, slope_building_plan, wall_roughness
-
-            # --- _bwrel_ ---
-            # catchment_area__BWREL_fk_wastewater_networkelement_rw_current, catchment_area__BWREL_fk_wastewater_networkelement_rw_planned, catchment_area__BWREL_fk_wastewater_networkelement_ww_current, catchment_area__BWREL_fk_wastewater_networkelement_ww_planned, connection_object__BWREL_fk_wastewater_networkelement, reach_point__BWREL_fk_wastewater_networkelement, reach_text__BWREL_fk_reach, txt_text__BWREL_fk_reach
-
-            # --- _rel_ ---
-            # elevation_determination__REL, fk_dataowner__REL, fk_pipe_profile__REL, fk_provider__REL, fk_reach_point_from__REL, fk_reach_point_to__REL, fk_wastewater_structure__REL, horizontal_positioning__REL, inside_coating__REL, material__REL, reliner_material__REL, relining_construction__REL, relining_kind__REL
-
-            haltung = self.model_classes_interlis.haltung(
-                # FIELDS TO MAP TO ABWASSER.haltung
-                # --- abwassernetzelement ---
-                **self.wastewater_networkelement_common(row, "haltung"),
-                # --- haltung ---
-                # new attribute fliesszeit_trockenwetter release 2020
-                fliesszeit_trockenwetter=row.flow_time_dry_weather,
+            attrs={
+                "fliesszeit_trockenwetter": row.flow_time_dry_weather,
                 # -- attribute 3D ---
-                #  hoehenbestimmung=self.get_vl(row.elevation_determination__REL),
+                #  hoehenbestimmung": self.get_vl(row.elevation_determination__REL),
                 # new attribute hydr_belastung_ist release 2020
-                hydr_belastung_ist=row.hydraulic_load_current,
-                innenschutz=self.get_vl(row.inside_coating__REL),
-                laengeeffektiv=row.length_effective,
-                lagebestimmung=self.get_vl(row.horizontal_positioning__REL),
+                "hydr_belastung_ist": row.hydraulic_load_current,
+                "innenschutz": self.get_vl(row.inside_coating__REL),
+                "laengeeffektiv": row.length_effective,
+                "lagebestimmung": self.get_vl(row.horizontal_positioning__REL),
                 # new attribute leckschutz release 2020
-                leckschutz=self.get_vl(row.leak_protection__REL),
-                lichte_hoehe=row.clear_height,
-                material=self.get_vl(row.material__REL),
-                nachhaltungspunktref=self.get_tid(row.fk_reach_point_to__REL),
-                plangefaelle=row.slope_building_plan,  # TODO : check, does this need conversion ?
-                reibungsbeiwert=row.coefficient_of_friction,
-                reliner_art=self.get_vl(row.relining_kind__REL),
-                reliner_bautechnik=self.get_vl(row.relining_construction__REL),
-                reliner_material=self.get_vl(row.reliner_material__REL),
-                reliner_nennweite=row.reliner_nominal_size,
-                ringsteifigkeit=row.ring_stiffness,
-                rohrprofilref=self.get_tid(row.fk_pipe_profile__REL),
-                verlauf=ST_Force2D(row.progression3d_geometry),
-                vonhaltungspunktref=self.get_tid(row.fk_reach_point_from__REL),
-                wandrauhigkeit=row.wall_roughness,
-            )
-            self.abwasser_session.add(haltung)
+                "leckschutz": self.get_vl(row.leak_protection__REL),
+                "lichte_hoehe": row.clear_height,
+                "material": self.get_vl(row.material__REL),
+                "nachhaltungspunktref": self.get_tid(row.fk_reach_point_to__REL),
+                "plangefaelle": row.slope_building_plan,  # TODO : check, does this need conversion ?
+                "reibungsbeiwert": row.coefficient_of_friction,
+                "reliner_art": self.get_vl(row.relining_kind__REL),
+                "reliner_bautechnik": self.get_vl(row.relining_construction__REL),
+                "reliner_material": self.get_vl(row.reliner_material__REL),
+                "reliner_nennweite": row.reliner_nominal_size,
+                "ringsteifigkeit": row.ring_stiffness,
+                "rohrprofilref": self.get_tid(row.fk_pipe_profile__REL),
+                "verlauf": ST_Force2D(row.progression3d_geometry),
+                "vonhaltungspunktref": self.get_tid(row.fk_reach_point_from__REL),
+                "wandrauhigkeit": row.wall_roughness,
+            }
+            if self.is_3d_model:
+                attrs.update(self.wastewater_networkelement_common(row,self.model_classes_interlis.haltung3d.__tablename__))
+                attrs.update({
+                    "verlauf3d": row.progression3d_geometry,
+                    "hoehenbestimmung": self.get_vl(row.elevation_determination__REL),
+                    })
+                item = self.model_classes_interlis.haltung3d(**attrs)
+            else:
+                attrs.update(self.wastewater_networkelement_common(row, self.model_classes_interlis.haltung.__tablename__))
+                item = self.model_classes_interlis.haltung(**attrs)
+            self.abwasser_session.add(item)
             print(".", end="")
         logger.info("done")
         self.abwasser_session.flush()
@@ -1178,39 +1145,30 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-            # AVAILABLE FIELDS IN TWW.cover
-
-            # --- structure_part ---
-            # fk_dataowner, fk_provider, fk_wastewater_structure, identifier, last_modification, remark, renovation_demand
-
-            # --- cover ---
-            # brand, cover_shape, diameter, fastening, level, material, obj_id, positional_accuracy, situation3d_geometry, sludge_bucket, venting
-
-            # --- _bwrel_ ---
-            # access_aid_kind__BWREL_obj_id, backflow_prevention__BWREL_obj_id, benching_kind__BWREL_obj_id, dryweather_flume_material__BWREL_obj_id, electric_equipment__BWREL_obj_id, electromechanical_equipment__BWREL_obj_id, solids_retention__BWREL_obj_id, flushing_nozzle__BWREL_obj_id, tank_cleaning__BWREL_obj_id, tank_emptying__BWREL_obj_id, wastewater_structure__BWREL_fk_main_cover
-
-            # --- _rel_ ---
-            # cover_shape__REL, fastening__REL, fk_dataowner__REL, fk_provider__REL, fk_wastewater_structure__REL, material__REL, positional_accuracy__REL, renovation_demand__REL, sludge_bucket__REL, venting__REL
-
-            deckel = self.model_classes_interlis.deckel(
-                # FIELDS TO MAP TO ABWASSER.deckel
-                # --- bauwerksteil ---
-                **self.structure_part_common(row, "deckel"),
-                # --- deckel ---
-                deckelform=self.get_vl(row.cover_shape__REL),
-                durchmesser=row.diameter,
-                entlueftung=self.get_vl(row.venting__REL),
-                fabrikat=row.brand,
-                kote=row.level,
-                lage=ST_Force2D(row.situation3d_geometry),
-                lagegenauigkeit=self.get_vl(row.positional_accuracy__REL),
+            attrs={
+                "deckelform": self.get_vl(row.cover_shape__REL),
+                "durchmesser": row.diameter,
+                "entlueftung": self.get_vl(row.venting__REL),
+                "fabrikat": row.brand,
+                "kote": row.level,
+                "lage": ST_Force2D(row.situation3d_geometry),
+                "lagegenauigkeit": self.get_vl(row.positional_accuracy__REL),
                 # -- attribute 3D ---
-                # maechtigkeit=row.depth,
-                material=self.get_vl(row.material__REL),
-                schlammeimer=self.get_vl(row.sludge_bucket__REL),
-                verschluss=self.get_vl(row.fastening__REL),
-            )
-            self.abwasser_session.add(deckel)
+                # maechtigkeit": row.depth,
+                "material": self.get_vl(row.material__REL),
+                "schlammeimer": self.get_vl(row.sludge_bucket__REL),
+                "verschluss": self.get_vl(row.fastening__REL),
+            }
+            if self.is_3d_model:
+                attrs.update(self.structure_part_common(row,self.model_classes_interlis.deckel3d.__tablename__))
+                attrs.update({
+                    "maechtigkeit": row._depth,
+                    })
+                item = self.model_classes_interlis.deckel3d(**attrs)
+            else:
+                attrs.update(self.structure_part_common(row, self.model_classes_interlis.deckel.__tablename__))
+                item = self.model_classes_interlis.deckel(**attrs)
+            self.abwasser_session.add(item)
             print(".", end="")
         logger.info("done")
         self.abwasser_session.flush()
@@ -1425,14 +1383,17 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-            arabauwerk = self.model_classes_interlis.arabauwerk(
-                # --- bauwerksteil ---
-                **self.wastewater_structure_common(row, "arabauwerk"),
-                # --- arabauwerk ---
-                art=self.get_vl(row.kind__REL),
-                abwasserreinigungsanlageref=self.get_tid(row.fk_waste_water_treatment_plant__REL),
-            )
-            self.abwasser_session.add(arabauwerk)
+            attrs={
+                "art": self.get_vl(row.kind__REL),
+                "abwasserreinigungsanlageref": self.get_tid(row.fk_waste_water_treatment_plant__REL),
+            }
+            if self.is_3d_model:
+                attrs.update(self._wastewater_structure_common_3d(row,self.model_classes_interlis.arabauwerk3d.__tablename__))
+                item = self.model_classes_interlis.arabauwerk3d(**attrs)
+            else:
+                attrs.update(self.wastewater_structure_common(row, self.model_classes_interlis.arabauwerk.__tablename__))
+                item = self.model_classes_interlis.arabauwerk(**attrs)
+            self.abwasser_session.add(item)
             print(".", end="")
         logger.info("done")
         self.abwasser_session.flush()
@@ -1469,12 +1430,16 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-            abflusslose_toilette = self.model_classes_interlis.abflusslose_toilette(
-                **self.wastewater_structure_common(row, "abflusslose_toilette"),
-                # --- drainless_toilet ---
-                art=self.get_vl(row.kind__REL),
-            )
-            self.abwasser_session.add(abflusslose_toilette)
+            attrs={
+                "art": self.get_vl(row.kind__REL),
+            }
+            if self.is_3d_model:
+                attrs.update(self._wastewater_structure_common_3d(row,self.model_classes_interlis.abflusslose_toilette3d.__tablename__))
+                item = self.model_classes_interlis.abflusslose_toilette3d(**attrs)
+            else:
+                attrs.update(self.wastewater_structure_common(row, self.model_classes_interlis.abflusslose_toilette.__tablename__))
+                item = self.model_classes_interlis.abflusslose_toilette(**attrs)
+            self.abwasser_session.add(item)
             print(".", end="")
         logger.info("done")
         self.abwasser_session.flush()
@@ -2196,15 +2161,19 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-            klara = self.model_classes_interlis.klara(
-                **self.wastewater_structure_common(row, "klara"),
-                # --- small_treatment_plant ---
-                bewilligungsnummer=row.approval_number,
-                funktion=self.get_vl(row.function__REL),
-                anlagenummer=row.installation_number,
-                fernueberwachung=self.get_vl(row.remote_monitoring__REL),
-            )
-            self.abwasser_session.add(klara)
+            attrs={
+                "bewilligungsnummer": row.approval_number,
+                "funktion": self.get_vl(row.function__REL),
+                "anlagenummer": row.installation_number,
+                "fernueberwachung": self.get_vl(row.remote_monitoring__REL),
+            }
+            if self.is_3d_model:
+                attrs.update(self._wastewater_structure_common_3d(row,self.model_classes_interlis.klara3d.__tablename__))
+                item = self.model_classes_interlis.klara3d(**attrs)
+            else:
+                attrs.update(self.wastewater_structure_common(row, self.model_classes_interlis.klara.__tablename__))
+                item = self.model_classes_interlis.klara(**attrs)
+            self.abwasser_session.add(item)
             print(".", end="")
         logger.info("done")
         self.abwasser_session.flush()
@@ -2942,11 +2911,16 @@ class InterlisExporterToIntermediateSchema:
 
             if not dss_supported:
                 continue
-
+            
+            if self.current_basket:
+                basket = self.current_basket.t_id
+            else:
+                basket = None
             erhaltungsereignis_abwasserbauwerkassoc = self.model_classes_interlis.erhaltungsereignis_abwasserbauwerkassoc(
                 # FIELDS TO MAP TO ABWASSER.erhaltungsereignis_abwasserbauwerkassoc
                 # this class does not inherit vsa_base_common
                 # --- erhaltungsereignis_abwasserbauwerkassoc ---
+                t_basket=basket,
                 abwasserbauwerkref=self.get_tid(row.fk_wastewater_structure__REL),
                 erhaltungsereignis_abwasserbauwerkassocref=self.get_tid(
                     row.fk_maintenance_event__REL
@@ -2970,6 +2944,11 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
+            if self.current_basket:
+                basket = self.current_basket.t_id
+            else:
+                basket = None
+            
             gebaeudegruppe_entsorgungassoc = self.model_classes_interlis.gebaeudegruppe_entsorgungassoc(
                 # FIELDS TO MAP TO ABWASSER.gebaeudegruppe_entsorgungassoc
                 # --- baseclass ---
@@ -2979,192 +2958,13 @@ class InterlisExporterToIntermediateSchema:
                 # --- gebaeudegruppe_entsorgungassoc ---
                 entsorgungref=self.get_tid(row.fk_disposal__REL),
                 gebaeudegruppe_entsorgungassocref=self.get_tid(row.fk_building_group__REL),
+                t_basket = basket,
             )
             self.abwasser_session.add(gebaeudegruppe_entsorgungassoc)
             print(".", end="")
         logger.info("done")
         self.abwasser_session.flush()
 
-    def _export_channel_3d(self):
-        query = self.tww_session.query(self.model_classes_tww_od.channel)
-        if self.filtered:
-            query = query.join(self.model_classes_tww_od.wastewater_networkelement).filter(
-                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
-            )
-            logger.info(f"Selection query: {query.statement}")
-        for row in query:
-            input = self.model_classes_interlis.kanal3d(
-                **self._wastewater_structure_common_3d(row)
-            )
-            self.abwasser_session.add(input)
-            print(".", end="")
-        logger.info("done")
-        self.abwasser_session.flush()
-
-    def _export_manhole_3d(self):
-        query = self.tww_session.query(self.model_classes_tww_od.manhole)
-        if self.filtered:
-            query = query.join(self.model_classes_tww_od.wastewater_networkelement).filter(
-                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
-            )
-            logger.info(f"Selection query: {query.statement}")
-        for row in query:
-            input = self.model_classes_interlis.normschacht3d(
-                **self._wastewater_structure_common_3d(row),
-                maechtigkeit=row.depth,
-                hoehenbestimmung=self.get_vl(row.elevation_determination__REL),
-            )
-            self.abwasser_session.add(input)
-            print(".", end="")
-        logger.info("done")
-        self.abwasser_session.flush()
-
-    def _export_special_structure_3d(self):
-        query = self.tww_session.query(self.model_classes_tww_od.manhole)
-        if self.filtered:
-            query = query.join(self.model_classes_tww_od.wastewater_networkelement).filter(
-                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
-            )
-            logger.info(f"Selection query: {query.statement}")
-        for row in query:
-            input = self.model_classes_interlis.spezialbauwerk3d(
-                **self._wastewater_structure_common_3d(row),
-                maechtigkeit=row.depth,
-                deckenkote=row.upper_elevation,
-                hoehenbestimmung=self.get_vl(row.elevation_determination__REL),
-            )
-            self.abwasser_session.add(input)
-            print(".", end="")
-        logger.info("done")
-        self.abwasser_session.flush()
-
-    def _export_infiltration_installation_3d(self):
-        query = self.tww_session.query(self.model_classes_tww_od.infiltration_installation)
-        if self.filtered:
-            query = query.join(self.model_classes_tww_od.wastewater_networkelement).filter(
-                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
-            )
-            logger.info(f"Selection query: {query.statement}")
-        for row in query:
-            input = self.model_classes_interlis.versickerungsanlage3d(
-                **self._wastewater_structure_common_3d(row),
-                maechtigkeit=row.depth,
-                deckenkote=row.upper_elevation,
-                hoehenbestimmung=self.get_vl(row.elevation_determination__REL),
-            )
-            self.abwasser_session.add(input)
-            print(".", end="")
-
-    def _export_discharge_point_3d(self):
-        query = self.tww_session.query(self.model_classes_tww_od.discharge_point)
-        if self.filtered:
-            query = query.join(self.model_classes_tww_od.wastewater_networkelement).filter(
-                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
-            )
-            logger.info(f"Selection query: {query.statement}")
-        for row in query:
-            input = self.model_classes_interlis.einleitstelle3d(
-                **self._wastewater_structure_common_3d(row),
-                maechtigkeit=row.depth,
-                deckenkote=row.upper_elevation,
-                hoehenbestimmung=self.get_vl(row.elevation_determination__REL),
-            )
-            self.abwasser_session.add(input)
-            print(".", end="")
-        logger.info("done")
-
-    def _export_small_treatment_plant_3d(self):
-        query = self.tww_session.query(self.model_classes_tww_od.mall_treatment_plant)
-        if self.filtered:
-            query = query.join(self.model_classes_tww_od.wastewater_networkelement).filter(
-                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
-            )
-            logger.info(f"Selection query: {query.statement}")
-        for row in query:
-            input = self.model_classes_interlis.klara3d(
-                **self._wastewater_structure_common_3d(row),
-                maechtigkeit=row.depth,
-                hoehenbestimmung=self.get_vl(row.elevation_determination__REL),
-            )
-            self.abwasser_session.add(input)
-            print(".", end="")
-        logger.info("done")
-        self.abwasser_session.flush()
-
-    def _export_wwtp_structure_3d(self):
-        query = self.tww_session.query(self.model_classes_tww_od.wwtp_structure)
-        if self.filtered:
-            query = query.join(self.model_classes_tww_od.wastewater_networkelement).filter(
-                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
-            )
-            logger.info(f"Selection query: {query.statement}")
-        for row in query:
-            input = self.model_classes_interlis.arabauwerk3d(
-                **self._wastewater_structure_common_3d(row),
-                maechtigkeit=row.depth,
-                hoehenbestimmung=self.get_vl(row.elevation_determination__REL),
-            )
-            self.abwasser_session.add(input)
-            print(".", end="")
-        logger.info("done")
-        self.abwasser_session.flush()
-
-    def _export_drainless_toilet_3d(self):
-        query = self.tww_session.query(self.model_classes_tww_od.drainless_toilet)
-        if self.filtered:
-            query = query.join(self.model_classes_tww_od.wastewater_networkelement).filter(
-                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
-            )
-            logger.info(f"Selection query: {query.statement}")
-        for row in query:
-            input = self.model_classes_interlis.abflusslosetoilette3d(
-                **self._wastewater_structure_common_3d(row),
-                maechtigkeit=row.depth,
-                hoehenbestimmung=self.get_vl(row.elevation_determination__REL),
-            )
-            self.abwasser_session.add(input)
-            print(".", end="")
-        logger.info("done")
-        self.abwasser_session.flush()
-
-    def _export_cover_3d(self):
-        query = self.tww_session.query(self.model_classes_tww_od.cover)
-        if self.filtered:
-            query = (
-                query.join(self.model_classes_tww_od.wastewater_structure)
-                .join(self.model_classes_tww_od.wastewater_networkelement)
-                .filter(
-                    self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
-                )
-            )
-            logger.info(f"Selection query: {query.statement}")
-        for row in query:
-            input = self.model_classes_interlis.deckel3d(
-                **self._3d_common(row),
-                maechtigkeit=row.depth,
-            )
-            self.abwasser_session.add(input)
-            print(".", end="")
-        logger.info("done")
-        self.abwasser_session.flush()
-
-    def _export_reach_3d(self):
-        query = self.tww_session.query(self.model_classes_tww_od.reach)
-        if self.filtered:
-            query = query.join(self.model_classes_tww_od.wastewater_networkelement).filter(
-                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
-            )
-            logger.info(f"Selection query: {query.statement}")
-        for row in query:
-            input = self.model_classes_interlis.haltung3d(
-                **self._3d_common(row),
-                verlauf3d=row.progression3d_geometry,
-                hoehenbestimmung=self.get_vl(row.elevation_determination__REL),
-            )
-            self.abwasser_session.add(input)
-            print(".", end="")
-        logger.info("done")
-        self.abwasser_session.flush()
 
     def get_tid(self, relation):
         """
@@ -3318,23 +3118,11 @@ class InterlisExporterToIntermediateSchema:
 
         return instance.prefix
 
-    def _3d_common(self, row):
-        """
-        Returns common attributes for base
-        """
-        base = {
-            "t_id": self.get_tid(row),
-        }
-        if self.current_basket:
-            base["t_basket"] = self.current_basket.t_id
-
-        return base
-
-    def _wastewater_structure_common_3d(self, row):
+    def _wastewater_structure_common_3d(self, row, type_name):
         return {
+            **self.wastewater_structure_common(row, type_name),
             "detailgeometrie3d": row.detail_geometry3d_geometry,
             "hoehenbestimmung": self.get_vl(row.elevation_determination__REL),
-            **self._3d_common(row),
         }
 
     def base_common(self, row, type_name):
