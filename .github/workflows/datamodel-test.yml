@@ -21,15 +21,55 @@ on:
 
 
 jobs:
+  version-tests:
+    if: github.event_name == 'pull_request'
+    name: Check versioning
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+
+      - name: Check changelog versions
+        run: |
+          LATEST_RELEASE=$(gh release view --json tagName -q .tagName | cut -d. -f1-2)
+          echo "Latest release: $LATEST_RELEASE"
+          if [ -z "$LATEST_RELEASE" ]; then
+            echo "No release found."
+            exit 1
+          fi
+
+          MODIFIED_FILES=$(git diff --name-only HEAD^1 HEAD)
+          echo "*** Modified files:"
+          echo "$MODIFIED_FILES"
+
+          MODIFIED_CHANGELOGS=$(echo "$MODIFIED_FILES" | grep "^datamodel/changelogs/" || true)
+          echo "Modified changelog files:"
+          echo "$MODIFIED_CHANGELOGS"
+
+          if [ -n "$MODIFIED_CHANGELOGS" ]; then
+            for file in $MODIFIED_CHANGELOGS; do
+              DIR=$(echo "$file" | cut -d'/' -f3)
+              if (( $(echo "$DIR <= ${LATEST_RELEASE}" | bc -l) )); then
+                echo "❌ Error: Changelogs are modified in an already existing release directory: $DIR"
+                exit 1
+              fi
+            done
+          fi
+          echo "✅ Changelog versions are valid"
+
   datamodel-tests:
     name: Run unit tests on datamodel
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
 
     env:
-      DOCKER_TAG: teksi/tww:unstable
-      DB_NAME: tww
-      PG_SERVICE: pg_tww
       DEMO_DATA: Aletsch
+      PGSERVICE: pg_tww
+      DB_NAME: tww
+      RUN_TESTS: True
 
     strategy:
       fail-fast: false
@@ -37,51 +77,50 @@ jobs:
         include:
         - modification_ci: false
           modification_agxx: false
+          webgis: false
 
         - modification_ci: true
           modification_agxx: false
+          webgis: false
 
         - modification_ci: false
           modification_agxx: true
+          webgis: false
+
+        - modification_ci: false
+          modification_agxx: false
+          webgis: true
 
     steps:
-      - uses: actions/checkout@v5
-
-      - name: "build dockerfile"
-        run: |
-          docker build -f datamodel/.docker/Dockerfile \
-            --build-arg RUN_TEST=True \
-            --build-arg DB_NAME=${DB_NAME} \
-            --build-arg PG_SERVICE=${PG_SERVICE} \
-            --build-arg TEST_PACKAGES="${TEST_PACKAGES}" \
-            --tag ${DOCKER_TAG} .
+      - uses: actions/checkout@v6
 
       - name: Initialize container
         run: |
-          docker run -d -p 5432:5432 -v $(pwd):/usr/src --name pum_db_container ${DOCKER_TAG}
-          until docker exec pum_db_container pg_isready -U postgres; do
+          docker compose up --build -d
+          until docker compose exec db pg_isready -U postgres; do
             echo "Waiting for PostgreSQL to be ready..."
             sleep 2
           done
           # create the database
-          docker exec pum_db_container sh -c "createdb ${DB_NAME}"
-          docker exec pum_db_container \
-              pum -vvv -s ${PG_SERVICE} -d datamodel install \
+          docker compose exec db createdb -U postgres ${DB_NAME}
+          docker compose run pum \
+              -vvv -p ${PGSERVICE} -d datamodel install \
               -p modification_ci ${{ matrix.modification_ci}} \
               -p modification_agxx ${{ matrix.modification_agxx}} \
-              -p SRID 2056 --roles --grant
+              -p webgis ${{ matrix.webgis}} \
+              -p SRID 2056
 
       - name: Run tests
-        run:  docker exec pum_db_container pytest datamodel
+        run:  docker compose run --entrypoint pytest pum datamodel
 
       - name: Docker logs
         if: failure()
-        run: docker logs pum_db_container
+        run: docker compose logs pum
 
   static-tests:
     name: Run static tests on datamodel
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - run: ./datamodel/test/static_tests.sh

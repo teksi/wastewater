@@ -25,7 +25,7 @@ jobs:
   datamodel-documentation:
     # Skip generating datamodel docs on PRs labeled PR-fast-doc
     if: ${{ !(github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'PR-fast-doc')) }}
-    uses: ./.github/workflows/datamodel-create-dumps.yml
+    uses: ./.github/workflows/datamodel-dumps-documentation.yml
 
   build:
     needs: datamodel-documentation
@@ -34,7 +34,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: install requirements
         working-directory: docs
@@ -70,7 +70,7 @@ jobs:
       - name: copy datamodel documentation
         # Download artifact only if datamodel step ran (i.e., not a fast-doc PR)
         if: ${{ !(github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'PR-fast-doc')) }}
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: datamodel-schemaspy
           path: docs/_static/datamodel
@@ -81,7 +81,7 @@ jobs:
           make html
           touch build/html/.nojekyll
 
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v6
         with:
           name: documentation
           path: docs/build/html

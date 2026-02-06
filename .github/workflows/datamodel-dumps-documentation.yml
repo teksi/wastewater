@@ -13,7 +13,7 @@ on:
       - main
     paths:
       - datamodel/**
-      - '.github/workflows/datamodel-create-dumps.yml'
+      - '.github/workflows/datamodel-dumps-documentation.yml'
   workflow_dispatch:
   workflow_call: # Allows this workflow to be called by other workflows
       inputs:
@@ -27,8 +27,11 @@ on:
 jobs:
   datamodel-dumps:
     name: Create dumps and schemaspy of datamodel
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     env:
+      PGSERVICE: pg_tww
+      DB_NAME: tww
+      DEMO_DATA: Aletsch
       COMPOSE_PROFILES: schemaspy
       COMPOSE_PROJECT_NAME: wastewater
 
@@ -36,25 +39,33 @@ jobs:
       fail-fast: false
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Setup env
         run: cp .env.example .env
 
-      - name: Docker build
-        run: docker compose up -d --build
-
       - name: Initialize container
         run: |
+          docker compose up -d --build
           until docker compose exec db pg_isready -U postgres; do
             echo "Waiting for PostgreSQL to be ready..."
-            sleep 2
+            sleep 3
           done
-          docker compose exec db createdb -U postgres tww
-          docker compose exec db pum -vvv -s pg_tww -d datamodel install -p SRID 2056 --roles --grant
+          docker compose exec db createdb -U postgres ${DB_NAME}
+          docker compose exec db createdb -U postgres ${DB_NAME}_demo
+          docker compose run pum -vvv -p ${PGSERVICE} -d datamodel install -p SRID 2056
+          docker compose run pum -vvv -p ${PGSERVICE}_demo -d datamodel install -p SRID 2056 --demo-data ${DEMO_DATA}
 
       - name: Create dumps
-        run: docker compose exec db /usr/src/datamodel/scripts/create-dumps.py
+        run: |
+          VERSION=${{ inputs.release_tag || github.event.release.tag_name || 'dev' }}
+          docker compose exec db pg_dump -U postgres --format custom --exclude-schema=public --blobs --compress 5 --file /dump/${DB_NAME}-${VERSION}-db-dump.backup ${DB_NAME}
+          docker compose exec db pg_dump -U postgres --format plain --exclude-schema=public --file /dump/${DB_NAME}-${VERSION}-db-dump.sql ${DB_NAME}
+          docker compose exec db pg_dump -U postgres --format plain --schema=${DB_NAME}_app --file /dump/${DB_NAME}-${VERSION}-db-app.sql ${DB_NAME}
+          docker compose exec db pg_dump -U postgres --format custom --exclude-schema=public --blobs --compress 5 --file /dump/${DB_NAME}-${VERSION}-db-dump-with-demo.backup ${DB_NAME}_demo
+          docker compose exec db pg_dump -U postgres --format plain --exclude-schema=public --file /dump/${DB_NAME}-${VERSION}-db-dump-with-demo.sql ${DB_NAME}_demo
+          mkdir -p datamodel/artifacts/
+          docker compose cp db:/dump/. ./datamodel/artifacts/
 
       - name: Schemaspy
         run:  docker compose up schemaspy
@@ -63,13 +74,13 @@ jobs:
         if: failure()
         run: docker compose logs db
 
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v6
         with:
           name: datamodel-dumps
           path: datamodel/artifacts/
           if-no-files-found: error
 
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v6
         with:
           name: datamodel-schemaspy
           path: datamodel/schemaspy/

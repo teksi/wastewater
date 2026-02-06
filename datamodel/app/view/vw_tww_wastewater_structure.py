@@ -256,14 +256,21 @@ def vw_tww_wastewater_structure(
 
     {insert_wn}
 
-
-      CASE WHEN NOT tww_app.check_all_nulls(to_jsonb(NEW),'co') THEN -- no cover entries
+    CASE WHEN NOT tww_app.check_all_nulls(to_jsonb(NEW),'co') THEN -- at least one field starting with 'co_' is not null
+      IF EXISTS (
+        SELECT 1
+        FROM tww_od.structure_part
+        WHERE identifier = COALESCE(NULLIF(NEW.co_identifier,''), NEW.identifier)
+      ) THEN
+        PERFORM pg_notify('vw_tww_ws_cover_exists', format('Wastewater Structure %s: cover with identifier %s already exists. Inserting cover aborted.',NEW.identifier, COALESCE(NULLIF(NEW.co_identifier,''), NEW.identifier)));
+      ELSE
         {insert_vw_cover}
+      END IF;
 
-     ELSE
-       NEW.co_obj_id=NULL;
-       PERFORM pg_notify('vw_tww_ws_no_cover', format('Wastewater Structure %s: no cover created. If you want to add a cover please fill in at least one cover attribute value.',NEW.identifier));
-       RAISE WARNING 'Wastewater Structure %: no cover created as all cover-related columns are NULL. If you want to add a cover please fill in at least one cover attribute value.', NEW.identifier; -- Warning
+    ELSE
+      NEW.co_obj_id=NULL;
+      PERFORM pg_notify('vw_tww_ws_no_cover', format('Wastewater Structure %s: no cover created. If you want to add a cover please fill in at least one cover attribute value.',NEW.identifier));
+      RAISE WARNING 'Wastewater Structure %: no cover created as all cover-related columns are NULL. If you want to add a cover please fill in at least one cover attribute value.', NEW.identifier; -- Warning
     END CASE;
 
     UPDATE tww_od.wastewater_structure
@@ -402,10 +409,24 @@ def vw_tww_wastewater_structure(
       dy float;
     BEGIN
 
+    IF NULLIF(NEW.identifier, '') IS NOT NULL THEN
+      IF NULLIF(OLD.identifier, '') IS NOT NULL AND OLD.identifier = OLD.co_identifier AND NEW.co_identifier = OLD.co_identifier THEN NEW.co_identifier = NEW.identifier; END IF;
+      IF NULLIF(OLD.identifier, '') IS NOT NULL AND OLD.identifier = OLD.wn_identifier AND NEW.wn_identifier = OLD.wn_identifier THEN NEW.wn_identifier = NEW.identifier; END IF;
+    END IF;
+
+
       {update_co}
       IF NOT FOUND THEN
-        CASE WHEN NOT tww_app.check_all_nulls(to_jsonb(NEW),'co') THEN -- no cover entries
-          {insert_vw_cover}
+        CASE WHEN NOT tww_app.check_all_nulls(to_jsonb(NEW),'co') THEN -- at least one field starting with 'co_' is not null
+          IF EXISTS (
+            SELECT 1
+            FROM tww_od.structure_part
+            WHERE identifier = COALESCE(NULLIF(NEW.co_identifier,''), NEW.identifier)
+          ) THEN
+            PERFORM pg_notify('vw_tww_ws_cover_exists', format('Wastewater Structure %s: cover with identifier %s already exists. Inserting cover aborted.',NEW.identifier, COALESCE(NULLIF(NEW.co_identifier,''), NEW.identifier)));
+          ELSE
+            {insert_vw_cover}
+          END IF;
         ELSE
           PERFORM pg_notify('vw_tww_ws_no_cover', format('Wastewater Structure %s: no cover created. If you want to add a cover please fill in at least one cover attribute value.',NEW.identifier));
         END CASE;

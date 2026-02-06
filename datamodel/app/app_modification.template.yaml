@@ -6,7 +6,7 @@ extra_definitions:
   vw_tww_additional_ws: null
   vw_tww_catchment_area: null
   vw_tww_catchment_area_totals: null
-  vw_tww_channel: null
+  mvw_tww_channel: null
   vw_tww_channel_maintenance: null
   vw_tww_damage_channel: null
   vw_tww_infiltration_installation: null
@@ -31,6 +31,9 @@ modification_repositories:
   - id: ci
     active: false
     template: modification_repos/ci_extension/config.yaml
+  - id: webgis
+    active: false
+    template: modification_repos/webgis/config.yaml
   - id: agxx
     active: false
     reset_vl: false
