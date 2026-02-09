@@ -103,8 +103,7 @@ def mvw_tww_channel(
          LEFT JOIN tww_od.reach_point rp_to on rp_to.obj_id=rpc.fk_reach_point_to
          LEFT JOIN tww_od.wastewater_structure ws ON ch.obj_id = ws.obj_id
          LEFT JOIN re_agg on re_agg.fk_wastewater_structure = ch.obj_id
-         LEFT JOIN tww_vl.channel_function_hierarchic vl_fh ON vl_fh.code = ch.function_hierarchic
-
+         LEFT JOIN tww_vl.channel_function_hierarchic vl_fh ON vl_fh.code = ch.function_hierarchic;
     """.format(
         lang_code=lang_code,
         ch_cols=select_columns(
@@ -141,6 +140,13 @@ def mvw_tww_channel(
 
     matview_sql = psycopg.sql.SQL(matview_sql).format(srid=psycopg.sql.Literal(srid))
     cursor.execute(matview_sql)
+    extras = """CREATE UNIQUE INDEX in_app_mvw_tww_channel_unique
+    ON tww_app.mvw_tww_channel USING btree
+    (obj_id COLLATE pg_catalog."default")
+    TABLESPACE pg_default;"""
+
+    extras_sql = psycopg.sql.SQL(extras)
+    cursor.execute(extras_sql)
 
 
 def vw_tww_channel_maintenance(connection: psycopg.Connection, extra_definition: dict = None):

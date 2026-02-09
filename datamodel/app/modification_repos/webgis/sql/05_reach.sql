@@ -62,3 +62,8 @@ AS
      LEFT JOIN tww_vl.wastewater_structure_structure_condition ws_sc ON ws_sc.code = ws.structure_condition
      LEFT JOIN tww_vl.reach_point_elevation_accuracy rp_to_ea ON rp_to_ea.code = rp_to.elevation_accuracy
      LEFT JOIN tww_vl.reach_point_elevation_accuracy rp_from_ea ON rp_from_ea.code = rp_from.elevation_accuracy;
+
+CREATE UNIQUE INDEX in_app_mvw_web_reach_obj_id
+    ON tww_app.mvw_web_reach USING btree
+    (obj_id COLLATE pg_catalog."default")
+    TABLESPACE pg_default;

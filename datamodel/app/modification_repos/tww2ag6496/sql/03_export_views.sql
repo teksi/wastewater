@@ -237,7 +237,7 @@ WITH re_meta AS(
 
 WITH DATA;
 
-CREATE INDEX in_app_vw_agxx_knoten_bauwerksattribute_obj_id
+CREATE UNIQUE INDEX in_app_vw_agxx_knoten_bauwerksattribute_obj_id
     ON tww_app.vw_agxx_knoten_bauwerksattribute USING btree
     (obj_id)
     TABLESPACE pg_default;
