@@ -69,6 +69,20 @@ jobs:
           path: plugin/teksi_wastewater.${{ inputs.release_tag || '0.0.0' }}.zip
           if-no-files-found: error
 
+      - name: Comment on PR with artifact link
+        if: github.event_name == 'pull_request'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: plugin-artifact
+          message: |
+            ## 🔌 Plugin Artifact
+
+            A development build of the plugin is available for testing:
+
+            **[⬇️ Download teksi_wastewater_plugin_dev.zip](${{ steps.upload-artifact.outputs.artifact-url }})**
+
+            > ⚠️ This is a development build from commit ${{ github.event.pull_request.head.sha }}.
+
       - name: Upload plugin as GitHub Release asset
         if: ${{ inputs.release_tag != '' }}
         run: gh release upload "${{ inputs.release_tag }}" plugin/teksi_wastewater.${{ inputs.release_tag || '0.0.0' }}.zip#oqtopus.plugin --repo "$GITHUB_REPOSITORY"
