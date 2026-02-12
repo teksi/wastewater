@@ -546,8 +546,7 @@ def tww_import_logic(connection: psycopg.Connection):
     rp_level numeric(7,3),
     co_level numeric(7,3),
     ss_upper_elevation numeric(7,3),
-    rp_ss_upper_elevation_depth numeric(7,3)
-    ):
+    rp_ss_upper_elevation_depth numeric(7,3))
     RETURNS numeric(7,3)
     LANGUAGE plpgsql
     AS $$
