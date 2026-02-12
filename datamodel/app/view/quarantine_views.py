@@ -513,7 +513,7 @@ def tww_import_logic(connection: psycopg.Connection):
     for table in sp_tables:
         wsq_skip_cols.extend(
             columns(
-                connection=conn,
+                connection=connection,
                 table_schema="tww_od",
                 table_name=table,
             )
