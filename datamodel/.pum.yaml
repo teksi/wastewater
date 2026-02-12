@@ -2,7 +2,7 @@
 pum:
   module: tww
   migration_table_schema: tww_sys
-  minimum_version: 1.4.0
+  minimum_version: 1.4.2
 
 roles:
   - name: tww_viewer
