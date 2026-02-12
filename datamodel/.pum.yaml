@@ -67,6 +67,7 @@ parameters:
     default: en
     description: language code for the creation of custom views
     app_only: true
+    values: [en, de, fr, it]
 
 dependencies:
   - name: pirogue
