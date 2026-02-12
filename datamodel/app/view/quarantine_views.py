@@ -488,49 +488,38 @@ def tww_import_logic(connection: psycopg.Connection):
 
     cursor = connection.cursor()
 
-    wsq_skip_cols = (
-        [
-            "tww_okay",
-            "tww_deleted",
-            "aa_renovation_demand",
-            "aa_remark",
-            "be_renovation_demand",
-            "be_remark",
-            "df_renovation_demand",
-            "df_remark",
-            "dd_renovation_demand",
-            "dd_remark",
-            "in_quarantine",
-        ]
-        .append(
+    wsq_skip_cols = [
+        "tww_okay",
+        "tww_deleted",
+        "aa_renovation_demand",
+        "aa_remark",
+        "be_renovation_demand",
+        "be_remark",
+        "df_renovation_demand",
+        "df_remark",
+        "dd_renovation_demand",
+        "dd_remark",
+        "in_quarantine",
+    ]
+
+    # List of tables to fetch columns from
+    sp_tables = [
+        "access_aid",
+        "benching",
+        "dryweather_flume",
+        "dryweather_downspout",
+    ]
+
+
+    for table in sp_tables:
+        wsq_skip_cols.extend(
             columns(
-                connection=connection,
+                connection=conn,
                 table_schema="tww_od",
-                table_name="access_aid",
+                table_name=table,
             )
         )
-        .append(
-            columns(
-                connection=connection,
-                table_schema="tww_od",
-                table_name="benching",
-            )
-        )
-        .append(
-            columns(
-                connection=connection,
-                table_schema="tww_od",
-                table_name="dryweather_flume",
-            )
-        )
-        .append(
-            columns(
-                connection=connection,
-                table_schema="tww_od",
-                table_name="dryweather_downspout",
-            )
-        )
-    )
+
 
     rp_skip_cols = [
         "tww_level_measurement_kind",
