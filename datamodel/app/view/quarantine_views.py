@@ -510,7 +510,6 @@ def tww_import_logic(connection: psycopg.Connection):
         "dryweather_downspout",
     ]
 
-
     for table in sp_tables:
         wsq_skip_cols.extend(
             columns(
@@ -519,7 +518,6 @@ def tww_import_logic(connection: psycopg.Connection):
                 table_name=table,
             )
         )
-
 
     rp_skip_cols = [
         "tww_level_measurement_kind",
