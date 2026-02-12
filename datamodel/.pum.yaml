@@ -2,7 +2,7 @@
 pum:
   module: tww
   migration_table_schema: tww_sys
-  minimum_version: 1.3.0
+  minimum_version: 1.4.0
 
 roles:
   - name: tww_viewer
@@ -43,25 +43,30 @@ parameters:
     type: boolean
     default: false
     description: load ci modification
+    app_only: true
 
   - name: modification_agxx
     type: boolean
     default: false
     description: enable AG-64/96 app modification
+    app_only: true
 
   - name: webgis
     type: boolean
     default: false
     description: enable WebGIS app modification
+    app_only: true
 
   - name: modification_yaml
     type: path
     description: yaml file with app modification definitions
+    app_only: true
 
   - name: lang_code
     type: text
     default: en
     description: language code for the creation of custom views
+    app_only: true
 
 dependencies:
   - name: pirogue
