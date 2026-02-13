@@ -68,7 +68,7 @@ COMMENT ON COLUMN tww_od.agxx_catchment_area_totals.ag96_sewer_infiltration_wate
 ALTER TABLE tww_od.agxx_catchment_area_totals ADD COLUMN IF NOT EXISTS ag96_waste_water_production_dim  decimal(9,3);
 COMMENT ON COLUMN tww_od.agxx_catchment_area_totals.ag96_waste_water_production_dim IS 'Extension for AG-96/ Erweiterung aus AG-96 /xxx_fr';
 
-ALTER TABLE tww_od.agxx_catchment_area_totals ADD COLUMN IF NOT EXISTS ag96_perimeter_geometry  geometry(MultiSurface,2056);
+ALTER TABLE tww_od.agxx_catchment_area_totals ADD COLUMN IF NOT EXISTS ag96_perimeter_geometry  geometry(MultiSurface,${SRID});
 COMMENT ON COLUMN tww_od.agxx_catchment_area_totals.ag96_waste_water_production_dim IS 'Extension for AG-96/ Erweiterung aus AG-96 /xxx_fr';
 
 -- Bauten Ausserhalb Baugebiet
@@ -150,7 +150,7 @@ CREATE TABLE IF NOT EXISTS tww_od.agxx_unconnected_node_bwrel (
 	structure_condition bigint,
 	status bigint,
 	co_level numeric(7,3),
-    detail_geometry3d_geometry geometry(CurvePolygonZ,2056),
+    detail_geometry3d_geometry geometry(CurvePolygonZ,${SRID}),
 	financing bigint,
     ch_function_hierarchic bigint,
     status_survey_year integer,
@@ -162,7 +162,7 @@ CREATE TABLE IF NOT EXISTS tww_od.agxx_unconnected_node_bwrel (
     ag96_fk_measure varchar(16),
 	-- Erweiterung 2025.0.2
 	wwtp_number integer,
-	situation3d_geometry geometry(PointZ,2056),
+	situation3d_geometry geometry(PointZ,${SRID}),
 	backflow_level_current decimal(7,3),
 	bottom_level decimal(7,3),
 	CONSTRAINT pkey_od_agxx_unconnected_node_bwrel_obj_id PRIMARY KEY (obj_id));
@@ -203,7 +203,7 @@ CREATE TABLE IF NOT EXISTS tww_od.agxx_measure_text
     text text COLLATE pg_catalog."default",
     texthali smallint,
     textori numeric(4,1),
-    textpos_geometry geometry(Point,2056),
+    textpos_geometry geometry(Point,${SRID}),
     textvali smallint,
     last_modification timestamp without time zone DEFAULT now(),
     fk_measure character varying(16) COLLATE pg_catalog."default",
@@ -244,7 +244,7 @@ CREATE TABLE IF NOT EXISTS tww_od.agxx_building_group_text
     text text COLLATE pg_catalog."default",
     texthali smallint,
     textori numeric(4,1),
-    textpos_geometry geometry(Point,2056),
+    textpos_geometry geometry(Point,${SRID}),
     textvali smallint,
     last_modification timestamp without time zone DEFAULT now(),
     fk_building_group character varying(16) COLLATE pg_catalog."default",
