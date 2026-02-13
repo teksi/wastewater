@@ -57,8 +57,6 @@ class Hook(HookBase):
 
         if modification_yaml:
             self.parameters = self.load_yaml(modification_yaml)
-            SRID = self.parameters["base_configurations"][0].get("SRID", 2056)
-            lang_code = self.parameters["base_configurations"][0].get("lang_code", "en")
         else:
             self.parameters = self.load_yaml(self.cwd / "app_modification.template.yaml")
             if "modification_repositories" in self.parameters:
