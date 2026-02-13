@@ -1,0 +1,1 @@
+COMMENT ON COLUMN tww_od.agxx_catchment_area_totals.ag96_perimeter_geometry IS 'Extension for AG-96/ Erweiterung aus AG-96 /xxx_fr'; 
