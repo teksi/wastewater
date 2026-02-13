@@ -63,7 +63,9 @@ jobs:
             --asset-path plugin/teksi_wastewater/interlis/bin \
             --transifex-token "${{ secrets.TX_TOKEN }}"
 
-      - uses: actions/upload-artifact@v6
+      - name : Upload artifact for PR testing
+        id: upload-artifact
+        uses: actions/upload-artifact@v6
         with:
           name: teksi_wastewater_plugin_dev
           path: plugin/teksi_wastewater.${{ inputs.release_tag || '0.0.0' }}.zip
