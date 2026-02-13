@@ -58,7 +58,7 @@ BEGIN
 	  NEW.obj_id
 	, NEW.maxrueckstauhoehe
     , NEW.sohlenkote
-    , ST_SetSRID(ST_MakePoint(ST_X(NEW.lage), ST_Y(NEW.lage), COALESCE(NEW.sohlenkote,'nan')), {SRID}) )
+    , ST_SetSRID(ST_MakePoint(ST_X(NEW.lage), ST_Y(NEW.lage), COALESCE(NEW.sohlenkote,'nan')), {SRID} )
 	, NEW.ara_nr
 	);
 
@@ -97,7 +97,7 @@ BEGIN
 		  co_oid
 		, NEW.deckelkote
 		, (SELECT code FROM tww_vl.cover_positional_accuracy WHERE value_de=NEW.lagegenauigkeit)
-		, ST_SetSRID(ST_MakePoint(ST_X(NEW.lage), ST_Y(NEW.lage), COALESCE(NEW.deckelkote,'nan')), {SRID}) )
+		, ST_SetSRID(ST_MakePoint(ST_X(NEW.lage), ST_Y(NEW.lage), COALESCE(NEW.deckelkote,'nan')), {SRID} )
 		);
 
 		INSERT INTO tww_od.agxx_cover(
