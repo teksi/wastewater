@@ -602,7 +602,7 @@ def tww_import_logic(connection: psycopg.Connection):
                 INNER JOIN tww_od.import_reach_point_quarantine rp on rp.fk_import_ws_quarantine =ws.uuidoid
                 WHERE ws.uuidoid = NEW.fk_import_ws_quarantine and rp.tww_is_inflow = NEW.tww_is_inflow;
 
-                IF old_in_outlets = 1 AND new_in_outlets = 1 THEN AND ws_record.obj_id IS NOT NULL THEN--auto-assignment possible
+                IF old_in_outlets = 1 AND new_in_outlets = 1 AND ws_record.obj_id IS NOT NULL THEN--auto-assignment possible
                     UPDATE tww_od.reach
                     SET material = NEW.re_material,
                     clear_height = NEW.re_clear_height
