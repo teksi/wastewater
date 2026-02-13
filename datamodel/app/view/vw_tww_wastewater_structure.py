@@ -82,6 +82,7 @@ def vw_tww_wastewater_structure(
         , wn._function_hierarchic AS _channel_function_hierarchic
         , vl_fh.tww_is_primary
         , og.organisation_type as _owner_organisation_type
+        , lc.obj_id is not NULL as tww_has_log_card
 
         FROM tww_od.wastewater_structure ws
         LEFT JOIN tww_od.cover main_co ON main_co.obj_id = ws.fk_main_cover
@@ -99,6 +100,7 @@ def vw_tww_wastewater_structure(
         LEFT JOIN tww_od.drainless_toilet dt ON dt.obj_id = ws.obj_id
         LEFT JOIN tww_vl.channel_function_hierarchic vl_fh ON vl_fh.code = wn._function_hierarchic
         LEFT JOIN tww_od.organisation og on og.obj_id=ws.fk_owner
+        LEFT JOIN tww_od.log_card lc ON lc.fk_pwwf_wastewater_node=wn.obj_id
         WHERE '-1'=ALL(ARRAY[ch.obj_id,dt.obj_id,sm.obj_id,wt.obj_id]) IS NULL
         AND '-2'=ALL(ARRAY[ch.obj_id,dt.obj_id,sm.obj_id,wt.obj_id]) IS NULL;
 
