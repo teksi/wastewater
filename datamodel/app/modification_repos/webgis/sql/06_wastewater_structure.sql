@@ -29,7 +29,7 @@ AS
     ws_sc.{value_lang} AS structure_condition,
     replace(ws.year_of_construction::character varying::text, '1800'::text, '-'::text) AS year_of_construction,
     main_co.level AS co_level,
-    st_force2d(COALESCE(wn.situation3d_geometry, main_co.situation3d_geometry))::geometry(Point,2056) AS situation_geometry,
+    st_force2d(COALESCE(wn.situation3d_geometry, main_co.situation3d_geometry))::geometry(Point,{SRID}) AS situation_geometry,
     COALESCE(ma.dimension1, ii.dimension1) AS dimension1,
     COALESCE(ma.dimension2, ii.dimension2) AS dimension2,
     COALESCE(ss.upper_elevation, dp.upper_elevation) AS upper_elevation,
