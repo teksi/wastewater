@@ -168,7 +168,7 @@
          </column>
          <column autoUpdated="false" defaultValue="null" digits="3" id="2" name="ag96_sewer_infiltration_water_dim" nullable="true" remarks="Extension for AG-96/ Erweiterung aus AG-96 /xxx_fr" size="9" type="numeric" typeCode="2"/>
          <column autoUpdated="false" defaultValue="null" digits="3" id="3" name="ag96_waste_water_production_dim" nullable="true" remarks="Extension for AG-96/ Erweiterung aus AG-96 /xxx_fr" size="9" type="numeric" typeCode="2"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="ag96_perimeter_geometry" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="ag96_perimeter_geometry" nullable="true" remarks="Extension for AG-96/ Erweiterung aus AG-96 /xxx_fr" size="2147483647" type="geometry" typeCode="1111"/>
          <primaryKey column="uuid" sequenceNumberInPK="1"/>
          <index name="pkey_tww_od_agxx_catchment_area_totals_uuid" unique="true">
             <column ascending="true" name="uuid"/>
