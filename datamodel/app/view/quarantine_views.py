@@ -499,7 +499,6 @@ def tww_import_logic(connection: psycopg.Connection):
         "df_remark",
         "dd_renovation_demand",
         "dd_remark",
-        "in_quarantine",
     ]
 
     # List of tables to fetch columns from
