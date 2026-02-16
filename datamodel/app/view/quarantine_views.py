@@ -222,7 +222,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection):
             table_name="import_ws_quarantine",
             remove_pkey=False,
             indent=2,
-            skip_columns=["tww_okay", "tww_deleted"],
+            skip_columns=["tww_is_okay", "tww_deleted"],
         ),
     )
 
@@ -257,7 +257,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection):
             table_name="import_ws_quarantine",
             remove_pkey=False,
             indent=6,
-            skip_columns=["tww_okay", "tww_deleted"],
+            skip_columns=["tww_is_okay", "tww_deleted"],
         ),
         update_wsq=update_command(
             connection=connection,
@@ -265,7 +265,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection):
             table_name="import_ws_quarantine",
             remove_pkey=False,
             indent=6,
-            skip_columns=["tww_okay", "tww_deleted"],
+            skip_columns=["tww_is_okay", "tww_deleted"],
         ),
     )
 
@@ -427,7 +427,7 @@ WHERE secondary.idx > 1)
             table_name="import_reach_point_quarantine",
             remove_pkey=False,
             indent=2,
-            skip_columns=["tww_okay"],
+            skip_columns=["tww_is_okay"],
         ),
     )
 
@@ -462,7 +462,7 @@ WHERE secondary.idx > 1)
             table_name="import_reach_point_quarantine",
             remove_pkey=False,
             indent=6,
-            skip_columns=["tww_okay"],
+            skip_columns=["tww_is_okay"],
         ),
         update_rpq=update_command(
             connection=connection,
@@ -470,7 +470,7 @@ WHERE secondary.idx > 1)
             table_name="import_reach_point_quarantine",
             remove_pkey=False,
             indent=6,
-            skip_columns=["tww_okay"],
+            skip_columns=["tww_is_okay"],
         ),
     )
 
@@ -489,7 +489,7 @@ def tww_import_logic(connection: psycopg.Connection):
     cursor = connection.cursor()
 
     wsq_skip_cols = [
-        "tww_okay",
+        "tww_is_okay",
         "tww_deleted",
         "aa_renovation_demand",
         "aa_remark",
