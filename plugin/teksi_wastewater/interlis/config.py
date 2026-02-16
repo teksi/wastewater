@@ -2,7 +2,7 @@ import os
 
 BASE = os.path.dirname(__file__)
 
-ILIVALIDATOR = os.path.join(BASE, "bin", "ilivalidator-1.14.7", "ilivalidator-1.14.7.jar")
+ILIVALIDATOR = os.path.join(BASE, "bin", "ilivalidator-1.15.0", "ilivalidator-1.15.0.jar")
 
 TWW_DEFAULT_PGSERVICE = "pg_tww"
 TWW_OD_SCHEMA = "tww_od"
@@ -28,3 +28,5 @@ TOPIC_NAME_AG96 = "Genereller_Entwaesserungsplan_AG.AG96"
 TOPIC_NAME_AG64 = "Abwasserkataster_AG_V2_LV95.AG64"
 TOPIC_NAME_CABLE = "SIA405_FERNWIRKKABEL_2015_LV95.SIA405_Fernwirkkabel"
 TOPIC_NAME_PROTECTION_TUBE = "SIA405_SCHUTZROHR_2015_LV95.SIA405_Schutzrohr"
+
+EXTERNAL_ORGANISATION = "https://www.vsa.ch/models/organisation/vsa_organisationen_2020_1.xtf"

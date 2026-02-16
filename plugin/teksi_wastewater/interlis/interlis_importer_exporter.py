@@ -97,6 +97,7 @@ class InterlisImporterExporter:
         logs_next_to_file=True,
         filter_nulls=True,
         srid: int = None,
+        use_refdata=True,
     ):
         # Configure logging
         if logs_next_to_file:
@@ -111,7 +112,7 @@ class InterlisImporterExporter:
 
         # Validating the input file
         self._progress_done(5, "Validating the input file...")
-        self._import_validate_xtf_file(xtf_file_input)
+        self._import_validate_xtf_file(xtf_file_input, use_refdata)
 
         # Get model to import from xtf file
         self._progress_done(10, "Extract model from xtf...")
@@ -415,12 +416,13 @@ class InterlisImporterExporter:
                     None,
                 )
 
-    def _import_validate_xtf_file(self, xtf_file_input):
+    def _import_validate_xtf_file(self, xtf_file_input, use_refdata):
         log_path = make_log_path(self.base_log_path, "ilivalidator")
         try:
             self.interlisTools.validate_xtf_data(
                 xtf_file_input,
                 log_path,
+                use_refdata,
             )
         except CmdException:
             raise InterlisImporterExporterError(
