@@ -14,7 +14,7 @@ The TWW-Database has four tww-schemas:
 
 * tww_sys: special tables for administration of the database. As a TWW-User you can not edit these tables.
 
-If INTERLIS-import or -export is used, then there will be additional schema like "pg2ili_abwasser". The are recreated with every import or export. Do not add these schema to the tww-project.
+If INTERLIS-import or -export is used, then there will be additional schema like "tww_app_pg2ili". The are recreated with every import or export. Do not add these schema to the tww-project.
 
 
 Layer names

@@ -149,7 +149,7 @@ BEGIN
 	)VALUES
 	(
       (SELECT code FROM tww_vl.reach_point_elevation_accuracy WHERE value_de=NEW.hoehengenauigkeit_von)
-	, ST_SetSRID(ST_MakePoint(ST_X(ST_StartPoint(NEW.verlauf)), ST_X(ST_StartPoint(NEW.verlauf)), COALESCE(NEW.kote_beginn,'nan')), 2056 )
+	, ST_SetSRID(ST_MakePoint(ST_X(ST_StartPoint(NEW.verlauf)), ST_X(ST_StartPoint(NEW.verlauf)), COALESCE(NEW.kote_beginn,'nan')), {SRID} )
 	, tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
     , NEW.startknoten
 	, NEW.letzte_aenderung_wi
@@ -167,7 +167,7 @@ BEGIN
 	)VALUES
 	(
       (SELECT code FROM tww_vl.reach_point_elevation_accuracy WHERE value_de=NEW.hoehengenauigkeit_nach)
-	, ST_SetSRID(ST_MakePoint(ST_X(ST_EndPoint(NEW.verlauf)), ST_X(ST_EndPoint(NEW.verlauf)), COALESCE(NEW.kote_ende,'nan')), 2056 )
+	, ST_SetSRID(ST_MakePoint(ST_X(ST_EndPoint(NEW.verlauf)), ST_X(ST_EndPoint(NEW.verlauf)), COALESCE(NEW.kote_ende,'nan')), {SRID} )
 	, tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
     , NEW.endknoten
 	, NEW.letzte_aenderung_wi
@@ -315,7 +315,7 @@ BEGIN
 
 	UPDATE tww_od.reach_point SET
       elevation_accuracy = (SELECT code FROM tww_vl.reach_point_elevation_accuracy WHERE value_de=NEW.hoehengenauigkeit_von)
-	, situation3d_geometry = ST_SetSRID(ST_MakePoint(ST_X(ST_StartPoint(NEW.verlauf)), ST_X(ST_StartPoint(NEW.verlauf)), COALESCE(NEW.kote_beginn,'nan')), 2056 )
+	, situation3d_geometry = ST_SetSRID(ST_MakePoint(ST_X(ST_StartPoint(NEW.verlauf)), ST_X(ST_StartPoint(NEW.verlauf)), COALESCE(NEW.kote_beginn,'nan')), {SRID} )
     , fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
     , fk_wastewater_networkelement = NEW.startknoten
     , last_modification = NEW.letzte_aenderung_wi
@@ -324,7 +324,7 @@ BEGIN
 
 	UPDATE tww_od.reach_point SET
       elevation_accuracy = (SELECT code FROM tww_vl.reach_point_elevation_accuracy WHERE value_de=NEW.hoehengenauigkeit_von)
-	, situation3d_geometry = ST_SetSRID(ST_MakePoint(ST_X(ST_EndPoint(NEW.verlauf)), ST_X(ST_EndPoint(NEW.verlauf)), COALESCE(NEW.kote_ende,'nan')), 2056 )
+	, situation3d_geometry = ST_SetSRID(ST_MakePoint(ST_X(ST_EndPoint(NEW.verlauf)), ST_X(ST_EndPoint(NEW.verlauf)), COALESCE(NEW.kote_ende,'nan')), {SRID} )
     , fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
     , fk_wastewater_networkelement = NEW.endknoten
     , last_modification = NEW.letzte_aenderung_wi

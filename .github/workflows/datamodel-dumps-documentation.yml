@@ -53,8 +53,8 @@ jobs:
           done
           docker compose exec db createdb -U postgres ${DB_NAME}
           docker compose exec db createdb -U postgres ${DB_NAME}_demo
-          docker compose run pum -vvv -s ${PGSERVICE} -d datamodel install -p SRID 2056 --roles --grant
-          docker compose run pum -vvv -s ${PGSERVICE}_demo -d datamodel install -p SRID 2056 --demo-data ${DEMO_DATA} --roles --grant
+          docker compose run pum -vvv -p ${PGSERVICE} -d datamodel install -p SRID 2056
+          docker compose run pum -vvv -p ${PGSERVICE}_demo -d datamodel install -p SRID 2056 --demo-data ${DEMO_DATA}
 
       - name: Create dumps
         run: |
