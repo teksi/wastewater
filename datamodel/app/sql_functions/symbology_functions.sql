@@ -177,12 +177,22 @@ BEGIN
   END CASE;
 
     INSERT INTO tww_od.tww_symbology_quarantine(wn_obj_id)
-    SELECT ne.obj_id
+    SELECT wn.obj_id
+      FROM tww_od.wastewater_networkelement ch_ne
+      LEFT JOIN tww_od.reach re ON ch_ne.obj_id = re.obj_id
+      LEFT JOIN tww_od.reach_point rp ON rp.obj_id = ANY(ARRAY[re.fk_reach_point_from , re.fk_reach_point_to])
+      INNER JOIN tww_od.wastewater_node wn ON rp.fk_wastewater_networkelement = wn.obj_id
+      WHERE ch_ne.fk_wastewater_structure = ch_obj_id AND wn.obj_id IS NOT NULL
+    ON CONFLICT DO NOTHING;
+	
+	INSERT INTO tww_od.tww_symbology_quarantine(ws_obj_id)
+    SELECT ne.fk_wastewater_structure
       FROM tww_od.wastewater_networkelement ch_ne
       LEFT JOIN tww_od.reach re ON ch_ne.obj_id = re.obj_id
       LEFT JOIN tww_od.reach_point rp ON rp.obj_id = ANY(ARRAY[re.fk_reach_point_from , re.fk_reach_point_to])
       LEFT JOIN tww_od.wastewater_networkelement ne ON rp.fk_wastewater_networkelement = ne.obj_id
-      WHERE ch_ne.fk_wastewater_structure = ch_obj_id AND ne.obj_id IS NOT NULL
+	  INNER JOIN tww_od.wastewater_node wn ON rp.fk_wastewater_networkelement = wn.obj_id
+      WHERE ch_ne.fk_wastewater_structure = ch_obj_id AND wn.obj_id IS NOT NULL
     ON CONFLICT DO NOTHING;
 
   RETURN NEW;
@@ -218,10 +228,19 @@ BEGIN
   END CASE;
 
     INSERT INTO tww_od.tww_symbology_quarantine(wn_obj_id)
-	SELECT ne.obj_id
-      FROM tww_od.wastewater_structure ws
-      LEFT JOIN tww_od.wastewater_networkelement ne ON ws.obj_id = ne.fk_wastewater_structure
-      LEFT JOIN tww_od.reach_point rp ON ne.obj_id = rp.fk_wastewater_networkelement
+	SELECT wn.obj_id
+      FROM tww_od.reach_point rp
+      LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = rp.fk_wastewater_networkelement
+	  INNER JOIN tww_od.wastewater_node wn ON ne.obj_id = wn.obj_id
+      WHERE rp.obj_id = rp_obj_id
+    ON CONFLICT DO NOTHING;
+	
+	INSERT INTO tww_od.tww_symbology_quarantine(ws_obj_id)
+	SELECT ws.obj_id
+      FROM tww_od.reach_point rp
+      LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = rp.fk_wastewater_networkelement
+	  INNER JOIN tww_od.wastewater_node wn ON ne.obj_id = wn.obj_id
+	  LEFT JOIN tww_od.wastewater_structure ws ON ws.obj_id = ne.fk_wastewater_structure
       WHERE rp.obj_id = rp_obj_id
     ON CONFLICT DO NOTHING;
 
@@ -259,14 +278,23 @@ BEGIN
   END CASE;
 
     INSERT INTO tww_od.tww_symbology_quarantine(wn_obj_id)
-	SELECT ne.obj_id
+	SELECT wn.obj_id
+      FROM tww_od.reach re
+      LEFT JOIN tww_od.reach_point rp ON rp.obj_id = ANY(ARRAY[re.fk_reach_point_from , re.fk_reach_point_to])
+      INNER JOIN tww_od.wastewater_node wn ON wn.obj_id = rp.fk_wastewater_networkelement
+      WHERE re.obj_id = re_obj_id
+   ON CONFLICT DO NOTHING;
+   
+    INSERT INTO tww_od.tww_symbology_quarantine(ws_obj_id)
+	SELECT ne.fk_wastewater_structure
       FROM tww_od.reach re
       LEFT JOIN tww_od.reach_point rp ON rp.obj_id = ANY(ARRAY[re.fk_reach_point_from , re.fk_reach_point_to])
       LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = rp.fk_wastewater_networkelement
-      WHERE re.obj_id = re_obj_id AND ne.obj_id IS NOT NULL
+      INNER JOIN tww_od.wastewater_node wn ON wn.obj_id = ne.obj_id
+      WHERE re.obj_id = re_obj_id
    ON CONFLICT DO NOTHING;
 
-  RETURN NEW;
+  RETURN NEW;s
 END; $BODY$
 LANGUAGE plpgsql VOLATILE;
 
@@ -619,10 +647,17 @@ BEGIN
   LOOP
       IF ne_obj_id IS NOT NULL THEN
 		INSERT INTO tww_od.tww_symbology_quarantine(ws_obj_id)
-		  SELECT ws.obj_id
-		  FROM tww_od.wastewater_structure ws
-		  LEFT JOIN tww_od.wastewater_networkelement ne ON ws.obj_id = ne.fk_wastewater_structure
-		  LEFT JOIN tww_od.reach_point rp ON ne.obj_id = ne_obj_id
+		  SELECT ne.fk_wastewater_structure
+		  FROM tww_od.wastewater_networkelement ne
+		  INNER JOIN tww_od.wastewater_node wn ON wn.obj_id=ne.obj_id
+		  WHERE ne.obj_id = ne_obj_id
+		  ON CONFLICT DO NOTHING;
+	  
+		INSERT INTO tww_od.tww_symbology_quarantine(wn_obj_id)
+		  SELECT ne.obj_id
+		  FROM tww_od.wastewater_networkelement ne
+		  INNER JOIN tww_od.wastewater_node wn ON wn.obj_id=ne.obj_id
+		  WHERE ne.obj_id = ne_obj_id
 		  ON CONFLICT DO NOTHING;
 	  END IF;
   END LOOP;
@@ -686,7 +721,6 @@ CREATE OR REPLACE FUNCTION tww_app.symbology_recalculate()
   RETURNS trigger AS
 $BODY$
 BEGIN
-  RAISE NOTICE 'recalculate_symbology trigger fired for wn_obj_id: %, ws_obj_id: %', NEW.wn_obj_id, NEW.ws_obj_id;
   IF NEW.wn_obj_id IS NOT NULL THEN
     PERFORM tww_app.update_wastewater_node_symbology(NEW.wn_obj_id);
 	DELETE FROM tww_od.tww_symbology_quarantine	WHERE wn_obj_id=NEW.wn_obj_id;
