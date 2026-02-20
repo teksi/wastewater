@@ -1061,7 +1061,7 @@ $$;
                 "ss_upper_elevation": "_upper_elevation",
                 "wn_bottom_level": "_bottom_level",
             },
-            returning="obj_id into ws_oid",
+            returning="ws_obj_id into ws_oid",
         )
         .replace("NEW.", "ws_record.")
         .replace("tww_od.import_ws_quarantine", "tww_app.vw_tww_wastewater_structure"),
