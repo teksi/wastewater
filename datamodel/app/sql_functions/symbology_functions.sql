@@ -538,7 +538,7 @@ BEGIN
       LEFT JOIN tww_od.reach_point rp ON wn.obj_id = rp.fk_wastewater_networkelement
       WHERE rp.obj_id = ANY ( rp_obj_ids );
 	  PERFORM tww_app.update_wastewater_node_symbology(_update_oid);
-	  
+
     SELECT ws.obj_id into _update_oid
       FROM tww_od.wastewater_structure ws
       LEFT JOIN tww_od.wastewater_networkelement ne ON ws.obj_id = ne.fk_wastewater_structure
@@ -638,7 +638,7 @@ BEGIN
 		  FROM tww_od.wastewater_networkelement ne
 		  INNER JOIN tww_od.wastewater_node wn ON wn.obj_id=ne.obj_id
 		  WHERE ne.obj_id = ne_obj_id
-		  ON CONFLICT DO NOTHING;  
+		  ON CONFLICT DO NOTHING;
 	  	PERFORM tww_app.update_wastewater_node_symbology(_update_oid);
 		  SELECT ne.fk_wastewater_structure INTO _update_oid
 		  FROM tww_od.wastewater_networkelement ne
@@ -698,5 +698,3 @@ BEFORE INSERT OR UPDATE
   ON tww_od.reach
 FOR EACH ROW
   EXECUTE PROCEDURE tww_app.symbology_calculate_reach_length();
-
-
