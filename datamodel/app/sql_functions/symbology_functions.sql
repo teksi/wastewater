@@ -62,7 +62,8 @@ CREATE OR REPLACE FUNCTION tww_app.update_wastewater_node_symbology(_obj_id text
   RETURNS VOID AS
   $BODY$
 BEGIN
-
+  -- Start error handling block
+  BEGIN
 DELETE FROM tww_od.tww_wastewater_node_symbology
 WHERE fk_wastewater_node =_obj_id or _all;
 
@@ -144,7 +145,9 @@ WHERE symbology_ne.wn_obj_id = n.fk_wastewater_node
  	  AND TRUE = ANY(array[n._function_hierarchic IS NULL
 					  ,n._usage_current IS NULL
 					  ,n._status IS NULL]);
-
+EXCEPTION WHEN OTHERS THEN
+  RAISE NOTICE 'Error in update_wastewater_node_symbology: %', SQLERRM;
+END;
 END
 $BODY$
 LANGUAGE plpgsql
@@ -684,16 +687,12 @@ CREATE OR REPLACE FUNCTION tww_app.symbology_recalculate()
 $BODY$
 BEGIN
   IF NEW.wn_obj_id IS NOT NULL THEN
-    EXECUTE tww_app.update_wastewater_node_symbology(NEW.wn_obj_id);
-	DELETE
-  	FROM tww_od.tww_symbology_quarantine
-  	WHERE wn_obj_id=NEW.wn_obj_id;
+    PERFORM tww_app.update_wastewater_node_symbology(NEW.wn_obj_id);
+	DELETE FROM tww_od.tww_symbology_quarantine	WHERE wn_obj_id=NEW.wn_obj_id;
   END IF;
   IF NEW.ws_obj_id IS NOT NULL THEN
-    EXECUTE tww_app.update_wastewater_structure_label(NEW.ws_obj_id);
-	DELETE
-  	FROM tww_od.tww_symbology_quarantine
-  	WHERE ws_obj_id=NEW.ws_obj_id;
+    PERFORM tww_app.update_wastewater_structure_label(NEW.ws_obj_id);
+	DELETE FROM tww_od.tww_symbology_quarantine WHERE ws_obj_id=NEW.ws_obj_id;
     END IF;
   RETURN NULL;
 END;

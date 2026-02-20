@@ -10,13 +10,16 @@ CREATE OR REPLACE FUNCTION tww_app.update_reach_point_label(_obj_id text,
 	)
   RETURNS VOID AS
  $BODY$
+BEGIN
 
-  BEGIN
   -- Updates the reach_point labels of the wastewater_structure
   -- Function inputs
   -- _obj_id: obj_id of the associated wastewater structure
   -- _all: optional boolean to update all reach points
   --
+  
+  -- Start error handling block
+  BEGIN
 DELETE FROM tww_od.tww_reach_point_label where _all or fk_wastewater_structure=_obj_id;
 -- Outflow
     WITH outs as(
@@ -104,7 +107,9 @@ DELETE FROM tww_od.tww_reach_point_label where _all or fk_wastewater_structure=_
 	  , fk_wastewater_structure
 	  , NULL
 	  FROM null_label;
-
+	EXCEPTION WHEN OTHERS THEN
+	  RAISE NOTICE 'Error in update_reach_point_label: %', SQLERRM;
+	END;
 END;
 $BODY$
 LANGUAGE plpgsql
@@ -124,87 +129,93 @@ VOLATILE;
 
 CREATE OR REPLACE FUNCTION tww_app.update_wastewater_structure_label(_obj_id text, _all boolean default false)
   RETURNS VOID AS
-  $BODY$
-  DECLARE
+$BODY$
+DECLARE
   myrec record;
-
 BEGIN
+  -- Start error handling block
+  BEGIN
+    DELETE FROM tww_od.tww_wastewater_structure_label WHERE _all OR fk_wastewater_structure = _obj_id;
+    PERFORM tww_app.update_reach_point_label(_obj_id, _all);
 
-DELETE FROM tww_od.tww_wastewater_structure_label where _all or fk_wastewater_structure=_obj_id;
-EXECUTE tww_app.update_reach_point_label(_obj_id,_all);
-
-WITH labeled_ws AS(
-SELECT   ws_obj_id,
-           COALESCE(ws_identifier, '')  as main_lbl,
-          CASE WHEN count(co_level)<2 THEN array_to_string(array_agg(E'\nC' || '=' || co_level ORDER BY idx DESC), '', '') ELSE
-		  array_to_string(array_agg(E'\nC' || idx || '=' || co_level ORDER BY idx ASC), '', '') END as cover_lbl,
-          array_to_string(array_agg(E'\nB' || '=' || bottom_level), '', '') as bottom_lbl,
-		  array_to_string(array_agg(E'\n'||rp_label|| '=' || rp_level ORDER BY rp_label ASC), '', '')  as rp_lbl
-  FROM (
-		  SELECT ws.obj_id AS ws_obj_id
-		  , ws.identifier AS ws_identifier
-		  , parts.co_level AS co_level
-		  , parts.rp_level AS rp_level
-		  , parts.rp_label AS rp_label
-		  , parts.obj_id, idx
-		  , parts.bottom_level AS bottom_level
-    FROM tww_od.wastewater_structure WS
-
-    LEFT JOIN (
-	  --cover
+    WITH labeled_ws AS (
       SELECT
-		coalesce(round(CO.level, 2)::text, '?') AS co_level
-		, SP.fk_wastewater_structure ws
-		, SP.obj_id
-		, row_number() OVER(PARTITION BY SP.fk_wastewater_structure) AS idx
-		, NULL::text AS bottom_level
-		, NULL::text AS rp_level
-		, NULL::text as rp_label
-      FROM tww_od.structure_part SP
-      RIGHT JOIN tww_od.cover CO ON CO.obj_id = SP.obj_id
-      WHERE _all OR SP.fk_wastewater_structure =_obj_id
-      -- Bottom
-      UNION
-      SELECT
-		NULL AS co_level
-		, ws1.obj_id ws
-		, NULL as obj_id
-		, NULL as idx
-		, coalesce(round(wn.bottom_level, 2)::text, '?') AS wn_bottom_level
-		, NULL::text AS rp_level
-		, NULL::text as rp_label
-      FROM tww_od.wastewater_structure ws1
-	  LEFT JOIN tww_od.channel ch1 ON ch1.obj_id=ws1.obj_id
-      LEFT JOIN tww_od.wastewater_node wn ON wn.obj_id = ws1.fk_main_wastewater_node
-      WHERE (_all AND ch1.obj_id IS NULL) OR ws1.obj_id =_obj_id
-	  UNION
-	  --reach points
-      SELECT
-		NULL AS co_level
-		, lb.fk_wastewater_structure ws
-		, RP.obj_id
-		,NULL as idx
-		, NULL::text AS bottom_level
-		, coalesce(round(RP.level, 2)::text, '?') AS rp_level
-		, lb.label_text as rp_label
-      FROM tww_od.reach_point RP
-	  LEFT JOIN tww_od.tww_reach_point_label lb on RP.obj_id=lb.fk_reach_point
-      WHERE (_all OR lb.fk_wastewater_structure =_obj_id)
-	) parts ON parts.ws = ws.obj_id
-    WHERE _all  OR ws.obj_id =_obj_id
-    ) all_parts
-	GROUP BY ws_obj_id, COALESCE(ws_identifier, '')
-)
-  INSERT INTO tww_od.tww_wastewater_structure_label (fk_wastewater_structure,label_text_c,label_text_b,label_text_rp)
-  SELECT
-      ws_obj_id
-    , cover_lbl
-	, bottom_lbl
-	, rp_lbl
-  FROM labeled_ws;
+        ws_obj_id,
+        COALESCE(ws_identifier, '') AS main_lbl,
+        CASE
+          WHEN count(co_level) < 2 THEN array_to_string(array_agg(E'\nC' || '=' || co_level ORDER BY idx DESC), '', '')
+          ELSE array_to_string(array_agg(E'\nC' || idx || '=' || co_level ORDER BY idx ASC), '', '')
+        END AS cover_lbl,
+        array_to_string(array_agg(E'\nB' || '=' || bottom_level), '', '') AS bottom_lbl,
+        array_to_string(array_agg(E'\n' || rp_label || '=' || rp_level ORDER BY rp_label ASC), '', '') AS rp_lbl
+      FROM (
+        SELECT
+          ws.obj_id AS ws_obj_id,
+          ws.identifier AS ws_identifier,
+          parts.co_level AS co_level,
+          parts.rp_level AS rp_level,
+          parts.rp_label AS rp_label,
+          parts.obj_id,
+          idx,
+          parts.bottom_level AS bottom_level
+        FROM tww_od.wastewater_structure WS
+        LEFT JOIN (
+          -- Cover
+          SELECT
+            coalesce(round(CO.level, 2)::text, '?') AS co_level,
+            SP.fk_wastewater_structure AS ws,
+            SP.obj_id,
+            row_number() OVER(PARTITION BY SP.fk_wastewater_structure) AS idx,
+            NULL::text AS bottom_level,
+            NULL::text AS rp_level,
+            NULL::text AS rp_label
+          FROM tww_od.structure_part SP
+          RIGHT JOIN tww_od.cover CO ON CO.obj_id = SP.obj_id
+          WHERE _all OR SP.fk_wastewater_structure = _obj_id
+          -- Bottom
+          UNION
+          SELECT
+            NULL AS co_level,
+            ws1.obj_id AS ws,
+            NULL AS obj_id,
+            NULL AS idx,
+            coalesce(round(wn.bottom_level, 2)::text, '?') AS wn_bottom_level,
+            NULL::text AS rp_level,
+            NULL::text AS rp_label
+          FROM tww_od.wastewater_structure ws1
+          LEFT JOIN tww_od.channel ch1 ON ch1.obj_id = ws1.obj_id
+          LEFT JOIN tww_od.wastewater_node wn ON wn.obj_id = ws1.fk_main_wastewater_node
+          WHERE (_all AND ch1.obj_id IS NULL) OR ws1.obj_id = _obj_id
+          -- Reach points
+          UNION
+          SELECT
+            NULL AS co_level,
+            lb.fk_wastewater_structure AS ws,
+            RP.obj_id,
+            NULL AS idx,
+            NULL::text AS bottom_level,
+            coalesce(round(RP.level, 2)::text, '?') AS rp_level,
+            lb.label_text AS rp_label
+          FROM tww_od.reach_point RP
+          LEFT JOIN tww_od.tww_reach_point_label lb ON RP.obj_id = lb.fk_reach_point
+          WHERE _all OR lb.fk_wastewater_structure = _obj_id
+        ) parts ON parts.ws = ws.obj_id
+        WHERE _all OR ws.obj_id = _obj_id
+      ) all_parts
+      GROUP BY ws_obj_id, COALESCE(ws_identifier, '')
+    )
+    INSERT INTO tww_od.tww_wastewater_structure_label (fk_wastewater_structure, label_text_c, label_text_b, label_text_rp)
+    SELECT
+      ws_obj_id,
+      cover_lbl,
+      bottom_lbl,
+      rp_lbl
+    FROM labeled_ws;
 
-END
-
+  EXCEPTION WHEN OTHERS THEN
+    RAISE NOTICE 'Error in update_wastewater_structure_label: %', SQLERRM;
+  END; -- End error handling block
+END;
 $BODY$
 LANGUAGE plpgsql
 VOLATILE;
