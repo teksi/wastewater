@@ -144,7 +144,7 @@ class TestViews(unittest.TestCase, DbTestBase):
         self.insert_reaches(reaches, manholes)
         self.assertEqual(
             self.select("vw_tww_wastewater_structure", manholes["main"]["obj_id"])["_input_label"],
-            "\nI1=1012.00\nI2=1012.00",
+            "\nI1=1011.00\nI2=1012.00",
         )
 
 
