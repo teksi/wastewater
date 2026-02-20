@@ -686,6 +686,7 @@ CREATE OR REPLACE FUNCTION tww_app.symbology_recalculate()
   RETURNS trigger AS
 $BODY$
 BEGIN
+  RAISE NOTICE 'recalculate_symbology trigger fired for wn_obj_id: %, ws_obj_id: %', NEW.wn_obj_id, NEW.ws_obj_id;
   IF NEW.wn_obj_id IS NOT NULL THEN
     PERFORM tww_app.update_wastewater_node_symbology(NEW.wn_obj_id);
 	DELETE FROM tww_od.tww_symbology_quarantine	WHERE wn_obj_id=NEW.wn_obj_id;
