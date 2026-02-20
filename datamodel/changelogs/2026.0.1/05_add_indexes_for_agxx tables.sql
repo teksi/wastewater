@@ -6,6 +6,6 @@ CREATE INDEX in_agxx_last_modification_fk_element ON tww_od.agxx_last_modificati
 CREATE INDEX in_agxx_overflow_fk_overflow ON tww_od.agxx_overflow USING btree (fk_overflow);
 CREATE INDEX in_agxx_reach_fk_reach ON tww_od.agxx_reach USING btree (fk_reach);
 CREATE INDEX in_agxx_reach_point_fk_reach_point ON tww_od.agxx_reach_point USING btree (fk_reach_point);
-CREATE INDEX in_agxx_wastewater_networkelement_fk_element ON tww_od.agxx_wastewater_networkelement USING btree (fk_element);
+CREATE INDEX in_agxx_wastewater_networkelement_fk_element ON tww_od.agxx_wastewater_networkelement USING btree (fk_wastewater_networkelement);
 CREATE INDEX in_agxx_wastewater_node_fk_wastewater_node ON tww_od.agxx_wastewater_node USING btree (fk_wastewater_node);
 CREATE INDEX in_agxx_wastewater_structure_fk_wastewater_structure ON tww_od.agxx_wastewater_structure USING btree (fk_wastewater_structure);
