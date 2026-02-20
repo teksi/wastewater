@@ -110,11 +110,9 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         strct_row = self.select("vw_tww_wastewater_structure", strct_id)
 
         expected = {
-            "_label": "A",
             "_cover_label": "\nC=100.00",
-            "_bottom_label": "",
-            "_input_label": "",
-            "_output_label": "",
+            "_bottom_label": "\nB=?",
+            "_reach_point_label": "",
         }
 
         check_values(expected)
@@ -130,7 +128,6 @@ class TestTriggers(unittest.TestCase, DbTestBase):
 
         expected.update(
             {
-                "_label": "B",
                 "_cover_label": "\nC=98.00",
                 "_bottom_label": "\nB=90.12",
             }
@@ -145,6 +142,8 @@ class TestTriggers(unittest.TestCase, DbTestBase):
                 "ST_ForceCurve(ST_SetSrid(ST_MakeLine(ST_MakePoint(3000001, 1500001, 100), ST_MakePoint(3000000, 1500000, 100)), 2056))"
             ),
             "ch_function_hierarchic": 5062,
+            "ws_status": 8493,
+            "ch_usage_current": 9023,
             "rp_to_fk_wastewater_networkelement": strct_row["wn_obj_id"],
             "rp_to_level": 95,
         }
@@ -152,7 +151,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
 
         expected.update(
             {
-                "_input_label": "\nI=95.00",
+                "_reach_point_label": "\nI=95.00",
             }
         )
         check_values(expected)
@@ -163,6 +162,8 @@ class TestTriggers(unittest.TestCase, DbTestBase):
                 "ST_ForceCurve(ST_SetSrid(ST_MakeLine(ST_MakePoint(3000000, 1500000, 92), ST_MakePoint(3000000, 1500001, 90)), 2056))"
             ),
             "ch_function_hierarchic": 5062,
+            "ws_status": 8493,
+            "ch_usage_current": 9023,
             "rp_from_fk_wastewater_networkelement": strct_row["wn_obj_id"],
             "rp_from_level": 92,
         }
@@ -170,7 +171,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
 
         expected.update(
             {
-                "_output_label": "\nO=92.00",
+                "_reach_point_label": "\nI=95.00\nO=92.00",
             }
         )
         check_values(expected)
@@ -181,6 +182,8 @@ class TestTriggers(unittest.TestCase, DbTestBase):
                 "ST_ForceCurve(ST_SetSrid(ST_MakeLine(ST_MakePoint(3000000, 1500000, 93), ST_MakePoint(3000001, 1500000, 90)), 2056))"
             ),
             "ch_function_hierarchic": 5062,
+            "ws_status": 8493,
+            "ch_usage_current": 9023,
             "rp_from_fk_wastewater_networkelement": strct_row["wn_obj_id"],
             "rp_from_level": 93,
         }
@@ -188,7 +191,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
 
         expected.update(
             {
-                "_output_label": "\nO1=92.00\nO2=93.00",
+                "_reach_point_label": "\nI=95.00\nO1=92.00\nO2=93.00",
             }
         )
         check_values(expected)
@@ -200,7 +203,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
 
         expected.update(
             {
-                "_input_label": "\nI=94.00",
+                "_reach_point_label": "\nI=94.00\nO1=92.00\nO2=93.00",
             }
         )
         check_values(expected)
@@ -216,7 +219,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
 
         expected.update(
             {
-                "_output_label": "\nO1=93.00\nO2=92.00",
+                "_reach_point_label": "\nI=94.00\nO1=93.00\nO2=92.00",
             }
         )
         check_values(expected)
@@ -228,7 +231,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
 
         expected.update(
             {
-                "_output_label": "\nO1=?\nO2=92.00",
+                "_reach_point_label": "\nI=94.00\nO1=?\nO2=92.00",
             }
         )
         check_values(expected)
@@ -317,14 +320,14 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         )
 
         check_values(
-            "vw_wastewater_node",
+            "vw_tww_wastewater_node",
             strct_from_row["wn_obj_id"],
             {
                 "_function_hierarchic": 5062,
             },
         )
         check_values(
-            "vw_wastewater_node",
+            "vw_tww_wastewater_node",
             strct_to_row["wn_obj_id"],
             {
                 "_function_hierarchic": 5062,
@@ -350,14 +353,14 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         )
 
         check_values(
-            "vw_wastewater_node",
+            "vw_tww_wastewater_node",
             strct_from_row["wn_obj_id"],
             {
                 "_function_hierarchic": 5063,
             },
         )
         check_values(
-            "vw_wastewater_node",
+            "vw_tww_wastewater_node",
             strct_to_row["wn_obj_id"],
             {
                 "_function_hierarchic": 5063,

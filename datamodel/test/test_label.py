@@ -67,6 +67,7 @@ class TestViews(unittest.TestCase, DbTestBase):
                     "rp_from_level": reach.get("rp_from_level", 1020.0),
                     "rp_to_level": reach.get("rp_to_level", 1000.0),
                     "ch_usage_current": 4514,
+                    "ws_status": 8493,
                     "progression3d_geometry": geom,
                 }
                 obj_id = self.insert("vw_tww_reach", row)
@@ -114,14 +115,10 @@ class TestViews(unittest.TestCase, DbTestBase):
         }
         self.insert_reaches(reaches, manholes)
         self.assertEqual(
-            self.select("vw_tww_wastewater_structure", manholes["main"]["obj_id"])["_input_label"],
-            "\nI1=1011.00\nI2=1012.00\nI3=1013.00\nI4=1014.00",
-        )
-        self.assertEqual(
             self.select("vw_tww_wastewater_structure", manholes["main"]["obj_id"])[
-                "_output_label"
+                "_reach_point_label"
             ],
-            "\nO1=1001.00\nO2=1002.00\nO3=1003.00\nO4=1004.00",
+            "\nI1=1011.00\nI2=1012.00\nI3=1013.00\nI4=1014.00\nO1=1001.00\nO2=1002.00\nO3=1003.00\nO4=1004.00",
         )
 
     def test_crossing_circular_reaches(self):
@@ -139,7 +136,9 @@ class TestViews(unittest.TestCase, DbTestBase):
         }
         self.insert_reaches(reaches, manholes)
         self.assertEqual(
-            self.select("vw_tww_wastewater_structure", manholes["main"]["obj_id"])["_input_label"],
+            self.select("vw_tww_wastewater_structure", manholes["main"]["obj_id"])[
+                "_reach_point_label"
+            ],
             "\nI1=1012.00\nI2=1011.00",
         )
 

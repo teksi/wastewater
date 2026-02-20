@@ -40,7 +40,7 @@ def vw_wastewater_structure(connection: psycopg.Connection, extra_definition: di
         , og.organisation_type as _owner_organisation_type
 
         FROM tww_od.wastewater_structure ws
-        LEFT JOIN tww_od.wastewater_node wn ON wn.obj_id = ws.fk_main_wastewater_node
+        LEFT JOIN tww_od.tww_wastewater_node_symbology wn ON wn.fk_wastewater_node = ws.fk_main_wastewater_node
         LEFT JOIN tww_od.channel ch ON ch.obj_id = ws.obj_id
         LEFT JOIN tww_vl.channel_function_hierarchic vl_fh ON vl_fh.code = wn._function_hierarchic
         LEFT JOIN tww_od.organisation og on og.obj_id=ws.fk_owner
@@ -61,13 +61,7 @@ def vw_wastewater_structure(connection: psycopg.Connection, extra_definition: di
             table_alias="ws",
             remove_pkey=False,
             indent=4,
-            skip_columns=[
-                "_label",
-                "_cover_label",
-                "_bottom_label",
-                "_input_label",
-                "_output_label",
-            ],
+            skip_columns=[],
         ),
         extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
     )
@@ -98,13 +92,6 @@ def vw_wastewater_structure(connection: psycopg.Connection, extra_definition: di
             table_alias="",
             remove_pkey=False,
             indent=2,
-            skip_columns=[
-                "_label",
-                "_cover_label",
-                "_bottom_label",
-                "_input_label",
-                "_output_label",
-            ],
         ),
         insert_extra=insert_extra(connection=connection, extra_definition=extra_definition),
     )
@@ -138,11 +125,6 @@ def vw_wastewater_structure(connection: psycopg.Connection, extra_definition: di
             indent=6,
             skip_columns=[
                 "last_modification",
-                "_label",
-                "_cover_label",
-                "_bottom_label",
-                "_input_label",
-                "_output_label",
                 "_depth",
             ],
             update_values={},
