@@ -294,7 +294,7 @@ BEGIN
       WHERE re.obj_id = re_obj_id
    ON CONFLICT DO NOTHING;
 
-  RETURN NEW;s
+  RETURN NEW;
 END; $BODY$
 LANGUAGE plpgsql VOLATILE;
 
