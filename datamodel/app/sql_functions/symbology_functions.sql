@@ -184,7 +184,7 @@ BEGIN
       INNER JOIN tww_od.wastewater_node wn ON rp.fk_wastewater_networkelement = wn.obj_id
       WHERE ch_ne.fk_wastewater_structure = ch_obj_id AND wn.obj_id IS NOT NULL
     ON CONFLICT DO NOTHING;
-	
+
 	INSERT INTO tww_od.tww_symbology_quarantine(ws_obj_id)
     SELECT ne.fk_wastewater_structure
       FROM tww_od.wastewater_networkelement ch_ne
@@ -234,7 +234,7 @@ BEGIN
 	  INNER JOIN tww_od.wastewater_node wn ON ne.obj_id = wn.obj_id
       WHERE rp.obj_id = rp_obj_id
     ON CONFLICT DO NOTHING;
-	
+
 	INSERT INTO tww_od.tww_symbology_quarantine(ws_obj_id)
 	SELECT ws.obj_id
       FROM tww_od.reach_point rp
@@ -284,7 +284,7 @@ BEGIN
       INNER JOIN tww_od.wastewater_node wn ON wn.obj_id = rp.fk_wastewater_networkelement
       WHERE re.obj_id = re_obj_id
    ON CONFLICT DO NOTHING;
-   
+
     INSERT INTO tww_od.tww_symbology_quarantine(ws_obj_id)
 	SELECT ne.fk_wastewater_structure
       FROM tww_od.reach re
@@ -652,7 +652,7 @@ BEGIN
 		  INNER JOIN tww_od.wastewater_node wn ON wn.obj_id=ne.obj_id
 		  WHERE ne.obj_id = ne_obj_id
 		  ON CONFLICT DO NOTHING;
-	  
+
 		INSERT INTO tww_od.tww_symbology_quarantine(wn_obj_id)
 		  SELECT ne.obj_id
 		  FROM tww_od.wastewater_networkelement ne
