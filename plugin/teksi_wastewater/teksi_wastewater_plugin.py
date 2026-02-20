@@ -41,6 +41,7 @@ except ImportError:
 from .gui.twwprofiledockwidget import TwwProfileDockWidget
 from .gui.twwsettingsdialog import TwwSettingsDialog
 from .gui.twwwizard import TwwWizard
+from .gui.twwselectionextenderwidget import TwwSelectionExtenderWidget
 from .libs.modelbaker.iliwrapper.ili2dbutils import JavaNotFoundError
 from .processing_provider.provider import TwwProcessingProvider
 from .tools.twwmaptools import TwwMapToolConnectNetworkElements, TwwTreeMapTool
@@ -356,6 +357,20 @@ class TeksiWastewaterPlugin:
 
         self.network_layer_notifier.layersAdded([])
 
+        self.selectionExtenderWidget = None
+
+        self.selectionExtenderAction = QAction(
+            QIcon("icons/selection_extender.svg"),
+            "Extend selection",
+            self.iface.mainWindow()
+        )
+
+        self.selectionExtenderAction.triggered.connect(
+            self.toggleSelectionExtenderWidget
+        )
+        self.toolbarButtons.append(self.selectionExtenderAction)
+
+
     def tww_validity_check_startup(self):
         messages = []
         try:
@@ -436,6 +451,7 @@ class TeksiWastewaterPlugin:
         self.toolbar.removeAction(self.wizardAction)
         self.toolbar.removeAction(self.refreshNetworkTopologyAction)
         self.toolbar.removeAction(self.connectNetworkElementsAction)
+        self.toolbar.removeAction(self.selectionExtenderAction)
 
         if self.importAction in self.toolbar.actions():
             self.toolbar.removeAction(self.importAction)
@@ -453,6 +469,12 @@ class TeksiWastewaterPlugin:
         self.iface.removePluginMenu(self.main_menu_name, self.disableSymbologyTriggersAction)
 
         QgsApplication.processingRegistry().removeProvider(self.processing_provider)
+
+        if self.selectionExtenderWidget is not None:
+            self.iface.removeDockWidget(self.selectionExtenderWidget)
+            self.selectionExtenderWidget.deleteLater()
+            self.selectionExtenderWidget = None
+        
 
     def onNetworkLayersAvailable(self, layers):
         self.connectNetworkElementsAction.setEnabled(True)
@@ -726,3 +748,20 @@ class TeksiWastewaterPlugin:
 
         self.enableSymbologyTriggersAction.setEnabled(admin_mode)
         self.disableSymbologyTriggersAction.setEnabled(admin_mode)
+    
+    def toggleSelectionExtenderWidget(self):
+
+        if self.selectionExtenderWidget is None:
+            self.selectionExtenderWidget = TwwSelectionExtenderWidget(
+                self.iface,
+                self.iface.mainWindow()
+            )
+
+            self.iface.addDockWidget(
+                Qt.RightDockWidgetArea,
+                self.selectionExtenderWidget
+            )
+
+        self.selectionExtenderWidget.show()
+        self.selectionExtenderWidget.raise_()
+
