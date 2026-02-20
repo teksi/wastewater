@@ -17,7 +17,7 @@ BEGIN
   -- _obj_id: obj_id of the associated wastewater structure
   -- _all: optional boolean to update all reach points
   --
-  
+
   -- Start error handling block
   BEGIN
 DELETE FROM tww_od.tww_reach_point_label where _all or fk_wastewater_structure=_obj_id;
