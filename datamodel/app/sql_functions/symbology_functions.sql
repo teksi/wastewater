@@ -176,7 +176,7 @@ BEGIN
       ch_obj_id = OLD.obj_id;
   END CASE;
 
-    FOR _update_oid IN 
+    FOR _update_oid IN
     SELECT wn.obj_id
       FROM tww_od.wastewater_networkelement ch_ne
       LEFT JOIN tww_od.reach re ON ch_ne.obj_id = re.obj_id
@@ -187,7 +187,7 @@ BEGIN
 	    PERFORM tww_app.update_wastewater_node_symbology(_update_oid);
     END LOOP;
 
-    FOR _update_oid IN 
+    FOR _update_oid IN
     SELECT ne.fk_wastewater_structure
       FROM tww_od.wastewater_networkelement ch_ne
       LEFT JOIN tww_od.reach re ON ch_ne.obj_id = re.obj_id
@@ -280,7 +280,7 @@ BEGIN
       re_obj_id = OLD.obj_id;
   END CASE;
 
-    FOR _update_oid IN 
+    FOR _update_oid IN
     SELECT wn.obj_id
       FROM tww_od.reach re
       LEFT JOIN tww_od.reach_point rp ON rp.obj_id = ANY(ARRAY[re.fk_reach_point_from , re.fk_reach_point_to])
@@ -290,7 +290,7 @@ BEGIN
 	    PERFORM tww_app.update_wastewater_node_symbology(_update_oid);
     END LOOP;
 
-    FOR _update_oid IN 
+    FOR _update_oid IN
 	  SELECT ne.fk_wastewater_structure
       FROM tww_od.reach re
       LEFT JOIN tww_od.reach_point rp ON rp.obj_id = ANY(ARRAY[re.fk_reach_point_from , re.fk_reach_point_to])
@@ -547,7 +547,7 @@ BEGIN
       rp_obj_ids = ARRAY[OLD.fk_reach_point_from, OLD.fk_reach_point_to];
   END CASE;
 
-    FOR _update_oid IN 
+    FOR _update_oid IN
     SELECT wn.obj_id
       FROM tww_od.wastewater_node wn
       LEFT JOIN tww_od.reach_point rp ON wn.obj_id = rp.fk_wastewater_networkelement
@@ -556,7 +556,7 @@ BEGIN
 	    PERFORM tww_app.update_wastewater_node_symbology(_update_oid);
     END LOOP;
 
-    FOR _update_oid IN 
+    FOR _update_oid IN
 	  SELECT ws.obj_id
       FROM tww_od.wastewater_structure ws
       LEFT JOIN tww_od.wastewater_networkelement ne ON ws.obj_id = ne.fk_wastewater_structure
