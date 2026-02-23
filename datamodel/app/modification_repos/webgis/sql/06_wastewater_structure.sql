@@ -34,11 +34,7 @@ AS
     COALESCE(ma.dimension2, ii.dimension2) AS dimension2,
     COALESCE(ss.upper_elevation, dp.upper_elevation) AS upper_elevation,
     wn.backflow_level_current,
-    wn.bottom_level,
-        CASE
-            WHEN ws.identifier = ws.obj_id::text THEN '?'::text
-            ELSE ws._label
-        END AS _label
+    wn.bottom_level
     , wsl.label_text_c AS _cover_label
     , wsl.label_text_b AS _bottom_label
     , wsl.label_text_rp AS _reach_point_label
