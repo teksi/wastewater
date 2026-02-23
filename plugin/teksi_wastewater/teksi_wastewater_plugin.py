@@ -46,6 +46,7 @@ from .libs.modelbaker.iliwrapper.ili2dbutils import JavaNotFoundError
 from .processing_provider.provider import TwwProcessingProvider
 from .tools.twwmaptools import TwwMapToolConnectNetworkElements, TwwTreeMapTool
 from .tools.twwnetwork import TwwGraphManager
+from .tools.twwselectionextender import TwwSelectionExtender
 from .utils.database_utils import DatabaseUtils
 from .utils.plugin_utils import plugin_root_path
 from .utils.qt_utils import OverrideCursor
@@ -360,16 +361,17 @@ class TeksiWastewaterPlugin:
         self.selectionExtenderWidget = None
 
         self.selectionExtenderAction = QAction(
-            QIcon("icons/selection_extender.svg"),
-            "Extend selection",
-            self.iface.mainWindow()
+            QIcon(os.path.join(plugin_root_path(), "icons/selection-extender.svg")),
+            self.tr("Extend selection"),
+            self.iface.mainWindow(),
         )
 
         self.selectionExtenderAction.triggered.connect(
             self.toggleSelectionExtenderWidget
         )
+        self.toolbar.addAction(self.selectionExtenderAction)
         self.toolbarButtons.append(self.selectionExtenderAction)
-
+        self.selectionExtenderController = TwwSelectionExtender(self.iface)
 
     def tww_validity_check_startup(self):
         messages = []
@@ -756,6 +758,7 @@ class TeksiWastewaterPlugin:
                 self.iface,
                 self.iface.mainWindow()
             )
+            self.selectionExtenderWidget.setController(self.selectionExtenderController)
 
             self.iface.addDockWidget(
                 Qt.RightDockWidgetArea,
