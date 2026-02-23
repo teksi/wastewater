@@ -57,6 +57,8 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
         , {rp_from_cols}
         , {rp_to_cols}
         , vl_fh.tww_is_primary
+        , og.organisation_type as _owner_organisation_type
+        , False as tww_update_lvl_by_geom
       FROM tww_od.reach re
          LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = re.obj_id
          LEFT JOIN tww_od.reach_point rp_from ON rp_from.obj_id = re.fk_reach_point_from
@@ -64,7 +66,8 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
          LEFT JOIN tww_od.wastewater_structure ws ON ne.fk_wastewater_structure = ws.obj_id
          LEFT JOIN tww_od.channel ch ON ch.obj_id = ws.obj_id
          LEFT JOIN tww_od.pipe_profile pp ON re.fk_pipe_profile = pp.obj_id
-        LEFT JOIN tww_vl.channel_function_hierarchic vl_fh ON vl_fh.code = ch.function_hierarchic
+         LEFT JOIN tww_vl.channel_function_hierarchic vl_fh ON vl_fh.code = ch.function_hierarchic
+         LEFT JOIN tww_od.organisation og on og.obj_id=ws.fk_owner
          {extra_joins};
     """.format(
         extra_cols=(
@@ -284,6 +287,7 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
           ST_MakePoint(ST_X(ST_StartPoint(NEW.progression3d_geometry)),ST_Y(ST_StartPoint(NEW.progression3d_geometry)),COALESCE(NEW.rp_from_level,'NaN'))));
         WHEN
           COALESCE(new_lvl,0) != 0  -- filter out NULL and 0
+          AND NEW.tww_update_lvl_by_geom
           AND new_lvl IS DISTINCT FROM NULLIF(ST_Z(ST_StartPoint(OLD.progression3d_geometry)),'NaN') -- 3d geometry Z was changed
         THEN
           NEW.rp_from_level = new_lvl;
@@ -303,6 +307,7 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
           ST_MakePoint(ST_X(ST_EndPoint(NEW.progression3d_geometry)),ST_Y(ST_EndPoint(NEW.progression3d_geometry)),COALESCE(NEW.rp_to_level,'NaN'))));
         WHEN
           COALESCE(new_lvl,0) != 0  -- filter out NULL and 0
+          AND NEW.tww_update_lvl_by_geom
           AND new_lvl IS DISTINCT FROM NULLIF(ST_Z(ST_EndPoint(OLD.progression3d_geometry)),'NaN') -- 3d geometry Z was changed
         THEN
           NEW.rp_to_level = new_lvl;

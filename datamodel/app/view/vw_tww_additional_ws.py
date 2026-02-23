@@ -75,6 +75,7 @@ def vw_tww_additional_ws(
         , wn._usage_current AS _channel_usage_current
         , wn._function_hierarchic AS _channel_function_hierarchic
         , vl_fh.tww_is_primary
+        , og.organisation_type as _owner_organisation_type
         FROM tww_od.wastewater_structure ws
         LEFT JOIN tww_od.cover main_co ON main_co.obj_id = ws.fk_main_cover
         LEFT JOIN tww_od.structure_part main_co_sp ON main_co_sp.obj_id = ws.fk_main_cover
@@ -89,6 +90,7 @@ def vw_tww_additional_ws(
         LEFT JOIN tww_od.discharge_point dp ON dp.obj_id = ws.obj_id
         LEFT JOIN tww_od.infiltration_installation ii ON ii.obj_id = ws.obj_id
         LEFT JOIN tww_vl.channel_function_hierarchic vl_fh ON vl_fh.code = wn._function_hierarchic
+        LEFT JOIN tww_od.organisation og on og.obj_id=ws.fk_owner
         {extra_joins}
         WHERE '-1'= ALL(ARRAY[ch.obj_id,ma.obj_id,ss.obj_id,dp.obj_id,ii.obj_id]) IS NULL
         AND '-2'= ALL(ARRAY[ch.obj_id,ma.obj_id,ss.obj_id,dp.obj_id,ii.obj_id]) IS NULL;
@@ -183,7 +185,7 @@ def vw_tww_additional_ws(
             table_alias="ne",
             remove_pkey=True,
             indent=4,
-            skip_columns=[],
+            skip_columns=["fk_wastewater_structure"],
             prefix="wn_",
             remap_columns={},
         ),
@@ -491,11 +493,12 @@ def vw_tww_additional_ws(
             table_alias="sp",
             prefix="co_",
             indent=6,
-            skip_columns=["fk_wastewater_structure"],
+            skip_columns=[],
             update_values={
                 "last_modification": "NEW.last_modification",
                 "fk_dataowner": "NEW.fk_dataowner",
                 "fk_provider": "NEW.fk_provider",
+                "fk_wastewater_structure": "NEW.obj_id",
             },
         ),
         update_ws=update_command(
@@ -574,6 +577,12 @@ def vw_tww_additional_ws(
             prefix="wn_",
             indent=6,
             skip_columns=[],
+            update_values={
+                "last_modification": "NEW.last_modification",
+                "fk_dataowner": "NEW.fk_dataowner",
+                "fk_provider": "NEW.fk_provider",
+                "fk_wastewater_structure": "NEW.obj_id",
+            },
         ),
         update_extra=update_extra(connection=connection, extra_definition=extra_definition),
     )

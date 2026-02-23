@@ -49,3 +49,4 @@ joins:
     prefix: co_
     read_only: false
     where_clause: "agxx_co.fk_cover = OLD.co_obj_id"
+    case_condition: "NEW.co_obj_id IS NOT NULL"

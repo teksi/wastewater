@@ -1,11 +1,3 @@
-variables:
-   lang_code:
-     value: de
-     type: literal
-   SRID:
-     value: 2056
-     type: number
-
 sql_files:
   - file: sql/01_defaults.sql
   - file: sql/02_aux_functions.sql
@@ -20,6 +12,7 @@ extra_definitions:
   vw_tww_wastewater_structure: extra_definitions/vw_tww_wastewater_structure.yaml
   vw_tww_overflow: extra_definitions/vw_tww_overflow.yaml
   vw_wastewater_structure: extra_definitions/vw_wastewater_structure.yaml
+  vw_tww_catchment_area_totals: extra_definitions/vw_tww_catchment_area_totals.yaml
 
 reset_vl_files:
   - file: vl_management_agxx.sql

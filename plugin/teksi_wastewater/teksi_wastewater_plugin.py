@@ -115,7 +115,7 @@ class TeksiWastewaterPlugin:
         :param source_text: The text to translate
         :return: The translated text
         """
-        return QApplication.translate("TwwPlugin", source_text)
+        return QApplication.translate("TeksiWastewaterPlugin", source_text)
 
     def initLogger(self):
         """
@@ -366,9 +366,9 @@ class TeksiWastewaterPlugin:
 
         for message in messages:
             self.iface.messageBar().pushMessage(
-                "Error",
+                "Warning",
                 message,
-                level=Qgis.Critical,
+                level=Qgis.Warning,
             )
 
     def tww_validity_check_action(self):

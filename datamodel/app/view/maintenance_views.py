@@ -15,14 +15,14 @@ from .utils.extra_definition_utils import (
 )
 
 
-def vw_tww_channel(
+def mvw_tww_channel(
     connection: psycopg.Connection,
     srid: psycopg.sql.Literal,
     extra_definition: dict = None,
     lang_code: str = "en",
 ):
     """
-    Creates tww_channel view
+    Creates mvw_tww_channel view
     :param connection: Psycopg connection
     :param extra_definition: a dictionary for additional read-only columns
     """
@@ -31,60 +31,80 @@ def vw_tww_channel(
     cursor = connection.cursor()
 
     matview_sql = """
-    DROP MATERIALIZED VIEW IF EXISTS tww_app.vw_tww_channel;
+    DROP MATERIALIZED VIEW IF EXISTS tww_app.mvw_tww_channel;
 
-    CREATE MATERIALIZED VIEW tww_app.vw_tww_channel AS
-    WITH _topology AS
-        (
-        SELECT
-          ch.obj_id
-        , array_agg(wn_from.obj_id) AS _from_nodes
-        , array_agg(wn_to.obj_id) as _to_nodes
-      FROM tww_od.channel ch
-         LEFT JOIN tww_od.wastewater_structure ws ON ch.obj_id = ws.obj_id
-         LEFT JOIN tww_od.wastewater_networkelement ne ON ne.fk_wastewater_structure = ws.obj_id
-         LEFT JOIN tww_od.reach re ON ne.obj_id = re.obj_id
-         LEFT JOIN tww_od.reach_point rp_to ON re.fk_reach_point_to=rp_to.obj_id
-         LEFT JOIN tww_od.wastewater_node wn_to on wn_to.obj_id=rp_to.fk_wastewater_networkelement
-         LEFT JOIN tww_od.reach_point rp_from ON re.fk_reach_point_from=rp_from.obj_id
-         LEFT JOIN tww_od.wastewater_node wn_from on wn_from.obj_id=rp_from.fk_wastewater_networkelement
-       GROUP BY
-         ch.obj_id
+    CREATE MATERIALIZED VIEW tww_app.mvw_tww_channel AS
+     WITH  reach_2d AS MATERIALIZED (SELECT obj_id,
+        st_curvetoline(st_force2d(progression3d_geometry)) AS progression2d_geometry,
+                fk_reach_point_from,
+                fk_reach_point_to,
+                clear_height,
+                length_effective,
+                material
+        FROM tww_od.reach),
+        channel_geometries AS (
+            SELECT
+                ch.obj_id,
+                st_startpoint(st_linemerge(st_collect(re.progression2d_geometry))) AS channel_start_point,
+                st_endpoint(st_linemerge(st_collect(re.progression2d_geometry))) AS channel_end_point
+            FROM tww_od.channel ch
+            JOIN tww_od.wastewater_structure ws ON ch.obj_id = ws.obj_id
+            JOIN tww_od.wastewater_networkelement ne ON ne.fk_wastewater_structure = ws.obj_id
+            JOIN reach_2d re ON re.obj_id = ne.obj_id
+            GROUP BY ch.obj_id
+        ),
+        reach_start_end_points AS (
+            SELECT
+                re.obj_id,
+                ne.fk_wastewater_structure,
+                re.fk_reach_point_from,
+                re.fk_reach_point_to,
+                st_startpoint(re.progression2d_geometry) AS reach_start_point,
+                st_endpoint(re.progression2d_geometry) AS reach_end_point
+            FROM reach_2d re
+            JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = re.obj_id
+        ),
+        rp_channel AS (
+            SELECT
+                cg.obj_id,
+                rs.fk_reach_point_from,
+                re.fk_reach_point_to
+            FROM channel_geometries cg
+            JOIN reach_start_end_points rs ON rs.fk_wastewater_structure = cg.obj_id AND st_equals(rs.reach_start_point, cg.channel_start_point)
+            JOIN reach_start_end_points re ON re.fk_wastewater_structure = cg.obj_id AND st_equals(re.reach_end_point, cg.channel_end_point)
+        ), re_agg as(
+        select ne.fk_wastewater_structure,
+            st_multi(st_forcecurve(st_linemerge(st_collect(re.progression2d_geometry))))::geometry(MultiCurve, {{srid}}) AS progression2d_geometry,
+            min(re.clear_height) AS _re_min_height,
+            max(re.clear_height) AS _re_max_height,
+            sum(re.length_effective) AS _re_length_effective,
+            array_agg(DISTINCT vl_mat.value_{lang_code}) AS _re_materials
+        FROM reach_2d re
+        INNER JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = re.obj_id
+        LEFT JOIN tww_vl.reach_material vl_mat ON vl_mat.code = re.material
+        GROUP BY ne.fk_wastewater_structure
         )
         SELECT
           {ch_cols}
         , {ws_cols}
-        , ST_Multi(ST_Force2D(ST_ForceCurve(ST_LineMerge(ST_Collect(ST_CurveToLine(re.progression3d_geometry))))))::geometry(MultiCurve, {{srid}})  as progression2d_geometry
-        , min(re.clear_height) AS _re_min_height
-        , max(re.clear_height) AS _re_max_height
-        , sum(length_effective) as _re_length_effective
-        , array_agg(DISTINCT vl_mat.value_{lang_code}) as _re_materials
-        , (
-            SELECT unnest(_topology._from_nodes)
-            EXCEPT ALL
-            SELECT unnest(_topology._to_nodes)
-            LIMIT 1
-          ) AS _from_node
-        , (
-            SELECT unnest(_topology._to_nodes)
-            EXCEPT ALL
-            SELECT unnest(_topology._from_nodes)
-            LIMIT 1
-          ) AS _to_node
+        , re_agg.progression2d_geometry
+        , re_agg._re_min_height
+        , re_agg._re_max_height
+        , re_agg._re_length_effective
+        , re_agg._re_materials
+        , rpc.fk_reach_point_from
+        , rp_from.fk_wastewater_networkelement as _from_ne
+        , rpc.fk_reach_point_to
+        , rp_to.fk_wastewater_networkelement as _to_ne
         , vl_fh.tww_is_primary
       FROM tww_od.channel ch
-         INNER JOIN _topology on _topology.obj_id=ch.obj_id
+         JOIN rp_channel rpc ON rpc.obj_id::text = ch.obj_id::text
+         LEFT JOIN tww_od.reach_point rp_from on rp_from.obj_id=rpc.fk_reach_point_from
+         LEFT JOIN tww_od.reach_point rp_to on rp_to.obj_id=rpc.fk_reach_point_to
          LEFT JOIN tww_od.wastewater_structure ws ON ch.obj_id = ws.obj_id
-         LEFT JOIN tww_od.wastewater_networkelement ne ON ne.fk_wastewater_structure = ws.obj_id
-         LEFT JOIN tww_od.reach re ON ne.obj_id = re.obj_id
+         LEFT JOIN re_agg on re_agg.fk_wastewater_structure = ch.obj_id
          LEFT JOIN tww_vl.channel_function_hierarchic vl_fh ON vl_fh.code = ch.function_hierarchic
-         LEFT JOIN tww_vl.reach_material vl_mat on vl_mat.code = re.material
-       GROUP BY
-         {ch_cols_grp}
-        , {ws_cols_grp}
-        , _topology._from_nodes
-        , _topology._to_nodes
-        , vl_fh.tww_is_primary
+
     """.format(
         lang_code=lang_code,
         ch_cols=select_columns(
@@ -102,35 +122,6 @@ def vw_tww_channel(
             table_name="wastewater_structure",
             table_alias="ws",
             prefix="ws_",
-            remove_pkey=True,
-            indent=4,
-            skip_columns=[
-                "detail_geometry3d_geometry",
-                "fk_dataowner",
-                "fk_provider",
-                "_label",
-                "_cover_label",
-                "_bottom_label",
-                "_input_label",
-                "_output_label",
-                "_depth",
-                "fk_main_cover",
-            ],
-        ),
-        ch_cols_grp=select_columns(
-            connection=connection,
-            table_schema="tww_od",
-            table_name="channel",
-            table_alias="ch",
-            remove_pkey=False,
-            indent=4,
-            skip_columns=[],
-        ),
-        ws_cols_grp=select_columns(
-            connection=connection,
-            table_schema="tww_od",
-            table_name="wastewater_structure",
-            table_alias="ws",
             remove_pkey=True,
             indent=4,
             skip_columns=[
@@ -174,7 +165,7 @@ def vw_tww_channel_maintenance(connection: psycopg.Connection, extra_definition:
         , {ch_cols}
         {extra_cols}
       FROM tww_od.re_maintenance_event_wastewater_structure mw
-         INNER JOIN tww_app.vw_tww_channel ch ON ch.obj_id = mw.fk_wastewater_structure
+         INNER JOIN tww_app.mvw_tww_channel ch ON ch.obj_id = mw.fk_wastewater_structure
          LEFT JOIN tww_od.maintenance_event me ON me.obj_id = mw.fk_maintenance_event
          LEFT JOIN tww_od.maintenance mn ON me.obj_id = mn.obj_id
          {extra_joins}
@@ -183,7 +174,7 @@ def vw_tww_channel_maintenance(connection: psycopg.Connection, extra_definition:
         ch_cols=select_columns(
             connection=connection,
             table_schema="tww_app",
-            table_name="vw_tww_channel",
+            table_name="mvw_tww_channel",
             table_alias="ch",
             remove_pkey=False,
             indent=4,
@@ -415,6 +406,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
     pg_service = args.pg_service or os.getenv("PGSERVICE")
     with psycopg.connect(f"service={pg_service}") as conn:
-        vw_tww_channel(connection=conn)
+        mvw_tww_channel(connection=conn)
         vw_tww_channel_maintenance(connection=conn)
         vw_tww_ws_maintenance(connection=conn)

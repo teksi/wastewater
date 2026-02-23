@@ -15,7 +15,7 @@ from view.catchment_area_views import (
     vw_tww_catchment_area_totals,
 )
 from view.maintenance_views import (
-    vw_tww_channel,
+    mvw_tww_channel,
     vw_tww_channel_maintenance,
     vw_tww_ws_maintenance,
 )
@@ -38,6 +38,7 @@ class Hook(HookBase):
         connection: psycopg.Connection,
         SRID: int = 2056,
         modification_agxx: bool = False,
+        webgis: bool = False,
         modification_ci: bool = False,
         lang_code: str = "en",
         modification_yaml: Path = None,
@@ -46,6 +47,7 @@ class Hook(HookBase):
         Creates the schema tww_app for TEKSI Wastewater & GEP
         :param SRID: the EPSG code for geometry columns. Overridden by modification_yaml
         :param modification_agxx: bool of whether to load agxx modification. Overridden by modification_yaml
+        :param webgis: bool of whether to load web modification. Overridden by modification_yaml
         :param modification_ci: bool of whether to load ci modification. Overridden by modification_yaml
         :param lang_code: language code for use in modification views. Overridden by modification_yaml
         :param modification_yaml: Path of yaml containing app parametrisation
@@ -55,13 +57,13 @@ class Hook(HookBase):
 
         if modification_yaml:
             self.parameters = self.load_yaml(modification_yaml)
-            SRID = self.parameters["base_configurations"][0].get("SRID", 2056)
-            lang_code = self.parameters["base_configurations"][0].get("lang_code", "en")
         else:
             self.parameters = self.load_yaml(self.cwd / "app_modification.template.yaml")
             if "modification_repositories" in self.parameters:
                 for entry in self.parameters["modification_repositories"]:
                     if modification_ci and entry["id"] == "ci":
+                        entry["active"] = True
+                    if webgis and entry["id"] == "webgis":
                         entry["active"] = True
                     if modification_agxx and entry["id"] == "agxx":
                         entry["active"] = True
@@ -92,8 +94,13 @@ class Hook(HookBase):
                 "value": f"display_{lang_code}",
                 "type": "identifier",
             },
+            "name_lang": {
+                "value": f"name_{lang_code}",
+                "type": "identifier",
+            },
         }
         self.execute("CREATE SCHEMA tww_app;")
+        self.execute("CREATE SCHEMA tww_app_pg2ili;")
         self.run_sql_files_in_folder(self.cwd / "sql_functions")
         self.app_modifications = [
             entry
@@ -109,7 +116,7 @@ class Hook(HookBase):
 
         if self.app_modifications:
             for modification in self.app_modifications:
-                logger.info(
+                logger.debug(
                     f"""*****
 Running modification {modification.get('id')}
 ****
@@ -127,7 +134,7 @@ Running modification {modification.get('id')}
         set_defaults_and_triggers(self._connection, self.single_inherintances)
 
         for key in self.single_inherintances:
-            logger.info(f"creating view vw_{key}")
+            logger.debug(f"creating view vw_{key}")
             SingleInheritance(
                 connection=self._connection,
                 parent_table="tww_od." + self.single_inherintances[key],
@@ -136,7 +143,7 @@ Running modification {modification.get('id')}
                 view_schema="tww_app",
                 pkey_default_value=True,
                 inner_defaults={"identifier": "obj_id"},
-            ).create()
+            ).create(commit=False)
 
         for key in self.multiple_inherintances:
             MultipleInheritance(
@@ -144,7 +151,7 @@ Running modification {modification.get('id')}
                 definition=self.load_yaml(self.abspath / self.multiple_inherintances[key]),
                 drop=True,
                 variables=variables_pirogue,
-            ).create()
+            ).create(commit=False)
 
         for key, value in self.extra_definitions.items():
             if value:
@@ -184,13 +191,13 @@ Running modification {modification.get('id')}
                 else {}
             ),
         )
-        vw_tww_channel(
+        mvw_tww_channel(
             connection=self._connection,
             srid=SRID,
             lang_code=lang_code,
             extra_definition=(
-                self.load_yaml(self.extra_definitions["vw_tww_channel"])
-                if self.extra_definitions.get("vw_tww_channel")
+                self.load_yaml(self.extra_definitions["mvw_tww_channel"])
+                if self.extra_definitions.get("mvw_tww_channel")
                 else {}
             ),
         )
@@ -207,22 +214,6 @@ Running modification {modification.get('id')}
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_ws_maintenance"])
                 if self.extra_definitions.get("vw_tww_ws_maintenance")
-                else {}
-            ),
-        )
-        vw_tww_channel_maintenance(
-            connection=self._connection,
-            extra_definition=(
-                self.load_yaml(self.extra_definitions["vw_tww_channel_maintenance"])
-                if self.extra_definitions["vw_tww_channel_maintenance"]
-                else {}
-            ),
-        )
-        vw_tww_ws_maintenance(
-            connection=self._connection,
-            extra_definition=(
-                self.load_yaml(self.extra_definitions["vw_tww_ws_maintenance"])
-                if self.extra_definitions["vw_tww_ws_maintenance"]
                 else {}
             ),
         )
@@ -288,7 +279,7 @@ Running modification {modification.get('id')}
         for _, yaml_path in self.simple_joins_yaml.items():
             SimpleJoins(
                 definition=self.load_yaml(self.abspath / yaml_path), connection=self._connection
-            ).create()
+            ).create(commit=False)
 
         sql_directories = [
             "view/varia",
@@ -312,7 +303,7 @@ Running modification {modification.get('id')}
         if not file.exists():
             raise FileNotFoundError(f"The file {file} does not exist.")
 
-        logger.info(f"loading yaml {file}")
+        logger.debug(f"loading yaml {file}")
         with open(file) as f:
             data = yaml.safe_load(f)
             return data if isinstance(data, dict) else {}
@@ -336,9 +327,10 @@ Running modification {modification.get('id')}
             curr_dir = ""
 
         ext_variables = modification_config.get("variables", {})
-        sql_vars = self.parse_variables(ext_variables)
+        sql_vars = self.parse_variables({**self.variables_sql, **ext_variables})
 
         for sql_file in modification_config.get("sql_files", None):
+            logger.debug(f"Running sql file {sql_file}")
             file_name = curr_dir / sql_file.get("file")
             self.run_sql_file(file_name, sql_vars)
 
@@ -346,14 +338,23 @@ Running modification {modification.get('id')}
             for key, value in modification_config.get("extra_definitions", {}).items():
                 if not self.extra_definitions[key]:
                     self.extra_definitions[key] = curr_dir / value
+                    logger.debug(
+                        f"altered {key} extra definition to {self.extra_definitions[key]}"
+                    )
 
             for key, value in modification_config.get("simple_joins_yaml", {}).items():
                 if not self.simple_joins_yaml[key]:
                     self.simple_joins_yaml[key] = curr_dir / value
+                    logger.debug(
+                        f"altered {key} simpleJoin definition to {self.simple_joins_yaml[key]}"
+                    )
 
             for key, value in modification_config.get("multiple_inherintances", {}).items():
                 if self.multiple_inherintances[key]:
                     self.multiple_inherintances[key] = curr_dir / value
+                    logger.debug(
+                        f"altered {key} multipleInheritance definition to {self.multiple_inherintances[key]}"
+                    )
 
     def manage_vl(
         self,
@@ -406,7 +407,7 @@ Running modification {modification.get('id')}
         for file in files:
             filename = os.fsdecode(file)
             if filename.lower().endswith(".sql"):
-                logger.info(f"Running {filename}")
+                logger.debug(f"Running {filename}")
                 self.run_sql_file(os.path.join(directory, filename), sql_vars)
 
     def parse_variables(self, variables: dict) -> dict:
@@ -463,6 +464,13 @@ if __name__ == "__main__":
         help="load ci modification",
     )
     parser.add_argument(
+        "-w",
+        "--webgis",
+        action="store_true",
+        default=False,
+        help="load webGIS modification",
+    )
+    parser.add_argument(
         "-l",
         "--lang_code",
         help="language code",
@@ -482,6 +490,7 @@ if __name__ == "__main__":
             SRID=args.srid,
             modification_agxx=args.modification_agxx,
             modification_ci=args.modification_ci,
+            webgis=args.webgis,
             modification_yaml=args.modification_yaml,
             lang_code=args.lang_code,
         )

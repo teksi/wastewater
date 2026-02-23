@@ -29,15 +29,15 @@ SELECT DISTINCT
         ELSE re.clear_height/1000::float/pp.height_width_ratio
       END
       WHEN pp.height_width_ratio IS NULL THEN 0.002  --ROMA: TODO default value for width to be set
-      ELSE 0.002  --ROMA: TODO default value for width to be set
+      ELSE 0.002  --TODO default value for width to be set
     END
-    ELSE NULL
+    ELSE 0 -- default set to 0 instead of NULL
   END as Geom2,
   --Geom3 = code -> used only for arch profile, but this code value is nowhere to be set in the TWW model
   0 as Geom3,
   0 as Geom4,
   1 as Barrels,
-  NULL as Culvert,
+  0 as Culvert, -- default set to 0 instead of NULL
   CASE
     WHEN ws_st.vsacode IN (7959, 6529, 6526) THEN 'planned'
     ELSE 'current'

@@ -28,7 +28,7 @@ Adding a new Maintenance Event
 
  * Edit the new record in the vw_tww_maintenance_event form, then click **OK**
 
- .. figure:: images/maintenance_new_record.jpg
+ .. figure:: images/maintenance_new_record2025.jpg
 
  .. figure:: images/maintenance_new_record_saved.jpg
 
@@ -67,6 +67,15 @@ Editing
 
  * Do as described in adding - but just edit existing maintenance events.
  * Or edit the **vw_tww_maintenance_event** table (in layer group **inspection**)
+
+Mark as outdated
+----------------
+
+.. versionadded:: 2025.0
+
+In order to use maintenance events and files efficiently, they can be flagged as outdated using a TEKSI-specific extension of the datamodel, namely a true/false value named ``tww_outdated``.
+
+ .. attention:: This extension-data is not part of the INTERLIS-export. If you migrate data via export-import, you will have to copy this values separately in the new database.
 
 
 Multi Edit

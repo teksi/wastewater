@@ -900,10 +900,14 @@ class TwwMapToolConnectNetworkElements(QgsMapTool):
             for cbx in properties:
                 if cbx.isChecked():
                     source_feature[cbx.objectName()] = target_feature["obj_id"]
+
+            if not source.layer().isEditable():
+                source.layer().startEditing()
+
             if not source.layer().isEditable():
                 self.iface.messageBar().pushMessage(
                     "TWW",
-                    self.tr('Layer "{layername}" is not in edit mode').format(
+                    self.tr('Layer "{layername}" can\'t be made editable').format(
                         layername=source.layer().name()
                     ),
                     Qgis.Warning,

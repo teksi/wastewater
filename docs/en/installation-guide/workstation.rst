@@ -20,6 +20,8 @@ Set the environment variable ``PGSYSCONFDIR`` to the path to ``PGSYSCONFDIR``.
 
 .. note:: Search for environment variable in your windows system settings, then click one of the following options, for either a user or a system variable:
 
+  .. figure:: images/system_environment_variable.jpg
+
     Click ``New`` to add a new variable name and value.
     Click an existing variable, and then click ``Edit`` to change its name or value.
     Click an existing variable, and then click ``Delete`` to remove it.
@@ -107,6 +109,8 @@ Install TWW plugin
 
 Plugin requirements:
 
+Please check if the following python libraries are installed
+
 - `networkx <https://pypi.org/project/networkx/>`_ >= 3.3
 
 You can install them on Debian based systems with::
@@ -117,6 +121,9 @@ You can install them on Debian based systems with::
 Or for Windows users, directly in QGIS via the Python Console with::
 
  import pip; pip.main(["install", "networkx"])
+
+
+Plugin installation from QGIS Plugins Menu:
 
 * Open QGIS
 
@@ -140,6 +147,20 @@ Or for Windows users, directly in QGIS via the Python Console with::
 
    **Add the TWW plugin**
 
+* When the installation was successfull, you should see the TWW Toolbar:
+
+.. figure:: images/tww_plugin_toolbar_ok.png
+
+   * If the toolbar is greyed out, you have to restart QGIS respectively re-load the project:
+
+.. figure:: images/tww_plugin_toolbar_grey.png
+
+* Configuration of the plugin:
+
+  * Plugin - TEKSI Wastewater - Settings
+  * Check the Admin Guide to see how to enable `INTERLIS Import / Export options <https://teksi.github.io/wastewater/admin-guide/interlis-io/index.html#enable-admin-mode>`_
+
+
 Optional plugin
 ~~~~~~~~~~~~~~~
 
@@ -148,24 +169,28 @@ TWW uses a data historization process. The ``pg history viewer`` `plugin <http:/
 Install the demo data
 ---------------------
 
-as described `here <https://teksi.github.io/wastewater/docs/installation-guide/database-initialization.html#restore-datamodel-demodata>`_
+See the current `TMMT Documentation for a step by step help <https://github.com/teksi/TMMT/discussions/34>`_
+
 
 Install the demo project
 ------------------------
 
-* Download from https://github.com/teksi/wastewater/releases/latest the qgs project file and its translations
-project-translations.zip
+* See the current `TMMT Documentation for a step by step help <https://github.com/teksi/TMMT/discussions/34>`_
 
-* Extract the file
+* Configure and download the qgs project file and its translations so it fits your pg_config setting
 
-* If you leave the teksi_wastewater_[language].qm files in the same directory as the teksi_wastewater.qgs file and start QGIS with one of these languages, your project will be translated to that langue when you start the project. E.g. you start teksi_wastewater.qgs with a QGIS Installation that is set to German, then the teksi_wastewater.qgs project will appear in German.
+* If you leave the teksi_wastewater_[language].qm files in the same directory as the teksi_wastewater.qgs file and start QGIS with one of these languages, your project will be translated to that language when you start the project. E.g. you start teksi_wastewater.qgs with a QGIS installation that is set to German, then the teksi_wastewater.qgs project will appear in German.
 
 .. note:: You need to explicitly set the language in QGIS in settings. If QGIS is configured to take the system language, the TWW translation is not loaded.
 
+.. note:: You may need to set for example the qm file to teksi_wastewater_de_CH.qm to fit the Swiss regional settings. The same for *_fr_CH in French instead of just *_fr.
+
 .. figure:: images/tww_project_qm_language_files.jpg
 
-* Open `project-translations/teksi_wastewater.qgs` with QGIS
+* Open `teksi_wastewater.qgs` with QGIS
 * When you save that project it will keep it's language and it cannot be changed in the same way.
+
+.. note:: It is recommended to use the QGIS settings that save the project files as *.qgs and not as *.qgz.
 
 
 If you are a data owner: Add your own OID to the project
