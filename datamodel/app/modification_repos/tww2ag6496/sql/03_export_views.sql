@@ -305,9 +305,9 @@ SELECT
 
 
 FROM (
-	SELECT obj_id, wwtp_number, situation3d_geometry, backflow_level_current, bottom_level,wns._function_hierarchic 
+	SELECT obj_id, wwtp_number, situation3d_geometry, backflow_level_current, bottom_level,wns._function_hierarchic
 	FROM tww_od.wastewater_node wn
-    LEFT JOIN tww_od.tww_wastewater_node_symbology wns 
+    LEFT JOIN tww_od.tww_wastewater_node_symbology wns
 	ON wns.fk_wastewater_node = wn.obj_id
 	UNION (
 		SELECT obj_id, wwtp_number, situation3d_geometry, backflow_level_current, bottom_level, ch_function_hierarchic as _function_hierarchic
