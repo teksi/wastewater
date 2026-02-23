@@ -1,7 +1,3 @@
-base_configurations:
-   - lang_code: en
-   - SRID: 2056
-
 extra_definitions:
   vw_tww_additional_ws: null
   vw_tww_catchment_area: null
