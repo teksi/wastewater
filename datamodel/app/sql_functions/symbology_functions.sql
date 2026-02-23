@@ -585,7 +585,7 @@ BEGIN
   	PERFORM tww_app.update_wastewater_node_symbology(wn_obj_id);
 
   IF affected_ws.fk_wastewater_structure IS NOT NULL THEN
-	PERFORM tww_app.update_wastewater_structure_label(affected_ws.fk_wastewater_structure;
+	PERFORM tww_app.update_wastewater_structure_label(affected_ws.fk_wastewater_structure);
   END IF;
 
   EXECUTE tww_app.update_depth(affected_ws.fk_wastewater_structure);
