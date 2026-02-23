@@ -129,13 +129,17 @@ class TestViews(unittest.TestCase, DbTestBase):
             "main": {"obj_id": None, "wn_obj_id": None, "coords": [2600000, 1200000]},
             "N": {"obj_id": None, "wn_obj_id": None, "coords": [2600000, 1200001]},
             "S": {"obj_id": None, "wn_obj_id": None, "coords": [2600000, 1199999]},
+            "W": {"obj_id": None, "wn_obj_id": None, "coords": [2599999, 1200000]},
         }
         self.insert_manholes(manholes)
         reaches = {
             "input": [
                 {"mh_id": "N", "rp_to_level": 1011, "mid_point": [2600000.5, 1199999.5]},
                 {"mh_id": "S", "rp_to_level": 1012, "mid_point": [2600000.5, 1200000.5]},
-            ]
+            ],
+            "output": [
+                {"mh_id": "W", "rp_from_level": 1010, "mid_point": [2599999.5, 1200000]},
+            ],
         }
         self.insert_reaches(reaches, manholes)
         self.assertEqual(
