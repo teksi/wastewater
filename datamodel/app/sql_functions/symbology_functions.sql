@@ -176,23 +176,28 @@ BEGIN
       ch_obj_id = OLD.obj_id;
   END CASE;
 
-
-    SELECT wn.obj_id INTO _update_oid
+    FOR _update_oid IN 
+    SELECT wn.obj_id
       FROM tww_od.wastewater_networkelement ch_ne
       LEFT JOIN tww_od.reach re ON ch_ne.obj_id = re.obj_id
       LEFT JOIN tww_od.reach_point rp ON rp.obj_id = ANY(ARRAY[re.fk_reach_point_from , re.fk_reach_point_to])
       INNER JOIN tww_od.wastewater_node wn ON rp.fk_wastewater_networkelement = wn.obj_id
-      WHERE ch_ne.fk_wastewater_structure = ch_obj_id AND wn.obj_id IS NOT NULL;
-	PERFORM tww_app.update_wastewater_node_symbology(_update_oid);
+      WHERE ch_ne.fk_wastewater_structure = ch_obj_id AND wn.obj_id IS NOT NULL
+    LOOP
+	    PERFORM tww_app.update_wastewater_node_symbology(_update_oid);
+    END LOOP;
 
-    SELECT ne.fk_wastewater_structure into _update_oid
+    FOR _update_oid IN 
+    SELECT ne.fk_wastewater_structure
       FROM tww_od.wastewater_networkelement ch_ne
       LEFT JOIN tww_od.reach re ON ch_ne.obj_id = re.obj_id
       LEFT JOIN tww_od.reach_point rp ON rp.obj_id = ANY(ARRAY[re.fk_reach_point_from , re.fk_reach_point_to])
       LEFT JOIN tww_od.wastewater_networkelement ne ON rp.fk_wastewater_networkelement = ne.obj_id
-	  INNER JOIN tww_od.wastewater_node wn ON rp.fk_wastewater_networkelement = wn.obj_id
-      WHERE ch_ne.fk_wastewater_structure = ch_obj_id AND wn.obj_id IS NOT NULL;
-	PERFORM tww_app.update_wastewater_structure_label(_update_oid);
+	    INNER JOIN tww_od.wastewater_node wn ON rp.fk_wastewater_networkelement = wn.obj_id
+      WHERE ch_ne.fk_wastewater_structure = ch_obj_id AND wn.obj_id IS NOT NULL
+    LOOP
+	    PERFORM tww_app.update_wastewater_structure_label(_update_oid);
+    END LOOP;
 
   RETURN NEW;
 END; $BODY$
@@ -275,19 +280,28 @@ BEGIN
       re_obj_id = OLD.obj_id;
   END CASE;
 
-	SELECT wn.obj_id into _update_oid
+    FOR _update_oid IN 
+    SELECT wn.obj_id
       FROM tww_od.reach re
       LEFT JOIN tww_od.reach_point rp ON rp.obj_id = ANY(ARRAY[re.fk_reach_point_from , re.fk_reach_point_to])
       INNER JOIN tww_od.wastewater_node wn ON wn.obj_id = rp.fk_wastewater_networkelement
-      WHERE re.obj_id = re_obj_id;
-	  PERFORM tww_app.update_wastewater_node_symbology(_update_oid);
+      WHERE re.obj_id = re_obj_id
+    LOOP
+	    PERFORM tww_app.update_wastewater_node_symbology(_update_oid);
+    END LOOP;
 
-	SELECT ne.fk_wastewater_structure into _update_oid
+    FOR _update_oid IN 
+	  SELECT ne.fk_wastewater_structure
       FROM tww_od.reach re
       LEFT JOIN tww_od.reach_point rp ON rp.obj_id = ANY(ARRAY[re.fk_reach_point_from , re.fk_reach_point_to])
       LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = rp.fk_wastewater_networkelement
       INNER JOIN tww_od.wastewater_node wn ON wn.obj_id = ne.obj_id
-      WHERE re.obj_id = re_obj_id;
+      WHERE re.obj_id = re_obj_id
+    LOOP
+	    PERFORM tww_app.update_wastewater_structure_label(_update_oid);
+    END LOOP;
+
+
 	PERFORM tww_app.update_wastewater_structure_label(_update_oid);
 
   RETURN NEW;
@@ -533,18 +547,24 @@ BEGIN
       rp_obj_ids = ARRAY[OLD.fk_reach_point_from, OLD.fk_reach_point_to];
   END CASE;
 
-    SELECT wn.obj_id into _update_oid
+    FOR _update_oid IN 
+    SELECT wn.obj_id
       FROM tww_od.wastewater_node wn
       LEFT JOIN tww_od.reach_point rp ON wn.obj_id = rp.fk_wastewater_networkelement
-      WHERE rp.obj_id = ANY ( rp_obj_ids );
-	  PERFORM tww_app.update_wastewater_node_symbology(_update_oid);
+      WHERE rp.obj_id = ANY ( rp_obj_ids )
+    LOOP
+	    PERFORM tww_app.update_wastewater_node_symbology(_update_oid);
+    END LOOP;
 
-    SELECT ws.obj_id into _update_oid
+    FOR _update_oid IN 
+	  SELECT ws.obj_id
       FROM tww_od.wastewater_structure ws
       LEFT JOIN tww_od.wastewater_networkelement ne ON ws.obj_id = ne.fk_wastewater_structure
       LEFT JOIN tww_od.reach_point rp ON ne.obj_id = rp.fk_wastewater_networkelement
-      WHERE rp.obj_id = ANY ( rp_obj_ids );
-	PERFORM tww_app.update_wastewater_structure_label(_update_oid);
+      WHERE rp.obj_id = ANY ( rp_obj_ids )
+    LOOP
+	    PERFORM tww_app.update_wastewater_structure_label(_update_oid);
+    END LOOP;
 
   RETURN NEW;
 END; $BODY$
