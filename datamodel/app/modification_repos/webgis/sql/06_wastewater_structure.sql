@@ -38,12 +38,12 @@ AS
         CASE
             WHEN ws.identifier = ws.obj_id::text THEN '?'::text
             ELSE ws._label
-        END AS _label,
+        END AS _label
     , wsl.label_text_c AS _cover_label
     , wsl.label_text_b AS _bottom_label
     , wsl.label_text_rp AS _reach_point_label
-        , wns._usage_current AS _channel_usage_current
-        , wns._function_hierarchic AS _channel_function_hierarchic
+    , wns._usage_current AS _channel_usage_current
+    , wns._function_hierarchic AS _channel_function_hierarchic
    FROM tww_od.wastewater_structure ws
      LEFT JOIN tww_od.cover main_co ON main_co.obj_id::text = ws.fk_main_cover::text
      LEFT JOIN tww_od.manhole ma ON ma.obj_id::text = ws.obj_id::text
