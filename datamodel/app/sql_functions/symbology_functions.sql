@@ -637,8 +637,7 @@ BEGIN
 		SELECT ne.obj_id into _update_oid
 		  FROM tww_od.wastewater_networkelement ne
 		  INNER JOIN tww_od.wastewater_node wn ON wn.obj_id=ne.obj_id
-		  WHERE ne.obj_id = ne_obj_id
-		  ON CONFLICT DO NOTHING;
+		  WHERE ne.obj_id = ne_obj_id;
 	  	PERFORM tww_app.update_wastewater_node_symbology(_update_oid);
 		  SELECT ne.fk_wastewater_structure INTO _update_oid
 		  FROM tww_od.wastewater_networkelement ne
