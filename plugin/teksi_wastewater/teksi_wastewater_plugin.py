@@ -39,9 +39,9 @@ try:
 except ImportError:
     TwwPlotSVGWidget = None
 from .gui.twwprofiledockwidget import TwwProfileDockWidget
+from .gui.twwselectionextenderwidget import TwwSelectionExtenderWidget
 from .gui.twwsettingsdialog import TwwSettingsDialog
 from .gui.twwwizard import TwwWizard
-from .gui.twwselectionextenderwidget import TwwSelectionExtenderWidget
 from .libs.modelbaker.iliwrapper.ili2dbutils import JavaNotFoundError
 from .processing_provider.provider import TwwProcessingProvider
 from .tools.twwmaptools import TwwMapToolConnectNetworkElements, TwwTreeMapTool
@@ -367,7 +367,6 @@ class TeksiWastewaterPlugin:
         self.selectionExtenderAction.setEnabled(False)
         self.selectionExtenderAction.setCheckable(True)
         self.selectionExtenderAction.toggled.connect(self.toggleSelectionExtenderWidget)
-        
 
         self.toolbar.addAction(self.selectionExtenderAction)
         self.toolbarButtons.append(self.selectionExtenderAction)
@@ -476,7 +475,6 @@ class TeksiWastewaterPlugin:
             self.iface.removeDockWidget(self.selectionExtenderWidget)
             self.selectionExtenderWidget.deleteLater()
             self.selectionExtenderWidget = None
-        
 
     def onNetworkLayersAvailable(self, layers):
         self.connectNetworkElementsAction.setEnabled(True)
@@ -750,7 +748,7 @@ class TeksiWastewaterPlugin:
 
         self.enableSymbologyTriggersAction.setEnabled(admin_mode)
         self.disableSymbologyTriggersAction.setEnabled(admin_mode)
-    
+
     def toggleSelectionExtenderWidget(self, checked: bool):
         if checked:
             if self.selectionExtenderWidget is None:
@@ -761,7 +759,7 @@ class TeksiWastewaterPlugin:
                 self.selectionExtenderWidget.setController(self.selectionExtenderController)
 
                 self.iface.addDockWidget(Qt.RightDockWidgetArea, self.selectionExtenderWidget)
-                
+
                 self.selectionExtenderWidget.visibilityChanged.connect(
                     self._onSelectionExtenderVisibilityChanged
                 )
@@ -779,4 +777,3 @@ class TeksiWastewaterPlugin:
         self.selectionExtenderAction.blockSignals(True)
         self.selectionExtenderAction.setChecked(visible)
         self.selectionExtenderAction.blockSignals(False)
-

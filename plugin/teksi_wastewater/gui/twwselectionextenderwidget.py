@@ -1,14 +1,11 @@
-from qgis.PyQt.QtWidgets import QDockWidget, QApplication
-from qgis.PyQt.QtCore import QSize
-from qgis.PyQt import uic
 from qgis.core import Qgis
-
-import os
+from qgis.PyQt.QtCore import QSize
+from qgis.PyQt.QtWidgets import QApplication, QDockWidget
 
 from ..utils import get_ui_class
-from ..utils.twwlayermanager import TwwLayerManager
 
 DOCK_WIDGET_UI = get_ui_class("twwselectionextenderwidget.ui")
+
 
 class TwwSelectionExtenderWidget(QDockWidget, DOCK_WIDGET_UI):
 
@@ -27,9 +24,10 @@ class TwwSelectionExtenderWidget(QDockWidget, DOCK_WIDGET_UI):
         self.planned.setChecked(False)
 
     def tr(self, text: str) -> str:
-            return QApplication.translate("TwwSelectionExtenderWidget", text)
+        return QApplication.translate("TwwSelectionExtenderWidget", text)
+
     def setController(self, controller):
-            self.controller = controller
+        self.controller = controller
 
     # --------------------
     # UI -> parmeters
@@ -57,16 +55,12 @@ class TwwSelectionExtenderWidget(QDockWidget, DOCK_WIDGET_UI):
     def _on_select_clicked(self):
         if self.controller is None:
             self.iface.messageBar().pushWarning(
-                 self.tr("Selection Extender"),
-                 self.tr("Controller not set.")
+                self.tr("Selection Extender"), self.tr("Controller not set.")
             )
             return
 
-        self.controller.extend_selection(
-            mode = self._get_mode(),
-            status = self._get_status()
-        )
-    
+        self.controller.extend_selection(mode=self._get_mode(), status=self._get_status())
+
     def _on_reset_clicked(self):
         if self.controller is None:
             self.iface.messageBar().pushWarning(
@@ -81,5 +75,5 @@ class TwwSelectionExtenderWidget(QDockWidget, DOCK_WIDGET_UI):
             self.tr("Selection Extender"),
             self.tr("Reach memory reset."),
             level=Qgis.Info,
-            duration=3
+            duration=3,
         )

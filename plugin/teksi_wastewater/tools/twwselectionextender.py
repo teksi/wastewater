@@ -1,9 +1,10 @@
 from __future__ import annotations
 
-from typing import Iterable, Set
+from typing import Set
+from collections.abc import Iterable
 
+from qgis.core import Qgis, QgsFeatureRequest
 from qgis.PyQt.QtCore import QObject
-from qgis.core import QgsFeatureRequest, Qgis
 
 from ..utils.twwlayermanager import TwwLayerManager
 
@@ -29,7 +30,7 @@ class TwwSelectionExtender(QObject):
         # Load layers
         reach_layer = TwwLayerManager.layer("vw_tww_reach")
         structure_layer = TwwLayerManager.layer("vw_tww_wastewater_structure")
-        node_layer = TwwLayerManager.layer("vw_wastewater_node")  
+        node_layer = TwwLayerManager.layer("vw_wastewater_node")
         catchment_layer = TwwLayerManager.layer("vw_tww_catchment_area")
 
         if not reach_layer:
@@ -50,7 +51,7 @@ class TwwSelectionExtender(QObject):
             )
             self.reset()
             return
-        
+
         # Collect node obj_ids from selected reaches
         node_obj_ids = self._collect_node_obj_ids_from_reaches(reach_layer, selected_reach_fids)
 
@@ -59,7 +60,7 @@ class TwwSelectionExtender(QObject):
             node_target_fids = self._find_fids_by_obj_id(node_layer, "obj_id", node_obj_ids)
             self._apply_selection(node_layer, node_target_fids, mode)
 
-        # Select structures linked to nodes 
+        # Select structures linked to nodes
         if structure_layer and node_obj_ids:
             structure_target_fids = self._find_fids_by_obj_id(
                 structure_layer, "wn_obj_id", node_obj_ids
@@ -79,16 +80,17 @@ class TwwSelectionExtender(QObject):
         reach_layer.select(list(self._saved_reach_fids))
 
         self._msg(
-                self.tr("Selection Extender"),
-                self.tr(f"Extended selection: reaches={len(selected_reach_fids)}, nodes={len(node_obj_ids)}, catchments={len(catch_target_fids)}"),
-                Qgis.Success,
-            )
-    
+            self.tr("Selection Extender"),
+            self.tr(
+                f"Extended selection: reaches={len(selected_reach_fids)}, nodes={len(node_obj_ids)}, catchments={len(catch_target_fids)}"
+            ),
+            Qgis.Success,
+        )
 
     def _collect_node_obj_ids_from_reaches(
         self, reach_layer, reach_fids: Iterable[int]
-    ) -> Set[str]:
-        obj_ids: Set[str] = set()
+    ) -> set[str]:
+        obj_ids: set[str] = set()
 
         req = QgsFeatureRequest().setFilterFids(list(reach_fids))
         for f in reach_layer.getFeatures(req):
@@ -102,7 +104,7 @@ class TwwSelectionExtender(QObject):
 
         return obj_ids
 
-    def _find_fids_by_obj_id(self, layer, id_field: str, obj_ids: Set[str]) -> Set[int]:
+    def _find_fids_by_obj_id(self, layer, id_field: str, obj_ids: set[str]) -> set[int]:
         if not obj_ids:
             return set()
 
@@ -112,7 +114,7 @@ class TwwSelectionExtender(QObject):
         req = QgsFeatureRequest().setFilterExpression(expr)
         return {f.id() for f in layer.getFeatures(req)}
 
-    def _find_catchment_fids(self, layer, node_obj_ids: Set[str], status: str) -> Set[int]:
+    def _find_catchment_fids(self, layer, node_obj_ids: set[str], status: str) -> set[int]:
         if not node_obj_ids:
             return set()
 
@@ -133,12 +135,12 @@ class TwwSelectionExtender(QObject):
         req = QgsFeatureRequest().setFilterExpression(expr)
         return {f.id() for f in layer.getFeatures(req)}
 
-    def _apply_selection(self, layer, target_fids: Set[int], mode: str) -> None:
+    def _apply_selection(self, layer, target_fids: set[int], mode: str) -> None:
         current = set(layer.selectedFeatureIds())
         target = set(target_fids)
         layer.removeSelection()
 
-        final = self._combine_sets(current,target,mode)
+        final = self._combine_sets(current, target, mode)
 
         layer.select(list(final))
 
