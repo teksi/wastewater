@@ -22,6 +22,7 @@
 <polygon fill="none" stroke="black" points="1095.5,-838 1095.5,-860 1308.5,-860 1308.5,-838 1095.5,-838"/>
 <image xlink:href="../../images/primaryKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="1100.5" y="-855"/>
 <text text-anchor="start" x="1115.5" y="-846.2" font-family="Helvetica,sans-Serif" font-size="11.00">uuid</text>
+<polygon fill="#ffffff" stroke="transparent" points="1095.5,-816 1095.5,-838 1308.5,-838 1308.5,-816 1095.5,-816"/>
 <polygon fill="none" stroke="black" points="1095.5,-816 1095.5,-838 1308.5,-838 1308.5,-816 1095.5,-816"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="1100.5" y="-833"/>
 <text text-anchor="start" x="1115.5" y="-824.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_reach_point</text>
@@ -107,6 +108,7 @@
 <text text-anchor="start" x="635" y="-269.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_provider</text>
 <polygon fill="none" stroke="black" points="869,-261 869,-283 1005,-283 1005,-261 869,-261"/>
 <text text-anchor="start" x="872" y="-269.2" font-family="Helvetica,sans-Serif" font-size="11.00">varchar[16]</text>
+<polygon fill="#ffffff" stroke="transparent" points="615,-239 615,-261 869,-261 869,-239 615,-239"/>
 <polygon fill="none" stroke="black" points="615,-239 615,-261 869,-261 869,-239 615,-239"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="620" y="-256"/>
 <text text-anchor="start" x="635" y="-247.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_wastewater_networkelement</text>
@@ -479,12 +481,15 @@
 <polygon fill="none" stroke="black" points="1056.5,-346 1056.5,-368 1347.5,-368 1347.5,-346 1056.5,-346"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="1061.5" y="-363"/>
 <text text-anchor="start" x="1076.5" y="-354.2" font-family="Helvetica,sans-Serif" font-size="11.00">relining_kind</text>
+<polygon fill="#ffffff" stroke="transparent" points="1056.5,-324 1056.5,-346 1347.5,-346 1347.5,-324 1056.5,-324"/>
 <polygon fill="none" stroke="black" points="1056.5,-324 1056.5,-346 1347.5,-346 1347.5,-324 1056.5,-324"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="1061.5" y="-341"/>
 <text text-anchor="start" x="1076.5" y="-332.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_reach_point_from</text>
+<polygon fill="#ffffff" stroke="transparent" points="1056.5,-302 1056.5,-324 1347.5,-324 1347.5,-302 1056.5,-302"/>
 <polygon fill="none" stroke="black" points="1056.5,-302 1056.5,-324 1347.5,-324 1347.5,-302 1056.5,-302"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="1061.5" y="-319"/>
 <text text-anchor="start" x="1076.5" y="-310.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_reach_point_to</text>
+<polygon fill="#ffffff" stroke="transparent" points="1056.5,-280 1056.5,-302 1347.5,-302 1347.5,-280 1056.5,-280"/>
 <polygon fill="none" stroke="black" points="1056.5,-280 1056.5,-302 1347.5,-302 1347.5,-280 1056.5,-280"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="1061.5" y="-297"/>
 <text text-anchor="start" x="1076.5" y="-288.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_pipe_profile</text>

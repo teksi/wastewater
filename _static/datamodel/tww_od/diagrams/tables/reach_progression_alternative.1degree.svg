@@ -96,12 +96,15 @@
 <polygon fill="none" stroke="black" points="60,-139 60,-161 351,-161 351,-139 60,-139"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="65" y="-156"/>
 <text text-anchor="start" x="80" y="-147.2" font-family="Helvetica,sans-Serif" font-size="11.00">relining_kind</text>
+<polygon fill="#ffffff" stroke="transparent" points="60,-117 60,-139 351,-139 351,-117 60,-117"/>
 <polygon fill="none" stroke="black" points="60,-117 60,-139 351,-139 351,-117 60,-117"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="65" y="-134"/>
 <text text-anchor="start" x="80" y="-125.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_reach_point_from</text>
+<polygon fill="#ffffff" stroke="transparent" points="60,-95 60,-117 351,-117 351,-95 60,-95"/>
 <polygon fill="none" stroke="black" points="60,-95 60,-117 351,-117 351,-95 60,-95"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="65" y="-112"/>
 <text text-anchor="start" x="80" y="-103.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_reach_point_to</text>
+<polygon fill="#ffffff" stroke="transparent" points="60,-73 60,-95 351,-95 351,-73 60,-73"/>
 <polygon fill="none" stroke="black" points="60,-73 60,-95 351,-95 351,-73 60,-73"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="65" y="-90"/>
 <text text-anchor="start" x="80" y="-81.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_pipe_profile</text>

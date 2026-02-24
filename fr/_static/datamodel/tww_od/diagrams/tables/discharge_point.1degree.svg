@@ -163,15 +163,18 @@
 <polygon fill="none" stroke="black" points="39,-240 39,-262 274,-262 274,-240 39,-240"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="44" y="-257"/>
 <text text-anchor="start" x="59" y="-248.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_provider</text>
+<polygon fill="#ffffff" stroke="transparent" points="39,-218 39,-240 274,-240 274,-218 39,-218"/>
 <polygon fill="none" stroke="black" points="39,-218 39,-240 274,-240 274,-218 39,-218"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="44" y="-235"/>
 <text text-anchor="start" x="59" y="-226.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_owner</text>
 <polygon fill="none" stroke="black" points="39,-196 39,-218 274,-218 274,-196 39,-196"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="44" y="-213"/>
 <text text-anchor="start" x="59" y="-204.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_operator</text>
+<polygon fill="#ffffff" stroke="transparent" points="39,-174 39,-196 274,-196 274,-174 39,-174"/>
 <polygon fill="none" stroke="black" points="39,-174 39,-196 274,-196 274,-174 39,-174"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="44" y="-191"/>
 <text text-anchor="start" x="59" y="-182.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_main_cover</text>
+<polygon fill="#ffffff" stroke="transparent" points="39,-152 39,-174 274,-174 274,-152 39,-152"/>
 <polygon fill="none" stroke="black" points="39,-152 39,-174 274,-174 274,-152 39,-152"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="44" y="-169"/>
 <text text-anchor="start" x="59" y="-160.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_main_wastewater_node</text>

@@ -208,15 +208,18 @@
 <polygon fill="none" stroke="black" points="104.5,-982 104.5,-1004 339.5,-1004 339.5,-982 104.5,-982"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="109.5" y="-999"/>
 <text text-anchor="start" x="124.5" y="-990.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_provider</text>
+<polygon fill="#ffffff" stroke="transparent" points="104.5,-960 104.5,-982 339.5,-982 339.5,-960 104.5,-960"/>
 <polygon fill="none" stroke="black" points="104.5,-960 104.5,-982 339.5,-982 339.5,-960 104.5,-960"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="109.5" y="-977"/>
 <text text-anchor="start" x="124.5" y="-968.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_owner</text>
 <polygon fill="none" stroke="black" points="104.5,-938 104.5,-960 339.5,-960 339.5,-938 104.5,-938"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="109.5" y="-955"/>
 <text text-anchor="start" x="124.5" y="-946.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_operator</text>
+<polygon fill="#ffffff" stroke="transparent" points="104.5,-916 104.5,-938 339.5,-938 339.5,-916 104.5,-916"/>
 <polygon fill="none" stroke="black" points="104.5,-916 104.5,-938 339.5,-938 339.5,-916 104.5,-916"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="109.5" y="-933"/>
 <text text-anchor="start" x="124.5" y="-924.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_main_cover</text>
+<polygon fill="#ffffff" stroke="transparent" points="104.5,-894 104.5,-916 339.5,-916 339.5,-894 104.5,-894"/>
 <polygon fill="none" stroke="black" points="104.5,-894 104.5,-916 339.5,-916 339.5,-894 104.5,-894"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="109.5" y="-911"/>
 <text text-anchor="start" x="124.5" y="-902.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_main_wastewater_node</text>

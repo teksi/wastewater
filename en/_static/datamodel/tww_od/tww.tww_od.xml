@@ -133,6 +133,9 @@
          <index name="pkey_tww_od_agxx_building_group_uuid" unique="true">
             <column ascending="true" name="uuid"/>
          </index>
+         <index name="in_agxx_building_group_fk_building_group" unique="false">
+            <column ascending="true" name="fk_building_group"/>
+         </index>
       </table>
       <table name="agxx_building_group_text" remarks="Extension for AG-96/ Erweiterung für AG-96 / Extension pour AG-96" schema="tww_od" type="TABLE">
          <column autoUpdated="false" defaultValue="tww_app.generate_oid('tww_od'::text, 'agxx_building_group_text'::text)" digits="0" id="0" name="obj_id" nullable="false" remarks="" size="16" type="varchar" typeCode="12"/>
@@ -173,6 +176,9 @@
          <index name="pkey_tww_od_agxx_catchment_area_totals_uuid" unique="true">
             <column ascending="true" name="uuid"/>
          </index>
+         <index name="in_agxx_catchment_area_totals_fk_catchment_area_totals" unique="false">
+            <column ascending="true" name="fk_catchment_area_totals"/>
+         </index>
       </table>
       <table name="agxx_cover" remarks="" schema="tww_od" type="TABLE">
          <column autoUpdated="false" defaultValue="uuid_generate_v4()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
@@ -185,6 +191,9 @@
          <primaryKey column="uuid" sequenceNumberInPK="1"/>
          <index name="pkey_tww_od_agxx_cover_uuid" unique="true">
             <column ascending="true" name="uuid"/>
+         </index>
+         <index name="in_agxx_cover_fk_cover" unique="false">
+            <column ascending="true" name="fk_cover"/>
          </index>
       </table>
       <table name="agxx_infiltration_zone" remarks="" schema="tww_od" type="TABLE">
@@ -200,6 +209,9 @@
          <index name="pkey_tww_od_agxx_infiltration_zone" unique="true">
             <column ascending="true" name="uuid"/>
          </index>
+         <index name="in_agxx_infiltration_zone_fk_infiltration_zone" unique="false">
+            <column ascending="true" name="fk_infiltration_zone"/>
+         </index>
       </table>
       <table name="agxx_last_modification" remarks="" schema="tww_od" type="TABLE">
          <column autoUpdated="false" defaultValue="uuid_generate_v4()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
@@ -209,6 +221,9 @@
          <primaryKey column="uuid" sequenceNumberInPK="1"/>
          <index name="pkey_tww_od_agxx_last_modification" unique="true">
             <column ascending="true" name="uuid"/>
+         </index>
+         <index name="in_agxx_last_modification_fk_element" unique="false">
+            <column ascending="true" name="fk_element"/>
          </index>
       </table>
       <table name="agxx_last_modification_updater" remarks="" schema="tww_od" type="TABLE">
@@ -264,6 +279,9 @@
          <index name="pkey_tww_od_agxx_overflow" unique="true">
             <column ascending="true" name="uuid"/>
          </index>
+         <index name="in_agxx_overflow_fk_overflow" unique="false">
+            <column ascending="true" name="fk_overflow"/>
+         </index>
       </table>
       <table name="agxx_reach" remarks="" schema="tww_od" type="TABLE">
          <column autoUpdated="false" defaultValue="uuid_generate_v4()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
@@ -275,6 +293,9 @@
          <primaryKey column="uuid" sequenceNumberInPK="1"/>
          <index name="pkey_tww_od_agxx_reach_uuid" unique="true">
             <column ascending="true" name="uuid"/>
+         </index>
+         <index name="in_agxx_reach_fk_reach" unique="false">
+            <column ascending="true" name="fk_reach"/>
          </index>
       </table>
       <table name="agxx_reach_point" remarks="" schema="tww_od" type="TABLE">
@@ -288,6 +309,9 @@
          <primaryKey column="uuid" sequenceNumberInPK="1"/>
          <index name="pkey_tww_od_agxx_reach_point_uuid" unique="true">
             <column ascending="true" name="uuid"/>
+         </index>
+         <index name="in_agxx_reach_point_fk_reach_point" unique="false">
+            <column ascending="true" name="fk_reach_point"/>
          </index>
       </table>
       <table name="agxx_unconnected_node_bwrel" remarks="" schema="tww_od" type="TABLE">
@@ -340,6 +364,9 @@
          <index name="pkey_tww_od_agxx_wastewater_networkelement" unique="true">
             <column ascending="true" name="uuid"/>
          </index>
+         <index name="in_agxx_wastewater_networkelement_fk_element" unique="false">
+            <column ascending="true" name="fk_wastewater_networkelement"/>
+         </index>
       </table>
       <table name="agxx_wastewater_node" remarks="" schema="tww_od" type="TABLE">
          <column autoUpdated="false" defaultValue="uuid_generate_v4()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
@@ -356,6 +383,9 @@
          <index name="pkey_tww_od_agxx_wastewater_node_uuid" unique="true">
             <column ascending="true" name="uuid"/>
          </index>
+         <index name="in_agxx_wastewater_node_fk_wastewater_node" unique="false">
+            <column ascending="true" name="fk_wastewater_node"/>
+         </index>
       </table>
       <table name="agxx_wastewater_structure" remarks="" schema="tww_od" type="TABLE">
          <column autoUpdated="false" defaultValue="uuid_generate_v4()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
@@ -368,6 +398,9 @@
          <primaryKey column="uuid" sequenceNumberInPK="1"/>
          <index name="pkey_tww_od_agxx_wastewater_structure_uuid" unique="true">
             <column ascending="true" name="uuid"/>
+         </index>
+         <index name="in_agxx_wastewater_structure_fk_wastewater_structure" unique="false">
+            <column ascending="true" name="fk_wastewater_structure"/>
          </index>
       </table>
       <table name="backflow_prevention" remarks="" schema="tww_od" type="TABLE">
@@ -771,8 +804,14 @@
          <index name="pkey_tww_od_channel_obj_id" unique="true">
             <column ascending="true" name="obj_id"/>
          </index>
+         <index name="in_channel_function_hierarchic" unique="false">
+            <column ascending="true" name="function_hierarchic"/>
+         </index>
          <index name="in_channel_function_hierarchic_usage_current" unique="false">
             <column ascending="true" name="function_hierarchic"/>
+            <column ascending="true" name="usage_current"/>
+         </index>
+         <index name="in_channel_usage_current" unique="false">
             <column ascending="true" name="usage_current"/>
          </index>
       </table>
@@ -2497,6 +2536,15 @@
          <index name="pkey_tww_od_reach_obj_id" unique="true">
             <column ascending="true" name="obj_id"/>
          </index>
+         <index name="in_reach_fk_pipe_profile" unique="false">
+            <column ascending="true" name="fk_pipe_profile"/>
+         </index>
+         <index name="in_reach_fk_reach_point_from" unique="false">
+            <column ascending="true" name="fk_reach_point_from"/>
+         </index>
+         <index name="in_reach_fk_reach_point_to" unique="false">
+            <column ascending="true" name="fk_reach_point_to"/>
+         </index>
          <index name="in_tww_reach_progression3d_geometry" unique="false">
             <column ascending="true" name="progression3d_geometry"/>
          </index>
@@ -2548,6 +2596,9 @@
          <index name="in_od_reach_point_identifier" unique="true">
             <column ascending="true" name="identifier"/>
             <column ascending="true" name="fk_dataowner"/>
+         </index>
+         <index name="in_reach_point_fk_wastewater_networkelement" unique="false">
+            <column ascending="true" name="fk_wastewater_networkelement"/>
          </index>
          <index name="in_tww_reach_point_situation3d_geometry" unique="false">
             <column ascending="true" name="situation3d_geometry"/>
@@ -3313,6 +3364,15 @@
          </index>
          <index name="in_tww_wastewater_structure_detail_geometry3d_geometry" unique="false">
             <column ascending="true" name="detail_geometry3d_geometry"/>
+         </index>
+         <index name="in_wastewater_structure_fk_main_cover" unique="false">
+            <column ascending="true" name="fk_main_cover"/>
+         </index>
+         <index name="in_wastewater_structure_fk_main_wastewater_node" unique="false">
+            <column ascending="true" name="fk_main_wastewater_node"/>
+         </index>
+         <index name="in_wastewater_structure_fk_owner" unique="false">
+            <column ascending="true" name="fk_owner"/>
          </index>
          <checkConstraint constraint="((char_length(contract_section) &lt;= 50))" name="ws_contract_section_length_max_50"/>
          <checkConstraint constraint="((char_length(identifier) &lt;= 41))" name="ws_identifier_length_max_41"/>

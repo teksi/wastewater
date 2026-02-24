@@ -427,6 +427,12 @@
                                     <td>identifier + fk_dataowner</td>
                                 </tr>
                                 <tr>
+                                    <td title='Indexed'>in_reach_point_fk_wastewater_networkelement</td>
+                                    <td>Performance</td>
+                                    <td><span title='Ascending'>Asc</span></td>
+                                    <td>fk_wastewater_networkelement</td>
+                                </tr>
+                                <tr>
                                     <td title='Indexed'>in_tww_reach_point_situation3d_geometry</td>
                                     <td>Performance</td>
                                     <td><span title='Ascending'>Asc</span></td>
@@ -461,12 +467,12 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td>rp_remark_length_max_80</td>
-                                    <td>((char_length(remark) &lt;&#61; 80))</td>
-                                </tr>
-                                <tr>
                                     <td>rp_identifier_length_max_20</td>
                                     <td>((char_length(identifier) &lt;&#61; 20))</td>
+                                </tr>
+                                <tr>
+                                    <td>rp_remark_length_max_80</td>
+                                    <td>((char_length(remark) &lt;&#61; 80))</td>
                                 </tr>
                                 </tbody>
                             </table>

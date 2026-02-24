@@ -23,6 +23,7 @@
 <text text-anchor="start" x="474.5" y="-912.2" font-family="Helvetica,sans-Serif" font-size="11.00">uuid</text>
 <polygon fill="none" stroke="black" points="643.5,-904 643.5,-926 749.5,-926 749.5,-904 643.5,-904"/>
 <text text-anchor="start" x="646.5" y="-912.2" font-family="Helvetica,sans-Serif" font-size="11.00">uuid[2147483647]</text>
+<polygon fill="#ffffff" stroke="transparent" points="454.5,-882 454.5,-904 643.5,-904 643.5,-882 454.5,-882"/>
 <polygon fill="none" stroke="black" points="454.5,-882 454.5,-904 643.5,-904 643.5,-882 454.5,-882"/>
 <text text-anchor="start" x="474.5" y="-890.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_element</text>
 <polygon fill="none" stroke="black" points="643.5,-882 643.5,-904 749.5,-904 749.5,-882 643.5,-882"/>
