@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from typing import Set
 from collections.abc import Iterable
 
 from qgis.core import Qgis, QgsFeatureRequest
