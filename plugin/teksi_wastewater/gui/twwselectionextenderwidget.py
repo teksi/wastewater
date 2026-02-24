@@ -1,4 +1,4 @@
-from qgis.PyQt.QtWidgets import QDockWidget
+from qgis.PyQt.QtWidgets import QDockWidget, QApplication
 from qgis.PyQt.QtCore import QSize
 from qgis.PyQt import uic
 from qgis.core import Qgis
@@ -20,14 +20,14 @@ class TwwSelectionExtenderWidget(QDockWidget, DOCK_WIDGET_UI):
         self.setMinimumSize(QSize(260, 220))
 
         self.Select.clicked.connect(self._on_select_clicked)
-
+        self.reset.clicked.connect(self._on_reset_clicked)
 
         self.add.setChecked(True)
         self.current.setChecked(True)
         self.planned.setChecked(False)
 
-        self.reset.clicked.connect(self._on_reset_clicked)
-
+    def tr(self, text: str) -> str:
+            return QApplication.translate("TwwSelectionExtenderWidget", text)
     def setController(self, controller):
             self.controller = controller
 
@@ -56,32 +56,30 @@ class TwwSelectionExtenderWidget(QDockWidget, DOCK_WIDGET_UI):
     # --------------------
     def _on_select_clicked(self):
         if self.controller is None:
-            self.iface.messageBar().pushWarning("Selection Extender", "Controller not set.")
+            self.iface.messageBar().pushWarning(
+                 self.tr("Selection Extender"),
+                 self.tr("Controller not set.")
+            )
             return
 
-        mode = self._get_mode()
-        status = self._get_status()
-
-        self.controller.extend_selection(mode=mode, status=status)
+        self.controller.extend_selection(
+            mode = self._get_mode(),
+            status = self._get_status()
+        )
     
     def _on_reset_clicked(self):
         if self.controller is None:
             self.iface.messageBar().pushWarning(
-                "Selection Extender",
-                "Controller not set."
+                self.tr("Selection Extender"),
+                self.tr("Controller not set."),
             )
             return
 
         self.controller.reset()
 
-        # Also remove actual selection for comprehension
-        reach_layer = TwwLayerManager.layer("vw_tww_reach")
-        if reach_layer:
-            reach_layer.removeSelection()
-
         self.iface.messageBar().pushMessage(
-            "Selection Extender",
-            "Reach memory reset.",
+            self.tr("Selection Extender"),
+            self.tr("Reach memory reset."),
             level=Qgis.Info,
             duration=3
         )

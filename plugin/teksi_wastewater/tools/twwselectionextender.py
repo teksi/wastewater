@@ -15,8 +15,10 @@ class TwwSelectionExtender(QObject):
         self._saved_reach_fids = set()
 
     def run(self):
-        """Entry point called by QAction."""
         self.extend_selection()
+
+    def tr(self, text):
+        return self.iface.mainWindow().tr(text)
 
     def extend_selection(self, mode: str = "add", status: str = "current") -> None:
         """
@@ -31,12 +33,21 @@ class TwwSelectionExtender(QObject):
         catchment_layer = TwwLayerManager.layer("vw_tww_catchment_area")
 
         if not reach_layer:
+            self._msg(
+                self.tr("Selection Extender"),
+                self.tr("Layer vw_tww_reach not loaded."),
+                Qgis.Warning,
+            )
             self._msg("Selection Extender", "Layer vw_tww_reach not loaded.", Qgis.Warning)
             return
 
         selected_reach_fids = reach_layer.selectedFeatureIds()
         if not selected_reach_fids:
-            self._msg("Selection Extender", "No selected reaches in vw_tww_reach. Reaches selection reset", Qgis.Info)
+            self._msg(
+                self.tr("Selection Extender"),
+                self.tr("No selected reaches in vw_tww_reach. Reaches selection reset"),
+                Qgis.Info,
+            )
             self.reset()
             return
         
@@ -68,11 +79,10 @@ class TwwSelectionExtender(QObject):
         reach_layer.select(list(self._saved_reach_fids))
 
         self._msg(
-            "Selection Extender",
-            f"Extended selection: reaches={len(selected_reach_fids)}, nodes={len(node_obj_ids)}, catchments={len(catch_target_fids)}",
-            Qgis.Success,
-        )
-
+                self.tr("Selection Extender"),
+                self.tr(f"Extended selection: reaches={len(selected_reach_fids)}, nodes={len(node_obj_ids)}, catchments={len(catch_target_fids)}"),
+                Qgis.Success,
+            )
     
 
     def _collect_node_obj_ids_from_reaches(
@@ -145,6 +155,10 @@ class TwwSelectionExtender(QObject):
 
     def reset(self):
         self._saved_reach_fids.clear()
+
+        reach_layer = TwwLayerManager.layer("vw_tww_reach")
+        if reach_layer:
+            reach_layer.removeSelection()
 
     def _msg(self, title: str, text: str, level: Qgis.MessageLevel) -> None:
         self.iface.messageBar().pushMessage(title, text, level=level, duration=4)
