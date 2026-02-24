@@ -359,16 +359,16 @@ class TeksiWastewaterPlugin:
         self.network_layer_notifier.layersAdded([])
 
         self.selectionExtenderWidget = None
-
         self.selectionExtenderAction = QAction(
             QIcon(os.path.join(plugin_root_path(), "icons/selection-extender.svg")),
             self.tr("Extend selection"),
             self.iface.mainWindow(),
         )
+        self.selectionExtenderAction.setEnabled(False)
+        self.selectionExtenderAction.setCheckable(True)
+        self.selectionExtenderAction.toggled.connect(self.toggleSelectionExtenderWidget)
+        
 
-        self.selectionExtenderAction.triggered.connect(
-            self.toggleSelectionExtenderWidget
-        )
         self.toolbar.addAction(self.selectionExtenderAction)
         self.toolbarButtons.append(self.selectionExtenderAction)
         self.selectionExtenderController = TwwSelectionExtender(self.iface)
@@ -751,20 +751,32 @@ class TeksiWastewaterPlugin:
         self.enableSymbologyTriggersAction.setEnabled(admin_mode)
         self.disableSymbologyTriggersAction.setEnabled(admin_mode)
     
-    def toggleSelectionExtenderWidget(self):
+    def toggleSelectionExtenderWidget(self, checked: bool):
+        if checked:
+            if self.selectionExtenderWidget is None:
+                self.selectionExtenderWidget = TwwSelectionExtenderWidget(
+                    self.iface,
+                    self.iface.mainWindow(),
+                )
+                self.selectionExtenderWidget.setController(self.selectionExtenderController)
 
-        if self.selectionExtenderWidget is None:
-            self.selectionExtenderWidget = TwwSelectionExtenderWidget(
-                self.iface,
-                self.iface.mainWindow()
-            )
-            self.selectionExtenderWidget.setController(self.selectionExtenderController)
+                self.iface.addDockWidget(Qt.RightDockWidgetArea, self.selectionExtenderWidget)
+                
+                self.selectionExtenderWidget.visibilityChanged.connect(
+                    self._onSelectionExtenderVisibilityChanged
+                )
 
-            self.iface.addDockWidget(
-                Qt.RightDockWidgetArea,
-                self.selectionExtenderWidget
-            )
+            self.selectionExtenderWidget.show()
+            self.selectionExtenderWidget.raise_()
+            self.selectionExtenderWidget.activateWindow()
 
-        self.selectionExtenderWidget.show()
-        self.selectionExtenderWidget.raise_()
+        else:
+            if self.selectionExtenderWidget is not None:
+                self.selectionExtenderWidget.hide()
+
+    def _onSelectionExtenderVisibilityChanged(self, visible: bool):
+        # escape from loop visibilityChanged <-> toggled
+        self.selectionExtenderAction.blockSignals(True)
+        self.selectionExtenderAction.setChecked(visible)
+        self.selectionExtenderAction.blockSignals(False)
 

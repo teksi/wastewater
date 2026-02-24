@@ -74,7 +74,7 @@ class TwwSelectionExtenderWidget(QDockWidget, DOCK_WIDGET_UI):
 
         self.controller.reset()
 
-        # Optionnel mais fortement recommandé :
+        # Also remove actual selection for comprehension
         reach_layer = TwwLayerManager.layer("vw_tww_reach")
         if reach_layer:
             reach_layer.removeSelection()

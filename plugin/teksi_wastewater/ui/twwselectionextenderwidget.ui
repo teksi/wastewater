@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>309</width>
-    <height>264</height>
+    <height>271</height>
    </rect>
   </property>
   <property name="baseSize">
@@ -22,14 +22,14 @@
   <widget class="QWidget" name="SelectionExtender_2">
    <property name="minimumSize">
     <size>
-     <width>230</width>
-     <height>226</height>
+     <width>309</width>
+     <height>249</height>
     </size>
    </property>
    <property name="baseSize">
     <size>
-     <width>230</width>
-     <height>226</height>
+     <width>309</width>
+     <height>249</height>
     </size>
    </property>
    <widget class="QPushButton" name="Select">
@@ -172,6 +172,24 @@
     </property>
     <property name="text">
      <string>Reset reaches memory</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>0</y>
+      <width>291</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>7</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Extend the reaches selection to nodes and catchment</string>
     </property>
    </widget>
   </widget>
