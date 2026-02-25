@@ -115,7 +115,7 @@ class TeksiWastewaterPlugin:
         :param source_text: The text to translate
         :return: The translated text
         """
-        return QApplication.translate("TwwPlugin", source_text)
+        return QApplication.translate("TeksiWastewaterPlugin", source_text)
 
     def initLogger(self):
         """

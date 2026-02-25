@@ -520,7 +520,7 @@ class InterlisExporterToIntermediateSchema:
     def _set_tid_iterator(self):
         # set tidMaker
         max_tid = self.abwasser_session.execute(
-            text("SELECT last_value from pg2ili_abwasser.t_ili2db_seq;")
+            text(f"SELECT last_value from {config.ABWASSER_SCHEMA}.t_ili2db_seq;")
         ).fetchone()
         for _ in range(max_tid.last_value + 1):
             self.tid_maker.next_tid()
@@ -741,7 +741,9 @@ class InterlisExporterToIntermediateSchema:
                 bemerkung=self.truncate(self.emptystr_to_null(row.remark), 80),
                 bezeichnung=self.null_to_emptystr(row.identifier),
                 # added round as long as INTERLIS 2020.1 is used Verhaeltnis_H_B = 0.01 .. 100.00;
-                hoehenbreitenverhaeltnis=self.round(row.height_width_ratio, 2),
+                # adapt to VSA model patch for 2020.1 published end of November 2025 - round not needed anymore.
+                # hoehenbreitenverhaeltnis=self.round(row.height_width_ratio, 2),
+                hoehenbreitenverhaeltnis=row.height_width_ratio,
                 profiltyp=self.get_vl(row.profile_type__REL),
             )
             self.abwasser_session.add(rohrprofil)

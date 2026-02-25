@@ -35,7 +35,7 @@ Changing attributes of point elements (manholes / special structures)
 ---------------------------------------------------------------------
 
  * To change an attribute you first need to select the **vw_tww_wastewater_structure** layer.
- * Switch to the edit mode or start the **TWW Wizard** and click on **Start Data Entry**.
+ * **Toogle Editing** or start the **TWW Wizard** and click on **Start Data Entry**.
  * Then click on the **Identify features** button and click on the element you want to edit.
 
  .. figure:: images/identify_feature_tool.jpg
@@ -46,7 +46,7 @@ Changing attributes of point elements (manholes / special structures)
 
  * On the first tab (General) you can change the most common attributes
  * Main Cover and Main Node are the first cover / node defined for the wastewater structure.
- * Additional attributes of table wastewater structure and fo the selected subclass can be changed on tab Wastewater structure
+ * Additional attributes of table wastewater structure and for the selected subclass can be changed on tab Wastewater structure
  * To change attributes of related tables (e.g. cover) you need to select the correspondent tab.
  * In **Structure parts** tab you can add further parts such as **access aids**, **backflow prevention**, **dryweather flume** etc.
 
@@ -201,26 +201,21 @@ If there are lot of records (several hundred to several thousand) a multiple rec
 Special the TWW-main-views (vw_tww_wastewater_structure and vw_tww_reach) have this problem. Therefore, it is always better not to multi-edit these large views, but rather to edit the table in question directly if a large number of data records are to be changed at the same time. That's why it is good to know, in which table is our field (perhaps the fieldname-prefix helps) and you may need to add this table to your TWW-project.
 To explain, that it really matters, there was the following test:
 
-Change for 500 reaches out of 10'122 the field rv_construction_type. It's a field with a value list. In vw_tww_reach, the fields name is ws_rv_construction_type, means the table of the field is wastewater_structure (ws).
+Change for 500 reaches out of 1'653 the field rv_construction_type. It's a field with a value list. In vw_tww_reach, the fields name is ws_rv_construction_type, means the table of the field is wastewater_structure (ws).
 
 How long did we wait:
 
-- Use field calculator with vw_tww_reach: more than 25 minutes!
+- Use field calculator with vw_tww_reach: more than 2:24 minutes!
 
-- Use multiedit with vw_tww_reach: more than 5 minutes.
+- Use field calculator with vw_channel: 33 seconds
 
-- Use field calculator with vw_channel: 1 minute 3seconds
 
-- Use field calculator with table wastewater_structure: 5 seconds
+Why is vw_tww_reach so slow: there are triggers in the database, that updates for every record the calculated fields of the connected manholes and nodes, that this themes symbology is always up-to-date.
 
-Why is vw_tww_reach so slow: there are triggers in the database, that updates for every record the calculated fields of the connected manholes and nodes, that this themes symbology is always up-to-date. With: ``SELECT tww_sys.disable_symbology_triggers();`` these triggers can be stopped. If the triggers are stopped then also the main-views are fast:
+TWW has a function to disable / enable symbology triggers (chapter how to)
 
-- Use field calculator or multiedit with vw_tww_reach: about 8 seconds.
+- Use field calculator with vw_tww_reach, symbology trigger disabled: about 15 seconds.
 
-Do not forget the enable the symbology triggers again after the calculations: ``SELECT tww_sys.enable_symbology_triggers();``
-(and to run the symbology_triggers manually for all records if necessary with the new xy-button?!).
-
-To do: verify these tests with TWW
 
 
 Saving changes
@@ -233,8 +228,6 @@ Changing Wastewater Structure Type (ws_type)
 ----------------------------------
 
 In the vw_tww_wastewater_structure form, you can change the subclass of the wastewater structure (e.g. from manhole to special structure or to infiltration installation) with the field **ws_type**. The old subclass-record will be deleted and you must enter those attributes, that are subclass specific. But all connections (they are defined to the class wastewater_structure and not to the subclass) or the obj_id or the identifier will not change.
-
-.. note:: There are just four subclasses supported in the moment: manhole, special_structure, infiltration_installation, discharge_point. Other subclasses (wwtp_structure, small_treatment_plant, drainless_toilett) will be supported in a next release of TWW.
 
 .. note:: You can not change a point - wastewater structure (e.g. manhole) to a line wastewater structure (channel) or vice versa.
 
