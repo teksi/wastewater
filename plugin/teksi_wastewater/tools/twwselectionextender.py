@@ -65,7 +65,7 @@ class TwwSelectionExtender(QObject):
             self._apply_selection(structure_layer, structure_target_fids, mode)
 
         # Select catchments linked to nodes
-        catch_target_fids=set()
+        catch_target_fids = set()
         if catchment_layer and node_obj_ids:
             catch_target_fids = self._find_catchment_fids(catchment_layer, node_obj_ids, status)
             self._apply_selection(catchment_layer, catch_target_fids, mode)
