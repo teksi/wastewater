@@ -38,8 +38,6 @@ class TwwSelectionExtender(QObject):
                 self.tr("Layer vw_tww_reach not loaded."),
                 Qgis.Warning,
             )
-            self._msg("Selection Extender", "Layer vw_tww_reach not loaded.", Qgis.Warning)
-            return
 
         selected_reach_fids = reach_layer.selectedFeatureIds()
         if not selected_reach_fids:
@@ -67,6 +65,7 @@ class TwwSelectionExtender(QObject):
             self._apply_selection(structure_layer, structure_target_fids, mode)
 
         # Select catchments linked to nodes
+        catch_target_fids=set()
         if catchment_layer and node_obj_ids:
             catch_target_fids = self._find_catchment_fids(catchment_layer, node_obj_ids, status)
             self._apply_selection(catchment_layer, catch_target_fids, mode)

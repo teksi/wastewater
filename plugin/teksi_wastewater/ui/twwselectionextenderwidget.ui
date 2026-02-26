@@ -189,7 +189,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Extend the reaches selection to nodes and catchment</string>
+     <string>Extend the reaches selection to nodes and catchments</string>
     </property>
    </widget>
   </widget>
