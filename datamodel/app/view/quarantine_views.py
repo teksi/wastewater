@@ -1195,7 +1195,7 @@ $$;
             table_name="vw_file",
             remove_pkey=False,
             indent=6,
-            safe_skip_columns=["fk_dataowner", "fk_provider","dataowner", "provider"], 
+            safe_skip_columns=["fk_dataowner", "fk_provider", "dataowner", "provider"],
             comment_skipped=False,
             insert_values={
                 "_url": "_url",
@@ -1207,7 +1207,7 @@ $$;
             table_name="vw_file",
             remove_pkey=False,
             indent=6,
-            safe_skip_columns=["fk_dataowner", "fk_provider","dataowner", "provider"], 
+            safe_skip_columns=["fk_dataowner", "fk_provider", "dataowner", "provider"],
             comment_skipped=False,
             update_values={
                 "_url": "_url",
