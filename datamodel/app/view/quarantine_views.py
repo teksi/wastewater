@@ -122,7 +122,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection):
             table_alias="main_co",
             remove_pkey=False,
             indent=4,
-            skip_columns=["situation3d_geometry"],
+            safe_skip_columns=["situation3d_geometry"],
             prefix="co_",
             remap_columns={"cover_shape": "co_shape"},
             columns_at_end=["obj_id"],
@@ -134,7 +134,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection):
             table_alias="ma",
             remove_pkey=True,
             indent=4,
-            skip_columns=[],
+            safe_skip_columns=[],
             prefix="ma_",
             remap_columns={"_orientation": "ma_orientation"},
         ),
@@ -145,7 +145,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection):
             table_alias="ss",
             remove_pkey=True,
             indent=4,
-            skip_columns=[],
+            safe_skip_columns=[],
             prefix="ss_",
             remap_columns={},
         ),
@@ -156,7 +156,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection):
             table_alias="aa",
             remove_pkey=False,
             indent=4,
-            skip_columns=[],
+            safe_skip_columns=[],
             prefix="aa_",
             remap_columns={},
         ),
@@ -167,7 +167,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection):
             table_alias="be",
             remove_pkey=False,
             indent=4,
-            skip_columns=[],
+            safe_skip_columns=[],
             prefix="be_",
             remap_columns={},
         ),
@@ -178,7 +178,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection):
             table_alias="dd",
             remove_pkey=False,
             indent=4,
-            skip_columns=[],
+            safe_skip_columns=[],
             prefix="dd_",
             remap_columns={},
         ),
@@ -189,7 +189,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection):
             table_alias="df",
             remove_pkey=False,
             indent=4,
-            skip_columns=[],
+            safe_skip_columns=[],
             prefix="df_",
             remap_columns={},
         ),
@@ -222,7 +222,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection):
             table_name="import_ws_quarantine",
             remove_pkey=False,
             indent=2,
-            skip_columns=["tww_is_okay", "tww_deleted"],
+            safe_skip_columns=["tww_is_okay", "tww_deleted"],
         ),
     )
 
@@ -257,7 +257,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection):
             table_name="import_ws_quarantine",
             remove_pkey=False,
             indent=6,
-            skip_columns=["tww_is_okay", "tww_deleted"],
+            safe_skip_columns=["tww_is_okay", "tww_deleted"],
         ),
         update_wsq=update_command(
             connection=connection,
@@ -265,7 +265,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection):
             table_name="import_ws_quarantine",
             remove_pkey=False,
             indent=6,
-            skip_columns=["tww_is_okay", "tww_deleted"],
+            safe_skip_columns=["tww_is_okay", "tww_deleted"],
         ),
     )
 
@@ -387,7 +387,7 @@ WHERE secondary.idx > 1)
             table_alias="rp",
             remove_pkey=False,
             indent=4,
-            skip_columns=[
+            safe_skip_columns=[
                 "situation3d_geometry",
                 "last_modification",
                 "fk_dataowner",
@@ -427,7 +427,7 @@ WHERE secondary.idx > 1)
             table_name="import_reach_point_quarantine",
             remove_pkey=False,
             indent=2,
-            skip_columns=["tww_is_okay"],
+            safe_skip_columns=["tww_is_okay"],
         ),
     )
 
@@ -462,7 +462,7 @@ WHERE secondary.idx > 1)
             table_name="import_reach_point_quarantine",
             remove_pkey=False,
             indent=6,
-            skip_columns=["tww_is_okay"],
+            safe_skip_columns=["tww_is_okay"],
         ),
         update_rpq=update_command(
             connection=connection,
@@ -470,7 +470,7 @@ WHERE secondary.idx > 1)
             table_name="import_reach_point_quarantine",
             remove_pkey=False,
             indent=6,
-            skip_columns=["tww_is_okay"],
+            safe_skip_columns=["tww_is_okay"],
         ),
     )
 
@@ -628,7 +628,7 @@ def tww_import_logic(connection: psycopg.Connection):
             table_name="import_reach_point_quarantine",
             remove_pkey=True,
             indent=6,
-            skip_columns=rp_skip_cols,
+            safe_skip_columns=rp_skip_cols,
             comment_skipped=False,
             update_values={
                 "level": """tww_app.calculate_quarantine_rp_level(
@@ -1049,7 +1049,7 @@ $$;
             table_name="import_ws_quarantine",
             remove_pkey=True,
             indent=6,
-            skip_columns=wsq_skip_cols,
+            safe_skip_columns=wsq_skip_cols,
             comment_skipped=False,
             insert_values={
                 "ss_upper_elevation": "_upper_elevation",
@@ -1065,7 +1065,7 @@ $$;
             table_name="import_ws_quarantine",
             remove_pkey=True,
             indent=6,
-            skip_columns=wsq_skip_cols,
+            safe_skip_columns=wsq_skip_cols,
             comment_skipped=False,
             update_values={
                 "ss_upper_elevation": "_upper_elevation",
@@ -1080,7 +1080,7 @@ $$;
             table_name="import_reach_point_quarantine",
             remove_pkey=True,
             indent=6,
-            skip_columns=rp_skip_cols,
+            safe_skip_columns=rp_skip_cols,
             comment_skipped=False,
             insert_values={
                 "level": """tww_app.calculate_quarantine_rp_level(
@@ -1101,7 +1101,7 @@ $$;
             table_name="import_reach_point_quarantine",
             remove_pkey=True,
             indent=6,
-            skip_columns=rp_skip_cols,
+            safe_skip_columns=rp_skip_cols,
             comment_skipped=False,
             update_values={
                 "level": """tww_app.calculate_quarantine_rp_level(
@@ -1121,7 +1121,7 @@ $$;
             table_name="import_reach_quarantine",
             remove_pkey=True,
             indent=6,
-            skip_columns=re_skip_cols,
+            safe_skip_columns=re_skip_cols,
             comment_skipped=False,
             insert_values={
                 "progression3d_geometry": "ST_Translate(re_record.progression3d_geometry,0,0,re_record.tww_delta_measurement)",
@@ -1135,7 +1135,7 @@ $$;
             table_name="import_reach_quarantine",
             remove_pkey=True,
             indent=6,
-            skip_columns=re_skip_cols,
+            safe_skip_columns=re_skip_cols,
             comment_skipped=False,
             update_values={
                 "progression3d_geometry": "ST_Translate(re_record.progression3d_geometry,0,0,re_record.tww_delta_measurement)",
@@ -1149,7 +1149,7 @@ $$;
             table_name="import_examination_quarantine",
             remove_pkey=True,
             indent=6,
-            skip_columns=["fk_import_ws_quarantine", "tww_is_okay"],
+            safe_skip_columns=["fk_import_ws_quarantine", "tww_is_okay"],
             comment_skipped=False,
             returning="obj_id INTO ex_oid",
         )
@@ -1161,7 +1161,7 @@ $$;
             table_name="import_examination_quarantine",
             remove_pkey=True,
             indent=6,
-            skip_columns=["fk_import_ws_quarantine", "tww_is_okay"],
+            safe_skip_columns=["fk_import_ws_quarantine", "tww_is_okay"],
             comment_skipped=False,
             returning="obj_id INTO ex_oid",
         )
@@ -1173,7 +1173,7 @@ $$;
             table_name="import_damage_ws_quarantine",
             remove_pkey=True,
             indent=6,
-            skip_columns=["fk_import_examination_quarantine"],
+            safe_skip_columns=["fk_import_examination_quarantine"],
             comment_skipped=False,
         )
         .replace("NEW.", "dm_record.")
@@ -1184,7 +1184,7 @@ $$;
             table_name="import_damage_ws_quarantine",
             remove_pkey=True,
             indent=6,
-            skip_columns=["fk_import_examination_quarantine"],
+            safe_skip_columns=["fk_import_examination_quarantine"],
             comment_skipped=False,
         )
         .replace("NEW.", "dm_record.")
@@ -1195,7 +1195,7 @@ $$;
             table_name="vw_file",
             remove_pkey=False,
             indent=6,
-            skip_columns=["fk_dataowner", "fk_provider"],
+            safe_skip_columns=["fk_dataowner", "fk_provider","dataowner", "provider"], 
             comment_skipped=False,
             insert_values={
                 "_url": "_url",
@@ -1207,7 +1207,7 @@ $$;
             table_name="vw_file",
             remove_pkey=False,
             indent=6,
-            skip_columns=["fk_dataowner", "fk_provider"],
+            safe_skip_columns=["fk_dataowner", "fk_provider","dataowner", "provider"], 
             comment_skipped=False,
             update_values={
                 "_url": "_url",
