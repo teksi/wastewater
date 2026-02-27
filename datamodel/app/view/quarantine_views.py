@@ -7,7 +7,7 @@ import os
 
 import psycopg
 from pirogue.information_schema import columns
-from pirogue.utils import insert_command, select_columns, update_command
+from pirogue.utils import insert_command, select_columns, update_command,__column_alias
 from pum.exceptions import PumHookError
 
 
@@ -491,32 +491,26 @@ def tww_import_logic(connection: psycopg.Connection):
     wsq_skip_cols = [
         "tww_is_okay",
         "tww_deleted",
-        "aa_renovation_demand",
-        "aa_remark",
-        "be_renovation_demand",
-        "be_remark",
-        "df_renovation_demand",
-        "df_remark",
-        "dd_renovation_demand",
-        "dd_remark",
     ]
 
     # List of tables to fetch columns from
-    sp_tables = [
-        "access_aid",
-        "benching",
-        "dryweather_flume",
-        "dryweather_downspout",
-    ]
+    sp_tables = {
+        "aa_":"access_aid",
+        "be_":"benching",
+        "df_":"dryweather_flume",
+        "dd_":"dryweather_downspout",
+    }
 
-    for table in sp_tables:
-        wsq_skip_cols.extend(
-            columns(
+    for prefix, table in sp_tables.items():
+        cols = columns(
                 connection=connection,
                 table_schema="tww_od",
                 table_name=table,
             )
-        )
+        cols.extend(["renovation_demand","remark"])
+        for col in cols:
+            cal = __column_alias(col, prefix=prefix, field_if_no_alias=True)
+            wsq_skip_cols.append(cal)
 
     rp_skip_cols = [
         "tww_level_measurement_kind",
