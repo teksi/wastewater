@@ -7,7 +7,7 @@ import os
 
 import psycopg
 from pirogue.information_schema import columns
-from pirogue.utils import insert_command, select_columns, update_command,__column_alias
+from pirogue.utils import __column_alias, insert_command, select_columns, update_command
 from pum.exceptions import PumHookError
 
 
@@ -495,19 +495,19 @@ def tww_import_logic(connection: psycopg.Connection):
 
     # List of tables to fetch columns from
     sp_tables = {
-        "aa_":"access_aid",
-        "be_":"benching",
-        "df_":"dryweather_flume",
-        "dd_":"dryweather_downspout",
+        "aa_": "access_aid",
+        "be_": "benching",
+        "df_": "dryweather_flume",
+        "dd_": "dryweather_downspout",
     }
 
     for prefix, table in sp_tables.items():
         cols = columns(
-                connection=connection,
-                table_schema="tww_od",
-                table_name=table,
-            )
-        cols.extend(["renovation_demand","remark"])
+            connection=connection,
+            table_schema="tww_od",
+            table_name=table,
+        )
+        cols.extend(["renovation_demand", "remark"])
         for col in cols:
             cal = __column_alias(col, prefix=prefix, field_if_no_alias=True)
             wsq_skip_cols.append(cal)
