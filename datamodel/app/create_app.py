@@ -280,17 +280,6 @@ Running modification {modification.get('id')}
                 else None
             ),
         )
-        # Quarantine logic
-
-        tww_import_logic(
-            connection=self._connection,
-        )
-        vw_tww_import_manhole(
-            connection=self._connection,
-        )
-        vw_tww_import_reach_point(
-            connection=self._connection,
-        )
 
         # TODO: Are these export views necessary? cymed 13.03.25
         for _, yaml_path in self.simple_joins_yaml.items():
@@ -309,6 +298,19 @@ Running modification {modification.get('id')}
         for directory in sql_directories:
             abs_dir = self.cwd / directory
             self.run_sql_files_in_folder(abs_dir)
+
+        # Quarantine logic
+
+        tww_import_logic(
+            connection=self._connection,
+        )
+        vw_tww_import_manhole(
+            connection=self._connection,
+        )
+        vw_tww_import_reach_point(
+            connection=self._connection,
+        )
+
 
         # run post_all
         self.run_sql_files_in_folder(self.cwd / "post_all")
