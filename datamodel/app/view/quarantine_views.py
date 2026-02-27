@@ -30,7 +30,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection):
           WHEN ss.obj_id IS NOT NULL THEN 'special_structure'
           ELSE 'unknown'
         END AS ws_type
-        , ws.obj_id as ws_obj_id
+        , ws.obj_id
         , ws._depth as ws__depth
         , ws.accessibility as ws_accessibility
         , ws.identifier as ws_identifier
@@ -580,13 +580,13 @@ def tww_import_logic(connection: psycopg.Connection):
                     FROM tww_od.wastewater_networkelement ne
                     INNER JOIN tww_od.reach_point rp on rp.fk_wastewater_networkelement =ne.obj_id
                     INNER JOIN tww_od.reach re on re.fk_reach_point_to = rp.obj_id
-                    WHERE ne.fk_wastewater_structure = ws_record.ws_obj_id;
+                    WHERE ne.fk_wastewater_structure = ws_record.obj_id;
                 WHEN NOT NEW.tww_is_inflow THEN
                     SELECT COUNT(rp.obj_id) INTO old_in_outlets
                     FROM tww_od.wastewater_networkelement ne
                     INNER JOIN tww_od.reach_point rp on rp.fk_wastewater_networkelement =ne.obj_id
                     INNER JOIN tww_od.reach re on re.fk_reach_point_from = rp.obj_id
-                    WHERE ne.fk_wastewater_structure = ws_record.ws_obj_id;
+                    WHERE ne.fk_wastewater_structure = ws_record.obj_id;
                 ELSE NULL;
                 END CASE;
 
@@ -665,7 +665,7 @@ def tww_import_logic(connection: psycopg.Connection):
         IF ws_row.aa_obj_id IS NOT NULL THEN
             IF EXISTS (
                 SELECT 1 FROM tww_app.access_aid
-                WHERE fk_wastewater_structure = ws_row.ws_obj_id
+                WHERE fk_wastewater_structure = ws_row.obj_id
             ) THEN
                 -- Update existing record
                 UPDATE tww_app.access_aid
@@ -673,7 +673,7 @@ def tww_import_logic(connection: psycopg.Connection):
                     renovation_demand = ws_row.aa_renovation_demand,
                     remark = ws_row.aa_remark,
                     kind = ws_row.aa_kind
-                WHERE fk_wastewater_structure = ws_row.ws_obj_id;
+                WHERE fk_wastewater_structure = ws_row.obj_id;
             ELSE
                 -- Check if any attribute is not NULL
                 has_data := (ws_row.aa_renovation_demand IS NOT NULL)
@@ -689,7 +689,7 @@ def tww_import_logic(connection: psycopg.Connection):
                         kind
                     ) VALUES (
                         ws_row.aa_obj_id,
-                        ws_row.ws_obj_id,
+                        ws_row.obj_id,
                         ws_row.aa_renovation_demand,
                         ws_row.aa_remark,
                         ws_row.aa_kind
@@ -702,7 +702,7 @@ def tww_import_logic(connection: psycopg.Connection):
         IF ws_row.be_obj_id IS NOT NULL THEN
             IF EXISTS (
                 SELECT 1 FROM tww_app.vw_benching
-                WHERE fk_wastewater_structure = ws_row.ws_obj_id
+                WHERE fk_wastewater_structure = ws_row.obj_id
             ) THEN
                 -- Update existing record
                 UPDATE tww_app.vw_benching
@@ -710,7 +710,7 @@ def tww_import_logic(connection: psycopg.Connection):
                     kind = ws_row.be_kind,
                     renovation_demand = ws_row.be_renovation_demand,
                     remark = ws_row.be_remark
-                WHERE fk_wastewater_structure = ws_row.ws_obj_id;
+                WHERE fk_wastewater_structure = ws_row.obj_id;
             ELSE
                 -- Check if any attribute is not NULL
                 has_data := (ws_row.be_kind IS NOT NULL)
@@ -726,7 +726,7 @@ def tww_import_logic(connection: psycopg.Connection):
                         remark
                     ) VALUES (
                         ws_row.be_obj_id,
-                        ws_row.ws_obj_id,
+                        ws_row.obj_id,
                         ws_row.be_kind,
                         ws_row.be_renovation_demand,
                         ws_row.be_remark
@@ -739,7 +739,7 @@ def tww_import_logic(connection: psycopg.Connection):
         IF ws_row.df_obj_id IS NOT NULL THEN
             IF EXISTS (
                 SELECT 1 FROM tww_app.vw_dryweather_flume
-                WHERE fk_wastewater_structure = ws_row.ws_obj_id
+                WHERE fk_wastewater_structure = ws_row.obj_id
             ) THEN
                 -- Update existing record
                 UPDATE tww_app.vw_dryweather_flume
@@ -747,7 +747,7 @@ def tww_import_logic(connection: psycopg.Connection):
                     material = ws_row.df_material,
                     renovation_demand = ws_row.df_renovation_demand,
                     remark = ws_row.df_remark
-                WHERE fk_wastewater_structure = ws_row.ws_obj_id;
+                WHERE fk_wastewater_structure = ws_row.obj_id;
             ELSE
                 -- Check if any attribute is not NULL
                 has_data := (ws_row.df_material IS NOT NULL)
@@ -763,7 +763,7 @@ def tww_import_logic(connection: psycopg.Connection):
                         remark
                     ) VALUES (
                         ws_row.df_obj_id,
-                        ws_row.ws_obj_id,
+                        ws_row.obj_id,
                         ws_row.df_material,
                         ws_row.df_renovation_demand,
                         ws_row.df_remark
@@ -776,7 +776,7 @@ def tww_import_logic(connection: psycopg.Connection):
         IF ws_row.dd_obj_id IS NOT NULL THEN
             IF EXISTS (
                 SELECT 1 FROM tww_app.dryweather_downspout
-                WHERE fk_wastewater_structure = ws_row.ws_obj_id
+                WHERE fk_wastewater_structure = ws_row.obj_id
             ) THEN
                 -- Update existing record
                 UPDATE tww_app.dryweather_downspout
@@ -784,7 +784,7 @@ def tww_import_logic(connection: psycopg.Connection):
                     diameter = ws_row.dd_diameter,
                     renovation_demand = ws_row.dd_renovation_demand,
                     remark = ws_row.dd_remark
-                WHERE fk_wastewater_structure = ws_row.ws_obj_id;
+                WHERE fk_wastewater_structure = ws_row.obj_id;
             ELSE
                 -- Check if any attribute is not NULL
                 has_data := (ws_row.dd_diameter IS NOT NULL)
@@ -800,7 +800,7 @@ def tww_import_logic(connection: psycopg.Connection):
                         remark
                     ) VALUES (
                         ws_row.dd_obj_id,
-                        ws_row.ws_obj_id,
+                        ws_row.obj_id,
                         ws_row.dd_diameter,
                         ws_row.dd_renovation_demand,
                         ws_row.dd_remark
@@ -888,14 +888,14 @@ BEGIN
             -- Check if the record already exists in the live table
             IF EXISTS (
                 SELECT 1 FROM tww_od.manhole
-                WHERE obj_id = ws_record.ws_obj_id
+                WHERE obj_id = ws_record.obj_id
                 UNION ALL
                 SELECT 1 from tww_od.special_structure
-                WHERE obj_id = ws_record.ws_obj_id
+                WHERE obj_id = ws_record.obj_id
             ) THEN
                 {update_wsq}
                 PERFORM tww_app.set_structure_parts_from_quarantine(ws_record.*);
-                ws_oid := ws_record.ws_obj_id;
+                ws_oid := ws_record.obj_id;
             ELSE
                 {insert_wsq}
                 PERFORM tww_app.set_structure_parts_from_quarantine(ws_record.*);
@@ -1055,7 +1055,7 @@ $$;
                 "ss_upper_elevation": "_upper_elevation",
                 "wn_bottom_level": "_bottom_level",
             },
-            returning="ws_obj_id into ws_oid",
+            returning="obj_id into ws_oid",
         )
         .replace("NEW.", "ws_record.")
         .replace("tww_od.import_ws_quarantine", "tww_app.vw_tww_wastewater_structure"),
@@ -1175,15 +1175,6 @@ $$;
             indent=6,
             skip_columns=["fk_import_examination_quarantine"],
             comment_skipped=False,
-            insert_values={
-                "obj_id": "dm_record.dm_obj_id",
-                "fk_examination": "dm_record.da_fk_examination",
-                "comments": "dm_record.da_comments",
-                "single_damage_class": "dm_record.da_single_damage_class",
-                "shaft_area": "dm_record.dm_shaft_area",
-                "damage_code": "dm_record.dm_damage_code",
-            },
-            returning="obj_id INTO rp_oid",
         )
         .replace("NEW.", "dm_record.")
         .replace("tww_od.import_damage_ws_quarantine", "tww_app.vw_damage_manhole"),
@@ -1195,14 +1186,6 @@ $$;
             indent=6,
             skip_columns=["fk_import_examination_quarantine"],
             comment_skipped=False,
-            update_values={
-                "obj_id": "dm_record.dm_obj_id",
-                "fk_examination": "dm_record.da_fk_examination",
-                "comments": "dm_record.da_comments",
-                "single_damage_class": "dm_record.da_single_damage_class",
-                "shaft_area": "dm_record.dm_shaft_area",
-                "damage_code": "dm_record.dm_damage_code",
-            },
         )
         .replace("NEW.", "dm_record.")
         .replace("tww_od.import_damage_ws_quarantine", "tww_app.vw_damage_manhole"),
