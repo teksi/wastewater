@@ -1195,7 +1195,7 @@ $$;
             table_name="vw_file",
             remove_pkey=False,
             indent=6,
-            skip_columns=rp_skip_cols,
+            skip_columns=["fk_dataowner", "fk_provider"],
             comment_skipped=False,
             insert_values={
                 "_url": "_url",
