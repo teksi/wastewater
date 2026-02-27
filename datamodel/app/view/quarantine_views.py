@@ -1065,7 +1065,7 @@ $$;
             table_name="import_ws_quarantine",
             remove_pkey=True,
             indent=6,
-            skip_columns=rp_skip_cols,
+            skip_columns=wsq_skip_cols,
             comment_skipped=False,
             update_values={
                 "ss_upper_elevation": "_upper_elevation",
