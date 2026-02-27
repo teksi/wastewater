@@ -311,7 +311,6 @@ Running modification {modification.get('id')}
             connection=self._connection,
         )
 
-
         # run post_all
         self.run_sql_files_in_folder(self.cwd / "post_all")
 
