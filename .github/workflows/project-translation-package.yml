@@ -76,7 +76,7 @@ jobs:
           ./tx pull -a
           docker compose exec qgis sh -c "/usr/src/project/scripts/project-translation-compile.sh /usr/src/project/${QGS_PROJECT_FILE}.qgs"
 
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         with:
           name: project-translations
           path: project/${{ env.QGS_PROJECT_FILE }}*
