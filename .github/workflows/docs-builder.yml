@@ -70,7 +70,7 @@ jobs:
       - name: copy datamodel documentation
         # Download artifact only if datamodel step ran (i.e., not a fast-doc PR)
         if: ${{ !(github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'PR-fast-doc')) }}
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: datamodel-schemaspy
           path: docs/_static/datamodel
