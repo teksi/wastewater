@@ -22,44 +22,8 @@ on:
 
 jobs:
   version-tests:
-    if: github.event_name == 'pull_request'
-    name: Check versioning
-    runs-on: ubuntu-latest
-    env:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 2
-
-      - name: Check changelog versions
-        run: |
-          LATEST_RELEASE=$(gh release view --json tagName -q .tagName | cut -d. -f1-2)
-          echo "Latest release: $LATEST_RELEASE"
-          if [ -z "$LATEST_RELEASE" ]; then
-            echo "No release found."
-            exit 1
-          fi
-
-          MODIFIED_FILES=$(git diff --name-only HEAD^1 HEAD)
-          echo "*** Modified files:"
-          echo "$MODIFIED_FILES"
-
-          MODIFIED_CHANGELOGS=$(echo "$MODIFIED_FILES" | grep "^datamodel/changelogs/" || true)
-          echo "Modified changelog files:"
-          echo "$MODIFIED_CHANGELOGS"
-
-          if [ -n "$MODIFIED_CHANGELOGS" ]; then
-            for file in $MODIFIED_CHANGELOGS; do
-              DIR=$(echo "$file" | cut -d'/' -f3)
-              if (( $(echo "$DIR <= ${LATEST_RELEASE}" | bc -l) )); then
-                echo "❌ Error: Changelogs are modified in an already existing release directory: $DIR"
-                exit 1
-              fi
-            done
-          fi
-          echo "✅ Changelog versions are valid"
+    uses: opengisch/oqtopus/.github/workflows/reusable-datamodel-version-check.yml@main
+    secrets: inherit
 
   datamodel-tests:
     name: Run unit tests on datamodel
