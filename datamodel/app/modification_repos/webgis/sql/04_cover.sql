@@ -22,3 +22,9 @@ AS
      LEFT JOIN tww_vl.cover_material co_ma ON co_ma.code = co.material
      LEFT JOIN tww_vl.cover_positional_accuracy co_pa ON co_ma.code = co.positional_accuracy
      LEFT JOIN tww_vl.cover_sludge_bucket co_sb ON co_sb.code = co.sludge_bucket;
+
+
+CREATE UNIQUE INDEX in_app_mvw_web_cover_obj_id
+    ON tww_app.mvw_web_cover USING btree
+    (obj_id COLLATE pg_catalog."default")
+    TABLESPACE pg_default;

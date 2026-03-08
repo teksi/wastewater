@@ -28,3 +28,8 @@ AS
      LEFT JOIN tww_od.wastewater_networkelement ne_rw ON ca.fk_wastewater_networkelement_rw_current::text = ne_rw.obj_id::text
      LEFT JOIN tww_od.wastewater_networkelement ne_ww ON ca.fk_wastewater_networkelement_ww_current::text = ne_ww.obj_id::text
 WITH DATA;
+
+CREATE UNIQUE INDEX in_app_mvw_web_catchment_area_current_obj_id
+    ON tww_app.mvw_web_catchment_area_current USING btree
+    (obj_id COLLATE pg_catalog."default")
+    TABLESPACE pg_default;
