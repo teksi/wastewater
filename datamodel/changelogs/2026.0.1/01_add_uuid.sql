@@ -28,8 +28,8 @@ BEGIN
 
         -- Only add uuidoid if the table is not a child
         IF NOT is_child THEN
-            EXECUTE format('ALTER TABLE tww_od.%I ADD COLUMN IF NOT EXISTS uuidoid uuid DEFAULT uuid_generate_v4()', tbl);
-            EXECUTE format('UPDATE tww_od.%I SET uuidoid = uuid_generate_v4() WHERE uuidoid IS NULL', tbl);
+            EXECUTE format('ALTER TABLE tww_od.%I ADD COLUMN IF NOT EXISTS uuidoid uuid DEFAULT gen_random_uuid()', tbl);
+            EXECUTE format('UPDATE tww_od.%I SET uuidoid = gen_random_uuid() WHERE uuidoid IS NULL', tbl);
         END IF;
     END LOOP;
 END $$;
