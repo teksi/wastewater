@@ -19,6 +19,11 @@ from view.maintenance_views import (
     vw_tww_channel_maintenance,
     vw_tww_ws_maintenance,
 )
+from view.quarantine_views import (
+    tww_import_logic,
+    vw_tww_import_manhole,
+    vw_tww_import_reach_point,
+)
 from view.vw_tww_additional_ws import vw_tww_additional_ws
 from view.vw_tww_damage_channel import vw_tww_damage_channel
 from view.vw_tww_infiltration_installation import vw_tww_infiltration_installation
@@ -275,6 +280,7 @@ Running modification {modification.get('id')}
                 else None
             ),
         )
+
         # TODO: Are these export views necessary? cymed 13.03.25
         for _, yaml_path in self.simple_joins_yaml.items():
             SimpleJoins(
@@ -292,6 +298,18 @@ Running modification {modification.get('id')}
         for directory in sql_directories:
             abs_dir = self.cwd / directory
             self.run_sql_files_in_folder(abs_dir)
+
+        # Quarantine logic
+
+        tww_import_logic(
+            connection=self._connection,
+        )
+        vw_tww_import_manhole(
+            connection=self._connection,
+        )
+        vw_tww_import_reach_point(
+            connection=self._connection,
+        )
 
         # run post_all
         self.run_sql_files_in_folder(self.cwd / "post_all")
