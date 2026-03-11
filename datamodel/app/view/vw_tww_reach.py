@@ -56,6 +56,8 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
         , {ws_cols}
         , {rp_from_cols}
         , {rp_to_cols}
+        , rp_from_lbl.label_text as rp_from_label
+        , rp_to_lbl.label_text as rp_to_label
         , vl_fh.tww_is_primary
         , og.organisation_type as _owner_organisation_type
         , False as tww_update_lvl_by_geom
@@ -66,6 +68,8 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
          LEFT JOIN tww_od.wastewater_structure ws ON ne.fk_wastewater_structure = ws.obj_id
          LEFT JOIN tww_od.channel ch ON ch.obj_id = ws.obj_id
          LEFT JOIN tww_od.pipe_profile pp ON re.fk_pipe_profile = pp.obj_id
+         LEFT JOIN tww_od.tww_reach_point_label rp_from_lbl ON rp_from_lbl.fk_reach_point = rp_from.obj_id
+         LEFT JOIN tww_od.tww_reach_point_label rp_to_lbl ON rp_to_lbl.fk_reach_point = rp_to.obj_id
          LEFT JOIN tww_vl.channel_function_hierarchic vl_fh ON vl_fh.code = ch.function_hierarchic
          LEFT JOIN tww_od.organisation og on og.obj_id=ws.fk_owner
          {extra_joins};
@@ -122,7 +126,6 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
                 "fk_owner",
                 "fk_dataowner",
                 "fk_provider",
-                "_label",
                 "_depth",
                 "fk_main_cover",
             ],
@@ -224,7 +227,6 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
             indent=2,
             skip_columns=[
                 "detail_geometry3d_geometry",
-                "_label",
                 "_depth",
                 "fk_main_cover",
             ],
@@ -378,7 +380,6 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
             },
             skip_columns=[
                 "detail_geometry3d_geometry",
-                "_label",
                 "_depth",
                 "fk_main_cover",
             ],
