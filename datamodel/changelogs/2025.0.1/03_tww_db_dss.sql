@@ -28,18 +28,17 @@ WITH (
 -------
 CREATE TABLE tww_od.re_building_group_disposal
 (
-   id uuid NOT NULL DEFAULT uuid_generate_v4(),
+   id uuid NOT NULL DEFAULT gen_random_uuid(),
    CONSTRAINT pkey_tww_od_re_building_group_disposal_id PRIMARY KEY (id)
 );
-COMMENT ON COLUMN tww_od.re_building_group_disposal.id IS 'UUID generated with uuid_generate_v4 see https://www.postgresql.org/docs/16/uuid-ossp.html#UUID-OSSP-FUNCTIONS-SECT';
 
 -------
 CREATE TABLE tww_od.re_maintenance_event_wastewater_structure
 (
-   id uuid NOT NULL DEFAULT uuid_generate_v4(),
+   id uuid NOT NULL DEFAULT gen_random_uuid(),
    CONSTRAINT pkey_tww_od_re_maintenance_event_wastewater_structure_id PRIMARY KEY (id)
 );
-COMMENT ON COLUMN tww_od.re_maintenance_event_wastewater_structure.id IS 'UUID generated with uuid_generate_v4 see https://www.postgresql.org/docs/16/uuid-ossp.html#UUID-OSSP-FUNCTIONS-SECT';
+
 -------
 CREATE TABLE tww_od.organisation
 (
