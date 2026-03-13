@@ -117,15 +117,22 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
             combobox.setCurrentIndex(idx)
 
     def initAG64LastModificationCombobox(self):
+        self.mCbAg6496LastModification.clear()
+        original_values = ["WI", "GEP", "None", "Both"]
+
+        # Populate the combobox
+        for original in original_values:
+            translated = self.tr(original)
+            self.mCbAg6496LastModification.addItem(translated, original)
+
         default = "None"
         idx = self.mCbAg6496LastModification.currentIndex()
         if not idx or idx == -1:
-            self.mCbAg6496LastModification.setCurrentIndex(
-                self.mCbAg6496LastModification.findText(default)
-            )
-        if (
-            self.mCbAg6496Extension.isChecked()
-        ):  # use if clause to not trigger any db calls on startup unless necessary
+            idx = self.mCbAg6496LastModification.findData(default)
+            if idx != -1:
+                self.mCbAg6496LastModification.setCurrentIndex(idx)
+
+        if self.mCbAg6496Extension.isChecked():
             conn_exists = self._configure_database_connection_config_from_tww_layer()
             if conn_exists:
                 pgconf = DatabaseUtils.get_pgconf()
@@ -143,7 +150,8 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
                     """
                     )
                     if agxx_last_mod_setting:
-                        idx = self.mCbAg6496LastModification.findText(agxx_last_mod_setting[0])
+                        original_value = agxx_last_mod_setting[0]
+                        idx = self.mCbAg6496LastModification.findData(original_value)
                         if idx != -1:
                             self.mCbAg6496LastModification.setCurrentIndex(idx)
 
@@ -163,36 +171,49 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
             return False
 
     def execAG64LastModificationCombobox(self):
-        self.mCbAg6496LastModification.currentIndex()
+        # Get the original value, not the translated text
+        curr_agxxdata = self.mCbAg6496LastModification.currentData()
+
         conn_exists = self._configure_database_connection_config_from_tww_layer()
         if conn_exists:
             pgconf = DatabaseUtils.get_pgconf()
             table_exists = DatabaseUtils.fetchone(
                 """SELECT EXISTS( SELECT 1 FROM information_schema.tables
-                    WHERE  table_schema = 'tww_od'
-                    AND table_name   = 'agxx_last_modification_updater');"""
+                        WHERE table_schema = 'tww_od' AND table_name = 'agxx_last_modification_updater"""
             )
             if table_exists[0]:
                 agxx_last_mod_setting = DatabaseUtils.fetchone(
-                    f"""
-                SELECT ag_update_type
-                FROM tww_od.agxx_last_modification_updater
-                WHERE username='{pgconf["user"]}';
-                """
+                    DatabaseUtils.compose_sql(
+                        """
+                        SELECT ag_update_type
+                        FROM tww_od.agxx_last_modification_updater
+                        WHERE username = {usr};
+                        """,
+                        usr=DatabaseUtils.wrap_literal(pgconf["user"]),
+                    ),
                 )
                 if agxx_last_mod_setting:
                     DatabaseUtils.execute(
-                        f"""
-                    UPDATE tww_od.agxx_last_modification_updater
-                    SET ag_update_type = '{self.mCbAg6496LastModification.currentText()}'
-                    WHERE username ='{pgconf["user"]}';"""
+                        DatabaseUtils.compose_sql(
+                            """
+                            UPDATE tww_od.agxx_last_modification_updater
+                            SET ag_update_type = {val}
+                            WHERE username = {usr};
+                            """,
+                            val=DatabaseUtils.wrap_literal(curr_agxxdata),
+                            usr=DatabaseUtils.wrap_literal(pgconf["user"]),
+                        )
                     )
                 else:
                     DatabaseUtils.execute(
-                        f"""
-                    INSERT INTO tww_od.agxx_last_modification_updater (username, ag_update_type)
-                    VALUES ('{pgconf["user"]}','{self.mCbAg6496LastModification.currentText()}')
-                    ;"""
+                        DatabaseUtils.compose_sql(
+                            """
+                            INSERT INTO tww_od.agxx_last_modification_updater (username, ag_update_type)
+                            VALUES ({usr},{val});
+                            """,
+                            val=DatabaseUtils.wrap_literal(curr_agxxdata),
+                            usr=DatabaseUtils.wrap_literal(pgconf["user"]),
+                        )
                     )
 
     @pyqtSlot()
