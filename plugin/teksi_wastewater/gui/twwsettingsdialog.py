@@ -124,7 +124,7 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
         for original in original_values:
             translated = self.tr(original)
             self.mCbAg6496LastModification.addItem(translated, original)
-        
+
         default = "None"
         idx = self.mCbAg6496LastModification.currentIndex()
         if not idx or idx == -1:
@@ -178,7 +178,7 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
         if conn_exists:
             pgconf = DatabaseUtils.get_pgconf()
             table_exists = DatabaseUtils.fetchone(
-                    """SELECT EXISTS( SELECT 1 FROM information_schema.tables
+                """SELECT EXISTS( SELECT 1 FROM information_schema.tables
                         WHERE table_schema = 'tww_od' AND table_name = 'agxx_last_modification_updater"""
             )
             if table_exists[0]:
@@ -189,7 +189,7 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
                         FROM tww_od.agxx_last_modification_updater
                         WHERE username = {usr};
                         """,
-                        usr=DatabaseUtils.wrap_literal(pgconf["user"])
+                        usr=DatabaseUtils.wrap_literal(pgconf["user"]),
                     ),
                 )
                 if agxx_last_mod_setting:
@@ -201,7 +201,7 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
                             WHERE username = {usr};
                             """,
                             val=DatabaseUtils.wrap_literal(curr_agxxdata),
-                            usr=DatabaseUtils.wrap_literal(pgconf["user"])
+                            usr=DatabaseUtils.wrap_literal(pgconf["user"]),
                         )
                     )
                 else:
@@ -212,7 +212,7 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
                             VALUES ({usr},{val});
                             """,
                             val=DatabaseUtils.wrap_literal(curr_agxxdata),
-                            usr=DatabaseUtils.wrap_literal(pgconf["user"])
+                            usr=DatabaseUtils.wrap_literal(pgconf["user"]),
                         )
                     )
 
