@@ -179,7 +179,7 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
             pgconf = DatabaseUtils.get_pgconf()
             table_exists = DatabaseUtils.fetchone(
                 """SELECT EXISTS( SELECT 1 FROM information_schema.tables
-                        WHERE table_schema = 'tww_od' AND table_name = 'agxx_last_modification_updater'"""
+                        WHERE table_schema = 'tww_od' AND table_name = 'agxx_last_modification_updater')"""
             )
             if table_exists[0]:
                 agxx_last_mod_setting = DatabaseUtils.fetchone(
