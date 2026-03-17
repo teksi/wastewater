@@ -722,8 +722,9 @@ class InterlisImporterExporter:
                         cursor.execute(f"DROP TABLE {config.ABWASSER_SCHEMA}.{row[0]} CASCADE;")
                 else:
                     for row in rows:
-                        cursor.execute(f"TRUNCATE TABLE {config.ABWASSER_SCHEMA}.{row[0]} CASCADE;")
-
+                        cursor.execute(
+                            f"TRUNCATE TABLE {config.ABWASSER_SCHEMA}.{row[0]} CASCADE;"
+                        )
 
     def _create_ili_schema(
         self, models, ext_columns_no_constraints=False, create_basket_col=False
