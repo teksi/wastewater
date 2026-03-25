@@ -177,3 +177,18 @@ This works just for layers based directly from the tww_od - tables, not for view
 Place your mouse over the name of the attribut and you get additional info for this field if there is an additionial discription on the VSA-DSS-Objektkatalog.
 
 .. figure:: images/hintattribute.jpg
+
+
+How TWW works with the fields **dataowner** and **provider**
+------------------------------------------------------------
+
+For all new data records, the default values ​​from the table tww_od.default_values ​​are used.
+
+What happens, if you change a dataowner- or provider-value of an existing record? 
+The following describes a change to the dataowner field. The same principle applies to a change in the provider field.
+
+*	change field fk_datawoner in vw_tww_wastewater_structure: also all fk_dataowner in connected wastewater_networkelements (node) and in connected structure_parts (covers,acces_aid etc) to change to the new fk_dataowner of the wastewater_structure
+
+*	change field wn_fk_datawoner in vw_tww_wastewater_structure: no other fk_dataowner-fields do change
+
+*	change field fk_datawoner in vw_cover: no other fk_dataowner-fields do change
