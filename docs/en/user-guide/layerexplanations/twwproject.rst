@@ -184,7 +184,7 @@ When TWW automatically updates the fields **dataowner** and **provider**
 
 For all new data records, the default values ​​from the table tww_od.default_values ​​are used.
 
-What happens, if you change a dataowner- or provider-value of an existing record? 
+What happens, if you change a dataowner- or provider-value of an existing record?
 In some cases, the fk_dataowner and fk_provider of connected tables do change also. But in many cases, you have to update manually.
 The following describes a change to the dataowner field. The same principle applies to a change in the provider field.
 
