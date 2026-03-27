@@ -57,6 +57,7 @@ In QGIS go to ``Settings`` > ``Options`` > ``System`` tab. Near the bottom you'l
 .. figure:: images/macEnvVarSet.png
 
 After closing and reopening QGIS, you should be able to see the added PGSYSCONFDIR at the bottom of the same window under ``Current environment variables``.
+
 .. figure:: images/macEnvVarCheck.png
 
 All systems
