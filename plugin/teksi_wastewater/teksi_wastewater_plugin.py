@@ -28,8 +28,8 @@ import logging
 import os
 import shutil
 
-from qgis.core import Qgis, QgsApplication
-from qgis.PyQt.QtCore import QLocale, QSettings, Qt
+from qgis.core import Qgis, QgsApplication, QgsProject
+from qgis.PyQt.QtCore import QLocale, QSettings, Qt, QTimer
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QApplication, QMessageBox, QToolBar
 from qgis.utils import qgsfunction
@@ -39,17 +39,19 @@ try:
 except ImportError:
     TwwPlotSVGWidget = None
 from .gui.twwprofiledockwidget import TwwProfileDockWidget
+from .gui.twwselectionextenderwidget import TwwSelectionExtenderWidget
 from .gui.twwsettingsdialog import TwwSettingsDialog
 from .gui.twwwizard import TwwWizard
 from .libs.modelbaker.iliwrapper.ili2dbutils import JavaNotFoundError
 from .processing_provider.provider import TwwProcessingProvider
 from .tools.twwmaptools import TwwMapToolConnectNetworkElements, TwwTreeMapTool
 from .tools.twwnetwork import TwwGraphManager
+from .tools.twwselectionextender import TwwSelectionExtender
 from .utils.database_utils import DatabaseUtils
 from .utils.plugin_utils import plugin_root_path
 from .utils.qt_utils import OverrideCursor
 from .utils.translation import setup_i18n
-from .utils.twwlayermanager import TwwLayerManager, TwwLayerNotifier
+from .utils.twwlayermanager import TwwLayerManager
 from .utils.twwlogging import TwwQgsLogHandler
 
 LOGFORMAT = "%(asctime)s:%(levelname)s:%(module)s:%(message)s"
@@ -163,14 +165,7 @@ class TeksiWastewaterPlugin:
         """
         Called to setup the plugin GUI
         """
-        self.network_layer_notifier = TwwLayerNotifier(
-            self.iface.mainWindow(),
-            ["vw_network_node", "vw_network_segment"],
-        )
-        self.vw_tww_layer_notifier = TwwLayerNotifier(
-            self.iface.mainWindow(),
-            ["vw_tww_wastewater_structure"],
-        )
+
         self.toolbarButtons = []
 
         # Create toolbar button
@@ -321,11 +316,8 @@ class TeksiWastewaterPlugin:
         self.toolbarButtons.append(self.importAction)
         self.toolbarButtons.append(self.exportAction)
 
-        self.network_layer_notifier.layersAvailable.connect(self.onNetworkLayersAvailable)
-        self.network_layer_notifier.layersUnavailable.connect(self.onNetworkLayersUnavailable)
-
-        self.vw_tww_layer_notifier.layersAvailable.connect(self.onTwwLayersAvailable)
-        self.vw_tww_layer_notifier.layersUnavailable.connect(self.onTwwLayersUnavailable)
+        QgsProject.instance().layerLoaded.connect(self._on_layer_loaded)
+        QgsProject.instance().cleared.connect(self._on_project_cleared)
 
         # Init the object maintaining the network
         self.network_analyzer = TwwGraphManager()
@@ -354,7 +346,22 @@ class TeksiWastewaterPlugin:
         self.processing_provider = TwwProcessingProvider()
         QgsApplication.processingRegistry().addProvider(self.processing_provider)
 
-        self.network_layer_notifier.layersAdded([])
+        # Handle the case where a project is already open when the plugin loads
+        self._check_tww_layers()
+
+        self.selectionExtenderWidget = None
+        self.selectionExtenderAction = QAction(
+            QIcon(os.path.join(plugin_root_path(), "icons/selection-extender.svg")),
+            self.tr("Extend selection"),
+            self.iface.mainWindow(),
+        )
+        self.selectionExtenderAction.setEnabled(False)
+        self.selectionExtenderAction.setCheckable(True)
+        self.selectionExtenderAction.toggled.connect(self.toggleSelectionExtenderWidget)
+
+        self.toolbar.addAction(self.selectionExtenderAction)
+        self.toolbarButtons.append(self.selectionExtenderAction)
+        self.selectionExtenderController = TwwSelectionExtender(self.iface)
 
     def tww_validity_check_startup(self):
         messages = []
@@ -436,6 +443,7 @@ class TeksiWastewaterPlugin:
         self.toolbar.removeAction(self.wizardAction)
         self.toolbar.removeAction(self.refreshNetworkTopologyAction)
         self.toolbar.removeAction(self.connectNetworkElementsAction)
+        self.toolbar.removeAction(self.selectionExtenderAction)
 
         if self.importAction in self.toolbar.actions():
             self.toolbar.removeAction(self.importAction)
@@ -454,22 +462,53 @@ class TeksiWastewaterPlugin:
 
         QgsApplication.processingRegistry().removeProvider(self.processing_provider)
 
-    def onNetworkLayersAvailable(self, layers):
+        if self.selectionExtenderWidget is not None:
+            self.iface.removeDockWidget(self.selectionExtenderWidget)
+            self.selectionExtenderWidget.deleteLater()
+            self.selectionExtenderWidget = None
+
+    def _on_layer_loaded(self, i, n):
+        """
+        Called during project loading for each layer. When the last layer is loaded,
+        schedule a deferred check so all C++ layer objects are fully constructed.
+        """
+        if i == n:
+            QTimer.singleShot(0, self._check_tww_layers)
+
+    def _on_project_cleared(self):
+        self._on_tww_project_unavailable()
+
+    def _check_tww_layers(self):
+        """
+        Checks whether a TWW project is available (i.e. some required TWW layers are present in the current project).
+        If so, enables the plugin.
+        """
+        required_layers = ["vw_network_node", "vw_network_segment", "vw_tww_wastewater_structure"]
+        all_layer_ids = list(QgsProject.instance().mapLayers().keys())
+
+        for tww_id in required_layers:
+            if not any(lyr_id.startswith(tww_id) for lyr_id in all_layer_ids):
+                return
+
+        self._on_tww_project_available()
+
+    def _on_tww_project_available(self):
+        network_segment = TwwLayerManager.layer("vw_network_segment")
+        network_node = TwwLayerManager.layer("vw_network_node")
+
         self.connectNetworkElementsAction.setEnabled(True)
-        self.network_analyzer.setReachLayer(layers["vw_network_segment"])
-        self.network_analyzer.setNodeLayer(layers["vw_network_node"])
+        self.network_analyzer.setLayers(network_segment, network_node)
 
-    def onNetworkLayersUnavailable(self):
-        self.connectNetworkElementsAction.setEnabled(False)
-
-    def onTwwLayersAvailable(self):
         for b in self.toolbarButtons:
             b.setEnabled(True)
 
         self._configure_database_connection_config_from_tww_layer()
         self.tww_validity_check_startup()
 
-    def onTwwLayersUnavailable(self):
+    def _on_tww_project_unavailable(self):
+        self.connectNetworkElementsAction.setEnabled(False)
+        self.network_analyzer.setLayers(None, None)
+
         for b in self.toolbarButtons:
             b.setEnabled(False)
 
@@ -726,3 +765,32 @@ class TeksiWastewaterPlugin:
 
         self.enableSymbologyTriggersAction.setEnabled(admin_mode)
         self.disableSymbologyTriggersAction.setEnabled(admin_mode)
+
+    def toggleSelectionExtenderWidget(self, checked: bool):
+        if checked:
+            if self.selectionExtenderWidget is None:
+                self.selectionExtenderWidget = TwwSelectionExtenderWidget(
+                    self.iface,
+                    self.iface.mainWindow(),
+                )
+                self.selectionExtenderWidget.setController(self.selectionExtenderController)
+
+                self.iface.addDockWidget(Qt.RightDockWidgetArea, self.selectionExtenderWidget)
+
+                self.selectionExtenderWidget.visibilityChanged.connect(
+                    self._onSelectionExtenderVisibilityChanged
+                )
+
+            self.selectionExtenderWidget.show()
+            self.selectionExtenderWidget.raise_()
+            self.selectionExtenderWidget.activateWindow()
+
+        else:
+            if self.selectionExtenderWidget is not None:
+                self.selectionExtenderWidget.hide()
+
+    def _onSelectionExtenderVisibilityChanged(self, visible: bool):
+        # escape from loop visibilityChanged <-> toggled
+        self.selectionExtenderAction.blockSignals(True)
+        self.selectionExtenderAction.setChecked(visible)
+        self.selectionExtenderAction.blockSignals(False)
