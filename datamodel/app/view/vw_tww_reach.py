@@ -135,7 +135,11 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
             prefix="rp_from_",
             remove_pkey=False,
             indent=4,
-            skip_columns=["situation3d_geometry"],
+            skip_columns=[
+                "situation3d_geometry",
+                "fk_dataowner",
+                "fk_provider",
+                ],
         ),
         rp_to_cols=select_columns(
             connection=connection,
@@ -145,7 +149,11 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
             prefix="rp_to_",
             remove_pkey=False,
             indent=4,
-            skip_columns=["situation3d_geometry"],
+            skip_columns=[
+                "situation3d_geometry",
+                "fk_dataowner",
+                "fk_provider",
+                ],
         ),
         extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
     )
@@ -194,8 +202,8 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
             coalesce_pkey_default=True,
             insert_values={
                 "situation3d_geometry": "ST_StartPoint(NEW.progression3d_geometry)",
-                "fk_provider": "COALESCE(NULLIF(NEW.rp_from_fk_provider,''), NEW.fk_provider)",
-                "fk_dataowner": "COALESCE(NULLIF(NEW.rp_from_fk_dataowner,''), NEW.fk_dataowner)",
+                "fk_provider": "NEW.fk_provider",
+                "fk_dataowner": "NEW.fk_dataowner",
             },
             returning="obj_id INTO NEW.rp_from_obj_id",
         ),
@@ -210,8 +218,8 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
             coalesce_pkey_default=True,
             insert_values={
                 "situation3d_geometry": "ST_EndPoint(NEW.progression3d_geometry)",
-                "fk_provider": "COALESCE(NULLIF(NEW.rp_to_fk_provider,''), NEW.fk_provider)",
-                "fk_dataowner": "COALESCE(NULLIF(NEW.rp_to_fk_dataowner,''), NEW.fk_dataowner)",
+                "fk_provider": "NEW.fk_provider",
+                "fk_dataowner": "NEW.fk_dataowner",
             },
             returning="obj_id INTO NEW.rp_to_obj_id",
         ),
@@ -344,7 +352,11 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
             prefix="rp_from_",
             remove_pkey=True,
             indent=6,
-            update_values={"situation3d_geometry": "ST_StartPoint(NEW.progression3d_geometry)"},
+            update_values={
+                "situation3d_geometry": "ST_StartPoint(NEW.progression3d_geometry)",
+                "fk_provider": "NEW.fk_provider",
+                "fk_dataowner": "NEW.fk_dataowner",
+            },,
         ),
         rp_to=update_command(
             connection=connection,
@@ -353,7 +365,11 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
             prefix="rp_to_",
             remove_pkey=True,
             indent=6,
-            update_values={"situation3d_geometry": "ST_EndPoint(NEW.progression3d_geometry)"},
+            update_values={
+                "situation3d_geometry": "ST_EndPoint(NEW.progression3d_geometry)",
+                "fk_provider": "NEW.fk_provider",
+                "fk_dataowner": "NEW.fk_dataowner",
+            },,
         ),
         ch=update_command(
             connection=connection,

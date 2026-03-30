@@ -361,7 +361,6 @@ def vw_tww_additional_ws(
       {update_sp}
       {update_ws}
       {update_wn}
-      {update_ne}
       {update_extra}
 
       IF OLD.ws_type <> NEW.ws_type THEN
@@ -557,8 +556,8 @@ def vw_tww_additional_ws(
         ),
         update_wn=update_command(
             connection=connection,
-            table_schema="tww_od",
-            table_name="wastewater_node",
+            table_schema="tww_app",
+            table_name="vw_tww_wastewater_node",
             table_alias="wn",
             prefix="wn_",
             indent=6,
@@ -568,15 +567,6 @@ def vw_tww_additional_ws(
                 "_status",
                 "_function_hierarchic",
             ],
-        ),
-        update_ne=update_command(
-            connection=connection,
-            table_schema="tww_od",
-            table_name="wastewater_networkelement",
-            table_alias="ne",
-            prefix="wn_",
-            indent=6,
-            skip_columns=[],
             update_values={
                 "last_modification": "NEW.last_modification",
                 "fk_dataowner": "NEW.fk_dataowner",
