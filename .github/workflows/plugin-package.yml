@@ -57,9 +57,10 @@ jobs:
       - name: Package
         run: |
           VERSION=${{ inputs.release_tag || '0.0.0' }}
-          qgis-plugin-ci -v package ${VERSION} \
-            --allow-uncommitted-changes \
+          qgis-plugin-ci -v \
             --no-validation \
+            package ${VERSION} \
+            --allow-uncommitted-changes \
             --asset-path plugin/teksi_wastewater/libs \
             --asset-path plugin/teksi_wastewater/interlis/bin \
             --transifex-token "${{ secrets.TX_TOKEN }}"
