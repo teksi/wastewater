@@ -123,3 +123,136 @@ BEGIN
  RETURN NEW;
 END;
 $$ LANGUAGE PLPGSQL;
+
+-- default organisation
+
+CREATE FUNCTION tww_app.modification_default_orgs_referencing() RETURNS trigger AS $$
+DECLARE
+ _schema_name TEXT;
+ _table_name TEXT;
+ _provider TEXT;
+ _dataowner TEXT;
+ parent_tbl TEXT;
+BEGIN
+ _schema_name := TG_ARGV[0];
+ parent_tbl := TG_ARGV[1];
+ fk_name := TG_ARGV[2];
+
+ IF _schema_name IS NULL THEN 
+  _schema_name := 'tww_od';
+ ELSE NULL;
+ END IF;
+
+ IF parent_tbl IS NOT NULL THEN
+  EXECUTE FORMAT("SELECT fk_provider, fk_dataowner
+  FROM %I.%I WHERE obj_id=NEW.obj_id",_schema_name,parent_tbl
+  )
+  INTO _provider, _dataowner; 
+ ELSE 
+  _provider := NEW.fk_provider;
+  _dataowner := NEW.fk_dataowner;
+ END IF;
+
+ IF fk_name IS NULL THEN
+  fk_name := 'fk_'||TG_TABLE_NAME;
+  ELSE
+  NULL;
+ END IF;
+
+ FOR _table_name IN unnest(TG_ARGV[1:array_length(TG_ARGV, 1)]) LOOP
+ 		_table_name := trim(_table_name);
+        BEGIN
+            EXECUTE format('
+                UPDATE %I.%I
+                SET fk_provider = %L,
+                    fk_dataowner = %L
+                WHERE %I = %L
+            ',
+                
+                _schema_name,
+                _table_name,
+                _provider,
+                _dataowner,
+                fk_name,
+                NEW.obj_id
+            );
+        EXCEPTION WHEN OTHERS THEN
+            RAISE WARNING 'Trigger %: Failed to update table %: %', TG_NAME, table_name, SQLERRM;
+        END;
+ END LOOP;
+ RETURN NEW;
+END;
+$$ LANGUAGE PLPGSQL;
+
+COMMENT ON tww_app.modification_default_orgs_referencing() 
+IS 'accepts a parent table name as a first argument (if the caller is a child table) and all potential tables that might cascade from it as further argument';
+
+CREATE FUNCTION tww_app.modification_default_orgs_referenced() RETURNS trigger AS $$
+DECLARE
+ _schema_name TEXT;
+ _table_name TEXT;
+ _provider TEXT;
+ _dataowner TEXT;
+ parent_tbl TEXT;
+BEGIN
+ _schema_name := TG_ARGV[0];
+ parent_tbl := TG_ARGV[1];
+ child_name := TG_ARGV[2];
+
+ IF _schema_name IS NULL THEN 
+  _schema_name := 'tww_od';
+ ELSE NULL;
+ END IF;
+
+ IF parent_tbl IS NOT NULL THEN
+  EXECUTE FORMAT("SELECT fk_provider, fk_dataowner
+  FROM %I.%I WHERE obj_id=NEW.obj_id",_schema_name,parent_tbl
+  )
+  INTO _provider, _dataowner; 
+ ELSE 
+  _provider := NEW.fk_provider;
+  _dataowner := NEW.fk_dataowner;
+ END IF;
+
+
+
+
+ FOR _table_name IN unnest(TG_ARGV[3:array_length(TG_ARGV, 1)]) LOOP
+ 		_table_name := trim(_table_name);
+     IF child_name IS NULL THEN
+      FORMAT("SELECT fk_%
+  FROM %I.%I WHERE obj_id=NEW.obj_id",_table_name, _schema_name, TG_TABLE_NAME
+  )
+      ELSE
+        EXECUTE FORMAT("SELECT fk_provider, fk_dataowner
+  FROM %I.%I WHERE obj_id=NEW.obj_id",_table_name, _schema_name, child_name
+  )
+  INTO _provider, _dataowner; 
+ END IF;
+        BEGIN
+            EXECUTE format('
+                UPDATE %I.%I
+                SET fk_provider = %L,
+                    fk_dataowner = %L
+                WHERE obj_id = NEW.fk_%I
+            ',
+                _schema_name,
+                _table_name,
+                _provider,
+                _dataowner,
+                fk_name
+            );
+        EXCEPTION WHEN OTHERS THEN
+            RAISE WARNING 'Trigger %: Failed to update table %.%: %', TG_NAME, _schema_name, _table_name, SQLERRM;
+        END;
+ END LOOP;
+ RETURN NEW;
+END;
+$$ LANGUAGE PLPGSQL;
+
+COMMENT ON tww_app.modification_default_orgs_referenced() 
+IS 'accepts the following arguments: 
+1. schema name
+2. parent_table: table in which the default values are taken (when TG_TABLE_NAME is a child table)
+3. child_table:  table over which the default values are mapped (when TG_TABLE_NAME is a parent table)
+4.+ all tables whose default values should be overwritten';

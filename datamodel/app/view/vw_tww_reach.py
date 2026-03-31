@@ -96,7 +96,11 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
             table_alias="ne",
             remove_pkey=True,
             indent=4,
-            skip_columns=["fk_wastewater_structure"],
+            skip_columns=[
+                "fk_wastewater_structure",
+                "fk_dataowner",
+                "fk_provider",
+                ],
         ),
         ch_cols=select_columns(
             connection=connection,
@@ -120,12 +124,14 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
                 "detail_geometry3d_geometry",
                 "status",
                 "fk_owner",
-                "fk_dataowner",
-                "fk_provider",
                 "_label",
                 "_depth",
                 "fk_main_cover",
             ],
+            remap_columns={
+                "fk_dataowner": "fk_dataowner",
+                "fk_provider": "fk_provider",
+                }
         ),
         rp_from_cols=select_columns(
             connection=connection,
@@ -356,7 +362,7 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
                 "situation3d_geometry": "ST_StartPoint(NEW.progression3d_geometry)",
                 "fk_provider": "NEW.fk_provider",
                 "fk_dataowner": "NEW.fk_dataowner",
-            },,
+            },
         ),
         rp_to=update_command(
             connection=connection,
@@ -369,7 +375,7 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
                 "situation3d_geometry": "ST_EndPoint(NEW.progression3d_geometry)",
                 "fk_provider": "NEW.fk_provider",
                 "fk_dataowner": "NEW.fk_dataowner",
-            },,
+            },
         ),
         ch=update_command(
             connection=connection,

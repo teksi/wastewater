@@ -46,10 +46,59 @@ def create_oid_default(tbl: str):
      """
     return query
 
+def create_default_value_trigger(tbl: str, inheritance_data: dict={}):
+    inheritance_structure=inheritance_data.get(tbl,{})
+    if not inheritance_structure: #tbl does not inherit to anyone
+        return ""
+    referencing_tbls=inheritance_structure.get('referencing',[])
+    referenced_tbls=inheritance_structure.get('referenced',[])
+    inheriting_tbls=inheritance_structure.get('inherits_to',[])
+    parent_tbl=inheritance_structure.get('inherits_from', [None])[0]
+    subqueries=[]
+            
+    for inheriting_tbl in inheriting_tbls:
+        _referencing =  inheritance_data.get(inheriting_tbl, {}).get('referencing', [])
+        _referenced = inheritance_data.get(inheriting_tbl, {}).get('referenced', [])
+        referencing_tbls.append(_referencing)
+        args_referenced_inh = f"'tww_od', {parent_arg}, 'fk_{inheriting_tbl}', "+", ".join(f"'{t}'" for t in _referenced)
+        subqueries.append(f"""
+        CREATE OR REPLACE TRIGGER
+        update_default_values_{tbl}_referenced
+        AFTER UPDATE OR INSERT ON
+        tww_od.{tbl}
+        FOR EACH ROW EXECUTE PROCEDURE
+        tww_app.modification_default_orgs_referenced({args_referenced_inh});
+        """)
+
+    parent_arg = f"'{parent_tbl}'" if parent_tbl is not None else "NULL"
+    args_referencing = f"'tww_od', {parent_arg}, "+", ".join(f"'{t}'" for t in referencing_tbls)
+    args_referenced = f"'tww_od', {parent_arg}, NULL, "+", ".join(f"'{t}'" for t in referenced_tbls)
+
+    if referencing_tbls:
+        subqueries.append(f"""
+        CREATE OR REPLACE TRIGGER
+        update_default_values_{tbl}_referencing
+        AFTER UPDATE OR INSERT ON
+        tww_od.{tbl}
+        FOR EACH ROW EXECUTE PROCEDURE
+        tww_app.modification_default_orgs_referencing({args_referencing});
+        """)
+    if referenced_tbls:
+        subqueries.append(f"""
+        CREATE OR REPLACE TRIGGER
+        update_default_values_{tbl}_referenced
+        AFTER UPDATE OR INSERT ON
+        tww_od.{tbl}
+        FOR EACH ROW EXECUTE PROCEDURE
+        tww_app.modification_default_orgs_referenced({args_referenced});
+        """)
+    return ''.join(subqueries)
+
 
 def set_defaults_and_triggers(
     connection: psycopg.Connection,
     SingleInheritances: dict = {},
+    FkInheritances: dict = {},
 ):
     """
     Creates the triggers and sets default values for TEKSI Wastewater & GEP
@@ -58,48 +107,55 @@ def set_defaults_and_triggers(
     """
 
     cursor = SqlContent(
-        "select table_name from information_schema.tables WHERE table_schema = 'tww_od'"
+        f"select table_name from information_schema.tables WHERE table_schema = '{schema}'"
     ).execute(connection)
-    entries = cursor.fetchall()
-
-    for entry in entries:
+    table_names = cursor.fetchall()
+    for table_name in table_names:
         cursor = SqlContent(
             f"""select 1 from information_schema.columns
             WHERE table_schema = 'tww_od'
-            AND table_name = '{entry[0]}'
+            AND table_name = '{table_name[0]}'
             and column_name = 'obj_id'"""
         ).execute(connection)
         found = cursor.fetchone()
         if found:
-            query = create_oid_default(entry[0])
+            query = create_oid_default(table_name[0])
             SqlContent(query).execute(connection)
-        if entry[0] in SingleInheritances.keys():  # Find Subclasses
+        if table_name[0] in SingleInheritances.keys():  # Find Subclasses
             cursor = SqlContent(
                 f"""select 1 from information_schema.columns
                 WHERE table_schema = 'tww_od'
-                AND table_name = '{SingleInheritances[entry[0]]}'
+                AND table_name = '{SingleInheritances[table_name[0]]}'
                 and column_name = 'last_modification'"""
             ).execute(connection)
             found = cursor.fetchone()
             if found:
-                if check_owner(connection, "tww_od", entry[0]):
+                if check_owner(connection, "tww_od", table_name[0]):
                     query = create_last_modification_trigger(
-                        entry[0], SingleInheritances[entry[0]]
+                        table_name[0], SingleInheritances[table_name[0]]
                     )
                     SqlContent(query).execute(connection)
                 else:
-                    raise Exception(f"Must be owner of tww_od.{entry[0]} to create triggers")
+                    raise Exception(f"Must be owner of tww_od.{table_name[0]} to create triggers")
         else:
             cursor = SqlContent(
                 f"""select 1 from information_schema.columns
                 WHERE table_schema = 'tww_od'
-                AND table_name = '{entry[0]}'
+                AND table_name = '{table_name[0]}'
                 and column_name = 'last_modification'"""
             ).execute(connection)
             found = cursor.fetchone()
             if found:
-                if check_owner(connection, "tww_od", entry[0]):
-                    query = create_last_modification_trigger(entry[0])
+                if check_owner(connection, "tww_od", table_name[0]):
+                    query = create_last_modification_trigger(table_name[0])
                     SqlContent(query).execute(connection)
                 else:
-                    raise Exception(f"Must be owner of tww_od.{entry[0]} to create triggers")
+                    raise Exception(f"Must be owner of tww_od.{table_name[0]} to create triggers")
+        if table_name[0] in FkInheritances.keys():  # Find Subclasses
+            if check_owner(connection, "tww_od", table_name[0]):
+                query = create_default_value_trigger(
+                    table_name[0], FkInheritances[table_name[0]]
+                )
+                SqlContent(query).execute(connection)
+            else:
+                raise Exception(f"Must be owner of tww_od.{table_name[0]} to create triggers")
