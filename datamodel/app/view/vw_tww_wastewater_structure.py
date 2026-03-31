@@ -211,7 +211,7 @@ def vw_tww_wastewater_structure(
             table_alias="ne",
             remove_pkey=True,
             indent=4,
-            skip_columns=["fk_wastewater_structure","fk_provider","fk_dataowner"],
+            skip_columns=["fk_wastewater_structure", "fk_provider", "fk_dataowner"],
             prefix="wn_",
             remap_columns={},
         ),

@@ -126,7 +126,7 @@ def vw_tww_infiltration_installation(
             table_alias="mp",
             remove_pkey=False,
             indent=4,
-            skip_columns=["fk_provider","fk_dataowner"],
+            skip_columns=["fk_provider", "fk_dataowner"],
             prefix="mp_",
             remap_columns={},
         ),
@@ -137,7 +137,7 @@ def vw_tww_infiltration_installation(
             table_alias="rb",
             remove_pkey=False,
             indent=4,
-            skip_columns=["fk_infiltration_installation","fk_provider","fk_dataowner"],
+            skip_columns=["fk_infiltration_installation", "fk_provider", "fk_dataowner"],
             prefix="rb_",
         ),
         wn_cols=select_columns(

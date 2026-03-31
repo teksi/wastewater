@@ -46,53 +46,64 @@ def create_oid_default(tbl: str):
      """
     return query
 
-def create_default_value_trigger(tbl: str, inheritance_data: dict={}):
-    inheritance_structure=inheritance_data.get(tbl,{})
-    if not inheritance_structure: #tbl does not inherit to anyone
+
+def create_default_value_trigger(tbl: str, inheritance_data: dict = {}):
+    inheritance_structure = inheritance_data.get(tbl, {})
+    if not inheritance_structure:  # tbl does not inherit to anyone
         return ""
-    referencing_tbls=inheritance_structure.get('referencing',[])
-    referenced_tbls=inheritance_structure.get('referenced',[])
-    inheriting_tbls=inheritance_structure.get('inherits_to',[])
-    parent_tbl=inheritance_structure.get('inherits_from', [None])[0]
-    subqueries=[]
-            
+    referencing_tbls = inheritance_structure.get("referencing", [])
+    referenced_tbls = inheritance_structure.get("referenced", [])
+    inheriting_tbls = inheritance_structure.get("inherits_to", [])
+    parent_tbl = inheritance_structure.get("inherits_from", [None])[0]
+    subqueries = []
+
     for inheriting_tbl in inheriting_tbls:
-        _referencing =  inheritance_data.get(inheriting_tbl, {}).get('referencing', [])
-        _referenced = inheritance_data.get(inheriting_tbl, {}).get('referenced', [])
+        _referencing = inheritance_data.get(inheriting_tbl, {}).get("referencing", [])
+        _referenced = inheritance_data.get(inheriting_tbl, {}).get("referenced", [])
         referencing_tbls.append(_referencing)
-        args_referenced_inh = f"'tww_od', {parent_arg}, 'fk_{inheriting_tbl}', "+", ".join(f"'{t}'" for t in _referenced)
-        subqueries.append(f"""
+        args_referenced_inh = f"'tww_od', {parent_arg}, 'fk_{inheriting_tbl}', " + ", ".join(
+            f"'{t}'" for t in _referenced
+        )
+        subqueries.append(
+            f"""
         CREATE OR REPLACE TRIGGER
         update_default_values_{tbl}_referenced
         AFTER UPDATE OR INSERT ON
         tww_od.{tbl}
         FOR EACH ROW EXECUTE PROCEDURE
         tww_app.modification_default_orgs_referenced({args_referenced_inh});
-        """)
+        """
+        )
 
     parent_arg = f"'{parent_tbl}'" if parent_tbl is not None else "NULL"
-    args_referencing = f"'tww_od', {parent_arg}, "+", ".join(f"'{t}'" for t in referencing_tbls)
-    args_referenced = f"'tww_od', {parent_arg}, NULL, "+", ".join(f"'{t}'" for t in referenced_tbls)
+    args_referencing = f"'tww_od', {parent_arg}, " + ", ".join(f"'{t}'" for t in referencing_tbls)
+    args_referenced = f"'tww_od', {parent_arg}, NULL, " + ", ".join(
+        f"'{t}'" for t in referenced_tbls
+    )
 
     if referencing_tbls:
-        subqueries.append(f"""
+        subqueries.append(
+            f"""
         CREATE OR REPLACE TRIGGER
         update_default_values_{tbl}_referencing
         AFTER UPDATE OR INSERT ON
         tww_od.{tbl}
         FOR EACH ROW EXECUTE PROCEDURE
         tww_app.modification_default_orgs_referencing({args_referencing});
-        """)
+        """
+        )
     if referenced_tbls:
-        subqueries.append(f"""
+        subqueries.append(
+            f"""
         CREATE OR REPLACE TRIGGER
         update_default_values_{tbl}_referenced
         AFTER UPDATE OR INSERT ON
         tww_od.{tbl}
         FOR EACH ROW EXECUTE PROCEDURE
         tww_app.modification_default_orgs_referenced({args_referenced});
-        """)
-    return ''.join(subqueries)
+        """
+        )
+    return "".join(subqueries)
 
 
 def set_defaults_and_triggers(
@@ -153,9 +164,7 @@ def set_defaults_and_triggers(
                     raise Exception(f"Must be owner of tww_od.{table_name[0]} to create triggers")
         if table_name[0] in FkInheritances.keys():  # Find Subclasses
             if check_owner(connection, "tww_od", table_name[0]):
-                query = create_default_value_trigger(
-                    table_name[0], FkInheritances[table_name[0]]
-                )
+                query = create_default_value_trigger(table_name[0], FkInheritances[table_name[0]])
                 SqlContent(query).execute(connection)
             else:
                 raise Exception(f"Must be owner of tww_od.{table_name[0]} to create triggers")

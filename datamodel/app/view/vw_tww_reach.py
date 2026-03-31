@@ -100,7 +100,7 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
                 "fk_wastewater_structure",
                 "fk_dataowner",
                 "fk_provider",
-                ],
+            ],
         ),
         ch_cols=select_columns(
             connection=connection,
@@ -131,7 +131,7 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
             remap_columns={
                 "fk_dataowner": "fk_dataowner",
                 "fk_provider": "fk_provider",
-                }
+            },
         ),
         rp_from_cols=select_columns(
             connection=connection,
@@ -145,7 +145,7 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
                 "situation3d_geometry",
                 "fk_dataowner",
                 "fk_provider",
-                ],
+            ],
         ),
         rp_to_cols=select_columns(
             connection=connection,
@@ -159,7 +159,7 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
                 "situation3d_geometry",
                 "fk_dataowner",
                 "fk_provider",
-                ],
+            ],
         ),
         extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
     )

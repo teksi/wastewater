@@ -138,7 +138,7 @@ BEGIN
  parent_tbl := TG_ARGV[1];
  fk_name := TG_ARGV[2];
 
- IF _schema_name IS NULL THEN 
+ IF _schema_name IS NULL THEN
   _schema_name := 'tww_od';
  ELSE NULL;
  END IF;
@@ -147,8 +147,8 @@ BEGIN
   EXECUTE FORMAT("SELECT fk_provider, fk_dataowner
   FROM %I.%I WHERE obj_id=NEW.obj_id",_schema_name,parent_tbl
   )
-  INTO _provider, _dataowner; 
- ELSE 
+  INTO _provider, _dataowner;
+ ELSE
   _provider := NEW.fk_provider;
   _dataowner := NEW.fk_dataowner;
  END IF;
@@ -168,7 +168,7 @@ BEGIN
                     fk_dataowner = %L
                 WHERE %I = %L
             ',
-                
+
                 _schema_name,
                 _table_name,
                 _provider,
@@ -184,7 +184,7 @@ BEGIN
 END;
 $$ LANGUAGE PLPGSQL;
 
-COMMENT ON tww_app.modification_default_orgs_referencing() 
+COMMENT ON tww_app.modification_default_orgs_referencing()
 IS 'accepts a parent table name as a first argument (if the caller is a child table) and all potential tables that might cascade from it as further argument';
 
 CREATE FUNCTION tww_app.modification_default_orgs_referenced() RETURNS trigger AS $$
@@ -199,7 +199,7 @@ BEGIN
  parent_tbl := TG_ARGV[1];
  child_name := TG_ARGV[2];
 
- IF _schema_name IS NULL THEN 
+ IF _schema_name IS NULL THEN
   _schema_name := 'tww_od';
  ELSE NULL;
  END IF;
@@ -208,8 +208,8 @@ BEGIN
   EXECUTE FORMAT("SELECT fk_provider, fk_dataowner
   FROM %I.%I WHERE obj_id=NEW.obj_id",_schema_name,parent_tbl
   )
-  INTO _provider, _dataowner; 
- ELSE 
+  INTO _provider, _dataowner;
+ ELSE
   _provider := NEW.fk_provider;
   _dataowner := NEW.fk_dataowner;
  END IF;
@@ -227,7 +227,7 @@ BEGIN
         EXECUTE FORMAT("SELECT fk_provider, fk_dataowner
   FROM %I.%I WHERE obj_id=NEW.obj_id",_table_name, _schema_name, child_name
   )
-  INTO _provider, _dataowner; 
+  INTO _provider, _dataowner;
  END IF;
         BEGIN
             EXECUTE format('
@@ -250,8 +250,8 @@ BEGIN
 END;
 $$ LANGUAGE PLPGSQL;
 
-COMMENT ON tww_app.modification_default_orgs_referenced() 
-IS 'accepts the following arguments: 
+COMMENT ON tww_app.modification_default_orgs_referenced()
+IS 'accepts the following arguments:
 1. schema name
 2. parent_table: table in which the default values are taken (when TG_TABLE_NAME is a child table)
 3. child_table:  table over which the default values are mapped (when TG_TABLE_NAME is a parent table)
