@@ -38,4 +38,3 @@ ALTER COLUMN uuid SET DEFAULT gen_random_uuid();
 
 --Remove extension / Alteration of changelog 2025.0.1/00_db_extensions.sql
 DROP EXTENSION IF EXISTS "uuid-ossp";
-
