@@ -109,7 +109,7 @@
          </index>
       </table>
       <table name="agxx_building_group" remarks="" schema="tww_od" type="TABLE">
-         <column autoUpdated="false" defaultValue="uuid_generate_v4()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="gen_random_uuid()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="fk_building_group" nullable="false" remarks="" size="16" type="varchar" typeCode="12">
             <parent column="obj_id" foreignKey="oorel_od_agxx_building_group" implied="false" onDeleteCascade="true" schema="tww_od" table="building_group"/>
          </column>
@@ -165,7 +165,7 @@
          <checkConstraint constraint="((char_length(remark) &lt;= 80))" name="gx_remark_length_max_80"/>
       </table>
       <table name="agxx_catchment_area_totals" remarks="" schema="tww_od" type="TABLE">
-         <column autoUpdated="false" defaultValue="uuid_generate_v4()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="gen_random_uuid()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="fk_catchment_area_totals" nullable="false" remarks="" size="16" type="varchar" typeCode="12">
             <parent column="obj_id" foreignKey="oorel_od_agxx_catchment_area_totals" implied="false" onDeleteCascade="true" schema="tww_od" table="catchment_area_totals"/>
          </column>
@@ -181,7 +181,7 @@
          </index>
       </table>
       <table name="agxx_cover" remarks="" schema="tww_od" type="TABLE">
-         <column autoUpdated="false" defaultValue="uuid_generate_v4()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="gen_random_uuid()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="fk_cover" nullable="false" remarks="" size="16" type="varchar" typeCode="12">
             <parent column="obj_id" foreignKey="oorel_od_agxx_cover" implied="false" onDeleteCascade="true" schema="tww_od" table="cover"/>
          </column>
@@ -197,7 +197,7 @@
          </index>
       </table>
       <table name="agxx_infiltration_zone" remarks="" schema="tww_od" type="TABLE">
-         <column autoUpdated="false" defaultValue="uuid_generate_v4()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="gen_random_uuid()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="fk_infiltration_zone" nullable="false" remarks="" size="16" type="varchar" typeCode="12">
             <parent column="obj_id" foreignKey="oorel_od_agxx_infiltration_zone" implied="false" onDeleteCascade="true" schema="tww_od" table="infiltration_zone"/>
          </column>
@@ -214,7 +214,7 @@
          </index>
       </table>
       <table name="agxx_last_modification" remarks="" schema="tww_od" type="TABLE">
-         <column autoUpdated="false" defaultValue="uuid_generate_v4()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="gen_random_uuid()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="fk_element" nullable="false" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="now()" digits="6" id="2" name="ag96_last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
          <column autoUpdated="false" defaultValue="now()" digits="6" id="3" name="ag64_last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
@@ -263,7 +263,7 @@
          <checkConstraint constraint="((char_length(remark) &lt;= 80))" name="mx_remark_length_max_80"/>
       </table>
       <table name="agxx_overflow" remarks="" schema="tww_od" type="TABLE">
-         <column autoUpdated="false" defaultValue="uuid_generate_v4()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="gen_random_uuid()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="fk_overflow" nullable="false" remarks="" size="16" type="varchar" typeCode="12">
             <parent column="obj_id" foreignKey="oorel_od_agxx_overflow" implied="false" onDeleteCascade="true" schema="tww_od" table="overflow"/>
          </column>
@@ -284,7 +284,7 @@
          </index>
       </table>
       <table name="agxx_reach" remarks="" schema="tww_od" type="TABLE">
-         <column autoUpdated="false" defaultValue="uuid_generate_v4()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="gen_random_uuid()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="fk_reach" nullable="false" remarks="" size="16" type="varchar" typeCode="12">
             <parent column="obj_id" foreignKey="oorel_od_agxx_reach" implied="false" onDeleteCascade="true" schema="tww_od" table="reach"/>
          </column>
@@ -299,7 +299,7 @@
          </index>
       </table>
       <table name="agxx_reach_point" remarks="" schema="tww_od" type="TABLE">
-         <column autoUpdated="false" defaultValue="uuid_generate_v4()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="gen_random_uuid()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="fk_reach_point" nullable="false" remarks="" size="16" type="varchar" typeCode="12">
             <parent column="obj_id" foreignKey="oorel_od_agxx_reach_point" implied="false" onDeleteCascade="true" schema="tww_od" table="reach_point"/>
          </column>
@@ -348,7 +348,7 @@
          </index>
       </table>
       <table name="agxx_wastewater_networkelement" remarks="" schema="tww_od" type="TABLE">
-         <column autoUpdated="false" defaultValue="uuid_generate_v4()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="gen_random_uuid()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="fk_wastewater_networkelement" nullable="false" remarks="" size="16" type="varchar" typeCode="12">
             <parent column="obj_id" foreignKey="oorel_od_agxx_wastewater_networkelement" implied="false" onDeleteCascade="true" schema="tww_od" table="wastewater_networkelement"/>
          </column>
@@ -369,7 +369,7 @@
          </index>
       </table>
       <table name="agxx_wastewater_node" remarks="" schema="tww_od" type="TABLE">
-         <column autoUpdated="false" defaultValue="uuid_generate_v4()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="gen_random_uuid()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="fk_wastewater_node" nullable="false" remarks="" size="16" type="varchar" typeCode="12">
             <parent column="obj_id" foreignKey="oorel_od_agxx_wastewater_node" implied="false" onDeleteCascade="true" schema="tww_od" table="wastewater_node"/>
          </column>
@@ -388,7 +388,7 @@
          </index>
       </table>
       <table name="agxx_wastewater_structure" remarks="" schema="tww_od" type="TABLE">
-         <column autoUpdated="false" defaultValue="uuid_generate_v4()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="gen_random_uuid()" digits="0" id="0" name="uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="fk_wastewater_structure" nullable="false" remarks="" size="16" type="varchar" typeCode="12">
             <parent column="obj_id" foreignKey="oorel_od_agxx_wastewater_structure" implied="false" onDeleteCascade="true" schema="tww_od" table="wastewater_structure"/>
          </column>
@@ -2442,7 +2442,7 @@
          </index>
       </table>
       <table name="re_building_group_disposal" remarks="" schema="tww_od" type="TABLE">
-         <column autoUpdated="false" defaultValue="uuid_generate_v4()" digits="0" id="0" name="id" nullable="false" remarks="UUID generated with uuid_generate_v4 see https://www.postgresql.org/docs/16/uuid-ossp.html#UUID-OSSP-FUNCTIONS-SECT" size="2147483647" type="uuid" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="gen_random_uuid()" digits="0" id="0" name="id" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="fk_building_group" nullable="true" remarks="" size="16" type="varchar" typeCode="12">
             <parent column="obj_id" foreignKey="rel_building_group_disposal_building_group" implied="false" onDeleteCascade="true" schema="tww_od" table="building_group"/>
          </column>
@@ -2459,7 +2459,7 @@
          </index>
       </table>
       <table name="re_maintenance_event_wastewater_structure" remarks="" schema="tww_od" type="TABLE">
-         <column autoUpdated="false" defaultValue="uuid_generate_v4()" digits="0" id="0" name="id" nullable="false" remarks="UUID generated with uuid_generate_v4 see https://www.postgresql.org/docs/16/uuid-ossp.html#UUID-OSSP-FUNCTIONS-SECT" size="2147483647" type="uuid" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="gen_random_uuid()" digits="0" id="0" name="id" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="fk_wastewater_structure" nullable="true" remarks="" size="16" type="varchar" typeCode="12">
             <parent column="obj_id" foreignKey="rel_maintenance_event_wastewater_structure_wastewater_structure" implied="false" onDeleteCascade="true" schema="tww_od" table="wastewater_structure"/>
          </column>
