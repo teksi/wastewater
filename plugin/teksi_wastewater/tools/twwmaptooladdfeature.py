@@ -307,7 +307,7 @@ class TwwMapToolAddReach(TwwMapToolAddFeature):
                 req = QgsFeatureRequest(match.featureId())
                 f = next(match.layer().getFeatures(req))
                 assert f.isValid()
-                (ok, vertex_id) = f.geometry().vertexIdFromVertexNr(match.vertexIndex())
+                ok, vertex_id = f.geometry().vertexIdFromVertexNr(match.vertexIndex())
                 assert ok
                 point = f.geometry().constGet().vertexAt(vertex_id)
                 assert isinstance(point, QgsPoint)

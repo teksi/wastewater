@@ -126,7 +126,7 @@ class FlowTimesAlgorithm(TwwAlgorithm):
         # create feature sink
         fields = QgsFields()
         fields.append(QgsField("flow_time", QVariant.Double))
-        (sink, dest_id) = self.parameterAsSink(
+        sink, dest_id = self.parameterAsSink(
             parameters,
             self.OUTPUT,
             context,
