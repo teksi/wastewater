@@ -142,13 +142,11 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
                         AND table_name   = 'agxx_last_modification_updater');"""
                 )
                 if table_exists[0]:
-                    agxx_last_mod_setting = DatabaseUtils.fetchone(
-                        f"""
+                    agxx_last_mod_setting = DatabaseUtils.fetchone(f"""
                     SELECT ag_update_type
                     FROM tww_od.agxx_last_modification_updater
                     WHERE username='{pgconf["user"]}';
-                    """
-                    )
+                    """)
                     if agxx_last_mod_setting:
                         original_value = agxx_last_mod_setting[0]
                         idx = self.mCbAg6496LastModification.findData(original_value)
