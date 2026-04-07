@@ -78,7 +78,7 @@ jobs:
 
       - uses: actions/upload-artifact@v7
         with:
-          name: project-translations
+          name: oqtopus.project
           path: project/${{ env.QGS_PROJECT_FILE }}*
           if-no-files-found: error
 

@@ -69,7 +69,7 @@ jobs:
         id: upload-artifact
         uses: actions/upload-artifact@v7
         with:
-          name: teksi_wastewater_plugin_dev
+          name: oqtopus.plugin
           path: plugin/teksi_wastewater.${{ inputs.release_tag || '0.0.0' }}.zip
           if-no-files-found: error
 
@@ -83,7 +83,7 @@ jobs:
 
             A development build of the plugin is available for testing:
 
-            **[⬇️ Download teksi_wastewater_plugin_dev.zip](${{ steps.upload-artifact.outputs.artifact-url }})**
+            **[⬇️ Download oqtopus.plugin.zip](${{ steps.upload-artifact.outputs.artifact-url }})**
 
             > ⚠️ This is a development build from commit ${{ github.event.pull_request.head.sha }}.
 
