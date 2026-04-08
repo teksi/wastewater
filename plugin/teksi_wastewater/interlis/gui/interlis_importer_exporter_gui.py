@@ -4,7 +4,13 @@ import webbrowser
 import sqlalchemy
 from qgis.core import Qgis, QgsProject, QgsSettings
 from qgis.PyQt.QtCore import QFileInfo, QObject, QSettings, Qt
-from qgis.PyQt.QtWidgets import QApplication, QFileDialog, QDialog, QProgressDialog, QPushButton
+from qgis.PyQt.QtWidgets import (
+    QApplication,
+    QDialog,
+    QFileDialog,
+    QProgressDialog,
+    QPushButton,
+)
 from qgis.utils import iface
 
 from ...utils.qt_utils import OverrideCursor
