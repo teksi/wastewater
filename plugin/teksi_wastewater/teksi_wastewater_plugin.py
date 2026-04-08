@@ -775,7 +775,9 @@ class TeksiWastewaterPlugin:
                 )
                 self.selectionExtenderWidget.setController(self.selectionExtenderController)
 
-                self.iface.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, self.selectionExtenderWidget)
+                self.iface.addDockWidget(
+                    Qt.DockWidgetArea.RightDockWidgetArea, self.selectionExtenderWidget
+                )
 
                 self.selectionExtenderWidget.visibilityChanged.connect(
                     self._onSelectionExtenderVisibilityChanged
