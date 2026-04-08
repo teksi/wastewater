@@ -4,7 +4,7 @@ import webbrowser
 import sqlalchemy
 from qgis.core import Qgis, QgsProject, QgsSettings
 from qgis.PyQt.QtCore import QFileInfo, QObject, QSettings, Qt
-from qgis.PyQt.QtWidgets import QApplication, QFileDialog, QProgressDialog, QPushButton
+from qgis.PyQt.QtWidgets import QApplication, QFileDialog, QDialog, QProgressDialog, QPushButton
 from qgis.utils import iface
 
 from ...utils.qt_utils import OverrideCursor
@@ -42,7 +42,7 @@ class InterlisImporterExporterGui(QObject):
         """
         import_dialog = InterlisImportSettingsDialog(None)
 
-        if import_dialog.exec() == import_dialog.Rejected:
+        if import_dialog.exec() == QDialog.DialogCode.Rejected:
             return
 
         default_folder = QgsSettings().value(
@@ -101,7 +101,7 @@ class InterlisImporterExporterGui(QObject):
         """
         export_dialog = InterlisExportSettingsDialog(None)
 
-        if export_dialog.exec() == export_dialog.Rejected:
+        if export_dialog.exec() == QDialog.DialogCode.Rejected:
             return
 
         default_folder = QgsSettings().value(

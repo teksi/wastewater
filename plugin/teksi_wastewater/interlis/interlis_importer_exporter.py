@@ -169,13 +169,13 @@ class InterlisImporterExporter:
 
             if show_selection_dialog:
                 from qgis.PyQt.QtCore import Qt
-                from qgis.PyQt.QtWidgets import QApplication
+                from qgis.PyQt.QtWidgets import QApplication, QDialog
 
                 self._progress_done(90, "Import objects selection...")
                 import_dialog = InterlisImportSelectionDialog()
                 import_dialog.init_with_session(tww_session)
                 QApplication.restoreOverrideCursor()
-                if import_dialog.exec() == import_dialog.Rejected:
+                if import_dialog.exec() == QDialog.DialogCode.Rejected:
                     tww_session.rollback()
                     tww_session.close()
                     raise InterlisImporterExporterStopped()
