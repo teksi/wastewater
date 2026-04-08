@@ -47,12 +47,12 @@ class TwwQgsLogHandler(logging.Handler):
 
         # Translate Python logging levels to QGIS message levels.
         level = {
-            logging.DEBUG: Qgis.Info,
-            logging.INFO: Qgis.Info,
-            logging.WARNING: Qgis.Warning,
-            logging.ERROR: Qgis.Critical,
-            logging.CRITICAL: Qgis.Critical,
-        }.get(record.levelno, Qgis.Info)
+            logging.DEBUG: QgsMessageLog.MessageLevel.Info,
+            logging.INFO: QgsMessageLog.MessageLevel.Info,
+            logging.WARNING: QgsMessageLog.MessageLevel.Warning,
+            logging.ERROR: QgsMessageLog.MessageLevel.Critical,
+            logging.CRITICAL: QgsMessageLog.MessageLevel.Critical,
+        }.get(record.levelno, QgsMessageLog.MessageLevel.Info)
 
         QgsMessageLog.logMessage(
             record.name + ": " + self.format(record),
