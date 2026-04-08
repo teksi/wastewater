@@ -286,7 +286,7 @@ class TWWIntegrityChecker:
         if empty_class_count > 0:
             return (True, error_message, empty_class_count)
         else:
-            logger.info("OK: all {value_name} set!")
+            logger.info(f"OK: all {value_name} set!")
             return (False, "", 0)
 
     def _check_value_condition(
@@ -331,7 +331,7 @@ class TWWIntegrityChecker:
                 logger.error(f"INTEGRITY CHECK missing {value_name}: {errormsg}")
             return (True, error_message, missing_count)
         else:
-            logger.info("OK: all {value_name} set!")
+            logger.info(f"OK: all {value_name} set!")
             return (False, "", 0)
 
     def _check_identifier_null(self):
