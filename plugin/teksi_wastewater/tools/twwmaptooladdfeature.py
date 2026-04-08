@@ -272,7 +272,7 @@ class TwwMapToolAddReach(TwwMapToolAddFeature):
         if self.snapping_marker is None:
             self.snapping_marker = QgsVertexMarker(self.iface.mapCanvas())
             self.snapping_marker.setPenWidth(3)
-            self.snapping_marker.setColor(QColor(Qt.magenta))
+            self.snapping_marker.setColor(QColor(Qt.GlobalColor.magenta))
 
         if match.hasVertex():
             if match.layer():

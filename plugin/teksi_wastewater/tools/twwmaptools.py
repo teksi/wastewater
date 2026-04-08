@@ -306,7 +306,7 @@ class TwwProfileMapTool(TwwMapTool):
         @param start_point: The id of the start point of the path
         @param end_point:   The id of the end point of the path
         """
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         # try:
         vertices, edges = self.network_analyzer.shortestPath(start_point, end_point)
         self.appendProfile(vertices, edges)
@@ -500,7 +500,7 @@ class TwwTreeMapTool(TwwMapTool):
         Does the work. Tracks the graph up- or downstream.
         :param node_id: The node from which the tracking should be started
         """
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         upstream = self.direction == "upstream"
 
         self.rubberBand.reset()

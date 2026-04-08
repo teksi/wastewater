@@ -69,7 +69,7 @@ class InterlisImporterExporterGui(QObject):
         self.progress_dialog.setWindowTitle("Import INTERLIS data...")
 
         try:
-            with OverrideCursor(Qt.WaitCursor):
+            with OverrideCursor(Qt.CursorShape.WaitCursor):
                 self.interlis_importer_exporter.interlis_import(
                     xtf_file_input=xtf_file_input,
                     show_selection_dialog=True,

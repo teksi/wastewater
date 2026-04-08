@@ -179,7 +179,7 @@ class InterlisImporterExporter:
                     tww_session.rollback()
                     tww_session.close()
                     raise InterlisImporterExporterStopped()
-                QApplication.setOverrideCursor(Qt.WaitCursor)
+                QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
             else:
                 self._progress_done(90, "Commit session...")
                 tww_session.commit()

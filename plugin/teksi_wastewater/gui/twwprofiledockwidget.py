@@ -59,15 +59,15 @@ class TwwProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
         self.configureSelectionAction = QAction(self.tr("Configure Select"), self.selectButton)
         self.configureSelectionAction.triggered.connect(self.onConfigureSelectAction)
         self.selectButton.addAction(self.configureSelectionAction)
-        self.setAttribute(Qt.WA_DeleteOnClose)
+        self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
         self.canvas = canvas
         self.addDockWidget = add_dock_widget
 
         self.plotWidget = None
 
     def showIt(self):
-        # self.setLocation( Qt.BottomDockWidgetArea )
-        self.location = Qt.BottomDockWidgetArea
+        # self.setLocation( Qt.DockWidgetArea.BottomDockWidgetArea )
+        self.location = Qt.DockWidgetArea.BottomDockWidgetArea
         minsize = self.minimumSize()
         maxsize = self.maximumSize()
         self.setMinimumSize(minsize)

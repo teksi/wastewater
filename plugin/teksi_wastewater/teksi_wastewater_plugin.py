@@ -545,7 +545,7 @@ class TeksiWastewaterPlugin:
         if not self.wizarddock:
             self.wizarddock = TwwWizard(self.iface.mainWindow(), self.iface)
         self.logger.debug("Opening Wizard")
-        self.iface.addDockWidget(Qt.LeftDockWidgetArea, self.wizarddock)
+        self.iface.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, self.wizarddock)
         self.wizarddock.show()
 
     def connectNetworkElements(self, checked):
@@ -608,7 +608,7 @@ class TeksiWastewaterPlugin:
 
     def updateSymbology(self):
         try:
-            with OverrideCursor(Qt.WaitCursor):
+            with OverrideCursor(Qt.CursorShape.WaitCursor):
                 DatabaseUtils.update_symbology()
             QMessageBox.information(
                 self.iface.mainWindow(),
@@ -775,7 +775,7 @@ class TeksiWastewaterPlugin:
                 )
                 self.selectionExtenderWidget.setController(self.selectionExtenderController)
 
-                self.iface.addDockWidget(Qt.RightDockWidgetArea, self.selectionExtenderWidget)
+                self.iface.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, self.selectionExtenderWidget)
 
                 self.selectionExtenderWidget.visibilityChanged.connect(
                     self._onSelectionExtenderVisibilityChanged
