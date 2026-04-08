@@ -8,9 +8,15 @@ except ImportError:
 
 from .utils import DEFAULT_PG_SERVICE, DbTestBase
 
-TWW_SCHEMAS = ("tww_sys", "tww_vl", "tww_od", "tww_app")
+TWW_SCHEMAS = ("tww_sys", "tww_vl", "tww_od")
+APP_SCHEMAS = ("tww_app", "tww_app_pg2ili")
 PG_SCHEMAS = ("pg_toast", "information_schema", "pg_catalog", "public")
-ILI_SCHEMAS = ("pg2ili_abwasser",)
+
+ALL_SCHEMAS = TWW_SCHEMAS + PG_SCHEMAS + APP_SCHEMAS
+
+
+def schemas_as_str(schemas):
+    return ", ".join([f"'{schema}'" for schema in schemas])
 
 
 class TestSchemas(unittest.TestCase, DbTestBase):
@@ -24,21 +30,17 @@ class TestSchemas(unittest.TestCase, DbTestBase):
         cls.conn = psycopg.connect(f"service={pgservice}")
 
     def test_list_schemas(self):
-        schemas = ", ".join([f"'{schema}'" for schema in TWW_SCHEMAS + PG_SCHEMAS + ILI_SCHEMAS])
-        list_schemas = f"SELECT schema_name FROM information_schema.schemata WHERE schema_name NOT IN ({schemas});"
+        list_schemas = f"SELECT schema_name FROM information_schema.schemata WHERE schema_name NOT IN ({schemas_as_str(ALL_SCHEMAS)});"
         self.check_empty(list_schemas)
 
     def test_app_schema(self):
-        list_tables = "SELECT * FROM information_schema.tables WHERE table_schema = 'tww_app' AND table_type != 'VIEW'"
+        list_tables = f"SELECT * FROM information_schema.tables WHERE table_schema IN ({schemas_as_str(APP_SCHEMAS)}) AND table_type != 'VIEW'"
         self.check_empty(list_tables)
 
     def test_data_schemas(self):
-        pg_schemas = ", ".join(
-            [f"'{schema}'" for schema in TWW_SCHEMAS + PG_SCHEMAS + ILI_SCHEMAS]
-        )
         list_views = (
             "SELECT * FROM information_schema.tables WHERE table_type = 'VIEW' "
-            f"AND table_schema NOT IN ('tww_app', {pg_schemas})"
+            f"AND table_schema IN ({schemas_as_str(TWW_SCHEMAS)})"
         )
         self.check_empty(list_views)
 
@@ -46,7 +48,7 @@ class TestSchemas(unittest.TestCase, DbTestBase):
             "SELECT routine_name, routine_schema FROM information_schema.routines "
             "WHERE routine_type = 'FUNCTION' "
             "AND routine_name NOT IN ('update_last_modified', 'update_last_modified_parent', 'generate_oid') "
-            f"AND routine_schema NOT IN ('tww_app', {pg_schemas})"
+            f"AND routine_schema NOT IN ({schemas_as_str(PG_SCHEMAS + APP_SCHEMAS)})"
         )
         self.check_empty(list_functions)
 

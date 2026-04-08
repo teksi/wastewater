@@ -82,6 +82,7 @@ def vw_tww_wastewater_structure(
         , wn._function_hierarchic AS _channel_function_hierarchic
         , vl_fh.tww_is_primary
         , og.organisation_type as _owner_organisation_type
+        , lc.obj_id is not NULL as tww_has_log_card
 
         FROM tww_od.wastewater_structure ws
         LEFT JOIN tww_od.cover main_co ON main_co.obj_id = ws.fk_main_cover
@@ -99,6 +100,7 @@ def vw_tww_wastewater_structure(
         LEFT JOIN tww_od.drainless_toilet dt ON dt.obj_id = ws.obj_id
         LEFT JOIN tww_vl.channel_function_hierarchic vl_fh ON vl_fh.code = wn._function_hierarchic
         LEFT JOIN tww_od.organisation og on og.obj_id=ws.fk_owner
+        LEFT JOIN tww_od.log_card lc ON lc.fk_pwwf_wastewater_node=wn.obj_id
         WHERE '-1'=ALL(ARRAY[ch.obj_id,dt.obj_id,sm.obj_id,wt.obj_id]) IS NULL
         AND '-2'=ALL(ARRAY[ch.obj_id,dt.obj_id,sm.obj_id,wt.obj_id]) IS NULL;
 
@@ -256,14 +258,21 @@ def vw_tww_wastewater_structure(
 
     {insert_wn}
 
-
-      CASE WHEN NOT tww_app.check_all_nulls(to_jsonb(NEW),'co') THEN -- no cover entries
+    CASE WHEN NOT tww_app.check_all_nulls(to_jsonb(NEW),'co') THEN -- at least one field starting with 'co_' is not null
+      IF EXISTS (
+        SELECT 1
+        FROM tww_od.structure_part
+        WHERE identifier = COALESCE(NULLIF(NEW.co_identifier,''), NEW.identifier)
+      ) THEN
+        PERFORM pg_notify('vw_tww_ws_cover_exists', format('Wastewater Structure %s: cover with identifier %s already exists. Inserting cover aborted.',NEW.identifier, COALESCE(NULLIF(NEW.co_identifier,''), NEW.identifier)));
+      ELSE
         {insert_vw_cover}
+      END IF;
 
-     ELSE
-       NEW.co_obj_id=NULL;
-       PERFORM pg_notify('vw_tww_ws_no_cover', format('Wastewater Structure %s: no cover created. If you want to add a cover please fill in at least one cover attribute value.',NEW.identifier));
-       RAISE WARNING 'Wastewater Structure %: no cover created as all cover-related columns are NULL. If you want to add a cover please fill in at least one cover attribute value.', NEW.identifier; -- Warning
+    ELSE
+      NEW.co_obj_id=NULL;
+      PERFORM pg_notify('vw_tww_ws_no_cover', format('Wastewater Structure %s: no cover created. If you want to add a cover please fill in at least one cover attribute value.',NEW.identifier));
+      RAISE WARNING 'Wastewater Structure %: no cover created as all cover-related columns are NULL. If you want to add a cover please fill in at least one cover attribute value.', NEW.identifier; -- Warning
     END CASE;
 
     UPDATE tww_od.wastewater_structure
@@ -402,10 +411,24 @@ def vw_tww_wastewater_structure(
       dy float;
     BEGIN
 
+    IF NULLIF(NEW.identifier, '') IS NOT NULL THEN
+      IF NULLIF(OLD.identifier, '') IS NOT NULL AND OLD.identifier = OLD.co_identifier AND NEW.co_identifier = OLD.co_identifier THEN NEW.co_identifier = NEW.identifier; END IF;
+      IF NULLIF(OLD.identifier, '') IS NOT NULL AND OLD.identifier = OLD.wn_identifier AND NEW.wn_identifier = OLD.wn_identifier THEN NEW.wn_identifier = NEW.identifier; END IF;
+    END IF;
+
+
       {update_co}
       IF NOT FOUND THEN
-        CASE WHEN NOT tww_app.check_all_nulls(to_jsonb(NEW),'co') THEN -- no cover entries
-          {insert_vw_cover}
+        CASE WHEN NOT tww_app.check_all_nulls(to_jsonb(NEW),'co') THEN -- at least one field starting with 'co_' is not null
+          IF EXISTS (
+            SELECT 1
+            FROM tww_od.structure_part
+            WHERE identifier = COALESCE(NULLIF(NEW.co_identifier,''), NEW.identifier)
+          ) THEN
+            PERFORM pg_notify('vw_tww_ws_cover_exists', format('Wastewater Structure %s: cover with identifier %s already exists. Inserting cover aborted.',NEW.identifier, COALESCE(NULLIF(NEW.co_identifier,''), NEW.identifier)));
+          ELSE
+            {insert_vw_cover}
+          END IF;
         ELSE
           PERFORM pg_notify('vw_tww_ws_no_cover', format('Wastewater Structure %s: no cover created. If you want to add a cover please fill in at least one cover attribute value.',NEW.identifier));
         END CASE;

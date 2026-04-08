@@ -1,4 +1,4 @@
-![TEKSI wastewater Module](https://github.com/teksi/Home/blob/master/Ressources/Logos/modules/EN/210910-teksi-waste-logos-en-01_45pp.png?raw=true)
+![TEKSI wastewater Module](https://github.com/teksi/Home/blob/main/Ressources/Logos/modules/EN/210910-teksi-waste-logos-en-01_45pp.png?raw=true)
 
 ## Welcome to the TEKSI wastewater Module GitHub Home page 👋
 TEKSI wastewater module (project name: TWW) is a selection of tools and a database implementation that allows you to:
@@ -39,7 +39,7 @@ The project is maintained by the [TEKSI community](https://www.teksi.ch)
 ## Website
 You can discover more about [TEKSI](https://www.teksi.ch)
 
-TEKSI Wastewater [Release 2024.0](https://github.com/teksi/wastewater/releases) is now available!
+TEKSI Wastewater [Release 2025.0.2](https://github.com/teksi/wastewater/releases) is now available!
 
 Migration path from QGEP to TEKSI Wastewater is also established. <!---  // skip-keyword-check -->
 

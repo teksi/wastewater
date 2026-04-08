@@ -1,7 +1,7 @@
 name: 🔌 Plugin | Package and release
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: plugin-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: ${{ github.event_name != 'workflow_call' }}
 
 on:
@@ -13,7 +13,7 @@ on:
       - main
     paths:
       - plugin/**
-      - '.github/workflows/datamodel-create-dumps.yml'
+      - '.github/workflows/plugin-package.yml'
   workflow_dispatch:
   workflow_call: # Allows this workflow to be called by other workflows
     inputs:
@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -56,22 +56,40 @@ jobs:
 
       - name: Package
         run: |
-          VERSION=0.0.0
-          qgis-plugin-ci -v package ${VERSION} \
+          VERSION=${{ inputs.release_tag || '0.0.0' }}
+          qgis-plugin-ci -v \
+            --no-validation \
+            package ${VERSION} \
             --allow-uncommitted-changes \
             --asset-path plugin/teksi_wastewater/libs \
             --asset-path plugin/teksi_wastewater/interlis/bin \
             --transifex-token "${{ secrets.TX_TOKEN }}"
 
-      - uses: actions/upload-artifact@v5
+      - name : Upload artifact for PR testing
+        id: upload-artifact
+        uses: actions/upload-artifact@v7
         with:
-          name: teksi_wastewater_plugin_dev
-          path: plugin/teksi_wastewater.0.0.0.zip
+          name: oqtopus.plugin
+          path: plugin/teksi_wastewater.${{ inputs.release_tag || '0.0.0' }}.zip
           if-no-files-found: error
+
+      - name: Comment on PR with artifact link
+        if: ${{github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository}}
+        uses: marocchino/sticky-pull-request-comment@v3
+        with:
+          header: plugin-artifact
+          message: |
+            ## 🔌 Plugin Artifact
+
+            A development build of the plugin is available for testing:
+
+            **[⬇️ Download oqtopus.plugin.zip](${{ steps.upload-artifact.outputs.artifact-url }})**
+
+            > ⚠️ This is a development build from commit ${{ github.event.pull_request.head.sha }}.
 
       - name: Upload plugin as GitHub Release asset
         if: ${{ inputs.release_tag != '' }}
-        run: gh release upload "${{ inputs.release_tag }}" plugin/teksi_wastewater.0.0.0.zip#oqtopus.plugin --repo "$GITHUB_REPOSITORY"
+        run: gh release upload "${{ inputs.release_tag }}" plugin/teksi_wastewater.${{ inputs.release_tag || '0.0.0' }}.zip#oqtopus.plugin --repo "$GITHUB_REPOSITORY"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ github.ref_name }}

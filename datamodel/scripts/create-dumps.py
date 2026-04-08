@@ -34,22 +34,6 @@ def _cmd(args):
         raise e
 
 
-def files_description(version, extension_suffix):
-    return f"""
-
-## Descriptions of the files
-File | Description
------------- | -------------
-tww_{version}_structure{extension_suffix}.sql | Contains the structure of tables and system schema content
-tww_{version}_structure_with_value_lists{extension_suffix}.sql | Contains the structure of tables, system schema data and value lists data
-tww_{version}_demo_data{extension_suffix}.backup | Data-only backup of the `tww_od` schema (i.e. ordinary data) from demonstration set of data
-tww_{version}_structure_and_demo_data{extension_suffix}.backup | Complete backup with structure and data of the demonstration set of data
-
-* If you plan to **use tww for production**, it is more likely you will be using the plain SQL `tww_{version}_structure_with_value_lists{extension_suffix}.sql`.
-* If you want to **give a try at tww**, you will likely restore the `tww_{version}_structure_and_demo_data{extension_suffix}.backup` backup file.
-"""  # noqa
-
-
 def create_dumps(**args):
     """
     Creates all dumps

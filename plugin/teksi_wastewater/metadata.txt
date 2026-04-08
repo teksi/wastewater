@@ -8,7 +8,7 @@ qgisMinimumVersion=3.34.8
 qgisMaximumVersion=4.99
 supportsQt6=True
 category=Vector
-version=2024.0.0
+version=0.0.0
 
 tags=teksi, gep, pgee, abwasser, wastewater, assainissement, network, sewer, infrastructure, management
 
@@ -23,5 +23,5 @@ icon=icons/teksi-abwasser-logo.svg
 
 plugin_dependencies=Linking Relation Editor,Document Management System
 
-experimental=False
+experimental=True
 deprecated=False

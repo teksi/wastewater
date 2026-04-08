@@ -1,5 +1,4 @@
 import json
-import re
 
 from geoalchemy2.functions import ST_Force2D, ST_GeomFromGeoJSON
 from sqlalchemy import nullslast, or_
@@ -89,13 +88,9 @@ class InterlisExporterToIntermediateSchema:
             self._export()
             self.abwasser_session.commit()
             self.close_sessions()
-        except Exception as e:
-            if hasattr(e, "pgcode") and e.pgcode == "23503":  # psycopg2/3
-                enhanced_exc = self.parse_fk_violation(e)
+        except Exception as exception:
             self.close_sessions()
-            if enhanced_exc:
-                raise enhanced_exc
-            raise e
+            raise exception
 
     def _export(self):
         # Allow to insert rows with cyclic dependencies at once
@@ -525,7 +520,7 @@ class InterlisExporterToIntermediateSchema:
     def _set_tid_iterator(self):
         # set tidMaker
         max_tid = self.abwasser_session.execute(
-            text("SELECT last_value from pg2ili_abwasser.t_ili2db_seq;")
+            text(f"SELECT last_value from {config.ABWASSER_SCHEMA}.t_ili2db_seq;")
         ).fetchone()
         for _ in range(max_tid.last_value + 1):
             self.tid_maker.next_tid()
@@ -746,7 +741,9 @@ class InterlisExporterToIntermediateSchema:
                 bemerkung=self.truncate(self.emptystr_to_null(row.remark), 80),
                 bezeichnung=self.null_to_emptystr(row.identifier),
                 # added round as long as INTERLIS 2020.1 is used Verhaeltnis_H_B = 0.01 .. 100.00;
-                hoehenbreitenverhaeltnis=self.round(row.height_width_ratio, 2),
+                # adapt to VSA model patch for 2020.1 published end of November 2025 - round not needed anymore.
+                # hoehenbreitenverhaeltnis=self.round(row.height_width_ratio, 2),
+                hoehenbreitenverhaeltnis=row.height_width_ratio,
                 profiltyp=self.get_vl(row.profile_type__REL),
             )
             self.abwasser_session.add(rohrprofil)
@@ -3037,10 +3034,10 @@ class InterlisExporterToIntermediateSchema:
                 return None
         else:
             # Makes a tid for a relation, like in get_tid
+            return self.tid_maker.tid_for_row(relation)
             logger.info(
                 f"check_fk_in_subsetid not filtered - give back tid = '{self.tid_maker.tid_for_row(relation)}'"
             )
-            return self.tid_maker.tid_for_row(relation)
 
     def get_oid_prefix(self, oid_table):
         instance = self.tww_session.query(oid_table).filter(oid_table.active.is_(True)).first()
@@ -3864,8 +3861,7 @@ class InterlisExporterToIntermediateSchema:
                 ),
             ).filter(self.model_classes_tww_app.gepknoten.obj_id.in_(self.subset_ids))
 
-        perimeter_query = text(
-            """
+        perimeter_query = text("""
             WITH geoms AS (
              SELECT *, ST_ForceCurve((ST_Dump(perimeter_ist)).geom) AS geom
              FROM tww_app.vw_agxx_sbw_einzugsgebiet
@@ -3878,8 +3874,7 @@ class InterlisExporterToIntermediateSchema:
             SELECT DISTINCT ON (obj_id) obj_id, ST_Area(geom) AS area, geom, ST_GeometryType(geom) as type
             FROM geoms
             ORDER BY obj_id, area DESC;
-        """
-        )
+        """)
         perimeters = self.tww_session.execute(perimeter_query).fetchall()
 
         for row in query:
@@ -4097,48 +4092,3 @@ class InterlisExporterToIntermediateSchema:
             "knotenref": self.get_tid_by_obj_id(row.knotenref),
             "knoten_nachref": self.get_tid_by_obj_id(row.knoten_nachref),
         }
-
-    def parse_fk_violation(self, exc: Exception) -> Exception:
-        """
-        Creates a new exception with the original message plus parsed details.
-        """
-
-        result = {
-            "table": None,
-            "column": None,
-            "key": None,
-            "referenced_table": None,
-            "constraint": None,
-        }
-
-        error_msg = str(exc)
-
-        table_constraint_match = re.search(
-            r'insert or update on table "([^"]+)" violates foreign key constraint "([^"]+)"',
-            error_msg,
-        )
-        if table_constraint_match:
-            result["table"] = table_constraint_match.group(1)
-            result["constraint"] = table_constraint_match.group(2)
-
-        detail_match = re.search(
-            r'DETAIL:\s*Key \(([^)]+)\)=\(([^)]+)\) is not present in table "([^"]+)"', error_msg
-        )
-        if detail_match:
-            result["column"] = detail_match.group(1)
-            result["key"] = detail_match.group(2)
-            result["referenced_table"] = detail_match.group(3)
-
-        if self.model in [config.MODEL_NAME_AG64, config.MODEL_NAME_AG96]:
-            query = text("SELECT obj_id from pg2ili_abwasser.:table WHERE t_id= :t_id;")
-            table = result["table"]
-        else:
-            query = text("SELECT t_ili_tid from pg2ili_abwasser.:table WHERE t_id= :t_id;")
-            table = "baseclass"
-        oid = self.abwasser_session.execute(
-            query, {"t_id": result["key"], "table": table}
-        ).fetchone()
-        enriched_msg = f"{str(exc)}\n" f"Object-ID: {oid}"
-        # Create a new exception of the same type, with the enriched message
-        new_exc = type(exc)(enriched_msg)
-        return new_exc

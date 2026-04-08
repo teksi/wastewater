@@ -37,6 +37,7 @@ import networkx as nx
 from qgis.core import NULL, Qgis, QgsGeometry, QgsMessageLog, QgsPointXY
 from qgis.PyQt.QtCore import QObject, Qt, pyqtSignal
 
+from ..utils.database_utils import DatabaseUtils
 from ..utils.qt_utils import OverrideCursor
 
 
@@ -61,36 +62,18 @@ class TwwGraphManager(QObject):
     def __init__(self):
         QObject.__init__(self)
 
-    def setReachLayer(self, reach_layer):
+    def setLayers(self, reach_layer, node_layer):
         """
-        Set the reach layer (edges)
+        Set both the reach (edge) and node layers at the same time.
         """
         self.edge_layer = reach_layer
-        self.dirty = True
-
-        if reach_layer:
-            self.edge_layer_id = reach_layer.id()
-        else:
-            self.edge_layer_id = 0
-
-        if self.nodeLayer and self.edge_layer:
-            self.createGraph()
-
-    def setNodeLayer(self, node_layer):
-        """
-        Set the node layer
-        """
-        self.dirty = True
-
         self.nodeLayer = node_layer
+        self.dirty = True
 
-        if node_layer:
-            self.nodeLayerId = node_layer.id()
+        self.edge_layer_id = reach_layer.id() if reach_layer else -1
+        self.nodeLayerId = node_layer.id() if node_layer else -1
 
-        else:
-            self.nodeLayerId = 0
-
-        if self.nodeLayer and self.edge_layer:
+        if self.edge_layer and self.nodeLayer:
             self.createGraph()
 
     def _addVertices(self):
@@ -159,39 +142,38 @@ class TwwGraphManager(QObject):
         Refreshes the network graph. It will force a refresh of the materialized views in the database and then reload
         and recreate the graph.
         """
-        with OverrideCursor(Qt.WaitCursor):
-            transaction = self.nodeLayer.dataProvider().transaction()
-            temporary_edit_session = False
-            if not transaction:
-                self.nodeLayer.startEditing()
-                temporary_edit_session = True
-                transaction = self.nodeLayer.dataProvider().transaction()
+        try:
+            with OverrideCursor(Qt.WaitCursor):
+                DatabaseUtils.refresh_matviews()
+            self.message_emitted.emit(
+                self.tr("Success"),
+                self.tr("Materialized Views successfully updated"),
+                Qgis.Success,
+            )
 
-                if not transaction:
-                    self.message_emitted.emit(
-                        self.tr("Error"),
-                        self.tr("Could not initialize transaction"),
-                        Qgis.Critical,
-                    )
-                    return
+        except Exception as exception:
+            self.message_emitted.emit(
+                self.tr("Error"),
+                self.tr(f"Materialized Views update failed:\n\n{exception}"),
+                Qgis.Critical,
+            )
 
-            query_template = "SELECT tww_app.network_refresh_network_simple();"
-            res, error = transaction.executeSql(query_template)
-            if not res:
-                self.message_emitted.emit(self.tr("Error"), error, Qgis.Critical)
-            else:
-                self.message_emitted.emit(
-                    self.tr("Success"),
-                    self.tr("Network successfully updated"),
-                    Qgis.Success,
-                )
-
-            if temporary_edit_session:
-                self.nodeLayer.commitChanges()
-
+        try:
             # recreate networkx graph
             self.graph.clear()
             self.createGraph()
+            self.message_emitted.emit(
+                self.tr("Success"),
+                self.tr("Network successfully updated"),
+                Qgis.Success,
+            )
+
+        except Exception as exception:
+            self.message_emitted.emit(
+                self.tr("Error"),
+                self.tr(f"Network update failed:\n\n{exception}"),
+                Qgis.Critical,
+            )
 
     def _profile(self, name):
         """
