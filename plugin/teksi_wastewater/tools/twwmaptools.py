@@ -236,7 +236,7 @@ class TwwMapTool(QgsMapTool):
             for action in sorted(actions.keys(), key=lambda o: o.text()):
                 menu.addAction(action)
 
-            clicked_action = menu.exec_(self.canvas.mapToGlobal(event.pos()))
+            clicked_action = menu.exec(self.canvas.mapToGlobal(event.pos()))
 
             if clicked_action is not None:
                 return actions[clicked_action]
