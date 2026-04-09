@@ -28,7 +28,7 @@ This module is used for logging in TWW.
 
 import logging
 
-from qgis.core import QgsApplication, QgsMessageLog
+from qgis.core import QgsMessageLog, QgsApplication
 
 
 class TwwQgsLogHandler(logging.Handler):
@@ -46,16 +46,4 @@ class TwwQgsLogHandler(logging.Handler):
         """
 
         # Translate Python logging levels to QGIS message levels.
-        level = {
-            logging.DEBUG: QgsMessageLog.MessageLevel.Info,
-            logging.INFO: QgsMessageLog.MessageLevel.Info,
-            logging.WARNING: QgsMessageLog.MessageLevel.Warning,
-            logging.ERROR: QgsMessageLog.MessageLevel.Critical,
-            logging.CRITICAL: QgsMessageLog.MessageLevel.Critical,
-        }.get(record.levelno, QgsMessageLog.MessageLevel.Info)
-
-        QgsMessageLog.logMessage(
-            record.name + ": " + self.format(record),
-            "tww",
-            level,
-        )
+        QgsMessageLog.logMessage(record.name + ":" + record.msg, "tww", record.levelname)
