@@ -46,4 +46,4 @@ class TwwQgsLogHandler(logging.Handler):
         """
 
         # Translate Python logging levels to QGIS message levels.
-        QgsMessageLog.logMessage(record.name + ":" + record.msg, "tww", record.levelname)
+        QgsMessageLog.logMessage(record.name + ":" + record.msg, "tww", record.levelno)
