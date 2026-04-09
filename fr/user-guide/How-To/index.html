@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>How To &mdash; Documentation TWW dev</title>
+  <title>Mode d’emploi &mdash; Documentation TWW dev</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
 
@@ -54,9 +54,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">Outils de poursuite de réseau</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">Impression de plans</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../history/index.html">History in TWW</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">How To</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Mode d’emploi</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#setting-default-values">Définir les valeurs par défaut</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#increase-speed-of-calculations-and-update-symbology-and-labels">Increase speed of calculations and update symbology and labels</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#increase-speed-of-calculations-and-update-symbology-and-labels">Améliorer la vitesse des calculs et mettre à jour la symbologie et les étiquettes.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#working-with-labels">Working with labels</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#how-vw-tww-wastewater-structure-labels-work">Comment fonctionnent les labels de la couche <cite>vw_tww_wastewater_structure</cite></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#how-to-translate-a-label-prefix-c-b-i-o">How to translate a label prefix (C, B, I, O)</a></li>
@@ -97,7 +97,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Guide utilisateur</a></li>
-      <li class="breadcrumb-item active">How To</li>
+      <li class="breadcrumb-item active">Mode d’emploi</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/user-guide/How-To/index.rst.txt" rel="nofollow"> Afficher la source de la page</a>
       </li>
@@ -110,7 +110,7 @@
   <blockquote>
 <div></div></blockquote>
 <section id="how-to">
-<h1>How To<a class="headerlink" href="#how-to" title="Lien vers cette rubrique"></a></h1>
+<h1>Mode d’emploi<a class="headerlink" href="#how-to" title="Lien vers cette rubrique"></a></h1>
 <p>Ce guide présente la configuration du module assainissement.</p>
 <section id="setting-default-values">
 <span id="settingdefaultvalues"></span><h2>Définir les valeurs par défaut<a class="headerlink" href="#setting-default-values" title="Lien vers cette rubrique"></a></h2>
@@ -151,40 +151,40 @@
 </div>
 <p>et demander de définir le préfix qui convient pour votre projet.</p>
 <p>Pour de plus amples informations, voir <a class="reference internal" href="../../admin-guide/db-production-readiness/index.html#productionreadiness"><span class="std std-ref">Prepare database for production</span></a></p>
-<p>Connect all occurences of your field name to <code class="docutils literal notranslate"><span class="pre">tww_app.get_default_values(field_name)</span></code>.
-Per default, the fields <code class="docutils literal notranslate"><span class="pre">fk_provider</span></code> and <code class="docutils literal notranslate"><span class="pre">fk_dataowner</span></code> are already connected to the function <code class="docutils literal notranslate"><span class="pre">tww_app.get_default_values(field_name)</span></code>.</p>
+<p>Connectez toutes les occurrences du nom de votre champ à tww_app.get_default_values(field_name). Par défaut, les champs fk_provider et fk_dataowner sont déjà connectés à la fonction tww_app.get_default_values(field_name).</p>
 <p>Un exemple de script SQL montre comment installer les valeurs par défaut toutes les occurrences d’un même nom de champ <a class="reference external" href="https://github.com/teksi/wastewater/blob/main/datamodel/changelogs/0001/14_default_values.sql">ici</a>)</p>
 </section>
 <section id="increase-speed-of-calculations-and-update-symbology-and-labels">
-<h2>Increase speed of calculations and update symbology and labels<a class="headerlink" href="#increase-speed-of-calculations-and-update-symbology-and-labels" title="Lien vers cette rubrique"></a></h2>
-<p>The TWW plugin has some menu commands to speed up calculations and for updating symbology and labels.</p>
+<h2>Améliorer la vitesse des calculs et mettre à jour la symbologie et les étiquettes.<a class="headerlink" href="#increase-speed-of-calculations-and-update-symbology-and-labels" title="Lien vers cette rubrique"></a></h2>
+<p>Le plugin TWW propose plusieurs commandes de menu permettant d’accélérer les calculs et de mettre à jour la symbologie et les étiquettes.</p>
 <figure class="align-default">
 <img alt="../../_images/tww_symbology_triggers.jpg" src="../../_images/tww_symbology_triggers.jpg" />
 </figure>
-<p>Select <em>Disable symbology triggers</em> before starting multiedit or a field calculation for a change of many records.</p>
-<p>Select <em>Enable symbology triggers</em> after the calculations or the multiedit sessions. If you forget to enable the symbology triggers, TWW will warn you if you start the project the next time.</p>
-<p>When the triggers are disabled, there is no update of calculated fields. E.g. the input- or output-labels or the _channel_function_hierarchic field in in layer vw_tww_wastewater_structure are not recalculated. To recalculate all these fields select <em>Update Symbology</em> in the TWW-Plugin-menu</p>
+<p>Sélectionnez <em>Désactiver les déclencheurs de symbologie</em> avant de commencer une modification multiple ou un calcul de champ impliquant la modification de nombreux enregistrements.</p>
+<p>Sélectionnez <em>Activer les déclencheurs de symbologie</em> après les calculs ou les sessions de modification multiple. Si vous oubliez d’activer les déclencheurs de symbologie, TWW vous avertira au prochain démarrage du projet.</p>
+<p>Lorsque les déclencheurs sont désactivés, les champs calculés ne sont pas mis à jour. Par exemple, les libellés d’entrée ou de sortie, ainsi que le champ _channel_function_hierarchic de la couche vw_tww_wastewater_structure, ne sont pas recalculés. Pour recalculer tous ces champs, sélectionnez Mettre à jour la symbologie dans le menu du plugin TWW.</p>
 </section>
 <section id="working-with-labels">
 <h2>Working with labels<a class="headerlink" href="#working-with-labels" title="Lien vers cette rubrique"></a></h2>
 <section id="how-vw-tww-wastewater-structure-labels-work">
 <h3>Comment fonctionnent les labels de la couche <cite>vw_tww_wastewater_structure</cite><a class="headerlink" href="#how-vw-tww-wastewater-structure-labels-work" title="Lien vers cette rubrique"></a></h3>
-<p>Labeling a manhole with his levels is quite a complex thing. Levels are not stored in the wastewater_structure class itself, but in the cover table and as reachpoint levels with the connected reaches. TWW has therefore 4 calculated fields to be able to label these levels:</p>
+<p>L’étiquetage d’un regard avec ses niveaux est un processus assez complexe. Les niveaux ne sont pas stockés directement dans la classe wastewater_structure, mais dans la table cover, ainsi que sous forme de niveaux de points de tronçon « reachpoint levels » associés aux tronçons connectés. C’est pourquoi TWW dispose de 4 champs calculés permettant d’étiqueter ces niveaux :</p>
 <ul class="simple">
 <li><p>_cover_label: shows the level / the levels of the cover/s.level of the wastewater structure</p></li>
-<li><p>_bottom_label: shows the level / the levels of the wastewater_node(s).bottom_level of the wastewater structure</p></li>
+<li><p>_bottom_label : affiche le niveau / les niveaux du champ bottom_level des wastewater_node(s) de la structure d’assainissement.</p></li>
 <li><p>_input_label: shows the levels of the reachpoints connected as to_reachpoints to one of the wastewater_nodes of the wastewater_structure</p></li>
-<li><p>_output_label: shows the levels of the reachpoints connected as from_reachpoints to one of the wastewater_nodes of the wastewater_structure</p></li>
+<li><p>_output_label : affiche les niveaux des points de tronçon « reachpoints » connectés en tant que from_reachpoints à l’un des wastewater_nodes de la structure d’assainissement.</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/tww_labels.jpg" src="../../_images/tww_labels.jpg" />
 </figure>
-<p>In this example, there are 4 input-reaches to the manhole, but there are only two input-labels (I1, I2). Why?</p>
-<p>Answer: in the function, where the _input_label is calculated, can be set a filter so that only reaches with specified function_hierachic (e.g. only pwwf-reaches) are labeled (uses a specific field in the vl-channel_function_hierarchic, documentation follows).
-In the example, the 200mm-reaches are swwf-reaches and therefore not labeled.</p>
+<p>Dans cet exemple, il y a 4 tronçons entrants « input reaches » raccordés au regard, mais seulement deux étiquettes d’entrée (I1, I2). Pourquoi ?</p>
+<p>Réponse :
+Dans la fonction qui calcule le champ _input_label, il est possible de définir un filtre afin que seuls les tronçons ayant une valeur spécifique de function_hierarchic (par exemple uniquement les tronçons pwwf) soient étiquetés.
+Ce filtrage s’appuie sur un champ spécifique de la table vl_channel_function_hierarchic (la documentation suit).</p>
 <p>Which reach is I1, which is I2?</p>
-<p>Answer: TWW uses the azimut of the last segment of the reach (for inputs) or the first segment of the reach (for outputs) to define the order of the labels. If you stand on the Main-Node of the manhole and turn to the outlet, you find first I1 if you turn clockwise and you find later I2.
-In the example, 400 wastewater-reach is I1, 300 combined-wastewater-reach is I2.</p>
+<p>Réponse :
+TWW utilise l’azimut du dernier segment du tronçon (pour les entrées) ou du premier segment du tronçon (pour les sorties) afin de définir l’ordre des étiquettes.</p>
 <div class="admonition hint">
 <p class="admonition-title">Indication</p>
 <p>This way of numbering the reaches differs from QGEP, where the north direction was the starting point.</p>
