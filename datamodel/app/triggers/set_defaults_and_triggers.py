@@ -64,16 +64,14 @@ def create_default_value_trigger(tbl: str, inheritance_data: dict = {}):
         args_referenced_inh = f"'tww_od', {parent_arg}, 'fk_{inheriting_tbl}', " + ", ".join(
             f"'{t}'" for t in _referenced
         )
-        subqueries.append(
-            f"""
+        subqueries.append(f"""
         CREATE OR REPLACE TRIGGER
         update_default_values_{tbl}_referenced
         AFTER UPDATE OR INSERT ON
         tww_od.{tbl}
         FOR EACH ROW EXECUTE PROCEDURE
         tww_app.modification_default_orgs_referenced({args_referenced_inh});
-        """
-        )
+        """)
 
     parent_arg = f"'{parent_tbl}'" if parent_tbl is not None else "NULL"
     args_referencing = f"'tww_od', {parent_arg}, " + ", ".join(f"'{t}'" for t in referencing_tbls)
@@ -82,27 +80,23 @@ def create_default_value_trigger(tbl: str, inheritance_data: dict = {}):
     )
 
     if referencing_tbls:
-        subqueries.append(
-            f"""
+        subqueries.append(f"""
         CREATE OR REPLACE TRIGGER
         update_default_values_{tbl}_referencing
         AFTER UPDATE OR INSERT ON
         tww_od.{tbl}
         FOR EACH ROW EXECUTE PROCEDURE
         tww_app.modification_default_orgs_referencing({args_referencing});
-        """
-        )
+        """)
     if referenced_tbls:
-        subqueries.append(
-            f"""
+        subqueries.append(f"""
         CREATE OR REPLACE TRIGGER
         update_default_values_{tbl}_referenced
         AFTER UPDATE OR INSERT ON
         tww_od.{tbl}
         FOR EACH ROW EXECUTE PROCEDURE
         tww_app.modification_default_orgs_referenced({args_referenced});
-        """
-        )
+        """)
     return "".join(subqueries)
 
 
@@ -122,23 +116,19 @@ def set_defaults_and_triggers(
     ).execute(connection)
     table_names = cursor.fetchall()
     for table_name in table_names:
-        cursor = SqlContent(
-            f"""select 1 from information_schema.columns
+        cursor = SqlContent(f"""select 1 from information_schema.columns
             WHERE table_schema = 'tww_od'
             AND table_name = '{table_name[0]}'
-            and column_name = 'obj_id'"""
-        ).execute(connection)
+            and column_name = 'obj_id'""").execute(connection)
         found = cursor.fetchone()
         if found:
             query = create_oid_default(table_name[0])
             SqlContent(query).execute(connection)
         if table_name[0] in SingleInheritances.keys():  # Find Subclasses
-            cursor = SqlContent(
-                f"""select 1 from information_schema.columns
+            cursor = SqlContent(f"""select 1 from information_schema.columns
                 WHERE table_schema = 'tww_od'
                 AND table_name = '{SingleInheritances[table_name[0]]}'
-                and column_name = 'last_modification'"""
-            ).execute(connection)
+                and column_name = 'last_modification'""").execute(connection)
             found = cursor.fetchone()
             if found:
                 if check_owner(connection, "tww_od", table_name[0]):
@@ -152,8 +142,7 @@ def set_defaults_and_triggers(
             cursor = SqlContent(f"""select 1 from information_schema.columns
                 WHERE table_schema = 'tww_od'
                 AND table_name = '{table_name[0]}'
-                and column_name = 'last_modification'"""
-            ).execute(connection)
+                and column_name = 'last_modification'""").execute(connection)
             found = cursor.fetchone()
             if found:
                 if check_owner(connection, "tww_od", table_name[0]):
