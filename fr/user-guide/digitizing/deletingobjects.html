@@ -55,12 +55,12 @@
 <li class="toctree-l3"><a class="reference internal" href="digitizingdrainagechannel.html">Numériser une géométrie détaillée en tant que conduite de drainage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="digitizingchannels.html">Numérisation de canalisations</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Suppression d’objets</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#delete-reach">Delete Reach</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#delete-manhole-or-other-wastewater-structure">Delete Manhole or other Wastewater Structure</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#delete-wastewater-structure-but-keep-the-wastewater-node-and-the-connections-to-the-wastewater-node">Delete Wastewater Structure, but keep the wastewater_node and the connections to the wastewater_node</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#delete-cover">Delete Cover</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-reach">Supprimer un tronçon</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-manhole-or-other-wastewater-structure">Supprimer un regard ou une autre structure de wastewater</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-wastewater-structure-but-keep-the-wastewater-node-and-the-connections-to-the-wastewater-node">Supprimer une structure de wastewater tout en conservant le nœud de wastewater et les connexions associées au nœud de wastewater</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-cover">Supprimer le couvercle</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#delete-structure-parts">Suppression d’éléments de structures</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#delete-detailed-geometries">Delete detailed geometries</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-detailed-geometries">Supprimer les géométries détaillées</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="digitizingcatchments.html">Numérisation des bassins versants</a></li>
@@ -112,12 +112,11 @@
 <div></div></blockquote>
 <section id="deleting-objects">
 <h1>Suppression d’objets<a class="headerlink" href="#deleting-objects" title="Lien vers cette rubrique"></a></h1>
-<p>You can delete point or line objects (with all associated objects) through the <strong>vw_tww_(wastewater_structure/reach)</strong> layers.
-You can also pick and delete only a specific object (e.g. cover).</p>
+<p>Vous pouvez supprimer des objets ponctuels ou linéaires (avec tous les objets associés) via les couches <strong>vw_tww_wastewater_structure ou vw_tww_reach</strong>. Il est également possible de sélectionner et de supprimer uniquement un objet spécifique (par exemple un couvercle).</p>
 <section id="delete-reach">
-<h2>Delete Reach<a class="headerlink" href="#delete-reach" title="Lien vers cette rubrique"></a></h2>
+<h2>Supprimer un tronçon<a class="headerlink" href="#delete-reach" title="Lien vers cette rubrique"></a></h2>
 <ul class="simple">
-<li><p>Select <strong>vw_tww_reach</strong> and change to edit mode.</p></li>
+<li><p>Sélectionnez <strong>vw_tww_reach</strong> et passez en mode édition.</p></li>
 <li><p>Sélectionnez le/les tronçon(s) que vous voulez supprimer. Vous pouvez cliquer sur un objet ou dessiner une zone de sélection.</p></li>
 </ul>
 <figure class="align-default">
@@ -145,41 +144,41 @@ You can also pick and delete only a specific object (e.g. cover).</p>
 </figure>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Delete reach deletes also all connected structure parts (e.g. dryweather_downspout). The connected channel is only deleted if there is no other wastewater networkelement connected to the channel. If there are two reaches connected to one channel, the channel is only deleted if both reaches are deleted.</p>
+<p>La suppression d’un tronçon entraîne également la suppression de toutes les parties de structure qui y sont connectées (par exemple dryweather_downspout). Le canal associé n’est supprimé que s’il n’existe aucun autre élément du réseau de wastewater connecté à ce canal. Si deux tronçons sont connectés à un même canal, celui‑ci n’est supprimé que lorsque les deux tronçons sont supprimés.</p>
 </div>
 </section>
 <section id="delete-manhole-or-other-wastewater-structure">
-<h2>Delete Manhole or other Wastewater Structure<a class="headerlink" href="#delete-manhole-or-other-wastewater-structure" title="Lien vers cette rubrique"></a></h2>
+<h2>Supprimer un regard ou une autre structure de wastewater<a class="headerlink" href="#delete-manhole-or-other-wastewater-structure" title="Lien vers cette rubrique"></a></h2>
 <ul class="simple">
-<li><p>Select <strong>vw_tww_wastewater_structure</strong> and change to edit mode</p></li>
+<li><p>Sélectionnez <strong>vw_tww_wastewater_structure</strong> et passez en mode édition.</p></li>
 <li><p>Sélectionnez les objets (<strong>chambres</strong>, <strong>structures spéciales</strong> etc.) que vous voulez supprimer</p></li>
 <li><p>Utilisez le menu <strong>Edition</strong> –&gt; <strong>Supprimer les entités</strong> pour supprimer.</p></li>
 <li><p>Stoppez le mode d’édition et confirmez les modifications apportées à la couche. Toutes les modifications vont alors être sauvegardées dans la base de données.</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Delete wastewater structures deletes also all connected structure parts (cover, access_aid etc) and all connected wastewater nodes. fk_wastewater_networkelement in reachpoints, that where connected to the node, are set to NULL.</p>
+<p>La suppression d’une structure de wastewater entraîne également la suppression de toutes les parties de structure qui y sont associées (couvercle, dispositif d’accès, etc.) ainsi que de tous les nœuds de wastewater connectés. Les champs fk_wastewater_networkelement des reachpoints qui étaient reliés à ces nœuds sont définis à NULL.</p>
 </div>
 </section>
 <section id="delete-wastewater-structure-but-keep-the-wastewater-node-and-the-connections-to-the-wastewater-node">
-<h2>Delete Wastewater Structure, but keep the wastewater_node and the connections to the wastewater_node<a class="headerlink" href="#delete-wastewater-structure-but-keep-the-wastewater-node-and-the-connections-to-the-wastewater-node" title="Lien vers cette rubrique"></a></h2>
-<p>First, you have to kill the connection between wastewater_node and wastewater_structure. Because the fk_wastewater_structure field is not visible in the wastewater_node feature attribut window (this field make no sense in other cases, where the form is also used), you have to follow this way:</p>
+<h2>Supprimer une structure de wastewater tout en conservant le nœud de wastewater et les connexions associées au nœud de wastewater<a class="headerlink" href="#delete-wastewater-structure-but-keep-the-wastewater-node-and-the-connections-to-the-wastewater-node" title="Lien vers cette rubrique"></a></h2>
+<p>Tout d’abord, il est nécessaire de supprimer la relation entre le nœud de wastewater et la structure de wastewater. Comme le champ fk_wastewater_structure n’est pas visible dans la fenêtre des attributs du nœud de wastewater (ce champ n’ayant pas de sens dans les autres cas où le même formulaire est utilisé), vous devez procéder de la manière suivante :</p>
 <ul class="simple">
-<li><p>Select <strong>vw_tww_wastewater_structure</strong> and change to edit mode</p></li>
+<li><p>Sélectionnez <strong>vw_tww_wastewater_structure</strong> et passez en mode édition.</p></li>
 <li><p>Use the <strong>Identify Features</strong> tool to open the form of the manhole you want to delete</p></li>
-<li><p>Switch to Wastewater Nodes tab</p></li>
-<li><p>Select the Node, that should not be deleted</p></li>
-<li><p>Use the button <strong>Unlink selected child record(s)</strong></p></li>
+<li><p>Passez à l’onglet Wastewater Nodes.</p></li>
+<li><p>Sélectionnez le nœud qui ne doit pas être supprimé.</p></li>
+<li><p>Utilisez le bouton <strong>Unlink selected child record(s)</strong>.</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/unlink_childe.jpg" src="../../_images/unlink_childe.jpg" />
 </figure>
 <ul class="simple">
-<li><p>Click <strong>OK</strong> and close the form window</p></li>
+<li><p>Cliquez sur <strong>OK</strong> et fermez la fenêtre du formulaire.</p></li>
 </ul>
-<p>The wastewater node is no no more part of the wastewater_structure</p>
+<p>Le nœud de wastewater ne fait désormais plus partie de la structure de wastewater.</p>
 <ul class="simple">
-<li><p>Select the object (<strong>manhole</strong>, <strong>special structure</strong> etc.) you want to delete</p></li>
+<li><p>Sélectionnez l’objet (<strong>regard</strong>, <strong>structure spéciale</strong>, etc.) que vous souhaitez supprimer.</p></li>
 <li><p>Utilisez le menu <strong>Edition</strong> –&gt; <strong>Supprimer les entités</strong> pour supprimer.</p></li>
 <li><p>Stoppez le mode d’édition et confirmez les modifications apportées à la couche. Toutes les modifications vont alors être sauvegardées dans la base de données.</p></li>
 </ul>
@@ -188,10 +187,10 @@ You can also pick and delete only a specific object (e.g. cover).</p>
 </figure>
 </section>
 <section id="delete-cover">
-<h2>Delete Cover<a class="headerlink" href="#delete-cover" title="Lien vers cette rubrique"></a></h2>
+<h2>Supprimer le couvercle<a class="headerlink" href="#delete-cover" title="Lien vers cette rubrique"></a></h2>
 <ul class="simple">
-<li><p>Select <strong>vw_tww_wastewater_structure</strong> and change to edit mode</p></li>
-<li><p>Select the object (<strong>manholes</strong>, <strong>special structures</strong> etc.) from which the cover is to be deleted</p></li>
+<li><p>Sélectionnez <strong>vw_tww_wastewater_structure</strong> et passez en mode édition.</p></li>
+<li><p>Sélectionnez l’objet (<strong>regard</strong>, <strong>structure spéciale</strong>, etc.) à partir duquel le couvercle doit être supprimé.</p></li>
 <li><p>Utilisez l’outil <strong>Sélectionner une entité</strong> pour ouvrir le formulaire</p></li>
 <li><p>Allez dans l’onglet couvercles</p></li>
 <li><p>Sélectionnez le(s) couvercle(s) que vous voulez supprimer</p></li>
@@ -204,19 +203,19 @@ You can also pick and delete only a specific object (e.g. cover).</p>
 <li><p>Cliquez sur le bouton <strong>Sauvegarder</strong> du formulaire</p></li>
 <li><p>Stoppez le mode édition et confirmez les modifications apportées à la couche. Toutes les modifications vont alors être sauvegardées dans la base de données.</p></li>
 </ul>
-<p>Second way to delete a cover</p>
+<p>Deuxième méthode pour supprimer un couvercle</p>
 <ul class="simple">
 <li><p>Select the <strong>vw_cover</strong> layer and change to edit mode</p></li>
 <li><p>Select the cover</p></li>
-<li><p>Use <strong>Edit</strong> –&gt; <strong>Delete Selected</strong></p></li>
-<li><p>Stop the editing mode</p></li>
+<li><p>Utilisez <strong>Édition</strong> → <strong>Supprimer les entités sélectionnées</strong>.</p></li>
+<li><p>Arrêtez le mode édition.</p></li>
 </ul>
 </section>
 <section id="delete-structure-parts">
 <h2>Suppression d’éléments de structures<a class="headerlink" href="#delete-structure-parts" title="Lien vers cette rubrique"></a></h2>
 <ul class="simple">
-<li><p>Select <strong>vw_tww_wastewater_structure</strong> and change to edit mode</p></li>
-<li><p>Select the object (<strong>manholes</strong>, <strong>special structures</strong> etc.) from which a structure part is to be deleted</p></li>
+<li><p>Sélectionnez <strong>vw_tww_wastewater_structure</strong> et passez en mode édition.</p></li>
+<li><p>Sélectionnez l’objet (<strong>regard</strong>, <strong>structure spéciale</strong>, etc.) à partir duquel un élément de structure doit être supprimé.</p></li>
 <li><p>Utilisez l’outil <strong>Sélectionner une entité</strong> pour ouvrir le formulaire</p></li>
 <li><p>Allez dans l’onglet éléments de structure</p></li>
 <li><p>Sélectionnez le(s) élément(s) que vous voulez supprimer</p></li>
@@ -226,10 +225,10 @@ You can also pick and delete only a specific object (e.g. cover).</p>
 </ul>
 </section>
 <section id="delete-detailed-geometries">
-<h2>Delete detailed geometries<a class="headerlink" href="#delete-detailed-geometries" title="Lien vers cette rubrique"></a></h2>
+<h2>Supprimer les géométries détaillées<a class="headerlink" href="#delete-detailed-geometries" title="Lien vers cette rubrique"></a></h2>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
-<p>Deleting features directly from <strong>wastewater_structure</strong> (layergroup Wastewater Structures) will remove the complete wastewater structure from the database and not only the geometry of the wastewater structure!</p>
+<p>La suppression d’entités directement depuis <strong>wastewater_structure</strong> (groupe de couches Wastewater Structures) entraîne la suppression complète de la structure de wastewater de la base de données, et pas uniquement de la géométrie de la structure de wastewater !</p>
 </div>
 <ul class="simple">
 <li><p>Select layer <strong>wastewater_structure</strong> and change to edit mode</p></li>
@@ -239,7 +238,7 @@ You can also pick and delete only a specific object (e.g. cover).</p>
 <img alt="../../_images/delete_part_tool.jpg" src="../../_images/delete_part_tool.jpg" />
 </figure>
 <ul class="simple">
-<li><p>You get a cross-cursor. Click on the part you want to delete (there is no question if you really want… If you click, the part is deleted!)</p></li>
+<li><p>Le curseur se transforme en croix. Cliquez sur la partie que vous souhaitez supprimer (aucune demande de confirmation n’est affichée : dès que vous cliquez, la partie est supprimée !).</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/delete_part_tool2.jpg" src="../../_images/delete_part_tool2.jpg" />

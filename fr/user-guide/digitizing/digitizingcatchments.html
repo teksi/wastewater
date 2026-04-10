@@ -62,7 +62,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#split-areas">Séparer des zones</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#merge-areas">Fusionner des zones</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#connect-catchment-area-to-wastewater-network-nodes">Connecter la zone du bassin versant aux noeuds du réseau assainissement</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#the-duplicate-coord-error">The “duplicate coord”-error</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-duplicate-coord-error">L’erreur <strong>duplicate coord</strong></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="importingdata.html">Importing data</a></li>
@@ -115,7 +115,7 @@
 <h1>Numérisation des bassins versants<a class="headerlink" href="#digitizing-catchment-areas" title="Lien vers cette rubrique"></a></h1>
 <section id="general">
 <h2>Généralités<a class="headerlink" href="#general" title="Lien vers cette rubrique"></a></h2>
-<p>Catchments can be digitized with QGIS standard tool <strong>Add Polygon Feature</strong>.</p>
+<p>Les bassins versants peuvent être numérisés à l’aide de l’outil standard QGIS <strong>Ajouter une entité polygonale</strong>.</p>
 <figure class="align-default">
 <img alt="../../_images/qgis_standard_tools.jpg" src="../../_images/qgis_standard_tools.jpg" />
 </figure>
@@ -137,11 +137,11 @@
 </figure>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>New digitized catchment areas will not overlap with existing areas with this settings.</p>
+<p>Avec ces paramètres, les nouveaux bassins versants numérisés ne se chevaucheront pas avec les zones existantes.</p>
 </div>
 <ul class="simple">
-<li><p>Set the layer <code class="docutils literal notranslate"><span class="pre">catchment_area</span></code> into the edit mode.</p></li>
-<li><p>Use the <strong>Add Polygon Feature</strong> tool to digitize a new area.</p></li>
+<li><p>Passez la couche <strong>catchment_area</strong> en mode édition.</p></li>
+<li><p>Utilisez l’outil <strong>Ajouter une entité polygonale</strong> pour numériser une nouvelle zone.</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/add_feature_tool.jpg" src="../../_images/add_feature_tool.jpg" />
@@ -160,7 +160,7 @@
 <p>Gardez en mémoire que le point final du polygone est le dernier point où vous avez effectué un clic <strong>gauche</strong>.</p>
 </div>
 <ul class="simple">
-<li><p>The <strong>catchment_area</strong> feature attributes window appears</p></li>
+<li><p>La fenêtre des attributs de l’entité <strong>catchment_area</strong> s’affiche.</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/catchment_area_digitizing2.jpg" src="../../_images/catchment_area_digitizing2.jpg" />
@@ -188,7 +188,7 @@
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The tab fk_log_card can only be used after creating the log_cards first, see chapter Editing /Log Cards .</p>
+<p>L’onglet fk_log_card ne peut être utilisé qu’après la création préalable des log_cards ; voir le chapitre Édition / Log Cards.</p>
 </div>
 </section>
 <section id="editing">
@@ -207,13 +207,13 @@
 <section id="split-areas">
 <h2>Séparer des zones<a class="headerlink" href="#split-areas" title="Lien vers cette rubrique"></a></h2>
 <ul class="simple">
-<li><p>You can split existing areas with the <strong>Split Features</strong> tool.</p></li>
+<li><p>Vous pouvez scinder des zones existantes à l’aide de l’outil <strong>Split Features</strong>.</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/split_tool.jpg" src="../../_images/split_tool.jpg" />
 </figure>
 <ul class="simple">
-<li><p>There is no need to select the area first. Left clicks to define the splitting line. Right click after having defined the last point of the splitting line.</p></li>
+<li><p>Il n’est pas nécessaire de sélectionner la zone au préalable. Effectuez des clics gauches pour définir la ligne de découpe. Cliquez avec le bouton droit après avoir défini le dernier point de la ligne de découpe.</p></li>
 </ul>
 </section>
 <section id="merge-areas">
@@ -223,24 +223,24 @@
 <img alt="../../_images/merge_selected_feature_tool.jpg" src="../../_images/merge_selected_feature_tool.jpg" />
 </figure>
 <ul class="simple">
-<li><p>Selected the <strong>catchment_area</strong> layer and set it into the edit mode</p></li>
+<li><p>Sélectionnez la couche <strong>catchment_area</strong> et passez‑la en mode édition.</p></li>
 <li><p>Sélectionnez au moins deux zones que vous voulez fusionner</p></li>
-<li><p>Click the <code class="docutils literal notranslate"><span class="pre">Merge</span> <span class="pre">Selected</span> <span class="pre">Feature</span></code> tool. -&gt; The <strong>Merge Features</strong> windows appears.</p></li>
+<li><p>Cliquez sur l’outil <strong>Merge Selected Feature</strong> → la fenêtre <strong>Merge Features</strong> s’affiche.</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/merge_feature_attributes.jpg" src="../../_images/merge_feature_attributes.jpg" />
 </figure>
 <ul class="simple">
-<li><p>Choose which values will be taken from which old record. Control the values for fields <strong>obj_id</strong>, <strong>identifier</strong>. Then click <strong>OK</strong>. You can ignore the setting of field surface_area, because the surface_area of the combined area will be recalculated anyway.</p></li>
+<li><p>Choisissez quelles valeurs doivent être reprises à partir de quel enregistrement d’origine. Vérifiez en particulier les valeurs des champs <strong>obj_id</strong> et identifier, puis cliquez sur <strong>OK</strong>. Vous pouvez ignorer le paramétrage du champ surface_area, car la surface de la zone fusionnée sera recalculée automatiquement.</p></li>
 </ul>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
-<p>If you select one of the records and click on the <strong>Take attributes from the selected feature</strong> button, then your manual changes will be reset. After using this button, you have to choose one of the values in the <strong>identifier</strong> field manually (otherwise <strong>identifier</strong> is skipped and the value will be NULL).</p>
+<p>Si vous sélectionnez l’un des enregistrements et cliquez sur le bouton <strong>Take attributes from the selected feature</strong>, toutes les modifications manuelles seront réinitialisées. Après avoir utilisé ce bouton, vous devez sélectionner manuellement une valeur dans le champ <strong>identifier</strong> (dans le cas contraire, le champ <strong>identifier</strong> est ignoré et sa valeur sera définie à NULL).</p>
 </div>
 </section>
 <section id="connect-catchment-area-to-wastewater-network-nodes">
 <h2>Connecter la zone du bassin versant aux noeuds du réseau assainissement<a class="headerlink" href="#connect-catchment-area-to-wastewater-network-nodes" title="Lien vers cette rubrique"></a></h2>
-<p>You connect catchment areas with the tool <strong>Connect wastewater networkelements</strong> (it’s the same tool to connect reaches and nodes described in the chapter Editing in TWW).</p>
+<p>Les bassins versants sont connectés à l’aide de l’outil <strong>Connect wastewater networkelements</strong> (il s’agit du même outil que celui utilisé pour connecter les tronçons et les nœuds, décrit dans le chapitre Édition dans TWW).</p>
 <figure class="align-default">
 <img alt="../../_images/connect_wastewater_network_elements_button.jpg" src="../../_images/connect_wastewater_network_elements_button.jpg" />
 </figure>
@@ -257,35 +257,35 @@
 <ul class="simple">
 <li><p>Une fenêtre apparaît, dans laquelle vous pouvez choisir quelle(s) connexion(s) sera(ont) définie(s).</p></li>
 <li><p>Si tout est OK, vous verrez apparaître un message dans une barre bleue, au-dessus de la vue de la carte</p></li>
-<li><p>After saving, you will see the catchment connection line, if this layer is visible.</p></li>
+<li><p>Après l’enregistrement, vous verrez la ligne de connexion du bassin versant, à condition que cette couche soit visible.</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/catchment_area_connect3.jpg" src="../../_images/catchment_area_connect3.jpg" />
 </figure>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>In the VSA-DSS-Datamodel, it is possible to connect catchment_areas to wastewater nodes or to reaches. Because a lot of hydraulic calculation do not support connections to reaches, this tool in tww connects only to wastewater nodes and not to reaches.</p>
+<p>Dans le modèle de données VSA‑DSS, il est possible de connecter des catchment_areas soit à des nœuds de wastewater, soit à des tronçons. Toutefois, comme de nombreux calculs hydrauliques ne prennent pas en charge les connexions aux tronçons, l’outil TWW ne permet de connecter les bassins versants qu’aux nœuds de wastewater, et non aux tronçons.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The tool does not check, if your choosen wastewater node is a part of the pwwf-network (primary network). It’s only the user who decides, if a node is ok or not. If you are not sure, please check the <strong>VSA Wegleitung Daten der Siedlungsentwässerung</strong>, part <strong>Erfassungsrichtlinien</strong></p>
+<p>L’outil ne vérifie pas si le nœud de wastewater sélectionné fait partie du réseau PWWF (réseau primaire). C’est uniquement à l’utilisateur de décider si un nœud est approprié ou non. En cas de doute, veuillez consulter la <strong>VSA Wegleitung Daten der Siedlungsentwässerung</strong>, section <strong>Erfassungsrichtlinien</strong>.</p>
 </div>
-<p>You can not connect multiple areas with the tool to a wastewater node at once. If you want to do so, you have to select the catchment areas, open the attribute table and then start the multi edit mode. There you can choose the wastewater node from the list of all nodes.</p>
+<p>Il n’est pas possible de connecter plusieurs bassins versants à un nœud de wastewater en une seule opération avec cet outil. Si vous souhaitez le faire, vous devez sélectionner les bassins versants, ouvrir la table attributaire, puis activer le mode d’édition multiple. Vous pourrez alors choisir le nœud de wastewater souhaité dans la liste de tous les nœuds disponibles.</p>
 <p>Pour supprimer une connexion à un noeud assainissement, vous pouvez éditer la zone avec l’outil <strong>Identifier entités</strong>.</p>
 </section>
 <section id="the-duplicate-coord-error">
-<h2>The “duplicate coord”-error<a class="headerlink" href="#the-duplicate-coord-error" title="Lien vers cette rubrique"></a></h2>
-<p>After digitizing catchment areas and export to DSS, you will probably get the message, that your exportfile is not valid. In the ilivalidator.log-file can be messages like:</p>
+<h2>L’erreur <strong>duplicate coord</strong><a class="headerlink" href="#the-duplicate-coord-error" title="Lien vers cette rubrique"></a></h2>
+<p>Après la numérisation des bassins versants et l’exportation vers DSS, vous obtiendrez probablement un message indiquant que votre fichier d’export n’est pas valide. Dans le fichier <strong>ilivalidator.log</strong>, vous pouvez trouver des messages tels que :</p>
 <p>Error: line nnnn: DSS_2020_1_LV95.Siedlungsentwaesserung.Einzugsgebiet: tid chmmmm: duplicate coord at (x.xxx, y.yyy, NaN)</p>
-<p>The reason is: in the XTF-file, coordinates are writen with 0.001m (1mm). Vertex-points in QGIS can differed by only 0.0001m (0.01mm) or less.</p>
+<p>La raison est la suivante : dans le fichier XTF, les coordonnées sont écrites avec une précision de 0,001 m (1 mm). Dans QGIS, les sommets peuvent cependant différer de seulement 0,0001 m (0,01 mm) ou même moins.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Do not work with a export-file, that is not valid. Be aware that you will not be able to import a not valid file in TWW.</p>
+<p>N’utilisez pas de fichier d’exportation qui n’est pas valide. Sachez qu’il ne sera pas possible d’importer un fichier non valide dans TWW.</p>
 </div>
 <p>Solutions:</p>
 <ul class="simple">
-<li><p>In layer-properties of the catchment area, tab <strong>digitizing</strong>, check <strong>remove duplicate nodes</strong> and add 0.001 as <strong>Geometry precision [m]</strong></p></li>
-<li><p>If there are already duplicate nodes in the data, you can eliminate them with <strong>processing toolbox</strong>, <strong>Edit Features in-Place</strong>, <strong>Remove duplicate vertices</strong>, <strong>Tolerance = 0.001m</strong></p></li>
+<li><p>Dans les propriétés de la couche catchment_area, onglet <strong>Numérisation</strong>, cochez l’option <strong>Remove duplicate nodes</strong> et <strong>définissez la précision géométrique [m]</strong> à 0,001.</p></li>
+<li><p>S’il existe déjà des sommets dupliqués dans les données, vous pouvez les éliminer à l’aide de la <strong>boîte à outils de traitements</strong> : <strong>Modifier les entités sur place</strong> → <strong>Supprimer les sommets dupliqués</strong>, avec une <strong>tolérance = 0,001 m</strong>.</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/remove_duplicate_nodes.jpg" src="../../_images/remove_duplicate_nodes.jpg" />

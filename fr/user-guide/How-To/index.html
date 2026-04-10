@@ -59,18 +59,18 @@
 <li class="toctree-l3"><a class="reference internal" href="#increase-speed-of-calculations-and-update-symbology-and-labels">Améliorer la vitesse des calculs et mettre à jour la symbologie et les étiquettes.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#working-with-labels">Working with labels</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#how-vw-tww-wastewater-structure-labels-work">Comment fonctionnent les labels de la couche <cite>vw_tww_wastewater_structure</cite></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#how-to-translate-a-label-prefix-c-b-i-o">How to translate a label prefix (C, B, I, O)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#manual-label-positioning-for-different-scales">Manual Label-positioning for different scales</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#how-to-import-existing-label-positions">How to import existing label-positions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-translate-a-label-prefix-c-b-i-o">Traduction des préfixes d’étiquettes (C, B, I, O)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#manual-label-positioning-for-different-scales">Positionnement manuel des étiquettes selon l’échelle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-import-existing-label-positions">Comment importer des positions d’étiquettes existantes</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#hydraulic-modeling">Hydraulic modeling</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#collecting-a-hydr-geometry-corresponds-to-a-basin-geometry-in-mike">Collecting a hydr_geometry (corresponds to a basin geometry in Mike+)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#hydraulic-modeling-of-an-overflow-prank-weir-leapingweir-pump">Hydraulic modeling of an overflow (prank weir / leapingweir / pump)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#overflow-characteristic">Overflow characteristic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hydraulic-modeling">Modélisation hydraulique</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#collecting-a-hydr-geometry-corresponds-to-a-basin-geometry-in-mike">Collecte d’une géométrie hydr_geometry (correspond à une géométrie de bassin dans Mike+)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hydraulic-modeling-of-an-overflow-prank-weir-leapingweir-pump">Modélisation hydraulique d’un déversoir (déversoir frontal / déversoir à saut / pompe)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#overflow-characteristic">Caractéristiques du déversoir</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#further-informations">Further informations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#further-informations">Informations complémentaires</a></li>
 </ul>
 </li>
 </ul>
@@ -187,35 +187,30 @@ Ce filtrage s’appuie sur un champ spécifique de la table vl_channel_function_
 TWW utilise l’azimut du dernier segment du tronçon (pour les entrées) ou du premier segment du tronçon (pour les sorties) afin de définir l’ordre des étiquettes.</p>
 <div class="admonition hint">
 <p class="admonition-title">Indication</p>
-<p>This way of numbering the reaches differs from QGEP, where the north direction was the starting point.</p>
+<p>Cette méthode de numérotation des tronçons diffère de celle de QGEP, où la direction nord constituait le point de départ.</p>
 </div>
 </section>
 <section id="how-to-translate-a-label-prefix-c-b-i-o">
-<h3>How to translate a label prefix (C, B, I, O)<a class="headerlink" href="#how-to-translate-a-label-prefix-c-b-i-o" title="Lien vers cette rubrique"></a></h3>
-<p>To easily translate label prefixes a series of QGIS project variables have been added. If you want to change the prefixes for cover level, bottom level and entry and exit levels, change the following project settings:</p>
+<h3>Traduction des préfixes d’étiquettes (C, B, I, O)<a class="headerlink" href="#how-to-translate-a-label-prefix-c-b-i-o" title="Lien vers cette rubrique"></a></h3>
+<p>Afin de faciliter la traduction des préfixes d’étiquettes, une série de variables de projet QGIS a été ajoutée. Si vous souhaitez modifier les préfixes pour le niveau du couvercle, le niveau de fond ainsi que les niveaux d’entrée et de sortie, modifiez les paramètres de projet suivants :</p>
 <figure class="align-default">
 <img alt="../../_images/tww_label_prefix_settings.jpg" src="../../_images/tww_label_prefix_settings.jpg" />
 </figure>
-<p>To see your changes, you have to choose « Update Symbology » in the TWW-plugin menu.</p>
+<p>Pour voir vos modifications, vous devez sélectionner « Mettre à jour la symbologie » dans le menu du plugin TWW.</p>
 </section>
 <section id="manual-label-positioning-for-different-scales">
-<h3>Manual Label-positioning for different scales<a class="headerlink" href="#manual-label-positioning-for-different-scales" title="Lien vers cette rubrique"></a></h3>
-<p>QGIS label definition can handle different labels for different scales. This works very well if you work on the screen.
-If you have to print plans with labels or if you have to export labels for data exchange (e.g. exchange with RegioGIS-platform), it will often be necessary to determine the label positions manually.
-If a label is positioned manually in QGIS, this fixed position applies to every scale. And that’s not always a good result.</p>
+<h3>Positionnement manuel des étiquettes selon l’échelle<a class="headerlink" href="#manual-label-positioning-for-different-scales" title="Lien vers cette rubrique"></a></h3>
+<p>La définition des étiquettes dans QGIS permet de gérer des étiquettes différentes selon l’échelle. Cela fonctionne très bien pour un travail à l’écran. En revanche, lorsqu’il s’agit d’imprimer des plans avec des étiquettes ou d’exporter des étiquettes pour l’échange de données (par exemple avec la plateforme RegioGIS), il est souvent nécessaire de définir manuellement la position des étiquettes. Lorsqu’une étiquette est positionnée manuellement dans QGIS, cette position fixe s’applique à toutes les échelles, ce qui ne donne pas toujours un résultat satisfaisant.</p>
 <p>Solution</p>
 <ul class="simple">
-<li><p>Extend the Auxiliary Storage File with new fields for different labelpositions</p></li>
+<li><p>Étendre le fichier de stockage auxiliaire avec de nouveaux champs pour différentes positions d’étiquettes</p></li>
 <li><p>Use Rule-based labeling, then you can define different labelpositions for every rule</p></li>
 </ul>
-<p>In the example below, we want to label the wastewater-structures with a detailed label for network_plan (1:500) and for overviewmap (1:2000).
-In the Auxiliary Storage we use the standard fields PositionX and PositionY for the  network_plan labels. For the overviewmap labels we add two new fields.
-We name this fields posx2000 and posy2000.</p>
+<p>Dans l’exemple ci-dessous, nous souhaitons étiqueter les structures d’assainissement avec une étiquette détaillée pour le plan de réseau (1:500) et pour la carte de synthèse (1:2000). Dans le stockage auxiliaire, nous utilisons les champs standards PositionX et PositionY pour les étiquettes du plan de réseau. Pour les étiquettes de la carte de synthèse, nous ajoutons deux nouveaux champs, nommés posx2000 et posy2000.</p>
 <figure class="align-default">
 <img alt="../../_images/man_labeling_newfields.jpg" src="../../_images/man_labeling_newfields.jpg" />
 </figure>
-<p>Define now rule-based labeling with two rules. In the example the first rule is called WP-Labels (WP = Werkplan = network_plan).
-You have not the change something in the placement, because this rule uses the standard positioning-fields.</p>
+<p>Définissez maintenant un étiquetage basé sur des règles avec deux règles. Dans l’exemple, la première règle s’appelle WP-Labels (WP = Werkplan = plan de réseau). Vous n’avez rien à modifier au niveau du positionnement, car cette règle utilise les champs de positionnement standards.</p>
 <figure class="align-default">
 <img alt="../../_images/man_labeling_rules.jpg" src="../../_images/man_labeling_rules.jpg" />
 </figure>
@@ -237,58 +232,58 @@ You have not the change something in the placement, because this rule uses the s
 </figure>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
-<p>Your changes are only saved if you save the QGIS-project!</p>
+<p>Vos modifications ne sont enregistrées que si vous enregistrez le projet QGIS !</p>
 </div>
 </section>
 <section id="how-to-import-existing-label-positions">
-<h3>How to import existing label-positions<a class="headerlink" href="#how-to-import-existing-label-positions" title="Lien vers cette rubrique"></a></h3>
+<h3>Comment importer des positions d’étiquettes existantes<a class="headerlink" href="#how-to-import-existing-label-positions" title="Lien vers cette rubrique"></a></h3>
 <p>Good label-positions can be hard work. So you don’t want to loose it.</p>
 <ul class="simple">
-<li><p>Export your label-positions from your old system in the form obj_id, coordinateX (east), coordinateY (north).</p></li>
-<li><p>Add the <strong>.qgd</strong>-file of your project with <strong>Add Vector Layer…</strong> to your project and open the attribute table.</p></li>
+<li><p>Exportez vos positions d’étiquettes depuis votre ancien système sous la forme obj_id, coordonnée X (Est), coordonnée Y (Nord).</p></li>
+<li><p>Ajoutez le fichier .qgd de votre projet à l’aide de Ajouter une couche vectorielle… dans votre projet, puis ouvrez la table attributaire.</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/man_labeling_auxtable.jpg" src="../../_images/man_labeling_auxtable.jpg" />
 </figure>
-<p>If you can not find a .qgd-file, then you have probably not moved or rotated a label before.</p>
+<p>Si vous ne trouvez pas de fichier .qgd, c’est probablement parce que vous n’avez encore jamais déplacé ou fait pivoter une étiquette.</p>
 <ul class="simple">
-<li><p>Change the field-names in your export-data to the field-names in the qgd-file. In the example the obj_id-field must have the name <strong>ASPK</strong>, the coordinate-fields must have the names <strong>labeling_positionx</strong> and <strong>labeling_positiony</strong>.</p></li>
-<li><p>Open the export-file in the QGIS-project and copy the rows you want to the table of the qgd-file (this file must be editable).</p></li>
-<li><p>Save the qgd-file and remove it from your project, before you remove labels, because QGIS can not save manual label-positions, if the qgd-file is a layer in the project.</p></li>
-<li><p>If necessary define the horizontal/vertical alignment of your label-coordinates in the placement of the label definition.</p></li>
+<li><p>Modifiez les noms des champs de vos données exportées afin qu’ils correspondent aux noms des champs du fichier .qgd. Dans l’exemple, le champ obj_id doit être nommé <strong>ASPK</strong>, et les champs de coordonnées doivent s’appeler <strong>labeling_positionx</strong> et <strong>labeling_positiony</strong>.</p></li>
+<li><p>Ouvrez le fichier exporté dans le projet QGIS et copiez les lignes souhaitées dans la table du fichier .qgd (ce fichier doit être modifiable).</p></li>
+<li><p>Enregistrez le fichier .qgd et retirez‑le de votre projet avant de supprimer les étiquettes, car QGIS ne peut pas enregistrer les positions d’étiquettes manuelles si le fichier .qgd est présent comme couche dans le projet.</p></li>
+<li><p>Si nécessaire, définissez l’alignement horizontal et vertical de vos coordonnées d’étiquettes dans les paramètres de positionnement de la définition des étiquettes.</p></li>
 </ul>
 </section>
 </section>
 <section id="hydraulic-modeling">
-<h2>Hydraulic modeling<a class="headerlink" href="#hydraulic-modeling" title="Lien vers cette rubrique"></a></h2>
+<h2>Modélisation hydraulique<a class="headerlink" href="#hydraulic-modeling" title="Lien vers cette rubrique"></a></h2>
 <section id="collecting-a-hydr-geometry-corresponds-to-a-basin-geometry-in-mike">
-<h3>Collecting a hydr_geometry (corresponds to a basin geometry in Mike+)<a class="headerlink" href="#collecting-a-hydr-geometry-corresponds-to-a-basin-geometry-in-mike" title="Lien vers cette rubrique"></a></h3>
+<h3>Collecte d’une géométrie hydr_geometry (correspond à une géométrie de bassin dans Mike+)<a class="headerlink" href="#collecting-a-hydr-geometry-corresponds-to-a-basin-geometry-in-mike" title="Lien vers cette rubrique"></a></h3>
 <p>Note:</p>
 <ul class="simple">
 <li><p>Wastewater structures with a hydr_geometry have to be defined as special structures (and not as standard manholes).</p></li>
-<li><p>The detail geometry can be graphically drawn with the <strong>Digitize action</strong>.</p></li>
+<li><p>La géométrie détaillée peut être dessinée graphiquement à l’aide de l’action <strong>Numériser</strong>.</p></li>
 </ul>
 <p>Action:</p>
 <ol class="arabic simple">
-<li><p>Select in layer vw_tww_wastewater_structure the wastewater structure with the i-button</p></li>
-<li><p>Select the <strong>Wastewater Nodes</strong> tab in the Feature Attributes window</p></li>
+<li><p>Sélectionnez, dans la couche vw_tww_wastewater_structure, la structure d’assainissement à l’aide du bouton i « outil d’identification ».</p></li>
+<li><p>Sélectionnez l’onglet <strong>Wastewater Nodes</strong> dans la fenêtre des attributs de l’entité.</p></li>
 </ol>
-<p>or in a more direct way: Select the node with the i-button in layer vw_wastewater_node</p>
+<p>Ou de manière plus directe : sélectionnez le nœud à l’aide du bouton i dans la couche vw_wastewater_node.</p>
 <ol class="arabic simple" start="3">
-<li><p>Expand the part ** additional attributes in special structures**</p></li>
-<li><p>Select a hydr_geometry in the fk_hydr_geometry field or use the <strong>+</strong> button to create a new hydr_geometry.</p></li>
+<li><p>Développez la section <strong>Additional attributes in special structures</strong>.</p></li>
+<li><p>Sélectionnez une hydr_geometry dans le champ fk_hydr_geometry ou utilisez le bouton <strong>+</strong> pour créer une nouvelle hydr_geometry.</p></li>
 </ol>
 <figure class="align-default">
 <img alt="../../_images/hydr_geometry1.jpg" src="../../_images/hydr_geometry1.jpg" />
 </figure>
 <ol class="arabic simple" start="5">
-<li><p>For a new record: Enter a description in the hydr_geometry - Feature Attributes window. This name is also the name of the table in Mike+.</p></li>
+<li><p>Pour un nouvel enregistrement : saisissez une description dans la fenêtre des attributs de l’entité hydr_geometry. Ce nom correspond également au nom de la table dans Mike+.</p></li>
 </ol>
 <figure class="align-default">
 <img alt="../../_images/hydr_geometry2.jpg" src="../../_images/hydr_geometry2.jpg" />
 </figure>
 <ol class="arabic simple" start="6">
-<li><p>With the <strong>Add child object</strong> button, you can now generate the records with which the hydr_geometry is defined analogously to the basin geometry of Mike+ (H, As surface, Ac cross-sectional area).</p></li>
+<li><p>À l’aide du bouton Ajouter un objet enfant, vous pouvez désormais générer les enregistrements servant à définir la hydr_geometry, de manière analogue à la géométrie de bassin dans Mike+ (H, As : surface, Ac : aire de section transversale).</p></li>
 </ol>
 <p>In the table view, the overview of the values is easier.</p>
 <figure class="align-default">
@@ -296,86 +291,83 @@ You have not the change something in the placement, because this rule uses the s
 </figure>
 <p>Note:</p>
 <ul class="simple">
-<li><p>The water depth is the value above the bottom level or the outlet. A hydr_geometry can thus be used for several wastewater structure if they are built similar.</p></li>
-<li><p>Be aware to respect the rules in Mike (e.g. continuous increasing cross_section_area)</p></li>
-<li><p>As long as the hydr_geometry record is not saved, you see in the Features Attribute window just the Obj_Id in brackets. After saving, you will see the identifier you have entered.</p></li>
+<li><p>La hauteur d’eau correspond à la valeur mesurée au‑dessus du niveau de fond ou du niveau de sortie. Une hydr_geometry peut ainsi être utilisée pour plusieurs structures d’assainissement si celles‑ci présentent une construction similaire.</p></li>
+<li><p>  Veillez à respecter les règles définies dans Mike (par exemple une augmentation continue de l’aire de section transversale).</p></li>
+<li><p>Tant que l’enregistrement hydr_geometry n’est pas enregistré, seule la valeur Obj_Id apparaît entre parenthèses dans la fenêtre des attributs de l’entité. Après l’enregistrement, l’identifiant que vous avez saisi est affiché.</p></li>
 </ul>
 </section>
 <section id="hydraulic-modeling-of-an-overflow-prank-weir-leapingweir-pump">
-<h3>Hydraulic modeling of an overflow (prank weir / leapingweir / pump)<a class="headerlink" href="#hydraulic-modeling-of-an-overflow-prank-weir-leapingweir-pump" title="Lien vers cette rubrique"></a></h3>
-<p>There is a special view for overflows, altough it would be possible to edit the overflow-data in layer vw_tww_wastewater_structure.
-The advantage of layer vw_tww_overflow: overflows can be visualized, can be found again and are available in lists.</p>
+<h3>Modélisation hydraulique d’un déversoir (déversoir frontal / déversoir à saut / pompe)<a class="headerlink" href="#hydraulic-modeling-of-an-overflow-prank-weir-leapingweir-pump" title="Lien vers cette rubrique"></a></h3>
+<p>Il existe une vue spécifique pour les déversoirs, même s’il serait également possible de modifier les données de déversoir directement dans la couche vw_tww_wastewater_structure. L’avantage de la couche vw_tww_overflow est que les déversoirs peuvent être visualisés, facilement retrouvés et qu’ils sont disponibles dans des listes.</p>
 <p>Action:</p>
-<p>If it not already exists: In the case of weirs, a second wastewater node has to be created in the wastewater structure.
-A second outlet has already been created (green = discharged combined wastewater) and has not yet been linked to any wastewater node in the overflow structure.</p>
+<p>Si ce n’est pas déjà fait : dans le cas des déversoirs, un second nœud d’assainissement doit être créé dans la structure de wastewater. Une deuxième sortie a déjà été créée (en vert : eaux usées mixtes déversées) et n’est pas encore reliée à un nœud d’assainissement dans la structure de déversoir.</p>
 <ol class="arabic simple">
-<li><p>Select the wastewater structure with the i-button</p></li>
-<li><p>Select the wastewater nodes tab in the Feature Attributes window</p></li>
-<li><p>Create a second wastewater node with the <strong>Add point child object</strong> button. The light blue note at the top of the map tells you what to do!</p></li>
+<li><p>Sélectionnez la structure de wastewater à l’aide du bouton i.</p></li>
+<li><p>Sélectionnez l’onglet Wastewater Nodes dans la fenêtre des attributs de l’entité.</p></li>
+<li><p>Créez un second nœud d’assainissement à l’aide du bouton <strong>Ajouter un objet enfant de type point</strong>. La note bleu clair en haut de la carte vous indique la marche à suivre !</p></li>
 </ol>
 <figure class="align-default">
 <img alt="../../_images/overflow1.jpg" src="../../_images/overflow1.jpg" />
 </figure>
 <ol class="arabic simple" start="4">
-<li><p>Click next to outlet 2 to place the second wastewater node.</p></li>
-<li><p>The Feature Attributes window for this wastewater node appears. Enter a meaningful identifier (e.g. 1.070-WN2 for wastewater node 2 of the 1.070 special structure). This designation also appears in Mike+. The new wastewater node is saved with OK.</p></li>
+<li><p>Cliquez à côté de la sortie 2 pour placer le second nœud d’assainissement.</p></li>
+<li><p>La fenêtre des attributs de l’entité pour ce nœud d’assainissement s’ouvre. Saisissez un identifiant explicite (par exemple : 1.070-WN2 pour le nœud d’assainissement 2 de la structure spéciale 1.070). Cette désignation apparaît également dans Mike+. Le nouveau nœud d’assainissement est ensuite enregistré en cliquant sur OK.</p></li>
 </ol>
 <figure class="align-default">
 <img alt="../../_images/overflow2.jpg" src="../../_images/overflow2.jpg" />
 </figure>
-<p>Close the Feature Attributes window of the wastewater structure.</p>
-<p>To define a new prank weir:</p>
+<p>Fermez la fenêtre des attributs de l’entité de la structure de wastewater.</p>
+<p>Pour définir un nouveau déversoir frontal :</p>
 <ol class="arabic simple" start="6">
-<li><p>Choose the layer vw_tww_overflow in the layergroup Hydraulic.</p></li>
-<li><p>Choose the QGIS standard <strong>Add Point Feature</strong> button and click anyware near to the wastewater_structure</p></li>
+<li><p>Choisissez la couche vw_tww_overflow dans le groupe de couches Hydraulic.</p></li>
+<li><p>Sélectionnez le bouton QGIS standard Ajouter une entité ponctuelle et cliquez n’importe où à proximité de la structure de wastewater.</p></li>
 </ol>
 <div class="admonition hint">
 <p class="admonition-title">Indication</p>
-<p>Because an overflow itself has no geometry, the place you click has no meaning. The geometry will be defined be the linked from- and to-wastewater nodes, see point 9</p>
+<p>Comme un déversoir ne possède pas de géométrie propre, l’emplacement du clic n’a aucune importance. La géométrie est définie par les nœuds de wastewater reliés en amont (from) et en aval (to), voir le point 9.</p>
 </div>
-<p>The overflow Feature Attributes window opens.</p>
+<p>La fenêtre des attributs de l’entité du déversoir s’ouvre.</p>
 <ol class="arabic simple" start="8">
 <li><p>Enter an identifier and choose the overflow_type.</p></li>
-<li><p>Define the two wastewater nodes of the overflow (fk_wastewater_node = from node, fk_overflow_to = to node) by selecting them on the map with the <strong>map identification</strong>-tool.</p></li>
+<li><p>Définissez les deux nœuds de wastewater du déversoir (fk_wastewater_node = nœud amont, fk_overflow_to = nœud aval) en les sélectionnant sur la carte à l’aide de l’<strong>outil Identification</strong> sur la carte.</p></li>
 </ol>
-<p>The attributes in the upper hydraulic section must be filled in, they will be transferred to Mike+.</p>
+<p>Les attributs de la section hydraulique supérieure doivent être renseignés ; ils seront transférés vers Mike+.</p>
 <figure class="align-default">
 <img alt="../../_images/overflow4.jpg" src="../../_images/overflow4.jpg" />
 </figure>
-<p>Close all open Feature Attributes windows.</p>
+<p>Fermez toutes les fenêtres des attributs de l’entité ouvertes.</p>
 <div class="admonition hint">
 <p class="admonition-title">Indication</p>
-<p>The new overflow is drawn as dotted line with arrow. If the line does not appear: the line is defined with the QGIS geometry generator symbol. Control the formula of the geometry generator (layer properties/symbology, select the symbol), control first the name of the <strong>vw_wastewater_node</strong> layer. If this layer is renamed, the formula has to be changed with the new name (e.g. <strong>vw_Abwasserknoten</strong>).</p>
+<p>Le nouveau déversoir est représenté par une ligne en pointillés avec une flèche. Si la ligne n’apparaît pas, cela signifie qu’elle est définie à l’aide d’un symbole de type générateur de géométrie dans QGIS. Vérifiez la formule du générateur de géométrie (propriétés de la couche → symbologie, puis sélection du symbole). Vérifiez d’abord le nom de la couche vw_wastewater_node. Si cette couche a été renommée, la formule doit être adaptée avec le nouveau nom (par exemple <strong>vw_Abwasserknoten</strong>).</p>
 </div>
-<p>To finish, the 2nd outlet has to be linked to the 2nd wastewater node:</p>
+<p>Pour terminer, la deuxième sortie doit être reliée au deuxième nœud de wastewater :</p>
 <ol class="arabic simple">
 <li><p>Select the TWW tool <strong>Connect wastewater networkelements</strong>.</p></li>
-<li><p>Click on the reach near to the outlet</p></li>
-<li><p>Click on the wastewater node</p></li>
-<li><p>Confirm that the connection is created for the <strong>from reach point</strong>.</p></li>
+<li><p>Cliquez sur le tronçon « reach » à proximité de la sortie.</p></li>
+<li><p>Cliquez sur le nœud de wastewater.</p></li>
+<li><p>Confirmez que la connexion est créée pour le <strong>from reach point</strong>.</p></li>
 </ol>
 <figure class="align-default">
 <img alt="../../_images/connect_2_node.jpg" src="../../_images/connect_2_node.jpg" />
 </figure>
 </section>
 <section id="overflow-characteristic">
-<h3>Overflow characteristic<a class="headerlink" href="#overflow-characteristic" title="Lien vers cette rubrique"></a></h3>
-<p>In the case of a leaping weir, a pump or under special conditions, an overflow characteristic can be defined for the overflow:</p>
-<p>You can select an existing characteristic in the field fk_overflow_char or you create a new characteristic with the green + button.</p>
-<p>The Feature Attributes window for the overflow characteristic appears:</p>
+<h3>Caractéristiques du déversoir<a class="headerlink" href="#overflow-characteristic" title="Lien vers cette rubrique"></a></h3>
+<p>Dans le cas d’un déversoir à saut, d’une pompe ou dans des conditions particulières, une caractéristique de déversoir peut être définie pour le déversoir :</p>
+<p>Vous pouvez sélectionner une caractéristique existante dans le champ fk_overflow_char ou créer une nouvelle caractéristique à l’aide du bouton vert +.</p>
+<p>La fenêtre des attributs de l’entité pour la caractéristique de déversoir s’ouvre :</p>
 <figure class="align-default">
 <img alt="../../_images/overflow_char1.jpg" src="../../_images/overflow_char1.jpg" />
 </figure>
 <ol class="arabic simple">
-<li><p>Here too, the identifer is later adopted in Mike+ as a table name for a QH relationship, which is used, for example, in a local controller.</p></li>
-<li><p>Define the necessary HQ or QQ values with the <strong>add child object</strong> button. Be sure to choose the correct tab corresponding to the choice in <strong>kind_overflow_char</strong></p></li>
+<li><p>Ici aussi, l’identifiant est repris ultérieurement dans Mike+ comme nom de table pour une relation QH, laquelle est utilisée par exemple dans un régulateur local.</p></li>
+<li><p>Définissez les valeurs HQ ou QQ nécessaires à l’aide du bouton <strong>Ajouter un objet</strong> enfant. Veillez à sélectionner l’onglet correct correspondant au choix effectué dans <strong>kind_overflow_char</strong>.</p></li>
 </ol>
 </section>
 </section>
 <section id="further-informations">
-<h2>Further informations<a class="headerlink" href="#further-informations" title="Lien vers cette rubrique"></a></h2>
-<p>Further Q &amp; A’s you can find in the
-<a class="reference external" href="https://github.com/orgs/teksi/discussions/categories/q-a">TWW Discussion section</a></p>
+<h2>Informations complémentaires<a class="headerlink" href="#further-informations" title="Lien vers cette rubrique"></a></h2>
+<p>Vous trouverez d’autres questions‑réponses dans la section de discussion TWW : <a class="reference external" href="https://github.com/orgs/teksi/discussions/categories/q-a">TWW Discussion section</a>.</p>
 </section>
 </section>
 
