@@ -149,8 +149,7 @@ def set_defaults_and_triggers(
                 else:
                     raise Exception(f"Must be owner of tww_od.{table_name[0]} to create triggers")
         else:
-            cursor = SqlContent(
-                f"""select 1 from information_schema.columns
+            cursor = SqlContent(f"""select 1 from information_schema.columns
                 WHERE table_schema = 'tww_od'
                 AND table_name = '{table_name[0]}'
                 and column_name = 'last_modification'"""
