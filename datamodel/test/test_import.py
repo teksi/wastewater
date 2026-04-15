@@ -307,8 +307,7 @@ class TestImport(unittest.TestCase, DbTestBase):
             LEFT JOIN {schema}.reach_point rp ON rp.obj_id = re.fk_reach_point_from\
             LEFT JOIN {schema}.wastewater_networkelement wn ON wn.obj_id = rp.fk_wastewater_networkelement\
             LEFT JOIN tww_app.vw_tww_wastewater_structure ws ON ws.obj_id = wn.fk_wastewater_structure\
-            WHERE ws.obj_id = %(obj_id)s"
-            ).format(schema=psycopg.sql.Identifier("tww_od")),
+            WHERE ws.obj_id = %(obj_id)s").format(schema=psycopg.sql.Identifier("tww_od")),
             {"obj_id": obj_id},
         )
         row = cur.fetchone()
@@ -468,8 +467,7 @@ class TestImport(unittest.TestCase, DbTestBase):
             LEFT JOIN {schema}.reach_point rp ON rp.obj_id = re.fk_reach_point_from\
             LEFT JOIN {schema}.wastewater_networkelement wn ON wn.obj_id = rp.fk_wastewater_networkelement\
             LEFT JOIN tww_app.vw_tww_wastewater_structure ws ON ws.obj_id = wn.fk_wastewater_structure\
-            WHERE ws.obj_id = %(obj_id)s"
-            ).format(schema=psycopg.sql.Identifier("tww_od")),
+            WHERE ws.obj_id = %(obj_id)s").format(schema=psycopg.sql.Identifier("tww_od")),
             {"obj_id": obj_id},
         )
         row = cur.fetchone()
@@ -619,8 +617,7 @@ class TestImport(unittest.TestCase, DbTestBase):
             LEFT JOIN {schema}.reach_point rp ON rp.obj_id = re.fk_reach_point_from\
             LEFT JOIN {schema}.wastewater_networkelement wn ON wn.obj_id = rp.fk_wastewater_networkelement\
             LEFT JOIN tww_app.vw_tww_wastewater_structure ws ON ws.obj_id = wn.fk_wastewater_structure\
-            WHERE ws.obj_id = %(obj_id)s"
-            ).format(schema=psycopg.sql.Identifier("tww_od")),
+            WHERE ws.obj_id = %(obj_id)s").format(schema=psycopg.sql.Identifier("tww_od")),
             {"obj_id": obj_id},
         )
         row = cur.fetchone()
