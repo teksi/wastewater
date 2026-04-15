@@ -546,6 +546,7 @@ FROM tww_od.catchment_area ca
 	LEFT JOIN tww_vl.catchment_area_retention_planned rp ON rp.code = ca.retention_planned
 	LEFT JOIN tww_vl.catchment_area_drainage_system_planned_export_rel_agxx dsp_rev ON dsp_rev.code = ca.drainage_system_planned
 	LEFT JOIN tww_vl.catchment_area_drainage_system_current_export_rel_agxx dsc_rev ON dsc_rev.code = ca.drainage_system_current
+	WHERE ca.drainage_system_current != 9068 --exclude drainage catchment areas as they are not included in AG-96
 ;
 
 
