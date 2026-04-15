@@ -23,6 +23,7 @@ for f in ${DIR}/*\_*.ts
 do
   FOUND=1
 	lrelease $f ${f%.ts}.qm
+  cp ${f%.ts}.qm ${f%.ts}_CH.qm
 	rm $f # do not package ts files
 done
 

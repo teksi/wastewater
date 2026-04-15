@@ -59,15 +59,15 @@ class TwwProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
         self.configureSelectionAction = QAction(self.tr("Configure Select"), self.selectButton)
         self.configureSelectionAction.triggered.connect(self.onConfigureSelectAction)
         self.selectButton.addAction(self.configureSelectionAction)
-        self.setAttribute(Qt.WA_DeleteOnClose)
+        self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
         self.canvas = canvas
         self.addDockWidget = add_dock_widget
 
         self.plotWidget = None
 
     def showIt(self):
-        # self.setLocation( Qt.BottomDockWidgetArea )
-        self.location = Qt.BottomDockWidgetArea
+        # self.setLocation( Qt.DockWidgetArea.BottomDockWidgetArea )
+        self.location = Qt.DockWidgetArea.BottomDockWidgetArea
         minsize = self.minimumSize()
         maxsize = self.maximumSize()
         self.setMinimumSize(minsize)
@@ -129,7 +129,9 @@ class TwwProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
         rw_planned_checkbox = QCheckBox(self.tr("Rainwater planned"))
         status, _ = QgsProject.instance().readBoolEntry("Tww", "FollowRainwaterPlanned", True)
         rw_planned_checkbox.setChecked(status)
-        btn_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+        btn_box = QDialogButtonBox(
+            QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel
+        )
         btn_box.accepted.connect(dlg.accept)
         btn_box.rejected.connect(dlg.reject)
         dlg.layout().addWidget(ww_current_checkbox)
@@ -138,7 +140,7 @@ class TwwProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
         dlg.layout().addWidget(rw_planned_checkbox)
         dlg.layout().addWidget(btn_box)
 
-        if dlg.exec_():
+        if dlg.exec():
             QgsProject.instance().writeEntry(
                 "Tww", "FollowWastewaterCurrent", ww_current_checkbox.isChecked()
             )

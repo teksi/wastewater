@@ -168,18 +168,18 @@ class InterlisImporterExporter:
             tww_session = self._import_from_intermediate_schema(import_model)
 
             if show_selection_dialog:
-                from PyQt5.QtCore import Qt
-                from PyQt5.QtWidgets import QApplication
+                from qgis.PyQt.QtCore import Qt
+                from qgis.PyQt.QtWidgets import QApplication, QDialog
 
                 self._progress_done(90, "Import objects selection...")
                 import_dialog = InterlisImportSelectionDialog()
                 import_dialog.init_with_session(tww_session)
                 QApplication.restoreOverrideCursor()
-                if import_dialog.exec_() == import_dialog.Rejected:
+                if import_dialog.exec() == QDialog.DialogCode.Rejected:
                     tww_session.rollback()
                     tww_session.close()
                     raise InterlisImporterExporterStopped()
-                QApplication.setOverrideCursor(Qt.WaitCursor)
+                QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
             else:
                 self._progress_done(90, "Commit session...")
                 tww_session.commit()
@@ -350,7 +350,7 @@ class InterlisImporterExporter:
             )
         else:
             if user_interaction:
-                from PyQt5.QtWidgets import QMessageBox
+                from qgis.PyQt.QtWidgets import QMessageBox
 
                 logger.debug("Adding QMessageBox ...")
                 # Add Message box to ask if export should still be continued or not
@@ -709,19 +709,22 @@ class InterlisImporterExporter:
                 f"SELECT schema_name FROM information_schema.schemata WHERE schema_name = '{config.ABWASSER_SCHEMA}';"
             )
             if cursor.rowcount == 0:
-                cursor.execute(f"CREATE SCHEMA {config.ABWASSER_SCHEMA} CASCADE;")
+                cursor.execute(f"CREATE SCHEMA {config.ABWASSER_SCHEMA};")
             else:
                 cursor.execute(
                     f"SELECT table_name FROM information_schema.tables WHERE table_schema = '{config.ABWASSER_SCHEMA}';"
                 )
                 logger.info(f"Truncating all tables in schema {config.ABWASSER_SCHEMA}")
                 rows = cursor.fetchall()
-                for row in rows:
-                    cursor.execute(f"TRUNCATE TABLE {config.ABWASSER_SCHEMA}.{row[0]} CASCADE;")
                 if recreate_tables:
                     logger.info(f"Deleting all tables in schema {config.ABWASSER_SCHEMA} ")
                     for row in rows:
                         cursor.execute(f"DROP TABLE {config.ABWASSER_SCHEMA}.{row[0]} CASCADE;")
+                else:
+                    for row in rows:
+                        cursor.execute(
+                            f"TRUNCATE TABLE {config.ABWASSER_SCHEMA}.{row[0]} CASCADE;"
+                        )
 
     def _create_ili_schema(
         self, models, ext_columns_no_constraints=False, create_basket_col=False
