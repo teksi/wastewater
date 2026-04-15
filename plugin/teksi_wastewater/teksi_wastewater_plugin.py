@@ -156,7 +156,7 @@ class TeksiWastewaterPlugin:
 
         fp = os.path.join(os.path.abspath(os.path.dirname(__file__)), "metadata.txt")
 
-        ini_text = QSettings(fp, QSettings.IniFormat)
+        ini_text = QSettings(fp, QSettings.Format.IniFormat)
         verno = ini_text.value("version")
 
         self.logger.info("TEKSI Wastewater plugin version " + verno + " started")
@@ -545,7 +545,7 @@ class TeksiWastewaterPlugin:
         if not self.wizarddock:
             self.wizarddock = TwwWizard(self.iface.mainWindow(), self.iface)
         self.logger.debug("Opening Wizard")
-        self.iface.addDockWidget(Qt.LeftDockWidgetArea, self.wizarddock)
+        self.iface.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, self.wizarddock)
         self.wizarddock.show()
 
     def connectNetworkElements(self, checked):
@@ -608,7 +608,7 @@ class TeksiWastewaterPlugin:
 
     def updateSymbology(self):
         try:
-            with OverrideCursor(Qt.WaitCursor):
+            with OverrideCursor(Qt.CursorShape.WaitCursor):
                 DatabaseUtils.update_symbology()
             QMessageBox.information(
                 self.iface.mainWindow(),
@@ -625,14 +625,14 @@ class TeksiWastewaterPlugin:
 
     def showSettings(self):
         settings_dlg = TwwSettingsDialog(self.iface.mainWindow())
-        settings_dlg.exec_()
+        settings_dlg.exec()
 
         self.update_admin_mode()
 
     def about(self):
         from .gui.about_dialog import AboutDialog
 
-        AboutDialog(self.iface.mainWindow()).exec_()
+        AboutDialog(self.iface.mainWindow()).exec()
 
     def actionExportClicked(self):
         if self.interlisImporterExporter is None:
@@ -775,7 +775,9 @@ class TeksiWastewaterPlugin:
                 )
                 self.selectionExtenderWidget.setController(self.selectionExtenderController)
 
-                self.iface.addDockWidget(Qt.RightDockWidgetArea, self.selectionExtenderWidget)
+                self.iface.addDockWidget(
+                    Qt.DockWidgetArea.RightDockWidgetArea, self.selectionExtenderWidget
+                )
 
                 self.selectionExtenderWidget.visibilityChanged.connect(
                     self._onSelectionExtenderVisibilityChanged

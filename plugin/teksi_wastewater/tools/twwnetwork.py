@@ -143,7 +143,7 @@ class TwwGraphManager(QObject):
         and recreate the graph.
         """
         try:
-            with OverrideCursor(Qt.WaitCursor):
+            with OverrideCursor(Qt.CursorShape.WaitCursor):
                 DatabaseUtils.refresh_matviews()
             self.message_emitted.emit(
                 self.tr("Success"),
