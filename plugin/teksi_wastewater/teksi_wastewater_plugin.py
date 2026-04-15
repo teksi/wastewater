@@ -647,7 +647,8 @@ class TeksiWastewaterPlugin:
             except ImportError as e:
                 self.iface.messageBar().pushMessage(
                     "Error",
-                    "Could not load Interlis exporter due to unmet dependencies. See logs for more details.",
+                    "Could not load Interlis exporter due to unmet dependencies.",
+                    showMore=f"Error details:\n{str(e)}",
                     level=Qgis.Critical,
                 )
                 self.logger.error(str(e))
@@ -656,7 +657,8 @@ class TeksiWastewaterPlugin:
             except JavaNotFoundError as e:
                 self.iface.messageBar().pushMessage(
                     "Error",
-                    "Could not load Interlis exporter due to missing Java. See logs for more details.",
+                    "Could not load Interlis exporter due to missing Java.",
+                    showMore=f"Error details:\n{str(e)}",
                     level=Qgis.Critical,
                 )
                 self.logger.error(str(e))
@@ -687,7 +689,8 @@ class TeksiWastewaterPlugin:
             except ImportError as e:
                 self.iface.messageBar().pushMessage(
                     "Error",
-                    "Could not load Interlis importer due to unmet dependencies. See logs for more details.",
+                    "Could not load Interlis importer due to unmet dependencies.",
+                    showMore=f"Error details:\n{str(e)}",
                     level=Qgis.Critical,
                 )
                 self.logger.error(str(e))
@@ -696,7 +699,8 @@ class TeksiWastewaterPlugin:
             except JavaNotFoundError as e:
                 self.iface.messageBar().pushMessage(
                     "Error",
-                    "Could not load Interlis importer due to missing Java. See logs for more details.",
+                    "Could not load Interlis importer due to missing Java.",
+                    showMore=f"Error details:\n{str(e)}",
                     level=Qgis.Critical,
                 )
                 self.logger.error(str(e))
