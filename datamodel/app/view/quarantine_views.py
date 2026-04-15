@@ -818,6 +818,7 @@ def tww_import_logic(connection: psycopg.Connection):
 
     update_fnc_sql = """
     CREATE OR REPLACE FUNCTION tww_app.transfer_quarantine_to_live()
+    RETURNS VOID
 LANGUAGE plpgsql
 AS $$
 DECLARE
@@ -1193,7 +1194,7 @@ $$;
             connection=connection,
             table_schema="tww_app",
             table_name="vw_file",
-            pkey="obj_id",
+            pkey='obj_id',
             remove_pkey=False,
             indent=6,
             skip_columns=["dataowner", "provider"],
@@ -1206,7 +1207,7 @@ $$;
             connection=connection,
             table_schema="tww_app",
             table_name="vw_file",
-            pkey="obj_id",
+            pkey='obj_id',
             remove_pkey=False,
             indent=6,
             skip_columns=["dataowner", "provider"],
