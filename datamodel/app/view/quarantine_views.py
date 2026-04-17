@@ -369,12 +369,12 @@ WHERE secondary.idx > 1)
         LEFT JOIN tww_od.special_structure ss ON ss.obj_id = ws.obj_id
         LEFT JOIN (
             SELECT obj_id
-            , id
+            , uuidoid
             FROM tww_od.import_reach_point_quarantine
             ) q ON q.obj_id = rp.obj_id
         LEFT JOIN (
             SELECT ws_obj_id
-            , id
+            , uuidoid
             , tww_deleted
             FROM tww_od.import_ws_quarantine
             ) q_ws ON q_ws.ws_obj_id = ws.obj_id
