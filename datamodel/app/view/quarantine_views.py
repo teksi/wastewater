@@ -987,11 +987,11 @@ BEGIN
                         IF vo_oid IS NULL THEN
                         INSERT INTO tww_od.data_media(remark) VALUES ('generated on quarantine import')
                         RETURNING obj_id into vo_oid;
-                            RAISE NOTICE  'Created new data_media (obj_id=%) for file import as data_media was not specified for file %, please edit manually',
-                            , vo_oid, fi_record.path_relative;
+                            RAISE NOTICE 'Created new data_media (obj_id=%) for file import as data_media was not specified for file %, please edit manually',
+                            vo_oid, fi_record.path_relative;
                         ELSE
-                            RAISE NOTICE  'Using data_media (obj_id=%) for file import as data_media was not specified for file %, please edit manually',
-                            , vo_oid, fi_record.path_relative;;
+                            RAISE NOTICE 'Using data_media (obj_id=%) for file import as data_media was not specified for file %, please edit manually',
+                            vo_oid, fi_record.path_relative;;
                         END IF;
                         ELSE NULL;
                     END IF;
