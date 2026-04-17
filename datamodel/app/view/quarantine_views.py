@@ -109,7 +109,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection):
         ) dd ON dd.fk_wastewater_structure = ws.obj_id
         LEFT JOIN (
             SELECT ws_obj_id
-            , id
+            , uuidoid
             , tww_deleted
             FROM tww_od.import_ws_quarantine
             ) q ON q.ws_obj_id = ws.obj_id
