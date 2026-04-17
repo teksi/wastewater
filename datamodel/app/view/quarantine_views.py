@@ -274,7 +274,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection):
     cursor.execute(update_trigger_sql)
 
     defaults = """
-    ALTER VIEW tww_app.vw_tww_import_manhole ALTER id SET DEFAULT gen_random_uuid();
+    ALTER VIEW tww_app.vw_tww_import_manhole ALTER uuidoid SET DEFAULT gen_random_uuid();
     """
     cursor.execute(defaults)
 
@@ -479,7 +479,7 @@ WHERE secondary.idx > 1)
     cursor.execute(update_trigger_sql)
 
     defaults = """
-    ALTER VIEW tww_app.vw_tww_import_reach_point ALTER id SET DEFAULT gen_random_uuid();
+    ALTER VIEW tww_app.vw_tww_import_reach_point ALTER uuidoid SET DEFAULT gen_random_uuid();
     """
     cursor.execute(defaults)
 
