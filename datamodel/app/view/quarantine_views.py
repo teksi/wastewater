@@ -991,7 +991,7 @@ BEGIN
                             vo_oid, fi_record.path_relative;
                         ELSE
                             RAISE NOTICE 'Using data_media (obj_id=%) for file import as data_media was not specified for file %, please edit manually',
-                            vo_oid, fi_record.path_relative;;
+                            vo_oid, fi_record.path_relative;
                         END IF;
                         ELSE NULL;
                     END IF;
