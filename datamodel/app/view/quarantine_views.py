@@ -108,11 +108,11 @@ def vw_tww_import_manhole(connection: psycopg.Connection):
           INNER JOIN tww_od.structure_part sp on sp.obj_id=cls.obj_id
         ) dd ON dd.fk_wastewater_structure = ws.obj_id
         LEFT JOIN (
-            SELECT obj_id
+            SELECT ws_obj_id
             , id
             , tww_deleted
             FROM tww_od.import_ws_quarantine
-            ) q ON q.obj_id = ws.obj_id
+            ) q ON q.ws_obj_id = ws.obj_id
         WHERE ma.obj_id IS NOT NULL or ss.obj_id IS NOT NULL AND q.tww_deleted IS NOT TRUE;
     """.format(
         main_co_cols=select_columns(
@@ -373,11 +373,11 @@ WHERE secondary.idx > 1)
             FROM tww_od.import_reach_point_quarantine
             ) q ON q.obj_id = rp.obj_id
         LEFT JOIN (
-            SELECT obj_id
+            SELECT ws_obj_id
             , id
             , tww_deleted
             FROM tww_od.import_ws_quarantine
-            ) q_ws ON q_ws.obj_id = ws.obj_id
+            ) q_ws ON q_ws.ws_obj_id = ws.obj_id
         WHERE q_ws.tww_deleted IS NOT TRUE;
     """.format(
         rp_columns=select_columns(
