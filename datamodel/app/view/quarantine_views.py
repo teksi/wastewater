@@ -43,7 +43,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection):
 
         , {ma_columns}
         , {ss_columns}
-        , main_co.level - ss.upper_elevation as ss__upper_elevation_depth,
+        , main_co.level - ss.upper_elevation as ss__upper_elevation_depth
         , {main_co_cols}
         , main_co_sp.renovation_demand as co_renovation_demand
         , main_co_sp.remark as co_remark
@@ -345,7 +345,7 @@ WHERE secondary.idx > 1)
           {rp_columns}
         , NULL::smallint as tww_level_measurement_kind
         , co.level - rp.level as co_depth
-        , ss.upper_elevation - rp.level as co_depth
+        , ss.upper_elevation - rp.level as ss_upper_elevation_depth
         , ws.status as ws_status
         , CASE
           WHEN re_from.obj_id IS NOT NULL THEN False
