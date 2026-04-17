@@ -214,7 +214,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection):
     DROP TRIGGER IF EXISTS vw_tww_import_manhole_INSERT ON tww_app.vw_tww_import_manhole;
 
     CREATE TRIGGER vw_tww_import_manhole_INSERT INSTEAD OF INSERT ON tww_app.vw_tww_import_manhole
-      FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vvw_tww_import_manhole_INSERT();
+      FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_import_manhole_INSERT();
     """.format(
         insert_wsq=insert_command(
             connection=connection,
@@ -419,7 +419,7 @@ WHERE secondary.idx > 1)
     DROP TRIGGER IF EXISTS vw_tww_import_reach_point_INSERT ON tww_app.vw_tww_import_reach_point;
 
     CREATE TRIGGER vw_tww_import_reach_point_INSERT INSTEAD OF INSERT ON tww_app.vw_tww_import_reach_point
-      FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vvw_tww_import_reach_point_INSERT();
+      FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_import_reach_point_INSERT();
     """.format(
         insert_rpq=insert_command(
             connection=connection,
