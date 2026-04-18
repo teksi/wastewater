@@ -48,7 +48,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">Guide d’installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Guide utilisateur</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">Aperçu de TWW</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">Digitizing in TWW</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Numérisation dans TWW</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="dataentry.html">Saisie de données</a></li>
 <li class="toctree-l3"><a class="reference internal" href="digitizingwastewaterstructures.html">Numériser les structures assainissement</a></li>
 <li class="toctree-l3"><a class="reference internal" href="digitizingdetailedgeometry.html">Numérisation de géométries détaillées</a></li>
@@ -58,15 +58,15 @@
 <li class="toctree-l4"><a class="reference internal" href="#digitizing">Numérisation</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#further-attributes-and-classes">Autres classes et attributs</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#geometry-synchronization">Synchronisation de la géométrie</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#digitizing-flushing-nozzle">Digitizing flushing nozzle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#digitizing-flushing-nozzle">Numérisation d’une buse de chasse</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="deletingobjects.html">Suppression d’objets</a></li>
 <li class="toctree-l3"><a class="reference internal" href="digitizingcatchments.html">Numérisation des bassins versants</a></li>
-<li class="toctree-l3"><a class="reference internal" href="importingdata.html">Importing data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="importingdata.html">Importation des données</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../editing/index.html">Editing in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../editing/index.html">Édition dans TWW</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">Profils en long</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">Outils de poursuite de réseau</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">Impression de plans</a></li>
@@ -96,7 +96,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Guide utilisateur</a></li>
-          <li class="breadcrumb-item"><a href="index.html">Digitizing in TWW</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Numérisation dans TWW</a></li>
       <li class="breadcrumb-item active">Numérisation de canalisations</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/user-guide/digitizing/digitizingchannels.rst.txt" rel="nofollow"> Afficher la source de la page</a>
@@ -157,15 +157,14 @@ Ainsi, pour numériser une conduite simple comportant 2 points, il faudra deux c
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If you do not enter an <cite>identifier</cite> (reach-identifier) in the General tab, TWW will enter the <cite>obj_id</cite> also as identifier (you can change later). As default, the <cite>identifier</cite> of the reach is also the <cite>ws_identifier</cite> of the channel. As default, the reachpoint-identifier is set to the reachpoint-obj_id.</p>
+<p>Si vous ne saisissez pas d’<cite>identifier</cite> (identifiant du tronçon) dans l’onglet General, TWW utilisera automatiquement l’<cite>obj_id</cite> comme identifiant (ce paramètre peut être modifié ultérieurement). Par défaut, l’<cite>identifier</cite> du tronçon est également utilisé comme <cite>ws_identifier</cite> du canal. Par défaut également, l’identifiant du point de tronçon « reachpoint » est défini sur le obj_id du point de tronçon.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>See <a class="reference internal" href="#reach-geometrysync"><span class="std std-ref">Synchronisation de la géométrie</span></a> for automatic reachpoint levels when snapping to wastewater nodes with level.</p>
+<p>Voir <a class="reference internal" href="#reach-geometrysync"><span class="std std-ref">Synchronisation de la géométrie</span></a> pour la définition automatique des niveaux de point d’aboutissement lors de l’aimantation aux nœuds d’eaux usées disposant d’un niveau.</p>
 </div>
 <ul class="simple">
-<li><p>For the profile type you will get a list of defined profiles.
-You can edit the pipe profiles in <strong>pipe_profile</strong> table (layergroup Wastewater Structures).</p></li>
+<li><p>Pour le type de profil, vous obtenez une liste des profils définis. Vous pouvez modifier les profils de conduites dans la table <strong>pipe_profile</strong> (groupe de couches Wastewater Structures).</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/wizard_reach_form_profiletypes.jpg" src="../../_images/wizard_reach_form_profiletypes.jpg" />
@@ -179,11 +178,11 @@ You can edit the pipe profiles in <strong>pipe_profile</strong> table (layergrou
 </figure>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The standard-fields on the <strong>General</strong> tab (and only those fields) do reuse the last entered attribute value when you add new reaches with the wizard. The QGIS option <strong>Reuse the last entered attribute values</strong> and the default values have no influence on these fields.</p>
+<p>Les champs standard de l’onglet <strong>General</strong> (et uniquement ces champs) réutilisent la dernière valeur d’attribut saisie lorsque vous ajoutez de nouveaux tronçons à l’aide de l’assistant. L’option QGIS <strong>Réutiliser les dernières valeurs d’attribut saisies</strong> ainsi que les valeurs par défaut n’ont aucune influence sur ces champs.</p>
 </div>
 <ul class="simple">
 <li><p>Vous pouvez éditer à nouveau un objet en sélectionnant les boutons <strong>Basculer en mode édition</strong> et <strong>Identifier les entités</strong> avant de sélectionner l’objet désiré avec le curseur.</p></li>
-<li><p>If you do not select the edit mode, you can just look at the existing data.</p></li>
+<li><p>Si vous ne sélectionnez pas le mode édition, vous pouvez uniquement consulter les données existantes.</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/reach_info_reach3.jpg" src="../../_images/reach_info_reach3.jpg" />
@@ -194,9 +193,9 @@ You can edit the pipe profiles in <strong>pipe_profile</strong> table (layergrou
 </section>
 <section id="further-attributes-and-classes">
 <h2>Autres classes et attributs<a class="headerlink" href="#further-attributes-and-classes" title="Lien vers cette rubrique"></a></h2>
-<p>When a line object is digitized, a series of steps take place in the background in the TWW database:</p>
+<p>Lorsqu’un objet linéaire est numérisé, une série d’étapes se déroulent en arrière‑plan dans la base de données TWW :</p>
 <ul class="simple">
-<li><p>a new object is added in the <strong>wastewater structure</strong> class (<code class="docutils literal notranslate"><span class="pre">wastewater_structure</span></code>)</p></li>
+<li><p>Un nouvel objet est ajouté dans la classe wastewater structure (<cite>wastewater_structure</cite>).</p></li>
 <li><p>a new object is added and linked in the <strong>channel</strong> subclass (<code class="docutils literal notranslate"><span class="pre">channel</span></code>)</p></li>
 <li><p>a new reach object is generated in the <strong>wastewater network elements</strong> class (<code class="docutils literal notranslate"><span class="pre">wastewater_networkelement</span></code>)
 and its subclass <strong>reach</strong> (<code class="docutils literal notranslate"><span class="pre">reach</span></code>)</p></li>
@@ -205,34 +204,32 @@ and its subclass <strong>reach</strong> (<code class="docutils literal notransla
 </section>
 <section id="geometry-synchronization">
 <span id="reach-geometrysync"></span><h2>Synchronisation de la géométrie<a class="headerlink" href="#geometry-synchronization" title="Lien vers cette rubrique"></a></h2>
-<p>When inserting a new reach using the wizard, the start and end points of the line geometry determine the level of the corresponding reach points (as shown in the pictures above).
-These values can be overwritten before saving.
-Upon saving, the level values <cite>rp_from_level</cite> and <cite>rp_to_level</cite> are used to define the Z value of the first and last vertex of a reach.</p>
-<p>When updating a reach, there are several cases:</p>
+<p>Lors de l’insertion d’un nouveau tronçon à l’aide de l’assistant, les points de début et de fin de la géométrie linéaire déterminent le niveau des points de tronçon correspondants (comme illustré dans les images ci‑dessus). Ces valeurs peuvent être modifiées avant l’enregistrement. Lors de l’enregistrement, les valeurs de niveau <cite>rp_from_level</cite> et <cite>rp_to_level</cite> sont utilisées pour définir la valeur Z du premier et du dernier sommet du tronçon.</p>
+<p>Lors de la mise à jour d’un tronçon, plusieurs cas peuvent se présenter :</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li><p>The first/last reach geometry vertex was not changed, but the <cite>rp_from_level</cite> / <cite>rp_to_level</cite> was. In this case, the level value <cite>rp_from_level</cite> / <cite>rp_to_level</cite> is used to set the Z value of the first / last vertex of the reach</p></li>
-<li><p>The first/last reach geometry vertex was changed, but the <cite>rp_from_level</cite> / <cite>rp_to_level</cite> was not. In this case, the QGIS variable <cite>&#64;tww_update_lvl_by_geom</cite> defines whether the <cite>rp_from_level</cite> / <cite>rp_to_level</cite> is overwritten by the Z value of the first / last vertex of the reach</p></li>
-<li><p>Both the first/last reach geometry vertex and the <cite>rp_from_level</cite> / <cite>rp_to_level</cite> were changed. The <cite>rp_from_level</cite> / <cite>rp_to_level</cite> take precendence</p></li>
-<li><p>Neither the first/last reach geometry vertex nor the <cite>rp_from_level</cite> / <cite>rp_to_level</cite> was changed. No changes occur</p></li>
+<li><p>Le premier/dernier sommet de la géométrie du tronçon n’a pas été modifié, mais la valeur <cite>rp_from_level</cite>/<cite>rp_to_level</cite> l’a été. Dans ce cas, la valeur de niveau <cite>rp_from_level</cite>/<cite>rp_to_level</cite> est utilisée pour définir la valeur Z du premier/dernier sommet du tronçon.</p></li>
+<li><p>Le premier/dernier sommet de la géométrie du tronçon a été modifié, mais la valeur <cite>rp_from_level</cite>/rp_to_level` ne l’a pas été. Dans ce cas, la variable QGIS <cite>&#64;tww_update_lvl_by_geom</cite> détermine si la valeur <cite>rp_from_level</cite>/<cite>rp_to_level</cite> est écrasée par la valeur Z du premier/dernier sommet du tronçon.</p></li>
+<li><p>Le premier/dernier sommet de la géométrie du tronçon ainsi que la valeur <cite>rp_from_level</cite>/<cite>rp_to_level</cite> ont tous deux été modifiés. Les valeurs <cite>rp_from_level</cite>/<cite>rp_to_level</cite> ont la priorité.</p></li>
+<li><p>Ni le premier/dernier sommet de la géométrie du tronçon, ni la valeur <cite>rp_from_level/`rp_to_level</cite> n’ont été modifiés. Aucun changement n’est appliqué.</p></li>
 </ol>
 </div></blockquote>
-<p>Synchronization of levels works also for intermediate points (points between the reachpoints), if you snap while digitizing to 3d-points on another layer (e.g. a textfile as result of gps-measurement with x,y,z coordinates added to the QGIS-project). Be aware, that you have then a full 3d-reach, but on the export to INTERLIS these intermediate-levels will be lost, because VSA-DSS version 2020 does not support 3d for reach-geometry.</p>
+<p>La synchronisation des niveaux fonctionne également pour les points intermédiaires (points situés entre les points de tronçon), si vous vous aimantez, lors de la numérisation, à des points 3D d’une autre couche (par exemple un fichier texte issu de mesures GPS avec des coordonnées x, y, z ajoutées au projet QGIS). Attention toutefois : vous obtenez alors un tronçon entièrement en 3D, mais lors de l’export vers INTERLIS, ces niveaux intermédiaires seront perdus, car la version 2020 de VSA‑DSS ne prend pas en charge la géométrie 3D des tronçons.</p>
 </section>
 <section id="digitizing-flushing-nozzle">
-<h2>Digitizing flushing nozzle<a class="headerlink" href="#digitizing-flushing-nozzle" title="Lien vers cette rubrique"></a></h2>
+<h2>Numérisation d’une buse de chasse<a class="headerlink" href="#digitizing-flushing-nozzle" title="Lien vers cette rubrique"></a></h2>
 <div class="versionadded">
 <p><span class="versionmodified added">Ajouté dans la version 2025.0.</span></p>
 </div>
-<p>TWW is configured to digitize flushing nozzles as structure part of the channel.</p>
-<p>You can digitize a flushing nozzle</p>
+<p>TWW est configuré pour numériser les buses de rinçage en tant qu’élément de structure du canal.</p>
+<p>Vous pouvez numériser une buse de rinçage.</p>
 <ul class="simple">
-<li><p>starting on the Feature Attribut window of vw_tww_reach with tab <strong>Structure Parts</strong>. Add point child feature and digitize the point on the map. Or</p></li>
-<li><p>create a new point on vw_flushing_nozzle and choose the connected channel for field fk_wastewater_structure on the map.</p></li>
+<li><p>en commençant depuis la fenêtre des attributs de l’entité vw_tww_reach, onglet <strong>Structure Parts</strong>. Ajoutez une entité fille de type point et numérisez le point sur la carte. Ou</p></li>
+<li><p>créez un nouveau point dans <cite>vw_flushing_nozzle</cite> et sélectionnez le canal connecté pour le champ <cite>fk_wastewater_structure</cite> directement sur la carte.</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>A flushing nozzle is connected to a wastewater_structure, but it’s geometry is totally independent of the wastewater_structure-geometry. If you move the channel, you have to move the flushing nozzle manually.</p>
+<p>Une buse de rinçage est reliée à wastewater_structure, mais sa géométrie est totalement indépendante de la géométrie de cette structure. Si vous déplacez le canal, vous devez déplacer la buse de rinçage manuellement.</p>
 </div>
 </section>
 </section>

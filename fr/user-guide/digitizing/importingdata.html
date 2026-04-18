@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Importing data &mdash; Documentation TWW dev</title>
+  <title>Importation des données &mdash; Documentation TWW dev</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
 
@@ -20,7 +20,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Recherche" href="../../search.html" />
-    <link rel="next" title="Editing in TWW" href="../editing/index.html" />
+    <link rel="next" title="Édition dans TWW" href="../editing/index.html" />
     <link rel="prev" title="Numérisation des bassins versants" href="digitizingcatchments.html" /> 
 </head>
 
@@ -48,7 +48,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">Guide d’installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Guide utilisateur</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">Aperçu de TWW</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">Digitizing in TWW</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Numérisation dans TWW</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="dataentry.html">Saisie de données</a></li>
 <li class="toctree-l3"><a class="reference internal" href="digitizingwastewaterstructures.html">Numériser les structures assainissement</a></li>
 <li class="toctree-l3"><a class="reference internal" href="digitizingdetailedgeometry.html">Numérisation de géométries détaillées</a></li>
@@ -56,15 +56,15 @@
 <li class="toctree-l3"><a class="reference internal" href="digitizingchannels.html">Numérisation de canalisations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="deletingobjects.html">Suppression d’objets</a></li>
 <li class="toctree-l3"><a class="reference internal" href="digitizingcatchments.html">Numérisation des bassins versants</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Importing data</a><ul>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Importation des données</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#general">Généralités</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#example-importing-manholes-from-a-txt-file">Example Importing manholes from a TXT-File:</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#example-importing-manholes-with-attributes">Example Importing manholes with attributes:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-importing-manholes-from-a-txt-file">Exemple : importation de regards à partir d’un fichier TXT :</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-importing-manholes-with-attributes">Exemple : importation de regards avec attributs :</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../editing/index.html">Editing in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../editing/index.html">Édition dans TWW</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">Profils en long</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">Outils de poursuite de réseau</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">Impression de plans</a></li>
@@ -94,8 +94,8 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Guide utilisateur</a></li>
-          <li class="breadcrumb-item"><a href="index.html">Digitizing in TWW</a></li>
-      <li class="breadcrumb-item active">Importing data</li>
+          <li class="breadcrumb-item"><a href="index.html">Numérisation dans TWW</a></li>
+      <li class="breadcrumb-item active">Importation des données</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/user-guide/digitizing/importingdata.rst.txt" rel="nofollow"> Afficher la source de la page</a>
       </li>
@@ -108,31 +108,29 @@
   <blockquote>
 <div></div></blockquote>
 <section id="importing-data">
-<h1>Importing data<a class="headerlink" href="#importing-data" title="Lien vers cette rubrique"></a></h1>
+<h1>Importation des données<a class="headerlink" href="#importing-data" title="Lien vers cette rubrique"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This chapter is about importing non-INTERLIS-data. Import and Export of INTERLIS-data is described in the administration chapter.</p>
+<p>Ce chapitre traite de l’importation de données non‑INTERLIS. L’importation et l’exportation des données INTERLIS sont décrites dans le chapitre Administration.</p>
 </div>
-<p>It is quite easy to import data (geometry and attributes) from an external software.
-Here is a general description and a specific example.</p>
+<p>Il est assez simple d’importer des données (géométrie et attributs) depuis un logiciel externe. Une description générale ainsi qu’un exemple concret sont présentés ci‑après.</p>
 <section id="general">
 <h2>Généralités<a class="headerlink" href="#general" title="Lien vers cette rubrique"></a></h2>
 <ul class="simple">
-<li><p>You have to add the data you want to import as (vector) layer into the TWW project.</p></li>
-<li><p>The field names of the attributes have to be the same as the field names of the TWW Layer.
-If possible, prefer non limiting standard open formats like geopackage. When using shp-files, the 10 letters limitation of the dbf-format will fail to map correctly attributes (Alias field names do not work).</p></li>
-<li><p>If you have a translated project, be sure to take the English field names (not the translated name that you find as Alias of the field).</p></li>
-<li><p>If there is a field with value list, you have to use the code, not the plain text.</p></li>
-<li><p>If your fields are prepared as described above, then just copy and paste in the TWW-layer.</p></li>
+<li><p>Vous devez ajouter les données que vous souhaitez importer en tant que couche (vectorielle) dans le projet TWW.</p></li>
+<li><p>Les noms de champs des attributs doivent être identiques à ceux des champs de la couche TWW. Lorsque cela est possible, privilégiez des formats standards ouverts et non contraignants, tels que le GeoPackage. Lors de l’utilisation de fichiers SHP, la limitation à 10 caractères du format DBF empêche une correspondance correcte des attributs (les noms de champs alias ne fonctionnent pas).</p></li>
+<li><p>Si vous utilisez un projet traduit, veillez à utiliser les noms de champs anglais (et non les noms traduits que vous trouvez comme alias des champs).</p></li>
+<li><p>S’il existe un champ avec une liste de valeurs, vous devez utiliser le code et non le texte affiché.</p></li>
+<li><p>Si vos champs sont préparés comme décrit ci‑dessus, il vous suffit de copier‑coller les données dans la couche TWW.</p></li>
 </ul>
-<p>Why all these regulations: You copy the data not in the layer in our QGIS-project, but direct in the view or table in the postgresql-database. The database does not know anything about the configuration of the QGIS-project (alias names or value relations). In the database work just the triggers that are defined. So an obj_id will be created automatic.</p>
-<p>If you want to import new values to existing records (e.g. update the field renovation_necessity of layer vw_tww_reach), you can not copy, because there are not new records. For these job you can work with QGIS fieldcalculator.</p>
+<p>Pourquoi toutes ces règles ? Vous ne copiez pas les données dans une couche du projet QGIS, mais directement dans une vue ou une table de la base de données PostgreSQL. La base de données ne connaît rien de la configuration du projet QGIS (noms d’alias ou relations de valeurs). Dans la base de données, seuls les déclencheurs « triggers » définis sont pris en compte. Ainsi, un <cite>obj_id</cite> est créé automatiquement.</p>
+<p>Si vous souhaitez importer de nouvelles valeurs dans des enregistrements existants (par exemple pour mettre à jour le champ renovation_necessity de la couche vw_tww_reach), vous ne pouvez pas utiliser le copier‑coller, puisqu’il ne s’agit pas de nouveaux enregistrements. Pour ce type d’opération, vous pouvez utiliser la calculatrice de champs de QGIS.</p>
 </section>
 <section id="example-importing-manholes-from-a-txt-file">
-<h2>Example Importing manholes from a TXT-File:<a class="headerlink" href="#example-importing-manholes-from-a-txt-file" title="Lien vers cette rubrique"></a></h2>
-<p>The pictures were created in QGEP, but the steps are still the same in TWW</p>
+<h2>Exemple : importation de regards à partir d’un fichier TXT :<a class="headerlink" href="#example-importing-manholes-from-a-txt-file" title="Lien vers cette rubrique"></a></h2>
+<p>Les images ont été réalisées dans QGEP, mais les étapes sont identiques dans TWW.</p>
 <ul class="simple">
-<li><p>Change the field names to identifier, x, y, co_level</p></li>
+<li><p>Modifiez les noms des champs en identifier, x, y, co_level.</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/importdata_txtfile.jpg" src="../../_images/importdata_txtfile.jpg" />
@@ -152,8 +150,8 @@ If possible, prefer non limiting standard open formats like geopackage. When usi
 </figure>
 <ul class="simple">
 <li><p>Choose <span class="menuselection">Edit ‣ Copy Features</span>.</p></li>
-<li><p>Select the vw_tww_wastewater_structure layer and set it editable</p></li>
-<li><p>Choose <span class="menuselection">Edit ‣ Paste Features</span>.</p></li>
+<li><p>Sélectionnez la couche vw_tww_wastewater_structure et activez le mode édition.</p></li>
+<li><p>Choisissez : <span class="menuselection">Édition ‣ Coller les entités</span>.</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/importdata_5newpoints.jpg" src="../../_images/importdata_5newpoints.jpg" />
@@ -163,21 +161,21 @@ If possible, prefer non limiting standard open formats like geopackage. When usi
 </figure>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The ws_type is set as default to manhole. The identifier is used not only for the wastewater_structure, but also as cover_identifier and as wastewaternode_identifier.</p>
+<p>Le champ ws_type est défini par défaut sur manhole. L’identifiant est utilisé non seulement pour le wastewater structure, mais également comme cover_identifier et comme wastewaternode_identifier.</p>
 </div>
 </section>
 <section id="example-importing-manholes-with-attributes">
-<h2>Example Importing manholes with attributes:<a class="headerlink" href="#example-importing-manholes-with-attributes" title="Lien vers cette rubrique"></a></h2>
+<h2>Exemple : importation de regards avec attributs :<a class="headerlink" href="#example-importing-manholes-with-attributes" title="Lien vers cette rubrique"></a></h2>
 <ul class="simple">
-<li><p>Example to add additional attributes</p></li>
+<li><p>Exemple pour ajouter des attributs supplémentaires</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/importdata_txtfile2.jpg" src="../../_images/importdata_txtfile2.jpg" />
 </figure>
 <ul class="simple">
-<li><p>The field ws_type is an exception. Possible values are manhole, special_structure, infiltration_installation, discharge_point.</p></li>
-<li><p>For other fields with value lists you have to use the code.</p></li>
-<li><p>In the example above, the values for ma_function in the row discharge_point or special_structure has no effect.</p></li>
+<li><p>Le champ ws_type constitue une exception. Les valeurs possibles sont manhole, special_structure, infiltration_installation et discharge_point.</p></li>
+<li><p>Pour les autres champs associés à des listes de valeurs, vous devez utiliser le code.</p></li>
+<li><p>Dans l’exemple ci‑dessus, les valeurs du champ ma_function dans les lignes discharge_point ou special_structure n’ont aucun effet.</p></li>
 </ul>
 </section>
 </section>
@@ -187,7 +185,7 @@ If possible, prefer non limiting standard open formats like geopackage. When usi
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
         <a href="digitizingcatchments.html" class="btn btn-neutral float-left" title="Numérisation des bassins versants" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
-        <a href="../editing/index.html" class="btn btn-neutral float-right" title="Editing in TWW" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../editing/index.html" class="btn btn-neutral float-right" title="Édition dans TWW" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
