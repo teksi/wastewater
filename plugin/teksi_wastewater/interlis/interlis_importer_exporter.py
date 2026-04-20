@@ -232,6 +232,7 @@ class InterlisImporterExporter:
         selected_labels_scales_indices=[],
         selected_ids=None,
         include_unplaced: bool = False,
+        use_refdata=True,
     ):
         # File name without extension (used later for export)
         file_name_base, _ = os.path.splitext(xtf_file_output)
@@ -308,6 +309,7 @@ class InterlisImporterExporter:
         selected_ids=None,
         srid: int = None,
         include_unplaced: bool = False,
+        use_refdata=True,
     ):
 
         if srid:
@@ -348,6 +350,7 @@ class InterlisImporterExporter:
                 labels_file,
                 selected_labels_scales_indices,
                 selected_ids,
+                use_refdata,
             )
         else:
             if user_interaction:
@@ -401,6 +404,7 @@ class InterlisImporterExporter:
                         labels_file,
                         selected_labels_scales_indices,
                         selected_ids,
+                        use_refdata,
                     )
             else:
                 logger.error(f"Failed checks:\n{results['failed_checks']}")
@@ -684,6 +688,7 @@ class InterlisImporterExporter:
                 self.interlisTools.validate_xtf_data(
                     export_file_name,
                     log_path,
+                    use_refdata,
                 )
             except CmdException:
                 xtf_export_errors.append(
