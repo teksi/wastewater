@@ -47,7 +47,7 @@ class TestOnDelete(unittest.TestCase, DbTestBase):
 
     def test_delete_reach(self):
         # Create a new reach and reachpoints
-        rp001_obj_id = self.insert_check(
+        ch012345demoRP00 = self.insert_check(
             "reach_point",
             {
                 "identifier": "RP001",
@@ -55,7 +55,7 @@ class TestOnDelete(unittest.TestCase, DbTestBase):
             },
             schema="tww_od",
         )  # ST_MakePoint(3000000, 1500000, 100)
-        rp002_obj_id = self.insert_check(
+        ch012345demoRP01 = self.insert_check(
             "reach_point",
             {
                 "identifier": "RP002",
@@ -63,35 +63,35 @@ class TestOnDelete(unittest.TestCase, DbTestBase):
             },
             schema="tww_od",
         )  # ST_MakePoint(3000001, 1500001, 100)
-        wn001_obj_id = self.insert_check(
+        ch012345demoWN00 = self.insert_check(
             "wastewater_networkelement", {"identifier": "WN001"}, schema="tww_od"
         )
 
         row = {
-            "obj_id": wn001_obj_id,
-            "fk_reach_point_from": rp001_obj_id,
-            "fk_reach_point_to": rp002_obj_id,
+            "obj_id": ch012345demoWN00,
+            "fk_reach_point_from": ch012345demoRP00,
+            "fk_reach_point_to": ch012345demoRP01,
             "progression3d_geometry": "01090000A008080000010000000102000080020000000000000060E346410000000060E3364100000000000059400000008060E346410000000061E336410000000000005940",  # SELECT ST_ForceCurve(ST_SetSrid(ST_MakeLine(ST_MakePoint(3000000, 1500000, 100), ST_MakePoint(3000001, 1500001, 100)), 2056));
         }
-        re001_obj_id = self.insert_check("reach", row, schema="tww_od")
+        ch012345demoRE00 = self.insert_check("reach", row, schema="tww_od")
 
-        self.assertIsNotNone(self.select("reach", re001_obj_id, schema="tww_od"))
-        self.assertIsNotNone(self.select("reach_point", rp001_obj_id, schema="tww_od"))
-        self.assertIsNotNone(self.select("reach_point", rp002_obj_id, schema="tww_od"))
+        self.assertIsNotNone(self.select("reach", ch012345demoRE00, schema="tww_od"))
+        self.assertIsNotNone(self.select("reach_point", ch012345demoRP00, schema="tww_od"))
+        self.assertIsNotNone(self.select("reach_point", ch012345demoRP01, schema="tww_od"))
         self.assertIsNotNone(
-            self.select("wastewater_networkelement", wn001_obj_id, schema="tww_od")
+            self.select("wastewater_networkelement", ch012345demoWN00, schema="tww_od")
         )
 
-        self.delete("reach", re001_obj_id, schema="tww_od")
+        self.delete("reach", ch012345demoRE00, schema="tww_od")
 
-        self.assertIsNone(self.select("reach", re001_obj_id, schema="tww_od"))
-        self.assertIsNone(self.select("reach_point", rp001_obj_id, schema="tww_od"))
-        self.assertIsNone(self.select("reach_point", rp002_obj_id, schema="tww_od"))
-        self.assertIsNone(self.select("wastewater_networkelement", wn001_obj_id, schema="tww_od"))
+        self.assertIsNone(self.select("reach", ch012345demoRE00, schema="tww_od"))
+        self.assertIsNone(self.select("reach_point", ch012345demoRP00, schema="tww_od"))
+        self.assertIsNone(self.select("reach_point", ch012345demoRP01, schema="tww_od"))
+        self.assertIsNone(self.select("wastewater_networkelement", ch012345demoWN00, schema="tww_od"))
 
         # The same but over the view vw_tww_reach
         # Create a new reach and reach points
-        rp001_obj_id = self.insert_check(
+        ch012345demoRP00 = self.insert_check(
             "reach_point",
             {
                 "identifier": "RP001",
@@ -101,7 +101,7 @@ class TestOnDelete(unittest.TestCase, DbTestBase):
             },
             schema="tww_od",
         )
-        rp002_obj_id = self.insert_check(
+        ch012345demoRP01 = self.insert_check(
             "reach_point",
             {
                 "identifier": "RP002",
@@ -111,40 +111,40 @@ class TestOnDelete(unittest.TestCase, DbTestBase):
             },
             schema="tww_od",
         )
-        wn001_obj_id = self.insert_check(
+        ch012345demoWN00 = self.insert_check(
             "wastewater_networkelement", {"identifier": "WN001"}, schema="tww_od"
         )
 
         row = {
-            "obj_id": wn001_obj_id,
-            "fk_reach_point_from": rp001_obj_id,
-            "fk_reach_point_to": rp002_obj_id,
+            "obj_id": ch012345demoWN00,
+            "fk_reach_point_from": ch012345demoRP00,
+            "fk_reach_point_to": ch012345demoRP01,
             "progression3d_geometry": self.execute(
                 "ST_ForceCurve(ST_SetSrid(ST_MakeLine(ST_MakePoint(3000000, 1500000, 100), ST_MakePoint(3000001, 1500001, 100)), 2056))"
             ),
         }
-        re001_obj_id = self.insert_check("reach", row, schema="tww_od")
+        ch012345demoRE00 = self.insert_check("reach", row, schema="tww_od")
 
-        self.assertIsNotNone(self.select("vw_tww_reach", re001_obj_id))
-        self.assertIsNotNone(self.select("reach_point", rp001_obj_id, schema="tww_od"))
-        self.assertIsNotNone(self.select("reach_point", rp002_obj_id, schema="tww_od"))
+        self.assertIsNotNone(self.select("vw_tww_reach", ch012345demoRE00))
+        self.assertIsNotNone(self.select("reach_point", ch012345demoRP00, schema="tww_od"))
+        self.assertIsNotNone(self.select("reach_point", ch012345demoRP01, schema="tww_od"))
         self.assertIsNotNone(
-            self.select("wastewater_networkelement", wn001_obj_id, schema="tww_od")
+            self.select("wastewater_networkelement", ch012345demoWN00, schema="tww_od")
         )
 
-        self.delete("vw_tww_reach", re001_obj_id)
+        self.delete("vw_tww_reach", ch012345demoRE00)
 
-        self.assertIsNone(self.select("vw_tww_reach", re001_obj_id))
-        self.assertIsNone(self.select("reach_point", rp001_obj_id, schema="tww_od"))
-        self.assertIsNone(self.select("reach_point", rp002_obj_id, schema="tww_od"))
-        self.assertIsNone(self.select("wastewater_networkelement", wn001_obj_id, schema="tww_od"))
+        self.assertIsNone(self.select("vw_tww_reach", ch012345demoRE00))
+        self.assertIsNone(self.select("reach_point", ch012345demoRP00, schema="tww_od"))
+        self.assertIsNone(self.select("reach_point", ch012345demoRP01, schema="tww_od"))
+        self.assertIsNone(self.select("wastewater_networkelement", ch012345demoWN00, schema="tww_od"))
 
         # control that channel is delete if no reach left
         ws001_obj_id = self.insert_check(
             "wastewater_structure", {"obj_id": "CH001"}, schema="tww_od"
         )
         ch001_obj_id = self.insert_check("channel", {"obj_id": "CH001"}, schema="tww_od")
-        rp001_obj_id = self.insert_check(
+        ch012345demoRP00 = self.insert_check(
             "reach_point",
             {
                 "identifier": "RP001",
@@ -154,7 +154,7 @@ class TestOnDelete(unittest.TestCase, DbTestBase):
             },
             schema="tww_od",
         )
-        rp002_obj_id = self.insert_check(
+        ch012345demoRP01 = self.insert_check(
             "reach_point",
             {
                 "identifier": "RP002",
@@ -163,17 +163,17 @@ class TestOnDelete(unittest.TestCase, DbTestBase):
             },
             schema="tww_od",
         )
-        wn001_obj_id = self.insert_check(
+        ch012345demoWN00 = self.insert_check(
             "wastewater_networkelement",
             {"identifier": "WN001", "fk_wastewater_structure": ch001_obj_id},
             schema="tww_od",
         )
-        re001_obj_id = self.insert_check(
+        ch012345demoRE00 = self.insert_check(
             "reach",
             {
-                "obj_id": wn001_obj_id,
-                "fk_reach_point_from": rp001_obj_id,
-                "fk_reach_point_to": rp002_obj_id,
+                "obj_id": ch012345demoWN00,
+                "fk_reach_point_from": ch012345demoRP00,
+                "fk_reach_point_to": ch012345demoRP01,
                 "progression3d_geometry": self.execute(
                     "ST_ForceCurve(ST_SetSrid(ST_MakeLine(ST_MakePoint(3000000, 1500000, 100), ST_MakePoint(3000001, 1500001, 100)), 2056))"
                 ),
@@ -219,7 +219,7 @@ class TestOnDelete(unittest.TestCase, DbTestBase):
         )
 
         self.assertEqual(ch001_obj_id, ws001_obj_id)
-        self.delete("reach", re001_obj_id, schema="tww_od")
+        self.delete("reach", ch012345demoRE00, schema="tww_od")
         self.assertIsNotNone(self.select("channel", ch001_obj_id, schema="tww_od"))
         self.delete("reach", re011_obj_id, schema="tww_od")
         self.assertIsNone(self.select("channel", ch001_obj_id, schema="tww_od"))
