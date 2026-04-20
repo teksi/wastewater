@@ -32,7 +32,7 @@ BEGIN
             RAISE EXCEPTION
                 USING
                     MESSAGE = format(
-                        'Aborting upgrade: %I.%I has %s non-confore obj_id values.',
+                        'Aborting upgrade: %I.%I has %s non-conform obj_id values.',
                         r.nspname,
                         r.relname,
                         cnt
