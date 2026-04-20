@@ -199,7 +199,7 @@ class TestInterlis(unittest.TestCase):
             xtf_file_output=self._get_output_filename(export_xtf_file),
             export_models=[config.MODEL_NAME_SIA405_BASE_ABWASSER],
             logs_next_to_file=True,
-            use_refdata = False,
+            use_refdata=False,
         )
 
         # Check exported TID
