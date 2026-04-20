@@ -291,7 +291,7 @@ class InterlisImporterExporter:
         tempdir.cleanup()  # Cleanup
 
         self._progress_done(75)
-        self._export_xtf_files(file_name_base, export_models)
+        self._export_xtf_files(file_name_base, export_models, use_refdata)
 
         self._progress_done(100)
         logger.info("INTERLIS export finished.")
