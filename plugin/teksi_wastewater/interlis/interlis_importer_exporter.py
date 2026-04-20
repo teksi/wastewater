@@ -649,7 +649,7 @@ class InterlisImporterExporter:
                     None,
                 )
 
-    def _export_xtf_files(self, file_name_base, export_models):
+    def _export_xtf_files(self, file_name_base, export_models, use_refdata=True):
         progress_step = (100 - self.current_progress) / (2 * len(export_models))
         progress_step = int(progress_step)
 
