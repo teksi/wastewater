@@ -266,7 +266,7 @@ class TestInterlis(unittest.TestCase):
             export_models=[config.MODEL_NAME_DSS],
             logs_next_to_file=True,
             user_interaction=False,
-            #20.4.2026 added
+            # 20.4.2026 added
             use_refdata=False,
         )
 
