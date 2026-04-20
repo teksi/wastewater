@@ -225,6 +225,7 @@ class InterlisImporterExporter:
         self,
         xtf_file_output,
         export_models,
+        use_refdata,
         logs_next_to_file=True,
         limit_to_selection=False,
         export_orientation=90.0,
@@ -232,7 +233,7 @@ class InterlisImporterExporter:
         selected_labels_scales_indices=[],
         selected_ids=None,
         include_unplaced: bool = False,
-        # use_refdata,
+        # ,
     ):
         # File name without extension (used later for export)
         file_name_base, _ = os.path.splitext(xtf_file_output)
@@ -344,13 +345,14 @@ class InterlisImporterExporter:
             self.execute_export(
                 xtf_file_output,
                 export_models,
+                use_refdata,
                 logs_next_to_file,
                 limit_to_selection,
                 export_orientation,
                 labels_file,
                 selected_labels_scales_indices,
                 selected_ids,
-                use_refdata,
+                # use_refdata,
             )
         else:
             if user_interaction:
@@ -398,13 +400,14 @@ class InterlisImporterExporter:
                     self.execute_export(
                         xtf_file_output,
                         export_models,
+                        use_refdata,
                         logs_next_to_file,
                         limit_to_selection,
                         export_orientation,
                         labels_file,
                         selected_labels_scales_indices,
                         selected_ids,
-                        use_refdata,
+                        # use_refdata,
                     )
             else:
                 logger.error(f"Failed checks:\n{results['failed_checks']}")
