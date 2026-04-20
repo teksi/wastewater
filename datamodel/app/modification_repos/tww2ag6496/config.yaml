@@ -1,11 +1,3 @@
-variables:
-   lang_code:
-     value: de
-     type: literal
-   SRID:
-     value: 2056
-     type: number
-
 sql_files:
   - file: sql/01_defaults.sql
   - file: sql/02_aux_functions.sql

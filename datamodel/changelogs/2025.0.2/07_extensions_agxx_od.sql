@@ -7,7 +7,7 @@
 -- GEPKnoten
 CREATE TABLE tww_od.agxx_wastewater_node
 (
-   uuid uuid NOT NULL DEFAULT uuid_generate_v4(),
+   uuid uuid NOT NULL DEFAULT gen_random_uuid(),
    fk_wastewater_node varchar(16) NOT NULL,
    CONSTRAINT pkey_tww_od_agxx_wastewater_node_uuid PRIMARY KEY (uuid),
    CONSTRAINT oorel_od_agxx_wastewater_node FOREIGN KEY (fk_wastewater_node) REFERENCES tww_od.wastewater_node(obj_id) ON DELETE CASCADE ON UPDATE CASCADE
@@ -23,7 +23,7 @@ ALTER TABLE tww_od.agxx_wastewater_node ADD CONSTRAINT fkey_vl_wastewater_node_a
 -- Link cover to GEPKnoten
 CREATE TABLE tww_od.agxx_cover
 (
-   uuid uuid NOT NULL DEFAULT uuid_generate_v4(),
+   uuid uuid NOT NULL DEFAULT gen_random_uuid(),
    fk_cover varchar(16) NOT NULL,
    CONSTRAINT pkey_tww_od_agxx_cover_uuid PRIMARY KEY (uuid),
    CONSTRAINT oorel_od_agxx_cover FOREIGN KEY (fk_cover) REFERENCES tww_od.cover(obj_id) ON DELETE CASCADE ON UPDATE CASCADE
@@ -34,7 +34,7 @@ ALTER TABLE tww_od.agxx_cover ADD CONSTRAINT rel_cover_wastewater_node FOREIGN K
 -- 1:1 relation GEPMassnahme/GEPKnoten
 CREATE TABLE tww_od.agxx_wastewater_structure
 (
-   uuid uuid NOT NULL DEFAULT uuid_generate_v4(),
+   uuid uuid NOT NULL DEFAULT gen_random_uuid(),
    fk_wastewater_structure varchar(16) NOT NULL,
    CONSTRAINT pkey_tww_od_agxx_wastewater_structure_uuid PRIMARY KEY (uuid),
    CONSTRAINT oorel_od_agxx_wastewater_structure FOREIGN KEY (fk_wastewater_structure) REFERENCES tww_od.wastewater_structure(obj_id) ON DELETE CASCADE ON UPDATE CASCADE
@@ -46,7 +46,7 @@ COMMENT ON COLUMN tww_od.agxx_wastewater_structure.ag96_fk_measure IS 'Extension
 -- GEPHaltung
 CREATE TABLE tww_od.agxx_reach
 (
-   uuid uuid NOT NULL DEFAULT uuid_generate_v4(),
+   uuid uuid NOT NULL DEFAULT gen_random_uuid(),
    fk_reach varchar(16) NOT NULL,
    CONSTRAINT pkey_tww_od_agxx_reach_uuid PRIMARY KEY (uuid),
    CONSTRAINT oorel_od_agxx_reach FOREIGN KEY (fk_reach) REFERENCES tww_od.reach(obj_id) ON DELETE CASCADE ON UPDATE CASCADE
@@ -57,7 +57,7 @@ ALTER TABLE tww_od.agxx_reach ADD COLUMN IF NOT EXISTS ag96_clear_width_planned 
 -- SBW_Einzugsgebiet
 CREATE TABLE tww_od.agxx_catchment_area_totals
 (
-   uuid uuid NOT NULL DEFAULT uuid_generate_v4(),
+   uuid uuid NOT NULL DEFAULT gen_random_uuid(),
    fk_catchment_area_totals varchar(16) NOT NULL,
    CONSTRAINT pkey_tww_od_agxx_catchment_area_totals_uuid PRIMARY KEY (uuid),
    CONSTRAINT oorel_od_agxx_catchment_area_totals FOREIGN KEY (fk_catchment_area_totals) REFERENCES tww_od.catchment_area_totals(obj_id) ON DELETE CASCADE ON UPDATE CASCADE
@@ -68,13 +68,13 @@ COMMENT ON COLUMN tww_od.agxx_catchment_area_totals.ag96_sewer_infiltration_wate
 ALTER TABLE tww_od.agxx_catchment_area_totals ADD COLUMN IF NOT EXISTS ag96_waste_water_production_dim  decimal(9,3);
 COMMENT ON COLUMN tww_od.agxx_catchment_area_totals.ag96_waste_water_production_dim IS 'Extension for AG-96/ Erweiterung aus AG-96 /xxx_fr';
 
-ALTER TABLE tww_od.agxx_catchment_area_totals ADD COLUMN IF NOT EXISTS ag96_perimeter_geometry  geometry(MultiSurface,2056);
+ALTER TABLE tww_od.agxx_catchment_area_totals ADD COLUMN IF NOT EXISTS ag96_perimeter_geometry  geometry(MultiSurface,{SRID});
 COMMENT ON COLUMN tww_od.agxx_catchment_area_totals.ag96_waste_water_production_dim IS 'Extension for AG-96/ Erweiterung aus AG-96 /xxx_fr';
 
 -- Bauten Ausserhalb Baugebiet
 CREATE TABLE tww_od.agxx_building_group
 (
-   uuid uuid NOT NULL DEFAULT uuid_generate_v4(),
+   uuid uuid NOT NULL DEFAULT gen_random_uuid(),
    fk_building_group varchar(16) NOT NULL,
    CONSTRAINT pkey_tww_od_agxx_building_group_uuid PRIMARY KEY (uuid),
    CONSTRAINT oorel_od_agxx_building_group FOREIGN KEY (fk_building_group) REFERENCES tww_od.building_group(obj_id) ON DELETE CASCADE ON UPDATE CASCADE
@@ -98,7 +98,7 @@ ALTER TABLE tww_od.agxx_building_group ADD CONSTRAINT fkey_vl_building_group_ag9
 
 CREATE TABLE tww_od.agxx_wastewater_networkelement
 (
-   uuid uuid NOT NULL DEFAULT uuid_generate_v4(),
+   uuid uuid NOT NULL DEFAULT gen_random_uuid(),
    fk_wastewater_networkelement varchar(16) NOT NULL,
    CONSTRAINT pkey_tww_od_agxx_wastewater_networkelement PRIMARY KEY (uuid),
    CONSTRAINT oorel_od_agxx_wastewater_networkelement FOREIGN KEY (fk_wastewater_networkelement) REFERENCES tww_od.wastewater_networkelement(obj_id) ON DELETE CASCADE ON UPDATE CASCADE
@@ -114,7 +114,7 @@ ALTER TABLE tww_od.agxx_wastewater_networkelement ADD CONSTRAINT ag64_rel_wastew
 
 CREATE TABLE tww_od.agxx_overflow
 (
-   uuid uuid NOT NULL DEFAULT uuid_generate_v4(),
+   uuid uuid NOT NULL DEFAULT gen_random_uuid(),
    fk_overflow varchar(16) NOT NULL,
    CONSTRAINT pkey_tww_od_agxx_overflow PRIMARY KEY (uuid),
    CONSTRAINT oorel_od_agxx_overflow FOREIGN KEY (fk_overflow) REFERENCES tww_od.overflow(obj_id) ON DELETE CASCADE ON UPDATE CASCADE
@@ -130,7 +130,7 @@ ALTER TABLE tww_od.agxx_overflow ADD CONSTRAINT ag96_rel_overflow_provider FOREI
 
 CREATE TABLE tww_od.agxx_infiltration_zone
 (
-   uuid uuid NOT NULL DEFAULT uuid_generate_v4(),
+   uuid uuid NOT NULL DEFAULT gen_random_uuid(),
    fk_infiltration_zone varchar(16) NOT NULL,
    CONSTRAINT pkey_tww_od_agxx_infiltration_zone PRIMARY KEY (uuid),
    CONSTRAINT oorel_od_agxx_infiltration_zone FOREIGN KEY (fk_infiltration_zone) REFERENCES tww_od.infiltration_zone(obj_id) ON DELETE CASCADE ON UPDATE CASCADE
@@ -150,7 +150,7 @@ CREATE TABLE IF NOT EXISTS tww_od.agxx_unconnected_node_bwrel (
 	structure_condition bigint,
 	status bigint,
 	co_level numeric(7,3),
-    detail_geometry3d_geometry geometry(CurvePolygonZ,2056),
+    detail_geometry3d_geometry geometry(CurvePolygonZ,{SRID}),
 	financing bigint,
     ch_function_hierarchic bigint,
     status_survey_year integer,
@@ -162,7 +162,7 @@ CREATE TABLE IF NOT EXISTS tww_od.agxx_unconnected_node_bwrel (
     ag96_fk_measure varchar(16),
 	-- Erweiterung 2025.0.2
 	wwtp_number integer,
-	situation3d_geometry geometry(PointZ,2056),
+	situation3d_geometry geometry(PointZ,{SRID}),
 	backflow_level_current decimal(7,3),
 	bottom_level decimal(7,3),
 	CONSTRAINT pkey_od_agxx_unconnected_node_bwrel_obj_id PRIMARY KEY (obj_id));
@@ -179,7 +179,7 @@ CREATE INDEX IF NOT EXISTS in_od_agxx_unconnected_node_bwrel_situation3d_geometr
 
 CREATE TABLE tww_od.agxx_reach_point
 (
-   uuid uuid NOT NULL DEFAULT uuid_generate_v4(),
+   uuid uuid NOT NULL DEFAULT gen_random_uuid(),
    fk_reach_point varchar(16) NOT NULL,
    CONSTRAINT pkey_tww_od_agxx_reach_point_uuid PRIMARY KEY (uuid),
    CONSTRAINT oorel_od_agxx_reach_point FOREIGN KEY (fk_reach_point) REFERENCES tww_od.reach_point(obj_id) ON DELETE CASCADE ON UPDATE CASCADE
@@ -203,7 +203,7 @@ CREATE TABLE IF NOT EXISTS tww_od.agxx_measure_text
     text text COLLATE pg_catalog."default",
     texthali smallint,
     textori numeric(4,1),
-    textpos_geometry geometry(Point,2056),
+    textpos_geometry geometry(Point,{SRID}),
     textvali smallint,
     last_modification timestamp without time zone DEFAULT now(),
     fk_measure character varying(16) COLLATE pg_catalog."default",
@@ -244,7 +244,7 @@ CREATE TABLE IF NOT EXISTS tww_od.agxx_building_group_text
     text text COLLATE pg_catalog."default",
     texthali smallint,
     textori numeric(4,1),
-    textpos_geometry geometry(Point,2056),
+    textpos_geometry geometry(Point,{SRID}),
     textvali smallint,
     last_modification timestamp without time zone DEFAULT now(),
     fk_building_group character varying(16) COLLATE pg_catalog."default",
@@ -284,7 +284,7 @@ CREATE TABLE IF NOT EXISTS tww_od.agxx_last_modification_updater(
 
 CREATE TABLE IF NOT EXISTS tww_od.agxx_last_modification
 (
-   uuid uuid NOT NULL DEFAULT uuid_generate_v4(),
+   uuid uuid NOT NULL DEFAULT gen_random_uuid(),
    fk_element varchar(16) NOT NULL,
    CONSTRAINT pkey_tww_od_agxx_last_modification PRIMARY KEY (uuid)
   );
