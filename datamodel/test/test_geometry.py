@@ -327,7 +327,7 @@ class TestGeometry(unittest.TestCase, DbTestBase):
             == "01010000A0080800000000000020D6434100000000804F32410000000000407F40"
         )
         # wastewater_node has the geometry and wn_buttom_level as Z: ST_SetSRID(ST_MakePoint(2600000, 1200000, 200), 2056)
-        row = self.select("wastewater_node", "ch000000demoCO04", schema="tww_od")
+        row = self.select("wastewater_node", "ch000000demoWN04", schema="tww_od")
         assert (
             row["situation3d_geometry"]
             == "01010000A0080800000000000020D6434100000000804F32410000000000006940"
@@ -912,6 +912,7 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         row = {
             "situation3d_geometry": "0101000020080800000000000020D6434100000000804F3241",
             "wn_obj_id": "ch000000demoWN09",
+            "co_obj_id": "ch000000demoCO09",
             "wn_bottom_level": "200.000",
         }
         expected_row = copy.deepcopy(row)
