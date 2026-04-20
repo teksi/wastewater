@@ -199,7 +199,6 @@ class TestInterlis(unittest.TestCase):
             xtf_file_output=self._get_output_filename(export_xtf_file),
             export_models=[config.MODEL_NAME_SIA405_BASE_ABWASSER],
             logs_next_to_file=True,
-            # use_refdata=FALSE added
             use_refdata=False,
         )
 
@@ -267,6 +266,8 @@ class TestInterlis(unittest.TestCase):
             export_models=[config.MODEL_NAME_DSS],
             logs_next_to_file=True,
             user_interaction=False,
+            #20.4.2026 added
+            use_refdata=False,
         )
 
         # Check exported TID
