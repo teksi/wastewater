@@ -232,7 +232,7 @@ class InterlisImporterExporter:
         selected_labels_scales_indices=[],
         selected_ids=None,
         include_unplaced: bool = False,
-        use_refdata=True,
+        use_refdata,
     ):
         # File name without extension (used later for export)
         file_name_base, _ = os.path.splitext(xtf_file_output)
@@ -649,7 +649,7 @@ class InterlisImporterExporter:
                     None,
                 )
 
-    def _export_xtf_files(self, file_name_base, export_models, use_refdata=True):
+    def _export_xtf_files(self, file_name_base, export_models, use_refdata):
         progress_step = (100 - self.current_progress) / (2 * len(export_models))
         progress_step = int(progress_step)
 
