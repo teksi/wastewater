@@ -87,7 +87,9 @@ class TestOnDelete(unittest.TestCase, DbTestBase):
         self.assertIsNone(self.select("reach", ch012345demoRE00, schema="tww_od"))
         self.assertIsNone(self.select("reach_point", ch012345demoRP00, schema="tww_od"))
         self.assertIsNone(self.select("reach_point", ch012345demoRP01, schema="tww_od"))
-        self.assertIsNone(self.select("wastewater_networkelement", ch012345demoWN00, schema="tww_od"))
+        self.assertIsNone(
+            self.select("wastewater_networkelement", ch012345demoWN00, schema="tww_od")
+        )
 
         # The same but over the view vw_tww_reach
         # Create a new reach and reach points
@@ -137,13 +139,17 @@ class TestOnDelete(unittest.TestCase, DbTestBase):
         self.assertIsNone(self.select("vw_tww_reach", ch012345demoRE00))
         self.assertIsNone(self.select("reach_point", ch012345demoRP00, schema="tww_od"))
         self.assertIsNone(self.select("reach_point", ch012345demoRP01, schema="tww_od"))
-        self.assertIsNone(self.select("wastewater_networkelement", ch012345demoWN00, schema="tww_od"))
+        self.assertIsNone(
+            self.select("wastewater_networkelement", ch012345demoWN00, schema="tww_od")
+        )
 
         # control that channel is delete if no reach left
         ws001_obj_id = self.insert_check(
             "wastewater_structure", {"obj_id": "ch012345demoCH00"}, schema="tww_od"
         )
-        ch012345demoCH00_obj_id = self.insert_check("channel", {"obj_id": "ch012345demoCH00"}, schema="tww_od")
+        ch012345demoCH00_obj_id = self.insert_check(
+            "channel", {"obj_id": "ch012345demoCH00"}, schema="tww_od"
+        )
         ch012345demoRP00 = self.insert_check(
             "reach_point",
             {
