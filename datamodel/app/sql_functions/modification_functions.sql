@@ -123,3 +123,107 @@ BEGIN
  RETURN NEW;
 END;
 $$ LANGUAGE PLPGSQL;
+
+--------------------------------------------------
+-- DEFAULT ORGANISATION
+--------------------------------------------------
+
+CREATE OR REPLACE FUNCTION tww_app.modification_default_orgs_referencing()
+RETURNS trigger
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    schema_name text := TG_ARGV[0];
+    parent_tbl  text := NULLIF(TG_ARGV[1], '_SELF_');
+    fk_name     text := TG_ARGV[2];
+    target_tbl  text := TG_ARGV[3];
+
+    provider text;
+    dataowner text;
+BEGIN
+    IF parent_tbl IS NOT NULL THEN
+        EXECUTE format(
+            'SELECT fk_provider, fk_dataowner FROM %I.%I WHERE obj_id = $1',
+            schema_name, parent_tbl
+        )
+        INTO provider, dataowner
+        USING NEW.obj_id;
+    ELSE
+        provider  := NEW.fk_provider;
+        dataowner := NEW.fk_dataowner;
+    END IF;
+
+    EXECUTE format(
+        'UPDATE %I.%I
+         SET fk_provider = $1, fk_dataowner = $2
+         WHERE %I = $3',
+        schema_name, target_tbl, fk_name
+    )
+    USING provider, dataowner, NEW.obj_id;
+
+    RETURN NEW;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION tww_app.modification_default_orgs_referenced()
+RETURNS trigger
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    schema_name TEXT := TG_ARGV[0];
+    parent_tbl  TEXT := NULLIF(TG_ARGV[1], '_SELF_');
+    child_tbl   TEXT := NULLIF(TG_ARGV[2], '_SELF_');
+    target_tbl  TEXT := TG_ARGV[3];
+
+    provider    TEXT;
+    dataowner   TEXT;
+BEGIN
+    IF TG_NARGS <> 4 THEN
+        RAISE EXCEPTION
+            'Too few arguments in trigger %: expected 4 arguments, got % (%).',
+            TG_NAME, TG_NARGS, TG_ARGV;
+    END IF;
+
+    -- Determine fk_provider / fk_dataowner source
+    IF parent_tbl IS NOT NULL THEN
+        EXECUTE format(
+            'SELECT fk_provider, fk_dataowner
+             FROM %I.%I
+             WHERE obj_id = $1',
+            schema_name,
+            parent_tbl
+        )
+        INTO provider, dataowner
+        USING NEW.obj_id;
+
+    ELSIF child_tbl IS NOT NULL THEN
+        -- Defaults come from explicit child table
+        EXECUTE format(
+            'SELECT fk_provider, fk_dataowner
+             FROM %I.%I
+             WHERE obj_id = $1',
+            schema_name,
+            child_tbl
+        )
+        INTO provider, dataowner
+        USING NEW.obj_id;
+
+    ELSE
+        -- Defaults are taken directly from NEW
+        provider  := NEW.fk_provider;
+        dataowner := NEW.fk_dataowner;
+    END IF;
+
+    EXECUTE format(
+        'UPDATE %I.%I
+         SET fk_provider  = $1,
+             fk_dataowner = $2
+         WHERE obj_id = $3',
+        schema_name,
+        target_tbl
+    )
+    USING provider, dataowner, NEW.obj_id;
+
+    RETURN NEW;
+END;
+$$;

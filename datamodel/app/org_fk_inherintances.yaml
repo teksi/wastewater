@@ -1,0 +1,55 @@
+wastewater_structure:
+  referencing: # layer referencing wastewater_structure
+    - "wastewater_networkelement"
+    - "structure_part"
+    - "mechanical_pretreatment"
+  inherits_to: #also cascade the trigger to these layers
+    - "infiltration_installation"
+
+wastewater_networkelement:
+  referencing:
+    - "reach_point"
+    - "connection_object"
+  inherits_to:
+    - "reach"
+    - "wastewater_node"
+
+wastewater_node:
+  inherits_from:  # does the layer have its own fk_provider
+    - "wastewater_networkelement"
+  referencing:
+    - "overflow"
+    - "throttle_shut_off_unit"
+    - "hydraulic_char_data"
+  referenced: # fk is on the layer wastewater_node
+    - "hydr_geometry"
+
+reach:
+  inherits_from:
+    - "wastewater_networkelement"
+  referencing:
+    - "overflow"
+    - "throttle_shut_off_unit"
+    - "hydraulic_char_data"
+  referenced:
+    - "pipe_profile"
+
+infiltration_installation:
+  inherits_from:
+    - "wastewater_structure"
+  referencing:
+    - "retention_body"
+
+hydr_geometry:
+  referencing:
+    - "hydr_geom_relation"
+
+maintenance_event:
+  inherits_to:
+    - "examination"
+
+examination:
+  inherits_from:
+    - "maintenance_event"
+  referencing:
+    - "damage"
