@@ -4,7 +4,7 @@ DECLARE
 BEGIN
     FOR r IN
         SELECT
-            rel.relname AS table_name
+            rel.relname
         FROM pg_class rel
         JOIN pg_namespace nsp
             ON nsp.oid = rel.relnamespace
