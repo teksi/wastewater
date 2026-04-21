@@ -47,9 +47,6 @@ def create_oid_default(tbl: str):
     return query
 
 
-
-
-
 def create_default_value_trigger(tbl: str, fk_data: dict):
     def create_referencing_triggers(tbl, parent_tbl, fk_col, targets):
         triggers = []
@@ -71,7 +68,7 @@ def create_default_value_trigger(tbl: str, fk_data: dict):
             );
             """)
         return triggers
-    
+
     def resolve_fk_targets(tbl: str, fk_data: dict) -> dict:
         """
         Returns:
@@ -94,7 +91,7 @@ def create_default_value_trigger(tbl: str, fk_data: dict):
 
         walk(tbl)
         return resolved
-    
+
     node = fk_data.get(tbl)
     if not node:
         return ""
