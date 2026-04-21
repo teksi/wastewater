@@ -142,7 +142,7 @@ def set_defaults_and_triggers(
     :param SingleInheritances: dictionary of all SingleInheritances in database
     :param FKInheritances: dictionary of all FKInheritances in database
     """
-
+    schema='tww_od'
     cursor = SqlContent(
         f"select table_name from information_schema.tables WHERE table_schema = '{schema}'"
     ).execute(connection)
