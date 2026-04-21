@@ -124,136 +124,106 @@ BEGIN
 END;
 $$ LANGUAGE PLPGSQL;
 
--- default organisation
+--------------------------------------------------
+-- DEFAULT ORGANISATION
+--------------------------------------------------
 
-CREATE FUNCTION tww_app.modification_default_orgs_referencing() RETURNS trigger AS $$
+CREATE OR REPLACE FUNCTION tww_app.modification_default_orgs_referencing()
+RETURNS trigger
+LANGUAGE plpgsql
+AS $$
 DECLARE
- _schema_name TEXT;
- _table_name TEXT;
- _provider TEXT;
- _dataowner TEXT;
- parent_tbl TEXT;
- fk_name TEXT;
+    schema_name text := TG_ARGV[0];
+    parent_tbl  text := NULLIF(TG_ARGV[1], '_SELF_');
+    fk_name     text := TG_ARGV[2];
+    target_tbl  text := TG_ARGV[3];
+
+    provider text;
+    dataowner text;
 BEGIN
- _schema_name := TG_ARGV[0];
- parent_tbl := TG_ARGV[1];
- fk_name := TG_ARGV[2];
+    IF parent_tbl IS NOT NULL THEN
+        EXECUTE format(
+            'SELECT fk_provider, fk_dataowner FROM %I.%I WHERE obj_id = $1',
+            schema_name, parent_tbl
+        )
+        INTO provider, dataowner
+        USING NEW.obj_id;
+    ELSE
+        provider  := NEW.fk_provider;
+        dataowner := NEW.fk_dataowner;
+    END IF;
 
- IF _schema_name IS NULL THEN
-  _schema_name := 'tww_od';
- ELSE NULL;
- END IF;
+    EXECUTE format(
+        'UPDATE %I.%I
+         SET fk_provider = $1, fk_dataowner = $2
+         WHERE %I = $3',
+        schema_name, target_tbl, fk_name
+    )
+    USING provider, dataowner, NEW.obj_id;
 
- IF parent_tbl IS NOT NULL THEN
-  EXECUTE FORMAT("SELECT fk_provider, fk_dataowner
-  FROM %I.%I WHERE obj_id=NEW.obj_id",_schema_name,parent_tbl
-  )
-  INTO _provider, _dataowner;
- ELSE
-  _provider := NEW.fk_provider;
-  _dataowner := NEW.fk_dataowner;
- END IF;
-
- IF fk_name IS NULL THEN
-  fk_name := 'fk_'||TG_TABLE_NAME;
-  ELSE
-  NULL;
- END IF;
-
- FOR _table_name IN unnest(TG_ARGV[1:array_length(TG_ARGV, 1)]) LOOP
- 		_table_name := trim(_table_name);
-        BEGIN
-            EXECUTE format('
-                UPDATE %I.%I
-                SET fk_provider = %L,
-                    fk_dataowner = %L
-                WHERE %I = %L
-            ',
-
-                _schema_name,
-                _table_name,
-                _provider,
-                _dataowner,
-                fk_name,
-                NEW.obj_id
-            );
-        EXCEPTION WHEN OTHERS THEN
-            RAISE WARNING 'Trigger %: Failed to update table %: %', TG_NAME, table_name, SQLERRM;
-        END;
- END LOOP;
- RETURN NEW;
+    RETURN NEW;
 END;
-$$ LANGUAGE PLPGSQL;
+$$;
 
-COMMENT ON FUNCTION tww_app.modification_default_orgs_referencing()
-IS 'accepts a parent table name as a first argument (if the caller is a child table) and all potential tables that might cascade from it as further argument';
-
-CREATE FUNCTION tww_app.modification_default_orgs_referenced() RETURNS trigger AS $$
+CREATE OR REPLACE FUNCTION tww_app.modification_default_orgs_referenced()
+RETURNS trigger
+LANGUAGE plpgsql
+AS $$
 DECLARE
- _schema_name TEXT;
- _table_name TEXT;
- _provider TEXT;
- _dataowner TEXT;
- parent_tbl TEXT;
+    schema_name TEXT := TG_ARGV[0];
+    parent_tbl  TEXT := NULLIF(TG_ARGV[1], '_SELF_');
+    child_tbl   TEXT := NULLIF(TG_ARGV[2], '_SELF_');
+    target_tbl  TEXT := TG_ARGV[3];
+
+    provider    TEXT;
+    dataowner   TEXT;
 BEGIN
- _schema_name := TG_ARGV[0];
- parent_tbl := TG_ARGV[1];
- child_name := TG_ARGV[2];
+    IF TG_NARGS <> 4 THEN
+        RAISE EXCEPTION
+            'Too few arguments in trigger %: expected 4 arguments, got % (%).',
+            TG_NAME, TG_NARGS, TG_ARGV;
+    END IF;
 
- IF _schema_name IS NULL THEN
-  _schema_name := 'tww_od';
- ELSE NULL;
- END IF;
+    -- Determine fk_provider / fk_dataowner source
+    IF parent_tbl IS NOT NULL THEN
+        EXECUTE format(
+            'SELECT fk_provider, fk_dataowner
+             FROM %I.%I
+             WHERE obj_id = $1',
+            schema_name,
+            parent_tbl
+        )
+        INTO provider, dataowner
+        USING NEW.obj_id;
 
- IF parent_tbl IS NOT NULL THEN
-  EXECUTE FORMAT("SELECT fk_provider, fk_dataowner
-  FROM %I.%I WHERE obj_id=NEW.obj_id",_schema_name,parent_tbl
-  )
-  INTO _provider, _dataowner;
- ELSE
-  _provider := NEW.fk_provider;
-  _dataowner := NEW.fk_dataowner;
- END IF;
+    ELSIF child_tbl IS NOT NULL THEN
+        -- Defaults come from explicit child table
+        EXECUTE format(
+            'SELECT fk_provider, fk_dataowner
+             FROM %I.%I
+             WHERE obj_id = $1',
+            schema_name,
+            child_tbl
+        )
+        INTO provider, dataowner
+        USING NEW.obj_id;
 
+    ELSE
+        -- Defaults are taken directly from NEW
+        provider  := NEW.fk_provider;
+        dataowner := NEW.fk_dataowner;
+    END IF;
 
+    EXECUTE format(
+        'UPDATE %I.%I
+         SET fk_provider  = $1,
+             fk_dataowner = $2
+         WHERE obj_id = $3',
+        schema_name,
+        target_tbl
+    )
+    USING provider, dataowner, NEW.obj_id;
 
-
- FOR _table_name IN unnest(TG_ARGV[3:array_length(TG_ARGV, 1)]) LOOP
- 		_table_name := trim(_table_name);
-     IF child_name IS NULL THEN
-      FORMAT("SELECT fk_%
-  FROM %I.%I WHERE obj_id=NEW.obj_id",_table_name, _schema_name, TG_TABLE_NAME
-  )
-      ELSE
-        EXECUTE FORMAT("SELECT fk_provider, fk_dataowner
-  FROM %I.%I WHERE obj_id=NEW.obj_id",_table_name, _schema_name, child_name
-  )
-  INTO _provider, _dataowner;
- END IF;
-        BEGIN
-            EXECUTE format('
-                UPDATE %I.%I
-                SET fk_provider = %L,
-                    fk_dataowner = %L
-                WHERE obj_id = NEW.fk_%I
-            ',
-                _schema_name,
-                _table_name,
-                _provider,
-                _dataowner,
-                fk_name
-            );
-        EXCEPTION WHEN OTHERS THEN
-            RAISE WARNING 'Trigger %: Failed to update table %.%: %', TG_NAME, _schema_name, _table_name, SQLERRM;
-        END;
- END LOOP;
- RETURN NEW;
+    RETURN NEW;
 END;
-$$ LANGUAGE PLPGSQL;
-
-COMMENT ON FUNCTION tww_app.modification_default_orgs_referenced()
-IS 'accepts the following arguments:
-1. schema name
-2. parent_table: table in which the default values are taken (when TG_TABLE_NAME is a child table)
-3. child_table:  table over which the default values are mapped (when TG_TABLE_NAME is a parent table)
-4.+ all tables whose default values should be overwritten';
+$$;

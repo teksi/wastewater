@@ -47,57 +47,91 @@ def create_oid_default(tbl: str):
     return query
 
 
-def create_default_value_trigger(tbl: str, inheritance_data: dict = {}):
-    inheritance_structure = inheritance_data.get(tbl, {})
-    if not inheritance_structure:  # tbl does not inherit to anyone
+
+
+
+def create_default_value_trigger(tbl: str, fk_data: dict):
+    def create_referencing_triggers(tbl, parent_tbl, fk_col, targets):
+        triggers = []
+
+        parent_arg = f"'{parent_tbl}'" if parent_tbl else "'_SELF_'"
+
+        for target in sorted(targets):
+            triggers.append(f"""
+            CREATE OR REPLACE TRIGGER
+            update_defaults_{tbl}_to_{target}
+            AFTER UPDATE OR INSERT ON
+            tww_od.{tbl}
+            FOR EACH ROW EXECUTE PROCEDURE
+            tww_app.modification_default_orgs_referencing(
+                'tww_od',
+                {parent_arg},
+                '{fk_col}',
+                '{target}'
+            );
+            """)
+        return triggers
+    
+    def resolve_fk_targets(tbl: str, fk_data: dict) -> dict:
+        """
+        Returns:
+        {
+            "referencing": set(...),
+            "referenced": set(...)
+        }
+        """
+        resolved = {
+            "referencing": set(),
+            "referenced": set(),
+        }
+
+        def walk(current):
+            node = fk_data.get(current, {})
+            resolved["referencing"].update(node.get("referencing", []))
+            resolved["referenced"].update(node.get("referenced", []))
+            for child in node.get("inherits_to", []):
+                walk(child)
+
+        walk(tbl)
+        return resolved
+    
+    node = fk_data.get(tbl)
+    if not node:
         return ""
-    referencing_tbls = inheritance_structure.get("referencing", [])
-    referenced_tbls = inheritance_structure.get("referenced", [])
-    inheriting_tbls = inheritance_structure.get("inherits_to", [])
-    parent_tbl = inheritance_structure.get("inherits_from", [None])[0]
-    subqueries = []
 
-    for inheriting_tbl in inheriting_tbls:
-        _referencing = inheritance_data.get(inheriting_tbl, {}).get("referencing", [])
-        _referenced = inheritance_data.get(inheriting_tbl, {}).get("referenced", [])
-        referencing_tbls.append(_referencing)
-        args_referenced_inh = f"'tww_od', {parent_arg}, 'fk_{inheriting_tbl}', " + ", ".join(
-            f"'{t}'" for t in _referenced
+    parent_tbl = node.get("inherits_from", [None])[0]
+    fk_col = f"fk_{tbl}"
+
+    resolved = resolve_fk_targets(tbl, fk_data)
+
+    sql = []
+
+    if resolved["referencing"]:
+        sql += create_referencing_triggers(
+            tbl,
+            parent_tbl,
+            fk_col,
+            resolved["referencing"],
         )
-        subqueries.append(f"""
-        CREATE OR REPLACE TRIGGER
-        update_default_values_{tbl}_referenced
-        AFTER UPDATE OR INSERT ON
-        tww_od.{tbl}
-        FOR EACH ROW EXECUTE PROCEDURE
-        tww_app.modification_default_orgs_referenced({args_referenced_inh});
-        """)
 
-    parent_arg = f"'{parent_tbl}'" if parent_tbl is not None else "NULL"
-    args_referencing = f"'tww_od', {parent_arg}, " + ", ".join(f"'{t}'" for t in referencing_tbls)
-    args_referenced = f"'tww_od', {parent_arg}, NULL, " + ", ".join(
-        f"'{t}'" for t in referenced_tbls
-    )
+    if resolved["referenced"]:
+        for target in resolved["referenced"]:
+            parent_arg = f"'{parent_tbl}'" if parent_tbl else "'_SELF_'"
+            sql.append(f"""
+            CREATE OR REPLACE TRIGGER
+            update_defaults_{tbl}_from_{target}
+            AFTER UPDATE OR INSERT ON
+            tww_od.{tbl}
+            FOR EACH ROW EXECUTE PROCEDURE
+            tww_app.modification_default_orgs_referenced(
+                'tww_od',
+                {parent_arg},
+                '_SELF_',
+                '{target}'
+            );
+            """)
 
-    if referencing_tbls:
-        subqueries.append(f"""
-        CREATE OR REPLACE TRIGGER
-        update_default_values_{tbl}_referencing
-        AFTER UPDATE OR INSERT ON
-        tww_od.{tbl}
-        FOR EACH ROW EXECUTE PROCEDURE
-        tww_app.modification_default_orgs_referencing({args_referencing});
-        """)
-    if referenced_tbls:
-        subqueries.append(f"""
-        CREATE OR REPLACE TRIGGER
-        update_default_values_{tbl}_referenced
-        AFTER UPDATE OR INSERT ON
-        tww_od.{tbl}
-        FOR EACH ROW EXECUTE PROCEDURE
-        tww_app.modification_default_orgs_referenced({args_referenced});
-        """)
-    return "".join(subqueries)
+    return "".join(sql)
 
 
 def set_defaults_and_triggers(
@@ -109,6 +143,7 @@ def set_defaults_and_triggers(
     Creates the triggers and sets default values for TEKSI Wastewater & GEP
     :param pg_service: the PostgreSQL service, if not given it will be determined from environment variable in Pirogue
     :param SingleInheritances: dictionary of all SingleInheritances in database
+    :param FKInheritances: dictionary of all FKInheritances in database
     """
 
     cursor = SqlContent(
