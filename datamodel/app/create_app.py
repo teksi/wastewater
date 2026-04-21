@@ -130,7 +130,9 @@ Running modification {modification.get('id')}
 
         # Defaults and Triggers
         # Has to be fired before view creation otherwise it won't work and will only fail in CI
-        set_defaults_and_triggers(self._connection, self.single_inherintances, self.fk_inheritances)
+        set_defaults_and_triggers(
+            self._connection, self.single_inherintances, self.fk_inheritances
+        )
 
         for key in self.single_inherintances:
             logger.debug(f"creating view vw_{key}")
