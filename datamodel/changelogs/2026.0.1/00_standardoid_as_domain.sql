@@ -23,7 +23,7 @@ BEGIN
             'SELECT count(*) FROM %I.%I
              WHERE obj_id IS NULL
                 OR length(obj_id) <> 16
-                OR obj_id !~ ''^[A-Za-z0-9]{16}$''',
+                OR obj_id !~ ''^[A-Za-z0-9]+$''',
             r.nspname,
             r.relname
         ) INTO cnt;
