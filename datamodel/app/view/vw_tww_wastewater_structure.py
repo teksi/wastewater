@@ -385,6 +385,7 @@ def vw_tww_wastewater_structure(
             pkey="obj_id",
             indent=6,
             remap_columns={"cover_shape": "co_shape"},
+            skip_columns=["uuidoid"],
             insert_values={
                 "identifier": "COALESCE(NULLIF(NEW.co_identifier,''), NEW.identifier)",
                 "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )",
@@ -697,6 +698,7 @@ def vw_tww_wastewater_structure(
             pkey="obj_id",
             indent=10,
             remap_columns={"cover_shape": "co_shape"},
+            skip_columns=["uuidoid"],
             insert_values={
                 "identifier": "COALESCE(NULLIF(NEW.co_identifier,''), NEW.identifier)",
                 "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )".format(
