@@ -17,7 +17,6 @@
  ***************************************************************************/
 """
 
-from PyQt5.QtCore import QVariant
 from qgis.core import (
     QgsFeature,
     QgsFeatureSink,
@@ -29,6 +28,7 @@ from qgis.core import (
     QgsProcessingParameterFeatureSink,
     QgsProcessingParameterFile,
 )
+from qgis.PyQt.QtCore import QVariant
 
 from .tww_algorithm import TwwAlgorithm
 from .TwwSwmm import TwwSwmm
@@ -57,12 +57,10 @@ class SwmmExtractResultsAlgorithm(TwwAlgorithm):
         return self.tr("SWMM Extract Results")
 
     def shortHelpString(self):
-        return self.tr(
-            """
+        return self.tr("""
         Import SWMM results in QGIS temporary tables.
         See: https://teksi.github.io/wastewater/tww_swmm/Process-Results.html
-        """
-        )
+        """)
 
     def helpUrl(self):
         return "https://teksi.github.io/wastewater/tww_swmm/Process-Results.html"
@@ -109,7 +107,7 @@ class SwmmExtractResultsAlgorithm(TwwAlgorithm):
         fields.append(QgsField("time_max_day", QVariant.Int))
         fields.append(QgsField("time_max_time", QVariant.String))
         fields.append(QgsField("reported_max_depth", QVariant.Double))
-        (sink_node, dest_id) = self.parameterAsSink(parameters, self.NODE_SUMMARY, context, fields)
+        sink_node, dest_id = self.parameterAsSink(parameters, self.NODE_SUMMARY, context, fields)
         if sink_node is None:
             raise QgsProcessingException(self.invalidSinkError(parameters, self.NODE_SUMMARY))
 
@@ -138,7 +136,7 @@ class SwmmExtractResultsAlgorithm(TwwAlgorithm):
         fields.append(QgsField("maximum_velocity", QVariant.Double))
         fields.append(QgsField("max_over_full_flow", QVariant.Double))
         fields.append(QgsField("max_over_full_depth", QVariant.Double))
-        (sink_link, dest_id) = self.parameterAsSink(parameters, self.LINK_SUMMARY, context, fields)
+        sink_link, dest_id = self.parameterAsSink(parameters, self.LINK_SUMMARY, context, fields)
         if sink_link is None:
             raise QgsProcessingException(self.invalidSinkError(parameters, self.LINK_SUMMARY))
 

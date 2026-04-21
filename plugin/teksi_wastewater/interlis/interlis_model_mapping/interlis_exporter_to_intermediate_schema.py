@@ -3861,8 +3861,7 @@ class InterlisExporterToIntermediateSchema:
                 ),
             ).filter(self.model_classes_tww_app.gepknoten.obj_id.in_(self.subset_ids))
 
-        perimeter_query = text(
-            """
+        perimeter_query = text("""
             WITH geoms AS (
              SELECT *, ST_ForceCurve((ST_Dump(perimeter_ist)).geom) AS geom
              FROM tww_app.vw_agxx_sbw_einzugsgebiet
@@ -3875,8 +3874,7 @@ class InterlisExporterToIntermediateSchema:
             SELECT DISTINCT ON (obj_id) obj_id, ST_Area(geom) AS area, geom, ST_GeometryType(geom) as type
             FROM geoms
             ORDER BY obj_id, area DESC;
-        """
-        )
+        """)
         perimeters = self.tww_session.execute(perimeter_query).fetchall()
 
         for row in query:

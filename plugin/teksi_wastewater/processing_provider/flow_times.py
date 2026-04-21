@@ -18,7 +18,6 @@
 """
 
 import qgis.utils as qgis_utils
-from PyQt5.QtCore import QVariant
 from qgis.core import (
     QgsExpression,
     QgsFeature,
@@ -36,6 +35,7 @@ from qgis.core import (
     QgsProcessingParameterVectorLayer,
     QgsWkbTypes,
 )
+from qgis.PyQt.QtCore import QVariant
 
 from .tww_algorithm import TwwAlgorithm
 
@@ -126,7 +126,7 @@ class FlowTimesAlgorithm(TwwAlgorithm):
         # create feature sink
         fields = QgsFields()
         fields.append(QgsField("flow_time", QVariant.Double))
-        (sink, dest_id) = self.parameterAsSink(
+        sink, dest_id = self.parameterAsSink(
             parameters,
             self.OUTPUT,
             context,

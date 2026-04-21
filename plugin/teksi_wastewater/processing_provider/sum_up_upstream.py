@@ -19,7 +19,6 @@
 
 import statistics
 
-from PyQt5.QtCore import QVariant
 from qgis.core import (
     NULL,
     QgsExpression,
@@ -43,6 +42,7 @@ from qgis.core import (
     QgsProcessingParameterVectorLayer,
     QgsWkbTypes,
 )
+from qgis.PyQt.QtCore import QVariant
 
 from .tww_algorithm import TwwAlgorithm
 
@@ -223,7 +223,7 @@ class SumUpUpstreamAlgorithm(TwwAlgorithm):
         # create feature sink
         fields = wastewater_node_layer.fields()
         fields.append(QgsField("value", QVariant.Double))
-        (sink, dest_id) = self.parameterAsSink(
+        sink, dest_id = self.parameterAsSink(
             parameters,
             self.OUTPUT,
             context,
@@ -235,7 +235,7 @@ class SumUpUpstreamAlgorithm(TwwAlgorithm):
         loop_sink = None
         loop_dest_id = None
         if create_loop_layer:
-            (loop_sink, loop_dest_id) = self.parameterAsSink(
+            loop_sink, loop_dest_id = self.parameterAsSink(
                 parameters,
                 self.LOOP_OUTPUT,
                 context,
