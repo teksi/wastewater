@@ -133,6 +133,7 @@ DECLARE
  _provider TEXT;
  _dataowner TEXT;
  parent_tbl TEXT;
+ fk_name TEXT;
 BEGIN
  _schema_name := TG_ARGV[0];
  parent_tbl := TG_ARGV[1];
