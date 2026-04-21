@@ -44,7 +44,7 @@ class AboutDialog(QDialog, DIALOG_UI):
             "metadata.txt",
         )
 
-        ini_text = QSettings(metadata_file_path, QSettings.IniFormat)
+        ini_text = QSettings(metadata_file_path, QSettings.Format.IniFormat)
         version = ini_text.value("version")
         name = ini_text.value("name")
         description = "".join(ini_text.value("description"))

@@ -1,4 +1,4 @@
-ARG QGIS_TEST_VERSION=latest
+ARG QGIS_TEST_VERSION=stable-noble
 FROM  qgis/qgis:${QGIS_TEST_VERSION}
 
 RUN apt-get update && \
