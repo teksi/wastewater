@@ -184,7 +184,7 @@ BEGIN
 END;
 $$ LANGUAGE PLPGSQL;
 
-COMMENT ON tww_app.modification_default_orgs_referencing()
+COMMENT ON FUNCTION tww_app.modification_default_orgs_referencing()
 IS 'accepts a parent table name as a first argument (if the caller is a child table) and all potential tables that might cascade from it as further argument';
 
 CREATE FUNCTION tww_app.modification_default_orgs_referenced() RETURNS trigger AS $$
@@ -250,7 +250,7 @@ BEGIN
 END;
 $$ LANGUAGE PLPGSQL;
 
-COMMENT ON tww_app.modification_default_orgs_referenced()
+COMMENT ON FUNCTION tww_app.modification_default_orgs_referenced()
 IS 'accepts the following arguments:
 1. schema name
 2. parent_table: table in which the default values are taken (when TG_TABLE_NAME is a child table)
