@@ -265,7 +265,7 @@ BEGIN
   WHERE _all or obj_id=_obj_id;
 
 END;
-$$
+$$;
 
 CREATE OR REPLACE FUNCTION tww_app.interpolate_reach_z_vertices(
     _obj_ids tww_od.interlis_standardoid[],
@@ -282,4 +282,4 @@ BEGIN
     PERFORM tww_app.interpolate_reach_z_vertices(_obj_id,mode);
   END LOOP;
 END;
-$$
+$$;
