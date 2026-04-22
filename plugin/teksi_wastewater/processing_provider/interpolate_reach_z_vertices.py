@@ -10,19 +10,13 @@
  ***************************************************************************/
 """
 
-
 from qgis.core import (
     QgsProcessingAlgorithm,
-    QgsProcessingParameterVectorLayer,
     QgsProcessingParameterEnum,
-    QgsProcessingAlgorithm,
+    QgsProcessingParameterVectorLayer,
 )
-from qgis.PyQt.QtCore import QCoreApplication
-
 
 from .tww_algorithm import TwwAlgorithm
-from ..utils.database_utils import DatabaseUtils
-
 
 __author__ = "Cyril Meder-Graf"
 __date__ = "2026-04-22"
@@ -31,7 +25,6 @@ __copyright__ = "(C) 2026 by TEKSI"
 # This will get replaced with a git SHA1 when you do a git archive
 
 __revision__ = "$Format:%H$"
-
 
 
 class InterpolateReachZVertices(TwwAlgorithm):
@@ -72,9 +65,7 @@ class InterpolateReachZVertices(TwwAlgorithm):
         )
 
     def processAlgorithm(self, parameters, context, feedback):
-        reach_layer = self.parameterAsVectorLayer(
-            parameters, self.REACH_LAYER, context
-        )
+        reach_layer = self.parameterAsVectorLayer(parameters, self.REACH_LAYER, context)
 
         mode_idx = self.parameterAsEnum(parameters, self.MODE, context)
         mode = ["local", "global"][mode_idx]
@@ -101,13 +92,12 @@ class InterpolateReachZVertices(TwwAlgorithm):
         if not transaction:
             raise Exception(
                 self.tr(
-                    "Layer is not in a PostgreSQL transaction – "
-                    "cannot safely run interpolation"
+                    "Layer is not in a PostgreSQL transaction – " "cannot safely run interpolation"
                 )
             )
         else:
 
-            try:         
+            try:
                 transaction.executeSql(
                     """
                     SELECT tww_app.interpolate_reach_z_vertices(
@@ -130,4 +120,3 @@ class InterpolateReachZVertices(TwwAlgorithm):
 
         feedback.setProgress(100)
         return {}
-
