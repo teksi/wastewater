@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS tww_od.tww_reach_point_label
 	fk_wastewater_structure character varying(16),
     label_text text,
 	azimuth numeric(4,3), -- radians
+	_usage_current smallint,
 	CONSTRAINT pkey_tww_od_tww_reach_point_label_fk_reach_point PRIMARY KEY (fk_reach_point),
 	CONSTRAINT oorel_od_tww_reach_point_label_reach_point FOREIGN KEY (fk_reach_point) REFERENCES tww_od.reach_point(obj_id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	CONSTRAINT fkey_od_tww_reach_point_label_wastewater_structure FOREIGN KEY (fk_wastewater_structure) REFERENCES tww_od.wastewater_structure(obj_id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
