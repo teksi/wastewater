@@ -135,7 +135,12 @@ def vw_tww_wastewater_structure(
             table_alias="main_co_sp",
             remove_pkey=True,
             indent=4,
-            skip_columns=["last_modification","fk_dataowner","fk_provider","fk_wastewater_structure"],
+            skip_columns=[
+                "last_modification",
+                "fk_dataowner",
+                "fk_provider",
+                "fk_wastewater_structure",
+            ],
             prefix="co_",
         ),
         main_co_cols=select_columns(

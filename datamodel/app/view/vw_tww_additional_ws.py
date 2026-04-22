@@ -113,7 +113,7 @@ def vw_tww_additional_ws(
                 "detail_geometry3d_geometry",
             ],
         ),
-         main_co_sp_cols=select_columns(
+        main_co_sp_cols=select_columns(
             connection=connection,
             table_schema="tww_od",
             table_name="structure_part",
