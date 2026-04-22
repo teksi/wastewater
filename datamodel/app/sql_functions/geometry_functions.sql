@@ -252,7 +252,7 @@ $$;
 
 CREATE OR REPLACE FUNCTION tww_app.interpolate_reach_z_vertices(
     _obj_id tww_od.interlis_standardoid,
-    mode text  -- 'local' or 'global',
+    mode text,  -- 'local' or 'global'
     _all default false
 )
 RETURNS VOID
@@ -260,10 +260,26 @@ LANGUAGE plpgsql
 AS
 $$
 BEGIN
-
   UPDATE tww_od.reach
   SET progression3d_geometry=tww_app.interpolate_z_vertices(progression3d_geometry,mode)
   WHERE _all or obj_id=_obj_id;
 
+END;
+$$
+
+CREATE OR REPLACE FUNCTION tww_app.interpolate_reach_z_vertices(
+    _obj_ids tww_od.interlis_standardoid[],
+    mode text  -- 'local' or 'global'
+)
+RETURNS VOID
+LANGUAGE plpgsql
+AS
+$$
+DECLARE
+  _obj_id  tww_od.interlis_standardoid;
+BEGIN
+  FOR _obj_id in _obj_ids LOOP
+    PERFORM tww_app.interpolate_reach_z_vertices(_obj_id,mode);
+  END LOOP;
 END;
 $$
