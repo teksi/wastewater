@@ -110,7 +110,7 @@ class TestInterlis(unittest.TestCase):
         interlisImporterExporter.interlis_import(
             xtf_file_input=xtf_file_input,
             use_refdata=False,
-            )
+        )
 
         result = DatabaseUtils.fetchone(
             "SELECT identifier FROM tww_od.organisation WHERE obj_id='ch20p3q400001497';"
@@ -125,7 +125,7 @@ class TestInterlis(unittest.TestCase):
             xtf_file_input=xtf_file_input,
             use_refdata=True,
             refdatpath=self._get_data_filename(TEST_DATASET_ORGANISATIONS),
-            )
+        )
 
         result = DatabaseUtils.fetchone(
             "SELECT obj_id FROM tww_od.reach WHERE obj_id='ch000000RE000001';"
@@ -171,7 +171,7 @@ class TestInterlis(unittest.TestCase):
             xtf_file_input=xtf_file_input,
             use_refdata=True,
             refdatpath=self._get_data_filename(TEST_DATASET_ORGANISATIONS),
-            )
+        )
 
         result = DatabaseUtils.fetchone(
             "SELECT obj_id FROM tww_od.pipe_profile WHERE obj_id='ch000000PP000001';"
@@ -192,7 +192,7 @@ class TestInterlis(unittest.TestCase):
             xtf_file_input=xtf_file_input,
             use_refdata=True,
             refdatapath="{config.EXTERNAL_ORGANISATION}",
-            )
+        )
 
         result = DatabaseUtils.fetchone(
             "SELECT fk_maintenance_event FROM tww_od.re_maintenance_event_wastewater_structure WHERE fk_wastewater_structure='ch000000WS000001';"
@@ -238,7 +238,7 @@ class TestInterlis(unittest.TestCase):
             logs_next_to_file=True,
             user_interaction=False,
             use_refdata=True,
-            #22.4.2026 to do define refdatpath "/usr/src/plugin/teksi_wastewater/tests/data/test-dataset-organisations.xtf"
+            # 22.4.2026 to do define refdatpath "/usr/src/plugin/teksi_wastewater/tests/data/test-dataset-organisations.xtf"
             refdatpath=self._get_data_filename(TEST_DATASET_ORGANISATIONS),
         )
 
