@@ -51,10 +51,7 @@ def vw_tww_additional_ws(
 
         , {ws_cols}
 
-        , main_co_sp.identifier AS co_identifier
-        , main_co_sp.remark AS co_remark
-        , main_co_sp.renovation_demand AS co_renovation_demand
-
+        , {main_co_sp_cols}
         , {main_co_cols}
         , ST_Force2D(COALESCE(wn.situation3d_geometry, main_co.situation3d_geometry))::geometry(Point, {{srid}}) AS situation3d_geometry
 
@@ -115,6 +112,18 @@ def vw_tww_additional_ws(
                 "fk_main_wastewater_node",
                 "detail_geometry3d_geometry",
             ],
+        ),
+         main_co_sp_cols=select_columns(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="structure_part",
+            table_alias="main_co_sp",
+            remove_pkey=False,
+            indent=4,
+            skip_columns=["obj_id", ""],
+            prefix="co_",
+            remap_columns={"cover_shape": "co_shape"},
+            columns_at_end=["obj_id"],
         ),
         main_co_cols=select_columns(
             connection=connection,
