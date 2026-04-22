@@ -101,8 +101,8 @@ DECLARE
     d_curr   double precision;
 BEGIN
     IF mode not in ('local','global') THEN
-    RAISE EXCEPTION 
-      USING 
+    RAISE EXCEPTION
+      USING
       MESSAGE = format(
         'mode "%s" not accepted (only local or global)', mode
       ),
