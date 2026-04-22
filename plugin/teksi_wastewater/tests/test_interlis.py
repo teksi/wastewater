@@ -108,8 +108,8 @@ class TestInterlis(unittest.TestCase):
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_ORGANISATION_ARBON_ONLY)
         interlisImporterExporter = InterlisImporterExporter()
         interlisImporterExporter.interlis_import(
-            xtf_file_input=xtf_file_input
-            use_refdata=False
+            xtf_file_input=xtf_file_input,
+            use_refdata=False,
             )
 
         result = DatabaseUtils.fetchone(
