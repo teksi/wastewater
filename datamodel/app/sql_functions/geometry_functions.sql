@@ -251,7 +251,7 @@ END;
 $$;
 
 CREATE OR REPLACE FUNCTION tww_app.interpolate_reach_z_vertices(
-    _obj_id tww_od.interlis_standardoid,
+    _obj_id text,
     mode text,  -- 'local' or 'global'
     _all default false
 )
@@ -268,7 +268,7 @@ END;
 $$;
 
 CREATE OR REPLACE FUNCTION tww_app.interpolate_reach_z_vertices(
-    _obj_ids tww_od.interlis_standardoid[],
+    _obj_ids text[],
     mode text  -- 'local' or 'global'
 )
 RETURNS VOID
@@ -276,7 +276,7 @@ LANGUAGE plpgsql
 AS
 $$
 DECLARE
-  _obj_id  tww_od.interlis_standardoid;
+  _obj_id  text;
 BEGIN
   FOR _obj_id in _obj_ids LOOP
     PERFORM tww_app.interpolate_reach_z_vertices(_obj_id,mode);
