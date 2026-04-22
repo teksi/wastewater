@@ -428,7 +428,7 @@ class InterlisImporterExporter:
                     None,
                 )
 
-    def _import_validate_xtf_file(self, xtf_file_input, use_refdata):
+    def _import_validate_xtf_file(self, xtf_file_input, use_refdata, refdatapath):
         log_path = make_log_path(self.base_log_path, "ilivalidator")
         try:
             self.interlisTools.validate_xtf_data(

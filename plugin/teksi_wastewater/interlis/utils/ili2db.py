@@ -80,7 +80,7 @@ class InterlisTools:
 
     def validate_xtf_data(self, xtf_file, log_path, refdata=True, refdatapath=None):
         if refdata:
-            if not refdatapath is None:
+            if refdatapath is not None:
                 logger.info("VALIDATING XTF DATA... with refdata")
                 execute_subprocess(
                     # f'"{self.java_executable_path}" -jar "{config.ILIVALIDATOR}" --log "{log_path}" "{xtf_file}"'
