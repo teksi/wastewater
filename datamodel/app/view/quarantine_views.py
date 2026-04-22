@@ -371,7 +371,7 @@ WHERE secondary.idx > 1)
         LEFT JOIN (
             SELECT obj_id
             , uuidoid
-			, tww_position_in_structure
+            , tww_position_in_structure
             FROM tww_od.import_reach_point_quarantine
             ) q ON q.obj_id = rp.obj_id
         LEFT JOIN (
