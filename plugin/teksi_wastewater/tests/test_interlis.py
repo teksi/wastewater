@@ -168,7 +168,7 @@ class TestInterlis(unittest.TestCase):
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_DSS)
         interlisImporterExporter = InterlisImporterExporter()
         interlisImporterExporter.interlis_import(
-            xtf_file_input=xtf_file_input
+            xtf_file_input=xtf_file_input,
             use_refdata=True,
             refdatpath=self._get_data_filename(TEST_DATASET_ORGANISATIONS),
             )
