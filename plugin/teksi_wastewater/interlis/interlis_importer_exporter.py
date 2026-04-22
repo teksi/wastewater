@@ -98,6 +98,7 @@ class InterlisImporterExporter:
         filter_nulls=True,
         srid: int = None,
         use_refdata=True,
+        refdatapath=None,
     ):
         # Configure logging
         if logs_next_to_file:
@@ -112,7 +113,7 @@ class InterlisImporterExporter:
 
         # Validating the input file
         self._progress_done(5, "Validating the input file...")
-        self._import_validate_xtf_file(xtf_file_input, use_refdata)
+        self._import_validate_xtf_file(xtf_file_input, use_refdata, refdatapath)
 
         # Get model to import from xtf file
         self._progress_done(10, "Extract model from xtf...")
@@ -226,6 +227,7 @@ class InterlisImporterExporter:
         xtf_file_output,
         export_models,
         use_refdata,
+        refdatapath,
         logs_next_to_file=True,
         limit_to_selection=False,
         export_orientation=90.0,
@@ -292,7 +294,7 @@ class InterlisImporterExporter:
         tempdir.cleanup()  # Cleanup
 
         self._progress_done(75)
-        self._export_xtf_files(file_name_base, export_models, use_refdata)
+        self._export_xtf_files(file_name_base, export_models, use_refdata,refdatapath)
 
         self._progress_done(100)
         logger.info("INTERLIS export finished.")
@@ -311,6 +313,7 @@ class InterlisImporterExporter:
         srid: int = None,
         include_unplaced: bool = False,
         use_refdata=True,
+        refdatapath=None,
     ):
 
         if srid:
@@ -346,6 +349,7 @@ class InterlisImporterExporter:
                 xtf_file_output,
                 export_models,
                 use_refdata,
+                refdatapath,
                 logs_next_to_file,
                 limit_to_selection,
                 export_orientation,
@@ -401,6 +405,7 @@ class InterlisImporterExporter:
                         xtf_file_output,
                         export_models,
                         use_refdata,
+                        refdatapath,
                         logs_next_to_file,
                         limit_to_selection,
                         export_orientation,
@@ -430,6 +435,7 @@ class InterlisImporterExporter:
                 xtf_file_input,
                 log_path,
                 use_refdata,
+                refdatapath,
             )
         except CmdException:
             raise InterlisImporterExporterError(
@@ -652,7 +658,7 @@ class InterlisImporterExporter:
                     None,
                 )
 
-    def _export_xtf_files(self, file_name_base, export_models, use_refdata):
+    def _export_xtf_files(self, file_name_base, export_models, use_refdata, refdatapath):
         progress_step = (100 - self.current_progress) / (2 * len(export_models))
         progress_step = int(progress_step)
 
@@ -692,6 +698,7 @@ class InterlisImporterExporter:
                     export_file_name,
                     log_path,
                     use_refdata,
+                    refdatapath,
                 )
             except CmdException:
                 xtf_export_errors.append(
