@@ -78,26 +78,29 @@ class InterlisTools:
             )
         )
 
-    def validate_xtf_data(self, xtf_file, log_path, refdata=True):
+    def validate_xtf_data(self, xtf_file, log_path, refdata=True, refdatapath=None):
         if refdata:
-            logger.info("VALIDATING XTF DATA... with refdata")
-            execute_subprocess(
-                # f'"{self.java_executable_path}" -jar "{config.ILIVALIDATOR}" --log "{log_path}" "{xtf_file}"'
-                f'"{self.java_executable_path}" -jar "{config.ILIVALIDATOR}" --allObjectsAccessible --refdata "{config.EXTERNAL_ORGANISATION}" --log "{log_path}" "{xtf_file}"'
-                # " ".join(
-                # [
-                # f'"{self.java_executable_path}"',
-                # "-jar ",
-                # """{config.ILIVALIDATOR}""",
-                # "--refdata ",
-                # """{config.EXTERNAL_ORGANISATION}""",
-                # "--allObjectsAccessible",
-                # "--log",
-                # f'"{log_path}"',
-                # f'"{xtf_file}"',
-                # ]
-                # )
-            )
+            if not refdatapath is None:
+                logger.info("VALIDATING XTF DATA... with refdata")
+                execute_subprocess(
+                    # f'"{self.java_executable_path}" -jar "{config.ILIVALIDATOR}" --log "{log_path}" "{xtf_file}"'
+                    f'"{self.java_executable_path}" -jar "{config.ILIVALIDATOR}" --allObjectsAccessible --refdata "{config.EXTERNAL_ORGANISATION}" --log "{log_path}" "{xtf_file}"'
+                    # " ".join(
+                    # [
+                    # f'"{self.java_executable_path}"',
+                    # "-jar ",
+                    # """{config.ILIVALIDATOR}""",
+                    # "--refdata ",
+                    # """{config.EXTERNAL_ORGANISATION}""",
+                    # "--allObjectsAccessible",
+                    # "--log",
+                    # f'"{log_path}"',
+                    # f'"{xtf_file}"',
+                    # ]
+                    # )
+                )
+            else:
+                logger.error("VALIDATING XTF DATA... with refdata, but no refdatapath provided")
         else:
             logger.info("VALIDATING XTF DATA... without refdata")
             execute_subprocess(
