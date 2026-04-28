@@ -484,6 +484,7 @@ WHERE secondary.idx > 1)
     """
     cursor.execute(defaults)
 
+
 def vw_tww_import_reach(connection: psycopg.Connection):
     """
     Creates vw_tww_import_reach view
@@ -499,7 +500,7 @@ def vw_tww_import_reach(connection: psycopg.Connection):
   SELECT
           {re_columns}
         , NULL::numeric(7,3) astww_delta_measurement
-        , {ch_columns}  
+        , {ch_columns}
         , ws.status as ws_status
         , q_rp_from.uuidoid as fk_import_rp_quarantine_from
         , q_rp_to.uuidoid as fk_import_rp_quarantine_to
@@ -636,6 +637,7 @@ def vw_tww_import_reach(connection: psycopg.Connection):
     ALTER VIEW tww_app.vw_tww_import_reach ALTER uuidoid SET DEFAULT gen_random_uuid();
     """
     cursor.execute(defaults)
+
 
 def tww_import_logic(connection: psycopg.Connection):
 
