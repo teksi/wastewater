@@ -32,6 +32,7 @@ from qgis.core import (
 
 from .tww_algorithm import TwwAlgorithm
 from .TwwSwmm import TwwSwmm
+from ..utils.twwlayermanager import TwwLayerManager
 
 __author__ = "Timothée Produit"
 __date__ = "2019-08-01"
@@ -140,9 +141,7 @@ class SwmmCreateInputAlgorithm(TwwAlgorithm):
         # Get selection
         if only_selected:
             hierarchy = None
-            structures_layers = QgsProject.instance().mapLayersByName(
-                "vw_tww_wastewater_structure"
-            )
+            structures_layers = TwwLayerManager.layer("vw_tww_wastewater_structure")
             if structures_layers:
                 structures = structures_layers[0].selectedFeatures()
                 selected_structures = []
@@ -151,7 +150,7 @@ class SwmmCreateInputAlgorithm(TwwAlgorithm):
             else:
                 self.structures = []
 
-            reaches_layers = QgsProject.instance().mapLayersByName("vw_tww_reach")
+            reaches_layers = TwwLayerManager.layer("vw_tww_reach")
             if reaches_layers:
                 reaches = reaches_layers[0].selectedFeatures()
                 selected_reaches = []
