@@ -141,9 +141,6 @@ class TWWIntegrityChecker:
 
         with DatabaseUtils.PsycopgConnection() as connection:
             cursor = connection.cursor()
-
-            cursor.execute(f"SELECT obj_id FROM {schema_name}.{parent_name};")
-
             cursor.execute(f"SELECT obj_id FROM {schema_name}.{parent_name};")
             parent_rows = cursor.fetchall()
             parent_ids = {row[0] for row in parent_rows}
@@ -204,12 +201,17 @@ class TWWIntegrityChecker:
         """
         Returns a dict of {class_name: (count, [obj_ids])} for missing values.
         """
-        if not check_val:
+        
+        if not condition_parts:
+            raise ValueError("No conditions specified for check_conditions")
+
+        if check_val is None:
             check_val = ""
         with DatabaseUtils.PsycopgConnection() as connection:
             cursor = connection.cursor()
             column_identifier = DatabaseUtils.wrap_identifier(value_name)
             condition_parts = []
+            params = []
             if check_str:
                 condition_parts.append(
                     DatabaseUtils.compose_sql(
@@ -217,6 +219,7 @@ class TWWIntegrityChecker:
                         column_name=column_identifier,
                     )
                 )
+                params.append(check_val)
             if check_null:
                 condition_parts.append(
                     DatabaseUtils.compose_sql(
@@ -245,7 +248,7 @@ class TWWIntegrityChecker:
                     table_name=DatabaseUtils.wrap_identifier(_class),
                     condition=condition,
                 )
-                cursor.execute(query, (check_val,))
+                cursor.execute(query, params or None)
                 result = cursor.fetchone()
                 class_count = int(result[0]) if result else 0
                 obj_ids_without_val = result[1] if result else []
