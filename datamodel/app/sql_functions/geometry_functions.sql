@@ -253,7 +253,7 @@ $$;
 CREATE OR REPLACE FUNCTION tww_app.interpolate_reach_z_vertices(
     _obj_id text,
     mode text,  -- 'local' or 'global'
-    _all default false
+    _all boolean default false
 )
 RETURNS VOID
 LANGUAGE plpgsql
