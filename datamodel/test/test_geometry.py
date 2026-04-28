@@ -267,26 +267,23 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         obj_id = self.insert("vw_tww_reach", row)
 
         # Act
-        self.execute(
-            f"""
+        self.execute(f"""
             SELECT tww_app.interpolate_reach_z_vertices(
                 ARRAY['{obj_id}'],
                 'local'
             );
-            """
-        )
+            """)
 
         new_row = self.select("vw_tww_reach", obj_id)
 
         # Geometry type must still be a curve
-        assert self.execute(
-            "GeometryType(%s)", [new_row["progression3d_geometry"]]
-        ) == "COMPOUNDCURVE"
+        assert (
+            self.execute("GeometryType(%s)", [new_row["progression3d_geometry"]])
+            == "COMPOUNDCURVE"
+        )
 
         # No NaN Z values must remain
-        wkt = self.execute(
-            "ST_AsText(%s)", [new_row["progression3d_geometry"]]
-        )
+        wkt = self.execute("ST_AsText(%s)", [new_row["progression3d_geometry"]])
         assert "NaN" not in wkt
 
         # Interpolated Z values from neighbouring indices
@@ -334,26 +331,23 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         obj_id = self.insert("vw_tww_reach", row)
 
         # Act
-        self.execute(
-            f"""
+        self.execute(f"""
             SELECT tww_app.interpolate_reach_z_vertices(
                 ARRAY['{obj_id}'],
                 'global'
             );
-            """
-        )
+            """)
 
         new_row = self.select("vw_tww_reach", obj_id)
 
         # Geometry type must still be a curve
-        assert self.execute(
-            "GeometryType(%s)", [new_row["progression3d_geometry"]]
-        ) == "COMPOUNDCURVE"
+        assert (
+            self.execute("GeometryType(%s)", [new_row["progression3d_geometry"]])
+            == "COMPOUNDCURVE"
+        )
 
         # No NaN Z values must remain
-        wkt = self.execute(
-            "ST_AsText(%s)", [new_row["progression3d_geometry"]]
-        )
+        wkt = self.execute("ST_AsText(%s)", [new_row["progression3d_geometry"]])
         assert "NaN" not in wkt
 
         # Interpolated Z values from start and end point indices
@@ -375,12 +369,9 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         )
         assert z == 55
 
-
         # Levels unchanged
         assert new_row["rp_from_level"] == 100
         assert new_row["rp_to_level"] == 40
-
-
 
     def test_vw_tww_wastewater_structure_geometry_insert(self):
         # 1. insert geometry and no co_level and no wn_bottom_level
