@@ -201,18 +201,21 @@ class TWWIntegrityChecker:
         """
         Returns a dict of {class_name: (count, [obj_ids])} for missing values.
         """
-
-        if not condition_parts:
+        
+        if not any((check_str, check_null, check_true)):
             raise ValueError("No conditions specified for check_conditions")
 
-        if check_val is None:
-            check_val = ""
+
         with DatabaseUtils.PsycopgConnection() as connection:
             cursor = connection.cursor()
             column_identifier = DatabaseUtils.wrap_identifier(value_name)
             condition_parts = []
             params = []
             if check_str:
+                
+                if check_val is None:
+                    raise ValueError("check_val must be provided when check_str=True")
+
                 condition_parts.append(
                     DatabaseUtils.compose_sql(
                         "{column_name} = %s",
