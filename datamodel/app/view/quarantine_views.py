@@ -24,7 +24,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection):
 
     CREATE OR REPLACE VIEW tww_app.vw_tww_import_manhole AS
   SELECT
-        q.uuidoid
+        ws.uuidoid
         , CASE
           WHEN ma.obj_id IS NOT NULL THEN 'manhole'
           WHEN ss.obj_id IS NOT NULL THEN 'special_structure'
@@ -65,6 +65,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection):
         , dd.renovation_demand as dd_renovation_demand
         , dd.remark as dd_remark
         , (q.uuidoid IS NOT NULL) AS in_quarantine
+        , coalesce(q.tww_deleted, false) as tww_deleted
 
 
         FROM tww_od.wastewater_structure ws
@@ -113,7 +114,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection):
             , tww_deleted
             FROM tww_od.import_ws_quarantine
             ) q ON q.ws_obj_id = ws.obj_id
-        WHERE ma.obj_id IS NOT NULL or ss.obj_id IS NOT NULL AND q.tww_deleted IS NOT TRUE;
+        WHERE ma.obj_id IS NOT NULL or ss.obj_id IS NOT NULL;
     """.format(
         main_co_cols=select_columns(
             connection=connection,
@@ -222,7 +223,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection):
             table_name="import_ws_quarantine",
             remove_pkey=False,
             indent=2,
-            skip_columns=["tww_is_okay", "tww_deleted"],
+            skip_columns=["tww_is_okay"],
         ),
     )
 
@@ -265,7 +266,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection):
             table_name="import_ws_quarantine",
             remove_pkey=False,
             indent=6,
-            skip_columns=["tww_is_okay", "tww_deleted"],
+            skip_columns=["tww_is_okay"],
         ),
     )
 
@@ -358,6 +359,7 @@ WHERE secondary.idx > 1)
         , q_ws.uuidoid as fk_import_ws_quarantine
         , NULL::boolean as tww_is_okay
         , (q.uuidoid IS NOT NULL) AS in_quarantine
+        , false as tww_deleted
 
         FROM tww_od.reach_point rp
         INNER JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = rp.fk_wastewater_networkelement
@@ -482,6 +484,158 @@ WHERE secondary.idx > 1)
     """
     cursor.execute(defaults)
 
+def vw_tww_import_reach(connection: psycopg.Connection):
+    """
+    Creates vw_tww_import_reach view
+    :param connection: a psycopg connection object
+    """
+
+    cursor = connection.cursor()
+
+    view_sql = """
+    DROP VIEW IF EXISTS tww_app.vw_tww_import_reach;
+
+    CREATE OR REPLACE VIEW tww_app.vw_tww_import_reach AS
+  SELECT
+          {re_columns}
+        , NULL::numeric(7,3) astww_delta_measurement
+        , {ch_columns}  
+        , ws.status as ws_status
+        , q_rp_from.uuidoid as fk_import_rp_quarantine_from
+        , q_rp_to.uuidoid as fk_import_rp_quarantine_to
+        , NULL::boolean as tww_is_okay
+        , (q.uuidoid IS NOT NULL) AS in_quarantine
+        , false as tww_deleted
+
+        FROM tww_od.reach re
+        INNER JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = re.obj_id
+        INNER JOIN tww_od.wastewater_structure ws ON ws.obj_id = ne.fk_wastewater_structure
+        LEFT JOIN tww_od.import_reach_point_quarantine q_rp_from on re.fk_reach_point_from =q_rp_from.obj_id
+        LEFT JOIN tww_od.import_reach_point_quarantine q_rp_to on re_to.fk_reach_point_to =q_rp_to.obj_id
+        LEFT JOIN (
+            SELECT ws_obj_id
+            , uuidoid
+            , tww_deleted
+            FROM tww_od.import_reach_quarantine
+            ) q ON q.obj_id = re.obj_id;
+    """.format(
+        re_columns=select_columns(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="reach",
+            table_alias="re",
+            remove_pkey=False,
+            indent=4,
+            skip_columns=[
+                "coefficient_of_friction",
+                "flow_time_dry_weather",
+                "hydraulic_load_current",
+                "length_effective",
+                "slope_building_plan",
+                "wall_roughness",
+                "swmm_default_coefficient_of_friction",
+            ],
+        ),
+        ch_columns=select_columns(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="channel",
+            table_alias="ch",
+            prefix="ch_",
+            remove_pkey=False,
+            indent=4,
+            skip_columns=[
+                "function_amelioration",
+                "function_hierarchic",
+                "function_hydraulic",
+                "jetting_interval",
+                "usage_planned",
+            ],
+        ),
+    )
+
+    view_sql = psycopg.sql.SQL(view_sql)
+
+    try:
+        cursor.execute(view_sql)
+    except psycopg.errors.SyntaxError as e:
+        raise PumHookError(f"Error creating view with code: {view_sql}: {e}")
+
+    trigger_insert_sql = """
+    CREATE OR REPLACE FUNCTION tww_app.ft_vw_tww_import_reach_INSERT()
+      RETURNS trigger AS
+    $BODY$
+    BEGIN
+      {insert_req}
+      RETURN NEW;
+    END; $BODY$ LANGUAGE plpgsql VOLATILE;
+
+    DROP TRIGGER IF EXISTS vw_tww_import_reach_INSERT ON tww_app.vw_tww_import_reach;
+
+    CREATE TRIGGER vw_tww_import_reach_INSERT INSTEAD OF INSERT ON tww_app.vw_tww_import_reach
+      FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_import_reach_INSERT();
+    """.format(
+        insert_rpq=insert_command(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="import_reach_quarantine",
+            remove_pkey=False,
+            indent=2,
+            skip_columns=["tww_is_okay"],
+        ),
+    )
+
+    trigger_insert_sql = psycopg.sql.SQL(trigger_insert_sql)
+
+    cursor.execute(trigger_insert_sql)
+
+    update_trigger_sql = """
+    CREATE OR REPLACE FUNCTION tww_app.ft_vw_tww_import_reach_UPDATE()
+      RETURNS trigger AS
+    $BODY$
+    BEGIN
+      CASE WHEN NEW.in_quarantine THEN
+        {update_req}
+      ELSE
+        {insert_req}
+      END CASE;
+      RETURN NEW;
+    END;
+    $BODY$
+    LANGUAGE plpgsql;
+
+
+    DROP TRIGGER IF EXISTS vw_tww_import_reach_UPDATE ON tww_app.vw_tww_import_reach;
+
+    CREATE TRIGGER vw_tww_import_reach_UPDATE INSTEAD OF UPDATE ON tww_app.vw_tww_import_reach
+      FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_import_reach_UPDATE();
+    """.format(
+        insert_req=insert_command(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="import_reach_quarantine",
+            remove_pkey=False,
+            indent=6,
+            skip_columns=["tww_is_okay"],
+        ),
+        update_req=update_command(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="import_reach_quarantine",
+            remove_pkey=False,
+            indent=6,
+            skip_columns=["tww_is_okay"],
+        ),
+    )
+
+    update_trigger_sql = psycopg.sql.SQL(update_trigger_sql)
+
+    cursor.execute(update_trigger_sql)
+
+    defaults = """
+    ALTER VIEW tww_app.vw_tww_import_reach ALTER uuidoid SET DEFAULT gen_random_uuid();
+    """
+    cursor.execute(defaults)
 
 def tww_import_logic(connection: psycopg.Connection):
 
