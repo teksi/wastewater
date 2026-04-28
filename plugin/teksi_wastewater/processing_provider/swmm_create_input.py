@@ -27,12 +27,11 @@ from qgis.core import (
     QgsProcessingParameterFile,
     QgsProcessingParameterFileDestination,
     QgsProcessingParameterString,
-    QgsProject,
 )
 
+from ..utils.twwlayermanager import TwwLayerManager
 from .tww_algorithm import TwwAlgorithm
 from .TwwSwmm import TwwSwmm
-from ..utils.twwlayermanager import TwwLayerManager
 
 __author__ = "Timothée Produit"
 __date__ = "2019-08-01"
