@@ -89,6 +89,8 @@ class TeksiWastewaterCmd:
                 config.MODEL_NAME_SIA405_BASE_ABWASSER,
                 config.MODEL_NAME_DSS,
                 config.MODEL_NAME_VSA_KEK,
+                config.MODEL_NAME_DSS_3D,
+                config.MODEL_NAME_SIA405_ABWASSER_3D,
                 config.MODEL_NAME_AG96,
                 config.MODEL_NAME_AG64,
             ],
