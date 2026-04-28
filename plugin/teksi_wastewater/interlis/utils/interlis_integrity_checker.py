@@ -201,7 +201,7 @@ class TWWIntegrityChecker:
         """
         Returns a dict of {class_name: (count, [obj_ids])} for missing values.
         """
-        
+
         if not condition_parts:
             raise ValueError("No conditions specified for check_conditions")
 
