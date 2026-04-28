@@ -176,21 +176,20 @@ class TestInterpolation(unittest.TestCase, DbTestBase):
         obj_id = self.insert("vw_tww_reach", row)
 
         # Act: global interpolation
-        self.execute(
-            f"""
+        self.execute(f"""
             SELECT tww_app.interpolate_reach_z_vertices(
                 ARRAY['{obj_id}'],
                 'global'
             );
-            """
-        )
+            """)
 
         new_row = self.select("vw_tww_reach", obj_id)
 
         # Geometry must remain a curve
-        assert self.execute(
-            "GeometryType(%s)", [new_row["progression3d_geometry"]]
-        ) == "COMPOUNDCURVE"
+        assert (
+            self.execute("GeometryType(%s)", [new_row["progression3d_geometry"]])
+            == "COMPOUNDCURVE"
+        )
 
         # Vertex 2: distance = 1 → fraction = 0.1 → Z = 92
         z2 = self.execute(
@@ -235,21 +234,20 @@ class TestInterpolation(unittest.TestCase, DbTestBase):
         obj_id = self.insert("vw_tww_reach", row)
 
         # Act: local interpolation
-        self.execute(
-            f"""
+        self.execute(f"""
             SELECT tww_app.interpolate_reach_z_vertices(
                 ARRAY['{obj_id}'],
                 'local'
             );
-            """
-        )
+            """)
 
         new_row = self.select("vw_tww_reach", obj_id)
 
         # Geometry must remain a curve
-        assert self.execute(
-            "GeometryType(%s)", [new_row["progression3d_geometry"]]
-        ) == "COMPOUNDCURVE"
+        assert (
+            self.execute("GeometryType(%s)", [new_row["progression3d_geometry"]])
+            == "COMPOUNDCURVE"
+        )
 
         # Vertex 3: interpolate locally between Z=80 and Z=35
         z3 = self.execute(
@@ -257,7 +255,7 @@ class TestInterpolation(unittest.TestCase, DbTestBase):
             [new_row["progression3d_geometry"]],
         )
 
-        assert abs(z3 - 55) < 1e-9 # allow for numeric imprecision
+        assert abs(z3 - 55) < 1e-9  # allow for numeric imprecision
 
         # Ensure existing neighbour Z values are preserved
         z2 = self.execute(
