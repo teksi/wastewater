@@ -422,7 +422,7 @@ class TWWIntegrityChecker:
                     ("zone"),
                 ]
             )
-        return self._check_value_condition(check_classes, "identifier",'')
+        return self._check_value_condition(check_classes, "identifier", "")
 
     def _check_fk_owner_null(self):
         """
