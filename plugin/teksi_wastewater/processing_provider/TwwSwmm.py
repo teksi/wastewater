@@ -237,7 +237,6 @@ class TwwSwmm:
             "ws_obj_id",
             "hierarchy",
             "message",
-            "obj_id",
         ]
         # Create commented line which contains the field names
         fields = ""
