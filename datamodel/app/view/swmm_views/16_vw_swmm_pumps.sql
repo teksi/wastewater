@@ -34,7 +34,7 @@ SELECT
 		ELSE 'current'
 	END as state,
 	CASE
-		WHEN cfhi.tww_is_primary
+		WHEN cfhi.tww_is_primary THEN 'primary'
 		ELSE 'secondary'
 	END as hierarchy,
 	wn.obj_id as obj_id
