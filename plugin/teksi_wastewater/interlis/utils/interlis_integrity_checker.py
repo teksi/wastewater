@@ -141,9 +141,6 @@ class TWWIntegrityChecker:
 
         with DatabaseUtils.PsycopgConnection() as connection:
             cursor = connection.cursor()
-
-            cursor.execute(f"SELECT obj_id FROM {schema_name}.{parent_name};")
-
             cursor.execute(f"SELECT obj_id FROM {schema_name}.{parent_name};")
             parent_rows = cursor.fetchall()
             parent_ids = {row[0] for row in parent_rows}
@@ -197,26 +194,30 @@ class TWWIntegrityChecker:
         check_classes: list[str],
         value_name: str,
         check_val: Any = None,
-        check_str: bool = True,
         check_null: bool = True,
         check_true: bool = False,
     ) -> dict[str, tuple[int, list[Any]]]:
         """
         Returns a dict of {class_name: (count, [obj_ids])} for missing values.
         """
-        if not check_val:
-            check_val = ""
+        check_str = check_val is not None
+        if not any((check_str, check_null, check_true)):
+            raise ValueError("No conditions specified for check_conditions")
+
         with DatabaseUtils.PsycopgConnection() as connection:
             cursor = connection.cursor()
             column_identifier = DatabaseUtils.wrap_identifier(value_name)
             condition_parts = []
+            params = []
             if check_str:
+
                 condition_parts.append(
                     DatabaseUtils.compose_sql(
                         "{column_name} = %s",
                         column_name=column_identifier,
                     )
                 )
+                params.append(check_val)
             if check_null:
                 condition_parts.append(
                     DatabaseUtils.compose_sql(
@@ -245,7 +246,7 @@ class TWWIntegrityChecker:
                     table_name=DatabaseUtils.wrap_identifier(_class),
                     condition=condition,
                 )
-                cursor.execute(query, (check_val,))
+                cursor.execute(query, params or None)
                 result = cursor.fetchone()
                 class_count = int(result[0]) if result else 0
                 obj_ids_without_val = result[1] if result else []
@@ -257,7 +258,6 @@ class TWWIntegrityChecker:
         check_classes: list[str],
         value_name: str,
         check_val: Any = None,
-        check_str: bool = True,
         check_null: bool = True,
         check_true: bool = False,
     ) -> tuple[bool, str, int]:
@@ -270,7 +270,7 @@ class TWWIntegrityChecker:
         Returns: (failed, error_message, issue_count)
         """
         results = self._check_conditions(
-            check_classes, value_name, check_val, check_str, check_null, check_true
+            check_classes, value_name, check_val, check_null, check_true
         )
         error_message = ""
         empty_class_count = 0
@@ -336,7 +336,7 @@ class TWWIntegrityChecker:
 
     def _check_identifier_null(self):
         """
-        Check if attribute identifier is Null
+        Check if attribute identifier is Null or ''
         """
         check_classes = [
             ("organisation"),
@@ -422,7 +422,7 @@ class TWWIntegrityChecker:
                     ("zone"),
                 ]
             )
-        return self._check_value_condition(check_classes, "identifier")
+        return self._check_value_condition(check_classes, "identifier", "")
 
     def _check_fk_owner_null(self):
         """
@@ -866,7 +866,7 @@ class TWWIntegrityChecker:
         return self._check_available_export_values(
             check_classes,
             "tww_local_extension",
+            check_val=None,
             check_null=False,
-            check_str=False,
             check_true=True,
         )
