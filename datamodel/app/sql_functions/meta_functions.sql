@@ -30,18 +30,25 @@ RETURNS void AS $$
 DECLARE
     mv_record record;
     _error_message text;
+    cnt int;
 BEGIN
     FOR mv_record IN
         SELECT schemaname, matviewname
         FROM pg_matviews
         WHERE schemaname = _schema_name
 		AND (_all OR matviewname = _matview_name)
-
     LOOP
         BEGIN
-            EXECUTE format('REFRESH MATERIALIZED VIEW %I.%I',
-                          mv_record.schemaname,
-                          mv_record.matviewname);
+            EXECUTE format('SELECT COUNT(*) FROM %I.%I', mv_record.schemaname, mv_record.matviewname) INTO cnt;
+            IF cnt > 0 THEN
+                EXECUTE format('REFRESH MATERIALIZED VIEW CONCURRENTLY %I.%I WITH DATA',
+                    mv_record.schemaname,
+                    mv_record.matviewname);
+            ELSE
+                EXECUTE format('REFRESH MATERIALIZED VIEW %I.%I WITH DATA',
+                    mv_record.schemaname,
+                    mv_record.matviewname);
+            END IF;
             RAISE NOTICE '%',format('Refreshed materialized view: %s.%s', mv_record.schemaname, mv_record.matviewname);
         EXCEPTION
             WHEN OTHERS THEN
