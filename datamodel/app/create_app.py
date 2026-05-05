@@ -39,7 +39,6 @@ class Hook(HookBase):
         SRID: int = 2056,
         modification_agxx: bool = False,
         webgis: bool = False,
-        modification_ci: bool = False,
         lang_code: str = "en",
         modification_yaml: Path = None,
     ):
@@ -48,7 +47,6 @@ class Hook(HookBase):
         :param SRID: the EPSG code for geometry columns. Overridden by modification_yaml
         :param modification_agxx: bool of whether to load agxx modification. Overridden by modification_yaml
         :param webgis: bool of whether to load web modification. Overridden by modification_yaml
-        :param modification_ci: bool of whether to load ci modification. Overridden by modification_yaml
         :param lang_code: language code for use in modification views. Overridden by modification_yaml
         :param modification_yaml: Path of yaml containing app parametrisation
         """
@@ -61,8 +59,6 @@ class Hook(HookBase):
             self.parameters = self.load_yaml(self.cwd / "app_modification.template.yaml")
             if "modification_repositories" in self.parameters:
                 for entry in self.parameters["modification_repositories"]:
-                    if modification_ci and entry["id"] == "ci":
-                        entry["active"] = True
                     if webgis and entry["id"] == "webgis":
                         entry["active"] = True
                     if modification_agxx and entry["id"] == "agxx":
@@ -455,13 +451,6 @@ if __name__ == "__main__":
         help="load AG-64/96 modification on app schema",
     )
     parser.add_argument(
-        "-c",
-        "--modification_ci",
-        action="store_true",
-        default=False,
-        help="load ci modification",
-    )
-    parser.add_argument(
         "-w",
         "--webgis",
         action="store_true",
@@ -487,7 +476,6 @@ if __name__ == "__main__":
             connection=connection,
             SRID=args.srid,
             modification_agxx=args.modification_agxx,
-            modification_ci=args.modification_ci,
             webgis=args.webgis,
             modification_yaml=args.modification_yaml,
             lang_code=args.lang_code,
