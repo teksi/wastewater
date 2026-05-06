@@ -66,6 +66,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection):
         , dd.remark as dd_remark
         , (q.uuidoid IS NOT NULL) AS in_quarantine
         , coalesce(q.tww_deleted, false) as tww_deleted
+        , null::smallint as tww_level_measurement_kind
 
 
         FROM tww_od.wastewater_structure ws
@@ -279,7 +280,6 @@ def vw_tww_import_manhole(connection: psycopg.Connection):
     """
     cursor.execute(defaults)
 
-
 def vw_tww_import_reach_point(connection: psycopg.Connection):
     """
     Creates vw_tww_import_reach_point view
@@ -484,7 +484,6 @@ WHERE secondary.idx > 1)
     """
     cursor.execute(defaults)
 
-
 def vw_tww_import_reach(connection: psycopg.Connection):
     """
     Creates vw_tww_import_reach view
@@ -499,7 +498,7 @@ def vw_tww_import_reach(connection: psycopg.Connection):
     CREATE OR REPLACE VIEW tww_app.vw_tww_import_reach AS
   SELECT
           {re_columns}
-        , NULL::numeric(7,3) astww_delta_measurement
+        , NULL::numeric(7,3) as tww_delta_measurement
         , {ch_columns}
         , ws.status as ws_status
         , q_rp_from.uuidoid as fk_import_rp_quarantine_from
@@ -638,7 +637,6 @@ def vw_tww_import_reach(connection: psycopg.Connection):
     """
     cursor.execute(defaults)
 
-
 def tww_import_logic(connection: psycopg.Connection):
 
     cursor = connection.cursor()
@@ -688,32 +686,41 @@ def tww_import_logic(connection: psycopg.Connection):
         "tww_deleted",
     ]
 
-    rp_lvl_sql = """
-    CREATE OR REPLACE FUNCTION tww_app.calculate_quarantine_rp_level(tww_level_measurement_kind smallint,
-    rp_co_depth numeric(7,3),
-    rp_level numeric(7,3),
+    quarantine_lvl_sql = """
+    CREATE OR REPLACE FUNCTION tww_app.calculate_quarantine_level(tww_level_measurement_kind smallint,
+    co_depth numeric(7,3),
+    abs_level numeric(7,3),
     co_level numeric(7,3),
     ss_upper_elevation numeric(7,3),
-    rp_ss_upper_elevation_depth numeric(7,3))
+    ss_upper_elevation_depth numeric(7,3))
     RETURNS numeric(7,3)
     LANGUAGE plpgsql
     AS $$
     DECLARE calc_lvl numeric(7,3);
     BEGIN
+        IF tww_level_measurement_kind NOT IN (1, 2, 3) THEN
+                RAISE EXCEPTION
+                    'No valid level measurement kind set.'
+                    USING ERRCODE = 'NO_DATA_FOUND';
+        END IF;
         -- calculate levels
-        CASE WHEN tww_level_measurement_kind  = 1 THEN
-            calc_lvl :=  NULLIF(co_level,0) - NULLIF(rp_co_depth,0);
-        WHEN tww_level_measurement_kind  = 2 THEN
-            calc_lvl :=  NULLIF(ss_upper_elevation,0) - NULLIF(rp_ss_upper_elevation_depth,0);
-        ELSE
-            calc_lvl = rp_level;
+        CASE
+            WHEN tww_level_measurement_kind = 1 THEN
+                calc_lvl := NULLIF(co_level, 0) - NULLIF(co_depth, 0);
+            WHEN tww_level_measurement_kind = 2 THEN
+                calc_lvl := NULLIF(ss_upper_elevation, 0)
+                            - NULLIF(ss_upper_elevation_depth, 0);
+            WHEN tww_level_measurement_kind = 3 THEN
+                calc_lvl := abs_level;
+            ELSE
+                NULL;
         END CASE;
         RETURN calc_lvl;
     END;
     $$;
     """
-    rp_lvl_sql = psycopg.sql.SQL(rp_lvl_sql)
-    cursor.execute(rp_lvl_sql)
+    quarantine_lvl_sql = psycopg.sql.SQL(quarantine_lvl_sql)
+    cursor.execute(quarantine_lvl_sql)
 
     autoupdate_sql = """
         CREATE OR REPLACE FUNCTION tww_app.try_quarantine_rp_insert()
@@ -786,7 +793,7 @@ def tww_import_logic(connection: psycopg.Connection):
             skip_columns=rp_skip_cols,
             comment_skipped=False,
             update_values={
-                "level": """tww_app.calculate_quarantine_rp_level(
+                "level": """tww_app.calculate_quarantine_level(
                             rp_record.tww_level_measurement_kind,
                             rp_record.rp_co_depth,
                             rp_record.rp_level,
@@ -970,7 +977,7 @@ def tww_import_logic(connection: psycopg.Connection):
     cursor.execute(structure_part_sql)
 
     update_fnc_sql = """
-    CREATE OR REPLACE FUNCTION tww_app.transfer_quarantine_to_live()
+    CREATE OR REPLACE FUNCTION tww_app.transfer_quarantine_to_live_internal(_uuidoid uuid)
     RETURNS VOID
 LANGUAGE plpgsql
 AS $$
@@ -994,12 +1001,11 @@ DECLARE
 BEGIN
     -- Start a transaction to ensure atomicity
     BEGIN
-
-        FOR ws_record IN
-            SELECT * FROM tww_od.import_ws_quarantine
-            WHERE tww_is_okay = true AND tww_deleted = false
-        LOOP
         -- Step 0: Check for non-ok foreign key entries in related tables
+        SELECT * FROM tww_od.import_ws_quarantine q INTO ws_record
+        WHERE q.uuidoid =_uuidoid;
+
+
         SELECT COUNT(*) INTO check_count
         FROM (
             SELECT 1 FROM tww_od.import_reach_point_quarantine rp
@@ -1026,17 +1032,24 @@ BEGIN
 
         -- Skip the loop if any related entries are not okay
         IF check_count > 0 THEN
-            RAISE NOTICE 'Skipping entry %: Not all children are set to ok', ws_record.obj_id;
-            CONTINUE;
+            RAISE EXCEPTION 'Entry %: Not all children are set to ok', ws_record.obj_id;
         END IF;
 
             -- Step 1: Process import_ws_quarantine
             CASE WHEN ws_record.tww_level_measurement_kind  = 1 THEN
             _bottom_level :=  coalesce(NULLIF(ws_record.co_level,0) - NULLIF(ws_record.ws__depth,0),wn_bottom_level);
             _upper_elevation := coalesce(NULLIF(ws_record.co_level,0) - NULLIF(ws_record.ss__upper_elevation_depth,0),ss_upper_elevation);
-            ELSE
+            WHEN ws_record.tww_level_measurement_kind  = 2 THEN
+            _upper_elevation := coalesce(NULLIF(ws_record.co_level,0) - NULLIF(ws_record.ss__upper_elevation_depth,0),ss_upper_elevation);
+            _bottom_level :=  coalesce(NULLIF(_upper_elevation,0) - NULLIF(ws_record.ws__depth,0),wn_bottom_level);
+            WHEN ws_record.tww_level_measurement_kind  = 3 THEN
             _bottom_level :=  ws_record.wn_bottom_level;
             _upper_elevation := ws_record.ss_upper_elevation;
+            ELSE
+                RAISE EXCEPTION
+                    'No level measurement kind set for entry (uuidoid=%)',
+                    ws_record.uuidoid
+                    USING ERRCODE = 'NO_DATA_FOUND';
             END CASE;
 
             -- Check if the record already exists in the live table
@@ -1185,14 +1198,6 @@ BEGIN
 
             END IF;
         END LOOP;
-
-        -- Commit the transaction if everything succeeds
-        COMMIT;
-    EXCEPTION
-        WHEN OTHERS THEN
-            -- Rollback in case of any error
-            ROLLBACK;
-            RAISE;
     END;
 END;
 $$;
@@ -1237,7 +1242,7 @@ $$;
             skip_columns=rp_skip_cols,
             comment_skipped=False,
             insert_values={
-                "level": """tww_app.calculate_quarantine_rp_level(
+                "level": """tww_app.calculate_quarantine_level(
                             rp_record.tww_level_measurement_kind,
                             rp_record.rp_co_depth,
                             rp_record.rp_level,
@@ -1258,7 +1263,7 @@ $$;
             skip_columns=rp_skip_cols,
             comment_skipped=False,
             update_values={
-                "level": """tww_app.calculate_quarantine_rp_level(
+                "level": """tww_app.calculate_quarantine_level(
                             rp_record.tww_level_measurement_kind,
                             rp_record.rp_co_depth,
                             rp_record.rp_level,
@@ -1373,6 +1378,79 @@ $$;
     )
     update_fnc_sql = psycopg.sql.SQL(update_fnc_sql)
     cursor.execute(update_fnc_sql)
+
+    api_sql = """
+        CREATE OR REPLACE FUNCTION tww_app.transfer_quarantine_to_live(
+            p_ws_uuidoid uuid
+        )
+        RETURNS void
+        LANGUAGE plpgsql
+        AS $$
+        DECLARE
+            _deleted boolean;
+            _obj_id  character varying(16)
+        BEGIN
+            
+            SELECT ws.tww_deleted, ws.obj_id
+            INTO _deleted, _obj_id
+            FROM tww_od.import_ws_quarantine ws
+            WHERE ws.uuidoid = p_ws_uuidoid;
+            
+            IF NOT FOUND THEN
+                RAISE EXCEPTION
+                    'No import_ws_quarantine entry found for uuidoid=%',
+                    p_ws_uuidoid
+                    USING ERRCODE = 'NO_DATA_FOUND';
+            ELSE NULL;
+            END IF;
+            IF _deleted is true THEN
+                
+            IF EXISTS (
+                SELECT 1
+                FROM tww_od.import_reach_point_quarantine rp
+                LEFT JOIN tww_od.import_reach_quarantine re on rp.uuidoid 
+                    IN(re.fk_import_rp_quarantine_from,re.fk_import_rp_quarantine_to)
+                WHERE fk_import_ws_quarantine = p_ws_uuidoid
+                AND re.tww_deleted IS NOT TRUE
+            ) THEN
+                RAISE EXCEPTION
+                    'Cannot delete wastewater structure %, link from non-deleted reach exists',
+                    _obj_id;
+            END IF;
+
+                DELETE FROM tww_app.vw_tww_wastewater_structure ws
+                    WHERE ws.obj_id = _obj_id;
+                DELETE FROM tww_od.import_damage_ws_quarantine dm
+                INNER JOIN tww_od.import_examination_quarantine ex 
+                    ON ex.uuidoid=dm.fk_import_examination_quarantine
+                WHERE ex.fk_import_ws_quarantine=p_ws_uuidoid;
+                
+                DELETE FROM tww_od.import_examination_quarantine ex
+                WHERE ex.fk_import_ws_quarantine=p_ws_uuidoid;
+
+                DELETE FROM tww_od.import_reach_point_quarantine rp
+                WHERE rp.fk_import_ws_quarantine=p_ws_uuidoid;
+
+                DELETE FROM tww_od.import_ws_quarantine ws
+                WHERE ws.uuidoid=p_ws_uuidoid;
+            ELSE
+                PERFORM tww_app.transfer_quarantine_to_live_internal(p_ws_uuidoid);
+            END IF;
+        END;
+        $$;
+
+        CREATE OR REPLACE FUNCTION tww_app.transfer_quarantine_to_live_all()
+        RETURNS void
+        LANGUAGE sql
+        AS $$
+            SELECT tww_app.transfer_quarantine_to_live(ws.uuidoid)
+            FROM tww_od.import_ws_quarantine ws
+            WHERE ws.tww_is_okay = true
+            AND ws.tww_deleted = false;
+        $$;
+    """
+    api_sql = psycopg.sql.SQL(api_sql)
+    cursor.execute(api_sql)
 
 
 if __name__ == "__main__":
