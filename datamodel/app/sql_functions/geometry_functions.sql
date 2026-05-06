@@ -278,7 +278,7 @@ $$
 DECLARE
   _obj_id  text;
 BEGIN
-  FOR _obj_id in _obj_ids LOOP
+  FOREACH _obj_id IN ARRAY _obj_ids LOOP
     PERFORM tww_app.interpolate_reach_z_vertices(_obj_id,mode);
   END LOOP;
 END;
