@@ -24,7 +24,7 @@ jobs:
   version-tests:
     if: github.event_name == 'pull_request'
     name: Check versioning
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -63,7 +63,7 @@ jobs:
 
   datamodel-tests:
     name: Run unit tests on datamodel
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
 
     env:
       DEMO_DATA: Aletsch
@@ -129,7 +129,7 @@ jobs:
 
   static-tests:
     name: Run static tests on datamodel
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
 
     steps:
     - uses: actions/checkout@v6
