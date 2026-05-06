@@ -42,8 +42,7 @@ class TestInterpolation(unittest.TestCase, DbTestBase):
         obj_id = self.insert("vw_tww_reach", row)
 
         # Act
-        self.execute(f"""
-            PERFORM tww_app.interpolate_reach_z_vertices(
+        self.execute(f"""SELECT tww_app.interpolate_reach_z_vertices(
                 ARRAY['{obj_id}'],
                 'local'
             );
@@ -106,8 +105,7 @@ class TestInterpolation(unittest.TestCase, DbTestBase):
         obj_id = self.insert("vw_tww_reach", row)
 
         # Act
-        self.execute(f"""
-            PERFORM tww_app.interpolate_reach_z_vertices(
+        self.execute(f"""SELECT tww_app.interpolate_reach_z_vertices(
                 ARRAY['{obj_id}'],
                 'global'
             );
@@ -176,8 +174,7 @@ class TestInterpolation(unittest.TestCase, DbTestBase):
         obj_id = self.insert("vw_tww_reach", row)
 
         # Act: global interpolation
-        self.execute(f"""
-            PERFORM tww_app.interpolate_reach_z_vertices(
+        self.execute(f"""SELECT tww_app.interpolate_reach_z_vertices(
                 ARRAY['{obj_id}'],
                 'global'
             );
@@ -234,8 +231,7 @@ class TestInterpolation(unittest.TestCase, DbTestBase):
         obj_id = self.insert("vw_tww_reach", row)
 
         # Act: local interpolation
-        self.execute(f"""
-            PERFORM tww_app.interpolate_reach_z_vertices(
+        self.execute(f"""SELECT tww_app.interpolate_reach_z_vertices(
                 ARRAY['{obj_id}'],
                 'local'
             );
