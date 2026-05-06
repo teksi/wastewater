@@ -26,13 +26,20 @@ class TestInterpolation(unittest.TestCase, DbTestBase):
         """
 
         wkt = """
-        COMPOUNDCURVEZ(
-        (1 1 100, 2 2 90, 3 3 NaN, 4 4 70, 5 5 40)
-        )
+            ST_SetSRID(
+            ST_MakeCompoundCurve(
+                ST_MakeLine(ARRAY[
+                    ST_MakePoint(0, 0, 100),
+                    ST_MakePoint(1, 0, NULL),
+                    ST_MakePoint(6, 0, NULL),
+                    ST_MakePoint(10, 0, 20)
+                ])
+            ),
+            2056);
         """
 
         row = {
-            "progression3d_geometry": self.geom_from_text(wkt),
+            "progression3d_geometry": self.execute(wkt),
             "rp_from_level": 100,
             "rp_to_level": 40,
             "rp_from_obj_id": "ch999999RP900001",
@@ -56,9 +63,9 @@ class TestInterpolation(unittest.TestCase, DbTestBase):
             == "COMPOUNDCURVE"
         )
 
-        # No NaN Z values must remain
+        # No NULL Z values must remain
         wkt = self.execute("ST_AsText(%s)", [new_row["progression3d_geometry"]])
-        assert "NaN" not in wkt
+        assert "NULL" not in wkt
 
         # Interpolated Z values from neighbouring indices
         z = self.execute(
@@ -89,13 +96,21 @@ class TestInterpolation(unittest.TestCase, DbTestBase):
         """
 
         wkt = """
-        COMPOUNDCURVEZ(
-        (1 1 100, 2 2 90, 3 3 NaN, 4 4 70, 5 5 40)
-        )
+            ST_SetSRID(
+            ST_MakeCompoundCurve(
+                ST_MakeLine(ARRAY[
+                    ST_MakePoint(1, 1, 100),
+                    ST_MakePoint(2, 2, 90),
+                    ST_MakePoint(3, 3, NULL),
+                    ST_MakePoint(4, 4, 70),
+                    ST_MakePoint(5, 5, 40)
+                ])
+            ),
+            2056);
         """
 
         row = {
-            "progression3d_geometry": self.geom_from_text(wkt),
+            "progression3d_geometry": self.execute(wkt),
             "rp_from_level": 100,
             "rp_to_level": 40,
             "rp_from_obj_id": "ch999999RP900003",
@@ -119,9 +134,9 @@ class TestInterpolation(unittest.TestCase, DbTestBase):
             == "COMPOUNDCURVE"
         )
 
-        # No NaN Z values must remain
+        # No NULL Z values must remain
         wkt = self.execute("ST_AsText(%s)", [new_row["progression3d_geometry"]])
-        assert "NaN" not in wkt
+        assert "NULL" not in wkt
 
         # Interpolated Z values from start and end point indices
         z = self.execute(
@@ -155,16 +170,20 @@ class TestInterpolation(unittest.TestCase, DbTestBase):
         # Uneven spacing along X axis: distances 0, 1, 6, 10
         # Start Z = 100, End Z = 20
         wkt = """
-        COMPOUNDCURVEZ(
-        (0 0 100,
-        1 0 NaN,
-        6 0 NaN,
-        10 0 20)
-        )
+            ST_SetSRID(
+            ST_MakeCompoundCurve(
+                ST_MakeLine(ARRAY[
+                    ST_MakePoint(0, 0, 100),
+                    ST_MakePoint(1, 0, NULL),
+                    ST_MakePoint(6, 0, NULL),
+                    ST_MakePoint(10, 0, 20)
+                ])
+            ),
+            2056);
         """
 
         row = {
-            "progression3d_geometry": self.geom_from_text(wkt),
+            "progression3d_geometry": self.execute(wkt),
             "rp_from_level": 100,
             "rp_to_level": 20,
             "rp_from_obj_id": "ch999999RP900010",
@@ -212,16 +231,20 @@ class TestInterpolation(unittest.TestCase, DbTestBase):
         """
 
         wkt = """
-        COMPOUNDCURVEZ(
-        (0 0 100,
-        1 0 80,
-        6 0 NaN,
-        10 0 35)
-        )
+            ST_SetSRID(
+            ST_MakeCompoundCurve(
+                ST_MakeLine(ARRAY[
+                    ST_MakePoint(0, 0, 100),
+                    ST_MakePoint(1, 0, 80),
+                    ST_MakePoint(6, 0, NULL),
+                    ST_MakePoint(10, 0, 35)
+                ])
+            ),
+            2056);
         """
 
         row = {
-            "progression3d_geometry": self.geom_from_text(wkt),
+            "progression3d_geometry": self.execute(wkt),
             "rp_from_level": 100,
             "rp_to_level": 35,
             "rp_from_obj_id": "ch999999RP900020",
