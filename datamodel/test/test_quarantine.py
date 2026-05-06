@@ -1,6 +1,6 @@
+import decimal
 import os
 import unittest
-import decimal
 
 try:
     import psycopg
@@ -25,7 +25,6 @@ class TestQuarantineViewsImport(unittest.TestCase, DbTestBase):
     def tearDownClass(cls):
         cls.conn.rollback()
         cls.conn.close()
-
 
     def test_vw_ws_to_quarantine(self):
         """
@@ -54,13 +53,7 @@ class TestQuarantineViewsImport(unittest.TestCase, DbTestBase):
 
         self.assertIsNotNone(quarantine)
         self.assertEqual(quarantine["co_level"], decimal.Decimal("100.000"))
-        self.assertEqual(
-            quarantine["wn_bottom_level"], decimal.Decimal("97.000")
-        )
-
-
-
-
+        self.assertEqual(quarantine["wn_bottom_level"], decimal.Decimal("97.000"))
 
     # ---------------------------------------------------------------------
     # Quarantine reach point import
@@ -162,7 +155,6 @@ class TestQuarantineViewsImport(unittest.TestCase, DbTestBase):
             schema="tww_od",
         )
         self.assertIsNone(live)
-
 
     # ---------------------------------------------------------------------
     # Geometry propagation

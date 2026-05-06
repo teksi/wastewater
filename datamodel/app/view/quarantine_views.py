@@ -280,6 +280,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection):
     """
     cursor.execute(defaults)
 
+
 def vw_tww_import_reach_point(connection: psycopg.Connection):
     """
     Creates vw_tww_import_reach_point view
@@ -484,6 +485,7 @@ WHERE secondary.idx > 1)
     """
     cursor.execute(defaults)
 
+
 def vw_tww_import_reach(connection: psycopg.Connection):
     """
     Creates vw_tww_import_reach view
@@ -636,6 +638,7 @@ def vw_tww_import_reach(connection: psycopg.Connection):
     ALTER VIEW tww_app.vw_tww_import_reach ALTER uuidoid SET DEFAULT gen_random_uuid();
     """
     cursor.execute(defaults)
+
 
 def tww_import_logic(connection: psycopg.Connection):
 
@@ -1390,12 +1393,12 @@ $$;
             _deleted boolean;
             _obj_id  character varying(16)
         BEGIN
-            
+
             SELECT ws.tww_deleted, ws.obj_id
             INTO _deleted, _obj_id
             FROM tww_od.import_ws_quarantine ws
             WHERE ws.uuidoid = p_ws_uuidoid;
-            
+
             IF NOT FOUND THEN
                 RAISE EXCEPTION
                     'No import_ws_quarantine entry found for uuidoid=%',
@@ -1404,11 +1407,11 @@ $$;
             ELSE NULL;
             END IF;
             IF _deleted is true THEN
-                
+
             IF EXISTS (
                 SELECT 1
                 FROM tww_od.import_reach_point_quarantine rp
-                LEFT JOIN tww_od.import_reach_quarantine re on rp.uuidoid 
+                LEFT JOIN tww_od.import_reach_quarantine re on rp.uuidoid
                     IN(re.fk_import_rp_quarantine_from,re.fk_import_rp_quarantine_to)
                 WHERE fk_import_ws_quarantine = p_ws_uuidoid
                 AND re.tww_deleted IS NOT TRUE
@@ -1421,10 +1424,10 @@ $$;
                 DELETE FROM tww_app.vw_tww_wastewater_structure ws
                     WHERE ws.obj_id = _obj_id;
                 DELETE FROM tww_od.import_damage_ws_quarantine dm
-                INNER JOIN tww_od.import_examination_quarantine ex 
+                INNER JOIN tww_od.import_examination_quarantine ex
                     ON ex.uuidoid=dm.fk_import_examination_quarantine
                 WHERE ex.fk_import_ws_quarantine=p_ws_uuidoid;
-                
+
                 DELETE FROM tww_od.import_examination_quarantine ex
                 WHERE ex.fk_import_ws_quarantine=p_ws_uuidoid;
 
