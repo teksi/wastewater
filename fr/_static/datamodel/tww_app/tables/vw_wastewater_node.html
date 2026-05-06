@@ -126,57 +126,6 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td><span id="_function_hierarchic">_function_hierarchic</span></td>
-                                    <td>int4</td>
-                                    <td>10</td>
-                                    <td title='nullable'>√</td>
-                                    <td title=''></td>
-                                    <td>null</td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td><span id="_status">_status</span></td>
-                                    <td>int4</td>
-                                    <td>10</td>
-                                    <td title='nullable'>√</td>
-                                    <td title=''></td>
-                                    <td>null</td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td><span id="_usage_current">_usage_current</span></td>
-                                    <td>int4</td>
-                                    <td>10</td>
-                                    <td title='nullable'>√</td>
-                                    <td title=''></td>
-                                    <td>null</td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td></td>
-                                </tr>
-                                <tr>
                                     <td><span id="backflow_level_current">backflow_level_current</span></td>
                                     <td>numeric</td>
                                     <td>7,3</td>
@@ -435,7 +384,7 @@
                             </div>
                         </div>
                         <div class="box-body">
-                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">SELECT wastewater_node.obj_id,&#10;    wastewater_node._function_hierarchic,&#10;    wastewater_node._status,&#10;    wastewater_node._usage_current,&#10;    wastewater_node.backflow_level_current,&#10;    wastewater_node.bottom_level,&#10;    wastewater_node.elevation_accuracy,&#10;    wastewater_node.fk_hydr_geometry,&#10;    wastewater_node.function_node_amelioration,&#10;    wastewater_node.situation3d_geometry,&#10;    wastewater_node.wwtp_number,&#10;    wastewater_networkelement.fk_dataowner,&#10;    wastewater_networkelement.fk_provider,&#10;    wastewater_networkelement.fk_wastewater_structure,&#10;    wastewater_networkelement.identifier,&#10;    wastewater_networkelement.last_modification,&#10;    wastewater_networkelement.remark&#10;   FROM (tww_od.wastewater_node&#10;     LEFT JOIN tww_od.wastewater_networkelement ON (((wastewater_networkelement.obj_id)::text &#61; (wastewater_node.obj_id)::text)));</textarea>
+                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">SELECT wastewater_node.obj_id,&#10;    wastewater_node.backflow_level_current,&#10;    wastewater_node.bottom_level,&#10;    wastewater_node.elevation_accuracy,&#10;    wastewater_node.fk_hydr_geometry,&#10;    wastewater_node.function_node_amelioration,&#10;    wastewater_node.situation3d_geometry,&#10;    wastewater_node.wwtp_number,&#10;    wastewater_networkelement.fk_dataowner,&#10;    wastewater_networkelement.fk_provider,&#10;    wastewater_networkelement.fk_wastewater_structure,&#10;    wastewater_networkelement.identifier,&#10;    wastewater_networkelement.last_modification,&#10;    wastewater_networkelement.remark&#10;   FROM (tww_od.wastewater_node&#10;     LEFT JOIN tww_od.wastewater_networkelement ON (((wastewater_networkelement.obj_id)::text &#61; (wastewater_node.obj_id)::text)));</textarea>
                             <div style="padding-top: 5px;"><hr></div>
                             <div class="box box-solid">
                                 <div class="box-header with-border">

@@ -48,6 +48,8 @@ fountain
 param_ca_general
 param_ca_mouse1
 reservoir
+tww_wastewater_node_symbology
+tww_wastewater_structure_label
 access_aid
 agxx_cover
 agxx_reach_point
@@ -67,6 +69,7 @@ re_maintenance_event_wastewater_structure
 reach_progression_alternative
 solids_retention
 tank_cleaning
+tww_reach_point_label
 wastewater_structure_symbol
 agxx_overflow
 agxx_wastewater_networkelement

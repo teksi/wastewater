@@ -215,7 +215,8 @@
 <img alt="../../_images/od_organisation.jpg" src="../../_images/od_organisation.jpg" />
 </figure>
 </div></blockquote>
-<p>This table is today a little bit hidden in the wastewater_structures group (but it is not only related to wastewater structures).</p>
+<p>This table is today a little bit hidden in the wastewater_structures group (but it is not only related to wastewater structures).
+As the VSA dataset contains over 2’300 organisations, there is a filter set up to limit the selection of organisations to the active ones (attribute tww_active)</p>
 </section>
 </section>
 <section id="layergroup-examination-maintenance">
@@ -227,7 +228,7 @@
 You can not create new maintenance-events with this views, but you can edit attributes, symbolize and export</p>
 <section id="maintenance-events-tww-app-vw-tww-maintenance">
 <h3>Evénements de maintenance``tww_app.vw_tww_maintenance``<a class="headerlink" href="#maintenance-events-tww-app-vw-tww-maintenance" title="Lien vers cette rubrique"></a></h3>
-<p>Maintenance events can be created through the view tww_od.vw_tww_maintenance.</p>
+<p>Maintenance events can be created through the view tww_app.vw_tww_maintenance.</p>
 <p>Ces événements de maintenance sont utilisé dans l’onglet maintenance des tables principales. Ils peuvent être liés à un ou plusieurs ouvrages.</p>
 <p>Voir <a class="reference external" href="../editing/maintenance_events.html">Edition des événements de maintenance</a> pour plus d’information.</p>
 </section>
@@ -249,9 +250,10 @@ You can not create new maintenance-events with this views, but you can edit attr
 </section>
 <section id="hydraulic">
 <h2>Hydraulique<a class="headerlink" href="#hydraulic" title="Lien vers cette rubrique"></a></h2>
-<section id="wastewater-nodes-tww-app-vw-wastewater-node">
-<h3>Noeuds réseaux <code class="docutils literal notranslate"><span class="pre">tww_app.vw_wastewater_node</span></code><a class="headerlink" href="#wastewater-nodes-tww-app-vw-wastewater-node" title="Lien vers cette rubrique"></a></h3>
-<p>Use this layer to change the situation of one selected wastewater node (and not the whole wastewater structure) or if you want to add a new wastewater node to an existing wastewater structure. You can add additional wastewater nodes in the wastewater nodes-tab of the <cite>vw_tww_wastewater_structure</cite> too.</p>
+<section id="wastewater-nodes-tww-app-vw-tww-wastewater-node">
+<h3>Wastewater nodes <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_wastewater_node</span></code><a class="headerlink" href="#wastewater-nodes-tww-app-vw-tww-wastewater-node" title="Lien vers cette rubrique"></a></h3>
+<p>Use this layer to change the situation of one selected wastewater node (and not the whole wastewater structure) or if you want to add a new wastewater node to an existing wastewater structure. You can add additional wastewater nodes in the wastewater nodes-tab of the <cite>vw_tww_wastewater_structure</cite> too.
+When moving the geometry of the wastewater node, the geometry of the connected reaches is updated automatically. If you want to move a wastewater node without moving the reaches, disconnect the reaches, move the node and reconnect the reaches.</p>
 </section>
 <section id="overflow-tables-tww-app-vw-tww-overflow">
 <h3>Overflow tables <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_overflow</span></code><a class="headerlink" href="#overflow-tables-tww-app-vw-tww-overflow" title="Lien vers cette rubrique"></a></h3>

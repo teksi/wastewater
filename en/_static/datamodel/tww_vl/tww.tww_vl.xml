@@ -5890,6 +5890,7 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="20" name="display_fr" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="21" name="display_it" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="22" name="display_ro" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="false" digits="0" id="23" name="tww_use_in_labels" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
          <primaryKey column="code" sequenceNumberInPK="1"/>
          <index name="pkey_tww_vl_wastewater_structure_status_code" unique="true">
             <column ascending="true" name="code"/>

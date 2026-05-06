@@ -183,6 +183,16 @@
                                                 <td class="constraint detail"><span title='Cascade on delete:&#10;Deletion of parent deletes child'>C</span></td>
                                             </tr>
                                             <tr>
+                                                <td title="tww_reach_point_label.fk_wastewater_structure references wastewater_structure.obj_id via fkey_od_tww_reach_point_label_wastewater_structure"><a href='tww_reach_point_label.html'>tww_reach_point_label</a><span class='relatedKey'>.fk_wastewater_structure</span></td>
+                                                <td class="constraint detail">fkey_od_tww_reach_point_label_wastewater_structure</td>
+                                                <td class="constraint detail"><span title='Cascade on delete:&#10;Deletion of parent deletes child'>C</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td title="tww_wastewater_structure_label.fk_wastewater_structure references wastewater_structure.obj_id via oorel_od_tww_wastewater_structure_label_wastewater_structure"><a href='tww_wastewater_structure_label.html'>tww_wastewater_structure_label</a><span class='relatedKey'>.fk_wastewater_structure</span></td>
+                                                <td class="constraint detail">oorel_od_tww_wastewater_structure_label_wastewater_structure</td>
+                                                <td class="constraint detail"><span title='Cascade on delete:&#10;Deletion of parent deletes child'>C</span></td>
+                                            </tr>
+                                            <tr>
                                                 <td title="wastewater_networkelement.fk_wastewater_structure references wastewater_structure.obj_id via rel_wastewater_networkelement_wastewater_structure"><a href='wastewater_networkelement.html'>wastewater_networkelement</a><span class='relatedKey'>.fk_wastewater_structure</span></td>
                                                 <td class="constraint detail">rel_wastewater_networkelement_wastewater_structure</td>
                                                 <td class="constraint detail"><span title='Cascade on delete:&#10;Deletion of parent deletes child'>C</span></td>
@@ -764,91 +774,6 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td><span id="_label">_label</span></td>
-                                    <td>text</td>
-                                    <td>2147483647</td>
-                                    <td title='nullable'>√</td>
-                                    <td title=''></td>
-                                    <td>null</td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td><p>not part of the VSA-DSS data model added solely for TEKSI Wastewater &amp; GEP</p></td>
-                                </tr>
-                                <tr>
-                                    <td><span id="_cover_label">_cover_label</span></td>
-                                    <td>text</td>
-                                    <td>2147483647</td>
-                                    <td title='nullable'>√</td>
-                                    <td title=''></td>
-                                    <td>null</td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td><p>stores the cover altitude to be used for labelling, not part of the VSA-DSS data model added solely for TEKSI Wastewater &amp; GEP</p></td>
-                                </tr>
-                                <tr>
-                                    <td><span id="_input_label">_input_label</span></td>
-                                    <td>text</td>
-                                    <td>2147483647</td>
-                                    <td title='nullable'>√</td>
-                                    <td title=''></td>
-                                    <td>null</td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td><p>stores the list of input altitudes to be used for labelling, not part of the VSA-DSS data model added solely for TEKSI Wastewater &amp; GEP</p></td>
-                                </tr>
-                                <tr>
-                                    <td><span id="_output_label">_output_label</span></td>
-                                    <td>text</td>
-                                    <td>2147483647</td>
-                                    <td title='nullable'>√</td>
-                                    <td title=''></td>
-                                    <td>null</td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td><p>stores the list of output altitudes to be used for labelling, not part of the VSA-DSS data model added solely for TEKSI Wastewater &amp; GEP</p></td>
-                                </tr>
-                                <tr>
-                                    <td><span id="_bottom_label">_bottom_label</span></td>
-                                    <td>text</td>
-                                    <td>2147483647</td>
-                                    <td title='nullable'>√</td>
-                                    <td title=''></td>
-                                    <td>null</td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td><p>stores the bottom altitude to be used for labelling, not part of the VSA-DSS data model added solely for TEKSI Wastewater &amp; GEP</p></td>
-                                </tr>
-                                <tr>
                                     <td><span id="_depth">_depth</span></td>
                                     <td>numeric</td>
                                     <td>6,3</td>
@@ -990,16 +915,16 @@
                                     <td>((char_length(location_name) &lt;&#61; 50))</td>
                                 </tr>
                                 <tr>
-                                    <td>ws_identifier_length_max_41</td>
-                                    <td>((char_length(identifier) &lt;&#61; 41))</td>
+                                    <td>ws_remark_length_max_80</td>
+                                    <td>((char_length(remark) &lt;&#61; 80))</td>
                                 </tr>
                                 <tr>
                                     <td>ws_records_length_max_255</td>
                                     <td>((char_length(records) &lt;&#61; 255))</td>
                                 </tr>
                                 <tr>
-                                    <td>ws_remark_length_max_80</td>
-                                    <td>((char_length(remark) &lt;&#61; 80))</td>
+                                    <td>ws_identifier_length_max_41</td>
+                                    <td>((char_length(identifier) &lt;&#61; 41))</td>
                                 </tr>
                                 </tbody>
                             </table>

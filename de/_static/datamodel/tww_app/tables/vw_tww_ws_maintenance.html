@@ -466,91 +466,6 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td><span id="ws__bottom_label">ws__bottom_label</span></td>
-                                    <td>text</td>
-                                    <td>2147483647</td>
-                                    <td title='nullable'>√</td>
-                                    <td title=''></td>
-                                    <td>null</td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td><span id="ws__cover_label">ws__cover_label</span></td>
-                                    <td>text</td>
-                                    <td>2147483647</td>
-                                    <td title='nullable'>√</td>
-                                    <td title=''></td>
-                                    <td>null</td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td><span id="ws__input_label">ws__input_label</span></td>
-                                    <td>text</td>
-                                    <td>2147483647</td>
-                                    <td title='nullable'>√</td>
-                                    <td title=''></td>
-                                    <td>null</td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td><span id="ws__label">ws__label</span></td>
-                                    <td>text</td>
-                                    <td>2147483647</td>
-                                    <td title='nullable'>√</td>
-                                    <td title=''></td>
-                                    <td>null</td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td><span id="ws__output_label">ws__output_label</span></td>
-                                    <td>text</td>
-                                    <td>2147483647</td>
-                                    <td title='nullable'>√</td>
-                                    <td title=''></td>
-                                    <td>null</td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td></td>
-                                </tr>
-                                <tr>
                                     <td><span id="ws_condition_score">ws_condition_score</span></td>
                                     <td>numeric</td>
                                     <td>3,2</td>
@@ -792,7 +707,7 @@
                             </div>
                         </div>
                         <div class="box-body">
-                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">SELECT mw.id,&#10;    wn.situation3d_geometry,&#10;    me.obj_id AS me_obj_id,&#10;    me.base_data AS me_base_data,&#10;    me.cost AS me_cost,&#10;    me.data_details AS me_data_details,&#10;    me.duration AS me_duration,&#10;    me.fk_dataowner AS me_fk_dataowner,&#10;    me.fk_measure AS me_fk_measure,&#10;    me.fk_operating_company AS me_fk_operating_company,&#10;    me.fk_provider AS me_fk_provider,&#10;    me.identifier AS me_identifier,&#10;    me.last_modification AS me_last_modification,&#10;    me.operator AS me_operator,&#10;    me.reason AS me_reason,&#10;    me.remark AS me_remark,&#10;    me.result AS me_result,&#10;    me.status AS me_status,&#10;    me.time_point AS me_time_point,&#10;    mn.kind AS mn_kind,&#10;    ws.obj_id AS ws_obj_id,&#10;    ws._bottom_label AS ws__bottom_label,&#10;    ws._cover_label AS ws__cover_label,&#10;    ws._input_label AS ws__input_label,&#10;    ws._label AS ws__label,&#10;    ws._output_label AS ws__output_label,&#10;    ws.condition_score AS ws_condition_score,&#10;    ws.financing AS ws_financing,&#10;    ws.fk_operator AS ws_fk_operator,&#10;    ws.fk_owner AS ws_fk_owner,&#10;    ws.gross_costs AS ws_gross_costs,&#10;    ws.identifier AS ws_identifier,&#10;    ws.inspection_interval AS ws_inspection_interval,&#10;    ws.renovation_necessity AS ws_renovation_necessity,&#10;    ws.status AS ws_status,&#10;    ws.status_survey_year AS ws_status_survey_year,&#10;    ws.structure_condition AS ws_structure_condition,&#10;    ws.urgency_figure AS ws_urgency_figure&#10;   FROM ((((tww_od.re_maintenance_event_wastewater_structure mw&#10;     JOIN tww_od.wastewater_structure ws ON (((ws.obj_id)::text &#61; (mw.fk_wastewater_structure)::text)))&#10;     LEFT JOIN tww_od.maintenance_event me ON (((me.obj_id)::text &#61; (mw.fk_maintenance_event)::text)))&#10;     LEFT JOIN tww_od.maintenance mn ON (((me.obj_id)::text &#61; (mn.obj_id)::text)))&#10;     LEFT JOIN tww_od.wastewater_node wn ON (((wn.obj_id)::text &#61; (ws.fk_main_wastewater_node)::text)))&#10;  WHERE (wn.obj_id IS NOT NULL);</textarea>
+                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">SELECT mw.id,&#10;    wn.situation3d_geometry,&#10;    me.obj_id AS me_obj_id,&#10;    me.base_data AS me_base_data,&#10;    me.cost AS me_cost,&#10;    me.data_details AS me_data_details,&#10;    me.duration AS me_duration,&#10;    me.fk_dataowner AS me_fk_dataowner,&#10;    me.fk_measure AS me_fk_measure,&#10;    me.fk_operating_company AS me_fk_operating_company,&#10;    me.fk_provider AS me_fk_provider,&#10;    me.identifier AS me_identifier,&#10;    me.last_modification AS me_last_modification,&#10;    me.operator AS me_operator,&#10;    me.reason AS me_reason,&#10;    me.remark AS me_remark,&#10;    me.result AS me_result,&#10;    me.status AS me_status,&#10;    me.time_point AS me_time_point,&#10;    mn.kind AS mn_kind,&#10;    ws.obj_id AS ws_obj_id,&#10;    ws.condition_score AS ws_condition_score,&#10;    ws.financing AS ws_financing,&#10;    ws.fk_operator AS ws_fk_operator,&#10;    ws.fk_owner AS ws_fk_owner,&#10;    ws.gross_costs AS ws_gross_costs,&#10;    ws.identifier AS ws_identifier,&#10;    ws.inspection_interval AS ws_inspection_interval,&#10;    ws.renovation_necessity AS ws_renovation_necessity,&#10;    ws.status AS ws_status,&#10;    ws.status_survey_year AS ws_status_survey_year,&#10;    ws.structure_condition AS ws_structure_condition,&#10;    ws.urgency_figure AS ws_urgency_figure&#10;   FROM ((((tww_od.re_maintenance_event_wastewater_structure mw&#10;     JOIN tww_od.wastewater_structure ws ON (((ws.obj_id)::text &#61; (mw.fk_wastewater_structure)::text)))&#10;     LEFT JOIN tww_od.maintenance_event me ON (((me.obj_id)::text &#61; (mw.fk_maintenance_event)::text)))&#10;     LEFT JOIN tww_od.maintenance mn ON (((me.obj_id)::text &#61; (mn.obj_id)::text)))&#10;     LEFT JOIN tww_od.wastewater_node wn ON (((wn.obj_id)::text &#61; (ws.fk_main_wastewater_node)::text)))&#10;  WHERE (wn.obj_id IS NOT NULL);</textarea>
                             <div style="padding-top: 5px;"><hr></div>
                             <div class="box box-solid">
                                 <div class="box-header with-border">

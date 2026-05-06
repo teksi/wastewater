@@ -215,7 +215,8 @@
 <img alt="../../_images/od_organisation.jpg" src="../../_images/od_organisation.jpg" />
 </figure>
 </div></blockquote>
-<p>Die Tabelle ist in der Layergruppe Konfiguration „versteckt“.</p>
+<p>This table is today a little bit hidden in the wastewater_structures group (but it is not only related to wastewater structures).
+As the VSA dataset contains over 2’300 organisations, there is a filter set up to limit the selection of organisations to the active ones (attribute tww_active)</p>
 </section>
 </section>
 <section id="layergroup-examination-maintenance">
@@ -226,7 +227,7 @@
 <p>Die Layer  <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_channel_maintenance</span></code> und``tww_app.vw_tww_ws_maintenance`` nutzen die Geomtrie und die wichtigsten Attribute der verknüpften Abwasserbauwerke um Erhaltungsereignisse in der Karte darzustellen.  In diesen Layern können nicht neue Erhaltungsereignis-Datensätze erfasst, aber es können Felder geändert werden und es kann symbolisiert und exportiert werden.</p>
 <section id="maintenance-events-tww-app-vw-tww-maintenance">
 <h3>Erhaltungsereignis <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_maintenance_event</span></code><a class="headerlink" href="#maintenance-events-tww-app-vw-tww-maintenance" title="Link to this heading"></a></h3>
-<p>Erhaltungsereignisse können mit der View tww_od.vw_tww_maintenance_event erstellt werden.</p>
+<p>Maintenance events can be created through the view tww_app.vw_tww_maintenance.</p>
 <p>Die Erhaltungsereignisse werden im Tab Erhaltungsereignis in den Hauptlayern benutzt. Erhaltungsereignisse können mit einem oder mehreren Abwasserbauwerken verknüpft sein.</p>
 <p>Vergleiche <a class="reference external" href="../editing/maintenance_events.html">Bearbeiten von Erhaltungsereignissen</a> für mehr Infos.</p>
 </section>
@@ -248,9 +249,10 @@
 </section>
 <section id="hydraulic">
 <h2>Hydraulik Layer<a class="headerlink" href="#hydraulic" title="Link to this heading"></a></h2>
-<section id="wastewater-nodes-tww-app-vw-wastewater-node">
-<h3>Abwasserknoten <code class="docutils literal notranslate"><span class="pre">tww_app.vw_wastewater_node</span></code><a class="headerlink" href="#wastewater-nodes-tww-app-vw-wastewater-node" title="Link to this heading"></a></h3>
-<p>Dieser Layer kann nur benutzt werden, wenn nur ein ausgewählter Abwasserknoten in der Lage geändert werden soll (und nicht das ganze Abwasserbauwerk) oder wenn ein neuer Abwasserknoten zu einem bestehenden Abwasserbauwerk hinzugefügt werden soll.  Ein Abwasserknoten kann auch im Reiter Abwasserknoten der vw_tww_Abwasserbauwerk-Eingabemaske hinzugefügt werden.</p>
+<section id="wastewater-nodes-tww-app-vw-tww-wastewater-node">
+<h3>Wastewater nodes <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_wastewater_node</span></code><a class="headerlink" href="#wastewater-nodes-tww-app-vw-tww-wastewater-node" title="Link to this heading"></a></h3>
+<p>Use this layer to change the situation of one selected wastewater node (and not the whole wastewater structure) or if you want to add a new wastewater node to an existing wastewater structure. You can add additional wastewater nodes in the wastewater nodes-tab of the <cite>vw_tww_wastewater_structure</cite> too.
+When moving the geometry of the wastewater node, the geometry of the connected reaches is updated automatically. If you want to move a wastewater node without moving the reaches, disconnect the reaches, move the node and reconnect the reaches.</p>
 </section>
 <section id="overflow-tables-tww-app-vw-tww-overflow">
 <h3>Überlauf Tabellen <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_overflow</span></code><a class="headerlink" href="#overflow-tables-tww-app-vw-tww-overflow" title="Link to this heading"></a></h3>

@@ -40,6 +40,7 @@ agxx_wastewater_node
 agxx_wastewater_networkelement
 agxx_overflow
 wastewater_structure_symbol
+tww_reach_point_label
 tank_cleaning
 solids_retention
 reach_progression_alternative
@@ -59,6 +60,8 @@ agxx_wastewater_structure
 agxx_reach_point
 agxx_cover
 access_aid
+tww_wastewater_structure_label
+tww_wastewater_node_symbology
 reservoir
 param_ca_mouse1
 param_ca_general
