@@ -1181,10 +1181,6 @@ BEGIN
 
                 END LOOP;
 
-            END LOOP;
-
-        END LOOP;
-
         -- Step 6: Process import_reach_quarantine
         FOR re_record IN
             SELECT * FROM tww_od.import_reach_quarantine
