@@ -50,14 +50,15 @@ def vw_tww_overflow(connection: psycopg.Connection, extra_definition: dict = Non
         , wn.situation3d_geometry as geometry
         {extra_cols}
 
-        , wn._usage_current AS _channel_usage_current
-        , wn._function_hierarchic AS _channel_function_hierarchic
+        , wns._usage_current AS _channel_usage_current
+        , wns._function_hierarchic AS _channel_function_hierarchic
 
         FROM tww_od.overflow ov
-        LEFT JOIN tww_od.leapingweir lw on lw.obj_id= ov.obj_id
-        LEFT JOIN tww_od.prank_weir pw on pw.obj_id= ov.obj_id
-        LEFT JOIN tww_od.pump pu on pu.obj_id= ov.obj_id
-        LEFT JOIN tww_od.wastewater_node wn on ov.fk_wastewater_node= wn.obj_id
+        LEFT JOIN tww_od.leapingweir lw on lw.obj_id = ov.obj_id
+        LEFT JOIN tww_od.prank_weir pw on pw.obj_id = ov.obj_id
+        LEFT JOIN tww_od.pump pu on pu.obj_id = ov.obj_id
+        LEFT JOIN tww_od.wastewater_node wn on ov.fk_wastewater_node = wn.obj_id
+        LEFT JOIN tww_od.tww_wastewater_node_symbology wns ON wns.fk_wastewater_node = wn.obj_id
         {extra_joins};
 
     """.format(
