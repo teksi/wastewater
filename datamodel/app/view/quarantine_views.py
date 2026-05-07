@@ -1040,11 +1040,11 @@ BEGIN
 
             -- Step 1: Process import_ws_quarantine
             CASE WHEN ws_record.tww_level_measurement_kind  = 1 THEN
-            _bottom_level :=  coalesce(NULLIF(ws_record.co_level,0) - NULLIF(ws_record.ws__depth,0),wn_bottom_level);
-            _upper_elevation := coalesce(NULLIF(ws_record.co_level,0) - NULLIF(ws_record.ss__upper_elevation_depth,0),ss_upper_elevation);
+            _bottom_level :=  coalesce(NULLIF(ws_record.co_level,0) - NULLIF(ws_record.ws__depth,0),ws_record.wn_bottom_level);
+            _upper_elevation := coalesce(NULLIF(ws_record.co_level,0) - NULLIF(ws_record.ss__upper_elevation_depth,0),ws_record.ss_upper_elevation);
             WHEN ws_record.tww_level_measurement_kind  = 2 THEN
-            _upper_elevation := coalesce(NULLIF(ws_record.co_level,0) - NULLIF(ws_record.ss__upper_elevation_depth,0),ss_upper_elevation);
-            _bottom_level :=  coalesce(NULLIF(_upper_elevation,0) - NULLIF(ws_record.ws__depth,0),wn_bottom_level);
+            _upper_elevation := coalesce(NULLIF(ws_record.co_level,0) - NULLIF(ws_record.ss__upper_elevation_depth,0),ws_record.ss_upper_elevation);
+            _bottom_level :=  coalesce(NULLIF(_upper_elevation,0) - NULLIF(ws_record.ws__depth,0),ws_record.wn_bottom_level);
             WHEN ws_record.tww_level_measurement_kind  = 3 THEN
             _bottom_level :=  ws_record.wn_bottom_level;
             _upper_elevation := ws_record.ss_upper_elevation;
@@ -1198,6 +1198,7 @@ BEGIN
             END IF;
         END LOOP;
     END;
+    RETURN;
 END;
 $$;
     """.format(
