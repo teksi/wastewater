@@ -56,47 +56,47 @@ class DbTestBase:
         return cls.conn.cursor(**kwargs)
 
     @classmethod
-    def insert(cls, table, row, schema="tww_app"):
+    def insert(cls, table, row, schema="tww_app", returning ="obj_id"):
         cur = cls.conn.cursor()
         cols = ", ".join(row.keys())
         values = ", ".join([f"%({key})s" for key in row.keys()])
         print(53453)
-        print(f"INSERT INTO {schema}.{table} ({cols}) VALUES ({values}) RETURNING obj_id")
+        print(f"INSERT INTO {schema}.{table} ({cols}) VALUES ({values}) RETURNING {returning}")
         print("-----")
         print(row)
         cur.execute(
-            f"INSERT INTO {schema}.{table} ({cols}) VALUES ({values}) RETURNING obj_id", row
+            f"INSERT INTO {schema}.{table} ({cols}) VALUES ({values}) RETURNING {returning}"", row
         )
         return cur.fetchone()[0]
 
     @classmethod
-    def update(cls, table, row, obj_id, schema="tww_app"):
+    def update(cls, table, row, oid, pkey="obj_id", schema="tww_app"):
         cur = cls.conn.cursor()
         cols = ",".join(["{key}=%({key})s".format(key=key) for key in row.keys()])
-        row["obj_id"] = obj_id
-        cur.execute(f"UPDATE {schema}.{table} SET {cols} WHERE obj_id=%(obj_id)s", row)
+        row[pkey] = oid
+        cur.execute(f"UPDATE {schema}.{table} SET {cols} WHERE {pkey}=%(pkey)s", row)
 
     @classmethod
-    def delete(cls, table, obj_id, schema="tww_app"):
+    def delete(cls, table, oid, pkey="obj_id", schema="tww_app"):
         cur = cls.conn.cursor()
-        cur.execute(f"DELETE FROM {schema}.{table} WHERE obj_id=%s", [obj_id])
+        cur.execute(f"DELETE FROM {schema}.{table} WHERE {pkey}=%s", [oid])
 
-    def insert_check(self, table, row, expected_row=None, schema="tww_app"):
-        obj_id = self.insert(table, row, schema=schema)
-        result = self.select(table, obj_id, schema=schema)
+    def insert_check(self, table, row, expected_row=None, schema="tww_app", pkey="obj_id"):
+        oid = self.insert(table, row, schema=schema, returning=pkey)
+        result = self.select(table, oid, attrname=pkey, schema=schema)
 
-        assert result, obj_id
+        assert result, oid
 
         if expected_row:
             row = expected_row
 
         self.check_result(row, result, table, "insert", schema)
 
-        return obj_id
+        return oid
 
-    def update_check(self, table, row, obj_id, expected_row=None, schema="tww_app"):
-        self.update(table, row, obj_id, schema=schema)
-        result = self.select(table, obj_id, schema=schema)
+    def update_check(self, table, row, oid, pkey="obj_id", expected_row=None, schema="tww_app"):
+        self.update(table, row, oid,  pkey=pkey, schema=schema)
+        result = self.select(table, oid, attrname=pkey, schema=schema)
         if not expected_row:
             expected_row = row
         self.check_result(expected_row, result, table, "update", schema)

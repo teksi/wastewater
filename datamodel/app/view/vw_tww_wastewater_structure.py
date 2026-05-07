@@ -55,10 +55,7 @@ def vw_tww_wastewater_structure(
 
         , {ws_cols}
 
-        , main_co_sp.identifier AS co_identifier
-        , main_co_sp.remark AS co_remark
-        , main_co_sp.renovation_demand AS co_renovation_demand
-
+        , {main_co_sp_cols}
         , {main_co_cols}
         , ST_Force2D(COALESCE(wn.situation3d_geometry, main_co.situation3d_geometry))::geometry(Point, {{srid}}) AS situation3d_geometry
 
@@ -125,6 +122,21 @@ def vw_tww_wastewater_structure(
                 "fk_main_wastewater_node",
                 "detail_geometry3d_geometry",
             ],
+        ),
+        main_co_sp_cols=select_columns(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="structure_part",
+            table_alias="main_co_sp",
+            remove_pkey=True,
+            indent=4,
+            skip_columns=[
+                "last_modification",
+                "fk_dataowner",
+                "fk_provider",
+                "fk_wastewater_structure",
+            ],
+            prefix="co_",
         ),
         main_co_cols=select_columns(
             connection=connection,
@@ -367,6 +379,7 @@ def vw_tww_wastewater_structure(
             pkey="obj_id",
             indent=6,
             remap_columns={"cover_shape": "co_shape"},
+            skip_columns=["uuidoid"],
             insert_values={
                 "identifier": "COALESCE(NULLIF(NEW.co_identifier,''), NEW.identifier)",
                 "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )",
@@ -672,6 +685,7 @@ def vw_tww_wastewater_structure(
             pkey="obj_id",
             indent=10,
             remap_columns={"cover_shape": "co_shape"},
+            skip_columns=["uuidoid"],
             insert_values={
                 "identifier": "COALESCE(NULLIF(NEW.co_identifier,''), NEW.identifier)",
                 "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )".format(
