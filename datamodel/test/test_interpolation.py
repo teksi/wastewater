@@ -59,8 +59,8 @@ class TestInterpolation(unittest.TestCase, DbTestBase):
 
         # Geometry type must still be a curve
         assert (
-            self.execute("GeometryType(%s)", [new_row["progression3d_geometry"]])
-            == "COMPOUNDCURVE"
+            self.execute("ST_GeometryType(%s)", [new_row["progression3d_geometry"]])
+            == "ST_CompoundCurve"
         )
 
         # No NULL Z values must remain
@@ -130,8 +130,8 @@ class TestInterpolation(unittest.TestCase, DbTestBase):
 
         # Geometry type must still be a curve
         assert (
-            self.execute("GeometryType(%s)", [new_row["progression3d_geometry"]])
-            == "COMPOUNDCURVE"
+            self.execute("ST_GeometryType(%s)", [new_row["progression3d_geometry"]])
+            == "ST_CompoundCurve"
         )
 
         # No NULL Z values must remain
@@ -203,8 +203,8 @@ class TestInterpolation(unittest.TestCase, DbTestBase):
 
         # Geometry must remain a curve
         assert (
-            self.execute("GeometryType(%s)", [new_row["progression3d_geometry"]])
-            == "COMPOUNDCURVE"
+            self.execute("ST_GeometryType(%s)", [new_row["progression3d_geometry"]])
+            == "ST_CompoundCurve"
         )
 
         # Vertex 2: distance = 1 → fraction = 0.1 → Z = 92
@@ -264,8 +264,8 @@ class TestInterpolation(unittest.TestCase, DbTestBase):
 
         # Geometry must remain a curve
         assert (
-            self.execute("GeometryType(%s)", [new_row["progression3d_geometry"]])
-            == "COMPOUNDCURVE"
+            self.execute("ST_GeometryType(%s)", [new_row["progression3d_geometry"]])
+            == "ST_CompoundCurve"
         )
 
         # Vertex 3: interpolate locally between Z=80 and Z=35
