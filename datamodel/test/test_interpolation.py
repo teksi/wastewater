@@ -27,7 +27,7 @@ class TestInterpolation(unittest.TestCase, DbTestBase):
 
         wkt = """
             ST_SetSRID(
-            ST_MakeCompoundCurve(
+            ST_LineToCurve(
                 ST_MakeLine(ARRAY[
                     ST_MakePoint(0, 0, 100),
                     ST_MakePoint(1, 0, NULL),
@@ -97,7 +97,7 @@ class TestInterpolation(unittest.TestCase, DbTestBase):
 
         wkt = """
             ST_SetSRID(
-            ST_MakeCompoundCurve(
+            ST_LineToCurve(
                 ST_MakeLine(ARRAY[
                     ST_MakePoint(1, 1, 100),
                     ST_MakePoint(2, 2, 90),
@@ -171,7 +171,7 @@ class TestInterpolation(unittest.TestCase, DbTestBase):
         # Start Z = 100, End Z = 20
         wkt = """
             ST_SetSRID(
-            ST_MakeCompoundCurve(
+            ST_LineToCurve(
                 ST_MakeLine(ARRAY[
                     ST_MakePoint(0, 0, 100),
                     ST_MakePoint(1, 0, NULL),
@@ -232,7 +232,7 @@ class TestInterpolation(unittest.TestCase, DbTestBase):
 
         wkt = """
             ST_SetSRID(
-            ST_MakeCompoundCurve(
+            ST_LineToCurve(
                 ST_MakeLine(ARRAY[
                     ST_MakePoint(0, 0, 100),
                     ST_MakePoint(1, 0, 80),
