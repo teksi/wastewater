@@ -27,11 +27,11 @@ class TestInterpolation(unittest.TestCase, DbTestBase):
 
         wkt = """
             ST_SetSRID(
-            ST_LineToCurve(
+            ST_ForceCurve(
                 ST_MakeLine(ARRAY[
                     ST_MakePoint(0, 0, 100),
-                    ST_MakePoint(1, 0, NULL),
-                    ST_MakePoint(6, 0, NULL),
+                    ST_MakePoint(1, 0, 'NaN'),
+                    ST_MakePoint(6, 0, 'NaN'),
                     ST_MakePoint(10, 0, 20)
                 ])
             ),
@@ -97,11 +97,11 @@ class TestInterpolation(unittest.TestCase, DbTestBase):
 
         wkt = """
             ST_SetSRID(
-            ST_LineToCurve(
+            ST_ForceCurve(
                 ST_MakeLine(ARRAY[
                     ST_MakePoint(1, 1, 100),
                     ST_MakePoint(2, 2, 90),
-                    ST_MakePoint(3, 3, NULL),
+                    ST_MakePoint(3, 3, 'NaN'),
                     ST_MakePoint(4, 4, 70),
                     ST_MakePoint(5, 5, 40)
                 ])
@@ -171,11 +171,11 @@ class TestInterpolation(unittest.TestCase, DbTestBase):
         # Start Z = 100, End Z = 20
         wkt = """
             ST_SetSRID(
-            ST_LineToCurve(
+            ST_ForceCurve(
                 ST_MakeLine(ARRAY[
                     ST_MakePoint(0, 0, 100),
-                    ST_MakePoint(1, 0, NULL),
-                    ST_MakePoint(6, 0, NULL),
+                    ST_MakePoint(1, 0, 'NaN'),
+                    ST_MakePoint(6, 0, 'NaN'),
                     ST_MakePoint(10, 0, 20)
                 ])
             ),
@@ -232,11 +232,11 @@ class TestInterpolation(unittest.TestCase, DbTestBase):
 
         wkt = """
             ST_SetSRID(
-            ST_LineToCurve(
+            ST_ForceCurve(
                 ST_MakeLine(ARRAY[
                     ST_MakePoint(0, 0, 100),
                     ST_MakePoint(1, 0, 80),
-                    ST_MakePoint(6, 0, NULL),
+                    ST_MakePoint(6, 0, 'NaN'),
                     ST_MakePoint(10, 0, 35)
                 ])
             ),
