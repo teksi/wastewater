@@ -151,7 +151,7 @@ class TestInterpolation(unittest.TestCase, DbTestBase):
             [new_row["progression3d_geometry"]],
         )
         assert abs(z - 85) < 1e-9
-        
+
         z = self.execute(
             "ST_Z(ST_PointN(%s, 4))",
             [new_row["progression3d_geometry"]],
