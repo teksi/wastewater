@@ -65,7 +65,7 @@ class TestInterpolation(unittest.TestCase, DbTestBase):
 
         # No NULL Z values must remain
         wkt = self.execute("ST_AsText(%s)", [new_row["progression3d_geometry"]])
-        assert "NULL" not in wkt
+        assert "NaN" not in wkt
 
         # Interpolated Z values from neighbouring indices
         z = self.execute(
@@ -136,7 +136,7 @@ class TestInterpolation(unittest.TestCase, DbTestBase):
 
         # No NULL Z values must remain
         wkt = self.execute("ST_AsText(%s)", [new_row["progression3d_geometry"]])
-        assert "NULL" not in wkt
+        assert "NaN" not in wkt
 
         # Interpolated Z values from start and end point indices
         z = self.execute(
@@ -151,6 +151,7 @@ class TestInterpolation(unittest.TestCase, DbTestBase):
             [new_row["progression3d_geometry"]],
         )
         assert abs(z - 85) < 1e-9
+        
         z = self.execute(
             "ST_Z(ST_PointN(%s, 4))",
             [new_row["progression3d_geometry"]],
@@ -209,13 +210,13 @@ class TestInterpolation(unittest.TestCase, DbTestBase):
 
         # Vertex 2: distance = 1 → fraction = 0.1 → Z = 92
         z2 = self.execute(
-            "ST_Z(ST_PointN(%s, 4))",
+            "ST_Z(ST_PointN(%s, 2))",
             [new_row["progression3d_geometry"]],
         )
         assert abs(z2 - 92) < 1e-9
 
         z3 = self.execute(
-            "ST_Z(ST_PointN(%s, 4))",
+            "ST_Z(ST_PointN(%s, 3))",
             [new_row["progression3d_geometry"]],
         )
         assert abs(z3 - 52) < 1e-9
@@ -278,7 +279,7 @@ class TestInterpolation(unittest.TestCase, DbTestBase):
 
         # Ensure existing neighbour Z values are preserved
         z2 = self.execute(
-            "ST_Z(ST_PointN(%s, 4))",
+            "ST_Z(ST_PointN(%s, 2))",
             [new_row["progression3d_geometry"]],
         )
         assert abs(z2 - 80) < 1e-9
