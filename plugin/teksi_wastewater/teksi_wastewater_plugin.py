@@ -760,9 +760,11 @@ class TeksiWastewaterPlugin:
         # seems QGIS loads True as "true" on restart ?!
         if admin_mode and admin_mode != "false":
             admin_mode = True
+            self.toolbar.addAction(self.refreshNetworkTopologyAction)
             self.toolbar.addAction(self.importAction)
             self.toolbar.addAction(self.exportAction)
         else:
+            self.toolbar.removeAction(self.refreshNetworkTopologyAction)
             self.toolbar.removeAction(self.importAction)
             self.toolbar.removeAction(self.exportAction)
             admin_mode = False
