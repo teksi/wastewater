@@ -1,10 +1,21 @@
 CREATE OR REPLACE FUNCTION tww_app.network_refresh_network_simple() RETURNS void SECURITY DEFINER AS $body$
+
+DECLARE
+  t0 timestamptz;
 BEGIN
+  t0 := clock_timestamp();
 
   TRUNCATE tww_od.network_segment CASCADE;
   TRUNCATE tww_od.network_node CASCADE;
 
   -- Insert wastewater nodes
+    PERFORM pg_notify(
+    'network_refresh',
+    json_build_object(
+      'step', 'nodes_wn',
+      'elapsed', extract(epoch from clock_timestamp() - t0)
+    )::text);
+  INSERT INTO t
   INSERT INTO tww_od.network_node(node_type, ne_id, geom)
   SELECT
     'wastewater_node',
@@ -13,6 +24,12 @@ BEGIN
   FROM tww_od.wastewater_node n;
 
 -- Insert reachpoints
+    PERFORM pg_notify(
+    'network_refresh',
+    json_build_object(
+      'step', 'nodes_rp',
+      'elapsed', extract(epoch from clock_timestamp() - t0)
+    )::text);
   INSERT INTO tww_od.network_node(node_type, ne_id, rp_id, geom)
   SELECT
     'reach_point',
@@ -24,6 +41,12 @@ BEGIN
   LEFT JOIN tww_od.reach r_t ON rp.obj_id = r_t.fk_reach_point_to;
 
   -- Insert virtual nodes for blind connections
+    PERFORM pg_notify(
+    'network_refresh',
+    json_build_object(
+      'step', 'nodes_blind',
+      'elapsed', extract(epoch from clock_timestamp() - t0)
+    )::text);
   INSERT INTO tww_od.network_node(node_type, ne_id, geom)
   SELECT DISTINCT
     'blind_connection',
@@ -40,6 +63,12 @@ BEGIN
 	NOT IN (0.0, 1.0); -- if exactly at start or at end, we don't need a virtualnode as we have the reachpoint
 
   -- Insert reaches, subdivided according to blind reaches
+    PERFORM pg_notify(
+    'network_refresh',
+    json_build_object(
+      'step', 'edges_re_blind',
+      'elapsed', extract(epoch from clock_timestamp() - t0)
+    )::text);
   INSERT INTO tww_od.network_segment (segment_type, from_node, to_node, ne_id, geom)
   SELECT 'reach',
          sub2.node_id_1,
@@ -69,6 +98,13 @@ BEGIN
   WHERE ratio_1 IS NOT NULL AND ratio_1 <> ratio_2;
 
   -- Insert edge between reachpoint (from) to the closest node belonging to the wasterwater network element
+  PERFORM pg_notify(
+    'network_refresh',
+    json_build_object(
+      'step', 'edges_rp_from',
+      'elapsed', extract(epoch from clock_timestamp() - t0)
+    )::text);
+  RAISE NOTICE 'step 5: inserting edges from rp_from in detail geom: %', clock_timestamp() - t0;
   INSERT INTO tww_od.network_segment (segment_type, from_node, to_node, geom)
   SELECT DISTINCT ON(n1.id)
          'special_structure',
@@ -87,9 +123,17 @@ BEGIN
   ) AS sub1
   JOIN tww_od.network_node as n1 ON n1.rp_id = rp_obj_id
   JOIN tww_od.network_node as n2 ON n2.ne_id = wwne_id
-  ORDER BY n1.id, ST_Distance(n1.geom, n2.geom);
+  ORDER BY n1.id, n1.geom <-> n2.geom;
 
   -- Insert edge between reachpoint (to) to the closest node belonging to the wasterwater network element
+  
+  PERFORM pg_notify(
+    'network_refresh',
+    json_build_object(
+      'step', 'edges_rp_to',
+      'elapsed', extract(epoch from clock_timestamp() - t0)
+    )::text);
+
   INSERT INTO tww_od.network_segment (segment_type, from_node, to_node, geom)
   SELECT DISTINCT ON(n1.id)
          'special_structure',
@@ -108,7 +152,7 @@ BEGIN
   ) AS sub1
   JOIN tww_od.network_node as n1 ON n1.rp_id = rp_obj_id
   JOIN tww_od.network_node as n2 ON n2.ne_id = wwne_id
-  ORDER BY n1.id, ST_Distance(n1.geom, n2.geom);
+  ORDER BY n1.id, n1.geom <-> n2.geom;
 
   PERFORM tww_app.refresh_materialized_views('tww_app',NULL,True);
 
