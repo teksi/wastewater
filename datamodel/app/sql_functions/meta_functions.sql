@@ -39,7 +39,7 @@ BEGIN
 
     LOOP
         BEGIN
-            EXECUTE format('REFRESH MATERIALIZED VIEW %I.%I',
+            EXECUTE format('REFRESH MATERIALIZED VIEW %I.%I WITH DATA;',
                           mv_record.schemaname,
                           mv_record.matviewname);
             RAISE NOTICE '%',format('Refreshed materialized view: %s.%s', mv_record.schemaname, mv_record.matviewname);
