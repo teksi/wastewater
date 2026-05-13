@@ -1420,9 +1420,9 @@ $$;
                 DELETE FROM tww_app.vw_tww_wastewater_structure ws
                     WHERE ws.obj_id = _obj_id;
                 DELETE FROM tww_od.import_damage_ws_quarantine dm
-                INNER JOIN tww_od.import_examination_quarantine ex
-                    ON ex.uuidoid=dm.fk_import_examination_quarantine
-                WHERE ex.fk_import_ws_quarantine=p_ws_uuidoid;
+                USING tww_od.import_examination_quarantine ex
+                WHERE ex.uuidoid=dm.fk_import_examination_quarantine
+                AND ex.fk_import_ws_quarantine=p_ws_uuidoid;
 
                 DELETE FROM tww_od.import_examination_quarantine ex
                 WHERE ex.fk_import_ws_quarantine=p_ws_uuidoid;
