@@ -38,8 +38,8 @@ def vw_tww_import_manhole(connection: psycopg.Connection):
         , ws.status as ws_status
         , wn.obj_id as wn_obj_id
         , wn.bottom_level as wn_bottom_level
-        , wn._function_hierarchic
-        , wn._usage_current
+        , wns._function_hierarchic
+        , wns._usage_current
 
         , {ma_columns}
         , {ss_columns}
@@ -76,6 +76,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection):
         LEFT JOIN tww_od.special_structure ss ON ss.obj_id = ws.obj_id
         INNER JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = ws.fk_main_wastewater_node
         INNER JOIN tww_od.wastewater_node wn ON wn.obj_id = ws.fk_main_wastewater_node
+        INNER JOIN tww_od.tww_wastewater_node_symbology wns ON wn.obj_id = wns.fk_wastewater_node
 
         LEFT JOIN (
           SELECT cls.*
