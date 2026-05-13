@@ -65,7 +65,7 @@ class DbTestBase:
         print("-----")
         print(row)
         cur.execute(
-            f"INSERT INTO {schema}.{table} ({cols}) VALUES ({values}) RETURNING {returning}"", row
+            f"INSERT INTO {schema}.{table} ({cols}) VALUES ({values}) RETURNING {returning}", row
         )
         return cur.fetchone()[0]
 

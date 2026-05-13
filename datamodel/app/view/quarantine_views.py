@@ -578,7 +578,7 @@ def vw_tww_import_reach(connection: psycopg.Connection):
     CREATE TRIGGER vw_tww_import_reach_INSERT INSTEAD OF INSERT ON tww_app.vw_tww_import_reach
       FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_import_reach_INSERT();
     """.format(
-        insert_rpq=insert_command(
+        insert_req=insert_command(
             connection=connection,
             table_schema="tww_od",
             table_name="import_reach_quarantine",
