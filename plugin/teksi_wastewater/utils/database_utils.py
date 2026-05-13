@@ -269,7 +269,7 @@ class DatabaseUtils:
     def refresh_network_simple():
         logger.info("Refreshing network")
         DatabaseUtils.execute("SELECT tww_app.network_refresh_network_simple();")
-        
+
     @staticmethod
     def refresh_matviews():
         logger.info("Refreshing materialized views")
