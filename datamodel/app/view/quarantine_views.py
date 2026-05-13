@@ -1387,7 +1387,7 @@ $$;
         AS $$
         DECLARE
             _deleted boolean;
-            _obj_id  character varying(16)
+            _obj_id  character varying(16);
         BEGIN
 
             SELECT ws.tww_deleted, ws.obj_id
