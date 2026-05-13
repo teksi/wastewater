@@ -1002,202 +1002,201 @@ DECLARE
     _url text;
 
 BEGIN
-    -- Start a transaction to ensure atomicity
-    BEGIN
-        -- Step 0: Check for non-ok foreign key entries in related tables
-        SELECT * FROM tww_od.import_ws_quarantine q INTO ws_record
-        WHERE q.uuidoid =_uuidoid;
+    -- Step 0: Check for non-ok foreign key entries in related tables
+    SELECT * FROM tww_od.import_ws_quarantine q INTO ws_record
+    WHERE q.uuidoid =_uuidoid;
 
 
-        SELECT COUNT(*) INTO check_count
-        FROM (
-            SELECT 1 FROM tww_od.import_reach_point_quarantine rp
-            WHERE rp.fk_import_ws_quarantine = ws_record.uuidoid AND rp.tww_is_okay = false
+    SELECT COUNT(*) INTO check_count
+    FROM (
+        SELECT 1 FROM tww_od.import_reach_point_quarantine rp
+        WHERE rp.fk_import_ws_quarantine = ws_record.uuidoid AND rp.tww_is_okay = false
 
-            UNION ALL
+        UNION ALL
 
-            SELECT 1 FROM tww_od.import_reach_quarantine re
-            JOIN tww_od.import_reach_point_quarantine rp
-              ON re.fk_import_rp_quarantine_from = rp.uuidoid OR re.fk_import_rp_quarantine_to = rp.uuidoid
-            WHERE rp.fk_import_ws_quarantine = ws_record.uuidoid AND re.tww_is_okay = false
+        SELECT 1 FROM tww_od.import_reach_quarantine re
+        JOIN tww_od.import_reach_point_quarantine rp
+            ON re.fk_import_rp_quarantine_from = rp.uuidoid OR re.fk_import_rp_quarantine_to = rp.uuidoid
+        WHERE rp.fk_import_ws_quarantine = ws_record.uuidoid AND re.tww_is_okay = false
 
-            UNION ALL
+        UNION ALL
 
-            SELECT 1 FROM tww_od.import_examination_quarantine ex
-            WHERE ex.fk_import_ws_quarantine = ws_record.uuidoid AND ex.tww_is_okay = false
+        SELECT 1 FROM tww_od.import_examination_quarantine ex
+        WHERE ex.fk_import_ws_quarantine = ws_record.uuidoid AND ex.tww_is_okay = false
 
-            UNION ALL
+        UNION ALL
 
-            SELECT 1 FROM tww_od.import_damage_ws_quarantine dm
-            JOIN tww_od.import_examination_quarantine ex ON dm.fk_import_examination_quarantine = ex.uuidoid
-            WHERE ex.fk_import_ws_quarantine = ws_record.uuidoid AND dm.tww_is_okay = false
-        ) AS subquery;
+        SELECT 1 FROM tww_od.import_damage_ws_quarantine dm
+        JOIN tww_od.import_examination_quarantine ex ON dm.fk_import_examination_quarantine = ex.uuidoid
+        WHERE ex.fk_import_ws_quarantine = ws_record.uuidoid AND dm.tww_is_okay = false
+    ) AS subquery;
 
-        -- Skip the loop if any related entries are not okay
-        IF check_count > 0 THEN
-            RAISE EXCEPTION 'Entry %: Not all children are set to ok', ws_record.obj_id;
+    -- Skip if any related entries are not okay
+    IF check_count > 0 THEN
+        RAISE NOTICE 'Entry %: Not all children are set to ok', ws_record.obj_id;
+        RETURN;
+    END IF;
+
+    -- Step 1: Process import_ws_quarantine
+    CASE WHEN ws_record.tww_level_measurement_kind  = 1 THEN
+    _bottom_level :=  coalesce(NULLIF(ws_record.co_level,0) - NULLIF(ws_record.ws__depth,0),ws_record.wn_bottom_level);
+    _upper_elevation := coalesce(NULLIF(ws_record.co_level,0) - NULLIF(ws_record.ss__upper_elevation_depth,0),ws_record.ss_upper_elevation);
+    WHEN ws_record.tww_level_measurement_kind  = 2 THEN
+    _upper_elevation := coalesce(NULLIF(ws_record.co_level,0) - NULLIF(ws_record.ss__upper_elevation_depth,0),ws_record.ss_upper_elevation);
+    _bottom_level :=  coalesce(NULLIF(_upper_elevation,0) - NULLIF(ws_record.ws__depth,0),ws_record.wn_bottom_level);
+    WHEN ws_record.tww_level_measurement_kind  = 3 THEN
+    _bottom_level :=  ws_record.wn_bottom_level;
+    _upper_elevation := ws_record.ss_upper_elevation;
+    ELSE
+        RAISE EXCEPTION
+            'No level measurement kind set for entry (uuidoid=%)',
+            ws_record.uuidoid
+            USING ERRCODE = 'NO_DATA_FOUND';
+    END CASE;
+
+    -- Check if the record already exists in the live table
+    IF EXISTS (
+        SELECT 1 FROM tww_od.manhole
+        WHERE obj_id = ws_record.obj_id
+        UNION ALL
+        SELECT 1 from tww_od.special_structure
+        WHERE obj_id = ws_record.obj_id
+    ) THEN
+        {update_wsq}
+        PERFORM tww_app.set_structure_parts_from_quarantine(ws_record.*);
+        ws_oid := ws_record.obj_id;
+    ELSE
+        {insert_wsq}
+        PERFORM tww_app.set_structure_parts_from_quarantine(ws_record.*);
+    END IF;
+
+    -- Step 2: Process import_reach_point_quarantine
+    FOR rp_record IN
+        SELECT * FROM tww_od.import_reach_point_quarantine
+        WHERE fk_import_ws_quarantine = ws_record.uuidoid
+    LOOP
+        -- Check if the record already exists in the live table
+        IF EXISTS (
+            SELECT 1 FROM tww_od.reach_point
+            WHERE obj_id = rp_record.obj_id
+        ) THEN
+            {update_rp}
+
+            UPDATE tww_od.import_reach_quarantine
+            SET fk_reach_point_from = rp_record.obj_id
+            WHERE fk_import_rp_quarantine_from = rp_record.uuidoid;
+
+            UPDATE tww_od.import_reach_quarantine
+            SET fk_reach_point_to = rp_record.obj_id
+            WHERE fk_import_rp_quarantine_to = rp_record.uuidoid;
+        ELSE
+            {insert_rp}
+
+            UPDATE tww_od.import_reach_quarantine
+            SET fk_reach_point_from = rp_record.obj_id
+            WHERE fk_import_rp_quarantine_from = rp_oid;
+
+            UPDATE tww_od.import_reach_quarantine
+            SET fk_reach_point_to = rp_record.obj_id
+            WHERE fk_import_rp_quarantine_to = rp_oid;
+        END IF;
+    END LOOP;
+
+    -- Step 3: Process import_examination_quarantine
+        UPDATE tww_od.import_damage_ws_quarantine
+            SET fk_wastewater_structure = ws_oid
+            WHERE fk_import_ws_quarantine = ws_record.uuidoid;
+
+    FOR ex_record IN
+        SELECT * FROM tww_od.import_examination_quarantine
+        WHERE fk_import_ws_quarantine = ws_record.uuidoid
+    LOOP
+        -- Check if the record already exists in the live table
+        IF EXISTS (
+            SELECT 1 FROM tww_od.examination
+            WHERE obj_id = ex_record.obj_id
+        ) THEN
+            {update_ex}
+        ELSE
+            {insert_ex}
         END IF;
 
-            -- Step 1: Process import_ws_quarantine
-            CASE WHEN ws_record.tww_level_measurement_kind  = 1 THEN
-            _bottom_level :=  coalesce(NULLIF(ws_record.co_level,0) - NULLIF(ws_record.ws__depth,0),ws_record.wn_bottom_level);
-            _upper_elevation := coalesce(NULLIF(ws_record.co_level,0) - NULLIF(ws_record.ss__upper_elevation_depth,0),ws_record.ss_upper_elevation);
-            WHEN ws_record.tww_level_measurement_kind  = 2 THEN
-            _upper_elevation := coalesce(NULLIF(ws_record.co_level,0) - NULLIF(ws_record.ss__upper_elevation_depth,0),ws_record.ss_upper_elevation);
-            _bottom_level :=  coalesce(NULLIF(_upper_elevation,0) - NULLIF(ws_record.ws__depth,0),ws_record.wn_bottom_level);
-            WHEN ws_record.tww_level_measurement_kind  = 3 THEN
-            _bottom_level :=  ws_record.wn_bottom_level;
-            _upper_elevation := ws_record.ss_upper_elevation;
-            ELSE
-                RAISE EXCEPTION
-                    'No level measurement kind set for entry (uuidoid=%)',
-                    ws_record.uuidoid
-                    USING ERRCODE = 'NO_DATA_FOUND';
-            END CASE;
 
-            -- Check if the record already exists in the live table
-            IF EXISTS (
-                SELECT 1 FROM tww_od.manhole
-                WHERE obj_id = ws_record.obj_id
-                UNION ALL
-                SELECT 1 from tww_od.special_structure
-                WHERE obj_id = ws_record.obj_id
-            ) THEN
-                {update_wsq}
-                PERFORM tww_app.set_structure_parts_from_quarantine(ws_record.*);
-                ws_oid := ws_record.obj_id;
-            ELSE
-                {insert_wsq}
-                PERFORM tww_app.set_structure_parts_from_quarantine(ws_record.*);
-            END IF;
+        -- Step 4: Process import_damage_ws_quarantine
+        UPDATE tww_od.import_damage_ws_quarantine
+            SET fk_examination = ex_oid
+            WHERE fk_import_examination_quarantine = ex_record.uuidoid;
 
-            -- Step 2: Process import_reach_point_quarantine
-            FOR rp_record IN
-                SELECT * FROM tww_od.import_reach_point_quarantine
-                WHERE fk_import_ws_quarantine = ws_record.uuidoid
-            LOOP
-                -- Check if the record already exists in the live table
-                IF EXISTS (
-                    SELECT 1 FROM tww_od.reach_point
-                    WHERE obj_id = rp_record.obj_id
-                ) THEN
-                    {update_rp}
-
-                    UPDATE tww_od.import_reach_quarantine
-                    SET fk_reach_point_from = rp_record.obj_id
-                    WHERE fk_import_rp_quarantine_from = rp_record.uuidoid;
-
-                    UPDATE tww_od.import_reach_quarantine
-                    SET fk_reach_point_to = rp_record.obj_id
-                    WHERE fk_import_rp_quarantine_to = rp_record.uuidoid;
-                ELSE
-                    {insert_rp}
-
-                    UPDATE tww_od.import_reach_quarantine
-                    SET fk_reach_point_from = rp_record.obj_id
-                    WHERE fk_import_rp_quarantine_from = rp_oid;
-
-                    UPDATE tww_od.import_reach_quarantine
-                    SET fk_reach_point_to = rp_record.obj_id
-                    WHERE fk_import_rp_quarantine_to = rp_oid;
-                END IF;
-            END LOOP;
-
-            -- Step 3: Process import_examination_quarantine
-             UPDATE tww_od.import_damage_ws_quarantine
-                    SET fk_wastewater_structure = ws_oid
-                    WHERE fk_import_ws_quarantine = ws_record.uuidoid;
-
-            FOR ex_record IN
-                SELECT * FROM tww_od.import_examination_quarantine
-                WHERE fk_import_ws_quarantine = ws_record.uuidoid
-            LOOP
-                -- Check if the record already exists in the live table
-                IF EXISTS (
-                    SELECT 1 FROM tww_od.examination
-                    WHERE obj_id = ex_record.obj_id
-                ) THEN
-                    {update_ex}
-                ELSE
-                    {insert_ex}
-                END IF;
-
-
-                -- Step 4: Process import_damage_ws_quarantine
-                UPDATE tww_od.import_damage_ws_quarantine
-                    SET fk_examination = ex_oid
-                    WHERE fk_import_examination_quarantine = ex_record.uuidoid;
-
-                FOR dm_record IN
-                    SELECT * FROM tww_od.import_examination_quarantine
-                    WHERE fk_import_examination_quarantine = ex_record.uuidoid
-                LOOP
-                    IF EXISTS (
-                        SELECT 1 FROM tww_od.damage_manhole
-                        WHERE obj_id = dm_record.obj_id
-                    ) THEN
-                        {update_dm}
-                    ELSE
-                        {insert_dm}
-                    END IF;
-
-                END LOOP;
-
-                -- Step 5: Process import_picture_quarantine
-                UPDATE tww_od.import_picture_quarantine
-                    SET fk_examination = ex_oid
-                    WHERE fk_import_ex_quarantine = ex_record.uuidoid;
-
-                FOR fi_record IN
-                    SELECT * FROM tww_od.import_picture_quarantine
-                    WHERE fk_import_ex_quarantine = ex_record.uuidoid
-                LOOP
-                    IF fi_record.fk_data_media is NULL THEN
-                        IF vo_oid IS NULL THEN
-                        INSERT INTO tww_od.data_media(remark) VALUES ('generated on quarantine import')
-                        RETURNING obj_id into vo_oid;
-                            RAISE NOTICE 'Created new data_media (obj_id=%) for file import as data_media was not specified for file %, please edit manually',
-                            vo_oid, fi_record.path_relative;
-                        ELSE
-                            RAISE NOTICE 'Using data_media (obj_id=%) for file import as data_media was not specified for file %, please edit manually',
-                            vo_oid, fi_record.path_relative;
-                        END IF;
-                        ELSE NULL;
-                    END IF;
-
-                    SELECT COALESCE(vo.path || fi_record.path_relative, fi_record.path_relative)
-                    INTO _url
-                    FROM tww_od.data_media vo
-                    WHERE vo.obj_id=fi_record.fk_data_media OR vo.obj_id=vo_oid;
-
-                    IF EXISTS (
-                        SELECT 1 FROM tww_od.file
-                        WHERE obj_id = fi_record.obj_id
-                    ) THEN
-                        {update_fi}
-                    ELSE
-                        {insert_fi}
-                    END IF;
-
-                END LOOP;
-
-        -- Step 6: Process import_reach_quarantine
-        FOR re_record IN
-            SELECT * FROM tww_od.import_reach_quarantine
-            WHERE tww_is_okay = true AND tww_deleted = false
+        FOR dm_record IN
+            SELECT * FROM tww_od.import_examination_quarantine
+            WHERE fk_import_examination_quarantine = ex_record.uuidoid
         LOOP
+            IF EXISTS (
+                SELECT 1 FROM tww_od.damage_manhole
+                WHERE obj_id = dm_record.obj_id
+            ) THEN
+                {update_dm}
+            ELSE
+                {insert_dm}
+            END IF;
+
+        END LOOP;
+
+        -- Step 5: Process import_picture_quarantine
+        UPDATE tww_od.import_picture_quarantine
+            SET fk_examination = ex_oid
+            WHERE fk_import_ex_quarantine = ex_record.uuidoid;
+
+        FOR fi_record IN
+            SELECT * FROM tww_od.import_picture_quarantine
+            WHERE fk_import_ex_quarantine = ex_record.uuidoid
+        LOOP
+            IF fi_record.fk_data_media is NULL THEN
+                IF vo_oid IS NULL THEN
+                INSERT INTO tww_od.data_media(remark) VALUES ('generated on quarantine import')
+                RETURNING obj_id into vo_oid;
+                    RAISE NOTICE 'Created new data_media (obj_id=%) for file import as data_media was not specified for file %, please edit manually',
+                    vo_oid, fi_record.path_relative;
+                ELSE
+                    RAISE NOTICE 'Using data_media (obj_id=%) for file import as data_media was not specified for file %, please edit manually',
+                    vo_oid, fi_record.path_relative;
+                END IF;
+                ELSE NULL;
+            END IF;
+
+            SELECT COALESCE(vo.path || fi_record.path_relative, fi_record.path_relative)
+            INTO _url
+            FROM tww_od.data_media vo
+            WHERE vo.obj_id=fi_record.fk_data_media OR vo.obj_id=vo_oid;
 
             IF EXISTS (
-                SELECT 1 FROM tww_od.reach
-                WHERE obj_id = re_record.obj_id
+                SELECT 1 FROM tww_od.file
+                WHERE obj_id = fi_record.obj_id
             ) THEN
-                {update_re}
+                {update_fi}
             ELSE
-                {insert_re}
-
+                {insert_fi}
             END IF;
+
         END LOOP;
-    END;
+    END LOOP;
+
+    -- Step 6: Process import_reach_quarantine
+    FOR re_record IN
+        SELECT * FROM tww_od.import_reach_quarantine
+        WHERE tww_is_okay = true AND tww_deleted = false
+    LOOP
+
+        IF EXISTS (
+            SELECT 1 FROM tww_od.reach
+            WHERE obj_id = re_record.obj_id
+        ) THEN
+            {update_re}
+        ELSE
+            {insert_re}
+
+        END IF;
+    END LOOP;
     RETURN;
 END;
 $$;
