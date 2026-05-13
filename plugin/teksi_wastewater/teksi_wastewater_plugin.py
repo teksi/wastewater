@@ -246,6 +246,11 @@ class TeksiWastewaterPlugin:
         )
         self.disableSymbologyTriggersAction.triggered.connect(self.disable_symbology_triggers)
 
+        self.refreshmaterializedViewsAction = QAction(
+            self.tr("Refresh materialized views"), self.iface.mainWindow()
+        )
+        self.refreshmaterializedViewsAction.triggered.connect(self.refresh_materialized_views)
+
         self.settingsAction = QAction(
             QIcon(QgsApplication.getThemeIcon("/mActionOptions.svg")),
             self.tr("Settings"),
@@ -296,6 +301,7 @@ class TeksiWastewaterPlugin:
         self.iface.addPluginToMenu(self.main_menu_name, self.validityCheckAction)
         self.iface.addPluginToMenu(self.main_menu_name, self.enableSymbologyTriggersAction)
         self.iface.addPluginToMenu(self.main_menu_name, self.disableSymbologyTriggersAction)
+        self.iface.addPluginToMenu(self.main_menu_name, self.refreshmaterializedViewsAction)
         self.iface.addPluginToMenu(self.main_menu_name, self.settingsAction)
         self.iface.addPluginToMenu(self.main_menu_name, self.aboutAction)
 
@@ -433,6 +439,22 @@ class TeksiWastewaterPlugin:
                 self.tr(f"Symbology triggers cannot be disabled:\n\n{exception}"),
             )
 
+    def refresh_materialized_views(self):
+        try:
+            DatabaseUtils.refresh_matviews()
+            QMessageBox.information(
+                self.iface.mainWindow(),
+                self.refreshmaterializedViewsAction.text(),
+                self.tr("Materialized views have been successfully refreshed"),
+            )
+
+        except Exception as exception:
+            QMessageBox.critical(
+                self.iface.mainWindow(),
+                self.refreshmaterializedViewsAction.text(),
+                self.tr(f"Materialized views cannot be refreshed:\n\n{exception}"),
+            )
+
     def unload(self):
         """
         Called when unloading
@@ -459,6 +481,7 @@ class TeksiWastewaterPlugin:
         self.iface.removePluginMenu(self.main_menu_name, self.aboutAction)
         self.iface.removePluginMenu(self.main_menu_name, self.enableSymbologyTriggersAction)
         self.iface.removePluginMenu(self.main_menu_name, self.disableSymbologyTriggersAction)
+        self.iface.removePluginMenu(self.main_menu_name, self.refreshmaterializedViewsAction)
 
         QgsApplication.processingRegistry().removeProvider(self.processing_provider)
 
@@ -769,6 +792,7 @@ class TeksiWastewaterPlugin:
 
         self.enableSymbologyTriggersAction.setEnabled(admin_mode)
         self.disableSymbologyTriggersAction.setEnabled(admin_mode)
+        self.refreshmaterializedViewsAction.setEnabled(admin_mode)
 
     def toggleSelectionExtenderWidget(self, checked: bool):
         if checked:

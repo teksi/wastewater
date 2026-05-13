@@ -15,7 +15,6 @@ BEGIN
       'step', 'nodes_wn',
       'elapsed', extract(epoch from clock_timestamp() - t0)
     )::text);
-  INSERT INTO t
   INSERT INTO tww_od.network_node(node_type, ne_id, geom)
   SELECT
     'wastewater_node',
@@ -104,7 +103,6 @@ BEGIN
       'step', 'edges_rp_from',
       'elapsed', extract(epoch from clock_timestamp() - t0)
     )::text);
-  RAISE NOTICE 'step 5: inserting edges from rp_from in detail geom: %', clock_timestamp() - t0;
   INSERT INTO tww_od.network_segment (segment_type, from_node, to_node, geom)
   SELECT DISTINCT ON(n1.id)
          'special_structure',
@@ -154,7 +152,8 @@ BEGIN
   JOIN tww_od.network_node as n2 ON n2.ne_id = wwne_id
   ORDER BY n1.id, n1.geom <-> n2.geom;
 
-  PERFORM tww_app.refresh_materialized_views('tww_app',NULL,True);
+  PERFORM tww_app.refresh_materialized_views('tww_app','vw_network_node');
+  PERFORM tww_app.refresh_materialized_views('tww_app','vw_network_segment');
 
 END;
 $body$
