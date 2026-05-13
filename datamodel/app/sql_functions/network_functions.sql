@@ -126,7 +126,7 @@ BEGIN
   ORDER BY n1.id, n1.geom <-> n2.geom;
 
   -- Insert edge between reachpoint (to) to the closest node belonging to the wasterwater network element
-  
+
   PERFORM pg_notify(
     'network_refresh',
     json_build_object(
