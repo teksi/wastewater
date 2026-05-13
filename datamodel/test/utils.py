@@ -56,7 +56,7 @@ class DbTestBase:
         return cls.conn.cursor(**kwargs)
 
     @classmethod
-    def insert(cls, table, row, schema="tww_app", returning ="obj_id"):
+    def insert(cls, table, row, schema="tww_app", returning="obj_id"):
         cur = cls.conn.cursor()
         cols = ", ".join(row.keys())
         values = ", ".join([f"%({key})s" for key in row.keys()])
@@ -95,7 +95,7 @@ class DbTestBase:
         return oid
 
     def update_check(self, table, row, oid, pkey="obj_id", expected_row=None, schema="tww_app"):
-        self.update(table, row, oid,  pkey=pkey, schema=schema)
+        self.update(table, row, oid, pkey=pkey, schema=schema)
         result = self.select(table, oid, attrname=pkey, schema=schema)
         if not expected_row:
             expected_row = row
