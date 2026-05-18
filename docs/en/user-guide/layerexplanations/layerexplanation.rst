@@ -200,7 +200,7 @@ See `connect wastewater network elements <../editing/connect_wastewater_network_
 Value Lists ``tww_vl.*``
 -------------------------
 
-These value lists are defined in the VSA-datamodel. 
+These value lists are defined in the VSA-datamodel.
 
 Warning: Do not change!
 
