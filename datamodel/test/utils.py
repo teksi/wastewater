@@ -39,10 +39,12 @@ class DbTestBase:
         return cur.fetchone()
 
     @classmethod
-    def execute(cls, sql: str, params=[]):
+    def execute(cls, sql: str, params=None):
         cur = cls.conn.cursor()
         if not sql.startswith("SELECT"):
             sql = f"SELECT {sql}"
+        if params is None: 
+            params = []
         cur.execute(sql, params)
         return cur.fetchone()[0]
 
