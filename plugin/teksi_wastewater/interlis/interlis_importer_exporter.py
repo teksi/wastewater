@@ -1,9 +1,10 @@
 import logging
-import requests
-import socket
 import os
+import socket
 import tempfile
 from pathlib import Path
+
+import requests
 
 from ..utils.database_utils import DatabaseUtils
 from . import config
@@ -155,10 +156,8 @@ class InterlisImporterExporter:
         self._create_ili_schema(
             [import_model], ext_columns_no_constraints=True, create_basket_col=True
         )
-      
-        result = DatabaseUtils.execute(
-            "SELECT 1 FROM tww_od.organisation LIMIT 1;"
-        )
+
+        result = DatabaseUtils.execute("SELECT 1 FROM tww_od.organisation LIMIT 1;")
         if not result:
             if self._has_internet():
                 try:
@@ -170,13 +169,13 @@ class InterlisImporterExporter:
                     tmp_file.close()
 
                     logger.info(f"Downloaded VSA organisations file to {tmp_file.name}")
-                    orgs_path=Path(tmp_file.name)
+                    orgs_path = Path(tmp_file.name)
                     logger.info("Importing VSA organisation to intermediate schema")
                     self._progress_done(25, "Importing VSA organisations data...")
                     self._import_xtf_file(orgs_path)
 
                 except Exception as e:
-                    logger.warning(f"Could not download VSA file: {e}") 
+                    logger.warning(f"Could not download VSA file: {e}")
                 finally:
                     try:
                         os.remove(tmp_file.name)
@@ -184,7 +183,9 @@ class InterlisImporterExporter:
                         pass
 
             else:
-                logger.warning("No internet connection detected → skipping download of vsa organisations")
+                logger.warning(
+                    "No internet connection detected → skipping download of vsa organisations"
+                )
 
         # Import from xtf file to ili2pg model
         self._progress_done(30, "Importing XTF data...")
@@ -307,7 +308,6 @@ class InterlisImporterExporter:
             abs_file_path = Path(__file__).parent.resolve() / file_path
             logger.info("Importing AG-64 organisation to intermediate schema")
             self._import_xtf_file(abs_file_path)
-
 
         # Export to the temporary ili2pg model
         self._progress_done(35, "Converting from TEKSI Wastewater...")
@@ -786,7 +786,6 @@ class InterlisImporterExporter:
         self.current_progress = progress
         if self.progress_done_callback:
             self.progress_done_callback(int(progress), text)
-
 
     def _has_internet(host="vsa.ch", port=443, timeout=1):
         try:
