@@ -154,7 +154,7 @@ Documents have now there own layergroup (before in layergroup Wastewater Structu
 Hydraulic
 ---------
 
-Wastewater nodes ``tww_app.vw_tww_wastewater_node``
+Wastewater nodes ``tww_app.vw_wastewater_node``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Use this layer to change the situation of one selected wastewater node (and not the whole wastewater structure) or if you want to add a new wastewater node to an existing wastewater structure. You can add additional wastewater nodes in the wastewater nodes-tab of the `vw_tww_wastewater_structure` too.
