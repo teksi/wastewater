@@ -43,7 +43,7 @@ class DbTestBase:
         cur = cls.conn.cursor()
         if not sql.startswith("SELECT"):
             sql = f"SELECT {sql}"
-        if params is None: 
+        if params is None:
             params = []
         cur.execute(sql, params)
         return cur.fetchone()[0]
