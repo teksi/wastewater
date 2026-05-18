@@ -204,7 +204,6 @@ These value lists are defined in the VSA-datamodel. Do not change.
 
 .. versionchanged:: 2025.0
 
-Main layer to digitize and edit the catchment_areas.
 
 Rural
 --------
