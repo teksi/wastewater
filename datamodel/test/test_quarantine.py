@@ -116,7 +116,7 @@ class TestQuarantineViewsImport(unittest.TestCase, DbTestBase):
             "co_level": None,
             "wn_bottom_level": None,
             "tww_is_okay": False,
-            "ws_obj_id":"ch00demoWS999999"
+            "ws_obj_id": "ch00demoWS999999",
         }
 
         ws_q_id = self.insert_check(
@@ -134,7 +134,7 @@ class TestQuarantineViewsImport(unittest.TestCase, DbTestBase):
         )
         self.assertIsNotNone(quarantine)
 
-        ws_oid=quarantine["ws_obj_id"]
+        ws_oid = quarantine["ws_obj_id"]
 
         # no autoupdate
         live = self.select(
@@ -143,8 +143,6 @@ class TestQuarantineViewsImport(unittest.TestCase, DbTestBase):
             schema="tww_od",
         )
         self.assertIsNone(live)
-
-
 
         cur = self.cursor()
         cur.execute(
@@ -160,8 +158,6 @@ class TestQuarantineViewsImport(unittest.TestCase, DbTestBase):
             schema="tww_od",
         )
         self.assertIsNone(live)
-
-        
 
     # ---------------------------------------------------------------------
     # Geometry propagation
