@@ -150,7 +150,7 @@ class TestViews(unittest.TestCase, DbTestBase):
         self.update_check(
             "vw_tww_wastewater_structure",
             row={"identifier": "ws_002"},
-            obj_id=obj_id,
+            oid=obj_id,
             expected_row=expected_row,
         )
 

@@ -159,15 +159,12 @@ class DbTestBase:
         )
 
     @classmethod
-    def make_point(cls, x, y, z, srid=2056):
+    def make_point(cls, x, y, z=None, srid=2056):
         """
-        Helper to make 3D point geometries
+        Helper to make point geometries
         """
-        return cls.execute("ST_SetSrid(ST_MakePoint(%s, %s, %s), %s)", [x, y, z, srid])
+        if z:
+            return cls.execute("ST_SetSrid(ST_MakePoint(%s, %s, %s), %s)", [x, y, z, srid])
+        else:
+            return cls.execute("ST_SetSrid(ST_MakePoint(%s, %s), %s)", [x, y, srid])
 
-    @classmethod
-    def make_point_2d(cls, x, y, z=None, srid=2056):
-        """
-        Helper to make 2D point geometries
-        """
-        return cls.execute("ST_SetSrid(ST_MakePoint(%s, %s), %s)", [x, y, srid])
