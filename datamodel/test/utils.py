@@ -74,7 +74,7 @@ class DbTestBase:
         cur = cls.conn.cursor()
         cols = ",".join(["{key}=%({key})s".format(key=key) for key in row.keys()])
         row[pkey] = oid
-        cur.execute(f"UPDATE {schema}.{table} SET {cols} WHERE {pkey}=%(pkey)s", row)
+        cur.execute(f"UPDATE {schema}.{table} SET {cols} WHERE {pkey}=%({pkey})s", row)
 
     @classmethod
     def delete(cls, table, oid, pkey="obj_id", schema="tww_app"):
