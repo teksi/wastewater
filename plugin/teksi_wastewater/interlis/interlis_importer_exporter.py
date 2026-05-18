@@ -787,9 +787,9 @@ class InterlisImporterExporter:
         if self.progress_done_callback:
             self.progress_done_callback(int(progress), text)
 
-    def _has_internet(host="vsa.ch", port=443, timeout=1):
+    def _has_internet(timeout=1):
         try:
-            socket.create_connection((host, port), timeout=timeout)
+            socket.create_connection(config.VSA_ORG_URL, timeout=timeout)
             return True
         except OSError:
             return False
