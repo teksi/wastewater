@@ -167,4 +167,3 @@ class DbTestBase:
             return cls.execute("ST_SetSrid(ST_MakePoint(%s, %s, %s), %s)", [x, y, z, srid])
         else:
             return cls.execute("ST_SetSrid(ST_MakePoint(%s, %s), %s)", [x, y, srid])
-
