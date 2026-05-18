@@ -520,7 +520,7 @@ class InterlisExporterToIntermediateSchema:
     def _set_tid_iterator(self):
         # set tidMaker
         max_tid = self.abwasser_session.execute(
-            text("SELECT last_value from pg2ili_abwasser.t_ili2db_seq;")
+            text(f"SELECT last_value from {config.ABWASSER_SCHEMA}.t_ili2db_seq;")
         ).fetchone()
         for _ in range(max_tid.last_value + 1):
             self.tid_maker.next_tid()
@@ -3861,8 +3861,7 @@ class InterlisExporterToIntermediateSchema:
                 ),
             ).filter(self.model_classes_tww_app.gepknoten.obj_id.in_(self.subset_ids))
 
-        perimeter_query = text(
-            """
+        perimeter_query = text("""
             WITH geoms AS (
              SELECT *, ST_ForceCurve((ST_Dump(perimeter_ist)).geom) AS geom
              FROM tww_app.vw_agxx_sbw_einzugsgebiet
@@ -3875,8 +3874,7 @@ class InterlisExporterToIntermediateSchema:
             SELECT DISTINCT ON (obj_id) obj_id, ST_Area(geom) AS area, geom, ST_GeometryType(geom) as type
             FROM geoms
             ORDER BY obj_id, area DESC;
-        """
-        )
+        """)
         perimeters = self.tww_session.execute(perimeter_query).fetchall()
 
         for row in query:

@@ -54,13 +54,11 @@ class SwmmExecuteAlgorithm(TwwAlgorithm):
         return self.tr("SWMM Execute")
 
     def shortHelpString(self):
-        return self.tr(
-            """
+        return self.tr("""
         Launch a swmm simulation.
          Note that usually a .inp file exported with TWW is not directly launchable. It must be checked and edited with a SWMM interface.
          See: https://teksi.github.io/wastewater/tww_swmm/Run-SWMM-Simulation.html#run-a-simulation-with-tww-swmm
-         """
-        )
+         """)
 
     def helpUrl(self):
         return "https://teksi.github.io/wastewater/tww_swmm/Run-SWMM-Simulation.html#run-a-simulation-with-tww-swmm"
@@ -96,12 +94,8 @@ class SwmmExecuteAlgorithm(TwwAlgorithm):
             # raise GeoAlgorithmExecutionException(
             # 'Swmm command line toom is not configured.\n\
             # Please configure it before running Swmm algorithms.')
-            raise QgsProcessingException(
-                self.tr(
-                    "Swmm command line tool is not configured.\n\
-                    Please configure it before running Swmm algorithms."
-                )
-            )
+            raise QgsProcessingException(self.tr("Swmm command line tool is not configured.\n\
+                    Please configure it before running Swmm algorithms."))
 
         with TwwSwmm(None, None, None, inp_file, None, rpt_file, swmm_cli, feedback) as qs:
             prompt = qs.execute_swmm()

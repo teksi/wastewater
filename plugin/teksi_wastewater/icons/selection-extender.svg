@@ -1,0 +1,28 @@
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+
+  <!-- Yellow selection square -->
+  <rect x="12" y="12" width="40" height="40" rx="3" ry="3" fill="#FFD84D" stroke="#C9A400" stroke-width="2"></rect>
+
+  <!-- Arrow style -->
+  <g fill="#5A6B7A">
+
+    <!-- UP -->
+    <rect x="29" y="20" width="6" height="8"></rect>
+    <polygon points="32,6 24,20 40,20"></polygon>
+
+    <!-- DOWN -->
+    <rect x="29" y="36" width="6" height="8"></rect>
+    <polygon points="32,58 24,44 40,44"></polygon>
+
+    <!-- LEFT -->
+    <rect x="20" y="29" width="8" height="6"></rect>
+    <polygon points="6,32 20,24 20,40"></polygon>
+
+    <!-- RIGHT -->
+    <rect x="36" y="29" width="8" height="6"></rect>
+    <polygon points="58,32 44,24 44,40"></polygon>
+
+  </g>
+
+</svg>

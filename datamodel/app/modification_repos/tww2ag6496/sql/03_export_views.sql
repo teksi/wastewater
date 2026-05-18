@@ -305,7 +305,10 @@ SELECT
 
 
 FROM (
-	SELECT obj_id, wwtp_number, situation3d_geometry, backflow_level_current, bottom_level,_function_hierarchic FROM tww_od.wastewater_node wn
+	SELECT obj_id, wwtp_number, situation3d_geometry, backflow_level_current, bottom_level,wns._function_hierarchic
+	FROM tww_od.wastewater_node wn
+    LEFT JOIN tww_od.tww_wastewater_node_symbology wns
+	ON wns.fk_wastewater_node = wn.obj_id
 	UNION (
 		SELECT obj_id, wwtp_number, situation3d_geometry, backflow_level_current, bottom_level, ch_function_hierarchic as _function_hierarchic
 		FROM tww_od.agxx_unconnected_node_bwrel un
@@ -546,6 +549,7 @@ FROM tww_od.catchment_area ca
 	LEFT JOIN tww_vl.catchment_area_retention_planned rp ON rp.code = ca.retention_planned
 	LEFT JOIN tww_vl.catchment_area_drainage_system_planned_export_rel_agxx dsp_rev ON dsp_rev.code = ca.drainage_system_planned
 	LEFT JOIN tww_vl.catchment_area_drainage_system_current_export_rel_agxx dsc_rev ON dsc_rev.code = ca.drainage_system_current
+	WHERE ca.drainage_system_current != 9068 --exclude drainage catchment areas as they are not included in AG-96
 ;
 
 

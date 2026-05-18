@@ -58,15 +58,13 @@ class SwmmCreateInputAlgorithm(TwwAlgorithm):
         return self.tr("SWMM Create Input")
 
     def shortHelpString(self):
-        return self.tr(
-            """
+        return self.tr("""
         This tool will export the entire PRIMARY network as an input file for SWMM.
         If \"Export only selected network\" is selected, the entire selected network is exported, including the secondary network.
         Note that at this stage of the development, export of special structures (pumps, weirs, dividers) and related curves must be checked.
         Advices to improve the export can be submited as github issues.
         See: https://teksi.github.io/wastewater/tww_swmm/Generate-SWMM-File.html#swmm-create-input
-        """
-        )
+        """)
 
     def helpUrl(self):
         return (

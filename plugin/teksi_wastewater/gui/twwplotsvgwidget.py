@@ -120,7 +120,7 @@ class TwwPlotSVGWidget(QWidget):
         printpreviewdlg = QPrintPreviewDialog()
         printpreviewdlg.paintRequested.connect(self.printRequested)
 
-        printpreviewdlg.exec_()
+        printpreviewdlg.exec()
 
     @pyqtSlot(QPrinter)
     def printRequested(self, printer):

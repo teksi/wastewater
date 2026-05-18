@@ -1,6 +1,6 @@
-.. _2026.X:
+.. _2026:
 
-2026.X (future)
+2026.0.1 (future)
 ===============
 
 Here you can find information about the future 2026.X release of TEKSI wastewater

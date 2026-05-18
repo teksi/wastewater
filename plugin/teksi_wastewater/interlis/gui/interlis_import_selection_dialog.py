@@ -88,7 +88,7 @@ class InterlisImportSelectionDialog(QDialog):
 
             if cls not in self.category_items:
                 self.category_items[cls].setText(self.Columns.NAME, cls.__name__)
-                self.category_items[cls].setCheckState(self.Columns.NAME, Qt.Checked)
+                self.category_items[cls].setCheckState(self.Columns.NAME, Qt.CheckState.Checked)
                 self.category_items[cls].setFont(
                     self.Columns.NAME, QFont(QFont().defaultFamily(), weight=QFont.Weight.Bold)
                 )
@@ -116,7 +116,7 @@ class InterlisImportSelectionDialog(QDialog):
         (propagation to parent/children is disabled for now)
         """
 
-        checked = item.checkState(self.Columns.NAME) == Qt.Checked
+        checked = item.checkState(self.Columns.NAME) == Qt.CheckState.Checked
 
         # add or remove object from session
         obj = self.get_obj_from_listitem(item)
@@ -128,7 +128,7 @@ class InterlisImportSelectionDialog(QDialog):
                     self.session.expunge(obj)
 
         checked_state = item.checkState(self.Columns.NAME)
-        if checked_state == Qt.PartiallyChecked:
+        if checked_state == Qt.CheckState.PartiallyChecked:
             return
 
         # propagate to children
@@ -141,22 +141,22 @@ class InterlisImportSelectionDialog(QDialog):
             has_checked = False
             has_unchecked = False
             for sibling in [parent.child(i) for i in range(parent.childCount())]:
-                if sibling.checkState(self.Columns.NAME) == Qt.Checked:
+                if sibling.checkState(self.Columns.NAME) == Qt.CheckState.Checked:
                     has_checked = True
-                if sibling.checkState(self.Columns.NAME) == Qt.Unchecked:
+                if sibling.checkState(self.Columns.NAME) == Qt.CheckState.Unchecked:
                     has_unchecked = True
                 if has_checked and has_unchecked:
                     break
 
             if has_checked and has_unchecked:
-                parent.setCheckState(self.Columns.NAME, Qt.PartiallyChecked)
+                parent.setCheckState(self.Columns.NAME, Qt.CheckState.PartiallyChecked)
             elif has_checked:
-                parent.setCheckState(self.Columns.NAME, Qt.Checked)
+                parent.setCheckState(self.Columns.NAME, Qt.CheckState.Checked)
             elif has_unchecked:
-                parent.setCheckState(self.Columns.NAME, Qt.Unchecked)
+                parent.setCheckState(self.Columns.NAME, Qt.CheckState.Unchecked)
             else:
                 # no children at all !!
-                parent.setCheckState(self.Columns.NAME, Qt.PartiallyChecked)
+                parent.setCheckState(self.Columns.NAME, Qt.CheckState.PartiallyChecked)
 
     def current_item_changed(self, current_item, previous_item):
         """
@@ -281,7 +281,7 @@ class InterlisImportSelectionDialog(QDialog):
         # probably a matter of creating a savepoint before saving with
         # session.begin_nested() and one additionnal self.session.commit()
         try:
-            with OverrideCursor(Qt.WaitCursor):
+            with OverrideCursor(Qt.CursorShape.WaitCursor):
                 self.session.commit()
                 self.session.close()
         except Exception as exception:
@@ -294,7 +294,7 @@ class InterlisImportSelectionDialog(QDialog):
             )
 
     def rollback_session(self):
-        with OverrideCursor(Qt.WaitCursor):
+        with OverrideCursor(Qt.CursorShape.WaitCursor):
             self.session.rollback()
             self.session.close()
 

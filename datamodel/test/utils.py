@@ -94,10 +94,12 @@ class DbTestBase:
 
         return obj_id
 
-    def update_check(self, table, row, obj_id, schema="tww_app"):
+    def update_check(self, table, row, obj_id, expected_row=None, schema="tww_app"):
         self.update(table, row, obj_id, schema=schema)
         result = self.select(table, obj_id, schema=schema)
-        self.check_result(row, result, table, "update", schema)
+        if not expected_row:
+            expected_row = row
+        self.check_result(expected_row, result, table, "update", schema)
 
     def check_result(self, expected, result, table, test_name, schema="tww_app"):
         # TODO: don't convert to unicode, type inference for smallint is

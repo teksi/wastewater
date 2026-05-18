@@ -112,6 +112,7 @@ In order to use the organisations efficiently, one can flag an organisation as a
  .. figure:: images/od_organisation.jpg
 
 This table is today a little bit hidden in the wastewater_structures group (but it is not only related to wastewater structures).
+As the VSA dataset contains over 2'300 organisations, there is a filter set up to limit the selection of organisations to the active ones (attribute tww_active)
 
 
 Layergroup Examination-Maintenance
@@ -125,7 +126,7 @@ You can not create new maintenance-events with this views, but you can edit attr
 Maintenance events ``tww_app.vw_tww_maintenance``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Maintenance events can be created through the view tww_od.vw_tww_maintenance.
+Maintenance events can be created through the view tww_app.vw_tww_maintenance.
 
 These maintenance events are used in the maintenance tabs in the main tables. They can be linked to one or several wastewater structures.
 
@@ -153,10 +154,11 @@ Documents have now there own layergroup (before in layergroup Wastewater Structu
 Hydraulic
 ---------
 
-Wastewater nodes ``tww_app.vw_wastewater_node``
+Wastewater nodes ``tww_app.vw_tww_wastewater_node``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Use this layer to change the situation of one selected wastewater node (and not the whole wastewater structure) or if you want to add a new wastewater node to an existing wastewater structure. You can add additional wastewater nodes in the wastewater nodes-tab of the `vw_tww_wastewater_structure` too.
+When moving the geometry of the wastewater node, the geometry of the connected reaches is updated automatically. If you want to move a wastewater node without moving the reaches, disconnect the reaches, move the node and reconnect the reaches.
 
 Overflow tables ``tww_app.vw_tww_overflow``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

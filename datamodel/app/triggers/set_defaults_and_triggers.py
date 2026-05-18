@@ -63,23 +63,19 @@ def set_defaults_and_triggers(
     entries = cursor.fetchall()
 
     for entry in entries:
-        cursor = SqlContent(
-            f"""select 1 from information_schema.columns
+        cursor = SqlContent(f"""select 1 from information_schema.columns
             WHERE table_schema = 'tww_od'
             AND table_name = '{entry[0]}'
-            and column_name = 'obj_id'"""
-        ).execute(connection)
+            and column_name = 'obj_id'""").execute(connection)
         found = cursor.fetchone()
         if found:
             query = create_oid_default(entry[0])
             SqlContent(query).execute(connection)
         if entry[0] in SingleInheritances.keys():  # Find Subclasses
-            cursor = SqlContent(
-                f"""select 1 from information_schema.columns
+            cursor = SqlContent(f"""select 1 from information_schema.columns
                 WHERE table_schema = 'tww_od'
                 AND table_name = '{SingleInheritances[entry[0]]}'
-                and column_name = 'last_modification'"""
-            ).execute(connection)
+                and column_name = 'last_modification'""").execute(connection)
             found = cursor.fetchone()
             if found:
                 if check_owner(connection, "tww_od", entry[0]):
@@ -90,12 +86,10 @@ def set_defaults_and_triggers(
                 else:
                     raise Exception(f"Must be owner of tww_od.{entry[0]} to create triggers")
         else:
-            cursor = SqlContent(
-                f"""select 1 from information_schema.columns
+            cursor = SqlContent(f"""select 1 from information_schema.columns
                 WHERE table_schema = 'tww_od'
                 AND table_name = '{entry[0]}'
-                and column_name = 'last_modification'"""
-            ).execute(connection)
+                and column_name = 'last_modification'""").execute(connection)
             found = cursor.fetchone()
             if found:
                 if check_owner(connection, "tww_od", entry[0]):

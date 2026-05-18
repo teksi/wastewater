@@ -73,17 +73,17 @@ def vw_tww_wastewater_structure(
         , {wn_cols}
         , {ne_cols}
 
-        , ws._label
-        , ws._cover_label
-        , ws._bottom_label
-        , ws._input_label
-        , ws._output_label
-        , wn._usage_current AS _channel_usage_current
-        , wn._function_hierarchic AS _channel_function_hierarchic
+        , wsl.label_text_c AS _cover_label
+        , wsl.label_text_b AS _bottom_label
+        , wsl.label_text_rp AS _reach_point_label
+        , wns._usage_current AS _channel_usage_current
+        , wns._function_hierarchic AS _channel_function_hierarchic
         , vl_fh.tww_is_primary
         , og.organisation_type as _owner_organisation_type
+        , lc.obj_id is not NULL as tww_has_log_card
 
         FROM tww_od.wastewater_structure ws
+        LEFT JOIN tww_od.tww_wastewater_structure_label wsl ON wsl.fk_wastewater_structure = ws.obj_id
         LEFT JOIN tww_od.cover main_co ON main_co.obj_id = ws.fk_main_cover
         LEFT JOIN tww_od.structure_part main_co_sp ON main_co_sp.obj_id = ws.fk_main_cover
         LEFT JOIN tww_od.manhole ma ON ma.obj_id = ws.obj_id
@@ -92,13 +92,15 @@ def vw_tww_wastewater_structure(
         LEFT JOIN tww_od.infiltration_installation ii ON ii.obj_id = ws.obj_id
         LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = ws.fk_main_wastewater_node
         LEFT JOIN tww_od.wastewater_node wn ON wn.obj_id = ws.fk_main_wastewater_node
+        LEFT JOIN tww_od.tww_wastewater_node_symbology wns ON wns.fk_wastewater_node = ws.fk_main_wastewater_node
         {extra_joins}
         LEFT JOIN tww_od.channel ch ON ch.obj_id = ws.obj_id
         LEFT JOIN tww_od.wwtp_structure wt ON wt.obj_id = ws.obj_id
         LEFT JOIN tww_od.small_treatment_plant sm ON sm.obj_id = ws.obj_id
         LEFT JOIN tww_od.drainless_toilet dt ON dt.obj_id = ws.obj_id
-        LEFT JOIN tww_vl.channel_function_hierarchic vl_fh ON vl_fh.code = wn._function_hierarchic
+        LEFT JOIN tww_vl.channel_function_hierarchic vl_fh ON vl_fh.code = wns._function_hierarchic
         LEFT JOIN tww_od.organisation og on og.obj_id=ws.fk_owner
+        LEFT JOIN tww_od.log_card lc ON lc.fk_pwwf_wastewater_node=wn.obj_id
         WHERE '-1'=ALL(ARRAY[ch.obj_id,dt.obj_id,sm.obj_id,wt.obj_id]) IS NULL
         AND '-2'=ALL(ARRAY[ch.obj_id,dt.obj_id,sm.obj_id,wt.obj_id]) IS NULL;
 
@@ -119,11 +121,6 @@ def vw_tww_wastewater_structure(
                 "identifier",
                 "fk_owner",
                 "status",
-                "_label",
-                "_cover_label",
-                "_bottom_label",
-                "_input_label",
-                "_output_label",
                 "fk_main_cover",
                 "fk_main_wastewater_node",
                 "detail_geometry3d_geometry",
@@ -194,9 +191,6 @@ def vw_tww_wastewater_structure(
             indent=4,
             skip_columns=[
                 "situation3d_geometry",
-                "_usage_current",
-                "_status",
-                "_function_hierarchic",
             ],
             prefix="wn_",
             remap_columns={},
@@ -256,14 +250,21 @@ def vw_tww_wastewater_structure(
 
     {insert_wn}
 
-
-      CASE WHEN NOT tww_app.check_all_nulls(to_jsonb(NEW),'co') THEN -- no cover entries
+    CASE WHEN NOT tww_app.check_all_nulls(to_jsonb(NEW),'co') THEN -- at least one field starting with 'co_' is not null
+      IF EXISTS (
+        SELECT 1
+        FROM tww_od.structure_part
+        WHERE identifier = COALESCE(NULLIF(NEW.co_identifier,''), NEW.identifier)
+      ) THEN
+        PERFORM pg_notify('vw_tww_ws_cover_exists', format('Wastewater Structure %s: cover with identifier %s already exists. Inserting cover aborted.',NEW.identifier, COALESCE(NULLIF(NEW.co_identifier,''), NEW.identifier)));
+      ELSE
         {insert_vw_cover}
+      END IF;
 
-     ELSE
-       NEW.co_obj_id=NULL;
-       PERFORM pg_notify('vw_tww_ws_no_cover', format('Wastewater Structure %s: no cover created. If you want to add a cover please fill in at least one cover attribute value.',NEW.identifier));
-       RAISE WARNING 'Wastewater Structure %: no cover created as all cover-related columns are NULL. If you want to add a cover please fill in at least one cover attribute value.', NEW.identifier; -- Warning
+    ELSE
+      NEW.co_obj_id=NULL;
+      PERFORM pg_notify('vw_tww_ws_no_cover', format('Wastewater Structure %s: no cover created. If you want to add a cover please fill in at least one cover attribute value.',NEW.identifier));
+      RAISE WARNING 'Wastewater Structure %: no cover created as all cover-related columns are NULL. If you want to add a cover please fill in at least one cover attribute value.', NEW.identifier; -- Warning
     END CASE;
 
     UPDATE tww_od.wastewater_structure
@@ -289,11 +290,6 @@ def vw_tww_wastewater_structure(
             remove_pkey=False,
             indent=2,
             skip_columns=[
-                "_label",
-                "_cover_label",
-                "_bottom_label",
-                "_input_label",
-                "_output_label",
                 "fk_main_cover",
                 "fk_main_wastewater_node",
                 "detail_geometry3d_geometry",
@@ -350,11 +346,6 @@ def vw_tww_wastewater_structure(
             remove_pkey=False,
             pkey="obj_id",
             indent=6,
-            skip_columns=[
-                "_usage_current",
-                "_status",
-                "_function_hierarchic",
-            ],
             insert_values={
                 "identifier": "COALESCE(NULLIF(NEW.wn_identifier,''), NEW.identifier)",
                 "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )",
@@ -402,10 +393,24 @@ def vw_tww_wastewater_structure(
       dy float;
     BEGIN
 
+    IF NULLIF(NEW.identifier, '') IS NOT NULL THEN
+      IF NULLIF(OLD.identifier, '') IS NOT NULL AND OLD.identifier = OLD.co_identifier AND NEW.co_identifier = OLD.co_identifier THEN NEW.co_identifier = NEW.identifier; END IF;
+      IF NULLIF(OLD.identifier, '') IS NOT NULL AND OLD.identifier = OLD.wn_identifier AND NEW.wn_identifier = OLD.wn_identifier THEN NEW.wn_identifier = NEW.identifier; END IF;
+    END IF;
+
+
       {update_co}
       IF NOT FOUND THEN
-        CASE WHEN NOT tww_app.check_all_nulls(to_jsonb(NEW),'co') THEN -- no cover entries
-          {insert_vw_cover}
+        CASE WHEN NOT tww_app.check_all_nulls(to_jsonb(NEW),'co') THEN -- at least one field starting with 'co_' is not null
+          IF EXISTS (
+            SELECT 1
+            FROM tww_od.structure_part
+            WHERE identifier = COALESCE(NULLIF(NEW.co_identifier,''), NEW.identifier)
+          ) THEN
+            PERFORM pg_notify('vw_tww_ws_cover_exists', format('Wastewater Structure %s: cover with identifier %s already exists. Inserting cover aborted.',NEW.identifier, COALESCE(NULLIF(NEW.co_identifier,''), NEW.identifier)));
+          ELSE
+            {insert_vw_cover}
+          END IF;
         ELSE
           PERFORM pg_notify('vw_tww_ws_no_cover', format('Wastewater Structure %s: no cover created. If you want to add a cover please fill in at least one cover attribute value.',NEW.identifier));
         END CASE;
@@ -579,11 +584,7 @@ def vw_tww_wastewater_structure(
             skip_columns=[
                 "detail_geometry3d_geometry",
                 "last_modification",
-                "_label",
-                "_cover_label",
-                "_bottom_label",
-                "_input_label",
-                "_output_label",
+                "fk_main_cover",
                 "fk_main_wastewater_node",
                 "_depth",
             ],
@@ -642,9 +643,6 @@ def vw_tww_wastewater_structure(
             indent=6,
             skip_columns=[
                 "situation3d_geometry",
-                "_usage_current",
-                "_status",
-                "_function_hierarchic",
             ],
         ),
         update_ne=update_command(

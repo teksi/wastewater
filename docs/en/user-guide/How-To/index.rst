@@ -10,7 +10,7 @@ Setting default values
 
 If you get the following error message on startup of the TEKSI project during the 'Database production ready check':
 
-.. warning:: CRITICAL: Error fk_provider or fk_dataowner not set in tww_od.default_values
+.. warning:: fk_provider or fk_dataowner not set in tww_od.default_values
 
 then your database is not yet production ready.
 

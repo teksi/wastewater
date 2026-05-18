@@ -67,6 +67,7 @@ class TestViews(unittest.TestCase, DbTestBase):
                     "rp_from_level": reach.get("rp_from_level", 1020.0),
                     "rp_to_level": reach.get("rp_to_level", 1000.0),
                     "ch_usage_current": 4514,
+                    "ws_status": 8493,
                     "progression3d_geometry": geom,
                 }
                 obj_id = self.insert("vw_tww_reach", row)
@@ -114,14 +115,10 @@ class TestViews(unittest.TestCase, DbTestBase):
         }
         self.insert_reaches(reaches, manholes)
         self.assertEqual(
-            self.select("vw_tww_wastewater_structure", manholes["main"]["obj_id"])["_input_label"],
-            "\nI1=1011.00\nI2=1012.00\nI3=1013.00\nI4=1014.00",
-        )
-        self.assertEqual(
             self.select("vw_tww_wastewater_structure", manholes["main"]["obj_id"])[
-                "_output_label"
+                "_reach_point_label"
             ],
-            "\nO1=1001.00\nO2=1002.00\nO3=1003.00\nO4=1004.00",
+            "\nI1=1011.00\nI2=1012.00\nI3=1013.00\nI4=1014.00\nO1=1001.00\nO2=1002.00\nO3=1003.00\nO4=1004.00",
         )
 
     def test_crossing_circular_reaches(self):
@@ -129,18 +126,24 @@ class TestViews(unittest.TestCase, DbTestBase):
             "main": {"obj_id": None, "wn_obj_id": None, "coords": [2600000, 1200000]},
             "N": {"obj_id": None, "wn_obj_id": None, "coords": [2600000, 1200001]},
             "S": {"obj_id": None, "wn_obj_id": None, "coords": [2600000, 1199999]},
+            "W": {"obj_id": None, "wn_obj_id": None, "coords": [2599999, 1200000]},
         }
         self.insert_manholes(manholes)
         reaches = {
             "input": [
                 {"mh_id": "N", "rp_to_level": 1011, "mid_point": [2600000.5, 1199999.5]},
                 {"mh_id": "S", "rp_to_level": 1012, "mid_point": [2600000.5, 1200000.5]},
-            ]
+            ],
+            "output": [
+                {"mh_id": "W", "rp_from_level": 1010, "mid_point": [2599999.5, 1200000]},
+            ],
         }
         self.insert_reaches(reaches, manholes)
         self.assertEqual(
-            self.select("vw_tww_wastewater_structure", manholes["main"]["obj_id"])["_input_label"],
-            "\nI1=1012.00\nI2=1011.00",
+            self.select("vw_tww_wastewater_structure", manholes["main"]["obj_id"])[
+                "_reach_point_label"
+            ],
+            "\nI1=1012.00\nI2=1011.00\nO=1010.00",
         )
 
 

@@ -208,14 +208,12 @@ class TestImport(unittest.TestCase, DbTestBase):
         # it should be in the live table tww_od.reach and tww_od.reach_point
         cur = self.cursor()
         cur.execute(
-            psycopg.sql.SQL(
-                "SELECT re.material, re.clear_height, rp.level, ws.co_level\
+            psycopg.sql.SQL("SELECT re.material, re.clear_height, rp.level, ws.co_level\
             FROM {schema}.reach re\
             LEFT JOIN {schema}.reach_point rp ON rp.obj_id = re.fk_reach_point_from\
             LEFT JOIN {schema}.wastewater_networkelement wn ON wn.obj_id = rp.fk_wastewater_networkelement\
             LEFT JOIN {schema}.vw_tww_wastewater_structure ws ON ws.obj_id = wn.fk_wastewater_structure\
-            WHERE ws.obj_id = %(obj_id)s"
-            ).format(schema=psycopg.sql.Identifier("tww_od")),
+            WHERE ws.obj_id = %(obj_id)s").format(schema=psycopg.sql.Identifier("tww_od")),
             {"obj_id": obj_id},
         )
         row = cur.fetchone()
@@ -228,11 +226,9 @@ class TestImport(unittest.TestCase, DbTestBase):
         row = self.select("file", obj_id, "tww_od")
         cur = self.cursor()
         cur.execute(
-            psycopg.sql.SQL(
-                "SELECT *\
+            psycopg.sql.SQL("SELECT *\
             FROM {schema}.file\
-            WHERE object = %(obj_id)s"
-            ).format(schema=psycopg.sql.Identifier("tww_od")),
+            WHERE object = %(obj_id)s").format(schema=psycopg.sql.Identifier("tww_od")),
             {"obj_id": obj_id},
         )
         row = cur.fetchone()
@@ -263,14 +259,12 @@ class TestImport(unittest.TestCase, DbTestBase):
         # it should be in the live table tww_od.reach and tww_od.reach_point
         cur = self.cursor()
         cur.execute(
-            psycopg.sql.SQL(
-                "SELECT re.material, re.clear_height, rp.level, ws.co_level\
+            psycopg.sql.SQL("SELECT re.material, re.clear_height, rp.level, ws.co_level\
             FROM tww_od.reach re\
             LEFT JOIN tww_od.reach_point rp ON rp.obj_id = re.fk_reach_point_from\
             LEFT JOIN tww_od.wastewater_networkelement wn ON wn.obj_id = rp.fk_wastewater_networkelement\
             LEFT JOIN tww_app.vw_tww_wastewater_structure ws ON ws.obj_id = wn.fk_wastewater_structure\
-            WHERE ws.obj_id = %(obj_id)s"
-            ),
+            WHERE ws.obj_id = %(obj_id)s"),
             {"obj_id": obj_id},
         )
 
@@ -340,14 +334,12 @@ class TestImport(unittest.TestCase, DbTestBase):
         # it should be in the live table tww_od.reach and tww_od.reach_point
         cur = self.cursor()
         cur.execute(
-            psycopg.sql.SQL(
-                "SELECT re.material, re.clear_height, rp.level, ws.co_level\
+            psycopg.sql.SQL("SELECT re.material, re.clear_height, rp.level, ws.co_level\
             FROM {schema}.reach re\
             LEFT JOIN {schema}.reach_point rp ON rp.obj_id = re.fk_reach_point_from\
             LEFT JOIN {schema}.wastewater_networkelement wn ON wn.obj_id = rp.fk_wastewater_networkelement\
             LEFT JOIN {schema}.vw_tww_wastewater_structure ws ON ws.obj_id = wn.fk_wastewater_structure\
-            WHERE ws.obj_id = %(obj_id)s"
-            ).format(schema=psycopg.sql.Identifier("tww_od")),
+            WHERE ws.obj_id = %(obj_id)s").format(schema=psycopg.sql.Identifier("tww_od")),
             {"obj_id": obj_id},
         )
         row = cur.fetchone()
@@ -443,14 +435,12 @@ class TestImport(unittest.TestCase, DbTestBase):
         # it should be in the live table tww_od.reach and tww_od.reach_point
         cur = self.cursor()
         cur.execute(
-            psycopg.sql.SQL(
-                "SELECT re.material, re.clear_height, rp.level, ws.co_level\
+            psycopg.sql.SQL("SELECT re.material, re.clear_height, rp.level, ws.co_level\
             FROM {schema}.reach re\
             LEFT JOIN {schema}.reach_point rp ON rp.obj_id = re.fk_reach_point_from\
             LEFT JOIN {schema}.wastewater_networkelement wn ON wn.obj_id = rp.fk_wastewater_networkelement\
             LEFT JOIN {schema}.vw_tww_wastewater_structure ws ON ws.obj_id = wn.fk_wastewater_structure\
-            WHERE ws.obj_id = %(obj_id)s"
-            ).format(schema=psycopg.sql.Identifier("tww_od")),
+            WHERE ws.obj_id = %(obj_id)s").format(schema=psycopg.sql.Identifier("tww_od")),
             {"obj_id": obj_id},
         )
         row = cur.fetchone()

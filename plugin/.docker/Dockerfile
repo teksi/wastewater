@@ -1,9 +1,5 @@
-ARG QGIS_TEST_VERSION=latest
+ARG QGIS_TEST_VERSION=stable-noble
 FROM  qgis/qgis:${QGIS_TEST_VERSION}
-
-# remove QGIS apt repo to avoid signing key issues
-RUN add-apt-repository -r  https://qgis.org/ubuntu && \
-    add-apt-repository -r  https://qgis.org/ubuntu-ltr
 
 RUN apt-get update && \
     apt-get -y install openjdk-8-jre curl locales postgresql-client python3-geoalchemy2 \

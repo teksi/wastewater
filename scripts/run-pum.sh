@@ -46,7 +46,7 @@ DROP ROLE IF EXISTS tww_sysadmin;"
 #psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f datamodel/roles/roles_create.sql
 #psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f datamodel/roles/roles_grant.sql
 
-pum -v -s pg_tww -d datamodel install -p SRID 2056 --roles --grant --demo-data Aletsch
+pum -v -p pg_tww -d datamodel install -p SRID 2056 --demo-data Aletsch
 
 psql -c "DROP SCHEMA IF EXISTS tww_od CASCADE;\
 DROP SCHEMA IF EXISTS tww_sys CASCADE;\
@@ -54,4 +54,4 @@ DROP SCHEMA IF EXISTS tww_vl CASCADE;\
 DROP SCHEMA IF EXISTS tww_cfg CASCADE;\
 DROP SCHEMA IF EXISTS tww_app CASCADE;\
 
-pum -v -s pg_tww -d datamodel install -p SRID 2056 --roles --grant --demo-data Aletsch
+pum -v -p pg_tww -d datamodel install -p SRID 2056 --demo-data Aletsch
