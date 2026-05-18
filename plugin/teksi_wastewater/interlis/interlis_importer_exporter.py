@@ -155,37 +155,36 @@ class InterlisImporterExporter:
         self._create_ili_schema(
             [import_model], ext_columns_no_constraints=True, create_basket_col=True
         )
+      
+        result = DatabaseUtils.execute(
+            "SELECT 1 FROM tww_od.organisation LIMIT 1;"
+        )
+        if not result:
+            if self._has_internet():
+                try:
+                    response = requests.get(config.VSA_ORG_URL, timeout=(2, 10))
+                    response.raise_for_status()
 
-        if import_model not in(config.MODEL_NAME_AG64,config.MODEL_NAME_AG96):        
-            result = DatabaseUtils.execute(
-                "SELECT 1 FROM tww_od.organisation LIMIT 1;"
-            )
-            if not result:
-                if self._has_internet():
+                    tmp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".xtf")
+                    tmp_file.write(response.content)
+                    tmp_file.close()
+
+                    logger.info(f"Downloaded VSA organisations file to {tmp_file.name}")
+                    orgs_path=Path(tmp_file.name)
+                    logger.info("Importing VSA organisation to intermediate schema")
+                    self._progress_done(25, "Importing VSA organisations data...")
+                    self._import_xtf_file(orgs_path)
+
+                except Exception as e:
+                    logger.warning(f"Could not download VSA file: {e}") 
+                finally:
                     try:
-                        response = requests.get(config.VSA_ORG_URL, timeout=(2, 10))
-                        response.raise_for_status()
+                        os.remove(tmp_file.name)
+                    except Exception:
+                        pass
 
-                        tmp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".xtf")
-                        tmp_file.write(response.content)
-                        tmp_file.close()
-
-                        logger.info(f"Downloaded VSA organisations file to {tmp_file.name}")
-                        orgs_path=Path(tmp_file.name)
-                        logger.info("Importing VSA organisation to intermediate schema")
-                        self._progress_done(25, "Importing VSA organisations data...")
-                        self._import_xtf_file(orgs_path)
-
-                    except Exception as e:
-                        logger.warning(f"Could not download VSA file: {e}") 
-                    finally:
-                        try:
-                            os.remove(tmp_file.name)
-                        except Exception:
-                            pass
-
-                else:
-                    logger.warning("No internet connection detected → skipping download of vsa organisations")
+            else:
+                logger.warning("No internet connection detected → skipping download of vsa organisations")
 
         # Import from xtf file to ili2pg model
         self._progress_done(30, "Importing XTF data...")
