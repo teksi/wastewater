@@ -52,6 +52,7 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Layer Erläuterungen</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#main-layers">Hauptlayer</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#layergroup-wastewater-structures">Layergruppe Abwasserbauwerke</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#layergroup-configuration">Layergroup Configuration</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#layergroup-examination-maintenance">Layergruppe Untersuchung-Unterhalt</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#documents">Dokumente</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#hydraulic">Hydraulik Layer</a></li>
@@ -206,17 +207,14 @@
 </div>
 <p>Eine View, um die Punkte mit Material-, Lichte-Hoehe oder Gefällswechsel darzustellen (Punkte müssen Abwasserknoten zwischen Haltungen mit dem gleichen Kanal sein).</p>
 </section>
+</section>
+<section id="layergroup-configuration">
+<h2>Layergroup Configuration<a class="headerlink" href="#layergroup-configuration" title="Link to this heading"></a></h2>
 <section id="organisations-tww-od-organisation">
 <h3>Organisationen <code class="docutils literal notranslate"><span class="pre">tww_od.organisation</span></code><a class="headerlink" href="#organisations-tww-od-organisation" title="Link to this heading"></a></h3>
-<p>Organisation enthält die Organisation die in den Attributen FS_Datenherr, FS_Eigentümer, FS_Betreiber, FS_Datenlieferant etc. gewählt werden können.</p>
-<p>Im Organisationen effizent zu verwenden, können Organisationen mit dem Flag <code class="docutils literal notranslate"><span class="pre">tww_active</span></code> aktiviert werden. Diese Flag filtert dann im QGIS-Projekt die angezeigten Organisationen.</p>
-<blockquote>
-<div><figure class="align-default">
-<img alt="../../_images/od_organisation.jpg" src="../../_images/od_organisation.jpg" />
-</figure>
-</div></blockquote>
-<p>This table is today a little bit hidden in the wastewater_structures group (but it is not only related to wastewater structures).
-As the VSA dataset contains over 2’300 organisations, there is a filter set up to limit the selection of organisations to the active ones (attribute tww_active)</p>
+<p>Table organisation contains the organisations that you can select in attributes like fk_dataowner, fk_operator, fk_provider, fk_owner, etc.</p>
+<p>Import the <a class="reference external" href="https://vsa.ch/models/organisation/vsa_organisationen_2020_1.xtf">VSA organisation 2020.1-dataset</a> that contains over 2’500 organisations. And/or create project-specific organisations, which, however, must be imported and exported additionally with every data exchange.</p>
+<p>In order to use the organisations efficiently, one can flag an organisation as active using the field <code class="docutils literal notranslate"><span class="pre">tww_active</span></code>. This flag filters the organisations accessible from the QGIS project.</p>
 </section>
 </section>
 <section id="layergroup-examination-maintenance">
@@ -285,11 +283,14 @@ Der Layer vw_network_segment kann benutzt werden, um die Fliessrichtung darzuste
 </section>
 <section id="value-lists-tww-vl">
 <h2>Wertelisten <code class="docutils literal notranslate"><span class="pre">tww_vl.*</span></code><a class="headerlink" href="#value-lists-tww-vl" title="Link to this heading"></a></h2>
-<p>Diese Wertelisten sind im Datenmodell VSA-DSS definiert. Nicht ändern.</p>
+<p>These value lists are defined in the VSA-datamodel.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warnung</p>
+<p>Do not change!</p>
+</div>
 <div class="versionchanged">
 <p><span class="versionmodified changed">Geändert in Version 2025.0.</span></p>
 </div>
-<p>Hauptlayer um Einzugsgebiete zu erfassen oder zu verändern.</p>
 </section>
 <section id="rural">
 <h2>Abwasserentsorgung im ländlichen Raum<a class="headerlink" href="#rural" title="Link to this heading"></a></h2>
@@ -325,7 +326,7 @@ Der Layer vw_network_segment kann benutzt werden, um die Fliessrichtung darzuste
 </div>
 <section id="log-card-tww-app-vw-tww-log-card">
 <h3>Stammkarte <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_log_card</span></code><a class="headerlink" href="#log-card-tww-app-vw-tww-log-card" title="Link to this heading"></a></h3>
-<p>Stammkarte für Sonderbauwerke: Hydraulisch-spezielle Abwasserbauwerke, z. B. Regenrückhaltebecken, Regenüberläufe oder Pumpwerke. Die meisten Sonderbauwerke sind auch Spezialbauwerke. Allerdings werden Sonderbauwerke wie Trennschächte oder kleine Pumpwerke häufig als Normschächte ausgeführt.</p>
+<p>Log card for special structures: Hydraulically specialized wastewater structures, e.g., storm water basins, storm water overflows, or pumping stations. Most special structures are also specialized structures. However, special structures such as separation structures or small pumping stations are often designed as manholes.</p>
 </section>
 <section id="catchment-area-totals-tww-app-catchment-area-totals">
 <h3>Gesamteinzugsgebiet <code class="docutils literal notranslate"><span class="pre">tww_app.catchment_area_totals</span></code><a class="headerlink" href="#catchment-area-totals-tww-app-catchment-area-totals" title="Link to this heading"></a></h3>

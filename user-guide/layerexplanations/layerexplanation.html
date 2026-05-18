@@ -51,6 +51,7 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Layers explanation</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#main-layers">Main layers</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#layergroup-wastewater-structures">Layergroup Wastewater Structures</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#layergroup-configuration">Layergroup Configuration</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#layergroup-examination-maintenance">Layergroup Examination-Maintenance</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#documents">Documents</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#hydraulic">Hydraulic</a></li>
@@ -205,17 +206,14 @@
 </div>
 <p>A view to visualize the points (wastewater_nodes between to reaches of the same channel), where material or clear_heigth or slope changes.</p>
 </section>
+</section>
+<section id="layergroup-configuration">
+<h2>Layergroup Configuration<a class="headerlink" href="#layergroup-configuration" title="Link to this heading"></a></h2>
 <section id="organisations-tww-od-organisation">
 <h3>Organisations <code class="docutils literal notranslate"><span class="pre">tww_od.organisation</span></code><a class="headerlink" href="#organisations-tww-od-organisation" title="Link to this heading"></a></h3>
-<p>organisation contains the organisation that you can select in attributes like fk_dataowner, fk_operator, fk_provider, fk_owner, etc.</p>
-<p>In order to use the organisations efficiently, one can flag an organisation as active using the flag <code class="docutils literal notranslate"><span class="pre">tww_active</span></code>. This flag filters the organisations accessible from the QGIS project.</p>
-<blockquote>
-<div><figure class="align-default">
-<img alt="../../_images/od_organisation.jpg" src="../../_images/od_organisation.jpg" />
-</figure>
-</div></blockquote>
-<p>This table is today a little bit hidden in the wastewater_structures group (but it is not only related to wastewater structures).
-As the VSA dataset contains over 2’300 organisations, there is a filter set up to limit the selection of organisations to the active ones (attribute tww_active)</p>
+<p>Table organisation contains the organisations that you can select in attributes like fk_dataowner, fk_operator, fk_provider, fk_owner, etc.</p>
+<p>Import the <a class="reference external" href="https://vsa.ch/models/organisation/vsa_organisationen_2020_1.xtf">VSA organisation 2020.1-dataset</a> that contains over 2’500 organisations. And/or create project-specific organisations, which, however, must be imported and exported additionally with every data exchange.</p>
+<p>In order to use the organisations efficiently, one can flag an organisation as active using the field <code class="docutils literal notranslate"><span class="pre">tww_active</span></code>. This flag filters the organisations accessible from the QGIS project.</p>
 </section>
 </section>
 <section id="layergroup-examination-maintenance">
@@ -286,11 +284,14 @@ Use the vw_network_segment layer to show the flow direction, if you use a marker
 </section>
 <section id="value-lists-tww-vl">
 <h2>Value Lists <code class="docutils literal notranslate"><span class="pre">tww_vl.*</span></code><a class="headerlink" href="#value-lists-tww-vl" title="Link to this heading"></a></h2>
-<p>These value lists are defined in the VSA-datamodel. Do not change.</p>
+<p>These value lists are defined in the VSA-datamodel.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Do not change!</p>
+</div>
 <div class="versionchanged">
 <p><span class="versionmodified changed">Changed in version 2025.0.</span></p>
 </div>
-<p>Main layer to digitize and edit the catchment_areas.</p>
 </section>
 <section id="rural">
 <h2>Rural<a class="headerlink" href="#rural" title="Link to this heading"></a></h2>
@@ -326,7 +327,7 @@ Use the vw_network_segment layer to show the flow direction, if you use a marker
 </div>
 <section id="log-card-tww-app-vw-tww-log-card">
 <h3>Log card <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_log_card</span></code><a class="headerlink" href="#log-card-tww-app-vw-tww-log-card" title="Link to this heading"></a></h3>
-<p>Log card for special structures: Hydraulically specialized wastewater structures, e.g., storm water basins, storm water overflows, or pumping stations. Most special structures are also specialized structures. However, special structures such as separation structures or small pumping stations are often designed as standard shafts.</p>
+<p>Log card for special structures: Hydraulically specialized wastewater structures, e.g., storm water basins, storm water overflows, or pumping stations. Most special structures are also specialized structures. However, special structures such as separation structures or small pumping stations are often designed as manholes.</p>
 </section>
 <section id="catchment-area-totals-tww-app-catchment-area-totals">
 <h3>Catchment area totals <code class="docutils literal notranslate"><span class="pre">tww_app.catchment_area_totals</span></code><a class="headerlink" href="#catchment-area-totals-tww-app-catchment-area-totals" title="Link to this heading"></a></h3>
