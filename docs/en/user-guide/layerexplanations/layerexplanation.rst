@@ -110,7 +110,7 @@ Organisations ``tww_od.organisation``
 
 Table organisation contains the organisations that you can select in attributes like fk_dataowner, fk_operator, fk_provider, fk_owner, etc.
 
-Import here the `VSA organisation 2020.1-dataset <https://vsa.ch/models/organisation/vsa_organisationen_2020_1.xtf>`_ that contains over 2'500 organisations. And/or create project-specific organisations, which, however, must be imported and exported additionally with every data exchange.
+Import the `VSA organisation 2020.1-dataset <https://vsa.ch/models/organisation/vsa_organisationen_2020_1.xtf>`_ that contains over 2'500 organisations. And/or create project-specific organisations, which, however, must be imported and exported additionally with every data exchange.
 
 In order to use the organisations efficiently, one can flag an organisation as active using the field ``tww_active``. This flag filters the organisations accessible from the QGIS project.
 
