@@ -202,7 +202,7 @@ Value Lists ``tww_vl.*``
 
 These value lists are defined in the VSA-datamodel. 
 
-Warning: Do not change!
+.. warning:: Do not change!
 
 .. versionchanged:: 2025.0
 
