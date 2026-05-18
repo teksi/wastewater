@@ -102,17 +102,17 @@ Change Points ``tww_app.vw_change_points``
 A view to visualize the points (wastewater_nodes between to reaches of the same channel), where material or clear_heigth or slope changes.
 
 
+Layergroup Configuration
+-------------------------
+
 Organisations ``tww_od.organisation``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-organisation contains the organisation that you can select in attributes like fk_dataowner, fk_operator, fk_provider, fk_owner, etc.
+Table organisation contains the organisations that you can select in attributes like fk_dataowner, fk_operator, fk_provider, fk_owner, etc.
 
-In order to use the organisations efficiently, one can flag an organisation as active using the flag ``tww_active``. This flag filters the organisations accessible from the QGIS project.
+Import the `VSA organisation 2020.1-dataset <https://vsa.ch/models/organisation/vsa_organisationen_2020_1.xtf>`_ that contains over 2'500 organisations. And/or create project-specific organisations, which, however, must be imported and exported additionally with every data exchange.
 
- .. figure:: images/od_organisation.jpg
-
-This table is today a little bit hidden in the wastewater_structures group (but it is not only related to wastewater structures).
-As the VSA dataset contains over 2'300 organisations, there is a filter set up to limit the selection of organisations to the active ones (attribute tww_active)
+In order to use the organisations efficiently, one can flag an organisation as active using the field ``tww_active``. This flag filters the organisations accessible from the QGIS project.
 
 
 Layergroup Examination-Maintenance
@@ -200,11 +200,12 @@ See `connect wastewater network elements <../editing/connect_wastewater_network_
 Value Lists ``tww_vl.*``
 -------------------------
 
-These value lists are defined in the VSA-datamodel. Do not change.
+These value lists are defined in the VSA-datamodel.
+
+.. warning:: Do not change!
 
 .. versionchanged:: 2025.0
 
-Main layer to digitize and edit the catchment_areas.
 
 Rural
 --------
@@ -249,7 +250,7 @@ Log card
 Log card ``tww_app.vw_tww_log_card``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Log card for special structures: Hydraulically specialized wastewater structures, e.g., storm water basins, storm water overflows, or pumping stations. Most special structures are also specialized structures. However, special structures such as separation structures or small pumping stations are often designed as standard shafts.
+Log card for special structures: Hydraulically specialized wastewater structures, e.g., storm water basins, storm water overflows, or pumping stations. Most special structures are also specialized structures. However, special structures such as separation structures or small pumping stations are often designed as manholes.
 
 
 
