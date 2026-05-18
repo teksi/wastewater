@@ -787,9 +787,9 @@ class InterlisImporterExporter:
         if self.progress_done_callback:
             self.progress_done_callback(int(progress), text)
 
-
     def _has_internet(self, url: str = None, timeout=1):
         from urllib.parse import urlparse
+
         try:
             if url:
                 host = urlparse(url).hostname
@@ -804,5 +804,3 @@ class InterlisImporterExporter:
 
         except OSError:
             return False
-
-
