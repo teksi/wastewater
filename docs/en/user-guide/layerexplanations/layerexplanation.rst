@@ -173,7 +173,7 @@ This view replaces is some way the tww_app.vw_wastewater_node (it still exists f
 
 This allows to better mark the different inlets and outlets:
 
-.. figure:: images/comparison_2025_and_2026symbolisation.png
+.. figure:: images/comparison_2025_and_2026symbolisation.jpg
 
 Introduction of these new views needs adaption of existing TWW project files (for details see (:ref:`2026`) Release notes)
 
