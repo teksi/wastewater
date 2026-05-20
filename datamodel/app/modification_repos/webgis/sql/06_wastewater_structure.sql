@@ -63,3 +63,8 @@ AS
      LEFT JOIN tww_od.tww_wastewater_node_symbology wns ON wns.fk_wastewater_node = ws.fk_main_wastewater_node
      LEFT JOIN tww_od.tww_wastewater_structure_label wsl ON wsl.fk_wastewater_structure = ws.obj_id
   WHERE ch.obj_id IS NULL;
+
+CREATE UNIQUE INDEX in_app_mvw_web_wastewater_structure_obj_id
+    ON tww_app.mvw_web_wastewater_structure USING btree
+    (obj_id COLLATE pg_catalog."default")
+    TABLESPACE pg_default;
