@@ -21,7 +21,6 @@ CREATE TABLE tww_od.import_ws_quarantine(
   co_renovation_demand integer,
   co_sludge_bucket integer,
   co_remark text,
-  _channel_usage_current integer,
   ma_dimension1 smallint,
   ma_dimension2 smallint,
   ma_function integer,
