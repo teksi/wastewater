@@ -147,7 +147,7 @@ class TestQuarantineViewsImport(unittest.TestCase, DbTestBase):
         cur = self.cursor()
         cur.execute(
             """
-            PERFORM tww_app.transfer_quarantine_to_live (%(oid)s);
+            SELECT tww_app.transfer_quarantine_to_live (%(oid)s);
             """,
             {"oid": quarantine["uuidoid"]},
         )
