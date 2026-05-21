@@ -114,7 +114,8 @@ CREATE TABLE tww_od.import_reach_point_quarantine
   tww_is_inflow bool default true,
   tww_position_in_structure smallint,
   tww_level_measurement_kind smallint,
-  tww_is_okay boolean DEFAULT false
+  tww_is_okay boolean DEFAULT false,
+  tww_deleted boolean DEFAULT false
 );
 
 COMMENT ON COLUMN tww_od.import_reach_point_quarantine.tww_level_measurement_kind

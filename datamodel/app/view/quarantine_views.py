@@ -125,7 +125,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection):
             table_alias="main_co",
             remove_pkey=False,
             indent=4,
-            skip_columns=["situation3d_geometry"],
+            skip_columns=[],
             prefix="co_",
             remap_columns={"cover_shape": "co_shape"},
             columns_at_end=["obj_id"],
@@ -260,7 +260,7 @@ def vw_tww_import_manhole(connection: psycopg.Connection):
             table_name="import_ws_quarantine",
             remove_pkey=False,
             indent=6,
-            skip_columns=["tww_is_okay", "tww_deleted"],
+            skip_columns=["tww_is_okay"],
         ),
         update_wsq=update_command(
             connection=connection,
@@ -345,7 +345,7 @@ FROM outlets secondary
 INNER JOIN outlets main ON main.ws = secondary.ws AND main.idx = 1
 WHERE secondary.idx > 1)
   SELECT
-          {rp_columns}
+        , {rp_columns}
         , NULL::smallint as tww_level_measurement_kind
         , co.level - rp.level as co_depth
         , ss.upper_elevation - rp.level as ss_upper_elevation_depth
