@@ -100,7 +100,7 @@ class InterlisImporterExporter:
         logs_next_to_file=True,
         filter_nulls=True,
         srid: int = None,
-        import_orgs = False,
+        import_orgs=False,
         user_interaction=False,
     ):
         # Configure logging
