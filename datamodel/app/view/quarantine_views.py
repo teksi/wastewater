@@ -1029,7 +1029,7 @@ BEGIN
 
         SELECT 1 FROM tww_od.import_damage_ws_quarantine dm
         JOIN tww_od.import_examination_quarantine ex ON dm.fk_import_examination_quarantine = ex.uuidoid
-        WHERE ex.fk_import_ws_quarantine = ws_record.uuidoid AND dm.tww_is_okay = false
+        WHERE ex.fk_import_ws_quarantine = ws_record.uuidoid
     ) AS subquery;
 
     -- Skip if any related entries are not okay
