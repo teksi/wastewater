@@ -1391,7 +1391,7 @@ $$;
             _obj_id  character varying(16);
         BEGIN
 
-            SELECT ws.tww_deleted, ws.obj_id
+            SELECT ws.tww_deleted, ws.ws_obj_id
             INTO _deleted, _obj_id
             FROM tww_od.import_ws_quarantine ws
             WHERE ws.uuidoid = p_ws_uuidoid;
