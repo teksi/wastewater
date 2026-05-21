@@ -38,11 +38,11 @@ class TestQuarantineViewsImport(unittest.TestCase, DbTestBase):
             "wn_bottom_level": decimal.Decimal("97.000"),
         }
 
-        ws_q_id = self.insert_check(
+        ws_q_id = self.insert(
             "vw_tww_import_manhole",
             row,
             schema="tww_app",
-            pkey="uuidoid",
+            returning="uuidoid",
         )
 
         quarantine = self.select(
@@ -71,11 +71,11 @@ class TestQuarantineViewsImport(unittest.TestCase, DbTestBase):
             "tww_is_okay": True,
         }
 
-        ws_q_id = self.insert_check(
+        ws_q_id = self.insert(
             "import_ws_quarantine",
             ws,
             schema="tww_od",
-            pkey="uuidoid",
+            returning="uuidoid",
         )
 
         rp = {
@@ -85,11 +85,11 @@ class TestQuarantineViewsImport(unittest.TestCase, DbTestBase):
             "tww_level_measurement_kind": 1,
         }
 
-        rp_q_id = self.insert_check(
+        rp_q_id = self.insert(
             "vw_tww_import_reach_point",
             rp,
             schema="tww_app",
-            pkey="uuidoid",
+            returning="uuidoid",
         )
 
         rp_live = self.select(
@@ -119,11 +119,11 @@ class TestQuarantineViewsImport(unittest.TestCase, DbTestBase):
             "ws_obj_id": "ch00demoWS999999",
         }
 
-        ws_q_id = self.insert_check(
+        ws_q_id = self.insert(
             "import_ws_quarantine",
             row,
             schema="tww_od",
-            pkey="uuidoid",
+            returning="uuidoid",
         )
 
         quarantine = self.select(
@@ -149,7 +149,7 @@ class TestQuarantineViewsImport(unittest.TestCase, DbTestBase):
             """
             PERFORM tww_app.transfer_quarantine_to_live (%(oid)s);
             """,
-            {"oid": quarantine},
+            {"oid": quarantine["uuidoid"]},
         )
 
         live = self.select(
@@ -177,7 +177,7 @@ class TestQuarantineViewsImport(unittest.TestCase, DbTestBase):
             "tww_is_okay": True,
         }
 
-        ws_q_id = self.insert_check(
+        ws_q_id = self.insert(
             "import_ws_quarantine",
             row,
             schema="tww_od",
@@ -194,7 +194,7 @@ class TestQuarantineViewsImport(unittest.TestCase, DbTestBase):
             {"oid": ws_q_id},
         )
         z = cur.fetchone()["z"]
-        self.assertEqual(z, 10)
+        self.assertEqual(z, 10.000)
 
 
 if __name__ == "__main__":
