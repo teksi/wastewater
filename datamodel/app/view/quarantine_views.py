@@ -345,7 +345,7 @@ FROM outlets secondary
 INNER JOIN outlets main ON main.ws = secondary.ws AND main.idx = 1
 WHERE secondary.idx > 1)
   SELECT
-        , {rp_columns}
+          {rp_columns}
         , NULL::smallint as tww_level_measurement_kind
         , co.level - rp.level as co_depth
         , ss.upper_elevation - rp.level as ss_upper_elevation_depth
