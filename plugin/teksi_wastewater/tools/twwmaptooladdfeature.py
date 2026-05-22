@@ -360,9 +360,8 @@ class TwwMapToolAddReach(TwwMapToolAddFeature):
                     else:
                         f.setAttribute(idx, self.layer.dataProvider().defaultValue(idx))
 
-
-            from_lbl = self.get_rp_identifier_from_match('from',f)
-            to_lbl   = self.get_rp_identifier_from_match('to', f)
+            from_lbl = self.get_rp_identifier_from_match("from", f)
+            to_lbl = self.get_rp_identifier_from_match("to", f)
 
             if from_lbl and to_lbl:
                 identifier = f"{from_lbl}-{to_lbl}"
@@ -409,10 +408,10 @@ class TwwMapToolAddReach(TwwMapToolAddFeature):
         self.rubberband.reset3D()
 
     def get_rp_identifier_from_match(self, idx, feat):
-        if idx=='from':
-            match=self.first_snapping_match
-        elif idx=='to':
-            match=self.last_snapping_match
+        if idx == "from":
+            match = self.first_snapping_match
+        elif idx == "to":
+            match = self.last_snapping_match
         else:
             return None
 
@@ -421,9 +420,8 @@ class TwwMapToolAddReach(TwwMapToolAddFeature):
             network_element = next(self.node_layer.getFeatures(request))
             assert network_element.isValid()
             return network_element.attribute("identifier")
-        else: # no valid match or reach-reach connection
+        else:  # no valid match or reach-reach connection
             return feat.attribute(f"rp_{idx}_obj_id")
-
 
 
 class TwwMapToolDigitizeDrainageChannel(QgsMapTool):
