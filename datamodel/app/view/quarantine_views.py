@@ -1399,8 +1399,7 @@ $$;
             IF NOT FOUND THEN
                 RAISE EXCEPTION
                     'No import_ws_quarantine entry found for uuidoid=%',
-                    p_ws_uuidoid
-                    USING ERRCODE = 'NO_DATA_FOUND';
+                    p_ws_uuidoid;
             ELSE NULL;
             END IF;
             IF _deleted is true THEN
