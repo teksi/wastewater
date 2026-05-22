@@ -369,7 +369,6 @@ class TwwMapToolAddReach(TwwMapToolAddFeature):
             else:
                 identifier = f.attribute("obj_id")
             field = self.layer.fields().indexFromName("identifier")
-            if
             f.setAttribute(field, identifier)
 
             f.setGeometry(self.rubberband.asGeometry3D())
