@@ -322,7 +322,7 @@ class TwwMapToolAddReach(TwwMapToolAddFeature):
         The party is over, the reach digitized. Create a feature from the rubberband and
         show the feature form.
         """
-        
+
         self.temp_rubberband.reset()
 
         if self.snapping_marker is not None:
@@ -369,7 +369,7 @@ class TwwMapToolAddReach(TwwMapToolAddFeature):
             else:
                 identifier = f.attribute("obj_id")
             field = self.layer.fields().indexFromName("identifier")
-            if 
+            if
             f.setAttribute(field, identifier)
 
             f.setGeometry(self.rubberband.asGeometry3D())
@@ -416,7 +416,7 @@ class TwwMapToolAddReach(TwwMapToolAddFeature):
             match=self.last_snapping_match
         else:
             return None
-        
+
         if match.isValid() and match.layer() == self.node_layer:
             request = QgsFeatureRequest(match.featureId())
             network_element = next(self.node_layer.getFeatures(request))
@@ -424,7 +424,7 @@ class TwwMapToolAddReach(TwwMapToolAddFeature):
             return network_element.attribute("identifier")
         else: # no valid match or reach-reach connection
             return feat.attribute(f"rp_{idx}_obj_id")
-      
+
 
 
 class TwwMapToolDigitizeDrainageChannel(QgsMapTool):
