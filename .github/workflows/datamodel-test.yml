@@ -75,28 +75,19 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - modification_ci: false
-          modification_agxx: false
+        - modification_agxx: false
           webgis: false
           srid: 2056
 
-        - modification_ci: true
-          modification_agxx: false
+        - modification_agxx: true
           webgis: false
           srid: 2056
 
-        - modification_ci: false
-          modification_agxx: true
-          webgis: false
-          srid: 2056
-
-        - modification_ci: false
-          modification_agxx: false
+        - modification_agxx: false
           webgis: true
           srid: 2056
 
-        - modification_ci: false
-          modification_agxx: false
+        - modification_agxx: false
           webgis: false
           srid: 21781
 
@@ -114,7 +105,6 @@ jobs:
           docker compose exec db createdb -U postgres ${DB_NAME}
           docker compose run pum \
               -vvv -p ${PGSERVICE} -d datamodel install \
-              -p modification_ci ${{ matrix.modification_ci}} \
               -p modification_agxx ${{ matrix.modification_agxx}} \
               -p webgis ${{ matrix.webgis}} \
               -p SRID ${{ matrix.srid }}
