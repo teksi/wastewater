@@ -107,7 +107,10 @@ class TestInterlis(unittest.TestCase):
         # Import organisation
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_ORGANISATION_ARBON_ONLY)
         interlisImporterExporter = InterlisImporterExporter()
-        interlisImporterExporter.interlis_import(xtf_file_input=xtf_file_input)
+        interlisImporterExporter.interlis_import(
+            xtf_file_input=xtf_file_input,
+            use_refdata=False,
+        )
 
         result = DatabaseUtils.fetchone(
             "SELECT identifier FROM tww_od.organisation WHERE obj_id='ch20p3q400001497';"
@@ -118,7 +121,11 @@ class TestInterlis(unittest.TestCase):
         # Import minimal sia405
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_SIA405_ABWASSER)
         interlisImporterExporter = InterlisImporterExporter()
-        interlisImporterExporter.interlis_import(xtf_file_input=xtf_file_input)
+        interlisImporterExporter.interlis_import(
+            xtf_file_input=xtf_file_input,
+            use_refdata=True,
+            refdatpath=self._get_data_filename(TEST_DATASET_ORGANISATIONS),
+        )
 
         result = DatabaseUtils.fetchone(
             "SELECT obj_id FROM tww_od.reach WHERE obj_id='ch000000RE000001';"
@@ -160,7 +167,11 @@ class TestInterlis(unittest.TestCase):
         # Import minimal dss
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_DSS)
         interlisImporterExporter = InterlisImporterExporter()
-        interlisImporterExporter.interlis_import(xtf_file_input=xtf_file_input)
+        interlisImporterExporter.interlis_import(
+            xtf_file_input=xtf_file_input,
+            use_refdata=True,
+            refdatpath=self._get_data_filename(TEST_DATASET_ORGANISATIONS),
+        )
 
         result = DatabaseUtils.fetchone(
             "SELECT obj_id FROM tww_od.pipe_profile WHERE obj_id='ch000000PP000001';"
@@ -177,7 +188,11 @@ class TestInterlis(unittest.TestCase):
         # Import minimal kek
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_KEK_MANHOLE_DAMAGE)
         interlisImporterExporter = InterlisImporterExporter()
-        interlisImporterExporter.interlis_import(xtf_file_input=xtf_file_input)
+        interlisImporterExporter.interlis_import(
+            xtf_file_input=xtf_file_input,
+            use_refdata=True,
+            refdatapath="{config.EXTERNAL_ORGANISATION}",
+        )
 
         result = DatabaseUtils.fetchone(
             "SELECT fk_maintenance_event FROM tww_od.re_maintenance_event_wastewater_structure WHERE fk_wastewater_structure='ch000000WS000001';"
@@ -199,6 +214,8 @@ class TestInterlis(unittest.TestCase):
             xtf_file_output=self._get_output_filename(export_xtf_file),
             export_models=[config.MODEL_NAME_SIA405_BASE_ABWASSER],
             logs_next_to_file=True,
+            use_refdata=False,
+            refdatapath=None,
         )
 
         # Check exported TID
@@ -220,6 +237,9 @@ class TestInterlis(unittest.TestCase):
             export_models=[config.MODEL_NAME_SIA405_ABWASSER],
             logs_next_to_file=True,
             user_interaction=False,
+            use_refdata=True,
+            # 22.4.2026 to do define refdatpath "/usr/src/plugin/teksi_wastewater/tests/data/test-dataset-organisations.xtf"
+            refdatpath=self._get_data_filename(TEST_DATASET_ORGANISATIONS),
         )
 
         # Check exported TID reach
@@ -265,6 +285,9 @@ class TestInterlis(unittest.TestCase):
             export_models=[config.MODEL_NAME_DSS],
             logs_next_to_file=True,
             user_interaction=False,
+            # 20.4.2026 added
+            use_refdata=True,
+            refdatpath=self._get_data_filename(TEST_DATASET_ORGANISATIONS),
         )
 
         # Check exported TID
@@ -282,7 +305,9 @@ class TestInterlis(unittest.TestCase):
             xtf_file_output=self._get_output_filename(export_xtf_file),
             export_models=[config.MODEL_NAME_VSA_KEK],
             logs_next_to_file=True,
-            user_interaction=False,
+            user_interaction=True,
+            use_refdata=True,
+            refdatapath="{config.EXTERNAL_ORGANISATION}",
         )
 
         # Check exported TID examination
@@ -325,6 +350,8 @@ class TestInterlis(unittest.TestCase):
             logs_next_to_file=True,
             user_interaction=False,
             selected_ids=["ch000000WN000002", "ch000000WN000003", "ch000000RE000002"],
+            use_refdata=True,
+            refdatpath=self._get_data_filename(TEST_DATASET_ORGANISATIONS),
         )
 
         # Check exported TID pipe_profile
