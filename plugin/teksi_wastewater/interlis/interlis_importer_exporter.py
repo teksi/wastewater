@@ -16,8 +16,12 @@ from .interlis_model_mapping.interlis_importer_to_intermediate_schema import (
 from .interlis_model_mapping.model_interlis_ag64 import ModelInterlisAG64
 from .interlis_model_mapping.model_interlis_ag96 import ModelInterlisAG96
 from .interlis_model_mapping.model_interlis_dss import ModelInterlisDss
+from .interlis_model_mapping.model_interlis_dss_3D import ModelInterlisDss3D
 from .interlis_model_mapping.model_interlis_sia405_abwasser import (
     ModelInterlisSia405Abwasser,
+)
+from .interlis_model_mapping.model_interlis_sia405_abwasser_3D import (
+    ModelInterlisSia405Abwasser3D,
 )
 from .interlis_model_mapping.model_interlis_sia405_base_abwasser import (
     ModelInterlisSia405BaseAbwasser,
@@ -56,19 +60,18 @@ class InterlisImporterExporter:
         self.current_progress = 0
 
     def _init_model_classes(self, model):
-        ModelInterlis = None
-        if model == config.MODEL_NAME_AG96:
-            ModelInterlis = ModelInterlisAG96
-        elif model == config.MODEL_NAME_AG64:
-            ModelInterlis = ModelInterlisAG64
-        elif model == config.MODEL_NAME_SIA405_BASE_ABWASSER:
-            ModelInterlis = ModelInterlisSia405BaseAbwasser
-        elif model == config.MODEL_NAME_SIA405_ABWASSER:
-            ModelInterlis = ModelInterlisSia405Abwasser
-        elif model == config.MODEL_NAME_DSS:
-            ModelInterlis = ModelInterlisDss
-        elif model == config.MODEL_NAME_VSA_KEK:
-            ModelInterlis = ModelInterlisVsaKek
+        ModelInterlis = {
+            config.MODEL_NAME_AG96: ModelInterlisAG96,
+            config.MODEL_NAME_AG64: ModelInterlisAG64,
+            config.MODEL_NAME_SIA405_BASE_ABWASSER: ModelInterlisSia405BaseAbwasser,
+            config.MODEL_NAME_SIA405_ABWASSER: ModelInterlisSia405Abwasser,
+            config.MODEL_NAME_DSS: ModelInterlisDss,
+            config.MODEL_NAME_VSA_KEK: ModelInterlisVsaKek,
+            config.MODEL_NAME_SIA405_ABWASSER_3D: ModelInterlisSia405Abwasser3D,
+            config.MODEL_NAME_DSS_3D: ModelInterlisDss3D,
+        }.get(model)
+        if ModelInterlis is None:
+            raise ValueError(f"Unknown model: {model}")
         self.model_classes_interlis = ModelInterlis().classes()
         self._progress_done(self.current_progress + 1)
 
@@ -117,24 +120,21 @@ class InterlisImporterExporter:
         self._progress_done(10, "Extract model from xtf...")
         import_models = self.interlisTools.get_xtf_models(xtf_file_input)
 
-        import_model = ""
-        if config.MODEL_NAME_SIA405_BASE_ABWASSER in import_models:
-            import_model = config.MODEL_NAME_SIA405_BASE_ABWASSER
-
-        # override base model if necessary
-        if config.MODEL_NAME_VSA_KEK in import_models:
-            import_model = config.MODEL_NAME_VSA_KEK
-        elif config.MODEL_NAME_SIA405_ABWASSER in import_models:
-            import_model = config.MODEL_NAME_SIA405_ABWASSER
-        elif config.MODEL_NAME_DSS in import_models:
-            import_model = config.MODEL_NAME_DSS
-
-        elif config.MODEL_NAME_SIA405_BASE_ABWASSER in import_models:
-            import_model = config.MODEL_NAME_SIA405_ABWASSER
-        elif config.MODEL_NAME_AG96 in import_models:
-            import_model = config.MODEL_NAME_AG96
-        elif config.MODEL_NAME_AG64 in import_models:
-            import_model = config.MODEL_NAME_AG64
+        import_model_hierarchy = [
+            config.MODEL_NAME_DSS_3D,
+            config.MODEL_NAME_DSS,
+            config.MODEL_NAME_VSA_KEK,
+            config.MODEL_NAME_SIA405_ABWASSER_3D,
+            config.MODEL_NAME_SIA405_ABWASSER,
+            config.MODEL_NAME_AG96,
+            config.MODEL_NAME_AG64,
+            config.MODEL_NAME_SIA405_BASE_ABWASSER,
+        ]
+        import_models_filtered = list(set(import_models).intersection(import_model_hierarchy))
+        if import_models_filtered:
+            import_model = import_models_filtered[0]
+        else:
+            import_model = ""
 
         if not import_model:
             error_text = f"No supported model was found among '{import_models}'."
@@ -142,7 +142,7 @@ class InterlisImporterExporter:
                 error_text = f"The model '{import_models[0]}' is not supported."
             raise InterlisImporterExporterError("Import error", error_text, None)
         logger.info(
-            f"Model '{import_model}' was choosen for import among found models '{import_models}'"
+            f"Model '{import_model}' was chosen for import among found models '{import_models}'"
         )
 
         # Prepare the temporary ili2pg model
@@ -245,9 +245,14 @@ class InterlisImporterExporter:
         self._clear_ili_schema(recreate_tables=True)
 
         self._progress_done(15, "Creating ili schema...")
-        create_basket_col = False
-        if config.MODEL_NAME_VSA_KEK in export_models:
+        if {
+            config.MODEL_NAME_VSA_KEK,
+            config.MODEL_NAME_DSS_3D,
+            config.MODEL_NAME_SIA405_ABWASSER_3D,
+        }.intersection(export_models):
             create_basket_col = True
+        else:
+            create_basket_col = False
         self._create_ili_schema(export_models, create_basket_col=create_basket_col)
 
         # Export the labels file
