@@ -69,6 +69,12 @@ parameters:
     app_only: true
     values: [en, de, fr, it]
 
+  - name: oid_prefix
+    type: text
+    default: ch000000
+    description: Object ID prefix for the creation of STANDARDOID
+
+
 dependencies:
   - name: pirogue
     minimum_version: 3.0.0
