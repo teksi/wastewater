@@ -142,3 +142,20 @@ BEGIN
     RETURN res_int;
 END;
 $BODY$;
+
+CREATE OR REPLACE FUNCTION tww_app.set_oid_prefix(v_oid_prefix text, overwrite_with_default bool DEFAULT false)
+RETURNS void AS $$
+BEGIN
+    IF v_oid_prefix = 'ch000000' AND NOT overwrite_with_default THEN
+        RETURN;
+    END IF;
+
+    UPDATE tww_sys.oid_prefixes
+    SET active = FALSE;
+
+    INSERT INTO tww_sys.oid_prefixes (prefix, active)
+    VALUES (v_oid_prefix, TRUE)
+    ON CONFLICT (prefix)
+    DO UPDATE SET active = TRUE;
+END;
+$$ LANGUAGE plpgsql;

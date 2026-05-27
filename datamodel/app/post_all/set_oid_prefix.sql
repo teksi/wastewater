@@ -1,0 +1,1 @@
+SELECT tww_app.set_oid_prefix({oid_prefix});

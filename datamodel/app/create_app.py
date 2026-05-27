@@ -7,6 +7,7 @@ from pathlib import Path
 
 import psycopg
 import yaml
+from psycopg.sql import SQL, Composable
 from pirogue import MultipleInheritance, SimpleJoins, SingleInheritance
 from pum import HookBase
 from triggers.set_defaults_and_triggers import set_defaults_and_triggers
@@ -31,7 +32,7 @@ from view.vw_tww_wastewater_structure import vw_tww_wastewater_structure
 from view.vw_wastewater_structure import vw_wastewater_structure
 
 logger = logging.getLogger(__name__)
-
+PLACEHOLDER_PATTERN = re.compile(r"\{[A-Za-z_][A-Za-z0-9_]*\}")
 
 class Hook(HookBase):
     def run_hook(
@@ -42,6 +43,7 @@ class Hook(HookBase):
         webgis: bool = False,
         modification_ci: bool = False,
         lang_code: str = "en",
+        oid_prefix: str = "ch000000",
         modification_yaml: Path = None,
     ):
         """
@@ -98,6 +100,10 @@ class Hook(HookBase):
             "name_lang": {
                 "value": f"name_{lang_code}",
                 "type": "identifier",
+            },
+            "oid_prefix": {
+                "value": f"{oid_prefix}",
+                "type": "literal",
             },
         }
         self.execute("CREATE SCHEMA tww_app;")
@@ -394,19 +400,32 @@ Running modification {modification.get('id')}
             sql = f.read()
         self.run_sql(sql, variables)
 
-    def run_sql(self, sql: str, variables: dict = None):
-        if variables is None:
-            variables = {}
-        if (
-            re.search(r"\{[A-Za-z-_]+\}", sql) and variables
-        ):  # avoid formatting if no variables are present
-            try:
-                sql = psycopg.sql.SQL(sql).format(**variables).as_string(self._connection)
 
-            except IndexError:
-                logger.critical(sql)
-                raise
-        self.execute(sql)
+    def run_sql(self, sql: str, variables: dict | None = None):
+        variables = variables or {}
+
+        if not variables or not PLACEHOLDER_PATTERN.search(sql):
+            return self.execute(sql)
+
+        # Enforce safe variable types
+        for key, value in variables.items():
+            if not isinstance(value, Composable):
+                raise TypeError(
+                    f"Variable '{key}' must be a psycopg.sql.Composable "
+                    f"(got {type(value).__name__})"
+                )
+
+        try:
+            formatted_sql = SQL(sql).format(**variables)
+            final_sql = formatted_sql.as_string(self._connection)
+        except Exception as e:
+            logger.critical("SQL formatting failed")
+            logger.critical("Template: %s", sql)
+            logger.critical("Variables: %s", variables)
+            raise
+
+        self.execute(final_sql)
+
 
     def run_sql_files_in_folder(self, directory: str):
         files = os.listdir(directory)
@@ -428,7 +447,7 @@ Running modification {modification.get('id')}
 
                 if var_type == "number":  # Directly insert SQL without escaping
                     if isinstance(value, float) or isinstance(value, int):
-                        formatted_vars[key] = psycopg.sql.SQL(f"{value}")
+                        formatted_vars[key] = psycopg.sql.Literal(value)
                     else:  # avoid injection
                         raise ValueError(f"Value '{value}' is not float or int.")
                 elif var_type == "identifier":  # Table/Column names
@@ -440,7 +459,7 @@ Running modification {modification.get('id')}
                 else:
                     raise ValueError(f"Unknown type '{var_type}' for variable '{key}'")
             else:
-                raise ValueError(f"Unknown type '{var_type}' for variable '{key}'.")
+                raise ValueError(f"Invalid variable format for '{key}'")
         return formatted_vars
 
 
