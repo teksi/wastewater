@@ -7,8 +7,8 @@ from pathlib import Path
 
 import psycopg
 import yaml
-from psycopg.sql import SQL, Composable
 from pirogue import MultipleInheritance, SimpleJoins, SingleInheritance
+from psycopg.sql import SQL, Composable
 from pum import HookBase
 from triggers.set_defaults_and_triggers import set_defaults_and_triggers
 from view.catchment_area_views import (
@@ -33,6 +33,7 @@ from view.vw_wastewater_structure import vw_wastewater_structure
 
 logger = logging.getLogger(__name__)
 PLACEHOLDER_PATTERN = re.compile(r"\{[A-Za-z_][A-Za-z0-9_]*\}")
+
 
 class Hook(HookBase):
     def run_hook(
@@ -400,7 +401,6 @@ Running modification {modification.get('id')}
             sql = f.read()
         self.run_sql(sql, variables)
 
-
     def run_sql(self, sql: str, variables: dict | None = None):
         variables = variables or {}
 
@@ -418,14 +418,13 @@ Running modification {modification.get('id')}
         try:
             formatted_sql = SQL(sql).format(**variables)
             final_sql = formatted_sql.as_string(self._connection)
-        except Exception as e:
+        except Exception:
             logger.critical("SQL formatting failed")
             logger.critical("Template: %s", sql)
             logger.critical("Variables: %s", variables)
             raise
 
         self.execute(final_sql)
-
 
     def run_sql_files_in_folder(self, directory: str):
         files = os.listdir(directory)
