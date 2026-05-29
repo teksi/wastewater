@@ -1,0 +1,49 @@
+name: 👓 Handle stale issues
+on:
+  schedule:
+  - cron: "30 2 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  stale:
+    permissions:
+      issues: write  # for actions/stale to close stale issues
+      pull-requests: write  # for actions/stale to close stale PRs
+    if: github.repository_owner == 'teksi'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/stale@v10
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+        # only unassigned issues
+        only-issue-assignees: none
+
+        # Nur markieren, nicht schliessen
+        days-before-issue-stale: 14
+        days-before-issue-close: -1
+        remove-stale-when-updated: false
+        enable-statistics: false
+        stale-issue-label: 'stale'
+
+        # do not touch PRs
+        days-before-pr-stale: -1
+        days-before-pr-close: -1
+
+        stale-issue-message: >
+          The TEKSI project highly values your report and would love to see it addressed.
+          However, this issue has been left in feedback mode for the last 14 days and is
+          being automatically marked as "stale".
+
+          If you would like to continue with this issue, please contact a certified service
+          provider (see https://www.teksi.ch/modules/#prestataires) who will contact you
+          for a service contract. If you could resolve the issue yourself meanwhile,
+          please leave a note for future readers with the same problem and close the issue.
+
+          In case you should have any uncertainty, please leave a comment and we will be
+          happy to help you proceed with this issue.
+
+        only-issue-labels: 'TEKSI Support'
+        operations-per-run: 20
