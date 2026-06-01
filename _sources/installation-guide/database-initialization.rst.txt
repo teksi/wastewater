@@ -34,6 +34,9 @@ See the current `TMMT Documentation for a step by step help <https://github.com/
 
 It is highly recommended to use these when using TWW in a production environment.
 
+Note that since 2026.0.1, the obj_id prefix can be set through TMMT as well.
+
+
 .. _install-datamodel-demodata:
 
 Install data model with or without demodata

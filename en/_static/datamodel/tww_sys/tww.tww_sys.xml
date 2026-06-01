@@ -174,6 +174,9 @@
          <index name="in_tww_is_oid_prefixes_id" unique="true">
             <column ascending="true" name="id"/>
          </index>
+         <index name="uniq_tww_sys_oid_prefixes_prefix" unique="true">
+            <column ascending="true" name="prefix"/>
+         </index>
       </table>
       <table name="pum_migrations" remarks="migration_table_version: 2" schema="tww_sys" type="TABLE">
          <column autoUpdated="false" defaultValue="gen_random_uuid()" digits="0" id="0" name="id" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
