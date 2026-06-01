@@ -69,6 +69,12 @@ parameters:
     app_only: true
     values: [en, de, fr, it]
 
+  - name: oid_prefix
+    type: text
+    default: ch000000
+    description: Object ID prefix for the creation of STANDARDOID
+
+
 dependencies:
   - name: pirogue
     minimum_version: 3.0.0
@@ -79,6 +85,8 @@ application:
     - code: DROP SCHEMA IF EXISTS tww_app_pg2ili CASCADE;
   create:
     - file: app/create_app.py
+    - code: SELECT tww_app.update_wastewater_node_symbology(NULL,True);
+    - code: SELECT tww_app.update_wastewater_structure_label(NULL,True);
 
 uninstall:
   - code: DROP SCHEMA IF EXISTS tww_od CASCADE;

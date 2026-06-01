@@ -59,10 +59,10 @@ def vw_tww_infiltration_installation(
         , {wn_cols}
         , {ne_cols}
 
-        , wn._usage_current AS _channel_usage_current
-        , wn._function_hierarchic AS _channel_function_hierarchic
-        , vl_fh.tww_is_primary
 
+        , wns._usage_current AS _channel_usage_current
+        , wns._function_hierarchic AS _channel_function_hierarchic
+        , vl_fh.tww_is_primary
 
       FROM tww_od.infiltration_installation ii
         LEFT JOIN tww_od.wastewater_structure ws ON ii.obj_id = ws.obj_id
@@ -72,7 +72,8 @@ def vw_tww_infiltration_installation(
         LEFT JOIN tww_od.retention_body rb ON rb.fk_infiltration_installation = ws.obj_id
         LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = ws.fk_main_wastewater_node
         LEFT JOIN tww_od.wastewater_node wn ON wn.obj_id = ws.fk_main_wastewater_node
-        LEFT JOIN tww_vl.channel_function_hierarchic vl_fh ON vl_fh.code = wn._function_hierarchic
+        LEFT JOIN tww_od.tww_wastewater_node_symbology wns ON wns.fk_wastewater_node = ws.fk_main_wastewater_node
+        LEFT JOIN tww_vl.channel_function_hierarchic vl_fh ON vl_fh.code = wns._function_hierarchic
         {extra_joins};
     """.format(
         ws_cols=select_columns(
@@ -86,11 +87,6 @@ def vw_tww_infiltration_installation(
                 "identifier",
                 "fk_owner",
                 "status",
-                "_label",
-                "_cover_label",
-                "_bottom_label",
-                "_input_label",
-                "_output_label",
                 "fk_main_cover",
                 "fk_main_wastewater_node",
                 "detail_geometry3d_geometry",
@@ -149,9 +145,6 @@ def vw_tww_infiltration_installation(
             indent=4,
             skip_columns=[
                 "situation3d_geometry",
-                "_function_hierarchic",
-                "_usage_current",
-                "_status",
             ],
             prefix="wn_",
             remap_columns={},
@@ -235,11 +228,6 @@ def vw_tww_infiltration_installation(
             remove_pkey=False,
             indent=2,
             skip_columns=[
-                "_label",
-                "_cover_label",
-                "_bottom_label",
-                "_input_label",
-                "_output_label",
                 "fk_main_cover",
                 "fk_main_wastewater_node",
                 "detail_geometry3d_geometry",
@@ -297,11 +285,6 @@ def vw_tww_infiltration_installation(
             remove_pkey=False,
             pkey="obj_id",
             indent=6,
-            skip_columns=[
-                "_function_hierarchic",
-                "_usage_current",
-                "_status",
-            ],
             insert_values={
                 "identifier": "COALESCE(NULLIF(NEW.wn_identifier,''), NEW.identifier)",
                 "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )",
@@ -485,11 +468,6 @@ def vw_tww_infiltration_installation(
             skip_columns=[
                 "detail_geometry3d_geometry",
                 "last_modification",
-                "_label",
-                "_cover_label",
-                "_bottom_label",
-                "_input_label",
-                "_output_label",
                 "fk_main_cover",
                 "fk_main_wastewater_node",
                 "_depth",
@@ -516,9 +494,6 @@ def vw_tww_infiltration_installation(
             indent=6,
             skip_columns=[
                 "situation3d_geometry",
-                "_function_hierarchic",
-                "_usage_current",
-                "_status",
             ],
         ),
         update_ne=update_command(
