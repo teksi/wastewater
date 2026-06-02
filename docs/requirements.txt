@@ -1,3 +1,4 @@
 sphinx
 sphinx-rtd-theme
+sphinx-multiversion
 Pygments>=2.20.0,<3.0.0

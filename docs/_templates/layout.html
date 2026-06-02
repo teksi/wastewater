@@ -1,0 +1,27 @@
+{% extends "!layout.html" %}
+
+{% block extrahead %}
+  <style>
+    .version-selector {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: white;
+      padding: 5px;
+    }
+  </style>
+{% endblock %}
+
+{% block body %}
+  <div class="version-selector">
+    <select onchange="location = this.value;">
+      {% for version in versions %}
+        <option value="/{{ version.name }}/"
+          {% if version.name == current_version.name %}selected{% endif %}>
+          {{ version.name }}
+        </option>
+      {% endfor %}
+    </select>
+  </div>
+  {{ super() }}
+{% endblock %}
