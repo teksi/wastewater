@@ -29,7 +29,6 @@ import os
 # ones.
 extensions = [
     "sphinx.ext.autodoc",
-    "sphinx_multiversion",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -56,17 +55,17 @@ copyright = "2025, The TWW Project www.teksi.ch"
 # --- Multiversion configuration ---
 
 # Include tags like 2026.0.1
-smv_tag_whitelist = r"^\d{4}\.\d+\.\d+$"
+# smv_tag_whitelist = r"^\d{4}\.\d+\.\d+$"
 
-# Include only main branch as development version
-smv_branch_whitelist = r"^main$"
+# # Include only main branch as development version
+# smv_branch_whitelist = r"^main$"
 
-# Treat main as "latest"
-smv_latest_version = "main"
-smv_rename_latest_version = "latest"
+# # Treat main as "latest"
+# smv_latest_version = "main"
+# smv_rename_latest_version = "latest"
 
 # The short X.Y version.
-version = os.environ.get("SMV_VERSION", "dev")
+version = os.environ.get("DOCS_VERSION", "dev")
 # The full version, including alpha/beta/rc tags.
 release = version
 

@@ -15,13 +15,27 @@
 {% block body %}
   <div class="version-selector">
     <select onchange="location = this.value;">
-      {% for version in versions %}
-        <option value="/{{ version.name }}/"
-          {% if version.name == current_version.name %}selected{% endif %}>
-          {{ version.name }}
-        </option>
-      {% endfor %}
-    </select>
   </div>
+
+  <script>
+  fetch("/versions.json")
+    .then(r => r.json())
+    .then(versions => {
+      const select = document.getElementById("version-select");
+
+      versions.forEach(v => {
+        const opt = document.createElement("option");
+        opt.value = "/" + v + "/";
+        opt.text = v;
+
+        if (window.location.pathname.includes("/" + v + "/")) {
+          opt.selected = true;
+        }
+
+        select.appendChild(opt);
+      });
+    });
+  </script>
+
   {{ super() }}
 {% endblock %}
