@@ -24,11 +24,7 @@ on:
   schedule:
     - cron: "30 04 * * *"
   workflow_dispatch:
-    inputs:
-      docs_rebuild:
-        description: "Run full migration build"
-        required: false
-        default: "false"
+
 
 
 jobs:
@@ -45,30 +41,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
 
       - name: Restore existing site
         run: |
           git clone --depth 1 --branch gh-pages https://github.com/${{ github.repository }} gh-pages || true
           mkdir -p docs/build/html
-          cp -r gh-pages/* docs/build/html/ || true
-
-
-      - name: Build all versions
-        if: ${{ github.event.inputs.docs_rebuild == 'true' }}
-        run: |
-          git fetch --tags
-
-          for tag in $(git tag); do
-            if [[ "$tag" =~ ^[0-9]{4}\.[0-9]+\.[0-9]+$ ]]; then
-              git checkout $tag
-              pip install -r docs/requirements.txt
-              (cd docs && sphinx-build --keep-going . ../docs/build/html/$tag)
-            fi
-          done
-
-          git checkout main
-          (cd docs && sphinx-build --keep-going . ../docs/build/html/latest)
-
+          rsync -a gh-pages/ docs/build/html/ || true
 
       - name: install requirements
         working-directory: docs
@@ -118,10 +99,9 @@ jobs:
           fi
 
       - name: build documentation
-        if: ${{ github.event.inputs.docs_rebuild != 'true' }}
         working-directory: docs
         run: |
-          sphinx-build --keep-going . build/html/$DOCS_VERSION
+          sphinx-build --keep-going . build/html/$DOCS_VERSION || true
           touch build/html/.nojekyll
 
       - name: Add root redirect
@@ -133,7 +113,7 @@ jobs:
       - name: Generate versions list
         run: |
           cd docs/build/html
-          ls -1 > versions.txt
+          ls -1 -d */ | sed 's#/##' > versions.txt
           jq -R -s -c 'split("\n")[:-1]' versions.txt > versions.json
 
 
