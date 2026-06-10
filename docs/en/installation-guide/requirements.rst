@@ -21,14 +21,13 @@ In order to install the TEKSI Wastewater module, you will need to install :
 * A working pg_service file and a connexion secured to your database server (hosted or local)
 * TEKSI Module Management Tool (`TMMT <https://plugins.qgis.org/plugins/teksi_module_management_tool>`_) plugin installed from the QGIS plugin repository
 
-The following Python packages (installed via OSGEO4W or using `pip <https://pypi.org/project/pip/>`_) are required:
+The following Python packages (installed via `OSGEO4W.exe` or using `pip <https://pypi.org/project/pip/>`_) are required:
 
 * `Psycopg <https://www.psycopg.org/>`_ as database adapter
 * `Pydantic <https://pydantic.dev/>`_ for data validation
-* `Pirogue <https://github.com/opengisch/pirogue>`_ for model generation and upgrades
 
 .. note::
-    PUM python package is automatically installed with the TMMT plugin.
+    PUM and pirogue python packages are automatically shipped with the TMMT plugin.
 
 Client Side
 ----------------
@@ -41,7 +40,7 @@ For each client (workstation), you will need :
 * TEKSI Wastewater `plugin <https://github.com/teksi/wastewater/releases/latest/>`_ (.zip file)
 * TEKSI Wastewater `project <https://github.com/teksi/wastewater/releases/latest/>`_ (.qgs file)
 
-The following Python packages (installed via OSGEO4W or using `pip <https://pypi.org/project/pip/>`_) are required:
+The following Python packages (installed via `OSGEO4W.exe` or using `pip <https://pypi.org/project/pip/>`_) are required:
 
 * `Psycopg <https://www.psycopg.org/>`_ as database adapter
 * `sqlalchemy <https://github.com/sqlalchemy/sqlalchemy>`_ for INTERLIS imports and exports
