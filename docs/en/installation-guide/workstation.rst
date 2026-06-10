@@ -144,17 +144,17 @@ Plugin installation from QGIS Plugins Menu:
 
     * Click the checkbox next to it
 
-.. figure:: images/001_searchplugin.jpeg
+  .. figure:: images/001_searchplugin.jpeg
 
    **Add the TWW plugin**
 
 * When the installation was successfull, you should see the TWW Toolbar:
 
-.. figure:: images/tww_plugin_toolbar_ok.png
+  .. figure:: images/tww_plugin_toolbar_ok.png
 
   * If the toolbar is greyed out, you have to restart QGIS respectively re-load the project:
 
-.. figure:: images/tww_plugin_toolbar_grey.png
+  .. figure:: images/tww_plugin_toolbar_grey.png
 
 * Configuration of the plugin:
 
@@ -163,7 +163,7 @@ Plugin installation from QGIS Plugins Menu:
 
 
 Optional plugin
-~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^
 
 TWW uses a data historization process. The ``pg history viewer`` `plugin <http://plugins.qgis.org/plugins/pg_history_viewer/>`_ allows you to view the changes made and replay some of them.
 

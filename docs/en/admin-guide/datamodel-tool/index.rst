@@ -2,8 +2,8 @@ TEKSI Module Management Tool
 ===============
 
 .. attention::
-
-This replaces the Data model tool that has been part of QGEP
+    
+ This replaces the Data model tool that has been part of QGEP
 
 The new plugin contains an advanced tool capable of initializing (and in future also upgrading) a TWW database.
 
