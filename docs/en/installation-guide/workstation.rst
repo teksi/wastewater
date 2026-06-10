@@ -52,7 +52,7 @@ and ``.pgpass`` into your home folder (normally ``/home/[username]``). Pay atten
 If your QGIS doesn't find the ``.pg_service.conf`` file, set the environment variable PGSYSCONFDIR:
 
 .. note::
-In QGIS go to ``Settings`` > ``Options`` > ``System`` tab. Near the bottom you'll find ``Environment``. Tick ``Use custom variables`` and click on the plus on the right. Add the PGSYSCONFDIR variable using Append (to make sure you don't delete anything - doesn't matter probably) and its value (probably ``/home/[username]`` see above). Then click ``OK`` at  the bottom right.
+ In QGIS go to ``Settings`` > ``Options`` > ``System`` tab. Near the bottom you'll find ``Environment``. Tick ``Use custom variables`` and click on the plus on the right. Add the PGSYSCONFDIR variable using Append (to make sure you don't delete anything - doesn't matter probably) and its value (probably ``/home/[username]`` see above). Then click ``OK`` at  the bottom right.
 
 .. figure:: images/macEnvVarSet.png
 
@@ -152,7 +152,7 @@ Plugin installation from QGIS Plugins Menu:
 
 .. figure:: images/tww_plugin_toolbar_ok.png
 
-   * If the toolbar is greyed out, you have to restart QGIS respectively re-load the project:
+  * If the toolbar is greyed out, you have to restart QGIS respectively re-load the project:
 
 .. figure:: images/tww_plugin_toolbar_grey.png
 

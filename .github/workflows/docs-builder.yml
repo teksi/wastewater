@@ -62,12 +62,12 @@ jobs:
             if [[ "$tag" =~ ^[0-9]{4}\.[0-9]+\.[0-9]+$ ]]; then
               git checkout $tag
               pip install -r docs/requirements.txt
-              sphinx-build docs docs/build/html/$tag
+              (cd docs && sphinx-build . ../docs/build/html/$tag)
             fi
           done
 
           git checkout main
-          sphinx-build docs docs/build/html/latest
+          (cd docs && sphinx-build . ../docs/build/html/latest)
 
 
       - name: install requirements
