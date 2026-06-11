@@ -6,10 +6,10 @@ Customization of the data model
 This chapter describes the possible customization to the data model.
 
 Alterations to ordinary data
----------------
+----------------------------
 
 Introduction
-^^^^^^^^^^^^^
+^^^^^^^^^^^^
 
 The data model is versioned and updates are achieved using Postgres Updates Manager (aka `PUM <https://github.com/opengisch/pum>`_).
 The views required to edit the data are automatically generated using `Pirogue <https://github.com/opengisch/pirogue>`_ library.
@@ -24,24 +24,24 @@ The TWW data model is a standard proof adaptative model and could follow your ne
 If a customization is still required, the following explanations and rules explain how to adapt TWW data model to your specific needs.
 
 Altering symbology and labelling behaviour
-^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Symbology and labelling behaviour depends on the value lists `` tww_vl.channel_usage_current`` and `` tww_vl.channel_function_hierarchic``  These two value list tables have an additional column ``tww_symbology_order``, which is used to define the hierarchy of the symbology.
 
 For labelling, one can use the column `` tww_vl.channel_function_hierarchic.tww_use_in_labels`` to define which functions_hierarchic are taken into account when creating a wastewater structure's label.
 
 Creation of custom tables
-^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 It is possible to add custom tables with ordinary data. They must be stored in ``tww_od``. In order to version them, use the Postgres Updates Manager (aka `PUM <https://github.com/opengisch/pum>`_).
 
 Adding fields to base tables
-^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Instead of adding additional fields to base tables, it is advised to create a new table with a foreign key linking it to the base table using `PUM <https://github.com/opengisch/pum>`_.
 
 Datamodel updates
-^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^
 .. attention:: The process of updating the database is currenty being overhauled. The following information can therefore change before the next release
 
 
@@ -59,7 +59,7 @@ If it is necessary to add custom fields, create a separate table with a foreign 
 
 .. _modification-framework:
 Modification Framework for application schema
----------------
+---------------------------------------------
 
 In order to add app modifications to TEKSI in a standardised way, TEKSI wastewater set into place an modification framework.
 
@@ -78,7 +78,7 @@ The modification framework allows the following actions:
 .. attention:: The modification framework is not intended for alterations on the schema ``tww_od``. Use PUM functionalities instead
 
 Creation and loading of modifications
-^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 All modification parameters are handles in a yaml that is passed to PUM `documentation <https://github.com/opengisch/pum>`_ on update.
 The the default yaml is
 
@@ -216,7 +216,7 @@ Modification Repositories
      - List of SQL files for activating/deactivating value list entries. Activates/deactivates based on the ``active`` setting. Overridden by ``template``
 
 Modification Repository Templates
-"""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""
 
 A modification repository template allows to predefine the values of the following repository flags:
 
@@ -228,7 +228,7 @@ Additionally, it allows setting values for Extra Definitions, MultipleInheritanc
 
 
 Limitations for sql scripts
-^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The sql scripts must only be used for the following purposes:
 

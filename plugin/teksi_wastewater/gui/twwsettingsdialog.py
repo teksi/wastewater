@@ -60,6 +60,12 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
         adminmode = self.settings.value("/TWW/AdminMode", False, type=bool)
         self.mCbAdminMode.setChecked(adminmode)
 
+        orgimportmode = self.settings.value("/TWW/OrgImportMode", True, type=bool)
+        self.mCbOrgImportMode.setChecked(orgimportmode)
+
+        orgexportmode = self.settings.value("/TWW/OrgExportMode", False, type=bool)
+        self.mCbOrgExportMode.setChecked(orgexportmode)
+
         ag6496extension = self.settings.value("/TWW/AGxxExtensions", False, type=bool)
         self.mCbAg6496Extension.setChecked(ag6496extension)
 
@@ -225,6 +231,8 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
 
         self.settings.setValue("/TWW/DeveloperMode", self.mCbDevelMode.isChecked())
         self.settings.setValue("/TWW/AdminMode", self.mCbAdminMode.isChecked())
+        self.settings.setValue("/TWW/OrgImportMode", self.mCbOrgImportMode.isChecked())
+        self.settings.setValue("/TWW/OrgExportMode", self.mCbOrgExportMode.isChecked())
 
         # AG-xx extensions
         self.settings.setValue("/TWW/AGxxExtensions", self.mCbAg6496Extension.isChecked())

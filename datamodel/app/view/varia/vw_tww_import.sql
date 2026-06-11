@@ -10,7 +10,7 @@ CREATE OR REPLACE VIEW tww_app.import_vw_manhole AS
     main_co.positional_accuracy as co_positional_accuracy,
     main_co.level as co_level,
     ws._depth::numeric(6, 3) AS _depth,
-    wn._usage_current AS _channel_usage_current,
+    wns._usage_current AS _channel_usage_current,
     ma.material as ma_material,
     ma.dimension1 as ma_dimension1,
     ma.dimension2 as ma_dimension2,
@@ -60,6 +60,7 @@ CREATE OR REPLACE VIEW tww_app.import_vw_manhole AS
     LEFT JOIN tww_od.infiltration_installation ii ON ii.obj_id = ws.obj_id
 	LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = ws.fk_main_wastewater_node
     LEFT JOIN tww_od.wastewater_node wn ON wn.obj_id = ws.fk_main_wastewater_node
+    LEFT JOIN tww_od.tww_wastewater_node_symbology wns ON wns.fk_wastewater_node = ws.fk_main_wastewater_node
 	LEFT JOIN (SELECT DISTINCT obj_id
 				, max(quarantine_serial)  as maximum
 				FROM tww_od.import_manhole_quarantine

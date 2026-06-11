@@ -108,7 +108,7 @@ Flow times downstream
 
 * This is a tool in the TWW-toolbox.
 
-* The idea for this tool is to get the flowtime between a startpoint (where e.g.is an accident) and an interesting wastewater structure downstreams. It is not the idea to create a flowtime plan for a whole network with this tool (use the SumUpTool_ tool for this task).
+* The idea for this tool is to get the flowtime between a startpoint (where e.g.is an accident) and an interesting wastewater structure downstreams. It is not the idea to create a flowtime plan for a whole network with this tool (use the SumUpUpstream_ tool for this task).
 
 * For this tool you need a layer (table) in the TWW-project with the flowtime per reach and the obj_id of the reach.
 

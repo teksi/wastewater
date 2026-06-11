@@ -34,17 +34,12 @@ AS
     COALESCE(ma.dimension2, ii.dimension2) AS dimension2,
     COALESCE(ss.upper_elevation, dp.upper_elevation) AS upper_elevation,
     wn.backflow_level_current,
-    wn.bottom_level,
-        CASE
-            WHEN ws.identifier = ws.obj_id::text THEN '?'::text
-            ELSE ws._label
-        END AS _label,
-    ws._cover_label,
-    ws._bottom_label,
-    ws._input_label,
-    ws._output_label,
-    wn._usage_current AS _channel_usage_current,
-    wn._function_hierarchic AS _channel_function_hierarchic
+    wn.bottom_level
+    , wsl.label_text_c AS _cover_label
+    , wsl.label_text_b AS _bottom_label
+    , wsl.label_text_rp AS _reach_point_label
+    , wns._usage_current AS _channel_usage_current
+    , wns._function_hierarchic AS _channel_function_hierarchic
    FROM tww_od.wastewater_structure ws
      LEFT JOIN tww_od.cover main_co ON main_co.obj_id::text = ws.fk_main_cover::text
      LEFT JOIN tww_od.manhole ma ON ma.obj_id::text = ws.obj_id::text
@@ -65,4 +60,6 @@ AS
      LEFT JOIN tww_vl.wastewater_structure_renovation_necessity ws_rn ON ws_rn.code = ws.renovation_necessity
      LEFT JOIN tww_vl.wastewater_structure_structure_condition ws_sc ON ws_sc.code = ws.structure_condition
      LEFT JOIN tww_sys.dictionary_od_table dot_dp on dot_dp.tablename = 'discharge_point'
+     LEFT JOIN tww_od.tww_wastewater_node_symbology wns ON wns.fk_wastewater_node = ws.fk_main_wastewater_node
+     LEFT JOIN tww_od.tww_wastewater_structure_label wsl ON wsl.fk_wastewater_structure = ws.obj_id
   WHERE ch.obj_id IS NULL;
