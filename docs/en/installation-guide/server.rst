@@ -21,7 +21,7 @@ Server installation
 
 .. note::
 
-Check the `TEKSI Roadmap <https://github.com/teksi/Home/wiki/TEKSI-modules-releases-and-roadmap#teksi-modules-releases>`_ to see latest minimal requirements
+ Check the `TEKSI Roadmap <https://github.com/teksi/Home/wiki/TEKSI-modules-releases-and-roadmap#teksi-modules-releases>`_ to see latest minimal requirements
 
 
 .. note::

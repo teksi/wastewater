@@ -8,18 +8,24 @@ on:
   push:
     branches:
       - main
+    tags:
+      - '*'
     paths:
       - docs/**
       - '.github/workflows/docs-builder.yml'
   pull_request:
     branches:
       - main
+    tags:
+      - '*'
     paths:
       - docs/**
       - '.github/workflows/docs-builder.yml'
   schedule:
     - cron: "30 04 * * *"
   workflow_dispatch:
+
+
 
 jobs:
   datamodel-documentation:
@@ -35,6 +41,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+
+      - name: Restore existing site
+        run: |
+          git clone --depth 1 --branch gh-pages https://github.com/${{ github.repository }} gh-pages || true
+          mkdir -p docs/build/html
+          rsync -a gh-pages/ docs/build/html/ || true
 
       - name: install requirements
         working-directory: docs
@@ -75,11 +90,32 @@ jobs:
           name: datamodel-schemaspy
           path: docs/_static/datamodel
 
+      - name: Set version
+        run: |
+          if [[ "${GITHUB_REF_TYPE}" == "tag" && "${GITHUB_REF_NAME}" =~ ^[0-9]{4}\.[0-9]+\.[0-9]+$ ]]; then
+            echo "DOCS_VERSION=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+          else
+            echo "DOCS_VERSION=latest" >> $GITHUB_ENV
+          fi
+
       - name: build documentation
         working-directory: docs
         run: |
-          make html
+          sphinx-build --keep-going . build/html/$DOCS_VERSION || true
           touch build/html/.nojekyll
+
+      - name: Add root redirect
+        working-directory: docs
+        run: |
+          echo '<meta http-equiv="refresh" content="0; url=latest/">' > build/html/index.html
+
+
+      - name: Generate versions list
+        run: |
+          cd docs/build/html
+          ls -1 -d */ | sed 's#/##' > versions.txt
+          jq -R -s -c 'split("\n")[:-1]' versions.txt > versions.json
+
 
       - uses: actions/upload-artifact@v7
         with:
