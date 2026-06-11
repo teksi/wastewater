@@ -17,7 +17,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tabLayout">
       <attribute name="title">
@@ -165,27 +165,7 @@
        <string>Developer Options</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="0">
-        <widget class="QCheckBox" name="mCbDevelMode">
-         <property name="toolTip">
-          <string>Enables developer tools on the profile widget. Reload and Inspect options are shown. The dock needs to be reopened.</string>
-         </property>
-         <property name="text">
-          <string>Developer mode (restart required)</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QCheckBox" name="mCbAdminMode">
-         <property name="toolTip">
-          <string>Enables the datamodel tool. The plugin needs to be reloaded.</string>
-         </property>
-         <property name="text">
-          <string>Admin mode</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
+       <item row="6" column="0">
         <widget class="QGroupBox" name="groupBox">
          <property name="title">
           <string>Logging</string>
@@ -278,7 +258,83 @@
          </layout>
         </widget>
        </item>
-       <item row="3" column="0">
+       <item row="4" column="0">
+        <widget class="QCheckBox" name="mCbOrgImportMode">
+         <property name="text">
+          <string>Import VSA Organisations into empty databases</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="0">
+        <widget class="QGroupBox" name="mCbAg6496Extension">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="title">
+          <string>Enable AG-64 and AG-96 extensions</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <layout class="QFormLayout" name="Ag6496layout">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+          </property>
+          <item row="0" column="0" colspan="2">
+           <widget class="QComboBox" name="mCbAg6496LastModification">
+            <item>
+             <property name="text">
+              <string>WI</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>GEP</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>None</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Both</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <layout class="QHBoxLayout" name="qhbox_modes">
+         <item>
+          <widget class="QCheckBox" name="mCbAdminMode">
+           <property name="toolTip">
+            <string>Enables the datamodel tool. The plugin needs to be reloaded.</string>
+           </property>
+           <property name="text">
+            <string>Admin mode</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="mCbDevelMode">
+           <property name="toolTip">
+            <string>Enables developer tools on the profile widget. Reload and Inspect options are shown. The dock needs to be reopened.</string>
+           </property>
+           <property name="text">
+            <string>Developer mode (restart required)</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="7" column="0">
         <widget class="QGroupBox" name="mGbLayout">
          <property name="title">
           <string>Layout</string>
@@ -315,92 +371,57 @@
          </layout>
         </widget>
        </item>
-       <item row="4" column="0">
-        <widget class="QGroupBox" name="mCbAg6496Extension">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
+       <item row="9" column="0" colspan="2">
+        <widget class="QGroupBox" name="mGbOverrideSRID">
          <property name="title">
-          <string>Enable AG-64 and AG-96 extensions</string>
+          <string>Override default SRID</string>
          </property>
          <property name="checkable">
           <bool>true</bool>
          </property>
-		 <layout class="QFormLayout" name="Ag6496layout">
-          <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-          </property>
-		  <item row="0" column="0" colspan ="2">
-           <widget class="QComboBox" name="mCbAg6496LastModification">
-            <item>
-             <property name="text">
-              <string>WI</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>GEP</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>None</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Both</string>
-             </property>
-            </item>
+         <layout class="QFormLayout" name="formLayout_srid">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_srid">
+            <property name="text">
+             <string>SRID</string>
+            </property>
            </widget>
           </item>
-         </layout>
-        </widget>
-       </item>
-	  <item row="5" column="0" colspan="2">
-           <widget class="QGroupBox" name="mGbOverrideSRID">
-            <property name="title">
-             <string>Override default SRID</string>
-            </property>
-            <property name="checkable">
-             <bool>true</bool>
-            </property>
-            <layout class="QFormLayout" name="formLayout_srid">
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_srid">
-               <property name="text">
-                <string>SRID</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QWidget" name="widget" native="true">
-               <layout class="QHBoxLayout" name="horizontalLayout_srid">
-                <property name="spacing">
-                 <number>0</number>
-                </property>
-                <property name="leftMargin">
-                 <number>0</number>
-                </property>
-                <property name="topMargin">
-                 <number>0</number>
-                </property>
-                <property name="rightMargin">
-                 <number>0</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>0</number>
-                </property>
-                <item>
-                 <widget class="QLineEdit" name="mSRID"/>
-                </item>
-               </layout>
-              </widget>
+          <item row="0" column="1">
+           <widget class="QWidget" name="widget" native="true">
+            <layout class="QHBoxLayout" name="horizontalLayout_srid">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QLineEdit" name="mSRID"/>
              </item>
             </layout>
            </widget>
           </item>
          </layout>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QCheckBox" name="mCbOrgExportMode">
+         <property name="text">
+          <string>Export VSA organisations on SIA405/VSA DSS exports</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </widget>
    </item>
@@ -420,7 +441,7 @@
   <customwidget>
    <class>QgsColorButton</class>
    <extends>QToolButton</extends>
-   <header>qgis.gui</header>
+   <header>qgscolorbutton.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
