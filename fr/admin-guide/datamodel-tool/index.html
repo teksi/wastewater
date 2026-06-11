@@ -98,11 +98,27 @@
 <div></div></blockquote>
 <section id="teksi-module-management-tool">
 <h1>TEKSI Module Management Tool<a class="headerlink" href="#teksi-module-management-tool" title="Lien vers cette rubrique"></a></h1>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
 <p>This replaces the Data model tool that has been part of QGEP</p>
-<p>The new plugin contains an advanced tool capable of initializing (and in future also upgrading) a TWW database.</p>
+</div>
+<p>The TEKSI Module Management Tool plugin is an advanced tool capable of initializing and upgrading a TWW database,
+as well as initializing the demo data, roles, business plugin and demo project.</p>
+<dl class="simple">
+<dt>It uses many previously existing tools</dt><dd><ul class="simple">
+<li><p>The <a class="reference external" href="https://opengisch.github.io/pum/">PostgreSQL Upgrade Manager (PUM) tool</a> for managing database installation and upgrades,</p></li>
+<li><p>The <a class="reference external" href="https://opengisch.github.io/pgserviceparser/">PG service parser library</a> for parsing the pg_service.conf file and managing database connections,</p></li>
+<li><p>The <a class="reference external" href="https://opengisch.github.io/pirogue/">Pirogue library</a> for managing editable views and inheritance in PostgreSQL.</p></li>
+</ul>
+</dd>
+</dl>
+<p>The tool is based on the <a class="reference external" href="https://opengisch.github.io/oqtopus/">oQtopus</a> plugin which is a able to deploy and manage non-TEKSI QGIS projects.</p>
 <p>It is aimed at system administrators and power users, and should not be used by end users, as it
 could lead to data loss if not used properly.</p>
-<p>For advanced cases, it is also possible to <a class="reference external" href="../db-update-pum/index.html">upgrade your database manually</a></p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Make sure to fulfill the prerequisites before installing and using the tool, as it may not work properly otherwise.</p>
+</div>
 <section id="documentation">
 <h2>Documentation<a class="headerlink" href="#documentation" title="Lien vers cette rubrique"></a></h2>
 <p>See the current <a class="reference external" href="https://github.com/teksi/TMMT/discussions/34">TMMT Documentation for a step by step help</a></p>
