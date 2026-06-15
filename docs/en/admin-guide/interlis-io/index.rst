@@ -122,7 +122,7 @@ A new dock widget has been added (right-side panel) allowing users to:
   - Intersect
 
 - Choose the status for catchment selection:
-  
+
   - Current
   - Planned
 
