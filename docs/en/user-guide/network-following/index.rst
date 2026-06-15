@@ -10,7 +10,7 @@ Note that from Version 2026.0 on the button is hidden in admin mode as the query
 
 * Before using the network following tools, be sure that your network topology is updated
 
-* To refresh the network topology, click the **Refresh network topology** tool (Button with SQL and drop). 
+* To refresh the network topology, click the **Refresh network topology** tool (Button with SQL and drop).
 
 * If ok, there is a message: **Success: Network successfully updated**
 
