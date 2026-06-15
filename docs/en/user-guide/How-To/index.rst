@@ -50,6 +50,7 @@ Per default, the fields ``fk_provider`` and ``fk_dataowner`` are already connect
 An example SQL script how to insert the default value for all occurences of a field name can be found `here <https://github.com/teksi/wastewater/blob/main/datamodel/changelogs/0001/14_default_values.sql>`_)
 
 
+.. _disable_enable_symbology_triggers:
 
 Increase speed of calculations and update symbology and labels
 --------------------------------------------------------------
