@@ -4,9 +4,13 @@ Network following tools
 Refresh network topology
 ------------------------
 
+.. versionchanged:: 2026.0
+
+Note that from Version 2026.0 on the button is hidden in admin mode as the query can take quite long for big networks.
+
 * Before using the network following tools, be sure that your network topology is updated
 
-* To refresh the network topology, click the **Refresh network topology** tool (Button with SQL and drip)
+* To refresh the network topology, click the **Refresh network topology** tool (Button with SQL and drop).
 
 * If ok, there is a message: **Success: Network successfully updated**
 
