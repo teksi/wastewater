@@ -19,7 +19,7 @@ jobs:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
 
         # only unassigned issues
-        only-issue-assignees: none
+        exempt-issue-assignees: '*'
 
         # Nur markieren, nicht schliessen
         days-before-issue-stale: 14
