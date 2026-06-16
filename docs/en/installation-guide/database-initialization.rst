@@ -40,7 +40,7 @@ Note that since 2026.0.1, the obj_id prefix can be set through TMMT as well.
 .. _install-datamodel-demodata:
 
 Install data model with or without demodata
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. note:: Demodata is available as an option during the setup process with TMMT. You can select to add demodata or leave this.
 

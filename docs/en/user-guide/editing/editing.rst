@@ -6,7 +6,7 @@ Editing of existing data
 This represents a guide on how to edit existing data in TWW.
 
 Demo project (chapter / pictures not adjusted to TWW)
-------------
+------------------------------------------------------------
 
 * Make sure you have imported the demo project with pgAdmin (see the :ref:`database-initialization` chapter)
 * Open the demo project by going to the main menu and press **Project** --> **Open**  or by pressing ``CTRL``

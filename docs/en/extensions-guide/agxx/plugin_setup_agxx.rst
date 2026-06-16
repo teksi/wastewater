@@ -1,12 +1,13 @@
 .. _plugin_setup_agxx:
 
 Plugin and Project Setup
-=======================
+===========================
 
 In order to use the AG-64/AG-96 extension, the database must be initialized accordingly. See :ref:`initialize-extensions` for further explanations.
 
 
 .. _interlis_setup_agxx:
+
 Enable AG-64/AG-96 Interlis Imports and Exports
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -21,6 +22,7 @@ In the tab *Developer options*, there is a Checkbox to enable the AG-64/96 exten
  When this checkbox is ticked, the data models AG-64/AG-96 are available in the interlis export.
 
 .. _last_modification_agxx:
+
 Handling of last modification
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -32,6 +34,7 @@ In the database, there is a table storing the setting per user. That value is re
 
 
 .. _project_setup_agxx:
+
 Project setup
 ^^^^^^^^^^^^^^^^^^^^^^
 

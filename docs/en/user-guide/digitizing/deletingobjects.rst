@@ -54,7 +54,8 @@ First, you have to kill the connection between wastewater_node and wastewater_st
 .. figure:: images/unlink_childe.jpg
 
 * Click **OK** and close the form window
- The wastewater node is no no more part of the wastewater_structure
+
+The wastewater node is now no more part of the wastewater_structure
 
 * Select the object (**manhole**, **special structure** etc.) you want to delete
 * Use **Edit** --> **Delete Selected** to delete.

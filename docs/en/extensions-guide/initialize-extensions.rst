@@ -1,7 +1,7 @@
 .. initialize-extensions:
 
 Initialising Database extensions
-=======================
+==============================================
 
 TEKSI Wastewater maintains database extensions to serve the following models:
 
@@ -15,7 +15,7 @@ In order to be able to use an extension, activate the corresponding app modifica
 .. _empty-extension-model:
 
 create an empty datamodel with an extension
-^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In order to use a database extension, we need to load them from the source code:
 
