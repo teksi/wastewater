@@ -81,7 +81,7 @@ Use this layer to change the situation of some specific cover (and not the whole
 
 
 Channels ``tww_app.mvw_tww_channel``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. versionadded:: 2025.0
 
@@ -124,7 +124,7 @@ You can not create new maintenance-events with this views, but you can edit attr
 
 
 Maintenance events ``tww_app.vw_tww_maintenance``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Maintenance events can be created through the view tww_app.vw_tww_maintenance.
 
@@ -155,7 +155,7 @@ Hydraulic
 ---------
 
 Wastewater nodes ``tww_app.vw_tww_wastewater_node``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Use this layer to change the situation of one selected wastewater node (and not the whole wastewater structure) or if you want to add a new wastewater node to an existing wastewater structure. You can add additional wastewater nodes in the wastewater nodes-tab of the `vw_tww_wastewater_structure` too.
 When moving the geometry of the wastewater node, the geometry of the connected reaches is updated automatically. If you want to move a wastewater node without moving the reaches, disconnect the reaches, move the node and reconnect the reaches.
@@ -270,7 +270,7 @@ Information on the attached catchment area (total), water volumes, and discharge
 
 
 Catchment area totals aggregated ``tww_app.vw_catchment_area_totals_aggregated``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 It is not to be confused with ``tww_app.vw_catchment_area_totals``.
 

@@ -225,7 +225,7 @@ Saving changes
 
 
 Changing Wastewater Structure Type (ws_type)
-----------------------------------
+------------------------------------------------
 
 In the vw_tww_wastewater_structure form, you can change the subclass of the wastewater structure (e.g. from manhole to special structure or to infiltration installation) with the field **ws_type**. The old subclass-record will be deleted and you must enter those attributes, that are subclass specific. But all connections (they are defined to the class wastewater_structure and not to the subclass) or the obj_id or the identifier will not change.
 

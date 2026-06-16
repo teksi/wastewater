@@ -32,7 +32,7 @@ There is a new layer group 'configuration' in the project:
 
 
 .. note:: If you do not have any organisations you first have to import them with the `Interlis Import chapter
-<https://teksi.github.io/wastewater/admin-guide/interlis-io/index.html#interlis-import>`_
+ <https://teksi.github.io/wastewater/admin-guide/interlis-io/index.html#interlis-import>`_
 
 
 

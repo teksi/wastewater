@@ -84,7 +84,7 @@ To save the password as well on the system you may use the file `pgpass <http://
    occurence of ``localhost`` with the network address of your database
    server.
 
-Alternative: put your password directly into the ``pg_service.conf`` (on Windows) / ``.pg_service.conf`` (on *nix) file:
+Alternative: put your password directly into the ``pg_service.conf`` (on Windows) / ``.pg_service.conf`` (on \*nix) file:
 
 .. code:: ini
 
@@ -184,14 +184,14 @@ Install the demo project
 
 .. note:: You need to explicitly set the language in QGIS in settings. If QGIS is configured to take the system language, the TWW translation is not loaded.
 
-.. note:: You may need to set for example the qm file to teksi_wastewater_de_CH.qm to fit the Swiss regional settings. The same for *_fr_CH in French instead of just *_fr.
+.. note:: You may need to set for example the qm file to teksi_wastewater_de_CH.qm to fit the Swiss regional settings. The same for \*_fr_CH in French instead of just \*_fr.
 
 .. figure:: images/tww_project_qm_language_files.jpg
 
 * Open `teksi_wastewater.qgs` with QGIS
 * When you save that project it will keep it's language and it cannot be changed in the same way.
 
-.. note:: It is recommended to use the QGIS settings that save the project files as *.qgs and not as *.qgz.
+.. note:: It is recommended to use the QGIS settings that save the project files as \*.qgs and not as \*.qgz.
 
 
 If you are a data owner: Add your own OID to the project
