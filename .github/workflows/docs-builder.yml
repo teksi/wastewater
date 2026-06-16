@@ -101,7 +101,10 @@ jobs:
       - name: build documentation
         working-directory: docs
         run: |
+          sphinx-build -n -W . build/_check
           sphinx-build --keep-going . build/html/$DOCS_VERSION || true
+
+          test -f build/html/$DOCS_VERSION/index.html
           touch build/html/.nojekyll
 
       - name: Add root redirect
