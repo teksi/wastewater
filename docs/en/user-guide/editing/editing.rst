@@ -160,6 +160,8 @@ An other way to choose an object
 
 .. _extend_selection_tool:
 
+.. versionadded:: 2026.0
+
 Extend selection tool
 ---------------------
 
