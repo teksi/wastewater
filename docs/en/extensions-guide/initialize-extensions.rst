@@ -1,4 +1,4 @@
-.. initialize-extensions:
+.. _initialize-extensions:
 
 Initialising Database extensions
 ==============================================

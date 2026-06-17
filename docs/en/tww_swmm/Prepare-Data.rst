@@ -8,4 +8,4 @@ Prepare Data
 
 .. include:: TWW-SWMM-data-requirements.rst
 
-.. include:: Coefficient-Of-Friction.rst
+.. include:: Coefficient-Friction.rst

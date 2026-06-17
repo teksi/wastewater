@@ -1,3 +1,4 @@
+.. _coefficient-of-friction:
 
 Coefficient of friction
 -----------------------
