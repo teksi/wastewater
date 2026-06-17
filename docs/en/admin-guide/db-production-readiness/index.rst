@@ -1,4 +1,4 @@
-.. _productionreadiness:
+.. _production_readiness:
 
 Prepare database for production
 ===============================
