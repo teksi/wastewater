@@ -52,12 +52,12 @@ jobs:
           rsync -a gh-pages/ docs/build/html/ || true
 
       - name: install requirements
-        working-directory: docs/en
+        working-directory: docs
         run: pip install -r requirements.txt
 
       - name: install tx requirements
         if: ${{ !(github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'PR-fast-doc')) }}
-        working-directory: docs/en
+        working-directory: docs
         run: |
           pip install -r requirements-tx.txt
           sudo apt-get install -y gettext
@@ -72,14 +72,14 @@ jobs:
         if: ${{ ( github.event.pull_request.head.repo.full_name == 'teksi/wastewater' || github.event_name == 'push' && github.ref == 'refs/heads/main' || github.event_name == 'schedule') && !(github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'PR-fast-doc')) }}
         env:
           TX_TOKEN: ${{ secrets.TX_TOKEN }}
-        working-directory: docs/en
+        working-directory: docs
         run: make transifex_pull
 
       - name: tx push
         env:
           TX_TOKEN: ${{ secrets.TX_TOKEN }}
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-        working-directory: docs/en
+        working-directory: docs
         run: make transifex_sync
 
       - name: copy datamodel documentation
