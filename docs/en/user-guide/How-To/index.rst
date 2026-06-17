@@ -42,7 +42,7 @@ For the second warning, please contact your TEKSI system administrator
 
 and ask him/her to set the prefix to fit your project.
 
-For more information see :ref:`productionreadiness`
+For more information see :ref:`production_readiness`
 
 Connect all occurences of your field name to ``tww_app.get_default_values(field_name)``.
 Per default, the fields ``fk_provider`` and ``fk_dataowner`` are already connected to the function ``tww_app.get_default_values(field_name)``.

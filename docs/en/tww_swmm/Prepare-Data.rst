@@ -4,8 +4,10 @@
 Prepare Data
 ============
 
-.. include:: TWW-SWMM-Correspondances.rst
+.. toctree::
+   :maxdepth: 1
 
-.. include:: TWW-SWMM-data-requirements.rst
+   TWW-SWMM-Correspondances
+   TWW-SWMM-data-requirements
+   Coefficient-Friction
 
-.. include:: Coefficient-Friction.rst

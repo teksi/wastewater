@@ -14,6 +14,7 @@ This represents a guide on how to administrate the database, install a Virtual m
    db-customization/index
    datamodel-tool/index
    db-update-pum/index
+   db-production-readiness/index
 
 In discussion:
 
