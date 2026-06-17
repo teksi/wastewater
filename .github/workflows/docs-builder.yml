@@ -99,7 +99,7 @@ jobs:
           fi
 
       - name: build documentation
-        working-directory: docs/en
+        working-directory: docs
         run: |
           sphinx-build -n -W . build/_check
           sphinx-build --keep-going . ../build/html/$DOCS_VERSION || true
@@ -108,7 +108,7 @@ jobs:
           touch ../build/html/.nojekyll
 
       - name: Add root redirect
-        working-directory: docs/en
+        working-directory: docs
         run: |
           echo '<meta http-equiv="refresh" content="0; url=latest/">' > ../build/html/index.html
 
