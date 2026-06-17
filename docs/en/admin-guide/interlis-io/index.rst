@@ -78,10 +78,10 @@ You should now see new `import` and `export` buttons in the TWW toolbar.
 .. _interlis_export:
 
 INTERLIS Export
-^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^
 
 Launch export wizard
------------------
+--------------------
 
 .. figure:: images/tww_interlis_export_button.png
 
