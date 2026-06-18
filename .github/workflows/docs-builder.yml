@@ -72,7 +72,7 @@ jobs:
           cd docs/build/html
 
           # Skip cleanup if first proper version exists
-          if [ -d "2026.0.1" ]; then
+          if ls | grep -Eq '^[0-9]{4}\.[0-9]+\.[0-9]+$'; then
             echo "Version 2026.0.1 exists — skipping cleanup"
             exit 0
           fi
@@ -107,6 +107,10 @@ jobs:
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         working-directory: docs
         run: make transifex_sync
+
+      - name: Compile translations
+        working-directory: docs
+        run: make compile_messages
 
       - name: copy datamodel documentation
         # Download artifact only if datamodel step ran (i.e., not a fast-doc PR)
