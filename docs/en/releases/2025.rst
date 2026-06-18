@@ -64,8 +64,7 @@ Main features
 Installation
 ----------------
 
- - As this release is published after the development of the TEKSI Module Management Tool plugin (TMMT), check the
- `installation guide <../installation-guide/index.html>`__ for more information on how to install TEKSI wastewater module via TMMT.
+ - As this release is published after the development of the TEKSI Module Management Tool plugin (TMMT), check the `installation guide <../installation-guide/index.html>`__ for more information on how to install TEKSI wastewater module via TMMT.
 
 Migration from 2024.X to 2025.X
 ---------------------------------

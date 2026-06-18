@@ -1,4 +1,3 @@
-.. _TWW-SWMM-data-requirements:
 
 TWW-SWMM data requirements
 ===========================
