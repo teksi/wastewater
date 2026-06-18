@@ -100,6 +100,7 @@ jobs:
             echo "DOCS_VERSION=latest" >> $GITHUB_ENV
           fi
 
+
       - name: Setup locales
         run: |
           sudo apt-get update
@@ -115,6 +116,9 @@ jobs:
             sudo locale-gen $LOCALE
           done
 
+          echo "LANG=en_US.UTF-8" >> $GITHUB_ENV
+          echo "LC_ALL=en_US.UTF-8" >> $GITHUB_ENV
+
 
       - name: build documentation
         working-directory: docs
@@ -122,7 +126,7 @@ jobs:
           LANGUAGES: "en de fr"
         run: |
           sphinx-build  -c . -n -W en ./build/_check
-          
+
           for LANG in $LANGUAGES; do
             echo "Building language: $LANG"
             mkdir -p ./build/html/$DOCS_VERSION/$LANG
@@ -130,7 +134,7 @@ jobs:
             test -f ./build/html/$DOCS_VERSION/$LANG/index.html || (echo "Missing index for $LANG" && exit 1)
           done
           touch ./build/html/.nojekyll
-          
+
       - name: Add root redirect
         working-directory: docs
         run: |
