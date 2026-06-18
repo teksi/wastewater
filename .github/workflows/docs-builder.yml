@@ -67,6 +67,30 @@ jobs:
           tar -xvzf tx-linux-amd64.tar.gz
           make gettext
 
+      - name: Remove legacy root docs
+        run: |
+          cd docs/build/html
+
+          # Skip cleanup if first proper version exists
+          if [ -d "2026.0.1" ]; then
+            echo "Version 2026.0.1 exists — skipping cleanup"
+            exit 0
+          fi
+
+          echo "Cleaning legacy root structure..."
+
+          for ITEM in *; do
+            case "$ITEM" in
+              latest|versions.json|versions.txt|index.html)
+                # keep
+                ;;
+              *)
+                echo "Removing legacy item: $ITEM"
+                rm -rf "$ITEM"
+                ;;
+            esac
+          done
+
       - name: Prepare datamodel static folder
         run: mkdir -p docs/_static/datamodel
 
@@ -122,8 +146,6 @@ jobs:
 
       - name: build documentation
         working-directory: docs
-        env:
-          LANGUAGES: "en de fr"
         run: |
           sphinx-build  -c . -n -W en ./build/_check
 
@@ -145,6 +167,21 @@ jobs:
           cd docs/build/html
           ls -1 -d */ | sed 's#/##' > versions.txt
           jq -R -s -c 'split("\n")[:-1]' versions.txt > versions.json
+
+
+      - name: Deduplicate static assets
+        working-directory: docs
+        run: |
+          cd build/html/$DOCS_VERSION
+
+          for LANG in $LANGUAGES; do
+            # skip base language
+            if [ "$LANG" != "en" ] && [ -d "$LANG" ]; then
+              rm -rf "$LANG/_static" "$LANG/_images"
+              ln -s "../en/_static" "$LANG/_static"
+              ln -s "../en/_images" "$LANG/_images"
+            fi
+          done
 
 
       - uses: actions/upload-artifact@v7
