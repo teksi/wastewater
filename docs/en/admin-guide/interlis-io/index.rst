@@ -62,10 +62,10 @@ The export only supports up-to-date TWW data model (`2020.1 <https://www.vsa.ch/
 
 
 Usage (GUI)
-^^^^^^^^^^^^^
+^^^^^^^^^^^
 
 Enable admin mode
--------------------------------------------------
+-----------------
 
 In the `plugin>TWW>settings` dialog, under the `Developer options` tab, ensure `Admin mode` is enabled. Restart QGIS.
 
@@ -78,7 +78,7 @@ You should now see new `import` and `export` buttons in the TWW toolbar.
 .. _interlis_export:
 
 INTERLIS Export
-^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^
 
 .. figure:: images/tww_interlis_export_button.png
 
@@ -154,7 +154,7 @@ You can check the protocol window and the text logs for further details.
      - ``*.ili2pg-schemaimport.log``
    * - Data export intermediatary schema
      - Export of data from tww_od to the new intermediary schema, translation from English to German
-     - *.tww2ili-export.log
+     - \*.tww2ili-export.log
    * - Data export to xtf
      - Data export from intermediary schema to INTERLIS Transfer file (xtf)
      - ``*.ili2pg-export-MODELNAME.log``
@@ -164,7 +164,7 @@ You can check the protocol window and the text logs for further details.
 
 
 Export extra organisations
--------------------------------------------------
+--------------------------
 
 .. figure:: images/tww_interlis_export_organisation.jpg
 
@@ -180,7 +180,7 @@ Extra organisations could be for example bigger private organisations that are u
 .. _interlis_import:
 
 INTERLIS Import
-^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^
 
 .. figure:: images/tww_interlis_import_button.png
 
