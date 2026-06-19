@@ -96,7 +96,7 @@ Export model
 ------------
 At first, select the export model.
 
-If you have an active selection in the nodes and/or reaches layer, you can choose to restrict the export to that selection. This is especially useful in combination with the upstream/downstream selection or `extend selection tools (see see :ref:`extend_selection_tool`).
+If you have an active selection in the nodes and/or reaches layer, you can choose to restrict the export to that selection. This is especially useful in combination with the upstream/downstream selection or `extend selection tools (see :ref:`extend_selection_tool`).
 
 .. figure:: images/tww_interlis_export_selection.png
 
