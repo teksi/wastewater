@@ -1,0 +1,326 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Digitizing Catchment Areas &mdash; TWW latest documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=c6e86fd7"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Importing data" href="importingdata.html" />
+    <link rel="prev" title="Deleting objects" href="deletingobjects.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            TWW
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">TEKSI wastewater (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">Installation Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">Overview of TWW</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Digitizing in TWW</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="dataentry.html">Data entry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingwastewaterstructures.html">Digitizing Wastewater Structures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingdetailedgeometry.html">Digitizing detailed geometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingdrainagechannel.html">Digitizing Detailed Geometry as Drainage Channel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingchannels.html">Digitizing Channels</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deletingobjects.html">Deleting objects</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Digitizing Catchment Areas</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#general">General</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#digitizing">Digitizing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#editing">Editing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#split-areas">Split Areas</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#merge-areas">Merge Areas</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#connect-catchment-area-to-wastewater-network-nodes">Connect Catchment area to Wastewater Network Nodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-duplicate-coord-error">The ‘duplicate coord’-error</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="importingdata.html">Importing data</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../editing/index.html">Editing in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">Length profiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">Network following tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">Plan plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/index.html">History in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../How-To/index.html">How To</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">Admin Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extensions-guide/index.html">Official TWW extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">Translation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">TWW</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">User Guide</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Digitizing in TWW</a></li>
+      <li class="breadcrumb-item active">Digitizing Catchment Areas</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/user-guide/digitizing/digitizingcatchments.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <blockquote>
+<div></div></blockquote>
+<section id="digitizing-catchment-areas">
+<h1>Digitizing Catchment Areas<a class="headerlink" href="#digitizing-catchment-areas" title="Link to this heading"></a></h1>
+<section id="general">
+<h2>General<a class="headerlink" href="#general" title="Link to this heading"></a></h2>
+<p>Catchments can be digitized with QGIS standard tool <strong>Add Polygon Feature</strong>.</p>
+<figure class="align-default">
+<img alt="../../_images/qgis_standard_tools.jpg" src="../../_images/qgis_standard_tools.jpg" />
+</figure>
+<p>Catchment areas should not overlap and can have 4 connections to wastewater nodes.</p>
+</section>
+<section id="digitizing">
+<h2>Digitizing<a class="headerlink" href="#digitizing" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Select the <strong>Enable Snapping</strong> button</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/enable_snapping_button.jpg" src="../../_images/enable_snapping_button.jpg" />
+</figure>
+<ul class="simple">
+<li><p>Open the <strong>Advanced Configuration</strong>, check the <strong>catchment_area</strong> layer and check the <strong>Avoid Overlap</strong> checkbox for the catchment_area layer</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/avoid_overlap.jpg" src="../../_images/avoid_overlap.jpg" />
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>New digitized catchment areas will not overlap with existing areas with this settings.</p>
+</div>
+<ul class="simple">
+<li><p>Set the layer <code class="docutils literal notranslate"><span class="pre">catchment_area</span></code> into the edit mode.</p></li>
+<li><p>Use the <strong>Add Polygon Feature</strong> tool to digitize a new area.</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/add_feature_tool.jpg" src="../../_images/add_feature_tool.jpg" />
+</figure>
+<ul class="simple">
+<li><p>Start digitizing with left click and continue with left click for every vertex of the polygon</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/catchment_area_digitizing1.jpg" src="../../_images/catchment_area_digitizing1.jpg" />
+</figure>
+<ul class="simple">
+<li><p>Stop digitizing with right click</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Keep in mind, that the finishing point of the polygon is the last point where you <strong>left</strong> clicked.</p>
+</div>
+<ul class="simple">
+<li><p>The <strong>catchment_area</strong> feature attributes window appears</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/catchment_area_digitizing2.jpg" src="../../_images/catchment_area_digitizing2.jpg" />
+</figure>
+<ul class="simple">
+<li><p>When finished editing attributes, click the <strong>OK</strong> button</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The new area does not overlap the old areas.</p>
+</div>
+<figure class="align-default">
+<img alt="../../_images/catchment_area_digitizing3.jpg" src="../../_images/catchment_area_digitizing3.jpg" />
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To control the exact area of a selected polygon, see in the <strong>Identify Results</strong> window under <strong>(Derived)</strong>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To connect the area with wastewater nodes, see chapter <a class="reference internal" href="../editing/connect_wastewater_network_elements.html#connect-wastewater-network-elements"><span class="std std-ref">Connect Wastewater Network Elements</span></a>.</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2025.0.</span></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The tab fk_log_card can only be used after creating the log_cards first, see chapter Editing /Log Cards .</p>
+</div>
+</section>
+<section id="editing">
+<h2>Editing<a class="headerlink" href="#editing" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>You can edit existing areas with the <strong>Identify features</strong> tool.</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/identify_feature_tool.jpg" src="../../_images/identify_feature_tool.jpg" />
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There are ideas to have a menu in the feature attribute window, that allows you to copy all current-values to the planned-fields. Not realized yet.</p>
+</div>
+</section>
+<section id="split-areas">
+<h2>Split Areas<a class="headerlink" href="#split-areas" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>You can split existing areas with the <strong>Split Features</strong> tool.</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/split_tool.jpg" src="../../_images/split_tool.jpg" />
+</figure>
+<ul class="simple">
+<li><p>There is no need to select the area first. Left clicks to define the splitting line. Right click after having defined the last point of the splitting line.</p></li>
+</ul>
+</section>
+<section id="merge-areas">
+<h2>Merge Areas<a class="headerlink" href="#merge-areas" title="Link to this heading"></a></h2>
+<p>You can merge existing areas with the <strong>Merge Selected Feature</strong> tool.</p>
+<figure class="align-default">
+<img alt="../../_images/merge_selected_feature_tool.jpg" src="../../_images/merge_selected_feature_tool.jpg" />
+</figure>
+<ul class="simple">
+<li><p>Selected the <strong>catchment_area</strong> layer and set it into the edit mode</p></li>
+<li><p>Select at least two areas you want to merge</p></li>
+<li><p>Click the <code class="docutils literal notranslate"><span class="pre">Merge</span> <span class="pre">Selected</span> <span class="pre">Feature</span></code> tool. -&gt; The <strong>Merge Features</strong> windows appears.</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/merge_feature_attributes.jpg" src="../../_images/merge_feature_attributes.jpg" />
+</figure>
+<ul class="simple">
+<li><p>Choose which values will be taken from which old record. Control the values for fields <strong>obj_id</strong>, <strong>identifier</strong>. Then click <strong>OK</strong>. You can ignore the setting of field surface_area, because the surface_area of the combined area will be recalculated anyway.</p></li>
+</ul>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>If you select one of the records and click on the <strong>Take attributes from the selected feature</strong> button, then your manual changes will be reset. After using this button, you have to choose one of the values in the <strong>identifier</strong> field manually (otherwise <strong>identifier</strong> is skipped and the value will be NULL).</p>
+</div>
+</section>
+<section id="connect-catchment-area-to-wastewater-network-nodes">
+<h2>Connect Catchment area to Wastewater Network Nodes<a class="headerlink" href="#connect-catchment-area-to-wastewater-network-nodes" title="Link to this heading"></a></h2>
+<p>You connect catchment areas with the tool <strong>Connect wastewater networkelements</strong> (it’s the same tool to connect reaches and nodes described in the chapter Editing in TWW).</p>
+<figure class="align-default">
+<img alt="../../_images/connect_wastewater_network_elements_button.jpg" src="../../_images/connect_wastewater_network_elements_button.jpg" />
+</figure>
+<ul class="simple">
+<li><p>It does not matter, which layer is selected</p></li>
+<li><p>The <strong>catchment_area</strong> layer has to be in edit mode</p></li>
+<li><p>Click the <strong>Connect wastewater networkelements</strong> button</p></li>
+<li><p>If you move the mouse over an catchment area near the border of the catchment area, it is marked: you can click to choose this record</p></li>
+<li><p>Move the mouse to the networkelement, to which the catchment area will by connected (again: selectable objects get marked) and click again</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/catchment_area_connect2.jpg" src="../../_images/catchment_area_connect2.jpg" />
+</figure>
+<ul class="simple">
+<li><p>A window appears, where you can choose, which connection(s) will be defined.</p></li>
+<li><p>If everything is ok, you will see a message in a blue bar on top of the map-window</p></li>
+<li><p>After saving, you will see the catchment connection line, if this layer is visible.</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/catchment_area_connect3.jpg" src="../../_images/catchment_area_connect3.jpg" />
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In the VSA-DSS-Datamodel, it is possible to connect catchment_areas to wastewater nodes or to reaches. Because a lot of hydraulic calculation do not support connections to reaches, this tool in tww connects only to wastewater nodes and not to reaches.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The tool does not check, if your choosen wastewater node is a part of the pwwf-network (primary network). It’s only the user who decides, if a node is ok or not. If you are not sure, please check the <strong>VSA Wegleitung Daten der Siedlungsentwässerung</strong>, part <strong>Erfassungsrichtlinien</strong></p>
+</div>
+<p>You can not connect multiple areas with the tool to a wastewater node at once. If you want to do so, you have to select the catchment areas, open the attribute table and then start the multi edit mode. There you can choose the wastewater node from the list of all nodes.</p>
+<p>Do delete a connection to a wastewater node, you can edit the area with the <strong>Identify features</strong> tool.</p>
+</section>
+<section id="the-duplicate-coord-error">
+<h2>The ‘duplicate coord’-error<a class="headerlink" href="#the-duplicate-coord-error" title="Link to this heading"></a></h2>
+<p>After digitizing catchment areas and export to DSS, you will probably get the message, that your exportfile is not valid. In the ilivalidator.log-file can be messages like:</p>
+<p>Error: line nnnn: DSS_2020_1_LV95.Siedlungsentwaesserung.Einzugsgebiet: tid chmmmm: duplicate coord at (x.xxx, y.yyy, NaN)</p>
+<p>The reason is: in the XTF-file, coordinates are writen with 0.001m (1mm). Vertex-points in QGIS can differed by only 0.0001m (0.01mm) or less.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Do not work with a export-file, that is not valid. Be aware that you will not be able to import a not valid file in TWW.</p>
+</div>
+<p>Solutions:</p>
+<ul class="simple">
+<li><p>In layer-properties of the catchment area, tab <strong>digitizing</strong>, check <strong>remove duplicate nodes</strong> and add 0.001 as <strong>Geometry precision [m]</strong></p></li>
+<li><p>If there are already duplicate nodes in the data, you can eliminate them with <strong>processing toolbox</strong>, <strong>Edit Features in-Place</strong>, <strong>Remove duplicate vertices</strong>, <strong>Tolerance = 0.001m</strong></p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/remove_duplicate_nodes.jpg" src="../../_images/remove_duplicate_nodes.jpg" />
+</figure>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="deletingobjects.html" class="btn btn-neutral float-left" title="Deleting objects" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="importingdata.html" class="btn btn-neutral float-right" title="Importing data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, The TWW Project www.teksi.ch.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

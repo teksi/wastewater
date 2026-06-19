@@ -1,0 +1,196 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="de" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Requirements &mdash; TWW latest Dokumentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=bb97b4dd"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/translations.js?v=9bf55d28"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Stichwortverzeichnis" href="../genindex.html" />
+    <link rel="search" title="Suche" href="../search.html" />
+    <link rel="next" title="Setup database server" href="server.html" />
+    <link rel="prev" title="Installation Guide" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            TWW
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Dokumentation durchsuchen" aria-label="Dokumentation durchsuchen" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">TEKSI wastewater (TWW)</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Installation Guide</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#provider-side">Provider Side</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#client-side">Client Side</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#postgresql-server-side">PostgreSQL Server side :</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="server.html">Setup database server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database-initialization.html">Database initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workstation.html">Setup workstation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">Admin Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions-guide/index.html">Official TWW extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tww_swmm/index.html">SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">Translation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">TWW</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Installation Guide</a></li>
+      <li class="breadcrumb-item active">Requirements</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/installation-guide/requirements.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <blockquote>
+<div></div></blockquote>
+<section id="requirements">
+<span id="id1"></span><h1>Requirements<a class="headerlink" href="#requirements" title="Link to this heading"></a></h1>
+<section id="provider-side">
+<h2>Provider Side<a class="headerlink" href="#provider-side" title="Link to this heading"></a></h2>
+<p>In order to install the TEKSI Wastewater module, you will need to install :</p>
+<ul class="simple">
+<li><p>A PostgreSQL instance with PostGIS extension (check the <a class="reference external" href="https://github.com/teksi/Home/wiki/TEKSI-modules-releases-and-roadmap">roadmap</a> for supported versions)</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Bemerkung</p>
+<p>TEKSI Wastewater uses a PostgreSQL with postgis Extension database, you need to install these on your server :
+Recommended is to use the <a class="reference external" href="https://www.enterprisedb.com/downloads/postgres-postgresql-downloads">EnterpriseDB</a> to make sure your
+postgreSQL version matches your postgis version and is installed at the right place.</p>
+</div>
+<ul class="simple">
+<li><p>Python 3.12+ (installed via OSGEO4W or using <a class="reference external" href="https://www.python.org/downloads/">python.org</a>)</p></li>
+<li><dl class="simple">
+<dt>QGIS installed with the latest LTR version</dt><dd><p>Recommanded is to install it with the OSGEO4W installer directly with all python packages listed.</p>
+</dd>
+</dl>
+</li>
+<li><p>A working pg_service file and a connexion secured to your database server (hosted or local)</p></li>
+<li><p>TEKSI Module Management Tool (<a class="reference external" href="https://plugins.qgis.org/plugins/teksi_module_management_tool">TMMT</a>) plugin installed from the QGIS plugin repository</p></li>
+</ul>
+<p>The following Python packages (installed via OSGEO4W or using <a class="reference external" href="https://pypi.org/project/pip/">pip</a>) are required:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.psycopg.org/">Psycopg</a> as database adapter</p></li>
+<li><p><a class="reference external" href="https://pydantic.dev/">Pydantic</a> for data validation</p></li>
+<li><p><a class="reference external" href="https://github.com/opengisch/pirogue">Pirogue</a> for model generation and upgrades</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Bemerkung</p>
+<p>PUM python package is automatically installed with the TMMT plugin.</p>
+</div>
+</section>
+<section id="client-side">
+<h2>Client Side<a class="headerlink" href="#client-side" title="Link to this heading"></a></h2>
+<p>For each client (workstation), you will need :</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>QGIS installed with the latest LTR version</dt><dd><p>Recommanded is to intall it with the OSGEO4W installer directly with all python packages listed.</p>
+</dd>
+</dl>
+</li>
+<li><p>A working pg_service file and a connexion secured to your database server (hosted or local)</p></li>
+<li><p>TEKSI Wastewater <a class="reference external" href="https://github.com/teksi/wastewater/releases/latest/">plugin</a> (.zip file)</p></li>
+<li><p>TEKSI Wastewater <a class="reference external" href="https://github.com/teksi/wastewater/releases/latest/">project</a> (.qgs file)</p></li>
+</ul>
+<p>The following Python packages (installed via OSGEO4W or using <a class="reference external" href="https://pypi.org/project/pip/">pip</a>) are required:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.psycopg.org/">Psycopg</a> as database adapter</p></li>
+<li><p><a class="reference external" href="https://github.com/sqlalchemy/sqlalchemy">sqlalchemy</a> for INTERLIS imports and exports</p></li>
+<li><p><a class="reference external" href="https://github.com/geoalchemy/geoalchemy2">geoalchemy2</a> for INTERLIS imports and exports</p></li>
+</ul>
+</section>
+<section id="postgresql-server-side">
+<h2>PostgreSQL Server side :<a class="headerlink" href="#postgresql-server-side" title="Link to this heading"></a></h2>
+<p>Allow the connexion of your clients through the <cite>postgresql.conf</cite> file and make sure your client
+is allowed to reach the server postgresql port (default is 5432).</p>
+<p>TEKSI Wastewater requires PostGIS functions that did not function properly in a set of releases:</p>
+<ul class="simple">
+<li><p>Versions before PostGIS 3.2 are not affected</p></li>
+<li><p>When using PostGIS 3.2, the bug is fixed in Version 3.2.7</p></li>
+<li><p>When using PostGIS 3.3, the bug is fixed in Version 3.3.6</p></li>
+<li><p>When using PostGIS 3.4, the bug is fixed in Version 3.4.2</p></li>
+<li><p>Versions of PostGIS 3.5 or later are not affected</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Installation Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
+        <a href="server.html" class="btn btn-neutral float-right" title="Setup database server" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, The TWW Project www.teksi.ch.</p>
+  </div>
+
+  Erstellt mit <a href="https://www.sphinx-doc.org/">Sphinx</a> mit einem
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    bereitgestellt von <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

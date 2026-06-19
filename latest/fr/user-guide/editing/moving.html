@@ -1,0 +1,236 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Moving Wastewater Structures with Reaches, Covers and Nodes &mdash; Documentation TWW latest</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=4e6483d5"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/translations.js?v=e6b791cb"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../search.html" />
+    <link rel="next" title="Adding or Editing of Maintenance Events" href="maintenance_events.html" />
+    <link rel="prev" title="Editing of existing data" href="editing.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            TWW
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">TEKSI wastewater (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">Installation Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">Overview of TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../digitizing/index.html">Digitizing in TWW</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Editing in TWW</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="editing.html">Editing of existing data</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Moving Wastewater Structures with Reaches, Covers and Nodes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#general">General</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#moving-a-manhole">Moving a manhole</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#moving-a-cover-a-node">Moving a cover / a node</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#moving-a-reachpoint">Moving a reachpoint</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#video-tutorial-outdated">Video Tutorial (outdated)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="maintenance_events.html">Adding or Editing of Maintenance Events</a></li>
+<li class="toctree-l3"><a class="reference internal" href="connect_wastewater_network_elements.html">Connect Wastewater Network Elements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="log_card.html">Adding or Editing of Log Cards</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">Length profiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">Network following tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">Plan plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/index.html">History in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../How-To/index.html">How To</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">Admin Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extensions-guide/index.html">Official TWW extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">Translation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">TWW</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">User Guide</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Editing in TWW</a></li>
+      <li class="breadcrumb-item active">Moving Wastewater Structures with Reaches, Covers and Nodes</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/user-guide/editing/moving.rst.txt" rel="nofollow"> Afficher la source de la page</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <blockquote>
+<div></div></blockquote>
+<section id="moving-wastewater-structures-with-reaches-covers-and-nodes">
+<span id="moving-covers-with-reaches-and-wastewater-nodes"></span><h1>Moving Wastewater Structures with Reaches, Covers and Nodes<a class="headerlink" href="#moving-wastewater-structures-with-reaches-covers-and-nodes" title="Lien vers cette rubrique"></a></h1>
+<p>This represents a guide on how to move wastewater structures with reaches and wastewater nodes compared to just moving the cover in TWW.</p>
+<section id="general">
+<h2>General<a class="headerlink" href="#general" title="Lien vers cette rubrique"></a></h2>
+<p>It’s not unusual, that manholes are digitized the first time with low precision. Later the manholes are measured, and there is the need, to move the whole wastewater structure (means cover(s), node(s) and reachpoints of all reaches) to the measured point.</p>
+<p>There are two tools to move a manhole: <strong>Vertex Tool</strong> and <strong>Move Feature</strong> Tool. And there is a very important option in the <strong>Snapping Toolbar</strong>: <strong>Enable Topological Editing</strong>.</p>
+<figure class="align-default">
+<img alt="../../_images/tools_moving.jpg" src="../../_images/tools_moving.jpg" />
+</figure>
+<p><strong>Vertex Tool</strong> and <strong>Move Feature</strong> work similar for (single)-point layers.</p>
+<p>Because with DSS-datamodel, cover, wastewater node and reachpoints are connected not by location, but by foreign keys in the database, TWW is prepared to move cover(s), node(s) and reachpoints (and therefore also reaches) together by the same distance. This means, it’s better not to enable topological editing in several cases.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You need to turn on the advanced digitizing toolbar in your project to be able to select the <strong>Move Feature</strong> tool.</p>
+</div>
+<figure class="align-default">
+<a class="reference internal image-reference" href="../../_images/advanced_digitizing_tools.jpg"><img alt="../../_images/advanced_digitizing_tools.jpg" height="377" src="../../_images/advanced_digitizing_tools.jpg" width="370" />
+</a>
+</figure>
+</section>
+<section id="moving-a-manhole">
+<h2>Moving a manhole<a class="headerlink" href="#moving-a-manhole" title="Lien vers cette rubrique"></a></h2>
+<ul class="simple">
+<li><p>Select the <strong>vw_tww_wastewater_structure</strong> layer</p></li>
+<li><p>Set the layer to edit mode</p></li>
+<li><p>Select the <strong>Move Feature</strong> tool (standard QGIS tool in the advanced digitizing toolbar) or the <strong>Vertex Tool</strong></p></li>
+<li><p>Deselect the button <strong>Enable Topological Editing</strong></p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/moving_wws_before.jpg" src="../../_images/moving_wws_before.jpg" />
+</figure>
+<p>In this example, the manhole has one cover, two wastewater nodes, four reaches that end/start at the nodes places and one reach with a gap to the connected node. There is also a detail geometry.</p>
+<ul class="simple">
+<li><p>Left Click one the wastewater_structure point you want to move and left click again at the new place.</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/moving_wws_manhole1.jpg" src="../../_images/moving_wws_manhole1.jpg" />
+</figure>
+<p>“1.070” manhole moved. Cover, 2 nodes and all 5 reachpoints (reaches) are moved to a new place. The distance between the points is still the same.
+The detail geometry does not move (layer wastewater_structure in layergroup Wastewater Structures). The detail geometry must be moved extra with the <strong>Move Feature</strong> tool. There is in the moment no good help, to do this automatically.</p>
+<ul class="simple">
+<li><p>To show the move, it’s a good way to set the <strong>Topology</strong> layers visible:</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/moving_wws_manhole1topology.jpg" src="../../_images/moving_wws_manhole1topology.jpg" />
+</figure>
+<ul class="simple">
+<li><p>To update the topology, click on the TWW - <strong>SQL</strong> Button</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/moving_wws_manhole1topologynew.jpg" src="../../_images/moving_wws_manhole1topologynew.jpg" />
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Reaches, that are connected to one of the moved reaches, are still connected with the foreign key, but did not move. You have to corrected manually if necessary.</p>
+</div>
+</section>
+<section id="moving-a-cover-a-node">
+<h2>Moving a cover / a node<a class="headerlink" href="#moving-a-cover-a-node" title="Lien vers cette rubrique"></a></h2>
+<p>To move just a cover or just a node, you work with the specific layer:
+Cover: Layergroup Wastewater Structures / Structure Parts, layer vw_cover
+Nodes: Layergroup Hydraulic, layer vw_wastewater_node</p>
+<ul class="simple">
+<li><p>Select the specific layer</p></li>
+<li><p>Set the layer to edit mode</p></li>
+<li><p>Select the <strong>Move Feature</strong> tool (standard QGIS tool in the advanced digitizing toolbar) or the <strong>Vertex Tool</strong></p></li>
+<li><p>Deselect the button <strong>Enable Topological Editing</strong></p></li>
+<li><p>Left Click one the cover/node point you want to move and left click again at the new place.</p></li>
+<li><p>To update the topology, click on the TWW - <strong>SQL</strong> Button (not necessary when moved just covers).</p></li>
+</ul>
+</section>
+<section id="moving-a-reachpoint">
+<h2>Moving a reachpoint<a class="headerlink" href="#moving-a-reachpoint" title="Lien vers cette rubrique"></a></h2>
+<p>There is no reachpoint layer in the TWW-project. You edit reachpoints as part of the reach in layer <strong>vw_tww_reach</strong>.</p>
+<ul class="simple">
+<li><p>Select the <strong>vw_tww_rach</strong> layer</p></li>
+<li><p>Set the layer to edit mode</p></li>
+<li><p>Select the <strong>Vertex Tool</strong> (the Move Feature Tool moves the whole reach)</p></li>
+<li><p>Deselect the button <strong>Enable Topological Editing</strong></p></li>
+<li><p>Left Click one the start- or endpoint of the reach you want to move and left click again at the new place.</p></li>
+<li><p>To update the topology, click on the TWW - <strong>SQL</strong> Button</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Set the layer <strong>Topology</strong>/<strong>vw_network_node</strong> visible to see the reachpoints location (not there attributes).</p>
+</div>
+</section>
+<section id="video-tutorial-outdated">
+<h2>Video Tutorial (outdated)<a class="headerlink" href="#video-tutorial-outdated" title="Lien vers cette rubrique"></a></h2>
+<ul class="simple">
+<li><p>See <a class="reference external" href="https://vimeo.com/162978741">this video tutorial (version QGIS 2)</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
+        <a href="editing.html" class="btn btn-neutral float-left" title="Editing of existing data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+        <a href="maintenance_events.html" class="btn btn-neutral float-right" title="Adding or Editing of Maintenance Events" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2025, The TWW Project www.teksi.ch.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

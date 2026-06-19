@@ -1,0 +1,247 @@
+Setup workstation
+=================
+
+Database configuration
+----------------------
+
+To tell a workstation, where the database is (on the local system or on a
+network server) you will have to create some files initially on every device on
+which you will have QGIS/TWW running (client). It is not required to do that on the
+server itself.
+
+These instructions depend on your operating system.
+
+Windows pg_service
+^^^^^^^^^^^^^^^^^^
+
+Create a new directory where you want to store the configuration in. (E.g. a new folder ``pgconfig`` in your home folder). This directory will be referred to as ``PGSYSCONFDIR`` in this guide.
+
+Set the environment variable ``PGSYSCONFDIR`` to the path to ``PGSYSCONFDIR``.
+
+.. note:: Search for environment variable in your windows system settings, then click one of the following options, for either a user or a system variable:
+
+  .. figure:: images/system_environment_variable.jpg
+
+    Click ``New`` to add a new variable name and value.
+    Click an existing variable, and then click ``Edit`` to change its name or value.
+    Click an existing variable, and then click ``Delete`` to remove it.
+
+  .. figure:: images/umgebungsvariablen_pgconfdir.jpg
+
+  You can check your environment variables also within QGIS: Menu ``Settings`` --> ``Options...`` --> ``System`` Tab  --> ``Environment``
+
+Inside this folder, there will be two files
+
+* ``pg_service.conf``
+* ``pgpass`` (If you do not want to enter the password for the db every time)
+
+.. attention::
+
+ On Windows, you need to save ``pg_service.conf`` in Unix format in order to work.
+ One way to do it is to open it with `Notepad++ <https://notepad-plus-plus.org/>`_
+ and ``Edit`` --> ``EOL Conversion`` --> ``UNIX Format`` --> ``File save`` .
+
+.. _pg_service-linux:
+
+Linux/macOS pg_service
+^^^^^^^^^^^^^^^^^^^^^^
+
+On Unix systems (linux/macOS etc.) you may put the files ``.pg_service.conf``
+and ``.pgpass`` into your home folder (normally ``/home/[username]``). Pay attention to the starting . (<> Windows)!
+
+If your QGIS doesn't find the ``.pg_service.conf`` file, set the environment variable PGSYSCONFDIR:
+
+.. note::
+ In QGIS go to ``Settings`` > ``Options`` > ``System`` tab. Near the bottom you'll find ``Environment``. Tick ``Use custom variables`` and click on the plus on the right. Add the PGSYSCONFDIR variable using Append (to make sure you don't delete anything - doesn't matter probably) and its value (probably ``/home/[username]`` see above). Then click ``OK`` at  the bottom right.
+
+.. figure:: images/macEnvVarSet.png
+
+After closing and reopening QGIS, you should be able to see the added PGSYSCONFDIR at the bottom of the same window under ``Current environment variables``.
+
+.. figure:: images/macEnvVarCheck.png
+
+All systems
+^^^^^^^^^^^
+
+Put the following content in the file ``pg_service.conf`` or ``.pg_service.conf``.
+You may have to adapt the variables for your setup.
+
+.. code:: ini
+
+    [pg_tww]
+    host=localhost
+    port=5432
+    dbname=tww
+    user=twwuser
+
+To save the password as well on the system you may use the file `pgpass <http://www.postgresql.org/docs/current/static/libpq-pgpass.html>`_.
+
+.. code:: ini
+
+    localhost:5432:*:twwuser:password
+
+.. note:: If you don't have the database on your local machine replace any
+   occurence of ``localhost`` with the network address of your database
+   server.
+
+Alternative: put your password directly into the ``pg_service.conf`` (on Windows) / ``.pg_service.conf`` (on \*nix) file:
+
+.. code:: ini
+
+    [pg_tww]
+    host=localhost
+    port=5432
+    dbname=tww
+    user=twwuser
+    password=***
+
+Install QGIS
+------------
+
+* Minimum requirement 3.34.8
+
+* We recommend using the latest master build (called qgis-dev on Windows)
+  which often offers a better experience in combination with TWW.
+  For Windows installation, download the `OSGeo4W Installer <http://download.osgeo.org/osgeo4w/osgeo4w-setup-x86_64.exe>`_
+  choose *advanced installation* and install qgis-dev.
+
+Install TWW plugin
+-------------------
+
+Plugin requirements:
+
+Please check if the following python libraries are installed
+
+- `networkx <https://pypi.org/project/networkx/>`_ >= 3.3
+
+You can install them on Debian based systems with::
+
+ sudo pip install networkx
+ sudo apt-get install libqt4-sql-psql
+
+Or for Windows users, directly in QGIS via the Python Console with::
+
+ import pip; pip.main(["install", "networkx"])
+
+
+Plugin installation from QGIS Plugins Menu:
+
+* Open QGIS
+
+* Go to ``Plugins``
+
+  * ``Manage and Install Plugins``
+
+  * ``Settings``
+
+    * Enable ``Show also experimental plugins``
+
+  * Activate the plugin (see image below):
+
+  * All
+
+    * Search `TWW`
+
+    * Click the checkbox next to it
+
+  .. figure:: images/001_searchplugin.jpeg
+
+   **Add the TWW plugin**
+
+* When the installation was successfull, you should see the TWW Toolbar:
+
+  .. figure:: images/tww_plugin_toolbar_ok.png
+
+  * If the toolbar is greyed out, you have to restart QGIS respectively re-load the project:
+
+  .. figure:: images/tww_plugin_toolbar_grey.png
+
+* Configuration of the plugin:
+
+  * Plugin - TEKSI Wastewater - Settings
+  * Check the Admin Guide to see how to enable `INTERLIS Import / Export options <https://teksi.github.io/wastewater/admin-guide/interlis-io/index.html#enable-admin-mode>`_
+
+
+Optional plugin
+^^^^^^^^^^^^^^^
+
+TWW uses a data historization process. The ``pg history viewer`` `plugin <http://plugins.qgis.org/plugins/pg_history_viewer/>`_ allows you to view the changes made and replay some of them.
+
+Install the demo data
+---------------------
+
+See the current `TMMT Documentation for a step by step help <https://github.com/teksi/TMMT/discussions/34>`_
+
+
+Install the demo project
+------------------------
+
+* See the current `TMMT Documentation for a step by step help <https://github.com/teksi/TMMT/discussions/34>`_
+
+* Configure and download the qgs project file and its translations so it fits your pg_config setting
+
+* If you leave the teksi_wastewater_[language].qm files in the same directory as the teksi_wastewater.qgs file and start QGIS with one of these languages, your project will be translated to that language when you start the project. E.g. you start teksi_wastewater.qgs with a QGIS installation that is set to German, then the teksi_wastewater.qgs project will appear in German.
+
+.. note:: You need to explicitly set the language in QGIS in settings. If QGIS is configured to take the system language, the TWW translation is not loaded.
+
+.. note:: You may need to set for example the qm file to teksi_wastewater_de_CH.qm to fit the Swiss regional settings. The same for \*_fr_CH in French instead of just \*_fr.
+
+.. figure:: images/tww_project_qm_language_files.jpg
+
+* Open `teksi_wastewater.qgs` with QGIS
+* When you save that project it will keep it's language and it cannot be changed in the same way.
+
+.. note:: It is recommended to use the QGIS settings that save the project files as \*.qgs and not as \*.qgz.
+
+
+If you are a data owner: Add your own OID to the project
+--------------------------------------------------------
+
+* If you are a data owner (Datenherr), you should
+
+  + add your OID data in the table tww_sys.oid_prefixes and set it to true with an INSERT statement
+  + and set the Invalid organisation (and any others) to FALSE:
+
+.. figure:: images/add_own_oid_prefix.jpg
+
+.. code:: sql
+
+  -- sample entry for myorganisation - you need to add an entry for your own organization
+  INSERT INTO tww_sys.oid_prefixes (prefix,organization,active) VALUES ('ch11h8mw','myorganisation',TRUE);
+
+  -- sample code to set Invalid organisation to FALSE
+  UPDATE tww_sys.oid_prefixes SET active=FALSE WHERE prefix='ch000000';
+
+.. note:: Only one OID Prefix should be set to TRUE!
+
+
+* OID prefixes have to be ordered at https://www.interlis.ch/en/dienste/oid-bestellen
+
+.. note:: If you work with different databases for different communities, you should use different OID prefixes for each database.
+
+
+Working with more than one database
+-----------------------------------
+
+* Create a new database in pgAdmin with a new name, e.g. communityA
+
+* Create a new schema tww in this database (do not choose another name, because all scripts works with the schema-name tww)
+
+* Go further on as described in 1.2 Database initialization
+
+* Change the ``pg_service.conf`` - file
+
+.. code:: ini
+
+  [pg_tww]   
+  host=localhost   
+  port=5432   
+  dbname=tww   
+  user=twwuser
+  [pg_communityA]   
+  host=localhost     
+  port=5432     
+  dbname=communityA     
+  user=twwuser
+
+* Search and replace in the copy of ``tww_en.qgs`` all 'pg_tww' with 'pg_communityA'

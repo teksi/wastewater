@@ -1,0 +1,272 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="de" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TWW-SWMM data requirements &mdash; TWW latest Dokumentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=bb97b4dd"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/translations.js?v=9bf55d28"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Stichwortverzeichnis" href="../genindex.html" />
+    <link rel="search" title="Suche" href="../search.html" />
+    <link rel="next" title="Coefficient of friction" href="Coefficient-Friction.html" />
+    <link rel="prev" title="TWW - SWMM correspondances" href="TWW-SWMM-Correspondances.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            TWW
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Dokumentation durchsuchen" aria-label="Dokumentation durchsuchen" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">TEKSI wastewater (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation-guide/index.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">Admin Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions-guide/index.html">Official TWW extensions</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">SWMM Data Exchange</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="SWMM.html">Storm Water Management Model (SWMM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TWW-SWMM-installation.html">TWW-SWMM installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TWW-SWMM-workflow.html">TWW-SWMM workflow</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="Prepare-Data.html">Prepare Data</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="TWW-SWMM-Correspondances.html">TWW - SWMM correspondances</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">TWW-SWMM data requirements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#junctions-and-coordinates">JUNCTIONS and COORDINATES</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#conduits">CONDUITS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xsections">XSECTIONS</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Coefficient-Friction.html">Coefficient of friction</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Generate-SWMM-File.html">Generate SWMM File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Check-SWMM-File.html">Check SWMM File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Run-SWMM-Simulation.html">Run SWMM Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Process-Results.html">Import results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Mapping.html">Mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Developpers-Advanced-Users.html">For developpers and advanced users</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">Translation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">TWW</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">SWMM Data Exchange</a></li>
+          <li class="breadcrumb-item"><a href="Prepare-Data.html">Prepare Data</a></li>
+      <li class="breadcrumb-item active">TWW-SWMM data requirements</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tww_swmm/TWW-SWMM-data-requirements.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <blockquote>
+<div></div></blockquote>
+<section id="tww-swmm-data-requirements">
+<h1>TWW-SWMM data requirements<a class="headerlink" href="#tww-swmm-data-requirements" title="Link to this heading"></a></h1>
+<p>To run a sucessful simulation in SWMM the following minimal data has to be filled in to be matched to the swmm objects</p>
+<section id="junctions-and-coordinates">
+<h2>JUNCTIONS and COORDINATES<a class="headerlink" href="#junctions-and-coordinates" title="Link to this heading"></a></h2>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">JUNCTIONS and COORDINATES</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 27.3%" />
+<col style="width: 45.5%" />
+<col style="width: 27.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>SWMM attribute</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>TWW equivalent</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>User-assigned junction name.</p></td>
+<td><p>wastewater_node.obj_id</p></td>
+</tr>
+<tr class="row-odd"><td><p>X-Coordinate / Y-Coordinate</p></td>
+<td><p>Coordinate of node [COORDINATES]</p></td>
+<td><p>wastewater_node.situation_geometry</p></td>
+</tr>
+<tr class="row-even"><td><p>Description</p></td>
+<td><p>Description of node</p></td>
+<td><p>wastewater_structure.identifier</p></td>
+</tr>
+<tr class="row-odd"><td><p>Tag</p></td>
+<td><p>Optional label used to categorize or classify the junction.</p></td>
+<td><p>manhole.obj_id</p></td>
+</tr>
+<tr class="row-even"><td><p>Invert El.</p></td>
+<td><p>Invert elevation of the junction</p></td>
+<td><p>wastewater_node.bottom_level</p></td>
+</tr>
+<tr class="row-odd"><td><p>Max. Depth</p></td>
+<td><p>Maximum depth at the junction (i.e., the distance from the invert to the ground surface) (feet or meters). If zero, then the distance from the invert to the top of the highest connecting link will be used.</p></td>
+<td><p>Difference of cover.level minus wastewater_node.bottom_level</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="conduits">
+<h2>CONDUITS<a class="headerlink" href="#conduits" title="Link to this heading"></a></h2>
+<table class="docutils align-default" id="id2">
+<caption><span class="caption-text">CONDUITS</span><a class="headerlink" href="#id2" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 27.3%" />
+<col style="width: 45.5%" />
+<col style="width: 27.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>SWMM attribute</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>TWW equivalent</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>User-assigned conduit name.</p></td>
+<td><p>wastewater_node.obj_id</p></td>
+</tr>
+<tr class="row-odd"><td><p>Inlet Node</p></td>
+<td><p>Name of node on the inlet end of the conduit (which is normally the end at higher elevation).</p></td>
+<td><p>from wastewater_node.obj_id</p></td>
+</tr>
+<tr class="row-even"><td><p>Outlet Node</p></td>
+<td><p>Name of node on the outlet end of the conduit (which is normally the end at lower elevation).</p></td>
+<td><p>from wastewater_node.obj_id</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Description of conduit</p></td>
+<td><p>wastewater_networkelement.identifier</p></td>
+</tr>
+<tr class="row-even"><td><p>Tag</p></td>
+<td><p>Optional label used to categorize or classify the conduit.</p></td>
+<td><p>wastewater_networkelement.fk_wastewater_structure</p></td>
+</tr>
+<tr class="row-odd"><td><p>Max. Depth</p></td>
+<td><p>Maximum depth of the conduit’s cross section</p></td>
+<td><p>Difference of Cover.level minus Wastewater_node.bottom_level</p></td>
+</tr>
+<tr class="row-even"><td><p>Length</p></td>
+<td><p>Conduit length</p></td>
+<td><p>reach.length_effective or calculated from reach.progression_geometry if length_effective is empty</p></td>
+</tr>
+<tr class="row-odd"><td><p>Roughness</p></td>
+<td><p>Manning’s roughness coefficient.</p></td>
+<td><p>reach.wall_roughness</p></td>
+</tr>
+<tr class="row-even"><td><p>InletOffset</p></td>
+<td><p>Depth or elevation of the conduit invert above the node invert at the inlet end of the conduit</p></td>
+<td><p>reach_point_from.level minus from_wastewater_node.bottom_level</p></td>
+</tr>
+<tr class="row-odd"><td><p>OutletOffset</p></td>
+<td><p>Depth or elevation of the conduit invert above the node invert at the outlet end of the conduit</p></td>
+<td><p>reach_point_to.level minus to_wastewater_node.bottom_level</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="xsections">
+<h2>XSECTIONS<a class="headerlink" href="#xsections" title="Link to this heading"></a></h2>
+<table class="docutils align-default" id="id3">
+<caption><span class="caption-text">XSECTIONS</span><a class="headerlink" href="#id3" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 27.3%" />
+<col style="width: 45.5%" />
+<col style="width: 27.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>SWMM attribute</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>TWW equivalent</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Shape</p></td>
+<td><p>geometric properties of the conduit’s cross section e.g. CIRCULAR.</p></td>
+<td><p>pipe_profile.profile_type</p></td>
+</tr>
+<tr class="row-odd"><td><p>Geom1</p></td>
+<td><p>Maximum height of conduit</p></td>
+<td><p>reach.clear_height/1000 [m] to [mm]</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="TWW-SWMM-Correspondances.html" class="btn btn-neutral float-left" title="TWW - SWMM correspondances" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
+        <a href="Coefficient-Friction.html" class="btn btn-neutral float-right" title="Coefficient of friction" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, The TWW Project www.teksi.ch.</p>
+  </div>
+
+  Erstellt mit <a href="https://www.sphinx-doc.org/">Sphinx</a> mit einem
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    bereitgestellt von <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

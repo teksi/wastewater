@@ -1,0 +1,170 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plugin and Project Setup &mdash; Documentation TWW latest</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=4e6483d5"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/translations.js?v=e6b791cb"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../search.html" />
+    <link rel="next" title="Data collection policy" href="data_collection_policy_agxx.html" />
+    <link rel="prev" title="Extension AG-64/AG-96" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            TWW
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">TEKSI wastewater (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user-guide/index.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">Admin Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Releases</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Official TWW extensions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../initialize-extensions.html">Initialising Database extensions</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Extension AG-64/AG-96</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Plugin and Project Setup</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#enable-ag-64-ag-96-interlis-imports-and-exports">Enable AG-64/AG-96 Interlis Imports and Exports</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#handling-of-last-modification">Handling of last modification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#project-setup">Project setup</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="data_collection_policy_agxx.html">Data collection policy</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">Translation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">TWW</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Official TWW extensions</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Extension AG-64/AG-96</a></li>
+      <li class="breadcrumb-item active">Plugin and Project Setup</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/extensions-guide/agxx/plugin_setup_agxx.rst.txt" rel="nofollow"> Afficher la source de la page</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <blockquote>
+<div></div></blockquote>
+<section id="plugin-and-project-setup">
+<span id="plugin-setup-agxx"></span><h1>Plugin and Project Setup<a class="headerlink" href="#plugin-and-project-setup" title="Lien vers cette rubrique"></a></h1>
+<p>In order to use the AG-64/AG-96 extension, the database must be initialized accordingly. See <a class="reference internal" href="../initialize-extensions.html#initialize-extensions"><span class="std std-ref">Initialising Database extensions</span></a> for further explanations.</p>
+<section id="enable-ag-64-ag-96-interlis-imports-and-exports">
+<span id="interlis-setup-agxx"></span><h2>Enable AG-64/AG-96 Interlis Imports and Exports<a class="headerlink" href="#enable-ag-64-ag-96-interlis-imports-and-exports" title="Lien vers cette rubrique"></a></h2>
+<p>In the plugin, there is a hidden functionality that allows importing and exporting AG-64/AG-96 interlis files. In order to activate it, one needs to open the TWW settings</p>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../../_images/opensettingsdialog.png" src="../../_images/opensettingsdialog.png" />
+</figure>
+</div></blockquote>
+<p>In the tab <em>Developer options</em>, there is a Checkbox to enable the AG-64/96 extension</p>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../../_images/enableextension.png" src="../../_images/enableextension.png" />
+</figure>
+<p>When this checkbox is ticked, the data models AG-64/AG-96 are available in the interlis export.</p>
+</div></blockquote>
+</section>
+<section id="handling-of-last-modification">
+<span id="last-modification-agxx"></span><h2>Handling of last modification<a class="headerlink" href="#handling-of-last-modification" title="Lien vers cette rubrique"></a></h2>
+<p>AG-64 and AG-96 have separated values for last_modification. In the tab <em>Developer options</em> of the plugin settings, there is a combobox that allows altering which last_modification(s) should be updated.</p>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../../_images/chooselastmodification.png" src="../../_images/chooselastmodification.png" />
+</figure>
+</div></blockquote>
+<p>In the database, there is a table storing the setting per user. That value is read on startup, so the setting does not need to be changed every time a project is opened.</p>
+</section>
+<section id="project-setup">
+<span id="project-setup-agxx"></span><h2>Project setup<a class="headerlink" href="#project-setup" title="Lien vers cette rubrique"></a></h2>
+<p>The attribute forms of AG-64/AG-96 are stored in a specific layer style automatically when starting the template .qgs project. In order to access them, right-click on the layer, select « styles » and cascade to « AG-64/96 »</p>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../../_images/selectstyle.png" src="../../_images/selectstyle.png" />
+</figure>
+</div></blockquote>
+<p>From there, you can copy/paste the forms if necessary.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
+        <a href="index.html" class="btn btn-neutral float-left" title="Extension AG-64/AG-96" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+        <a href="data_collection_policy_agxx.html" class="btn btn-neutral float-right" title="Data collection policy" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2025, The TWW Project www.teksi.ch.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,240 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adding or Editing of Maintenance Events &mdash; Documentation TWW latest</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=4e6483d5"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/translations.js?v=e6b791cb"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../search.html" />
+    <link rel="next" title="Connect Wastewater Network Elements" href="connect_wastewater_network_elements.html" />
+    <link rel="prev" title="Moving Wastewater Structures with Reaches, Covers and Nodes" href="moving.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            TWW
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">TEKSI wastewater (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">Installation Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">Overview of TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../digitizing/index.html">Digitizing in TWW</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Editing in TWW</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="editing.html">Editing of existing data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="moving.html">Moving Wastewater Structures with Reaches, Covers and Nodes</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Adding or Editing of Maintenance Events</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#general">General</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-a-new-maintenance-event">Adding a new Maintenance Event</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#link-an-existing-maintenance-event">Link an existing Maintenance Event</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unlink-maintenance-events">Unlink Maintenance Events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#editing">Editing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mark-as-outdated">Mark as outdated</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#multi-edit">Multi Edit</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="connect_wastewater_network_elements.html">Connect Wastewater Network Elements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="log_card.html">Adding or Editing of Log Cards</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">Length profiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">Network following tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">Plan plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/index.html">History in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../How-To/index.html">How To</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">Admin Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extensions-guide/index.html">Official TWW extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">Translation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">TWW</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">User Guide</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Editing in TWW</a></li>
+      <li class="breadcrumb-item active">Adding or Editing of Maintenance Events</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/user-guide/editing/maintenance_events.rst.txt" rel="nofollow"> Afficher la source de la page</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <blockquote>
+<div></div></blockquote>
+<section id="adding-or-editing-of-maintenance-events">
+<span id="maintenance-events"></span><h1>Adding or Editing of Maintenance Events<a class="headerlink" href="#adding-or-editing-of-maintenance-events" title="Lien vers cette rubrique"></a></h1>
+<p>This represents a guide on how to add or edit maintenance event data in TWW.</p>
+<section id="general">
+<h2>General<a class="headerlink" href="#general" title="Lien vers cette rubrique"></a></h2>
+<ul class="simple">
+<li><p>Maintenance events can be connected to one structure or to many.
+Therefore TWW uses a intermediary RE_table to model the n:m relationship (<strong>re_maintenance_event_wastewater_structure</strong>)</p></li>
+<li><p>Maintenance events can be created or linked at the same time a new wastewater structure or a new reach is created.</p></li>
+</ul>
+</section>
+<section id="adding-a-new-maintenance-event">
+<h2>Adding a new Maintenance Event<a class="headerlink" href="#adding-a-new-maintenance-event" title="Lien vers cette rubrique"></a></h2>
+<ul class="simple">
+<li><p>Enable the edit mode.</p></li>
+<li><p>With the <strong>Identify Features</strong> tool you can select <strong>wastewater_structures</strong> or <strong>reaches</strong> by selecting their corresponding layer (<strong>vw_tww_wastewater_structure</strong> or <strong>vw_tww_reach</strong>).</p></li>
+<li><p>The respective form will open. Change to the <strong>Maintenance_Events</strong> tab.</p></li>
+<li><p>Create a new maintenance event with the <strong>Add child feature</strong> button.</p></li>
+</ul>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../../_images/maintenance_add_child.jpg" src="../../_images/maintenance_add_child.jpg" />
+</figure>
+<ul class="simple">
+<li><p>Edit the new record in the vw_tww_maintenance_event form, then click <strong>OK</strong></p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/maintenance_new_record2025.jpg" src="../../_images/maintenance_new_record2025.jpg" />
+</figure>
+<figure class="align-default">
+<img alt="../../_images/maintenance_new_record_saved.jpg" src="../../_images/maintenance_new_record_saved.jpg" />
+</figure>
+</div></blockquote>
+</section>
+<section id="link-an-existing-maintenance-event">
+<h2>Link an existing Maintenance Event<a class="headerlink" href="#link-an-existing-maintenance-event" title="Lien vers cette rubrique"></a></h2>
+<ul class="simple">
+<li><p>Enable the edit mode.</p></li>
+<li><p>With the <strong>Identify Features</strong> tool you can select <strong>wastewater_structures</strong> or <strong>reaches</strong> by selecting their corresponding layer (<strong>vw_tww_wastewater_structure</strong> or <strong>vw_tww_reach</strong>).</p></li>
+<li><p>The respective form will open. Change to the <strong>Maintenance_Events</strong> tab.</p></li>
+<li><p>Click the <strong>Link existing child feature(s)</strong> button.</p></li>
+</ul>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../../_images/maintenance_link_child.jpg" src="../../_images/maintenance_link_child.jpg" />
+</figure>
+<ul class="simple">
+<li><p>Choose a maintenance event from the <strong>Manage linked features for …</strong> window by choosing a record. Then click the <strong>Link selected</strong> button and <strong>OK</strong></p></li>
+<li><p>Close the windows with <strong>OK</strong> and turn of the edit mode to save changes</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="unlink-maintenance-events">
+<h2>Unlink Maintenance Events<a class="headerlink" href="#unlink-maintenance-events" title="Lien vers cette rubrique"></a></h2>
+<ul class="simple">
+<li><p>Enable the edit mode.</p></li>
+<li><p>With the <strong>Identify Features</strong> tool you can select <strong>wastewater_structures</strong> or <strong>reaches</strong> by selecting their corresponding layer (<strong>vw_tww_wastewater_structure</strong> or <strong>vw_tww_reach</strong>).</p></li>
+<li><p>The respective form will open. Change to the <strong>Maintenance_Events</strong> tab.</p></li>
+<li><p>Select a maintenance event by clicking in the box (box gets yellow), then click the <strong>Unlink selected child feature(s)</strong> button.</p></li>
+</ul>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../../_images/maintenance_unlink_child.jpg" src="../../_images/maintenance_unlink_child.jpg" />
+</figure>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Unlink means, that there is only the record in the RE-table deleted. The maintenance event record itself is not deleted and can by linked with other wastewater structures. When using the <strong>Delete selected child feature(s)</strong> button, the maintenance_event- and the re_maintenance_event_wastewater_structure-record are deleted.</p>
+</div>
+</div></blockquote>
+</section>
+<section id="editing">
+<h2>Editing<a class="headerlink" href="#editing" title="Lien vers cette rubrique"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>Do as described in adding - but just edit existing maintenance events.</p></li>
+<li><p>Or edit the <strong>vw_tww_maintenance_event</strong> table (in layer group <strong>inspection</strong>)</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="mark-as-outdated">
+<h2>Mark as outdated<a class="headerlink" href="#mark-as-outdated" title="Lien vers cette rubrique"></a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">Ajouté dans la version 2025.0.</span></p>
+</div>
+<p>In order to use maintenance events and files efficiently, they can be flagged as outdated using a TEKSI-specific extension of the datamodel, namely a true/false value named <code class="docutils literal notranslate"><span class="pre">tww_outdated</span></code>.</p>
+<blockquote>
+<div><div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>This extension-data is not part of the INTERLIS-export. If you migrate data via export-import, you will have to copy this values separately in the new database.</p>
+</div>
+</div></blockquote>
+</section>
+<section id="multi-edit">
+<h2>Multi Edit<a class="headerlink" href="#multi-edit" title="Lien vers cette rubrique"></a></h2>
+<p>Multi edit with linked tables is implemented in QGIS. It is possible to create or to link a maintenance event to a selection of reaches or wastewater structures in multiedit-mode.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
+        <a href="moving.html" class="btn btn-neutral float-left" title="Moving Wastewater Structures with Reaches, Covers and Nodes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+        <a href="connect_wastewater_network_elements.html" class="btn btn-neutral float-right" title="Connect Wastewater Network Elements" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2025, The TWW Project www.teksi.ch.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

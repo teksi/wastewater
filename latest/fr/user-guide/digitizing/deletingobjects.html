@@ -1,0 +1,286 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deleting objects &mdash; Documentation TWW latest</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=4e6483d5"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/translations.js?v=e6b791cb"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../search.html" />
+    <link rel="next" title="Digitizing Catchment Areas" href="digitizingcatchments.html" />
+    <link rel="prev" title="Digitizing Channels" href="digitizingchannels.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            TWW
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">TEKSI wastewater (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">Installation Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">Overview of TWW</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Digitizing in TWW</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="dataentry.html">Data entry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingwastewaterstructures.html">Digitizing Wastewater Structures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingdetailedgeometry.html">Digitizing detailed geometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingdrainagechannel.html">Digitizing Detailed Geometry as Drainage Channel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingchannels.html">Digitizing Channels</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Deleting objects</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#delete-reach">Delete Reach</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-manhole-or-other-wastewater-structure">Delete Manhole or other Wastewater Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-wastewater-structure-but-keep-the-wastewater-node-and-the-connections-to-the-wastewater-node">Delete Wastewater Structure, but keep the wastewater_node and the connections to the wastewater_node</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-cover">Delete Cover</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-structure-parts">Delete Structure parts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-detailed-geometries">Delete detailed geometries</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingcatchments.html">Digitizing Catchment Areas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="importingdata.html">Importing data</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../editing/index.html">Editing in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">Length profiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">Network following tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">Plan plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/index.html">History in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../How-To/index.html">How To</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">Admin Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extensions-guide/index.html">Official TWW extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">Translation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">TWW</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">User Guide</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Digitizing in TWW</a></li>
+      <li class="breadcrumb-item active">Deleting objects</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/user-guide/digitizing/deletingobjects.rst.txt" rel="nofollow"> Afficher la source de la page</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <blockquote>
+<div></div></blockquote>
+<section id="deleting-objects">
+<h1>Deleting objects<a class="headerlink" href="#deleting-objects" title="Lien vers cette rubrique"></a></h1>
+<p>You can delete point or line objects (with all associated objects) through the <strong>vw_tww_(wastewater_structure/reach)</strong> layers.
+You can also pick and delete only a specific object (e.g. cover).</p>
+<section id="delete-reach">
+<h2>Delete Reach<a class="headerlink" href="#delete-reach" title="Lien vers cette rubrique"></a></h2>
+<ul class="simple">
+<li><p>Select <strong>vw_tww_reach</strong> and change to edit mode.</p></li>
+<li><p>Select the reach(es) you want to delete. You can click on an object or draw an area.</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/select_tool.jpg" src="../../_images/select_tool.jpg" />
+</figure>
+<ul class="simple">
+<li><p>Use the top menu <strong>Edit</strong> –&gt; <strong>Delete Selected</strong> to delete.</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/delete_reach.jpg" src="../../_images/delete_reach.jpg" />
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The easiest way is to simply press the <strong>Delete</strong> key on your keyboard.
+Another way is to press the <strong>Delete</strong> button located in the <strong>Digitizing toolbar</strong>.</p>
+<figure class="align-default">
+<img alt="../../_images/delete_button.jpg" src="../../_images/delete_button.jpg" />
+</figure>
+<p>Depending on how you customized QGIS the <strong>Digitizing toolbar</strong> may be hidden or located
+elsewhere.</p>
+</div>
+<ul class="simple">
+<li><p>Deselect the edit mode and confirm changes to layer. All changes will be saved to database.</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/delete_reach_confirm.jpg" src="../../_images/delete_reach_confirm.jpg" />
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Delete reach deletes also all connected structure parts (e.g. dryweather_downspout). The connected channel is only deleted if there is no other wastewater networkelement connected to the channel. If there are two reaches connected to one channel, the channel is only deleted if both reaches are deleted.</p>
+</div>
+</section>
+<section id="delete-manhole-or-other-wastewater-structure">
+<h2>Delete Manhole or other Wastewater Structure<a class="headerlink" href="#delete-manhole-or-other-wastewater-structure" title="Lien vers cette rubrique"></a></h2>
+<ul class="simple">
+<li><p>Select <strong>vw_tww_wastewater_structure</strong> and change to edit mode</p></li>
+<li><p>Select the objects (<strong>manholes</strong>, <strong>special structures</strong> etc.) you want to delete</p></li>
+<li><p>Use <strong>Edit</strong> –&gt; <strong>Delete Selected</strong> to delete.</p></li>
+<li><p>Stop the editing mode and confirm changes to layer. All changes will be saved to database.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Delete wastewater structures deletes also all connected structure parts (cover, access_aid etc) and all connected wastewater nodes. fk_wastewater_networkelement in reachpoints, that where connected to the node, are set to NULL.</p>
+</div>
+</section>
+<section id="delete-wastewater-structure-but-keep-the-wastewater-node-and-the-connections-to-the-wastewater-node">
+<h2>Delete Wastewater Structure, but keep the wastewater_node and the connections to the wastewater_node<a class="headerlink" href="#delete-wastewater-structure-but-keep-the-wastewater-node-and-the-connections-to-the-wastewater-node" title="Lien vers cette rubrique"></a></h2>
+<p>First, you have to kill the connection between wastewater_node and wastewater_structure. Because the fk_wastewater_structure field is not visible in the wastewater_node feature attribut window (this field make no sense in other cases, where the form is also used), you have to follow this way:</p>
+<ul class="simple">
+<li><p>Select <strong>vw_tww_wastewater_structure</strong> and change to edit mode</p></li>
+<li><p>Use the <strong>Identify Features</strong> tool to open the form of the manhole you want to delete</p></li>
+<li><p>Switch to Wastewater Nodes tab</p></li>
+<li><p>Select the Node, that should not be deleted</p></li>
+<li><p>Use the button <strong>Unlink selected child record(s)</strong></p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/unlink_childe.jpg" src="../../_images/unlink_childe.jpg" />
+</figure>
+<ul class="simple">
+<li><p>Click <strong>OK</strong> and close the form window</p></li>
+</ul>
+<p>The wastewater node is now no more part of the wastewater_structure</p>
+<ul class="simple">
+<li><p>Select the object (<strong>manhole</strong>, <strong>special structure</strong> etc.) you want to delete</p></li>
+<li><p>Use <strong>Edit</strong> –&gt; <strong>Delete Selected</strong> to delete.</p></li>
+<li><p>Stop the editing mode and confirm changes to layer. All changes will be saved to database.</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/keep_node.jpg" src="../../_images/keep_node.jpg" />
+</figure>
+</section>
+<section id="delete-cover">
+<h2>Delete Cover<a class="headerlink" href="#delete-cover" title="Lien vers cette rubrique"></a></h2>
+<ul class="simple">
+<li><p>Select <strong>vw_tww_wastewater_structure</strong> and change to edit mode</p></li>
+<li><p>Select the object (<strong>manholes</strong>, <strong>special structures</strong> etc.) from which the cover is to be deleted</p></li>
+<li><p>Use the <strong>Identify Features</strong> tool to open the form</p></li>
+<li><p>Switch to the covers tab</p></li>
+<li><p>Select the cover(s) you want to delete</p></li>
+<li><p>Click the button <strong>delete selected child features</strong> to delete the covers</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/delete_covers.jpg" src="../../_images/delete_covers.jpg" />
+</figure>
+<ul class="simple">
+<li><p>Click save on the form</p></li>
+<li><p>Deselect the edit mode and confirm changes to layer. All changes will be saved to database.</p></li>
+</ul>
+<p>Second way to delete a cover</p>
+<ul class="simple">
+<li><p>Select the <strong>vw_cover</strong> layer and change to edit mode</p></li>
+<li><p>Select the cover</p></li>
+<li><p>Use <strong>Edit</strong> –&gt; <strong>Delete Selected</strong></p></li>
+<li><p>Stop the editing mode</p></li>
+</ul>
+</section>
+<section id="delete-structure-parts">
+<h2>Delete Structure parts<a class="headerlink" href="#delete-structure-parts" title="Lien vers cette rubrique"></a></h2>
+<ul class="simple">
+<li><p>Select <strong>vw_tww_wastewater_structure</strong> and change to edit mode</p></li>
+<li><p>Select the object (<strong>manholes</strong>, <strong>special structures</strong> etc.) from which a structure part is to be deleted</p></li>
+<li><p>Use the <strong>Identify Features</strong> tool to open the form</p></li>
+<li><p>Switch to the structure parts tab</p></li>
+<li><p>Select the structure part you want to delete</p></li>
+<li><p>Click the red x button to delete the structure parts</p></li>
+<li><p>Click save on the form</p></li>
+<li><p>Stop the editing mode and confirm changes to layer. All changes will be saved to database.</p></li>
+</ul>
+</section>
+<section id="delete-detailed-geometries">
+<h2>Delete detailed geometries<a class="headerlink" href="#delete-detailed-geometries" title="Lien vers cette rubrique"></a></h2>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Deleting features directly from <strong>wastewater_structure</strong> (layergroup Wastewater Structures) will remove the complete wastewater structure from the database and not only the geometry of the wastewater structure!</p>
+</div>
+<ul class="simple">
+<li><p>Select layer <strong>wastewater_structure</strong> and change to edit mode</p></li>
+<li><p>Activate the <strong>Delete part</strong> tool from the Advanced digitizing toolbar</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/delete_part_tool.jpg" src="../../_images/delete_part_tool.jpg" />
+</figure>
+<ul class="simple">
+<li><p>You get a cross-cursor. Click on the part you want to delete (there is no question if you really want… If you click, the part is deleted!)</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/delete_part_tool2.jpg" src="../../_images/delete_part_tool2.jpg" />
+</figure>
+<ul class="simple">
+<li><p>Stop the editing mode and confirm changes to layer. All changes will be saved to database.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
+        <a href="digitizingchannels.html" class="btn btn-neutral float-left" title="Digitizing Channels" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+        <a href="digitizingcatchments.html" class="btn btn-neutral float-right" title="Digitizing Catchment Areas" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2025, The TWW Project www.teksi.ch.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

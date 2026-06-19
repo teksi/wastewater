@@ -1,0 +1,484 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>INTERLIS Data exchange &mdash; TWW latest documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=c6e86fd7"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Customization of the data model" href="../db-customization/index.html" />
+    <link rel="prev" title="User Roles" href="../security/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            TWW
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">TEKSI wastewater (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user-guide/index.html">User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Admin Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../datamodel.html">Datamodel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../db-label-customisation/index.html">Customisation of labeling and symbology behaviour</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pgadmin/index.html">pgAdmin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.html">User Roles</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">INTERLIS Data exchange</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#general">General</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#java">Java</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python-libraries">Python libraries</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tww-version">TWW Version</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#usage-gui">Usage (GUI)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#enable-admin-mode">Enable admin mode</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#interlis-export">INTERLIS Export</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#export-extra-organisations">Export extra organisations</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#interlis-import">INTERLIS Import</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#usage-command-line">Usage (command line)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#import">Import</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#export">Export</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#quality-control">Quality control</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#quality-control-with-vsa-online-checker-fachprufung-mit-vsa-checker-online">Quality control with VSA online checker (Fachprüfung mit VSA Checker (online))</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../db-customization/index.html">Customization of the data model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datamodel-tool/index.html">TEKSI Module Management Tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../db-update-pum/index.html">Manual update of the datamodel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../db-production-readiness/index.html">Prepare database for production</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extensions-guide/index.html">Official TWW extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">Translation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">TWW</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Admin Guide</a></li>
+      <li class="breadcrumb-item active">INTERLIS Data exchange</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/admin-guide/interlis-io/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <blockquote>
+<div></div></blockquote>
+<section id="interlis-data-exchange">
+<h1>INTERLIS Data exchange<a class="headerlink" href="#interlis-data-exchange" title="Link to this heading"></a></h1>
+<p>This represents a guide on how to import/export data between TWW and <a class="reference external" href="https://www.interlis.ch">INTERLIS 2 Transfer Format (XTF)</a>.</p>
+<section id="general">
+<h2>General<a class="headerlink" href="#general" title="Link to this heading"></a></h2>
+<p>The TWW plugin includes an INTERLIS import/export feature.
+It is currently capable of importing and exporting the following models:</p>
+<ul class="simple">
+<li><p>SIA405_ABWASSER_2020_1_LV95</p></li>
+<li><p>DSS_2020_1_LV95</p></li>
+<li><p>VSA_KEK_2020_1_LV95</p></li>
+<li><p>SIA405_Base_Abwasser_1_LV95 (to export your own additional organisations that are not part of the centralized VSA Organisation dataset)</p></li>
+</ul>
+<p>Note that currently, exports are possible in German only. Translated exports are on the roadmap, let us know if you are interested in this feature.</p>
+</section>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h2>
+<section id="java">
+<h3>Java<a class="headerlink" href="#java" title="Link to this heading"></a></h3>
+<p>You need java on your system.</p>
+<p>Windows : <a class="reference external" href="https://javadl.oracle.com/webapps/download/AutoDL?BundleId=245058_d3c52aa6bfa54d3ca74e617f18309292">Java for windows download</a>
+MacOS : <a class="reference external" href="https://javadl.oracle.com/webapps/download/AutoDL?BundleId=245051_d3c52aa6bfa54d3ca74e617f18309292">Java for MacOS download</a>
+Linux : use the package manager</p>
+</section>
+<section id="python-libraries">
+<h3>Python libraries<a class="headerlink" href="#python-libraries" title="Link to this heading"></a></h3>
+<p>You need <cite>sqlalchemy</cite> and <cite>geoalchemy2</cite>.</p>
+<p>To install : before launching QGIS, open OSGeo4W Shell</p>
+<figure class="align-default">
+<img alt="../../_images/osgeo4wshell.jpg" src="../../_images/osgeo4wshell.jpg" />
+</figure>
+<p>and type:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pip3</span> <span class="n">install</span> <span class="s2">&quot;sqlalchemy~=2.0.36&quot;</span> <span class="s2">&quot;geoalchemy2&gt;=0.14.7&quot;</span>
+</pre></div>
+</div>
+<p>If the command fails, try:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pip3</span> <span class="n">install</span> <span class="o">--</span><span class="n">upgrade</span> <span class="n">pip</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If pip cannot be found, make sure you’ve installed the python3-pip package using the OSGeo4W network installer (if you’ve installed the standalone version of QGIS, it should be included).</p>
+</div>
+<p>If this command still fails, try:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pip3</span> <span class="n">install</span> <span class="o">--</span><span class="n">target</span><span class="o">=</span><span class="n">c</span><span class="p">:</span>\<span class="n">somewhere</span>\<span class="n">other</span>\<span class="n">than</span>\<span class="n">the</span>\<span class="n">default</span> <span class="o">--</span><span class="n">upgrade</span> <span class="n">pip</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">c:\somewhere\other\than\the\default</span></code> is the path to your current pip package</p>
+<p>The same <cite>–target</cite> flag can be added to install <cite>sqlalchemy</cite> and <cite>geoalchemy2</cite> in another location.</p>
+</section>
+<section id="tww-version">
+<h3>TWW Version<a class="headerlink" href="#tww-version" title="Link to this heading"></a></h3>
+<p>The export only supports up-to-date TWW data model (<a class="reference external" href="https://www.vsa.ch/models/2020_1">2020.1</a> at the time of writing). Ensure your TWW data model is fully updated before trying to import/export.</p>
+</section>
+</section>
+<section id="usage-gui">
+<h2>Usage (GUI)<a class="headerlink" href="#usage-gui" title="Link to this heading"></a></h2>
+<section id="enable-admin-mode">
+<h3>Enable admin mode<a class="headerlink" href="#enable-admin-mode" title="Link to this heading"></a></h3>
+<p>In the <cite>plugin&gt;TWW&gt;settings</cite> dialog, under the <cite>Developer options</cite> tab, ensure <cite>Admin mode</cite> is enabled. Restart QGIS.</p>
+<figure class="align-default">
+<img alt="../../_images/settings_dialog.png" src="../../_images/settings_dialog.png" />
+</figure>
+<p>You should now see new <cite>import</cite> and <cite>export</cite> buttons in the TWW toolbar.</p>
+<figure class="align-default">
+<img alt="../../_images/toolbar.png" src="../../_images/toolbar.png" />
+</figure>
+</section>
+</section>
+<section id="interlis-export">
+<span id="id2"></span><h2>INTERLIS Export<a class="headerlink" href="#interlis-export" title="Link to this heading"></a></h2>
+<figure class="align-default">
+<img alt="../../_images/tww_interlis_export_button.png" src="../../_images/tww_interlis_export_button.png" />
+</figure>
+<p>To export your TWW data, click on the <cite>INTERLIS export</cite> button.</p>
+<p>The following dialog will appear.</p>
+<figure class="align-default">
+<img alt="../../_images/tww_interlis_export.png" src="../../_images/tww_interlis_export.png" />
+</figure>
+<p>At first, select the export model.</p>
+<p>If you have an active selection in the nodes and/or reaches layer, you can choose to restrict the export to that selection. This is especially useful in combination with the upstream/downstream selection tools.</p>
+<figure class="align-default">
+<img alt="../../_images/tww_interlis_export_selection.png" src="../../_images/tww_interlis_export_selection.png" />
+</figure>
+<p>The export tools is capable of exporting label positions for different scales. You can choose which scales you are interested in exporting by selected/deselecting them.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Only choose either Werkplan 1:500 or Werkplan 1:250. The latter may give you a more accurarte placement while printing labels in the scale 1:500. Choosing both scales will give you duplicate label positions - so avoid this! You will not be able to distinguish anymore which are the labels for 1:250 and 1:500 in the exported xtf file as both will get the plantype = “Werkplan” (currently VSA-DSS / SIA405 Abwasser 2020.x only supports one scale - this might change in a future release).</p>
+</div>
+<p>Then, confirm the dialog and choose where to save the <cite>.xtf</cite> file.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Note that windows file pathes with empty strings in the directory path or filename are not supported at the moment.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Note that for large/full exports, the command can take a long time.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Note that QGIS standard behaviour for too long labels is to turn them horizontally (orientation = 0). You can adjust the properties of the vw_tww_reach layer - Symbology - Placement - Label overrun from “no overrun” to e.g. 7 mm (Millimeter)</p>
+</div>
+<figure class="align-default">
+<img alt="../../_images/layer_vw_tww_reach_label_overrun.png" src="../../_images/layer_vw_tww_reach_label_overrun.png" />
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Note that remark fields are truncated to 80 characters on INTERLIS Export, as the INTERLIS definition is like this. If you have remark fields with more text then consider to move this data to documentation with the classes “file” and “data_media” so it can be exported to INTERLIS completely where you can add any document, photo or video to a class.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>More information on <a class="reference external" href="https://docs.qgis.org/3.44/en/docs/user_manual/processing_algs/qgis/cartography.html#extract-labels">QGIS label export</a></p>
+</div>
+<p>The following validations are run as pre-process:</p>
+<ul class="simple">
+<li><p>Validate subclasses before export (_check_subclass_counts): The total of the subclass entries over alls subclasses must be equal to the numer of entries in the superclass.</p></li>
+<li><p>Identifier NULL check (_check_identifier_null): As identifier is mandatory in the INTERLIS models, we check whether every identifier field has an entry (NOT NULL). If you have data, where you do not want to create your own identifiers, copy the obj_id as identifier (e.g. for reach_points). This is also the standard behaviour when you add new data. If you have copied data from elsewhere (not created in TEKSI), you might have to clean up this, else your INTERLIS export will stop.</p></li>
+<li><p>Check references to the class organisation (_check_fk_owner_null, _check_fk_operator_null, _check_fk_dataowner_null, _check_fk_provider_null): Owner, Operator and the metainformation about dataowner and provider are MANDATORY in a INTERLIS Export file. Therefor these pre-checks make sure they are filled in. If you don’t know, choose the Organisation ‘unknown’, that is also an entry in the organisation dataset.</p></li>
+<li><p>Check references to classes that are MANDATORY (e.g. _check_fk_reach_point_from_null, …): References that are MANDATORY in INTERLIS will be pre-checked to avoid crash during export.</p></li>
+</ul>
+<p>You will get a new summary window that tells you, if any of these pre-checks failed:</p>
+<figure class="align-default">
+<img alt="../../_images/interlis_export_precheck_results.png" src="../../_images/interlis_export_precheck_results.png" />
+</figure>
+<p>You can choose to continue export, if you think the pre-check results will not be relevant for your export (e.g. if you export SIA405 Abwaser, but there are reference check errors that are within the VSA-DSS part that are beyond SIA405 Abwasser).</p>
+<p>Exports include also a validation step at the end using <cite>ilivalidator</cite>, which will inform you whether the export contains INTERLIS validation errors.</p>
+<p>If the export was successful a green success message appears.
+If the export is not successfull you will get either error messages during the export process or an error warning at the end of the process.</p>
+<p>You can check the protocol window and the text logs for further details.</p>
+<table class="docutils align-default" id="id4">
+<caption><span class="caption-text">There are four different log files:</span><a class="headerlink" href="#id4" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 50.0%" />
+<col style="width: 25.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Heading Export step</p></th>
+<th class="head"><p>Heading Description</p></th>
+<th class="head"><p>Heading Log File</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Export schema</p></td>
+<td><p>Creation of export schema with ili2db and the selected INTERLIS model file</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">*.ili2pg-schemaimport.log</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Data export intermediatary schema</p></td>
+<td><p>Export of data from tww_od to the new intermediary schema, translation from English to German</p></td>
+<td><p>*.tww2ili-export.log</p></td>
+</tr>
+<tr class="row-even"><td><p>Data export to xtf</p></td>
+<td><p>Data export from intermediary schema to INTERLIS Transfer file (xtf)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">*.ili2pg-export-MODELNAME.log</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>INTERLIS validation</p></td>
+<td><p>Validation of the created xtf file(s) with ilivalidator</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">*.ilivalidator-MODELNAME.log</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<section id="export-extra-organisations">
+<h3>Export extra organisations<a class="headerlink" href="#export-extra-organisations" title="Link to this heading"></a></h3>
+<figure class="align-default">
+<img alt="../../_images/tww_interlis_export_organisation.jpg" src="../../_images/tww_interlis_export_organisation.jpg" />
+</figure>
+<p>Since Release 2025.x you can also export additional organisations that are not maintained as part of the <a class="reference external" href="https://vsa.ch/models/organisation/vsa_organisationen_2020_1.xtf">VSA organisation dataset</a> and that you are maintaining yourself. For a general introduction on how organisation are maintained by the Verband Schweizer Abwasser &amp; Gewässerschutzfachleute (VSA) <a class="reference external" href="https://vsa.ch/fachbereiche-cc/siedlungsentwaesserung/generelle-entwaesserungsplanung/datenmanagement/#Organisationstabelle">check this documentation</a>.</p>
+<p>Extra organisations could be for example bigger private organisations that are ususally summarized as ‘Privat’ when publishing to others, but they are relevant for you to be distinguised. For an export they need to be flagged as <code class="docutils literal notranslate"><span class="pre">tww_local_extension</span> <span class="pre">=</span> <span class="pre">True</span></code></p>
+<figure class="align-default">
+<img alt="../../_images/organisation_tww_local_extension.png" src="../../_images/organisation_tww_local_extension.png" />
+</figure>
+</section>
+</section>
+<section id="interlis-import">
+<span id="id3"></span><h2>INTERLIS Import<a class="headerlink" href="#interlis-import" title="Link to this heading"></a></h2>
+<figure class="align-default">
+<img alt="../../_images/tww_interlis_import_button.png" src="../../_images/tww_interlis_import_button.png" />
+</figure>
+<p>To import <cite>xtf`files, click on the `INTERLIS import</cite> button and navigate to the <cite>.xtf</cite> file.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Note that windows file pathes with empty strings in the directory path or filename are not supported at the moment.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There is a new option that you can avoid overwriting of data when there are NULL values of attributes in the import data set. This will keep your existing values that you already have in the database.</p>
+</div>
+<figure class="align-default">
+<img alt="../../_images/interlis_import_options.png" src="../../_images/interlis_import_options.png" />
+</figure>
+<p><strong>Organisations before data !</strong></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Starting with release 2020 all organisations are in a separated dataset and need to be imported first, else a bunch of errors will be thrown on all references like fk_dataowner, fk_owner, fk_provider, etc. Download the VSA Organisation data set from <a class="reference external" href="https://www.vsa.ch/models/organisation/vsa_organisationen_2020_1.xtf">https://www.vsa.ch/models/organisation/vsa_organisationen_2020_1.xtf</a> and start with importing that data set. This data set is updated regularly - so please come back and check (and maybe re-import) at a later stage to have access to all available organisation.</p>
+</div>
+<p>If you have organisations that are not yet in that data set <a class="reference external" href="https://vsa.ch/fachbereiche-cc/siedlungsentwaesserung/generelle-entwaesserungsplanung/datenmanagement/#Organisationstabelle">please inform the VSA and hand in an application to be added</a>.</p>
+<p>If you have additional own local organisations that are not (yet) in the VSA organisation data set continue with importing those before you start importing your network data. TV inspection data usually comes last, as it references your network data.</p>
+<p>After launching the import process your data set will be validated and imported in a intermediatary schema. Then the following dialog will appear.</p>
+<figure class="align-default">
+<img alt="../../_images/tww_import_dialog.png" src="../../_images/tww_import_dialog.png" />
+</figure>
+<p>The left part of this dialog lists all elements that are going to be imported from the <cite>.xtf</cite> file, allowing to review what is going to be imported and to deselect elements you may want to skip.
+You can see, if there is already a dataset with the same obj_id in the state attribute: (EXISTING) means that the import will not change anything, (MODIFIED) tells you that some attributes have been changed. For details see on the right side, where you can compare the values for each attribute.</p>
+<p>The second colums also shows the validation status of each object (VALID), showing whether further action is needed (INVALID) or recommended (WARNING) prior to importing.</p>
+<p>The right part of this dialog shows a form specific to the type of element selected in the list, allowing to adapt the import.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Currently de-selecting and selecting objects might take a long time depending how many data sets are in that respective class.</p>
+</div>
+<p>Once you’re happy with the import options, confirm the dialog to persist the changes to your database.</p>
+<p>If the import was successful a green success message appears.</p>
+</section>
+<section id="usage-command-line">
+<h2>Usage (command line)<a class="headerlink" href="#usage-command-line" title="Link to this heading"></a></h2>
+<p>For advanced usage, the import/export tool can also be used as a command line tool.</p>
+<section id="dependencies">
+<h3>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h3>
+<p>The QGIS python classes must be available in the python interpreter.</p>
+<ul class="simple">
+<li><p>On windows you can use the OSGeo4W environment</p></li>
+<li><p>On linux you can extend the PYTHONPATH pointing to you QGIS installation, for example: <cite>export PYTHONPATH=”$PYTHONPATH:/usr/share/qgis/python”</cite></p></li>
+</ul>
+</section>
+<section id="import">
+<h3>Import<a class="headerlink" href="#import" title="Link to this heading"></a></h3>
+<p>Import example</p>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3<span class="w"> </span>plugin/tww_cmd.py<span class="w"> </span>interlis_import<span class="w"> </span>--xtf_file<span class="w"> </span>plugin/teksi_wastewater/tests/data/minimal-dataset-SIA405-ABWASSER.xtf<span class="w"> </span>--pgservice<span class="w"> </span>pg_tww
+</pre></div>
+</div>
+<p>Full usage</p>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3<span class="w"> </span>plugin/tww_cmd.py<span class="w"> </span>interlis_export<span class="w"> </span>--help
+
+<span class="go">usage: tww_cmd.py interlis_export [-h] --xtf_file XTF_FILE [--selection SELECTION] [--export_model {SIA405_ABWASSER_2020_1_LV95,DSS_2020_1_LV95,VSA_KEK_2020_1_LV95}] [--logs_next_to_file]</span>
+<span class="go">                                               [--label_scale_pipeline_registry_1_1000] [--label_scale_network_plan_1_250] [--label_scale_network_plan_1_500] [--label_scale_overviewmap_1_10000] [--label_scale_overviewmap_1_5000]</span>
+<span class="go">                                               [--label_scale_overviewmap_1_2000] [--selected_ids SELECTED_IDS] [--pgservice PGSERVICE] [--pghost PGHOST] [--pgport PGPORT] [--pgdatabase PGDATABASE]</span>
+<span class="go">                                               [--pguser PGUSER] [--pgpass PGPASS]</span>
+
+<span class="go">options:</span>
+<span class="go">  -h, --help            show this help message and exit</span>
+<span class="go">  --xtf_file XTF_FILE   XTF outup file</span>
+<span class="go">  --selection SELECTION</span>
+<span class="go">                        if provided, limits the export to networkelements that are provided in the selection (comma separated list of ids)</span>
+<span class="go">  --export_model {SIA405_ABWASSER_2020_1_LV95,DSS_2020_1_LV95,VSA_KEK_2020_1_LV95}</span>
+<span class="go">                        Model to export (default: DSS_2020_1_LV95)</span>
+<span class="go">  --logs_next_to_file   Put log files next to XTF output file</span>
+<span class="go">  --label_scale_pipeline_registry_1_1000</span>
+<span class="go">                        Export labels in scale 1:1&#39;000, can be combined with other scales (Leitungskataster/Cadastre des conduites souterraines)</span>
+<span class="go">  --label_scale_network_plan_1_250</span>
+<span class="go">                        Export labels in scale 1:250, should not be combined with other scales of Werkplan (Werkplan/Plan de reseau)</span>
+<span class="go">  --label_scale_network_plan_1_500</span>
+<span class="go">                        Export labels in scale 1:500, should not be combined with other scales of Werkplan (Werkplan/Plan de reseau)</span>
+<span class="go">  --label_scale_overviewmap_1_10000</span>
+<span class="go">                        Export labels in scale 1:10&#39;000, can be combined with other scales (Uebersichtsplan/Plan d&#39;ensemble)</span>
+<span class="go">  --label_scale_overviewmap_1_5000</span>
+<span class="go">                        Export labels in scale 1:5&#39;000, can be combined with other scales (Uebersichtsplan/Plan d&#39;ensemble)</span>
+<span class="go">  --label_scale_overviewmap_1_2000</span>
+<span class="go">                        Export labels in scale 1:2&#39;000, can be combined with other scales (Uebersichtsplan/Plan d&#39;ensemble)</span>
+<span class="go">  --selected_ids SELECTED_IDS</span>
+<span class="go">                        If provided, limits the export to networkelements that are provided in the selection (comma separated list of ids)</span>
+<span class="go">  --pgservice PGSERVICE</span>
+<span class="go">                        Postgres service name</span>
+<span class="go">  --pghost PGHOST       Postgres host</span>
+<span class="go">  --pgport PGPORT       Postgres port</span>
+<span class="go">  --pgdatabase PGDATABASE</span>
+<span class="go">                        Postgres database</span>
+<span class="go">  --pguser PGUSER       Postgres user</span>
+<span class="go">  --pgpass PGPASS       Postgres password</span>
+</pre></div>
+</div>
+</section>
+<section id="export">
+<h3>Export<a class="headerlink" href="#export" title="Link to this heading"></a></h3>
+<p>Export example</p>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">python3 plugin/tww_cmd.py interlis_export --xtf_file &quot;output.xtf&quot; --pgservice pg_tww</span>
+</pre></div>
+</div>
+<p>Full usage</p>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3<span class="w"> </span>plugin/tww_cmd.py<span class="w"> </span>interlis_export<span class="w"> </span>--help
+
+<span class="go">usage: tww_cmd.py interlis_export [-h] --xtf_file XTF_FILE [--selection SELECTION] [--export_model {SIA405_ABWASSER_2020_1_LV95,DSS_2020_1_LV95,VSA_KEK_2020_1_LV95}] [--logs_next_to_file]</span>
+<span class="go">                                               [--label_scale_pipeline_registry_1_1000] [--label_scale_network_plan_1_250] [--label_scale_network_plan_1_500] [--label_scale_overviewmap_1_10000] [--label_scale_overviewmap_1_5000]</span>
+<span class="go">                                               [--label_scale_overviewmap_1_2000] [--selected_ids SELECTED_IDS] [--pgservice PGSERVICE] [--pghost PGHOST] [--pgport PGPORT] [--pgdatabase PGDATABASE]</span>
+<span class="go">                                               [--pguser PGUSER] [--pgpass PGPASS]</span>
+
+<span class="go">options:</span>
+<span class="go">  -h, --help            show this help message and exit</span>
+<span class="go">  --xtf_file XTF_FILE   XTF outup file</span>
+<span class="go">  --selection SELECTION</span>
+<span class="go">                        if provided, limits the export to networkelements that are provided in the selection (comma separated list of ids)</span>
+<span class="go">  --export_model {SIA405_ABWASSER_2020_1_LV95,DSS_2020_1_LV95,VSA_KEK_2020_1_LV95}</span>
+<span class="go">                        Model to export (default: DSS_2020_1_LV95)</span>
+<span class="go">  --logs_next_to_file   Put log files next to XTF output file</span>
+<span class="go">  --label_scale_pipeline_registry_1_1000</span>
+<span class="go">                        Export labels in scale 1:1&#39;000, can be combined with other scales (Leitungskataster/Cadastre des conduites souterraines)</span>
+<span class="go">  --label_scale_network_plan_1_250</span>
+<span class="go">                        Export labels in scale 1:250, can be combined with other scales (Werkplan/Plan de reseau)</span>
+<span class="go">  --label_scale_network_plan_1_500</span>
+<span class="go">                        Export labels in scale 1:500, can be combined with other scales (Werkplan/Plan de reseau)</span>
+<span class="go">  --label_scale_overviewmap_1_10000</span>
+<span class="go">                        Export labels in scale 1:10&#39;000, can be combined with other scales (Uebersichtsplan/Plan d&#39;ensemble)</span>
+<span class="go">  --label_scale_overviewmap_1_5000</span>
+<span class="go">                        Export labels in scale 1:5&#39;000, can be combined with other scales (Uebersichtsplan/Plan d&#39;ensemble)</span>
+<span class="go">  --label_scale_overviewmap_1_2000</span>
+<span class="go">                        Export labels in scale 1:2&#39;000, can be combined with other scales (Uebersichtsplan/Plan d&#39;ensemble)</span>
+<span class="go">  --selected_ids SELECTED_IDS</span>
+<span class="go">                        If provided, limits the export to networkelements that are provided in the selection (comma separated list of ids)</span>
+<span class="go">  --pgservice PGSERVICE</span>
+<span class="go">                        Postgres service name</span>
+<span class="go">  --pghost PGHOST       Postgres host</span>
+<span class="go">  --pgport PGPORT       Postgres port</span>
+<span class="go">  --pgdatabase PGDATABASE</span>
+<span class="go">                        Postgres database</span>
+<span class="go">  --pguser PGUSER       Postgres user</span>
+<span class="go">  --pgpass PGPASS       Postgres password</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="quality-control">
+<h2>Quality control<a class="headerlink" href="#quality-control" title="Link to this heading"></a></h2>
+<section id="quality-control-with-vsa-online-checker-fachprufung-mit-vsa-checker-online">
+<h3>Quality control with VSA online checker (Fachprüfung mit VSA Checker (online))<a class="headerlink" href="#quality-control-with-vsa-online-checker-fachprufung-mit-vsa-checker-online" title="Link to this heading"></a></h3>
+<figure class="align-default">
+<img alt="https://vsa.ch/wp-content/uploads/2020/04/Daten-checker-d-f-it.jpg" src="https://vsa.ch/wp-content/uploads/2020/04/Daten-checker-d-f-it.jpg" />
+</figure>
+<p><a class="reference external" href="https://vsa.ch/fachbereiche-cc/siedlungsentwaesserung/generelle-entwaesserungsplanung/datenmanagement/#GEP-Datachecker">For details see explanation on the VSA Homepage</a></p>
+<p><a class="reference external" href="https://vsa.ch/Mediathek/gep-datachecker-jahresgebuehr/?media_filter_two=lizenzen-software">Information about access and licensing you can get here</a></p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../security/index.html" class="btn btn-neutral float-left" title="User Roles" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../db-customization/index.html" class="btn btn-neutral float-right" title="Customization of the data model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, The TWW Project www.teksi.ch.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
