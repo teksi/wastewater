@@ -36,6 +36,8 @@ This is especially useful for discharge points that discharge in culverted creek
 For labelling, the attribute ``tww_use_in_labels`` of the value lists ``tww_vl.channel_usage_current``, ``tww_vl.channel_function_hierarchic``and ``tww_vl.wastewater_structure_status``
 filters out which entries are taken into account when creating a label.
 
+For more details see see the :ref:`labelcustomisation` chapter.
+
 Creation of custom tables
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
