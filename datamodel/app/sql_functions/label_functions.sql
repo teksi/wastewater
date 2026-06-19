@@ -54,7 +54,7 @@ DELETE FROM tww_od.tww_reach_point_label where _all or fk_wastewater_structure=_
 		  INNER JOIN tww_vl.wastewater_structure_status st ON ws.status = st.code
 			WHERE fh.tww_use_in_labels
 			AND st.tww_use_in_labels
-			AND _all OR ws_nd.obj_id=_obj_id)
+			AND ((_all AND ws_nd.obj_id IS NOT NULL) OR ws_nd.obj_id=_obj_id))
 	INSERT INTO tww_od.tww_reach_point_label(fk_reach_point,fk_wastewater_structure,label_text,azimuth,_usage_current)
     SELECT obj_id,fk_wastewater_structure, 'O'||CASE WHEN max_idx=1 THEN '' ELSE idx::text END,azimuth,_usage_current  FROM outs;
 
@@ -63,13 +63,30 @@ DELETE FROM tww_od.tww_reach_point_label where _all or fk_wastewater_structure=_
 		SELECT
 			ne.fk_wastewater_structure,
 			rp.obj_id,
-			row_number() OVER(PARTITION BY ne.fk_wastewater_structure
-						ORDER BY (mod((2*pi()+(ST_Azimuth(RP.situation3d_geometry,ST_PointN(RE_to.progression3d_geometry,-2))-coalesce(outs.azimuth,0)))::numeric , 2*pi()::numeric)) ASC) AS idx,
-            ST_Azimuth(RP.situation3d_geometry,ST_PointN(RE_to.progression3d_geometry,-2)) AS azimuth,
+			row_number() OVER(
+        PARTITION BY ne.fk_wastewater_structure
+				ORDER BY (
+          CASE WHEN outs.azimuth IS NULL THEN
+            ST_Azimuth(RP.situation3d_geometry,
+                 ST_PointN(RE_to.progression3d_geometry,-2))
+          ELSE
+            mod((2*pi()+
+              (ST_Azimuth(RP.situation3d_geometry,
+                ST_PointN(RE_to.progression3d_geometry,-2))
+              -coalesce(outs.azimuth,0))
+              )::numeric , 
+              2*pi()::numeric)
+          END
+          ) ASC
+        ) AS idx,
+      ST_Azimuth(RP.situation3d_geometry,ST_PointN(RE_to.progression3d_geometry,-2)) AS azimuth,
 		  count (*) OVER(PARTITION BY ne.fk_wastewater_structure ) as max_idx,
       uc.code as _usage_current
 		  FROM tww_od.reach_point rp
 		  INNER JOIN tww_od.wastewater_networkelement ne ON rp.fk_wastewater_networkelement = ne.obj_id
+      INNER JOIN (SELECT ws.obj_id, fk_main_wastewater_node FROM tww_od.wastewater_structure ws
+		  WHERE NOT EXISTS(SELECT 1 from tww_od.channel ch WHERE ws.obj_id = ch.obj_id LIMIT 1)
+					 ) ws_nd ON ne.fk_wastewater_structure = ws_nd.obj_id
 		  -- network element from
 		  INNER JOIN tww_od.reach re_to ON rp.obj_id = re_to.fk_reach_point_to
 		  INNER JOIN tww_od.wastewater_networkelement ne_re ON ne_re.obj_id::text = re_to.obj_id::text
@@ -81,7 +98,7 @@ DELETE FROM tww_od.tww_reach_point_label where _all or fk_wastewater_structure=_
 	      LEFT JOIN tww_od.tww_reach_point_label outs on outs.fk_wastewater_structure = ne.fk_wastewater_structure AND label_text=ANY(ARRAY['O','O1'])
 			WHERE fh.tww_use_in_labels
 			AND st.tww_use_in_labels
-			AND (_all OR ne.fk_wastewater_structure = _obj_id)
+			AND ((_all AND ws_nd.obj_id IS NOT NULL) OR ws_nd.obj_id=_obj_id)
 		),
 	null_label as(
      SELECT
@@ -89,6 +106,9 @@ DELETE FROM tww_od.tww_reach_point_label where _all or fk_wastewater_structure=_
     , rp.obj_id
       FROM tww_od.reach_point rp
       LEFT JOIN tww_od.wastewater_networkelement ne ON rp.fk_wastewater_networkelement = ne.obj_id
+      INNER JOIN (SELECT ws.obj_id, fk_main_wastewater_node FROM tww_od.wastewater_structure ws
+		  WHERE NOT EXISTS(SELECT 1 from tww_od.channel ch WHERE ws.obj_id = ch.obj_id LIMIT 1)
+					 ) ws_nd ON ne.fk_wastewater_structure = ws_nd.obj_id
       INNER JOIN tww_od.reach re ON rp.obj_id IN(re.fk_reach_point_to,re.fk_reach_point_from)
       LEFT JOIN tww_od.wastewater_networkelement ne_re ON ne_re.obj_id = re.obj_id
       LEFT JOIN tww_od.channel ch ON ne_re.fk_wastewater_structure = ch.obj_id
@@ -97,8 +117,8 @@ DELETE FROM tww_od.tww_reach_point_label where _all or fk_wastewater_structure=_
 	  LEFT JOIN tww_vl.wastewater_structure_status st ON ws.status = st.code
 	  WHERE NOT(fh.tww_use_in_labels
 			AND st.tww_use_in_labels)
-		    AND ((_all AND ne.fk_wastewater_structure IS NOT NULL)
-			  OR ne.fk_wastewater_structure= _obj_id))
+		    AND ((_all AND ws_nd.obj_id IS NOT NULL) OR ws_nd.obj_id=_obj_id)
+		)
   INSERT INTO tww_od.tww_reach_point_label (fk_reach_point,fk_wastewater_structure,label_text,azimuth,_usage_current)
   SELECT obj_id
 	  , fk_wastewater_structure
