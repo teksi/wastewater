@@ -74,7 +74,7 @@ DELETE FROM tww_od.tww_reach_point_label where _all or fk_wastewater_structure=_
               (ST_Azimuth(RP.situation3d_geometry,
                 ST_PointN(RE_to.progression3d_geometry,-2))
               -coalesce(outs.azimuth,0))
-              )::numeric , 
+              )::numeric ,
               2*pi()::numeric)
           END
           ) ASC
