@@ -211,7 +211,7 @@ The feature is implemented using standard PyQGIS mechanisms:
 
 The reach selection is internally stored and combined depending on the chosen mode to ensure consistent behavior between successive operations.
 
-.. figure:: images/selection_extender.selection_extender_selected_extended_selection_result.jpg
+.. figure:: images/selection_extender_selected_extended_selection_result.jpg
 
 Use the button Reset reaches memory to delete this internally stored reach selection.
 
