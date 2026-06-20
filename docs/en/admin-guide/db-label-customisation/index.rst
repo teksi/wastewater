@@ -21,7 +21,7 @@ If you want to include secondary inflows in the labels, this can be achieved by 
 
 .. figure:: images/tww_vl.channel_function_hierarchic.png
 
-.. figure:: images/tww_vl.tww_vl.wastewater_structure_status.png
+.. figure:: images/tww_vl.wastewater_structure_status.png
 
 Symbology
 ---------
@@ -35,4 +35,4 @@ The relevant fields are taken from the primary wastewater node of a wastewater s
 
 By altering the corresponding field in ``tww_vl``, the trigger logic's behaviour can be influenced.
 
-.. figure:: images/tww_vl.tww_vl.channel_usage_current.png
+.. figure:: images/tww_vl.channel_usage_current.png
