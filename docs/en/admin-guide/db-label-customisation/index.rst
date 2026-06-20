@@ -1,4 +1,4 @@
-.. .. figure:: images/tww_demoproject_old_login.jpg:
+.. _labelcustomisation:
 
 Customisation of labeling and symbology behaviour
 =================================================
