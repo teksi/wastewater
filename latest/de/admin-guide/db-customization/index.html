@@ -124,8 +124,14 @@ The TWW data model is a standard proof adaptative model and could follow your ne
 </section>
 <section id="altering-symbology-and-labelling-behaviour">
 <h3>Altering symbology and labelling behaviour<a class="headerlink" href="#altering-symbology-and-labelling-behaviour" title="Link to this heading"></a></h3>
-<p>Symbology and labelling behaviour depends on the value lists `` tww_vl.channel_usage_current`` and `` tww_vl.channel_function_hierarchic``  These two value list tables have an additional column <code class="docutils literal notranslate"><span class="pre">tww_symbology_order</span></code>, which is used to define the hierarchy of the symbology.</p>
-<p>For labelling, one can use the column `` tww_vl.channel_function_hierarchic.tww_use_in_labels`` to define which functions_hierarchic are taken into account when creating a wastewater structure’s label.</p>
+<p>Symbology behaviour depends on the value lists <code class="docutils literal notranslate"><span class="pre">tww_vl.channel_usage_current</span></code> and <code class="docutils literal notranslate"><span class="pre">tww_vl.channel_function_hierarchic</span></code>.
+These two value list tables have an additional column <code class="docutils literal notranslate"><span class="pre">tww_symbology_order</span></code>, which is used to define the hierarchy of the symbology.</p>
+<p>Generally, the <code class="docutils literal notranslate"><span class="pre">channel.usage_current</span></code> and <code class="docutils literal notranslate"><span class="pre">channel.function_hierarchic</span></code> of outflowing channels take precedence over the corresponding values of inflowing channels.
+For <code class="docutils literal notranslate"><span class="pre">tww_vl.channel_usage_current</span></code>, there exists a boolean column <code class="docutils literal notranslate"><span class="pre">tww_symbology_inflow_prio</span></code> which overrides this, having these inflowing channels taking precedence over outflowing channels.
+This is especially useful for discharge points that discharge in culverted creeks</p>
+<p>For labelling, the attribute <code class="docutils literal notranslate"><span class="pre">tww_use_in_labels</span></code> of the value lists <code class="docutils literal notranslate"><span class="pre">tww_vl.channel_usage_current</span></code>, <code class="docutils literal notranslate"><span class="pre">tww_vl.channel_function_hierarchic``and</span> <span class="pre">``tww_vl.wastewater_structure_status</span></code>
+filters out which entries are taken into account when creating a label.</p>
+<p>For more details see see the <a class="reference internal" href="../db-label-customisation/index.html#labelcustomisation"><span class="std std-ref">Customisation of labeling and symbology behaviour</span></a> chapter.</p>
 </section>
 <section id="creation-of-custom-tables">
 <h3>Creation of custom tables<a class="headerlink" href="#creation-of-custom-tables" title="Link to this heading"></a></h3>
