@@ -89,7 +89,11 @@ init: en/*
 
 transifex_sync: gettext
 	@set -e;\
-	./tx push -s;
+	if [ -z "$$TX_TOKEN" ]; then \
+		echo "Error: TX_TOKEN environment variable is not set"; \
+		exit 1; \
+	fi; \
+	./tx push -s || (echo "Transifex push failed"; exit 1); \
 	@echo "Transifex resources synchronized"
 
 transifex_pull:
