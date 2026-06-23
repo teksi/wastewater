@@ -3,10 +3,10 @@ Translation
 ***********
 
 The documentation is available in:
-
-- `English <https://teksi.github.io/wastewater/en/>`_
-- `Deutsch <https://teksi.github.io/wastewater/de/>`_
-- `Français <https://teksi.github.io/wastewater/fr/>`_
+    
+- `English <https://teksi.github.io/wastewater/latest/en/>`_
+- `Deutsch <https://teksi.github.io/wastewater/latest/de/>`_
+- `Français <https://teksi.github.io/wastewater/latest/fr/>`_
 
 It can be translated in other languages.
 
