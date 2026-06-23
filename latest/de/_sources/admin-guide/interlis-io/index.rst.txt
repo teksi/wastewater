@@ -80,6 +80,9 @@ You should now see new `import` and `export` buttons in the TWW toolbar.
 INTERLIS Export
 ^^^^^^^^^^^^^^^
 
+Launch export wizard
+--------------------
+
 .. figure:: images/tww_interlis_export_button.png
 
 To export your TWW data, click on the `INTERLIS export` button.
@@ -89,16 +92,25 @@ The following dialog will appear.
 
 .. figure:: images/tww_interlis_export.png
 
+Export model
+------------
 At first, select the export model.
 
-If you have an active selection in the nodes and/or reaches layer, you can choose to restrict the export to that selection. This is especially useful in combination with the upstream/downstream selection tools.
+If you have an active selection in the nodes and/or reaches layer, you can choose to restrict the export to that selection. This is especially useful in combination with the upstream/downstream selection or `extend selection tools (see :ref:`extend_selection_tool`).
 
 .. figure:: images/tww_interlis_export_selection.png
+
+
+Label export
+------------
 
 The export tools is capable of exporting label positions for different scales. You can choose which scales you are interested in exporting by selected/deselecting them.
 
 .. note::
    Only choose either Werkplan 1:500 or Werkplan 1:250. The latter may give you a more accurarte placement while printing labels in the scale 1:500. Choosing both scales will give you duplicate label positions - so avoid this! You will not be able to distinguish anymore which are the labels for 1:250 and 1:500 in the exported xtf file as both will get the plantype = "Werkplan" (currently VSA-DSS / SIA405 Abwasser 2020.x only supports one scale - this might change in a future release).
+
+File name and location
+----------------------
 
 Then, confirm the dialog and choose where to save the `.xtf` file.
 
@@ -120,6 +132,9 @@ Then, confirm the dialog and choose where to save the `.xtf` file.
 .. note::
    More information on `QGIS label export <https://docs.qgis.org/3.44/en/docs/user_manual/processing_algs/qgis/cartography.html#extract-labels>`_
 
+Validation pre-processing
+-------------------------
+
 The following validations are run as pre-process:
 
 * Validate subclasses before export (_check_subclass_counts): The total of the subclass entries over alls subclasses must be equal to the numer of entries in the superclass.
@@ -133,11 +148,18 @@ You will get a new summary window that tells you, if any of these pre-checks fai
 
 You can choose to continue export, if you think the pre-check results will not be relevant for your export (e.g. if you export SIA405 Abwaser, but there are reference check errors that are within the VSA-DSS part that are beyond SIA405 Abwasser).
 
+Validation Post-processing ilivalidator
+---------------------------------------
 
-Exports include also a validation step at the end using `ilivalidator`, which will inform you whether the export contains INTERLIS validation errors.
+
+Exports include also a validation step at the end using `ilivalidator`, which will inform you whether the export contains INTERLIS model validation errors.
 
 If the export was successful a green success message appears.
 If the export is not successfull you will get either error messages during the export process or an error warning at the end of the process.
+
+
+Error logs
+----------
 
 You can check the protocol window and the text logs for further details.
 

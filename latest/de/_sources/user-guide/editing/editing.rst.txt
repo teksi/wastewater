@@ -6,7 +6,7 @@ Editing of existing data
 This represents a guide on how to edit existing data in TWW.
 
 Demo project (chapter / pictures not adjusted to TWW)
-------------------------------------------------------------
+-----------------------------------------------------
 
 * Make sure you have imported the demo project with pgAdmin (see the :ref:`database-initialization` chapter)
 * Open the demo project by going to the main menu and press **Project** --> **Open**  or by pressing ``CTRL``
@@ -157,6 +157,65 @@ An other way to choose an object
 
  * You can select then the object you want. This will get you to the correspondent form to see the details.
 
+
+.. _extend_selection_tool:
+
+.. versionadded:: 2026.0
+
+Extend selection tool
+---------------------
+
+With the extend selection tool allows users to expand a selection made on the vw_tww_reach layer to related objects in:
+- vw_tww_wastewater_node
+- vw_tww_wastewater_structure
+- vw_tww_catchment_area
+
+
+**Features**
+
+.. figure:: images/selection_extender_only.jpg
+
+A new dock widget has been added (right-side panel) allowing users to:
+
+- Choose the selection mode:
+  - Add
+  - Replace
+  - Remove
+  - Intersect
+
+- Choose the status for catchment selection:
+
+  - Current
+  - Planned
+
+The selection is applied consistently across:
+- Reaches (as final reference selection)
+- Nodes
+- Structures
+- Catchments (filtered by status)
+
+.. figure:: images/selection_extender.jpg
+
+
+**Implementation details**
+
+The feature is implemented using standard PyQGIS mechanisms:
+- Layers are accessed via TwwLayerManager
+- Feature filtering is done using QgsFeatureRequest
+- Selection logic is applied using set operations:
+
+    - replace → overwrite
+    - add → union
+    - remove → difference
+    - intersect → intersection
+
+The reach selection is internally stored and combined depending on the chosen mode to ensure consistent behavior between successive operations.
+
+.. figure:: images/selection_extender_selected_extended_selection_result.jpg
+
+Use the button Reset reaches memory to delete this internally stored reach selection.
+
+
 .. _Adding-additional-covers-and-nodes-to-an-existing-wastewater-structure:
 
 Adding additional covers and nodes to an existing wastewater structure
@@ -213,6 +272,8 @@ How long did we wait:
 Why is vw_tww_reach so slow: there are triggers in the database, that updates for every record the calculated fields of the connected manholes and nodes, that this themes symbology is always up-to-date.
 
 TWW has a function to disable / enable symbology triggers (chapter how to)
+
+See :ref:`disable_enable_symbology_triggers` in the User Guide - How to Chapter
 
 - Use field calculator with vw_tww_reach, symbology trigger disabled: about 15 seconds.
 
