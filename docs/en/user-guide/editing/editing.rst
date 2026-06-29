@@ -228,7 +228,7 @@ If you want to start with a new selection of reaches, then click on "Reset reach
 
 .. figure:: images/selection_extender_5.png
 
-If you then choose "Replace", 
+If you then choose "Replace",
 
 - you will clear also the selection of wastewater structures and catchments with your next select,
 - otherwise you can work again with the old selection of structures and catchments.
