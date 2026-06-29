@@ -8,6 +8,7 @@ from pathlib import Path
 import psycopg
 import yaml
 from pirogue import MultipleInheritance, SimpleJoins, SingleInheritance
+from psycopg.sql import SQL, Composable
 from pum import HookBase
 from triggers.set_defaults_and_triggers import set_defaults_and_triggers
 from view.catchment_area_views import (
@@ -31,6 +32,7 @@ from view.vw_tww_wastewater_structure import vw_tww_wastewater_structure
 from view.vw_wastewater_structure import vw_wastewater_structure
 
 logger = logging.getLogger(__name__)
+PLACEHOLDER_PATTERN = re.compile(r"\{[A-Za-z_][A-Za-z0-9_]*\}")
 
 
 class Hook(HookBase):
@@ -40,8 +42,8 @@ class Hook(HookBase):
         SRID: int = 2056,
         modification_agxx: bool = False,
         webgis: bool = False,
-        modification_ci: bool = False,
         lang_code: str = "en",
+        oid_prefix: str = "ch000000",
         modification_yaml: Path = None,
     ):
         """
@@ -49,7 +51,6 @@ class Hook(HookBase):
         :param SRID: the EPSG code for geometry columns. Overridden by modification_yaml
         :param modification_agxx: bool of whether to load agxx modification. Overridden by modification_yaml
         :param webgis: bool of whether to load web modification. Overridden by modification_yaml
-        :param modification_ci: bool of whether to load ci modification. Overridden by modification_yaml
         :param lang_code: language code for use in modification views. Overridden by modification_yaml
         :param modification_yaml: Path of yaml containing app parametrisation
         """
@@ -62,8 +63,6 @@ class Hook(HookBase):
             self.parameters = self.load_yaml(self.cwd / "app_modification.template.yaml")
             if "modification_repositories" in self.parameters:
                 for entry in self.parameters["modification_repositories"]:
-                    if modification_ci and entry["id"] == "ci":
-                        entry["active"] = True
                     if webgis and entry["id"] == "webgis":
                         entry["active"] = True
                     if modification_agxx and entry["id"] == "agxx":
@@ -98,6 +97,10 @@ class Hook(HookBase):
             "name_lang": {
                 "value": f"name_{lang_code}",
                 "type": "identifier",
+            },
+            "oid_prefix": {
+                "value": f"{oid_prefix}",
+                "type": "literal",
             },
         }
         self.execute("CREATE SCHEMA tww_app;")
@@ -394,19 +397,30 @@ Running modification {modification.get('id')}
             sql = f.read()
         self.run_sql(sql, variables)
 
-    def run_sql(self, sql: str, variables: dict = None):
-        if variables is None:
-            variables = {}
-        if (
-            re.search(r"\{[A-Za-z-_]+\}", sql) and variables
-        ):  # avoid formatting if no variables are present
-            try:
-                sql = psycopg.sql.SQL(sql).format(**variables).as_string(self._connection)
+    def run_sql(self, sql: str, variables: dict | None = None):
+        variables = variables or {}
 
-            except IndexError:
-                logger.critical(sql)
-                raise
-        self.execute(sql)
+        if not variables or not PLACEHOLDER_PATTERN.search(sql):
+            return self.execute(sql)
+
+        # Enforce safe variable types
+        for key, value in variables.items():
+            if not isinstance(value, Composable):
+                raise TypeError(
+                    f"Variable '{key}' must be a psycopg.sql.Composable "
+                    f"(got {type(value).__name__})"
+                )
+
+        try:
+            formatted_sql = SQL(sql).format(**variables)
+            final_sql = formatted_sql.as_string(self._connection)
+        except Exception:
+            logger.critical("SQL formatting failed")
+            logger.critical("Template: %s", sql)
+            logger.critical("Variables: %s", variables)
+            raise
+
+        self.execute(final_sql)
 
     def run_sql_files_in_folder(self, directory: str):
         files = os.listdir(directory)
@@ -428,7 +442,7 @@ Running modification {modification.get('id')}
 
                 if var_type == "number":  # Directly insert SQL without escaping
                     if isinstance(value, float) or isinstance(value, int):
-                        formatted_vars[key] = psycopg.sql.SQL(f"{value}")
+                        formatted_vars[key] = psycopg.sql.Literal(value)
                     else:  # avoid injection
                         raise ValueError(f"Value '{value}' is not float or int.")
                 elif var_type == "identifier":  # Table/Column names
@@ -440,7 +454,7 @@ Running modification {modification.get('id')}
                 else:
                     raise ValueError(f"Unknown type '{var_type}' for variable '{key}'")
             else:
-                raise ValueError(f"Unknown type '{var_type}' for variable '{key}'.")
+                raise ValueError(f"Invalid variable format for '{key}'")
         return formatted_vars
 
 
@@ -463,13 +477,6 @@ if __name__ == "__main__":
         action="store_true",
         default=False,
         help="load AG-64/96 modification on app schema",
-    )
-    parser.add_argument(
-        "-c",
-        "--modification_ci",
-        action="store_true",
-        default=False,
-        help="load ci modification",
     )
     parser.add_argument(
         "-w",
@@ -497,7 +504,6 @@ if __name__ == "__main__":
             connection=connection,
             SRID=args.srid,
             modification_agxx=args.modification_agxx,
-            modification_ci=args.modification_ci,
             webgis=args.webgis,
             modification_yaml=args.modification_yaml,
             lang_code=args.lang_code,

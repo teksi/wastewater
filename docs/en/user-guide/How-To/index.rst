@@ -32,7 +32,7 @@ There is a new layer group 'configuration' in the project:
 
 
 .. note:: If you do not have any organisations you first have to import them with the `Interlis Import chapter
-<https://teksi.github.io/wastewater/admin-guide/interlis-io/index.html#interlis-import>`_
+ <https://teksi.github.io/wastewater/admin-guide/interlis-io/index.html#interlis-import>`_
 
 
 
@@ -42,7 +42,7 @@ For the second warning, please contact your TEKSI system administrator
 
 and ask him/her to set the prefix to fit your project.
 
-For more information see :ref:`productionreadiness`
+For more information see :ref:`production_readiness`
 
 Connect all occurences of your field name to ``tww_app.get_default_values(field_name)``.
 Per default, the fields ``fk_provider`` and ``fk_dataowner`` are already connected to the function ``tww_app.get_default_values(field_name)``.
@@ -50,6 +50,7 @@ Per default, the fields ``fk_provider`` and ``fk_dataowner`` are already connect
 An example SQL script how to insert the default value for all occurences of a field name can be found `here <https://github.com/teksi/wastewater/blob/main/datamodel/changelogs/0001/14_default_values.sql>`_)
 
 
+.. _disable_enable_symbology_triggers:
 
 Increase speed of calculations and update symbology and labels
 --------------------------------------------------------------

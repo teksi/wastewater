@@ -52,7 +52,7 @@ and ``.pgpass`` into your home folder (normally ``/home/[username]``). Pay atten
 If your QGIS doesn't find the ``.pg_service.conf`` file, set the environment variable PGSYSCONFDIR:
 
 .. note::
-In QGIS go to ``Settings`` > ``Options`` > ``System`` tab. Near the bottom you'll find ``Environment``. Tick ``Use custom variables`` and click on the plus on the right. Add the PGSYSCONFDIR variable using Append (to make sure you don't delete anything - doesn't matter probably) and its value (probably ``/home/[username]`` see above). Then click ``OK`` at  the bottom right.
+ In QGIS go to ``Settings`` > ``Options`` > ``System`` tab. Near the bottom you'll find ``Environment``. Tick ``Use custom variables`` and click on the plus on the right. Add the PGSYSCONFDIR variable using Append (to make sure you don't delete anything - doesn't matter probably) and its value (probably ``/home/[username]`` see above). Then click ``OK`` at  the bottom right.
 
 .. figure:: images/macEnvVarSet.png
 
@@ -84,7 +84,7 @@ To save the password as well on the system you may use the file `pgpass <http://
    occurence of ``localhost`` with the network address of your database
    server.
 
-Alternative: put your password directly into the ``pg_service.conf`` (on Windows) / ``.pg_service.conf`` (on *nix) file:
+Alternative: put your password directly into the ``pg_service.conf`` (on Windows) / ``.pg_service.conf`` (on \*nix) file:
 
 .. code:: ini
 
@@ -144,17 +144,17 @@ Plugin installation from QGIS Plugins Menu:
 
     * Click the checkbox next to it
 
-.. figure:: images/001_searchplugin.jpeg
+  .. figure:: images/001_searchplugin.jpeg
 
    **Add the TWW plugin**
 
 * When the installation was successfull, you should see the TWW Toolbar:
 
-.. figure:: images/tww_plugin_toolbar_ok.png
+  .. figure:: images/tww_plugin_toolbar_ok.png
 
-   * If the toolbar is greyed out, you have to restart QGIS respectively re-load the project:
+  * If the toolbar is greyed out, you have to restart QGIS respectively re-load the project:
 
-.. figure:: images/tww_plugin_toolbar_grey.png
+  .. figure:: images/tww_plugin_toolbar_grey.png
 
 * Configuration of the plugin:
 
@@ -163,7 +163,7 @@ Plugin installation from QGIS Plugins Menu:
 
 
 Optional plugin
-~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^
 
 TWW uses a data historization process. The ``pg history viewer`` `plugin <http://plugins.qgis.org/plugins/pg_history_viewer/>`_ allows you to view the changes made and replay some of them.
 
@@ -184,14 +184,14 @@ Install the demo project
 
 .. note:: You need to explicitly set the language in QGIS in settings. If QGIS is configured to take the system language, the TWW translation is not loaded.
 
-.. note:: You may need to set for example the qm file to teksi_wastewater_de_CH.qm to fit the Swiss regional settings. The same for *_fr_CH in French instead of just *_fr.
+.. note:: You may need to set for example the qm file to teksi_wastewater_de_CH.qm to fit the Swiss regional settings. The same for \*_fr_CH in French instead of just \*_fr.
 
 .. figure:: images/tww_project_qm_language_files.jpg
 
 * Open `teksi_wastewater.qgs` with QGIS
 * When you save that project it will keep it's language and it cannot be changed in the same way.
 
-.. note:: It is recommended to use the QGIS settings that save the project files as *.qgs and not as *.qgz.
+.. note:: It is recommended to use the QGIS settings that save the project files as \*.qgs and not as \*.qgz.
 
 
 If you are a data owner: Add your own OID to the project

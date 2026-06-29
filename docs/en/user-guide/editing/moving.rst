@@ -26,7 +26,7 @@ Because with DSS-datamodel, cover, wastewater node and reachpoints are connected
 
 
 Moving a manhole
-------------
+--------------------------
 * Select the **vw_tww_wastewater_structure** layer
 * Set the layer to edit mode
 * Select the **Move Feature** tool (standard QGIS tool in the advanced digitizing toolbar) or the **Vertex Tool**
@@ -57,7 +57,7 @@ The detail geometry does not move (layer wastewater_structure in layergroup Wast
 
 
 Moving a cover / a node
-------------
+--------------------------
 To move just a cover or just a node, you work with the specific layer:
 Cover: Layergroup Wastewater Structures / Structure Parts, layer vw_cover
 Nodes: Layergroup Hydraulic, layer vw_wastewater_node
@@ -70,7 +70,7 @@ Nodes: Layergroup Hydraulic, layer vw_wastewater_node
 * To update the topology, click on the TWW - **SQL** Button (not necessary when moved just covers).
 
 Moving a reachpoint
-------------
+--------------------------
 There is no reachpoint layer in the TWW-project. You edit reachpoints as part of the reach in layer **vw_tww_reach**.
 
 * Select the **vw_tww_rach** layer
@@ -85,6 +85,6 @@ There is no reachpoint layer in the TWW-project. You edit reachpoints as part of
 
 
 Video Tutorial (outdated)
---------------
+----------------------------
 
 * See `this video tutorial (version QGIS 2) <https://vimeo.com/162978741>`_
