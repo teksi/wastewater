@@ -186,8 +186,8 @@ A new dock widget has been added (right-side panel) allowing users to:
 
 - Choose the status for catchment selection:
 
-  * Current      -> use fk_wastewater_networkelement_ww_current and '*_rw_current'
-  * Planned      -> use fk_wastewater_networkelement_ww_planned and '*_rw_ planned'
+  * Current      -> use fk_wastewater_networkelement_ww_current and fk_wastewater_networkelement_rw_current
+  * Planned      -> use fk_wastewater_networkelement_ww_planned and fk_wastewater_networkelement_rw_planned
 
 To use this tool, make a selection in layer vw_tww_reach, choose the selection type and catchment status and click on select.
 Repeat this steps as many time as you want. Every step will combine the last selection of reaches, structures and catchment with the new selection depending on your choice.
