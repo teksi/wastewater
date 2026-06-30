@@ -178,42 +178,62 @@ With the extend selection tool allows users to expand a selection made on the vw
 A new dock widget has been added (right-side panel) allowing users to:
 
 - Choose the selection mode:
-  - Add
-  - Replace
-  - Remove
-  - Intersect
+  - Add          -> Union
+  - Replace      -> Overwrite
+  - Remove       -> Difference
+  - Intersect    -> Intersection
+
 
 - Choose the status for catchment selection:
 
-  - Current
-  - Planned
+  * Current      -> use fk_wastewater_networkelement_ww_current and fk_wastewater_networkelement_rw_current
+  * Planned      -> use fk_wastewater_networkelement_ww_planned and fk_wastewater_networkelement_rw_planned
 
-The selection is applied consistently across:
-- Reaches (as final reference selection)
-- Nodes
-- Structures
-- Catchments (filtered by status)
+To use this tool, make a selection in layer vw_tww_reach, choose the selection type and catchment status and click on select.
 
-.. figure:: images/selection_extender.jpg
+Repeat this steps as many time as you want. Every step will combine the last selection of reaches, structures and catchment with the new selection depending on your choice.
+
+Example:
+There is already a selection of catchments:
+
+.. figure:: images/selection_extender_0.png
+
+1.	You want to add to this catchments all catchments, that are connected to one of the selected reaches:
+
+- Select the reaches and  choose "Add", "Planned"
+
+.. figure:: images/selection_extender_1.png
+
+and click "Select"
+
+In the Messages, you can see, how many records are selected now
+
+.. figure:: images/selection_extender_2.png
+
+2.	But there are now too many reaches selected.
+
+- Select the reaches, that should not be in the selection and choose "Remove", "Planned"
+
+.. figure:: images/selection_extender_3.png
+
+and click "Select"
+
+.. figure:: images/selection_extender_4.png
+
+Now you have all reaches, that were selected with step 1, but have not been selected in step 2.
+
+And you have all nodes and catchments, that are connected with these reaches and the records, that were selected before you started to use the Selection extender Tool.
+
+If you want to start with a new selection of reaches, then click on "Reset reaches memory".
+
+.. figure:: images/selection_extender_5.png
+
+If you then choose "Replace",
+
+- you will clear also the selection of wastewater structures and catchments with your next select,
+- otherwise you can work again with the old selection of structures and catchments.
 
 
-**Implementation details**
-
-The feature is implemented using standard PyQGIS mechanisms:
-- Layers are accessed via TwwLayerManager
-- Feature filtering is done using QgsFeatureRequest
-- Selection logic is applied using set operations:
-
-    - replace → overwrite
-    - add → union
-    - remove → difference
-    - intersect → intersection
-
-The reach selection is internally stored and combined depending on the chosen mode to ensure consistent behavior between successive operations.
-
-.. figure:: images/selection_extender_selected_extended_selection_result.jpg
-
-Use the button Reset reaches memory to delete this internally stored reach selection.
 
 
 .. _Adding-additional-covers-and-nodes-to-an-existing-wastewater-structure:

@@ -339,43 +339,62 @@ Do not use the <strong>Reverse line</strong> button of QGIS, because this button
 <p>A new dock widget has been added (right-side panel) allowing users to:</p>
 <ul class="simple">
 <li><p>Choose the selection mode:
-- Add
-- Replace
-- Remove
-- Intersect</p></li>
+- Add          -&gt; Union
+- Replace      -&gt; Overwrite
+- Remove       -&gt; Difference
+- Intersect    -&gt; Intersection</p></li>
 <li><p>Choose the status for catchment selection:</p>
 <ul>
-<li><p>Current</p></li>
-<li><p>Planned</p></li>
+<li><p>Current      -&gt; use fk_wastewater_networkelement_ww_current and fk_wastewater_networkelement_rw_current</p></li>
+<li><p>Planned      -&gt; use fk_wastewater_networkelement_ww_planned and fk_wastewater_networkelement_rw_planned</p></li>
 </ul>
 </li>
 </ul>
-<p>The selection is applied consistently across:
-- Reaches (as final reference selection)
-- Nodes
-- Structures
-- Catchments (filtered by status)</p>
+<p>To use this tool, make a selection in layer vw_tww_reach, choose the selection type and catchment status and click on select.</p>
+<p>Repeat this steps as many time as you want. Every step will combine the last selection of reaches, structures and catchment with the new selection depending on your choice.</p>
+<p>Example:
+There is already a selection of catchments:</p>
 <figure class="align-default">
-<img alt="../../_images/selection_extender.jpg" src="../../_images/selection_extender.jpg" />
+<img alt="../../_images/selection_extender_0.png" src="../../_images/selection_extender_0.png" />
 </figure>
-<p><strong>Implementation details</strong></p>
-<p>The feature is implemented using standard PyQGIS mechanisms:
-- Layers are accessed via TwwLayerManager
-- Feature filtering is done using QgsFeatureRequest
-- Selection logic is applied using set operations:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>replace → overwrite</p></li>
-<li><p>add → union</p></li>
-<li><p>remove → difference</p></li>
-<li><p>intersect → intersection</p></li>
+<ol class="arabic simple">
+<li><p>You want to add to this catchments all catchments, that are connected to one of the selected reaches:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Select the reaches and  choose „Add“, „Planned“</p></li>
 </ul>
-</div></blockquote>
-<p>The reach selection is internally stored and combined depending on the chosen mode to ensure consistent behavior between successive operations.</p>
 <figure class="align-default">
-<img alt="../../_images/selection_extender_selected_extended_selection_result.jpg" src="../../_images/selection_extender_selected_extended_selection_result.jpg" />
+<img alt="../../_images/selection_extender_1.png" src="../../_images/selection_extender_1.png" />
 </figure>
-<p>Use the button Reset reaches memory to delete this internally stored reach selection.</p>
+<p>and click „Select“</p>
+<p>In the Messages, you can see, how many records are selected now</p>
+<figure class="align-default">
+<img alt="../../_images/selection_extender_2.png" src="../../_images/selection_extender_2.png" />
+</figure>
+<ol class="arabic simple" start="2">
+<li><p>But there are now too many reaches selected.</p></li>
+</ol>
+<ul class="simple">
+<li><p>Select the reaches, that should not be in the selection and choose „Remove“, „Planned“</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/selection_extender_3.png" src="../../_images/selection_extender_3.png" />
+</figure>
+<p>and click „Select“</p>
+<figure class="align-default">
+<img alt="../../_images/selection_extender_4.png" src="../../_images/selection_extender_4.png" />
+</figure>
+<p>Now you have all reaches, that were selected with step 1, but have not been selected in step 2.</p>
+<p>And you have all nodes and catchments, that are connected with these reaches and the records, that were selected before you started to use the Selection extender Tool.</p>
+<p>If you want to start with a new selection of reaches, then click on „Reset reaches memory“.</p>
+<figure class="align-default">
+<img alt="../../_images/selection_extender_5.png" src="../../_images/selection_extender_5.png" />
+</figure>
+<p>If you then choose „Replace“,</p>
+<ul class="simple">
+<li><p>you will clear also the selection of wastewater structures and catchments with your next select,</p></li>
+<li><p>otherwise you can work again with the old selection of structures and catchments.</p></li>
+</ul>
 </section>
 <section id="adding-additional-covers-and-nodes-to-an-existing-wastewater-structure">
 <span id="id2"></span><h2>Adding additional covers and nodes to an existing wastewater structure<a class="headerlink" href="#adding-additional-covers-and-nodes-to-an-existing-wastewater-structure" title="Link to this heading"></a></h2>
