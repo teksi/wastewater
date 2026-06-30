@@ -15,6 +15,10 @@ Else the new 'Database production ready check' will throw a WARNING.
 .. figure:: images/warning_oid_prefix_set_to_ch000000.png
 
 
+.. versionadded:: 2026.0
+
+The OID Prefix can be set in TMMT from 2026.0.1 on
+
 
 Obj_ID in the TEKSI Wastewater Module (TWW)
 -------------------------------------------
