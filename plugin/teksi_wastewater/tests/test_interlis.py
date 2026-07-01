@@ -6,14 +6,15 @@ import xml.etree.ElementTree as ET
 from decimal import Decimal
 
 from qgis.testing import start_app, unittest
-# 1.7.2025 adjust config path
-# from teksi_wastewater.interlis import config
-from ../interlis import config
 from teksi_wastewater.interlis.interlis_importer_exporter import (
     InterlisImporterExporter,
 )
 from teksi_wastewater.interlis.utils.ili2db import InterlisTools
 from teksi_wastewater.utils.database_utils import DatabaseUtils
+
+# 1.7.2025 adjust config path
+# from teksi_wastewater.interlis import config
+from ../interlis import config
 
 # Display logging in unittest output
 logger = logging.getLogger()
