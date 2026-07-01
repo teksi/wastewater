@@ -124,7 +124,7 @@ class TestInterlis(unittest.TestCase):
         interlisImporterExporter.interlis_import(
             xtf_file_input=xtf_file_input,
             use_refdata=True,
-            refdatpath=self._get_data_filename(TEST_DATASET_ORGANISATIONS),
+            refdatapath=self._get_data_filename(TEST_DATASET_ORGANISATIONS),
         )
 
         result = DatabaseUtils.fetchone(
@@ -170,7 +170,7 @@ class TestInterlis(unittest.TestCase):
         interlisImporterExporter.interlis_import(
             xtf_file_input=xtf_file_input,
             use_refdata=True,
-            refdatpath=self._get_data_filename(TEST_DATASET_ORGANISATIONS),
+            refdatapath=self._get_data_filename(TEST_DATASET_ORGANISATIONS),
         )
 
         result = DatabaseUtils.fetchone(
@@ -238,8 +238,8 @@ class TestInterlis(unittest.TestCase):
             logs_next_to_file=True,
             user_interaction=False,
             use_refdata=True,
-            # 22.4.2026 to do define refdatpath "/usr/src/plugin/teksi_wastewater/tests/data/test-dataset-organisations.xtf"
-            refdatpath=self._get_data_filename(TEST_DATASET_ORGANISATIONS),
+            # 22.4.2026 to do define refdatapath "/usr/src/plugin/teksi_wastewater/tests/data/test-dataset-organisations.xtf"
+            refdatapath=self._get_data_filename(TEST_DATASET_ORGANISATIONS),
         )
 
         # Check exported TID reach
@@ -287,7 +287,7 @@ class TestInterlis(unittest.TestCase):
             user_interaction=False,
             # 20.4.2026 added
             use_refdata=True,
-            refdatpath=self._get_data_filename(TEST_DATASET_ORGANISATIONS),
+            refdatapath=self._get_data_filename(TEST_DATASET_ORGANISATIONS),
         )
 
         # Check exported TID
@@ -351,7 +351,7 @@ class TestInterlis(unittest.TestCase):
             user_interaction=False,
             selected_ids=["ch000000WN000002", "ch000000WN000003", "ch000000RE000002"],
             use_refdata=True,
-            refdatpath=self._get_data_filename(TEST_DATASET_ORGANISATIONS),
+            refdatapath=self._get_data_filename(TEST_DATASET_ORGANISATIONS),
         )
 
         # Check exported TID pipe_profile
