@@ -191,7 +191,7 @@ class TestInterlis(unittest.TestCase):
         interlisImporterExporter.interlis_import(
             xtf_file_input=xtf_file_input,
             use_refdata=True,
-            refdatapath="{config.EXTERNAL_ORGANISATION}",
+            refdatapath="{config.VSA_ORG_URL}",
         )
 
         result = DatabaseUtils.fetchone(
