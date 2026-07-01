@@ -1,6 +1,4 @@
 
-.. _Change-Default-Export-Parameters:
-
 Change default export parameters
 --------------------------------
 As mentionned earlier, most of the simulation parameters are copied from the template ``.inp`` file.
