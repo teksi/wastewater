@@ -39,10 +39,7 @@ What happens when new data is imported?
 
 What happens if the OID prefix in `tww_sys.oid_prefixes` is changed and data already exists in the database?
 * If the existing data already uses the new OID prefix, the sequences must be updated. TWW does this automatically after saving the new OID prefix.
-* If the existing data does not use the new OID prefix, the sequences must be reset so that the counter starts at 0 again with the new prefix. TWW does not perform this reset automatically.
-
-To do: A function will be programmed to manually trigger the sequence reset.
-
+* If the existing data does not use the new OID prefix, the sequences must be reset so that the counter starts at 0 again with the new prefix. TWW does this reset automatically with a trigger that runs on UPDATE, so either when you alter the existing 'active' or change the prefix of the active row.
 
 
 Setting Default Values
