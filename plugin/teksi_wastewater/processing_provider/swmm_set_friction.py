@@ -52,12 +52,12 @@ class SwmmSetFrictionAlgorithm(TwwAlgorithm):
         return self.tr("""
         Fill the attribute tww_od.reach.default_coefficient_of_friction where it is not filled.
         If \"Overwrite existing default values\" is selected, all the default_coefficient_of_friction will be reseted.
-        See: https://teksi.github.io/wastewater/tww_swmm/Prepare-Data.html#coefficient-of-friction
+        See: https://teksi.github.io/wastewater/latest/en/tww_swmm/Prepare-Data.html#coefficient-of-friction
         """)
 
     def helpUrl(self):
         return (
-            "https://teksi.github.io/wastewater/tww_swmm/Prepare-Data.html#coefficient-of-friction"
+            "https://teksi.github.io/wastewater/latest/en/tww_swmm/Prepare-Data.html#coefficient-of-friction"
         )
 
     def initAlgorithm(self, config=None):
