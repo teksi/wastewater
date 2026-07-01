@@ -12,6 +12,10 @@ If you get the following error message on startup of the TEKSI project during th
 
 .. warning:: fk_provider or fk_dataowner not set in tww_od.default_values
 
+
+.. figure:: images/warning_missing_default_values.png
+
+
 then your database is not yet production ready.
 
 It is possible to define default values for repeated fields such as fk_provider or fk_dataowner, so that you not have to add those manually for each object that you are creating.
