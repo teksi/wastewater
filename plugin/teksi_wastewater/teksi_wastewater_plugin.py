@@ -48,12 +48,12 @@ from .tools.twwmaptools import TwwMapToolConnectNetworkElements, TwwTreeMapTool
 from .tools.twwnetwork import TwwGraphManager
 from .tools.twwselectionextender import TwwSelectionExtender
 from .utils.database_utils import DatabaseUtils
+from .utils.issues import Issue, IssueLevel
 from .utils.plugin_utils import plugin_root_path
 from .utils.qt_utils import OverrideCursor
 from .utils.translation import setup_i18n
 from .utils.twwlayermanager import TwwLayerManager
 from .utils.twwlogging import TwwQgsLogHandler
-from .utils.issues import IssueLevel, Issue
 
 LOGFORMAT = "%(asctime)s:%(levelname)s:%(module)s:%(message)s"
 
@@ -370,7 +370,6 @@ class TeksiWastewaterPlugin:
         self.toolbarButtons.append(self.selectionExtenderAction)
         self.selectionExtenderController = TwwSelectionExtender(self.iface)
 
-    
     def _get_validity_issues(self) -> list[Issue]:
         try:
             return DatabaseUtils.get_validity_check_issues(include_ili=True, logger=self.logger)
@@ -382,7 +381,6 @@ class TeksiWastewaterPlugin:
                 )
             ]
 
-
     def tww_validity_check_startup(self):
         issues = self._get_validity_issues()
 
@@ -392,8 +390,6 @@ class TeksiWastewaterPlugin:
                 issue.message,
                 level=self._qgis_level(issue.level),
             )
-
-
 
     def tww_validity_check_action(self):
         issues = self._get_validity_issues()
@@ -830,7 +826,6 @@ class TeksiWastewaterPlugin:
         self.selectionExtenderAction.blockSignals(True)
         self.selectionExtenderAction.setChecked(visible)
         self.selectionExtenderAction.blockSignals(False)
-
 
     def _qgis_issue_level(self, issue_level):
         if issue_level == IssueLevel.ERROR:

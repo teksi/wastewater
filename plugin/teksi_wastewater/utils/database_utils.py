@@ -1,13 +1,13 @@
 import collections
 import configparser
+import logging
 import os
 import re
 from typing import Any
-import logging
 
+from ..interlis import config
 from .issues import Issue, IssueLevel
 from .plugin_utils import logger
-from ..interlis import config
 
 try:
     import psycopg
@@ -234,7 +234,6 @@ class DatabaseUtils:
                 )
             )
 
-
         if len(prefixes) > 0:
             active_pref = prefixes[0][0]
             if active_pref == "ch000000":
@@ -244,7 +243,6 @@ class DatabaseUtils:
                         IssueLevel.ERROR,
                     )
                 )
-
 
         return issues
 
@@ -280,13 +278,14 @@ class DatabaseUtils:
         return msg_list
 
     @staticmethod
-    def get_validity_check_issues(include_ili: bool=False, logger=None) -> list[str]:
+    def get_validity_check_issues(include_ili: bool = False, logger=None) -> list[str]:
         messages = []
         messages = DatabaseUtils.check_oid_prefix()
         messages.extend(DatabaseUtils.check_fk_defaults())
 
         if not DatabaseUtils.check_symbology_triggers_enabled():
-            messages.extend(Issue(
+            messages.extend(
+                Issue(
                     "Symbology triggers are disabled",
                     IssueLevel.ERROR,
                 )
@@ -294,9 +293,8 @@ class DatabaseUtils:
 
         if include_ili:
             IntegrityChecker = TWWIntegrityChecker(
-                        models=[config.MODEL_NAME_DSS, config.MODEL_NAME_VSA_KEK],
-                        logger=logger
-                    )
+                models=[config.MODEL_NAME_DSS, config.MODEL_NAME_VSA_KEK], logger=logger
+            )
             IntegrityChecker.run_integrity_checks()
             messages.extend(IntegrityChecker.issues)
 
@@ -314,12 +312,11 @@ class DatabaseUtils:
 
 
 class TWWIntegrityChecker:
-    def __init__(self, models=[], limit_to_selection=False, logger = None):
+    def __init__(self, models=[], limit_to_selection=False, logger=None):
         self.limit_to_selection = limit_to_selection
         self.models = models
         self.issues = []
         self.logger = logger or logging.getLogger(__name__)
-
 
     def add_issue(
         self,
@@ -334,8 +331,6 @@ class TWWIntegrityChecker:
             self.logger.info(message)
         else:
             self.logger.warning(message)
-
-
 
     def run_integrity_checks(self) -> list[Issue]:
         checks = [
@@ -359,9 +354,6 @@ class TWWIntegrityChecker:
             ("fk_catchment_area_null", self._check_fk_catchment_area_null),
             # Add other checks here
         ]
-        number_tests_failed = 0
-        number_tests_ok = 0
-        failed_check_list = []
 
         for check_name, check_func in checks:
             failed, error_message, _ = check_func()
@@ -370,7 +362,6 @@ class TWWIntegrityChecker:
                     f"{check_name}: {error_message}",
                     IssueLevel.ERROR,
                 )
-
 
         return self.issues
 
@@ -453,6 +444,7 @@ class TWWIntegrityChecker:
         # logger.debug(f"check_subclass_counts_failed: {check_subclass_counts_failed} last")
         if raise_err and failed:
             from .interlis.utils.various import InterlisImporterExporterError
+
             raise InterlisImporterExporterError("Subclass Count error", error_message, None)
         return (failed, error_message, total_issue_count)
 
@@ -461,15 +453,15 @@ class TWWIntegrityChecker:
         Returns: (failed, error message, parent_count)
         """
         errormsg = ""
-        self.add_issue(f"INTEGRITY CHECK {parent_name} subclass data...",level='info')
-        self.add_issue("CONNECTING TO DATABASE...",level='info')
+        self.add_issue(f"INTEGRITY CHECK {parent_name} subclass data...", level="info")
+        self.add_issue("CONNECTING TO DATABASE...", level="info")
 
         with DatabaseUtils.PsycopgConnection() as connection:
             cursor = connection.cursor()
             cursor.execute(f"SELECT obj_id FROM {schema_name}.{parent_name};")
             parent_rows = cursor.fetchall()
             parent_ids = {row[0] for row in parent_rows}
-            self.add_issue(f"Number of {parent_name} datasets: {len(parent_ids)}",level='info')
+            self.add_issue(f"Number of {parent_name} datasets: {len(parent_ids)}", level="info")
 
             missing_in_subclass = set(parent_ids)
             missing_in_superclass = {}  # Maps subclass name to orphaned IDs
@@ -478,7 +470,7 @@ class TWWIntegrityChecker:
                 cursor.execute(f"SELECT obj_id FROM {schema_name}.{child_name};")
                 child_rows = cursor.fetchall()
                 child_ids = {row[0] for row in child_rows}
-                self.add_issue(f"Number of {child_name} datasets: {len(child_rows)}",level='info')
+                self.add_issue(f"Number of {child_name} datasets: {len(child_rows)}", level="info")
 
                 missing_in_subclass -= child_ids
 
@@ -504,13 +496,13 @@ class TWWIntegrityChecker:
                         f"Overall Subclass Count: {errormsg}. The problem might lie outside the selection"
                     )
                 else:
-                    self.add_issue(f"Subclass Count error: {errormsg}",level='error')
+                    self.add_issue(f"Subclass Count error: {errormsg}", level="error")
                 # Return statement added
                 return (True, errormsg, len(missing_in_subclass) + len(missing_in_superclass))
             else:
                 self.add_issue(
                     f"OK: number of subclass elements of class {parent_name} OK in schema {schema_name}!",
-                    level='info'
+                    level="info",
                 )
                 # Return statement added
                 return (False, errormsg, len(missing_in_subclass) + len(missing_in_superclass))
@@ -603,7 +595,7 @@ class TWWIntegrityChecker:
         for _class, (class_count, _) in results.items():
             self.add_issue(
                 f"table name: {_class}, value name: {value_name}, class count: {class_count}",
-                level='info'
+                level="info",
             )
             if class_count == 0:
                 error_message += (
@@ -613,7 +605,7 @@ class TWWIntegrityChecker:
         if empty_class_count > 0:
             return (True, error_message, empty_class_count)
         else:
-            self.add_issue(f"OK: all {value_name} set!",level='info')
+            self.add_issue(f"OK: all {value_name} set!", level="info")
             return (False, "", 0)
 
     def _check_value_condition(
@@ -641,7 +633,7 @@ class TWWIntegrityChecker:
         for _class, (class_count, obj_ids_without_val) in results.items():
             self.add_issue(
                 f"table name: {_class}, value name: {value_name}, class count: {class_count}",
-                level='info'
+                level="info",
             )
             if class_count > 0:
                 error_message += (
@@ -656,10 +648,10 @@ class TWWIntegrityChecker:
                     f"Overall Subclass Count: {errormsg}. The problem might lie outside the selection"
                 )
             else:
-                self.add_issue(f"INTEGRITY CHECK missing {value_name}: {errormsg}", level='error')
+                self.add_issue(f"INTEGRITY CHECK missing {value_name}: {errormsg}", level="error")
             return (True, error_message, missing_count)
         else:
-            self.add_issue(f"OK: all {value_name} set!",level='info')
+            self.add_issue(f"OK: all {value_name} set!", level="info")
             return (False, "", 0)
 
     def _check_identifier_null(self):
