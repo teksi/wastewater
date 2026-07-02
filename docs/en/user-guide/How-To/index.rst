@@ -315,7 +315,7 @@ Common mistakes
 Relying on the tww_app.vw_tww_wastewater_structure geometry
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The layer tww_app.vw_tww_wastewater_structure create a point geometry from either the main wastewater node of a nodal wastewater structure or from its main cover.
-This is why the layer's geometry is 2D and we advise not to snap on the tww_app.vw_tww_wastewater_structure layer. 
+This is why the layer's geometry is 2D and we advise not to snap on the tww_app.vw_tww_wastewater_structure layer.
 Use tww_app.vw_cover or tww_app.vw_tww_wastewater_node instead, depending on the reason you snap.
 
 Ignoring reach points when splitting reaches
@@ -338,9 +338,9 @@ While a user is in edit mode, database-wide alterations like enabling/disabling 
 This is due to the database locking certain operations while the user is in edit mode to prevent unstable conditions on the database.
 It is planned to check for database locks before firing the corresponding processes, but this is not implemented yet.
 
-Snapping fails on freshly created wastewater nodes 
+Snapping fails on freshly created wastewater nodes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-When creating a new wastewater structure, the database creates the corresponding wastewater node. 
+When creating a new wastewater structure, the database creates the corresponding wastewater node.
 The TWW wizard, however, does not refresh its memory of wastewater nodes to snap to, as it was created indirectly.
 Save, exit the editing mode, re-enter editing mode to snap on the entry.
 
