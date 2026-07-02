@@ -6,7 +6,7 @@ from pathlib import Path
 
 import requests
 
-from ..utils.database_utils import DatabaseUtils
+from ..utils.database_utils import DatabaseUtils, TWWIntegrityChecker
 from . import config
 from .gui.interlis_import_selection_dialog import InterlisImportSelectionDialog
 from .interlis_model_mapping.interlis_exporter_to_intermediate_schema import (
@@ -30,7 +30,7 @@ from .interlis_model_mapping.model_tww import ModelTwwSys, ModelTwwVl
 from .interlis_model_mapping.model_tww_ag6496 import ModelTwwAG6496
 from .interlis_model_mapping.model_tww_od import ModelTwwOd
 from .utils.ili2db import InterlisTools
-from .utils.interlis_integrity_checker import TWWIntegrityChecker
+
 from .utils.various import (
     CmdException,
     InterlisImporterExporterError,
@@ -202,7 +202,7 @@ class InterlisImporterExporter:
             self._import_update_main_cover_and_refresh_mat_views()
 
             # Validate subclasses after import
-            integrityChecker = TWWIntegrityChecker()
+            integrityChecker = TWWIntegrityChecker(logger=logger)
             _ = integrityChecker._check_subclass_counts(raise_err=True)
 
             # Update organisations
@@ -324,7 +324,7 @@ class InterlisImporterExporter:
         if srid:
             self.srid = srid
         exportChecker = TWWIntegrityChecker(
-            models=export_models, limit_to_selection=limit_to_selection
+            models=export_models, limit_to_selection=limit_to_selection, logger=logger
         )
         if export_models[0] == "SIA405_Base_Abwasser_1_LV95":
             failed, errormsg, _ = exportChecker._check_organisation_tww_local_extension_count()
