@@ -69,6 +69,9 @@ Select *Enable symbology triggers* after the calculations or the multiedit sessi
 
 When the triggers are disabled, there is no update of calculated fields. E.g. the input- or output-labels or the _channel_function_hierarchic field in in layer vw_tww_wastewater_structure are not recalculated. To recalculate all these fields select *Update Symbology* in the TWW-Plugin-menu
 
+Editing multiple entries at once
+--------------------------------
+There is a QGIS native tool to edit multiple entries at once. See  https://docs.qgis.org/latest/{language}/docs/user_manual/working_with_vector/attribute_table.html#editing-multiple-fields
 
 
 Working with labels
