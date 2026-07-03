@@ -62,16 +62,18 @@ class FeatureSelectorWidget(QWidget):
         self.highlight_feature_button = QToolButton(self)
         self.highlight_feature_button.setPopupMode(QToolButton.MenuButtonPopup)
         self.highlight_feature_action = QAction(
-            QgsApplication.getThemeIcon("/mActionHighlightFeature.svg"), "Highlight feature", self
+            QgsApplication.getThemeIcon("/mActionHighlightFeature.svg"), 
+                self.tr("Highlight feature"),
+                self
         )
         self.scale_highlight_feature_action = QAction(
             QgsApplication.getThemeIcon("/mActionScaleHighlightFeature.svg"),
-            "Scale and highlight feature",
+            self.tr("Scale and highlight feature"),
             self,
         )
         self.pan_highlight_feature_action = QAction(
             QgsApplication.getThemeIcon("/mActionPanHighlightFeature.svg"),
-            "Pan and highlight feature",
+            self.tr("Pan and highlight feature"),
             self,
         )
         self.highlight_feature_button.addAction(self.highlight_feature_action)
@@ -84,7 +86,7 @@ class FeatureSelectorWidget(QWidget):
         self.map_identification_button.setIcon(
             QgsApplication.getThemeIcon("/mActionMapIdentification.svg")
         )
-        self.map_identification_button.setText("Select on map")
+        self.map_identification_button.setText(self.tr("Select on map"))
         self.map_identification_button.setCheckable(True)
         edit_layout.addWidget(self.map_identification_button)
 
