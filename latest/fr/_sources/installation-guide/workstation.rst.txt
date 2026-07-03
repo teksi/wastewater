@@ -159,7 +159,7 @@ Plugin installation from QGIS Plugins Menu:
 * Configuration of the plugin:
 
   * Plugin - TEKSI Wastewater - Settings
-  * Check the Admin Guide to see how to enable `INTERLIS Import / Export options <https://teksi.github.io/wastewater/admin-guide/interlis-io/index.html#enable-admin-mode>`_
+  * Check the Admin Guide to see how to enable `INTERLIS Import / Export options <../admin-guide/interlis-io/index.html#enable-admin-mode>`_
 
 
 Optional plugin
