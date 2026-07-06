@@ -704,7 +704,7 @@ class TwwMapToolConnectNetworkElements(QgsMapTool):
                     },
                 ],
                 "target_layers": [
-                    TwwLayerManager.layer("vw_wastewater_node"),
+                    TwwLayerManager.layer("vw_tww_wastewater_node"),
                     TwwLayerManager.layer("vw_tww_reach"),
                 ],
             },
@@ -735,7 +735,7 @@ class TwwMapToolConnectNetworkElements(QgsMapTool):
                         ),
                     },
                 ],
-                "target_layers": [TwwLayerManager.layer("vw_wastewater_node")],
+                "target_layers": [TwwLayerManager.layer("vw_tww_wastewater_node")],
             },
         }
 
