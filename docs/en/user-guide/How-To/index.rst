@@ -348,7 +348,7 @@ The TWW wizard, however, does not refresh its memory of wastewater nodes to snap
 Save, exit the editing mode, re-enter editing mode to snap on the entry.
 
 ..versionadded: 2026.0.1
- this issue was fixed in 2026.0.1
+ This issue was fixed in 2026.0.1
 
 Further informations
 --------------------
