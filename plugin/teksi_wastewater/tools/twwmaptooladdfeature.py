@@ -215,7 +215,7 @@ class TwwMapToolAddReach(TwwMapToolAddFeature):
     def __init__(self, iface: QgisInterface, layer):
         TwwMapToolAddFeature.__init__(self, iface, layer)
         self.snapping_marker = None
-        self.node_layer = TwwLayerManager.layer("vw_wastewater_node")
+        self.node_layer = TwwLayerManager.layer("vw_tww_wastewater_node")
         assert self.node_layer is not None
         self.reach_layer = TwwLayerManager.layer("vw_tww_reach")
         assert self.reach_layer is not None
