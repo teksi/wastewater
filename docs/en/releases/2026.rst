@@ -19,8 +19,8 @@ Bug fixes and performance improvements
 
  - Various bug fixes for ...
 
- Adaptions to project file
- ----------------------------------------
+Adaptions to project file
+----------------------------------------
 
  The following new views have been integrated in this release:
 
