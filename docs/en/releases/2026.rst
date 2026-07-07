@@ -15,7 +15,6 @@ Main features
 
  - `The 'Refresh network topology' is only visible in Admin mode <../user-guide/network-following/index.html>`_ as the query can take quite long for big networks.
  - create _CH copies of translation files (*.qm)
- - Add info whether ws has log card to main view
  - Import VSA organisation from internet if not present
  
  Project
@@ -23,6 +22,7 @@ Main features
  
  - Better configuration in vw_tww_catchment_area_totals (point-layer)
  - Hint about necessary logcards in vw_catchment_area, tab fk_logcard
+ - Add info whether ws has log card to main view
  - Add layer vw_tww_damage
  
  - vw_tww_reach. labeldefinition for rp_from_label und rp_to_label renamed and with the replace-function so it will work with the variables for translation
