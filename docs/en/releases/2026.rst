@@ -29,7 +29,7 @@ Bug fixes and performance improvements
 * tww_od.tww_wastewater_structure_labels
 * tww_od.tww_wastewater_node_symbology
 
-Please use the corresponding *.qml files to integrate them into existing TWW 2025 project files
+Please use the corresponding '*.qml' files to integrate them into existing TWW 2025 project files
 
  The following view have been adapted and need an adaption of existing TWW 2025 project files:
 

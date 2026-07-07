@@ -161,7 +161,7 @@ Use this layer to change the situation of one selected wastewater node (and not 
 When moving the geometry of the wastewater node, the geometry of the connected reaches is updated automatically. If you want to move a wastewater node without moving the reaches, disconnect the reaches, move the node and reconnect the reaches.
 
 Wastewater nodes ``tww_app.vw_tww_wastewater_node``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. versionchanged:: 2026.0
 
