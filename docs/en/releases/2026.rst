@@ -16,15 +16,15 @@ Main features
  - `The 'Refresh network topology' is only visible in Admin mode <../user-guide/network-following/index.html>`_ as the query can take quite long for big networks.
  - create _CH copies of translation files (*.qm)
  - Import VSA organisation from internet if not present
- 
+
  Project
  -------
- 
+
  - Better configuration in vw_tww_catchment_area_totals (point-layer)
  - Hint about necessary logcards in vw_catchment_area, tab fk_logcard
  - Add info whether ws has log card to main view
  - Add layer vw_tww_damage
- 
+
  - vw_tww_reach. labeldefinition for rp_from_label und rp_to_label renamed and with the replace-function so it will work with the variables for translation
  - vw_tww_wastewater_structure: Symbology: replaced some 'not "tww_is_primary" ' with '(not "tww_is_primary" or "tww_is_primary" is NULL)'
  - vw_tww_wastewater_structure: Attributs Form: wn_elevation_accuracy also with option reuse last entered value (similar as co_position_accuracy)
@@ -53,7 +53,7 @@ Documentation
  - Docu: Correction about organisation table in configuration-layergroup
  - Fix installation documentation
  - Versionized docs
- - `Doc changes in dataowner fields <../user-guide/layerexplanations/twwproject.html>`_ 
+ - `Doc changes in dataowner fields <../user-guide/layerexplanations/twwproject.html>`_
  - Document labeling and symbology flags
  - Add chapter Obj_ID in TWW docs/en/admin-guide/db-production-readiness/index.rst
  - Adapt links and make these relative where possible
@@ -80,20 +80,20 @@ Bug fixes and performance improvements
  - use wastewater node identifiers in reach wizard identifier creation
  - Fix SWMM input creation
  - Refresh materialized views concurrently
- - Fix reach point label generation 
+ - Fix reach point label generation
  - Provide / fix translations for the plugin
- 
+
  Extension improvements
  ----------------------
  - Exclude drainage catchment areas from AG-xx export
  - Fix AG-xx last modification reference
  - Make AG-xx last modification selection locale-unaware
  - Fix AG-xx import reach point coordinates
- 
- 
+
+
  CI improvements
  ---------------
- 
+
  - Separate pum from db images in compose
  - Use pum docker image
  - Generalize workflows
