@@ -8,10 +8,18 @@ Here you can find information about the future 2026.x release of TEKSI wastewate
 Main features
 ----------------
 
+- First version of TEKSI wastewater module for QGIS 3.40 LTR and initialized and upgrade via the PostgreSQL Update Manager (PUM) and the TEKSI Module Management Tool (TMMT).
+Check the `installation guide <../installation-guide/index.html>`__ for more information on how to install TEKSI wastewater module via TMMT.
+
+TO DO: Check if this link has to be adapted
+https://teksi.github.io/wastewater/latest/fr/installation-guide/workstation.html#install-tww-plugin - should be adapted to do it with TMMT
+
+
+
  - `The OID Prefix can be set in TMMT from 2026.0.1 on <../admin-guide/db-production-readiness/index.html>`_
  - `The 'Extend selection tool' allows users to expand a selection made on the vw_tww_reach layer to related objects <../user-guide/editing/editing.html>`_
 
-.. figure:: ../user-guide/editing/images/selection_extender_2.png
+  .. figure:: ../user-guide/editing/images/selection_extender_2.png
 
  - `The 'Refresh network topology' is only visible in Admin mode <../user-guide/network-following/index.html>`_ as the query can take quite long for big networks.
  - create _CH copies of translation files ( '\*.qm' )
@@ -119,6 +127,7 @@ The following views have been adapted and need an adaption of existing TWW 2025 
  - vw_tww_reach: owner_organisation_type is not editable. owner_organisation_type configured as value relation
  - vw_tww_overflow: _channel_usage_current, _channel_function_hierarchic is not editable. _channel_usage_current, _channel_function_hierarchic configured as value relation
  - all fields with value relation: "order by" set to value
+ 
  For Reference see https://github.com/teksi/wastewater/issues/995#issuecomment-4803889291
 
  
