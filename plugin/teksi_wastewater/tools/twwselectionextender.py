@@ -29,7 +29,7 @@ class TwwSelectionExtender(QObject):
         # Load layers
         reach_layer = TwwLayerManager.layer("vw_tww_reach")
         structure_layer = TwwLayerManager.layer("vw_tww_wastewater_structure")
-        node_layer = TwwLayerManager.layer("vw_wastewater_node")
+        node_layer = TwwLayerManager.layer("vw_tww_wastewater_node")
         catchment_layer = TwwLayerManager.layer("vw_tww_catchment_area")
 
         if not reach_layer:

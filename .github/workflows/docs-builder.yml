@@ -8,18 +8,24 @@ on:
   push:
     branches:
       - main
+    tags:
+      - '*'
     paths:
       - docs/**
       - '.github/workflows/docs-builder.yml'
   pull_request:
     branches:
       - main
+    tags:
+      - '*'
     paths:
       - docs/**
       - '.github/workflows/docs-builder.yml'
   schedule:
     - cron: "30 04 * * *"
   workflow_dispatch:
+
+
 
 jobs:
   datamodel-documentation:
@@ -31,10 +37,21 @@ jobs:
     needs: datamodel-documentation
     if: always() # Always run to build docs even if datamodel step is skipped
     runs-on: ubuntu-24.04
+    env:
+      LANGUAGES: "en de fr"
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+
+      - name: Restore existing site
+        run: |
+          git clone --depth 1 --branch gh-pages https://github.com/${{ github.repository }} gh-pages || true
+          mkdir -p docs/build/html
+          rsync -a gh-pages/ docs/build/html/ || true
 
       - name: install requirements
         working-directory: docs
@@ -49,6 +66,30 @@ jobs:
           curl -OL https://github.com/transifex/cli/releases/download/v1.6.10/tx-linux-amd64.tar.gz
           tar -xvzf tx-linux-amd64.tar.gz
           make gettext
+
+      - name: Remove legacy root docs
+        run: |
+          cd docs/build/html
+
+          # Skip cleanup if first proper version exists
+          if ls | grep -Eq '^[0-9]{4}\.[0-9]+\.[0-9]+$'; then
+            echo "Version 2026.0.1 exists — skipping cleanup"
+            exit 0
+          fi
+
+          echo "Cleaning legacy root structure..."
+
+          for ITEM in *; do
+            case "$ITEM" in
+              latest|versions.json|versions.txt|index.html)
+                # keep
+                ;;
+              *)
+                echo "Removing legacy item: $ITEM"
+                rm -rf "$ITEM"
+                ;;
+            esac
+          done
 
       - name: Prepare datamodel static folder
         run: mkdir -p docs/_static/datamodel
@@ -67,6 +108,10 @@ jobs:
         working-directory: docs
         run: make transifex_sync
 
+      - name: Compile translations
+        working-directory: docs
+        run: make compile_messages
+
       - name: copy datamodel documentation
         # Download artifact only if datamodel step ran (i.e., not a fast-doc PR)
         if: ${{ !(github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'PR-fast-doc')) }}
@@ -75,11 +120,73 @@ jobs:
           name: datamodel-schemaspy
           path: docs/_static/datamodel
 
+      - name: Set version
+        run: |
+          if [[ "${GITHUB_REF_TYPE}" == "tag" && "${GITHUB_REF_NAME}" =~ ^[0-9]{4}\.[0-9]+\.[0-9]+$ ]]; then
+            echo "DOCS_VERSION=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+          else
+            echo "DOCS_VERSION=latest" >> $GITHUB_ENV
+          fi
+
+
+      - name: Setup locales
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y locales
+
+          for LANG in $LANGUAGES; do
+            case $LANG in
+              en) LOCALE="en_US.UTF-8" ;;
+              de) LOCALE="de_CH.UTF-8" ;;
+              fr) LOCALE="fr_CH.UTF-8" ;;
+              *) echo "Unsupported language $LANG"; exit 1 ;;
+            esac
+            sudo locale-gen $LOCALE
+          done
+
+          echo "LANG=en_US.UTF-8" >> $GITHUB_ENV
+          echo "LC_ALL=en_US.UTF-8" >> $GITHUB_ENV
+
+
       - name: build documentation
         working-directory: docs
         run: |
-          make html
-          touch build/html/.nojekyll
+          sphinx-build  -c . -n -W en ./build/_check
+
+          for LANG in $LANGUAGES; do
+            echo "Building language: $LANG"
+            mkdir -p ./build/html/$DOCS_VERSION/$LANG
+            sphinx-build -c . -D language=$LANG --keep-going en ./build/html/$DOCS_VERSION/$LANG || echo "Build failed for $LANG"
+            test -f ./build/html/$DOCS_VERSION/$LANG/index.html || (echo "Missing index for $LANG" && exit 1)
+          done
+          touch ./build/html/.nojekyll
+
+      - name: Add root redirect
+        working-directory: docs
+        run: |
+          echo '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0; url=latest/en/"></head></html>' > ./build/html/index.html
+
+      - name: Generate versions list
+        run: |
+          cd docs/build/html
+          ls -1 -d */ | sed 's#/##' > versions.txt
+          jq -R -s -c 'split("\n")[:-1]' versions.txt > versions.json
+
+
+      - name: Deduplicate static assets
+        working-directory: docs
+        run: |
+          cd build/html/$DOCS_VERSION
+
+          for LANG in $LANGUAGES; do
+            # skip base language
+            if [ "$LANG" != "en" ] && [ -d "$LANG" ]; then
+              rm -rf "$LANG/_static" "$LANG/_images"
+              ln -s "../en/_static" "$LANG/_static"
+              ln -s "../en/_images" "$LANG/_images"
+            fi
+          done
+
 
       - uses: actions/upload-artifact@v7
         with:

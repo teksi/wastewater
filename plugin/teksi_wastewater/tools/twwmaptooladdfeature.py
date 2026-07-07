@@ -215,7 +215,7 @@ class TwwMapToolAddReach(TwwMapToolAddFeature):
     def __init__(self, iface: QgisInterface, layer):
         TwwMapToolAddFeature.__init__(self, iface, layer)
         self.snapping_marker = None
-        self.node_layer = TwwLayerManager.layer("vw_wastewater_node")
+        self.node_layer = TwwLayerManager.layer("vw_tww_wastewater_node")
         assert self.node_layer is not None
         self.reach_layer = TwwLayerManager.layer("vw_tww_reach")
         assert self.reach_layer is not None
@@ -322,6 +322,7 @@ class TwwMapToolAddReach(TwwMapToolAddFeature):
         The party is over, the reach digitized. Create a feature from the rubberband and
         show the feature form.
         """
+
         self.temp_rubberband.reset()
 
         if self.snapping_marker is not None:
@@ -350,6 +351,7 @@ class TwwMapToolAddReach(TwwMapToolAddFeature):
                     "remark",
                 ]:
                     f.setAttribute(idx, self.last_feature_attributes[idx])
+
                 else:
                     # try client side default value first
                     v = self.layer.defaultValue(idx, f)
@@ -357,6 +359,16 @@ class TwwMapToolAddReach(TwwMapToolAddFeature):
                         f.setAttribute(idx, v)
                     else:
                         f.setAttribute(idx, self.layer.dataProvider().defaultValue(idx))
+
+            from_lbl = self.get_rp_identifier_from_match("from", f)
+            to_lbl = self.get_rp_identifier_from_match("to", f)
+
+            if from_lbl and to_lbl:
+                identifier = f"{from_lbl}-{to_lbl}"
+            else:
+                identifier = f.attribute("obj_id")
+            field = self.layer.fields().indexFromName("identifier")
+            f.setAttribute(field, identifier)
 
             f.setGeometry(self.rubberband.asGeometry3D())
 
@@ -394,6 +406,22 @@ class TwwMapToolAddReach(TwwMapToolAddFeature):
             self.last_feature_attributes = dlg.feature().attributes()
 
         self.rubberband.reset3D()
+
+    def get_rp_identifier_from_match(self, idx, feat):
+        if idx == "from":
+            match = self.first_snapping_match
+        elif idx == "to":
+            match = self.last_snapping_match
+        else:
+            return None
+
+        if match.isValid() and match.layer() == self.node_layer:
+            request = QgsFeatureRequest(match.featureId())
+            network_element = next(self.node_layer.getFeatures(request))
+            assert network_element.isValid()
+            return network_element.attribute("identifier")
+        else:  # no valid match or reach-reach connection
+            return feat.attribute(f"rp_{idx}_obj_id")
 
 
 class TwwMapToolDigitizeDrainageChannel(QgsMapTool):
