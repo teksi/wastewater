@@ -57,6 +57,7 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">How To</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#setting-default-values">Setting default values</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#increase-speed-of-calculations-and-update-symbology-and-labels">Increase speed of calculations and update symbology and labels</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#editing-multiple-entries-at-once">Editing multiple entries at once</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#working-with-labels">Working with labels</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#how-vw-tww-wastewater-structure-labels-work">How vw_tww_wastewater_structure labels work</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#how-to-translate-a-label-prefix-c-b-i-o">How to translate a label prefix (C, B, I, O)</a></li>
@@ -68,6 +69,14 @@
 <li class="toctree-l4"><a class="reference internal" href="#collecting-a-hydr-geometry-corresponds-to-a-basin-geometry-in-mike">Collecting a hydr_geometry (corresponds to a basin geometry in Mike+)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#hydraulic-modeling-of-an-overflow-prank-weir-leapingweir-pump">Hydraulic modeling of an overflow (prank weir / leapingweir / pump)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#overflow-characteristic">Overflow characteristic</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#common-mistakes">Common mistakes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#relying-on-the-tww-app-vw-tww-wastewater-structure-geometry">Relying on the tww_app.vw_tww_wastewater_structure geometry</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ignoring-reach-points-when-splitting-reaches">Ignoring reach points when splitting reaches</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#handling-of-reach-3d-geometry">Handling of reach 3D geometry</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#altering-database-wide-settings-while-in-edit-mode">Altering database-wide settings while in edit mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#snapping-fails-on-freshly-created-wastewater-nodes">Snapping fails on freshly created wastewater nodes</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#further-informations">Further informations</a></li>
@@ -166,6 +175,10 @@ Per default, the fields <code class="docutils literal notranslate"><span class="
 <p>Select <em>Disable symbology triggers</em> before starting multiedit or a field calculation for a change of many records.</p>
 <p>Select <em>Enable symbology triggers</em> after the calculations or the multiedit sessions. If you forget to enable the symbology triggers, TWW will warn you if you start the project the next time.</p>
 <p>When the triggers are disabled, there is no update of calculated fields. E.g. the input- or output-labels or the _channel_function_hierarchic field in in layer vw_tww_wastewater_structure are not recalculated. To recalculate all these fields select <em>Update Symbology</em> in the TWW-Plugin-menu</p>
+</section>
+<section id="editing-multiple-entries-at-once">
+<h2>Editing multiple entries at once<a class="headerlink" href="#editing-multiple-entries-at-once" title="Lien vers cette rubrique"></a></h2>
+<p>There is a QGIS native tool to edit multiple entries at once. See  <a class="reference external" href="https://docs.qgis.org/latest">https://docs.qgis.org/latest</a>/{language}/docs/user_manual/working_with_vector/attribute_table.html#editing-multiple-fields</p>
 </section>
 <section id="working-with-labels">
 <h2>Working with labels<a class="headerlink" href="#working-with-labels" title="Lien vers cette rubrique"></a></h2>
@@ -372,6 +385,45 @@ A second outlet has already been created (green = discharged combined wastewater
 <li><p>Here too, the identifer is later adopted in Mike+ as a table name for a QH relationship, which is used, for example, in a local controller.</p></li>
 <li><p>Define the necessary HQ or QQ values with the <strong>add child object</strong> button. Be sure to choose the correct tab corresponding to the choice in <strong>kind_overflow_char</strong></p></li>
 </ol>
+</section>
+</section>
+<section id="common-mistakes">
+<h2>Common mistakes<a class="headerlink" href="#common-mistakes" title="Lien vers cette rubrique"></a></h2>
+<section id="relying-on-the-tww-app-vw-tww-wastewater-structure-geometry">
+<h3>Relying on the tww_app.vw_tww_wastewater_structure geometry<a class="headerlink" href="#relying-on-the-tww-app-vw-tww-wastewater-structure-geometry" title="Lien vers cette rubrique"></a></h3>
+<p>The layer tww_app.vw_tww_wastewater_structure create a point geometry from either the main wastewater node of a nodal wastewater structure or from its main cover.
+This is why the layer’s geometry is 2D and we advise not to snap on the tww_app.vw_tww_wastewater_structure layer.
+Use tww_app.vw_cover or tww_app.vw_tww_wastewater_node instead, depending on the reason you snap.</p>
+</section>
+<section id="ignoring-reach-points-when-splitting-reaches">
+<h3>Ignoring reach points when splitting reaches<a class="headerlink" href="#ignoring-reach-points-when-splitting-reaches" title="Lien vers cette rubrique"></a></h3>
+<p>When a reach is split using the native tools, one of the resulting reaches keeps all the foreign keys of the old one while the other only keeps the channel obj_id.
+This means that the reach points of the old reach no longer correspond to the reach_point_from of the upper reach and the reach_point_to of the lower reach.
+This in turn means that the fk_reach_point of TV inspections might no longer reference the correct reach point.
+To keep consistency, one must load the the layers tww_od.reach and tww_od.reach_point, adapt the foreign keys and move the reach points to the correct location.</p>
+</section>
+<section id="handling-of-reach-3d-geometry">
+<h3>Handling of reach 3D geometry<a class="headerlink" href="#handling-of-reach-3d-geometry" title="Lien vers cette rubrique"></a></h3>
+<p>The layer tww_app.vw_tww_reach allows for two ways to update a reach point level:
+Either, one adapts the value in the attribute form or one snaps the start/end vertex to a 3D object, using the z value of that object instead.
+When manually altering the snapping settings, this can lead to undesired side effects, i.e. by snapping on a cover (and thus copying its level).
+We strongly encourage to edit in the unaltered TWW project and to separate adaptations for visualisations, plan exports etc. into separate qgs files.</p>
+</section>
+<section id="altering-database-wide-settings-while-in-edit-mode">
+<h3>Altering database-wide settings while in edit mode<a class="headerlink" href="#altering-database-wide-settings-while-in-edit-mode" title="Lien vers cette rubrique"></a></h3>
+<p>While a user is in edit mode, database-wide alterations like enabling/disabling triggers or updating the topology will likely make QGIS crash.
+This is due to the database locking certain operations while the user is in edit mode to prevent unstable conditions on the database.
+It is planned to check for database locks before firing the corresponding processes, but this is not implemented yet.</p>
+</section>
+<section id="snapping-fails-on-freshly-created-wastewater-nodes">
+<h3>Snapping fails on freshly created wastewater nodes<a class="headerlink" href="#snapping-fails-on-freshly-created-wastewater-nodes" title="Lien vers cette rubrique"></a></h3>
+<p>When creating a new wastewater structure, the database creates the corresponding wastewater node.
+The TWW wizard, however, does not refresh its memory of wastewater nodes to snap to, as it was created indirectly.
+Save, exit the editing mode, re-enter editing mode to snap on the entry.</p>
+<dl class="simple">
+<dt>..versionadded: 2026.0.1</dt><dd><p>This issue was fixed in 2026.0.1</p>
+</dd>
+</dl>
 </section>
 </section>
 <section id="further-informations">
