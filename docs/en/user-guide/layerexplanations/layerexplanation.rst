@@ -114,6 +114,8 @@ Import the `VSA organisation 2020.1-dataset <https://vsa.ch/models/organisation/
 
 In order to use the organisations efficiently, one can flag an organisation as active using the field ``tww_active``. This flag filters the organisations accessible from the QGIS project.
 
+See also :ref:`interlis_import`.
+
 
 Layergroup Examination-Maintenance
 ----------------------------------
