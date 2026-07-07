@@ -9,7 +9,7 @@ Main features
 ----------------
 
 - First version of TEKSI wastewater module for QGIS 3.40 LTR and initialized and upgrade via the PostgreSQL Update Manager (PUM) and the TEKSI Module Management Tool (TMMT).
-Check the `installation guide <../installation-guide/index.html>`__ for more information on how to install TEKSI wastewater module via TMMT.
+- Check the `installation guide <../installation-guide/index.html>`__ for more information on how to install TEKSI wastewater module via TMMT.
 
 TO DO: Check if this link has to be adapted
 https://teksi.github.io/wastewater/latest/fr/installation-guide/workstation.html#install-tww-plugin - should be adapted to do it with TMMT
