@@ -80,8 +80,8 @@ CI improvements
  - Add stale issue checker
  - Fix transifex
  - Versionized Documentation
- 
- 
+
+
 Project
 -------
 
@@ -129,6 +129,3 @@ The following views have been adapted and need an adaption of existing TWW 2025 
  - all fields with value relation: "order by" set to value
  
  For Reference see https://github.com/teksi/wastewater/issues/995#issuecomment-4803889291
-
- 
-
