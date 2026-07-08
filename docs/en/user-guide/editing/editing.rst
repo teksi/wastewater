@@ -62,7 +62,7 @@ Synchronize Identifiers of Manholes
 
 .. versionadded:: 2026.0
 
-This feature adapts the synchronization of identifiers, following the idea that identifiers are null.
+This feature adapts the synchronization of identifiers, following the idea that identifiers are not null.
 
 For Wastewater structure / Cover / Wastewater nodes, they are kept in sync:
 
@@ -77,6 +77,7 @@ Implemented behavior for covers:
 
     UPDATE
         if linked cover exists, it's updated (but it's not yet checked if the identifier is updated to an already existing one)
+
         if linked cover doesn't exists
             if cover with same identifier doesn't exist, then it's created
             if cover with same identifier already exist with identifier, no creation + notification

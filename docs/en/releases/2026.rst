@@ -33,7 +33,7 @@ Documentation
  - Adapt links and make these relative where possible
  - List common editing mistakes in docs
  - Release Notes 2026.0 added
-  - Update copyright year
+ - Update copyright year
 
 Bug fixes and performance improvements
 -----------------------------------------
