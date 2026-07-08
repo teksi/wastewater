@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>2026.0.1 (future) &mdash; TWW latest Dokumentation</title>
+  <title>2026.0.1 &mdash; TWW latest Dokumentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
 
@@ -51,9 +51,14 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Releases</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="2024.html">2024.0.5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="2025.html">2025.0.2</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">2026.0.1 (future)</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2026.0.1</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#main-features">Main features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#documentation">Documentation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#bug-fixes-and-performance-improvements">Bug fixes and performance improvements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#extension-improvements">Extension improvements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ci-improvements">CI improvements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#project">Project</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#adaptions-to-project-file">Adaptions to project file</a></li>
 </ul>
 </li>
 </ul>
@@ -78,7 +83,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">Releases</a></li>
-      <li class="breadcrumb-item active">2026.0.1 (future)</li>
+      <li class="breadcrumb-item active">2026.0.1</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/releases/2026.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
       </li>
@@ -90,27 +95,48 @@
              
   <blockquote>
 <div></div></blockquote>
-<section id="future">
-<span id="id1"></span><h1>2026.0.1 (future)<a class="headerlink" href="#future" title="Link to this heading"></a></h1>
-<p>Here you can find information about the future 2026.X release of TEKSI wastewater</p>
+<p id="id1">Here you can find information about the future 2026.x release of TEKSI wastewater</p>
+<section id="id2">
+<h1>2026.0.1<a class="headerlink" href="#id2" title="Link to this heading"></a></h1>
 <section id="main-features">
 <h2>Main features<a class="headerlink" href="#main-features" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>First version of TEKSI wastewater module for QGIS 3.40 LTR and initialized and upgrade via the PostgreSQL Update Manager (PUM) and the TEKSI Module Management Tool (TMMT).</p></li>
+<li><p>Check the <a class="reference external" href="../installation-guide/index.html">installation guide</a> for more information on how to install TEKSI wastewater module via TMMT.</p></li>
+</ul>
+<p>TO DO: Check if this link has to be adapted
+<a class="reference external" href="https://teksi.github.io/wastewater/latest/fr/installation-guide/workstation.html#install-tww-plugin">https://teksi.github.io/wastewater/latest/fr/installation-guide/workstation.html#install-tww-plugin</a> - should be adapted to do it with TMMT</p>
 <blockquote>
 <div><ul class="simple">
-<li><dl class="simple">
-<dt>New great feature 1</dt><dd><ul>
-<li><p>New great feature 2</p></li>
+<li><p><a class="reference external" href="../admin-guide/db-production-readiness/index.html">The OID Prefix can be set in TMMT from 2026.0.1 on</a></p></li>
+<li><p><a class="reference external" href="../user-guide/editing/editing.html">The ‚Extend selection tool‘ allows users to expand a selection made on the vw_tww_reach layer to related objects</a></p></li>
 </ul>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>New great feature 3</dt><dd><ul>
-<li><p>New great feature 4</p></li>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../_images/selection_extender_2.png" src="../_images/selection_extender_2.png" />
+</figure>
+</div></blockquote>
+<ul class="simple">
+<li><p><a class="reference external" href="../user-guide/network-following/index.html">The ‚Refresh network topology‘ is only visible in Admin mode</a> as the query can take quite long for big networks.</p></li>
+<li><p>create _CH copies of translation files ( ‚*.qm‘ )</p></li>
+<li><p>Import VSA organisation from internet if not present</p></li>
 </ul>
-</dd>
-</dl>
-</li>
+</div></blockquote>
+</section>
+<section id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>Release Notes 2025.0 added (incl. Video)</p></li>
+<li><p>Docu: Correction about organisation table in configuration-layergroup</p></li>
+<li><p>Fix installation documentation</p></li>
+<li><p>Versionized docs</p></li>
+<li><p><a class="reference external" href="../user-guide/layerexplanations/twwproject.html">Doc changes in dataowner fields</a></p></li>
+<li><p>Document labeling and symbology flags</p></li>
+<li><p>Add chapter Obj_ID in TWW docs/en/admin-guide/db-production-readiness/index.rst</p></li>
+<li><p>Adapt links and make these relative where possible</p></li>
+<li><p>Release Notes 2026.0 added</p></li>
+<li><p>Update copyright year</p></li>
 </ul>
 </div></blockquote>
 </section>
@@ -118,8 +144,98 @@
 <h2>Bug fixes and performance improvements<a class="headerlink" href="#bug-fixes-and-performance-improvements" title="Link to this heading"></a></h2>
 <blockquote>
 <div><ul class="simple">
-<li><p>Various bug fixes for …</p></li>
+<li><p>Snapping fails on freshly created wastewater nodes</p></li>
+<li><p>Improve identifier synchronization for wastewater structures (<a class="reference external" href="https://github.com/teksi/wastewater/pull/904#issuecomment-3723192972">https://github.com/teksi/wastewater/pull/904#issuecomment-3723192972</a>)</p></li>
+<li><p>Handle pg2ili as an app schema and fix roles granting</p></li>
+<li><p>Drop schema if exists</p></li>
+<li><p>Support of different SRID - SRID as a parameter</p></li>
+<li><p>Add indexes for main views</p></li>
+<li><p>Fix creation of ili schema on import/export</p></li>
+<li><p>Drop uuid-ossp (as already integrated in Postgres 17)</p></li>
+<li><p>First steps towards QGIS 4 and QT6</p></li>
+<li><p>Make error details more accessible <a class="reference external" href="https://github.com/teksi/wastewater/pull/971">https://github.com/teksi/wastewater/pull/971</a></p></li>
+<li><p>Fix integrity checker on INTERLIS Export</p></li>
+<li><p>Separate symbology and labels</p></li>
+<li><p>Improvements on network refresh</p></li>
+<li><p>Fix reach view limitations</p></li>
+<li><p>use wastewater node identifiers in reach wizard identifier creation</p></li>
+<li><p>Fix SWMM input creation</p></li>
+<li><p>Refresh materialized views concurrently</p></li>
+<li><p>Fix reach point label generation</p></li>
+<li><p>Provide / fix translations for the plugin</p></li>
 </ul>
+</div></blockquote>
+</section>
+<section id="extension-improvements">
+<h2>Extension improvements<a class="headerlink" href="#extension-improvements" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>Exclude drainage catchment areas from AG-xx export</p></li>
+<li><p>Fix AG-xx last modification reference</p></li>
+<li><p>Make AG-xx last modification selection locale-unaware</p></li>
+<li><p>Fix AG-xx import reach point coordinates</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="ci-improvements">
+<h2>CI improvements<a class="headerlink" href="#ci-improvements" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>Separate pum from db images in compose</p></li>
+<li><p>Use pum docker image</p></li>
+<li><p>Generalize workflows</p></li>
+<li><p>Add sticky to easy dev plugin download and tests</p></li>
+<li><p>Fix plugin package</p></li>
+<li><p>Add stale issue checker</p></li>
+<li><p>Fix transifex</p></li>
+<li><p>Versionized Documentation</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="project">
+<h2>Project<a class="headerlink" href="#project" title="Link to this heading"></a></h2>
+</section>
+<section id="adaptions-to-project-file">
+<h2>Adaptions to project file<a class="headerlink" href="#adaptions-to-project-file" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>The following new views have been integrated in this release:</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>tww_app.vw_tww_wastewater_node (in addition to tww_app.vw_wastewater_node)</p></li>
+<li><p>tww_od.tww_reach_point_labels</p></li>
+<li><p>tww_od.tww_wastewater_structure_labels</p></li>
+<li><p>tww_od.tww_wastewater_node_symbology</p></li>
+</ul>
+<p>Please use the corresponding <code class="docutils literal notranslate"><span class="pre">*</span> </code>.qml files to integrate them into existing TWW 2025 project files</p>
+<p>TO DO: create the qml files ?</p>
+<p>The following views have been adapted and need an adaption of existing TWW 2025 project files:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Better configuration in vw_tww_catchment_area_totals (point-layer)</p></li>
+<li><p>Hint about necessary logcards in vw_catchment_area, tab fk_logcard</p></li>
+<li><p>Added info whether ws has log card to main view</p></li>
+<li><p>Added layer vw_tww_damage</p></li>
+<li><p>vw_tww_reach. labeldefinition for rp_from_label und rp_to_label renamed and with the replace-function so it will work with the variables for translation</p></li>
+<li><p>vw_tww_wastewater_structure: Symbology: replaced some ‚not „tww_is_primary“ ‚ with ‚(not „tww_is_primary“ or „tww_is_primary“ is NULL)‘</p></li>
+<li><p>vw_tww_wastewater_structure: Attributs Form: wn_elevation_accuracy also with option reuse last entered value (similar as co_position_accuracy)</p></li>
+<li><p>vw_tww_wastewater_structure: Attributs Form: _input_label, _output_label replaced with _reach_point_label</p></li>
+<li><p>New Project variable tww_language: values should be _en, _de or _fr</p></li>
+<li><p>vw_tww_reach labeldefinition: changed „material_abbr_en“ to case when &#64;tww_language = ‚_de‘ then „material_abbr_de“ when &#64;tww_language = ‚_fr‘ then „material_abbr_fr“ else „material_abbr_en“ end</p></li>
+<li><p>new layer tww_od.profile_geometry</p></li>
+<li><p>new relation pipe_profile.obj_id to profile_geometry.fk_pipeprofile</p></li>
+<li><p>profile_geometry Attribute form</p></li>
+<li><p>pipe_profile Attribute form (profile_geometry subtable only for profile_type special, mouth, open)</p></li>
+<li><p>vw_tww_additional_ws: field wn_fk_wastewater_structure no more in vw</p></li>
+<li><p>all identifier-fields: new enforced constraints length(„identifier“ )&lt;=nn or „identifier“ is NULL (otherwise you loose all entries, if the identifier is to long)</p></li>
+<li><p>added a project-stored SQL „visualize profile_geometry“</p></li>
+<li><p>vw_tww_wastewater_structure: tww_is_primary, tww_has_log_card, _owner_organisation_type is not editable, owner_organisation_type configured as value relation</p></li>
+<li><p>vw_tww_additional_wws: reach_point_label, tww_is_primary, _channel_usage_current, _channel_function_hierarchic, _owner_organisation_type is not editable. _channel_usage_current, _channel_function_hierarchic, owner_organisation_type configured as value relation</p></li>
+<li><p>vw_wastewater_structure : tww_is_primary, _channel_usage_current, _channel_function_hierarchic, _owner_organisation_type is not editable. _channel_usage_current, _channel_function_hierarchic, owner_organisation_type configured as value relation</p></li>
+<li><p>vw_tww_reach: owner_organisation_type is not editable. owner_organisation_type configured as value relation</p></li>
+<li><p>vw_tww_overflow: _channel_usage_current, _channel_function_hierarchic is not editable. _channel_usage_current, _channel_function_hierarchic configured as value relation</p></li>
+<li><p>all fields with value relation: „order by“ set to value</p></li>
+</ul>
+<p>For Reference see <a class="reference external" href="https://github.com/teksi/wastewater/issues/995#issuecomment-4803889291">https://github.com/teksi/wastewater/issues/995#issuecomment-4803889291</a></p>
 </div></blockquote>
 </section>
 </section>

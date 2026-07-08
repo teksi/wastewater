@@ -359,6 +359,11 @@ You can see, if there is already a dataset with the same obj_id in the state att
 </div>
 <p>Once you’re happy with the import options, confirm the dialog to persist the changes to your database.</p>
 <p>If the import was successful a green success message appears.</p>
+<p>If you imported an (organisation) dataset, TWW automatically sets the <code class="docutils literal notranslate"><span class="pre">tww_active</span></code> flag on those organisations that have been used by any foreign key to the class organisation.</p>
+<p>If you import the organisation dataset before any network data (as proposed), you will not see any organisation in the layer organisations. You have to turn off the pre-defined filter <code class="docutils literal notranslate"><span class="pre">tww_active</span></code>.</p>
+<figure class="align-default">
+<img alt="../../_images/organisation_tww_active.png" src="../../_images/organisation_tww_active.png" />
+</figure>
 </section>
 <section id="usage-command-line">
 <h2>Usage (command line)<a class="headerlink" href="#usage-command-line" title="Link to this heading"></a></h2>

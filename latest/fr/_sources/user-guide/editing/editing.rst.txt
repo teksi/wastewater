@@ -143,7 +143,7 @@ Examples for using **represent_value**
 
  .. figure:: images/represent_value2.jpg
 
-.. note:: The expression `"ch_usage_current" <> "ch_usage planned"` does not work because of the unique codes!
+.. note:: The expression `"ch_usage_current" <> "ch_usage_planned"` does not work because of the unique codes!
 
 .. note:: In the demo-project is no use of represent_value for rule-based symbols, because the rules will otherwise only work for one language.
 
