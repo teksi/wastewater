@@ -81,13 +81,11 @@ CI improvements
  - Versionized Documentation
 
 
-Project
--------
-
 Adaptions to project file
 ----------------------------------------
 
  The following new views have been integrated in this release:
+
 
 * tww_app.vw_tww_wastewater_node (in addition to tww_app.vw_wastewater_node)
 * tww_od.tww_reach_point_labels
