@@ -201,7 +201,7 @@ class TeksiWastewaterPlugin:
 
         self.wizardAction = QAction(
             QIcon(os.path.join(plugin_root_path(), "icons/wizard.svg")),
-            "Wizard",
+            self.tr("Wizard"),
             self.iface.mainWindow(),
         )
         self.wizardAction.setWhatsThis(self.tr("Create new manholes and reaches"))
@@ -211,7 +211,7 @@ class TeksiWastewaterPlugin:
 
         self.connectNetworkElementsAction = QAction(
             QIcon(os.path.join(plugin_root_path(), "icons/link-wastewater-networkelement.svg")),
-            QApplication.translate("teksi_wastewater", "Connect wastewater networkelements"),
+            self.tr("Connect wastewater networkelements"),
             self.iface.mainWindow(),
         )
         self.connectNetworkElementsAction.setEnabled(False)
@@ -220,7 +220,7 @@ class TeksiWastewaterPlugin:
 
         self.refreshNetworkTopologyAction = QAction(
             QIcon(os.path.join(plugin_root_path(), "icons/refresh-network.svg")),
-            "Refresh network topology",
+            self.tr("Refresh network topology"),
             self.iface.mainWindow(),
         )
         self.refreshNetworkTopologyAction.setWhatsThis(self.tr("Refresh network topology"))

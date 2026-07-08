@@ -6,7 +6,7 @@ Editing of existing data
 This represents a guide on how to edit existing data in TWW.
 
 Demo project (chapter / pictures not adjusted to TWW)
-------------------------------------------------------------
+-----------------------------------------------------
 
 * Make sure you have imported the demo project with pgAdmin (see the :ref:`database-initialization` chapter)
 * Open the demo project by going to the main menu and press **Project** --> **Open**  or by pressing ``CTRL``
@@ -157,6 +157,85 @@ An other way to choose an object
 
  * You can select then the object you want. This will get you to the correspondent form to see the details.
 
+
+.. _extend_selection_tool:
+
+.. versionadded:: 2026.0
+
+Extend selection tool
+---------------------
+
+With the extend selection tool allows users to expand a selection made on the vw_tww_reach layer to related objects in:
+- vw_tww_wastewater_node
+- vw_tww_wastewater_structure
+- vw_tww_catchment_area
+
+
+**Features**
+
+.. figure:: images/selection_extender_only.jpg
+
+A new dock widget has been added (right-side panel) allowing users to:
+
+- Choose the selection mode:
+  - Add          -> Union
+  - Replace      -> Overwrite
+  - Remove       -> Difference
+  - Intersect    -> Intersection
+
+
+- Choose the status for catchment selection:
+
+  * Current      -> use fk_wastewater_networkelement_ww_current and fk_wastewater_networkelement_rw_current
+  * Planned      -> use fk_wastewater_networkelement_ww_planned and fk_wastewater_networkelement_rw_planned
+
+To use this tool, make a selection in layer vw_tww_reach, choose the selection type and catchment status and click on select.
+
+Repeat this steps as many time as you want. Every step will combine the last selection of reaches, structures and catchment with the new selection depending on your choice.
+
+Example:
+There is already a selection of catchments:
+
+.. figure:: images/selection_extender_0.png
+
+1.	You want to add to this catchments all catchments, that are connected to one of the selected reaches:
+
+- Select the reaches and  choose "Add", "Planned"
+
+.. figure:: images/selection_extender_1.png
+
+and click "Select"
+
+In the Messages, you can see, how many records are selected now
+
+.. figure:: images/selection_extender_2.png
+
+2.	But there are now too many reaches selected.
+
+- Select the reaches, that should not be in the selection and choose "Remove", "Planned"
+
+.. figure:: images/selection_extender_3.png
+
+and click "Select"
+
+.. figure:: images/selection_extender_4.png
+
+Now you have all reaches, that were selected with step 1, but have not been selected in step 2.
+
+And you have all nodes and catchments, that are connected with these reaches and the records, that were selected before you started to use the Selection extender Tool.
+
+If you want to start with a new selection of reaches, then click on "Reset reaches memory".
+
+.. figure:: images/selection_extender_5.png
+
+If you then choose "Replace",
+
+- you will clear also the selection of wastewater structures and catchments with your next select,
+- otherwise you can work again with the old selection of structures and catchments.
+
+
+
+
 .. _Adding-additional-covers-and-nodes-to-an-existing-wastewater-structure:
 
 Adding additional covers and nodes to an existing wastewater structure
@@ -213,6 +292,8 @@ How long did we wait:
 Why is vw_tww_reach so slow: there are triggers in the database, that updates for every record the calculated fields of the connected manholes and nodes, that this themes symbology is always up-to-date.
 
 TWW has a function to disable / enable symbology triggers (chapter how to)
+
+See :ref:`disable_enable_symbology_triggers` in the User Guide - How to Chapter
 
 - Use field calculator with vw_tww_reach, symbology trigger disabled: about 15 seconds.
 

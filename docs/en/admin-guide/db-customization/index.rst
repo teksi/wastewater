@@ -26,9 +26,17 @@ If a customization is still required, the following explanations and rules expla
 Altering symbology and labelling behaviour
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Symbology and labelling behaviour depends on the value lists `` tww_vl.channel_usage_current`` and `` tww_vl.channel_function_hierarchic``  These two value list tables have an additional column ``tww_symbology_order``, which is used to define the hierarchy of the symbology.
+Symbology behaviour depends on the value lists ``tww_vl.channel_usage_current`` and ``tww_vl.channel_function_hierarchic``.
+These two value list tables have an additional column ``tww_symbology_order``, which is used to define the hierarchy of the symbology.
 
-For labelling, one can use the column `` tww_vl.channel_function_hierarchic.tww_use_in_labels`` to define which functions_hierarchic are taken into account when creating a wastewater structure's label.
+Generally, the ``channel.usage_current`` and ``channel.function_hierarchic`` of outflowing channels take precedence over the corresponding values of inflowing channels.
+For ``tww_vl.channel_usage_current``, there exists a boolean column ``tww_symbology_inflow_prio`` which overrides this, having these inflowing channels taking precedence over outflowing channels.
+This is especially useful for discharge points that discharge in culverted creeks
+
+For labelling, the attribute ``tww_use_in_labels`` of the value lists ``tww_vl.channel_usage_current``, ``tww_vl.channel_function_hierarchic``and ``tww_vl.wastewater_structure_status``
+filters out which entries are taken into account when creating a label.
+
+For more details see see the :ref:`labelcustomisation` chapter.
 
 Creation of custom tables
 ^^^^^^^^^^^^^^^^^^^^^^^^^

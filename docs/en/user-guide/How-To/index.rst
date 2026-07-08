@@ -12,6 +12,10 @@ If you get the following error message on startup of the TEKSI project during th
 
 .. warning:: fk_provider or fk_dataowner not set in tww_od.default_values
 
+
+.. figure:: images/warning_missing_default_values.png
+
+
 then your database is not yet production ready.
 
 It is possible to define default values for repeated fields such as fk_provider or fk_dataowner, so that you not have to add those manually for each object that you are creating.
@@ -50,6 +54,7 @@ Per default, the fields ``fk_provider`` and ``fk_dataowner`` are already connect
 An example SQL script how to insert the default value for all occurences of a field name can be found `here <https://github.com/teksi/wastewater/blob/main/datamodel/changelogs/0001/14_default_values.sql>`_)
 
 
+.. _disable_enable_symbology_triggers:
 
 Increase speed of calculations and update symbology and labels
 --------------------------------------------------------------
@@ -64,6 +69,9 @@ Select *Enable symbology triggers* after the calculations or the multiedit sessi
 
 When the triggers are disabled, there is no update of calculated fields. E.g. the input- or output-labels or the _channel_function_hierarchic field in in layer vw_tww_wastewater_structure are not recalculated. To recalculate all these fields select *Update Symbology* in the TWW-Plugin-menu
 
+Editing multiple entries at once
+--------------------------------
+There is a QGIS native tool to edit multiple entries at once. See  https://docs.qgis.org/latest/{language}/docs/user_manual/working_with_vector/attribute_table.html#editing-multiple-fields
 
 
 Working with labels
@@ -304,7 +312,43 @@ The Feature Attributes window for the overflow characteristic appears:
 2. Define the necessary HQ or QQ values with the **add child object** button. Be sure to choose the correct tab corresponding to the choice in **kind_overflow_char**
 
 
+Common mistakes
+---------------
 
+Relying on the tww_app.vw_tww_wastewater_structure geometry
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The layer tww_app.vw_tww_wastewater_structure create a point geometry from either the main wastewater node of a nodal wastewater structure or from its main cover.
+This is why the layer's geometry is 2D and we advise not to snap on the tww_app.vw_tww_wastewater_structure layer.
+Use tww_app.vw_cover or tww_app.vw_tww_wastewater_node instead, depending on the reason you snap.
+
+Ignoring reach points when splitting reaches
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+When a reach is split using the native tools, one of the resulting reaches keeps all the foreign keys of the old one while the other only keeps the channel obj_id.
+This means that the reach points of the old reach no longer correspond to the reach_point_from of the upper reach and the reach_point_to of the lower reach.
+This in turn means that the fk_reach_point of TV inspections might no longer reference the correct reach point.
+To keep consistency, one must load the the layers tww_od.reach and tww_od.reach_point, adapt the foreign keys and move the reach points to the correct location.
+
+Handling of reach 3D geometry
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The layer tww_app.vw_tww_reach allows for two ways to update a reach point level:
+Either, one adapts the value in the attribute form or one snaps the start/end vertex to a 3D object, using the z value of that object instead.
+When manually altering the snapping settings, this can lead to undesired side effects, i.e. by snapping on a cover (and thus copying its level).
+We strongly encourage to edit in the unaltered TWW project and to separate adaptations for visualisations, plan exports etc. into separate qgs files.
+
+Altering database-wide settings while in edit mode
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+While a user is in edit mode, database-wide alterations like enabling/disabling triggers or updating the topology will likely make QGIS crash.
+This is due to the database locking certain operations while the user is in edit mode to prevent unstable conditions on the database.
+It is planned to check for database locks before firing the corresponding processes, but this is not implemented yet.
+
+Snapping fails on freshly created wastewater nodes
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+When creating a new wastewater structure, the database creates the corresponding wastewater node.
+The TWW wizard, however, does not refresh its memory of wastewater nodes to snap to, as it was created indirectly.
+Save, exit the editing mode, re-enter editing mode to snap on the entry.
+
+..versionadded: 2026.0.1
+ This issue was fixed in 2026.0.1
 
 Further informations
 --------------------

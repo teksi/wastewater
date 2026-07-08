@@ -242,4 +242,4 @@ texinfo_documents = [
 # texinfo_no_detailmenu = False
 
 # Path for sphinx to find *.mo files for translation
-locale_dirs = ["i18n/"]
+locale_dirs = ["./i18n"]
