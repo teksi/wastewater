@@ -124,7 +124,21 @@ Or for Windows users, directly in QGIS via the Python Console with::
  import pip; pip.main(["install", "networkx"])
 
 
+Plugin installation with TMMT Plugin:
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. versionadded:: 2025.0
+
+See the current `TMMT Documentation for a step by step help <https://github.com/teksi/TMMT/discussions/34>`_
+
+
 Plugin installation from QGIS Plugins Menu:
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. versionchanged:: 2025.0
+
+Use this approach only to install the TMMT plugin, with which you then can install the TWW plugin that corresponds to your database release version.
+
 
 * Open QGIS
 
@@ -140,13 +154,17 @@ Plugin installation from QGIS Plugins Menu:
 
   * All
 
-    * Search `TWW`
+    * Search `TMMT`
 
     * Click the checkbox next to it
 
   .. figure:: images/001_searchplugin.jpeg
 
-   **Add the TWW plugin**
+   **Add the TMMT plugin**
+
+
+Check TWW plugin installation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 * When the installation was successfull, you should see the TWW Toolbar:
 
@@ -166,6 +184,7 @@ Optional plugin
 ^^^^^^^^^^^^^^^
 
 TWW uses a data historization process. The ``pg history viewer`` `plugin <http://plugins.qgis.org/plugins/pg_history_viewer/>`_ allows you to view the changes made and replay some of them.
+
 
 Install the demo data
 ---------------------
