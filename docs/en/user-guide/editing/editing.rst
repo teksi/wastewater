@@ -56,6 +56,14 @@ Changing attributes of point elements (manholes / special structures)
 
 .. note:: **additional fields** means, that some fields of the class are in the general tab, others are in separat tabs. The fields of the general tab are not repeated, because Multiedit does not work correct when using a field on more than one tab.
 
+
+Synchronize Identifiers of Manholes
+-------------------------------------------------
+
+.. versionadded:: 2026.0
+
+
+
 Changing attributes of linear elements (channels)
 -------------------------------------------------
 
