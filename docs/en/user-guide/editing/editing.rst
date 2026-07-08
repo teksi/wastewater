@@ -62,6 +62,26 @@ Synchronize Identifiers of Manholes
 
 .. versionadded:: 2026.0
 
+This feature adapts the synchronization of identifiers, following the idea that identifiers are null.
+
+For Wastewater structure / Cover / Wastewater nodes, they are kept in sync:
+
+    insert: if only main is provided, all 3 get the same value
+    update: if they were the same and the main changes => all changes
+
+Implemented behavior for covers:
+
+    INSERT
+        if cover with same identifier doesn't exist, then it's created
+        if cover with same identifier already exist with identifier, no creation + notification
+
+    UPDATE
+        if linked cover exists, it's updated (but it's not yet checked if the identifier is updated to an already existing one)
+        if linked cover doesn't exists
+            if cover with same identifier doesn't exist, then it's created
+            if cover with same identifier already exist with identifier, no creation + notification
+
+Plus in general, if there is no cover data, no cover is created
 
 
 Changing attributes of linear elements (channels)
