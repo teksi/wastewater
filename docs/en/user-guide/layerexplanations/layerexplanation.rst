@@ -177,7 +177,7 @@ This allows to better mark the different inlets and outlets:
 
 .. figure:: images/comparison_2025_and_2026symbolisation.png
 
-Introduction of these new views needs adaption of existing TWW project files (for details see (:ref:`2026`) Release notes)
+Introduction of these new views needs adaption of existing TWW project files (for details see `2026 Release notes <../releases/2026.html>`_ )
 
 Overflow tables ``tww_app.vw_tww_overflow``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
