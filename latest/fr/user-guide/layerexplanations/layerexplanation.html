@@ -250,10 +250,27 @@ You can not create new maintenance-events with this views, but you can edit attr
 </section>
 <section id="hydraulic">
 <h2>Hydraulic<a class="headerlink" href="#hydraulic" title="Lien vers cette rubrique"></a></h2>
-<section id="wastewater-nodes-tww-app-vw-tww-wastewater-node">
-<h3>Wastewater nodes <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_wastewater_node</span></code><a class="headerlink" href="#wastewater-nodes-tww-app-vw-tww-wastewater-node" title="Lien vers cette rubrique"></a></h3>
+<section id="wastewater-nodes-tww-app-vw-wastewater-node">
+<h3>Wastewater nodes <code class="docutils literal notranslate"><span class="pre">tww_app.vw_wastewater_node</span></code><a class="headerlink" href="#wastewater-nodes-tww-app-vw-wastewater-node" title="Lien vers cette rubrique"></a></h3>
 <p>Use this layer to change the situation of one selected wastewater node (and not the whole wastewater structure) or if you want to add a new wastewater node to an existing wastewater structure. You can add additional wastewater nodes in the wastewater nodes-tab of the <cite>vw_tww_wastewater_structure</cite> too.
 When moving the geometry of the wastewater node, the geometry of the connected reaches is updated automatically. If you want to move a wastewater node without moving the reaches, disconnect the reaches, move the node and reconnect the reaches.</p>
+</section>
+<section id="wastewater-nodes-tww-app-vw-tww-wastewater-node">
+<h3>Wastewater nodes <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_wastewater_node</span></code><a class="headerlink" href="#wastewater-nodes-tww-app-vw-tww-wastewater-node" title="Lien vers cette rubrique"></a></h3>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Modifié dans la version 2026.0.</span></p>
+</div>
+<p>This view replaces in some way the tww_app.vw_wastewater_node (it still exists for backward compatibility) as it integrates the symbology of the following views, that handle symbology now separatly:</p>
+<ul class="simple">
+<li><p>a table tww_od.tww_reach_point_labels</p></li>
+<li><p>a table tww_od.tww_wastewater_structure_labels</p></li>
+<li><p>a table tww_od.tww_wastewater_node_symbology</p></li>
+</ul>
+<p>This allows to better mark the different inlets and outlets:</p>
+<figure class="align-default">
+<img alt="../../_images/comparison_2025_and_2026symbolisation.png" src="../../_images/comparison_2025_and_2026symbolisation.png" />
+</figure>
+<p>Introduction of these new views needs adaption of existing TWW project files (for details see <a class="reference external" href="../releases/2026.html">2026 Release notes</a> )</p>
 </section>
 <section id="overflow-tables-tww-app-vw-tww-overflow">
 <h3>Overflow tables <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_overflow</span></code><a class="headerlink" href="#overflow-tables-tww-app-vw-tww-overflow" title="Lien vers cette rubrique"></a></h3>
