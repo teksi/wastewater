@@ -58,7 +58,7 @@ Bug fixes and performance improvements
  - Fix reach point label generation
  - Provide / fix translations for the plugin
  - Update wastewater node cache after updating wastewater_structure
- - 
+ -
 
 Extension improvements
 ----------------------
