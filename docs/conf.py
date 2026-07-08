@@ -225,7 +225,7 @@ texinfo_documents = [
         "The TWW Project www.teksi.ch",
         "TWW",
         "Module Wastewater & GEP Infrastructure Management",
-        "Miscellaneous",
+        "Wastewater",
     ),
 ]
 
