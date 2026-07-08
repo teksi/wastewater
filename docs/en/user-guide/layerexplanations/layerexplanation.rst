@@ -165,7 +165,7 @@ Wastewater nodes ``tww_app.vw_tww_wastewater_node``
 
 .. versionchanged:: 2026.0
 
-This view replaces is some way the tww_app.vw_wastewater_node (it still exists for backward compatibility) as it integrates the symbology of the following views, that handle symbology now separatly:
+This view replaces in some way the tww_app.vw_wastewater_node (it still exists for backward compatibility) as it integrates the symbology of the following views, that handle symbology now separatly:
 
 * a table tww_od.tww_reach_point_labels
 * a table tww_od.tww_wastewater_structure_labels
