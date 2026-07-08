@@ -100,11 +100,9 @@
 <section id="main-features">
 <h2>Main features<a class="headerlink" href="#main-features" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>First version of TEKSI wastewater module for QGIS 3.40 LTR and initialized and upgrade via the PostgreSQL Update Manager (PUM) and the TEKSI Module Management Tool (TMMT).</p></li>
-<li><p>Check the <a class="reference external" href="../installation-guide/index.html">installation guide</a> for more information on how to install TEKSI wastewater module via TMMT.</p></li>
+<li><p>Version of TEKSI wastewater module for QGIS 3.40 LTR and initialized and upgrade via the PostgreSQL Update Manager (PUM) and the TEKSI Module Management Tool (TMMT).</p></li>
+<li><p>Check the <a class="reference external" href="../installation-guide/index.html">installation guide</a> for more information on how to install TEKSI wastewater module (TWW) via TMMT.</p></li>
 </ul>
-<p>TO DO: Check if this link has to be adapted
-<a class="reference external" href="https://teksi.github.io/wastewater/latest/fr/installation-guide/workstation.html#install-tww-plugin">https://teksi.github.io/wastewater/latest/fr/installation-guide/workstation.html#install-tww-plugin</a> - should be adapted to do it with TMMT</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><a class="reference external" href="../admin-guide/db-production-readiness/index.html">The OID Prefix can be set in TMMT from 2026.0.1 on</a></p></li>
@@ -117,7 +115,7 @@
 </div></blockquote>
 <ul class="simple">
 <li><p><a class="reference external" href="../user-guide/network-following/index.html">The ‘Refresh network topology’ is only visible in Admin mode</a> as the query can take quite long for big networks.</p></li>
-<li><p>create _CH copies of translation files ( ‘*.qm’ )</p></li>
+<li><p>create _ch copies of translation files ( ‘*.qm’ )</p></li>
 <li><p>Import VSA organisation from internet if not present</p></li>
 </ul>
 </div></blockquote>
@@ -134,6 +132,7 @@
 <li><p>Document labeling and symbology flags</p></li>
 <li><p>Add chapter Obj_ID in TWW docs/en/admin-guide/db-production-readiness/index.rst</p></li>
 <li><p>Adapt links and make these relative where possible</p></li>
+<li><p>List common editing mistakes in docs</p></li>
 <li><p>Release Notes 2026.0 added</p></li>
 <li><p>Update copyright year</p></li>
 </ul>
@@ -162,6 +161,8 @@
 <li><p>Refresh materialized views concurrently</p></li>
 <li><p>Fix reach point label generation</p></li>
 <li><p>Provide / fix translations for the plugin</p></li>
+<li><p>Update wastewater node cache after updating wastewater_structure</p></li>
+<li></li>
 </ul>
 </div></blockquote>
 </section>
@@ -205,8 +206,7 @@
 <li><p>tww_od.tww_wastewater_structure_labels</p></li>
 <li><p>tww_od.tww_wastewater_node_symbology</p></li>
 </ul>
-<p>Please use the corresponding <code class="docutils literal notranslate"><span class="pre">*</span> </code>.qml files to integrate them into existing TWW 2025 project files</p>
-<p>TO DO: create the qml files ?</p>
+<p>Please export and use the corresponding <code class="docutils literal notranslate"><span class="pre">*</span> </code>.qml files to integrate them into your existing TWW 2025 project files</p>
 <p>The following views have been adapted and need an adaption of existing TWW 2025 project files:</p>
 <blockquote>
 <div><ul class="simple">

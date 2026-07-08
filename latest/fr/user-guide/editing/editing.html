@@ -54,6 +54,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#demo-project-chapter-pictures-not-adjusted-to-tww">Demo project (chapter / pictures not adjusted to TWW)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#layers">Layers</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#changing-attributes-of-point-elements-manholes-special-structures">Changing attributes of point elements (manholes / special structures)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#synchronize-identifiers-of-manholes">Synchronize Identifiers of Manholes</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#changing-attributes-of-linear-elements-channels">Changing attributes of linear elements (channels)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#change-reach-direction">Change reach direction</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#snap-reach-geometry">Snap reach geometry</a></li>
@@ -187,6 +188,34 @@
 <p class="admonition-title">Note</p>
 <p><strong>additional fields</strong> means, that some fields of the class are in the general tab, others are in separat tabs. The fields of the general tab are not repeated, because Multiedit does not work correct when using a field on more than one tab.</p>
 </div>
+</section>
+<section id="synchronize-identifiers-of-manholes">
+<h2>Synchronize Identifiers of Manholes<a class="headerlink" href="#synchronize-identifiers-of-manholes" title="Lien vers cette rubrique"></a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">Ajouté dans la version 2026.0.</span></p>
+</div>
+<p>This feature adapts the synchronization of identifiers, following the idea that identifiers are not null.</p>
+<p>For Wastewater structure / Cover / Wastewater nodes, they are kept in sync:</p>
+<blockquote>
+<div><p>insert: if only main is provided, all 3 get the same value
+update: if they were the same and the main changes =&gt; all changes</p>
+</div></blockquote>
+<p>Implemented behavior for covers:</p>
+<blockquote>
+<div><dl>
+<dt>INSERT</dt><dd><p>if cover with same identifier doesn’t exist, then it’s created
+if cover with same identifier already exist with identifier, no creation + notification</p>
+</dd>
+<dt>UPDATE</dt><dd><p>if linked cover exists, it’s updated (but it’s not yet checked if the identifier is updated to an already existing one)</p>
+<dl class="simple">
+<dt>if linked cover doesn’t exists</dt><dd><p>if cover with same identifier doesn’t exist, then it’s created
+if cover with same identifier already exist with identifier, no creation + notification</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
+<p>Plus in general, if there is no cover data, no cover is created</p>
 </section>
 <section id="changing-attributes-of-linear-elements-channels">
 <h2>Changing attributes of linear elements (channels)<a class="headerlink" href="#changing-attributes-of-linear-elements-channels" title="Lien vers cette rubrique"></a></h2>

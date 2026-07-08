@@ -57,6 +57,9 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#install-qgis">Install QGIS</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#install-tww-plugin">Install TWW plugin</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#plugin-installation-with-tmmt-plugin">Plugin installation with TMMT Plugin:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#plugin-installation-from-qgis-plugins-menu">Plugin installation from QGIS Plugins Menu:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#check-tww-plugin-installation">Check TWW plugin installation</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#optional-plugin">Optional plugin</a></li>
 </ul>
 </li>
@@ -119,12 +122,12 @@ server itself.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Search for environment variable in your windows system settings, then click one of the following options, for either a user or a system variable:</p>
-<figure class="align-default" id="id2">
+<figure class="align-default" id="id3">
 <img alt="../_images/system_environment_variable.jpg" src="../_images/system_environment_variable.jpg" />
 <figcaption>
 <p><span class="caption-text">Click <code class="docutils literal notranslate"><span class="pre">New</span></code> to add a new variable name and value.
 Click an existing variable, and then click <code class="docutils literal notranslate"><span class="pre">Edit</span></code> to change its name or value.
-Click an existing variable, and then click <code class="docutils literal notranslate"><span class="pre">Delete</span></code> to remove it.</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+Click an existing variable, and then click <code class="docutils literal notranslate"><span class="pre">Delete</span></code> to remove it.</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <figure class="align-default">
@@ -219,7 +222,19 @@ choose <em>advanced installation</em> and install qgis-dev.</p></li>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pip</span><span class="p">;</span> <span class="n">pip</span><span class="o">.</span><span class="n">main</span><span class="p">([</span><span class="s2">&quot;install&quot;</span><span class="p">,</span> <span class="s2">&quot;networkx&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
-<p>Plugin installation from QGIS Plugins Menu:</p>
+<section id="plugin-installation-with-tmmt-plugin">
+<h3>Plugin installation with TMMT Plugin:<a class="headerlink" href="#plugin-installation-with-tmmt-plugin" title="Link to this heading"></a></h3>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2025.0.</span></p>
+</div>
+<p>See the current <a class="reference external" href="https://github.com/teksi/TMMT/discussions/34">TMMT Documentation for a step by step help</a></p>
+</section>
+<section id="plugin-installation-from-qgis-plugins-menu">
+<h3>Plugin installation from QGIS Plugins Menu:<a class="headerlink" href="#plugin-installation-from-qgis-plugins-menu" title="Link to this heading"></a></h3>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 2025.0.</span></p>
+</div>
+<p>Use this approach only to install the TMMT plugin, with which you then can install the TWW plugin that corresponds to your database release version.</p>
 <ul>
 <li><p>Open QGIS</p></li>
 <li><p>Go to <code class="docutils literal notranslate"><span class="pre">Plugins</span></code></p>
@@ -233,18 +248,23 @@ choose <em>advanced installation</em> and install qgis-dev.</p></li>
 <li><p>Activate the plugin (see image below):</p></li>
 <li><p>All</p>
 <ul>
-<li><p>Search <cite>TWW</cite></p></li>
+<li><p>Search <cite>TMMT</cite></p></li>
 <li><p>Click the checkbox next to it</p></li>
 </ul>
 </li>
 </ul>
-<figure class="align-default" id="id3">
+<figure class="align-default" id="id4">
 <img alt="../_images/001_searchplugin.jpeg" src="../_images/001_searchplugin.jpeg" />
 <figcaption>
-<p><span class="caption-text"><strong>Add the TWW plugin</strong></span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+<p><span class="caption-text"><strong>Add the TMMT plugin</strong></span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </li>
+</ul>
+</section>
+<section id="check-tww-plugin-installation">
+<h3>Check TWW plugin installation<a class="headerlink" href="#check-tww-plugin-installation" title="Link to this heading"></a></h3>
+<ul>
 <li><p>When the installation was successfull, you should see the TWW Toolbar:</p>
 <figure class="align-default">
 <img alt="../_images/tww_plugin_toolbar_ok.png" src="../_images/tww_plugin_toolbar_ok.png" />
@@ -263,6 +283,7 @@ choose <em>advanced installation</em> and install qgis-dev.</p></li>
 </ul>
 </li>
 </ul>
+</section>
 <section id="optional-plugin">
 <h3>Optional plugin<a class="headerlink" href="#optional-plugin" title="Link to this heading"></a></h3>
 <p>TWW uses a data historization process. The <code class="docutils literal notranslate"><span class="pre">pg</span> <span class="pre">history</span> <span class="pre">viewer</span></code> <a class="reference external" href="http://plugins.qgis.org/plugins/pg_history_viewer/">plugin</a> allows you to view the changes made and replay some of them.</p>

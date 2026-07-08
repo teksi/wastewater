@@ -8,12 +8,8 @@ Here you can find information about the future 2026.x release of TEKSI wastewate
 Main features
 ----------------
 
-- First version of TEKSI wastewater module for QGIS 3.40 LTR and initialized and upgrade via the PostgreSQL Update Manager (PUM) and the TEKSI Module Management Tool (TMMT).
-- Check the `installation guide <../installation-guide/index.html>`__ for more information on how to install TEKSI wastewater module via TMMT.
-
-TO DO: Check if this link has to be adapted
-https://teksi.github.io/wastewater/latest/fr/installation-guide/workstation.html#install-tww-plugin - should be adapted to do it with TMMT
-
+- Version of TEKSI wastewater module for QGIS 3.40 LTR and initialized and upgrade via the PostgreSQL Update Manager (PUM) and the TEKSI Module Management Tool (TMMT).
+- Check the `installation guide <../installation-guide/index.html>`__ for more information on how to install TEKSI wastewater module (TWW) via TMMT.
 
 
  - `The OID Prefix can be set in TMMT from 2026.0.1 on <../admin-guide/db-production-readiness/index.html>`_
@@ -22,7 +18,7 @@ https://teksi.github.io/wastewater/latest/fr/installation-guide/workstation.html
   .. figure:: ../user-guide/editing/images/selection_extender_2.png
 
  - `The 'Refresh network topology' is only visible in Admin mode <../user-guide/network-following/index.html>`_ as the query can take quite long for big networks.
- - create _CH copies of translation files ( '\*.qm' )
+ - create _ch copies of translation files ( '\*.qm' )
  - Import VSA organisation from internet if not present
 
 Documentation
@@ -35,6 +31,7 @@ Documentation
  - Document labeling and symbology flags
  - Add chapter Obj_ID in TWW docs/en/admin-guide/db-production-readiness/index.rst
  - Adapt links and make these relative where possible
+ - List common editing mistakes in docs
  - Release Notes 2026.0 added
  - Update copyright year
 
@@ -60,6 +57,8 @@ Bug fixes and performance improvements
  - Refresh materialized views concurrently
  - Fix reach point label generation
  - Provide / fix translations for the plugin
+ - Update wastewater node cache after updating wastewater_structure
+ -
 
 Extension improvements
 ----------------------
@@ -95,10 +94,7 @@ Adaptions to project file
 * tww_od.tww_wastewater_structure_labels
 * tww_od.tww_wastewater_node_symbology
 
-Please use the corresponding :literal:`* \ `.qml files to integrate them into existing TWW 2025 project files
-
-TO DO: create the qml files ?
-
+Please export and use the corresponding :literal:`* \ `.qml files to integrate them into your existing TWW 2025 project files
 
 
 The following views have been adapted and need an adaption of existing TWW 2025 project files:
