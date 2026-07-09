@@ -21,7 +21,7 @@ jobs:
         # only unassigned issues
         exempt-issue-assignees: '*'
 
-        # Nur markieren, nicht schliessen
+          # mark only, do not close
         days-before-issue-stale: 14
         days-before-issue-close: -1
         remove-stale-when-updated: false
@@ -47,3 +47,47 @@ jobs:
 
         only-issue-labels: 'TEKSI Support'
         operations-per-run: 20
+
+
+  stale-enhancements:
+    permissions:
+      issues: write
+    if: github.repository_owner == 'teksi'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v10
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+          # only unassigned issues
+          exempt-issue-assignees: '*'
+
+          # mark only, do not close
+          days-before-issue-stale: 14
+          days-before-issue-close: -1
+          remove-stale-when-updated: false
+          enable-statistics: false
+          stale-issue-label: 'stale'
+
+          # do not touch PRs
+          days-before-pr-stale: -1
+          days-before-pr-close: -1
+
+          # only enhancements
+          only-issue-labels: 'enhancement'
+          operations-per-run: 20
+
+          stale-issue-message: >
+            Thank you for your enhancement suggestion. We appreciate your contribution.
+
+            The TEKSI project follows a structured development process. To move forward with
+            this enhancement, we ask you to work with a certified service provider to define
+            a proper requirements document aligned with our processes.
+
+            You can find certified service providers here:
+            https://www.teksi.ch/modules/#prestataires
+
+            Once a requirements specification is available, the enhancement can be properly
+            evaluated and planned.
+
+            If you have further questions, feel free to leave a comment and we will gladly assist.
