@@ -85,7 +85,7 @@ END;
 $body$
 LANGUAGE plpgsql
 SECURITY DEFINER
-SET search_path = pg_catalog, public;
+SET search_path = pg_catalog,public;
 
 
 COMMENT ON FUNCTION tww_app.if_modified_func() IS $body$
