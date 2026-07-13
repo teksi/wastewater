@@ -87,39 +87,39 @@ Adaptions to project file
  The following new views have been integrated in this release:
 
 
-* tww_app.vw_tww_wastewater_node (in addition to tww_app.vw_wastewater_node)
-* tww_od.tww_reach_point_labels
-* tww_od.tww_wastewater_structure_labels
-* tww_od.tww_wastewater_node_symbology
+* `tww_app.vw_tww_wastewater_node` (in addition to `tww_app.vw_wastewater_node`)
+* `tww_od.tww_reach_point_labels`
+* `tww_od.tww_wastewater_structure_labels`
+* `tww_od.tww_wastewater_node_symbology`
+* new layer `tww_od.profile_geometry`
+* Added layer `vw_tww_damage`
 
-Please export and use the corresponding :literal:`* \ `.qml files to integrate them into your existing TWW 2025 project files
+Please export and use the corresponding :literal:`* \ .qml` files to integrate them into your existing TWW 2025 project files
 
 
 The following views have been adapted and need an adaption of existing TWW 2025 project files:
 
- - Better configuration in vw_tww_catchment_area_totals (point-layer)
- - Hint about necessary logcards in vw_catchment_area, tab fk_logcard
+ - Better configuration in `vw_tww_catchment_area_totals` (point-layer)
+ - Hint about necessary logcards in `vw_catchment_area`, tab fk_logcard
  - Added info whether ws has log card to main view
- - Added layer vw_tww_damage
 
- - vw_tww_reach. labeldefinition for rp_from_label und rp_to_label renamed and with the replace-function so it will work with the variables for translation
- - vw_tww_wastewater_structure: Symbology: replaced some 'not "tww_is_primary" ' with '(not "tww_is_primary" or "tww_is_primary" is NULL)'
- - vw_tww_wastewater_structure: Attributs Form: wn_elevation_accuracy also with option reuse last entered value (similar as co_position_accuracy)
- - vw_tww_wastewater_structure: Attributs Form: _input_label, _output_label replaced with _reach_point_label
- - New Project variable tww_language: values should be _en, _de or _fr
- - vw_tww_reach labeldefinition: changed "material_abbr_en" to case when @tww_language = '_de' then "material_abbr_de" when @tww_language = '_fr' then "material_abbr_fr" else "material_abbr_en" end
- - new layer tww_od.profile_geometry
- - new relation pipe_profile.obj_id to profile_geometry.fk_pipeprofile
- - profile_geometry Attribute form
- - pipe_profile Attribute form (profile_geometry subtable only for profile_type special, mouth, open)
- - vw_tww_additional_ws: field wn_fk_wastewater_structure no more in vw
- - all identifier-fields: new enforced constraints length("identifier" )<=nn or "identifier" is NULL (otherwise you loose all entries, if the identifier is to long)
+ - `vw_tww_reach`: labeldefinition for `rp_from_label` and `rp_to_label` renamed and with the replace-function so it will work with the variables for translation
+ - `vw_tww_wastewater_structure`: Symbology: replaced some `not "tww_is_primary" ` with `(not "tww_is_primary" or "tww_is_primary" is NULL)`
+ - `vw_tww_wastewater_structure`: Attributs Form: `wn_elevation_accuracy` also with option reuse last entered value (similar as `co_position_accuracy`)
+ - `vw_tww_wastewater_structure`: Attributs Form: `_input_label`, `_output_label` replaced with `_reach_point_label`
+ - New Project variable `tww_language`: values should be `_en`, _de` or `_fr`
+ - vw_tww_reach labeldefinition: changed "material_abbr_en" to `case when @tww_language = '_de' then "material_abbr_de" when @tww_language = '_fr' then "material_abbr_fr" else "material_abbr_en" end`
+ - new relation `pipe_profile.obj_id` to `profile_geometry.fk_pipeprofile`
+ - `profile_geometry` Attribute form
+ - `pipe_profile` Attribute form (profile_geometry subtable only for profile_type special, mouth, open)
+ - `vw_tww_additional_ws`: field wn_fk_wastewater_structure` no more in view
+ - all identifier-fields: new enforced constraints `length("identifier" )<=nn or "identifier" is NULL` (otherwise you loose all entries, if the identifier is to long)
  - added a project-stored SQL "visualize profile_geometry"
- - vw_tww_wastewater_structure: tww_is_primary, tww_has_log_card, _owner_organisation_type is not editable, owner_organisation_type configured as value relation
- - vw_tww_additional_wws: reach_point_label, tww_is_primary, _channel_usage_current, _channel_function_hierarchic, _owner_organisation_type is not editable. _channel_usage_current, _channel_function_hierarchic, owner_organisation_type configured as value relation
- - vw_wastewater_structure : tww_is_primary, _channel_usage_current, _channel_function_hierarchic, _owner_organisation_type is not editable. _channel_usage_current, _channel_function_hierarchic, owner_organisation_type configured as value relation
- - vw_tww_reach: owner_organisation_type is not editable. owner_organisation_type configured as value relation
- - vw_tww_overflow: _channel_usage_current, _channel_function_hierarchic is not editable. _channel_usage_current, _channel_function_hierarchic configured as value relation
+ - `vw_tww_wastewater_structure`: tww_is_primary, tww_has_log_card, _owner_organisation_type` is not editable, owner_organisation_type` configured as value relation
+ - `vw_tww_additional_wws`: `reach_point_label`, `tww_is_primary`, `_channel_usage_current`, `_channel_function_hierarchic`, `_owner_organisation_type` is not editable. `_channel_usage_current`, `_channel_function_hierarchic`, `owner_organisation_type` configured as value relation
+ - `vw_wastewater_structure` : `tww_is_primary`, `_channel_usage_current`, `_channel_function_hierarchic`, `_owner_organisation_type` is not editable. `_channel_usage_current`, `_channel_function_hierarchic`, `owner_organisation_type` configured as value relation
+ - `vw_tww_reach`: `owner_organisation_type` is not editable. `owner_organisation_type` configured as value relation
+ - `vw_tww_overflow`: `_channel_usage_current`, `_channel_function_hierarchic` is not editable. `_channel_usage_current`, `_channel_function_hierarchic` configured as value relation
  - all fields with value relation: "order by" set to value
 
  For Reference see https://github.com/teksi/wastewater/issues/995#issuecomment-4803889291
