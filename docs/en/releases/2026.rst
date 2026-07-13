@@ -13,7 +13,7 @@ Main features
 
 
  - `The OID Prefix can be set in TMMT from 2026.0.1 on <../admin-guide/db-production-readiness/index.html>`_
- - `The 'Extend selection tool' allows users to expand a selection made on the vw_tww_reach layer to related objects <../user-guide/editing/editing.html>`_
+ - `The 'Extend selection tool' allows users to expand a selection made on the vw_tww_reach layer to related objects <../user-guide/editing/editing.html#id1>`_
 
   .. figure:: ../user-guide/editing/images/selection_extender_2.png
 
