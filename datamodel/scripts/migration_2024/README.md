@@ -15,6 +15,8 @@ backup (dump) of your database, and it produces an upgraded backup:
   columns, is preserved,
 * the result is upgraded to the **latest TEKSI wastewater version** and ready
   for future upgrades with pum,
+* every object is counted before and after: the tool **aborts if any object
+  would disappear** during the migration,
 * at the end, a summary shows any remaining difference between your migrated
   database and a brand-new installation (normally: none).
 
@@ -66,6 +68,10 @@ The migration takes a few minutes. At the end you will find in `C:\teksi\dumps`:
 The console ends with a summary like:
 
 ```text
+Feature count check (tww_od, before vs after migration):
+  116 tables, 152264 objects before, 152264 after (in tables common to both)
+  Feature count check: OK, no object disappeared
+...
 Diff summary: migrated database vs fresh install of the latest version:
   Tables: OK
   Columns: OK

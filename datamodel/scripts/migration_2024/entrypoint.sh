@@ -47,6 +47,18 @@ log() {
     echo "[tww-migrator] $(date -u '+%Y-%m-%dT%H:%M:%SZ') $*" >&2
 }
 
+STEP=0
+TOTAL_STEPS=7
+step() {
+    STEP=$((STEP + 1))
+    {
+        echo ""
+        echo "======================================================================"
+        echo "==> Step ${STEP}/${TOTAL_STEPS}: $*"
+        echo "======================================================================"
+    } >&2
+}
+
 conn() {
     # psycopg / pum connection string for a database on the embedded server
     echo "postgresql://postgres@/$1?host=/var/run/postgresql"
@@ -153,11 +165,11 @@ restore_dump() {
                 psql -d "${db}" -v ON_ERROR_STOP=1 -q -c \
                     "CREATE OR REPLACE FUNCTION tww_app.${fn}() RETURNS trigger AS 'BEGIN RETURN NEW; END' LANGUAGE plpgsql;"
             done
-        psql -d "${db}" -v ON_ERROR_STOP=1 -q -f "$restore_sql"
+        psql -d "${db}" -v ON_ERROR_STOP=1 -q -o /dev/null -f "$restore_sql"
         rm -f "$restore_sql"
     else
         log "Restoring $dump (plain SQL) into database '${db}'"
-        psql -d "${db}" -v ON_ERROR_STOP=1 -q -f "$dump"
+        psql -d "${db}" -v ON_ERROR_STOP=1 -q -o /dev/null -f "$dump"
     fi
 }
 
@@ -217,6 +229,61 @@ pum_check() {
         -f json -o "$report"
 }
 
+snapshot_od_counts() {
+    # Per-table row counts of the data schema (tww_od): '<table> <count>' lines
+    local db=$1
+    local outfile=$2
+    psql -d "${db}" -tA -F ' ' -v ON_ERROR_STOP=1 -c "
+        SELECT c.relname,
+               (xpath('/row/cnt/text()',
+                      query_to_xml(format('SELECT count(*) AS cnt FROM %I.%I', n.nspname, c.relname),
+                                   false, true, '')))[1]::text::bigint
+        FROM pg_class c
+        JOIN pg_namespace n ON n.oid = c.relnamespace
+        WHERE n.nspname = 'tww_od' AND c.relkind = 'r'
+        ORDER BY c.relname;" > "$outfile"
+}
+
+check_feature_counts() {
+    # Validate that no object (tww_od row) disappeared during the migration.
+    local before=$1
+    local after=$2
+    python - "$before" "$after" <<'PYEOF'
+import sys
+
+def load(path):
+    counts = {}
+    with open(path) as f:
+        for line in f:
+            if line.strip():
+                table, count = line.rsplit(" ", 1)
+                counts[table] = int(count)
+    return counts
+
+before, after = load(sys.argv[1]), load(sys.argv[2])
+lost = {t: (n, after.get(t)) for t, n in before.items()
+        if t in after and after[t] < n}
+removed = {t: n for t, n in before.items() if t not in after and n > 0}
+changed = {t: (n, after[t]) for t, n in before.items()
+           if t in after and after[t] > n}
+
+for t, (b, a) in sorted(changed.items()):
+    print(f"  note: {t}: {b} -> {a} rows (added by the migration)")
+for t, (b, a) in sorted(lost.items()):
+    print(f"  ERROR: {t}: {b} -> {a} rows: {b - a} object(s) disappeared")
+for t, n in sorted(removed.items()):
+    print(f"  ERROR: table {t} with {n} row(s) no longer exists")
+
+total_before = sum(before.values())
+total_after = sum(after.get(t, 0) for t in before)
+print(f"  {len(before)} tables, {total_before} objects before, "
+      f"{total_after} after (in tables common to both)")
+if lost or removed:
+    sys.exit(4)
+print("  Feature count check: OK, no object disappeared")
+PYEOF
+}
+
 print_diff_summary() {
     local report=$1
     python - "$report" <<'PYEOF'
@@ -248,20 +315,13 @@ PYEOF
 FINAL_CHECK_RC=0
 final_check() {
     # Compare the migrated database against a fresh install of the latest
-    # version and print a diff summary. Differences are reported, not fatal
+    # version. Differences are reported (in the migration report), not fatal
     # (they may be intended client-specific drift).
     local name=$1
     install_reference tww_ref
     local report="/data/${name}_diff_vs_fresh_install.json"
     FINAL_CHECK_RC=0
     pum_check tww tww_ref "$report" || FINAL_CHECK_RC=$?
-    log "Diff summary: migrated database vs fresh install of the latest version:"
-    print_diff_summary "$report"
-    if [[ $FINAL_CHECK_RC -eq 0 ]]; then
-        log "Migrated database matches a fresh install"
-    else
-        log "Differences found; full report: ${report}"
-    fi
 }
 
 output_to_db() {
@@ -305,6 +365,7 @@ do_migrate() {
     local input=$1
     local name dump
 
+    step "Restoring the source database into the embedded server"
     create_roles
 
     if is_conninfo "$input"; then
@@ -319,15 +380,20 @@ do_migrate() {
     fi
 
     restore_dump tww "$dump"
+    snapshot_od_counts tww /tmp/od_counts_before.txt
+
+    step "Applying the migration delta (2024.0.5 -> ${BASELINE_VERSION})"
     drop_app_schemas tww
     apply_delta tww
 
+    step "Synchronizing the value lists"
     install_reference tww_baseline_ref "$BASELINE_VERSION"
     sync_value_lists tww tww_baseline_ref
 
+    step "Setting the pum baseline ${BASELINE_VERSION}"
     set_baseline tww
 
-    log "Upgrading to latest changelog"
+    step "Upgrading to the latest version"
     pum -p "$(conn tww)" -d "$DATAMODEL_DIR" upgrade --skip-baseline-check -p SRID "$SRID"
 
     local version
@@ -335,6 +401,19 @@ do_migrate() {
         "SELECT version FROM tww_sys.pum_migrations ORDER BY version DESC, date_installed DESC LIMIT 1;")
     log "Database is now at version ${version}"
 
+    step "Checking that no object disappeared"
+    # Validate before producing any output; keep the report for the summary
+    snapshot_od_counts tww /tmp/od_counts_after.txt
+    local fc_rc=0
+    check_feature_counts /tmp/od_counts_before.txt /tmp/od_counts_after.txt \
+        > /tmp/feature_count_report.txt 2>&1 || fc_rc=$?
+    cat /tmp/feature_count_report.txt >&2
+    if [[ $fc_rc -ne 0 ]]; then
+        log "ERROR: objects disappeared during the migration, aborting (no output written)"
+        exit 4
+    fi
+
+    step "Writing the output and final report"
     if [[ "$OUTPUT_FORMAT" == "custom" || "$OUTPUT_FORMAT" == "both" ]]; then
         local out="/data/${name}_upgraded_${version}.backup"
         log "Dumping upgraded database to ${out}"
@@ -348,9 +427,25 @@ do_migrate() {
     if [[ -n "${OUTPUT_DB:-}" ]]; then
         output_to_db
     fi
-    log "Migration finished successfully"
 
     final_check "$name"
+
+    {
+        echo ""
+        echo "======================================================================"
+        echo "==> Migration report (version ${version})"
+        echo "======================================================================"
+    } >&2
+    log "Feature count comparison (tww_od, source vs migrated):"
+    cat /tmp/feature_count_report.txt >&2
+    log "Structure comparison vs a fresh install of the latest version:"
+    print_diff_summary "/data/${name}_diff_vs_fresh_install.json" >&2
+    if [[ $FINAL_CHECK_RC -eq 0 ]]; then
+        log "Migrated database matches a fresh install"
+    else
+        log "Differences found; full report: /data/${name}_diff_vs_fresh_install.json"
+    fi
+    log "Migration finished successfully"
 }
 
 do_verify() {
