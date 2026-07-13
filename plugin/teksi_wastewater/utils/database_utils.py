@@ -365,6 +365,22 @@ class TWWIntegrityChecker:
 
         return self.issues
 
+    @property
+    def failed(self) -> bool:
+        return any(i.level == IssueLevel.ERROR for i in self.issues)
+
+    @property
+    def failed_checks(self) -> list:
+        return [i for i in self.issues if i.level == IssueLevel.ERROR]
+
+    @property
+    def stats(self):
+        return {
+            "failed": len(self.failed_checks),
+            "total": len(self.issues),
+        }
+
+
     def _check_subclass_counts(self, raise_err=False):
         failed = False
         error_messages = []
@@ -443,7 +459,7 @@ class TWWIntegrityChecker:
         error_message = "; ".join(error_messages) if error_messages else ""
         # logger.debug(f"check_subclass_counts_failed: {check_subclass_counts_failed} last")
         if raise_err and failed:
-            from .interlis.utils.various import InterlisImporterExporterError
+            from ..interlis.utils.various import InterlisImporterExporterError
 
             raise InterlisImporterExporterError("Subclass Count error", error_message, None)
         return (failed, error_message, total_issue_count)

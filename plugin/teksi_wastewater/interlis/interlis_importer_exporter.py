@@ -347,8 +347,7 @@ class InterlisImporterExporter:
         # go thru all available checks and register if check failed or not.
 
         results = exportChecker.run_integrity_checks()
-        if not results["failed"]:
-            logger.info(f"All checks passed! ({results['stats']['ok']} OK)")
+        if not results.failed:
             self.execute_export(
                 xtf_file_output,
                 export_models,
@@ -383,7 +382,7 @@ class InterlisImporterExporter:
                     "Stop exporting: Some export checks failed - check the logs for details. (if you have a selection you can still try (click Cancel) "
                 )
                 mb.setInformativeText(
-                    f" {results['stats']['failed']} failed, {results['stats']['ok']} passed"
+                    f" {results.stats['failed']} failed, {results.stats['ok']} passed"
                 )
                 mb.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
                 return_value = mb.exec()
@@ -415,16 +414,16 @@ class InterlisImporterExporter:
                         import_orgs,
                     )
             else:
-                logger.error(f"Failed checks:\n{results['failed_checks']}")
+                logger.error(f"Failed checks:\{"\n".join(issue.message for issue in results.failed_checks)}")
                 logger.info(
-                    f" {results['stats']['failed']} failed, {results['stats']['ok']} passed"
+                    f" {results.stats['failed']} failed, {results.stats['ok']} passed"
                 )
                 logger.info(
                     "INTERLIS export has been stopped due to failing export checks - see logs for details."
                 )
                 raise InterlisImporterExporterError(
                     "INTERLIS Export aborted!",
-                    results["failed_checks"],
+                    "\n".join(issue.message for issue in results.failed_checks),
                     None,
                 )
 
