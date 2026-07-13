@@ -404,7 +404,7 @@ class TeksiWastewaterPlugin:
             QMessageBox.critical(
                 self.iface.mainWindow(),
                 self.validityCheckAction.text(),
-                self.tr(f"Database has validity issues: see logs for details"),
+                self.tr("Database has validity issues: see logs for details"),
             )
 
     def enable_symbology_triggers(self):
