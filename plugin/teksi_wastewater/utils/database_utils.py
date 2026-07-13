@@ -380,7 +380,6 @@ class TWWIntegrityChecker:
             "total": len(self.issues),
         }
 
-
     def _check_subclass_counts(self, raise_err=False):
         failed = False
         error_messages = []

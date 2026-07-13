@@ -414,10 +414,10 @@ class InterlisImporterExporter:
                         import_orgs,
                     )
             else:
-                logger.error(f"Failed checks:\{"\n".join(issue.message for issue in results.failed_checks)}")
-                logger.info(
-                    f" {results.stats['failed']} failed, {results.stats['ok']} passed"
+                logger.error(
+                    f"Failed checks:\{"\n".join(issue.message for issue in results.failed_checks)}"
                 )
+                logger.info(f" {results.stats['failed']} failed, {results.stats['ok']} passed")
                 logger.info(
                     "INTERLIS export has been stopped due to failing export checks - see logs for details."
                 )
