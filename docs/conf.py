@@ -45,7 +45,7 @@ master_doc = "index"
 
 # General information about the project.
 project = "TWW"
-copyright = "2025, The TWW Project www.teksi.ch"
+copyright = "2026, The TWW Project www.teksi.ch"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -222,10 +222,10 @@ texinfo_documents = [
         "index",
         "TWW",
         "TWW Documentation",
-        "The TWW Project/OPENGIS.ch",
+        "The TWW Project www.teksi.ch",
         "TWW",
-        "One line description of project.",
-        "Miscellaneous",
+        "Module Wastewater & GEP Infrastructure Management",
+        "Wastewater",
     ),
 ]
 
