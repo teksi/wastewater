@@ -18,7 +18,7 @@ Main features
   .. figure:: ../user-guide/editing/images/selection_extender_2.png
 
  - `The 'Refresh network topology' is only visible in Admin mode <../user-guide/network-following/index.html>`_ as the query can take quite long for big networks.
- - create _ch copies of translation files ( '\*.qm' )
+ - create _CH copies of translation files ( '\*.qm' )
  - Import VSA organisation from internet if not present
 
 Documentation
