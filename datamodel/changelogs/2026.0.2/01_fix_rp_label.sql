@@ -1,0 +1,1 @@
+ALTER TABLE tww_od.tww_reach_point_label ALTER COLUMN _usage_current TYPE integer;
