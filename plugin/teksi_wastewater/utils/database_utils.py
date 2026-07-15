@@ -6,7 +6,7 @@ import re
 from typing import Any
 
 from ..interlis import config
-from .issues import Issue, IssueLevel
+from .issues import Issue, IssueLevel, CheckResult
 from .plugin_utils import logger
 
 try:
@@ -315,7 +315,7 @@ class TWWIntegrityChecker:
     def __init__(self, models=[], limit_to_selection=False, logger=None):
         self.limit_to_selection = limit_to_selection
         self.models = models
-        self.issues = []
+        self.issues = CheckResult
         self.logger = logger or logging.getLogger(__name__)
 
     def add_issue(
@@ -323,7 +323,7 @@ class TWWIntegrityChecker:
         message: str,
         level: IssueLevel = IssueLevel.WARNING,
     ):
-        self.issues.append(Issue(message, level))
+        self.issues.add(message, level)
 
         if level == IssueLevel.ERROR:
             self.logger.error(message)
