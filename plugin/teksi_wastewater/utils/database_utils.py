@@ -315,7 +315,7 @@ class TWWIntegrityChecker:
     def __init__(self, models=[], limit_to_selection=False, logger=None):
         self.limit_to_selection = limit_to_selection
         self.models = models
-        self.issues = CheckResult
+        self.issues = CheckResult()
         self.logger = logger or logging.getLogger(__name__)
 
     def add_issue(

@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 
 
@@ -17,7 +17,7 @@ class Issue:
 
 @dataclass
 class CheckResult:
-    issues: list[Issue]
+    issues: list[Issue] = field(default_factory=list)
 
     @property
     def failed(self) -> bool:
