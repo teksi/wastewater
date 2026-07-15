@@ -48,6 +48,7 @@ from .tools.twwmaptools import TwwMapToolConnectNetworkElements, TwwTreeMapTool
 from .tools.twwnetwork import TwwGraphManager
 from .tools.twwselectionextender import TwwSelectionExtender
 from .utils.database_utils import DatabaseUtils
+from .utils.issues import Issue, IssueLevel
 from .utils.plugin_utils import plugin_root_path
 from .utils.qt_utils import OverrideCursor
 from .utils.translation import setup_i18n
@@ -369,43 +370,42 @@ class TeksiWastewaterPlugin:
         self.toolbarButtons.append(self.selectionExtenderAction)
         self.selectionExtenderController = TwwSelectionExtender(self.iface)
 
-    def tww_validity_check_startup(self):
-        messages = []
+    def _get_validity_issues(self) -> list[Issue]:
         try:
-            messages = DatabaseUtils.get_validity_check_issues()
-
+            return DatabaseUtils.get_validity_check_issues(include_ili=True, logger=self.logger)
         except Exception as exception:
-            messages.append(self.tr(f"Could not check database validity: {exception}"))
+            return [
+                Issue(
+                    self.tr(f"Could not check database validity: {exception}"),
+                    IssueLevel.ERROR,
+                )
+            ]
 
-        for message in messages:
+    def tww_validity_check_startup(self):
+        issues = self._get_validity_issues()
+
+        for issue in issues:
             self.iface.messageBar().pushMessage(
-                "Warning",
-                message,
-                level=Qgis.Warning,
+                issue.level.name.title(),
+                issue.message,
+                level=self._qgis_level(issue.level),
             )
 
     def tww_validity_check_action(self):
-        messages = []
-        try:
-            messages = DatabaseUtils.get_validity_check_issues()
+        issues = self._get_validity_issues()
 
-        except Exception as exception:
-            messages.append(self.tr(f"Could not check database validity: {exception}"))
-
-        if len(messages) == 0:
+        if not issues:
             QMessageBox.information(
                 self.iface.mainWindow(),
                 self.validityCheckAction.text(),
                 self.tr("There are no database validity issues."),
             )
-            return
-
-        messagesText = "\n".join(messages)
-        QMessageBox.critical(
-            self.iface.mainWindow(),
-            self.validityCheckAction.text(),
-            self.tr(f"Database has following validity issues:\n\n{messagesText}"),
-        )
+        else:
+            QMessageBox.critical(
+                self.iface.mainWindow(),
+                self.validityCheckAction.text(),
+                self.tr("Database has validity issues: see logs for details"),
+            )
 
     def enable_symbology_triggers(self):
         try:
@@ -826,3 +826,11 @@ class TeksiWastewaterPlugin:
         self.selectionExtenderAction.blockSignals(True)
         self.selectionExtenderAction.setChecked(visible)
         self.selectionExtenderAction.blockSignals(False)
+
+    def _qgis_issue_level(self, issue_level):
+        if issue_level == IssueLevel.ERROR:
+            return Qgis.Critical
+        elif issue_level == IssueLevel.INFO:
+            return Qgis.Info
+
+        return Qgis.Warning
