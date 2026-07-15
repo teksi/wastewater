@@ -6,7 +6,7 @@ import re
 from typing import Any
 
 from ..interlis import config
-from .issues import Issue, IssueLevel, CheckResult
+from .issues import CheckResult, Issue, IssueLevel
 from .plugin_utils import logger
 
 try:
