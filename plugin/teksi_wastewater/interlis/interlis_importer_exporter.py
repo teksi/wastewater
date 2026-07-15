@@ -415,7 +415,7 @@ class InterlisImporterExporter:
                     )
             else:
                 logger.error(
-                    f"Failed checks:\{"\n".join(issue.message for issue in results.failed_checks)}"
+                    f"Failed checks:{"\n".join(issue.message for issue in results.failed_checks)}"
                 )
                 logger.info(f" {results.stats['failed']} failed, {results.stats['ok']} passed")
                 logger.info(
