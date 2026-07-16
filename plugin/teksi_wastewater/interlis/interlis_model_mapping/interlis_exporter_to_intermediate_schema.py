@@ -3512,16 +3512,18 @@ class InterlisExporterToIntermediateSchema:
                                 )
 
                             elif layer_name == "building_group":
-                                ili_label = self.model_classes_interlis.bautenausserhalbbaugebiet_text(
-                                    **self._textpos_common(
-                                        label,
-                                        "bautenausserhalbbaugebiet_text",
-                                        geojson_crs_def,
-                                        "BX",
-                                        self.oid_prefix,
-                                        plantyp,
-                                    ),
-                                    bautenausserhalbbaugebietref=t_id,
+                                ili_label = (
+                                    self.model_classes_interlis.bautenausserhalbbaugebiet_text(
+                                        **self._textpos_common(
+                                            label,
+                                            "bautenausserhalbbaugebiet_text",
+                                            geojson_crs_def,
+                                            "BX",
+                                            self.oid_prefix,
+                                            plantyp,
+                                        ),
+                                        bautenausserhalbbaugebietref=t_id,
+                                    )
                                 )
 
                             elif layer_name == "measure_line":
