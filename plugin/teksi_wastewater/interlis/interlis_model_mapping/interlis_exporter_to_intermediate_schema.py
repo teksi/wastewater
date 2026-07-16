@@ -3348,9 +3348,9 @@ class InterlisExporterToIntermediateSchema:
 
             if not labels["features"]:
                 logger.warning(
-                        f"No labels found for layer xxx - check if layer labels are activated!"
-                    )
-                    continue
+                    f"No labels found for layer xxx - check if layer labels are activated!"
+                )
+                continue
             else:
 
                 geojson_crs_def = labels["crs"]
