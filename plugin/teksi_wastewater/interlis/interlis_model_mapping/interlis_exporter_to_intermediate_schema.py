@@ -3347,17 +3347,9 @@ class InterlisExporterToIntermediateSchema:
             labels = json.load(labels_file_handle)
 
         label_name = labels["name"]
-        # if not labels["features"]:
-
-        #    logger.warning(
-        #        f"No labels found for layer '{label_name}' - check if layer labels are activated!"
-        #    )
-        #    # continue
-        # else:
 
         # Check that labels were generated
         labels_count = len(labels["features"])
-        # feedback.pushInfo(f"{labels_count} labels generated")
         logger.debug(f"{labels_count} labels generated")
         if labels_count > 0:
 
@@ -3579,13 +3571,6 @@ class InterlisExporterToIntermediateSchema:
                             )
                             continue
 
-                # # add try to prevent crash when ili_label was not created
-                # try:
-                    # self.abwasser_session.add(ili_label)
-                    # print(".", end="")
-                # except Exception as exception:
-                    # print(".", end="")
-                    # raise exception
                     self.abwasser_session.add(ili_label)
                     print(".", end="")
                 logger.info("done")
