@@ -3585,8 +3585,11 @@ class InterlisExporterToIntermediateSchema:
             # add try to prevent crash when ili_label was not created
             try:
                 self.abwasser_session.add(ili_label)
-
-            print(".", end="")
+                print(".", end="")
+            except Exception as exception:
+                print(".", end="")
+                raise exception
+            
         logger.info("done")
         self.abwasser_session.flush()
 
