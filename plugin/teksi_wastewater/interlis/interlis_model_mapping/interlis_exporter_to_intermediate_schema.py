@@ -3512,18 +3512,16 @@ class InterlisExporterToIntermediateSchema:
                             )
 
                         elif layer_name == "building_group":
-                            ili_label = (
-                                self.model_classes_interlis.bautenausserhalbbaugebiet_text(
-                                    **self._textpos_common(
-                                        label,
-                                        "bautenausserhalbbaugebiet_text",
-                                        geojson_crs_def,
-                                        "BX",
-                                        self.oid_prefix,
-                                        plantyp,
-                                    ),
-                                    bautenausserhalbbaugebietref=t_id,
-                                )
+                            ili_label = self.model_classes_interlis.bautenausserhalbbaugebiet_text(
+                                **self._textpos_common(
+                                    label,
+                                    "bautenausserhalbbaugebiet_text",
+                                    geojson_crs_def,
+                                    "BX",
+                                    self.oid_prefix,
+                                    plantyp,
+                                ),
+                                bautenausserhalbbaugebietref=t_id,
                             )
 
                         elif layer_name == "measure_line":
@@ -3580,7 +3578,6 @@ class InterlisExporterToIntermediateSchema:
             logger.warning(
                 f"No labels found for layer '{label_name}' - check if layer labels are activated!"
             )
-
 
     def close_sessions(self):
         self.tww_session.close()
