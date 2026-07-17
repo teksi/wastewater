@@ -3582,6 +3582,7 @@ class InterlisExporterToIntermediateSchema:
                 logger.warning(
                     f"No labels found for layer '{label_name}' - check if layer labels are activated!"
                 )
+
         # add try to prevent crash when ili_label was not created
         try:
             self.abwasser_session.add(ili_label)
@@ -3590,6 +3591,7 @@ class InterlisExporterToIntermediateSchema:
             print(".", end="")
             raise exception
             
+
         logger.info("done")
         self.abwasser_session.flush()
 
