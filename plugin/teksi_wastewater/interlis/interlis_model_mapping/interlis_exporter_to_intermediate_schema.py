@@ -3520,18 +3520,16 @@ class InterlisExporterToIntermediateSchema:
                             )
 
                         elif layer_name == "building_group":
-                            ili_label = (
-                                self.model_classes_interlis.bautenausserhalbbaugebiet_text(
-                                    **self._textpos_common(
-                                        label,
-                                        "bautenausserhalbbaugebiet_text",
-                                        geojson_crs_def,
-                                        "BX",
-                                        self.oid_prefix,
-                                        plantyp,
-                                    ),
-                                    bautenausserhalbbaugebietref=t_id,
-                                )
+                            ili_label = self.model_classes_interlis.bautenausserhalbbaugebiet_text(
+                                **self._textpos_common(
+                                    label,
+                                    "bautenausserhalbbaugebiet_text",
+                                    geojson_crs_def,
+                                    "BX",
+                                    self.oid_prefix,
+                                    plantyp,
+                                ),
+                                bautenausserhalbbaugebietref=t_id,
                             )
 
                         elif layer_name == "measure_line":
@@ -3579,11 +3577,11 @@ class InterlisExporterToIntermediateSchema:
                             )
                             continue
 
-                # # add try to prevent crash when ili_label was not created
-                # try:
+                    # # add try to prevent crash when ili_label was not created
+                    # try:
                     # self.abwasser_session.add(ili_label)
                     # print(".", end="")
-                # except Exception as exception:
+                    # except Exception as exception:
                     # print(".", end="")
                     # raise exception
                     self.abwasser_session.add(ili_label)
@@ -3595,7 +3593,6 @@ class InterlisExporterToIntermediateSchema:
             logger.warning(
                 f"No labels found for layer '{label_name}' - check if layer labels are activated!"
             )
-
 
     def close_sessions(self):
         self.tww_session.close()
