@@ -3589,7 +3589,7 @@ class InterlisExporterToIntermediateSchema:
             except Exception as exception:
                 print(".", end="")
                 raise exception
-            
+
         logger.info("done")
         self.abwasser_session.flush()
 
