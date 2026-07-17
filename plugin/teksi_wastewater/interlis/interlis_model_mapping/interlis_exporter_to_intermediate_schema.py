@@ -3346,9 +3346,8 @@ class InterlisExporterToIntermediateSchema:
         with open(self.labels_file) as labels_file_handle:
             labels = json.load(labels_file_handle)
 
-
             label_name = labels["name"]
-            #if not labels["features"]:
+            # if not labels["features"]:
 
             #    logger.warning(
             #        f"No labels found for layer '{label_name}' - check if layer labels are activated!"
