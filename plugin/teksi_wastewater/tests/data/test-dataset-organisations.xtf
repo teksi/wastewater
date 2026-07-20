@@ -2,7 +2,7 @@
 <TRANSFER xmlns="http://www.interlis.ch/INTERLIS2.3">
 	<HEADERSECTION VERSION="2.3" SENDER="VSA">
 		<MODELS>
-			<MODEL NAME="SIA405_Base_Abwasser_1_LV95" URI="http://www.infogrips.ch" VERSION= "18.10.2023"/>
+			<MODEL NAME="SIA405_Base_Abwasser_1_LV95" URI="http://www.infogrips.ch" VERSION="18.10.2023"/>
 		</MODELS>
 		<ALIAS>
 			<ENTRIES FOR="SIA405_Base_Abwasser_1_LV95"> </ENTRIES>
@@ -14,26 +14,25 @@
 			<SIA405_Base_Abwasser_1_LV95.Administration.Organisation TID="ch080qwzAM001217">
 				<Letzte_Aenderung>20240807</Letzte_Aenderung>
 				<Bezeichnung>Amt für Umwelt</Bezeichnung>
-				<Gemeindenummer></Gemeindenummer>
+				<Gemeindenummer/>
 				<Kurzbezeichnung>AfU</Kurzbezeichnung>
 				<Organisationstyp>Kanton</Organisationstyp>
 				<Status>aktiv</Status>
-				<UID></UID>
+				<UID/>
 			</SIA405_Base_Abwasser_1_LV95.Administration.Organisation>
 			<SIA405_Base_Abwasser_1_LV95.Administration.Organisation TID="ch080qwzPR000006">
 				<Letzte_Aenderung>20191014</Letzte_Aenderung>
-				<Bemerkung></Bemerkung>
+				<Bemerkung/>
 				<Bezeichnung>Privat</Bezeichnung>
-				<Gemeindenummer></Gemeindenummer>
+				<Gemeindenummer/>
 				<Organisationstyp>Privat</Organisationstyp>
 				<Status>aktiv</Status>
-				<UID></UID>
+				<UID/>
 			</SIA405_Base_Abwasser_1_LV95.Administration.Organisation>
-
 			<SIA405_Base_Abwasser_1_LV95.Administration.Organisation TID="ch080qwzPR000016">
 				<Letzte_Aenderung>20191014</Letzte_Aenderung>
 				<Bezeichnung>Oekologiebüro</Bezeichnung>
-				<Gemeindenummer></Gemeindenummer>
+				<Gemeindenummer/>
 				<Organisationstyp>Privat</Organisationstyp>
 				<Status>aktiv</Status>
 				<UID>CHE102441189</UID>
@@ -41,7 +40,7 @@
 			<SIA405_Base_Abwasser_1_LV95.Administration.Organisation TID="ch080qwzPR000020">
 				<Letzte_Aenderung>20201003</Letzte_Aenderung>
 				<Bezeichnung>GEP Büro</Bezeichnung>
-				<Gemeindenummer></Gemeindenummer>
+				<Gemeindenummer/>
 				<Organisationstyp>Privat</Organisationstyp>
 				<Status>aktiv</Status>
 				<UID>CHE102441189</UID>
@@ -49,7 +48,7 @@
 			<SIA405_Base_Abwasser_1_LV95.Administration.Organisation TID="ch080qwzAV000007">
 				<Letzte_Aenderung>20240807</Letzte_Aenderung>
 				<Bezeichnung>Abwasserverband Aletsch</Bezeichnung>
-				<Gemeindenummer></Gemeindenummer>
+				<Gemeindenummer/>
 				<Kurzbezeichnung>AV Aletsch</Kurzbezeichnung>
 				<Organisationstyp>Abwasserverband</Organisationstyp>
 				<Status>aktiv</Status>
@@ -58,7 +57,7 @@
 			<SIA405_Base_Abwasser_1_LV95.Administration.Organisation TID="ch080qwzPR000018">
 				<Letzte_Aenderung>20191014</Letzte_Aenderung>
 				<Bezeichnung>SBU</Bezeichnung>
-				<Gemeindenummer></Gemeindenummer>
+				<Gemeindenummer/>
 				<Organisationstyp>Privat</Organisationstyp>
 				<Status>aktiv</Status>
 				<UID>CHE114536626</UID>
@@ -66,7 +65,7 @@
 			<SIA405_Base_Abwasser_1_LV95.Administration.Organisation TID="ch080qwzPR000017">
 				<Letzte_Aenderung>20191014</Letzte_Aenderung>
 				<Bezeichnung>VSA</Bezeichnung>
-				<Gemeindenummer></Gemeindenummer>
+				<Gemeindenummer/>
 				<Organisationstyp>Privat</Organisationstyp>
 				<Status>aktiv</Status>
 				<UID>CHE106189304</UID>
@@ -77,23 +76,28 @@
 				<Gemeindenummer>344</Gemeindenummer>
 				<Organisationstyp>Privat</Organisationstyp>
 				<Status>aktiv</Status>
-				<UID></UID>
+				<UID/>
 			</SIA405_Base_Abwasser_1_LV95.Administration.Organisation>
-						<SIA405_Base_Abwasser_1_LV95.Administration.Organisation TID="ch080qwzGE000002">
+			<SIA405_Base_Abwasser_1_LV95.Administration.Organisation TID="ch080qwzGE000002">
 				<Letzte_Aenderung>20191014</Letzte_Aenderung>
 				<Bezeichnung>Gemeinde B</Bezeichnung>
 				<Gemeindenummer>345</Gemeindenummer>
 				<Organisationstyp>Gemeinde</Organisationstyp>
 				<Status>aktiv</Status>
-				<UID></UID>
+				<UID/>
 			</SIA405_Base_Abwasser_1_LV95.Administration.Organisation>
-						<SIA405_Base_Abwasser_1_LV95.Administration.Organisation TID="ch080qwzGE000003">
+			<SIA405_Base_Abwasser_1_LV95.Administration.Organisation TID="ch080qwzGE000003">
 				<Letzte_Aenderung>20191014</Letzte_Aenderung>
 				<Bezeichnung>Gemeinde C</Bezeichnung>
 				<Gemeindenummer>346</Gemeindenummer>
 				<Organisationstyp>Gemeinde</Organisationstyp>
 				<Status>aktiv</Status>
-				<UID></UID>
+				<UID/>
+			</SIA405_Base_Abwasser_1_LV95.Administration.Organisation>
+			<!-- 1.7.2026 integrate Arbon from VSA Organisation, as it is difficult to have two refdata files -->
+			<SIA405_Base_Abwasser_1_LV95.Administration.Organisation TID="ch20p3q400001497">
+				<Letzte_Aenderung>20211126</Letzte_Aenderung>
+				<Bezeichnung>Arbon</Bezeichnung><Gemeindenummer>4401</Gemeindenummer><Organisationstyp>Gemeinde</Organisationstyp><Status>aktiv</Status>
 			</SIA405_Base_Abwasser_1_LV95.Administration.Organisation>
 		</SIA405_Base_Abwasser_1_LV95.Administration>
 	</DATASECTION>
