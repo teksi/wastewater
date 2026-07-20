@@ -38,7 +38,7 @@ jobs:
     if: always() # Always run to build docs even if datamodel step is skipped
     runs-on: ubuntu-24.04
     env:
-      LANGUAGES: "en de fr"
+      LANGUAGES: "en de fr it"
 
     steps:
       - name: Checkout
@@ -139,6 +139,8 @@ jobs:
               en) LOCALE="en_US.UTF-8" ;;
               de) LOCALE="de_CH.UTF-8" ;;
               fr) LOCALE="fr_CH.UTF-8" ;;
+              fr) LOCALE="it_CH.UTF-8" ;;
+              fr) LOCALE="it_IT.UTF-8" ;;
               *) echo "Unsupported language $LANG"; exit 1 ;;
             esac
             sudo locale-gen $LOCALE
