@@ -46,16 +46,18 @@ jobs:
         with:
           fetch-depth: 0
 
+
       - name: Restore existing site
         run: |
-          git clone --depth 1 --branch gh-pages https://github.com/${{ github.repository }} gh-pages || true
-          mkdir -p docs/build/html
-          rsync -a gh-pages/ docs/build/html/ || true
+          mkdir -p docs/published-site
 
-      - name: Clean Sphinx build (for diagnostics)
-        working-directory: docs
-        run: |
-          rm -rf build
+          git clone --depth 1 --branch gh-pages \
+            https://github.com/${{ github.repository }} gh-pages || true
+
+          if [ -d gh-pages ]; then
+            rsync -a gh-pages/ docs/published-site/
+          fi
+
 
       - name: install requirements
         working-directory: docs
@@ -73,11 +75,10 @@ jobs:
 
       - name: Remove legacy root docs
         run: |
-          cd docs/build/html
+          cd docs/published-site
 
-          # Skip cleanup if first proper version exists
           if ls | grep -Eq '^[0-9]{4}\.[0-9]+\.[0-9]+$'; then
-            echo "Version 2026.0.1 exists — skipping cleanup"
+            echo "Versioned docs detected, skipping cleanup"
             exit 0
           fi
 
@@ -86,14 +87,17 @@ jobs:
           for ITEM in *; do
             case "$ITEM" in
               latest|versions.json|versions.txt|index.html)
-                # keep
                 ;;
               *)
-                echo "Removing legacy item: $ITEM"
                 rm -rf "$ITEM"
                 ;;
             esac
           done
+
+      - name: Clean build folders
+        run: |
+          rm -rf docs/build docs/site
+          mkdir -p docs/site
 
       - name: Prepare datamodel static folder
         run: mkdir -p docs/_static/datamodel
@@ -149,6 +153,13 @@ jobs:
           fi
 
 
+      - name: Debug version detection
+        run: |
+          echo "GITHUB_REF=$GITHUB_REF"
+          echo "GITHUB_REF_TYPE=$GITHUB_REF_TYPE"
+          echo "GITHUB_REF_NAME=$GITHUB_REF_NAME"
+          echo "DOCS_VERSION=$DOCS_VERSION"
+
       - name: Setup locales
         run: |
           for LANG in $LANGUAGES; do
@@ -165,36 +176,50 @@ jobs:
           echo "LANG=en_US.UTF-8" >> $GITHUB_ENV
           echo "LC_ALL=en_US.UTF-8" >> $GITHUB_ENV
 
-
       - name: build documentation
         working-directory: docs
         run: |
-          sphinx-build  -c . -n -W en ./build/_check
+          sphinx-build -c . -n -W en ./build/_check
 
           for LANG in $LANGUAGES; do
             echo "Building language: $LANG"
-            mkdir -p ./build/html/$DOCS_VERSION/$LANG
-            sphinx-build -c . -D language=$LANG --keep-going en ./build/html/$DOCS_VERSION/$LANG || echo "Build failed for $LANG"
-            test -f ./build/html/$DOCS_VERSION/$LANG/index.html || (echo "Missing index for $LANG" && exit 1)
+
+            mkdir -p ./site/$DOCS_VERSION/$LANG
+
+            sphinx-build \
+              -c . \
+              -D language=$LANG \
+              --keep-going \
+              en \
+              ./site/$DOCS_VERSION/$LANG
+              || echo "Build failed for $LANG"
+
+            test -f ./site/$DOCS_VERSION/$LANG/index.html \
+              || (echo "Missing index for $LANG" && exit 1)
           done
-          touch ./build/html/.nojekyll
+
+          touch ./site/.nojekyll
 
       - name: Add root redirect
         working-directory: docs
         run: |
-          echo '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0; url=latest/en/"></head></html>' > ./build/html/index.html
+          cat > ./site/index.html <<'EOF'
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <meta http-equiv="refresh" content="0; url=latest/en/">
+            </head>
+          </html>
+          EOF
 
-      - name: Generate versions list
+      - name: Merge generated docs
         run: |
-          cd docs/build/html
-          ls -1 -d */ | sed 's#/##' > versions.txt
-          jq -R -s -c 'split("\n")[:-1]' versions.txt > versions.json
-
+          rsync -a docs/site/ docs/published-site/
 
       - name: Deduplicate static assets
         working-directory: docs
         run: |
-          cd build/html/$DOCS_VERSION
+          cd site/$DOCS_VERSION
 
           for LANG in $LANGUAGES; do
             # skip base language
@@ -205,11 +230,24 @@ jobs:
             fi
           done
 
+      - name: Merge generated docs
+        run: |
+          rsync -a docs/site/ docs/published-site/
+
+      - name: Generate versions list
+        run: |
+          cd docs/published-site
+
+          find . -maxdepth 1 -mindepth 1 -type d \
+            | sed 's#^\./##' \
+            | sort -Vr > versions.txt
+
+          jq -R -s -c 'split("\n")[:-1]' versions.txt > versions.json
 
       - uses: actions/upload-artifact@v7
         with:
           name: documentation
-          path: docs/build/html
+          path: docs/published-site
           if-no-files-found: error
 
       - name: Deploy 🚀
@@ -217,4 +255,4 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: docs/build/html
+          folder: docs/published-site
