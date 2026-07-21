@@ -73,6 +73,12 @@ jobs:
           tar -xvzf tx-linux-amd64.tar.gz
           make gettext
 
+      - name: Show sphinx versions
+        working-directory: docs
+        run: |
+          python -m pip show sphinx
+          python -m pip show sphinx-rtd-theme
+
       - name: Remove legacy root docs
         run: |
           cd docs/published-site
