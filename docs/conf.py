@@ -245,3 +245,7 @@ texinfo_documents = [
 locale_dirs = ["./i18n"]
 # If True, a document’s text domain is its docname if it is a top-level project file and its very base directory otherwise
 gettext_compact = False
+
+# logs for debug
+print("CONF:", os.path.abspath(os.path.dirname(__file__)))
+print("LOCALE_DIR:", os.path.abspath("./i18n"))
