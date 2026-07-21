@@ -207,7 +207,11 @@ jobs:
         run: |
           echo "=== German translation hits ==="
           grep -R "TEKSI Abwasser" docs/site/latest/de | head -1 || true
+           echo "=== .mo file check ==="         
           strings docs/i18n/de/LC_MESSAGES/features-guide.mo | grep Abwasser || true
+          echo "=== HTML ==="
+          grep -R -m 1 "TEKSI Abwasser" docs/site/latest/de || true
+
 
       - name: Add root redirect
         working-directory: docs
