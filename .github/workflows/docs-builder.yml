@@ -214,6 +214,7 @@ jobs:
 
       - name: Merge generated docs
         run: |
+          rm -rf docs/published-site/$DOCS_VERSION
           rsync -a docs/site/ docs/published-site/
 
       - name: Deduplicate static assets
