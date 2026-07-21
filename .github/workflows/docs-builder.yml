@@ -156,12 +156,13 @@ jobs:
             echo "DOCS_VERSION=latest" >> $GITHUB_ENV
           fi
 
-      - name: Debug version detection
+      - name: Show POT structure
+        working-directory: docs
         run: |
-          echo "GITHUB_REF=$GITHUB_REF"
-          echo "GITHUB_REF_TYPE=$GITHUB_REF_TYPE"
-          echo "GITHUB_REF_NAME=$GITHUB_REF_NAME"
-          echo "DOCS_VERSION=$DOCS_VERSION"
+          find i18n/pot -type f | sort
+
+          echo "=== features-guide.pot ==="
+          grep -A3 -B3 "TEKSI wastewater" i18n/pot/features-guide.pot || true
 
       - name: Setup locales
         run: |
@@ -203,15 +204,6 @@ jobs:
           done
 
           touch ./site/.nojekyll
-
-      - name: Compare old and new build
-        working-directory: docs
-        run: |
-          make html
-
-          grep -n "TEKSI" build/html/de/features-guide/index.html | head
-          grep -n "TEKSI" site/latest/de/features-guide/index.html | head
-
 
       - name: Add root redirect
         working-directory: docs
