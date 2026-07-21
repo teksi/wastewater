@@ -203,26 +203,11 @@ jobs:
 
           touch ./site/.nojekyll
 
-
-      - name: Compare source, mo and html
+      - name: Inspect translated catalog entry
         working-directory: docs
         run: |
-          echo "=== MO ==="
-          strings i18n/de/LC_MESSAGES/features-guide.mo | grep -m 1 "TEKSI"
-
-          echo "=== HTML ==="
-          grep -n "TEKSI" site/latest/de/features-guide/index.html | head
-
-
-      - name: Compare EN and DE
-        working-directory: docs
-        run: |
-          echo "=== DE ==="
-          grep -n "TEKSI" site/latest/de/features-guide/index.html | head -20 || true
-
-          echo "=== EN ==="
-          grep -n "TEKSI" site/latest/en/features-guide/index.html | head -20 || true
-
+          msgunfmt i18n/de/LC_MESSAGES/features-guide.mo | \
+            grep -A1 -B1 "TEKSI wastewater"
 
       - name: Add root redirect
         working-directory: docs
