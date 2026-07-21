@@ -73,6 +73,10 @@ jobs:
           tar -xvzf tx-linux-amd64.tar.gz
           make gettext
 
+      - name: Show gettext catalogs
+        run: |
+          find docs/i18n -name "*.po" | sort | head -50
+
       - name: Remove legacy root docs
         run: |
           cd docs/published-site
@@ -202,6 +206,10 @@ jobs:
           done
 
           touch ./site/.nojekyll
+
+      - name: Verify language build
+        run: |
+          grep -R "lang=\"de\"" docs/site/latest/de/index.html || true
 
       - name: Verify translated output
         run: |
