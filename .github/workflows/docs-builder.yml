@@ -192,6 +192,7 @@ jobs:
             sphinx-build \
               -c . \
               -D language=$LANG \
+              -a \
               --keep-going \
               en \
               ./site/$DOCS_VERSION/$LANG \
@@ -207,7 +208,7 @@ jobs:
         working-directory: docs
         run: |
           msgunfmt i18n/de/LC_MESSAGES/features-guide.mo | \
-            grep -A1 -B1 "TEKSI wastewater"
+            grep -A3 -B1 "TEKSI wastewater"
 
       - name: Add root redirect
         working-directory: docs
