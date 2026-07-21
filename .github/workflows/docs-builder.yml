@@ -62,7 +62,7 @@ jobs:
         working-directory: docs
         run: |
           pip install -r requirements-tx.txt
-          sudo apt-get install -y gettext
+          sudo apt-get install -y gettext tree locales
           curl -OL https://github.com/transifex/cli/releases/download/v1.6.10/tx-linux-amd64.tar.gz
           tar -xvzf tx-linux-amd64.tar.gz
           make gettext
@@ -108,9 +108,27 @@ jobs:
         working-directory: docs
         run: make transifex_sync
 
+
+      - name: Show translations (debug)
+        run: |
+          echo "=== PO files ==="
+          find docs/i18n -name "*.po" | sort
+
+          echo "=== MO files ==="
+          find docs/i18n -name "*.mo" | sort || true
+
+      - name: Translation tree (debug)
+        run: |
+          tree docs/i18n
+
       - name: Compile translations
         working-directory: docs
         run: make compile_messages
+
+      - name: Verify compiled translations (debug)
+        run: |
+          echo "=== Compiled MO files ==="
+          find docs/i18n -name "*.mo" | sort
 
       - name: copy datamodel documentation
         # Download artifact only if datamodel step ran (i.e., not a fast-doc PR)
@@ -131,16 +149,12 @@ jobs:
 
       - name: Setup locales
         run: |
-          sudo apt-get update
-          sudo apt-get install -y locales
-
           for LANG in $LANGUAGES; do
             case $LANG in
               en) LOCALE="en_US.UTF-8" ;;
               de) LOCALE="de_CH.UTF-8" ;;
               fr) LOCALE="fr_CH.UTF-8" ;;
               it) LOCALE="it_CH.UTF-8" ;;
-              it) LOCALE="it_IT.UTF-8" ;;
               *) echo "Unsupported language $LANG"; exit 1 ;;
             esac
             sudo locale-gen $LOCALE
