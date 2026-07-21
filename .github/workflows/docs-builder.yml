@@ -120,6 +120,10 @@ jobs:
         working-directory: docs
         run: make compile_messages
 
+      - name: Show compiled catalogs
+        run: |
+          find docs/i18n -name "*.mo" | sort
+
       - name: Translation completeness
         working-directory: docs
         run: |
@@ -151,7 +155,6 @@ jobs:
           else
             echo "DOCS_VERSION=latest" >> $GITHUB_ENV
           fi
-
 
       - name: Debug version detection
         run: |
@@ -199,6 +202,12 @@ jobs:
           done
 
           touch ./site/.nojekyll
+
+      - name: Verify translated output
+        run: |
+          echo "=== German translation hits ==="
+          grep -R "TEKSI Abwasser" docs/site/latest/de | head -1 || true
+          strings docs/i18n/de/LC_MESSAGES/features-guide.mo | grep Abwasser || true
 
       - name: Add root redirect
         working-directory: docs
