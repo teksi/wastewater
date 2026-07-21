@@ -204,11 +204,14 @@ jobs:
 
           touch ./site/.nojekyll
 
-      - name: Inspect translated catalog entry
+      - name: Compare old and new build
         working-directory: docs
         run: |
-          msgunfmt i18n/de/LC_MESSAGES/features-guide.mo | \
-            grep -A3 -B1 "TEKSI wastewater"
+          make html
+
+          grep -n "TEKSI" build/html/de/features-guide/index.html | head
+          grep -n "TEKSI" site/latest/de/features-guide/index.html | head
+
 
       - name: Add root redirect
         working-directory: docs
