@@ -191,7 +191,7 @@ jobs:
               -D language=$LANG \
               --keep-going \
               en \
-              ./site/$DOCS_VERSION/$LANG
+              ./site/$DOCS_VERSION/$LANG \
               || echo "Build failed for $LANG"
 
             test -f ./site/$DOCS_VERSION/$LANG/index.html \
