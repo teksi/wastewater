@@ -62,7 +62,7 @@ jobs:
         working-directory: docs
         run: |
           pip install -r requirements-tx.txt
-          sudo apt-get install -y gettext tree locales
+          sudo apt-get install -y gettext locales
           curl -OL https://github.com/transifex/cli/releases/download/v1.6.10/tx-linux-amd64.tar.gz
           tar -xvzf tx-linux-amd64.tar.gz
           make gettext
@@ -108,27 +108,24 @@ jobs:
         working-directory: docs
         run: make transifex_sync
 
-
-      - name: Show translations (debug)
-        run: |
-          echo "=== PO files ==="
-          find docs/i18n -name "*.po" | sort
-
-          echo "=== MO files ==="
-          find docs/i18n -name "*.mo" | sort || true
-
-      - name: Translation tree (debug)
-        run: |
-          tree docs/i18n
-
       - name: Compile translations
         working-directory: docs
         run: make compile_messages
 
-      - name: Verify compiled translations (debug)
+      - name: Translation completeness
+        working-directory: docs
         run: |
-          echo "=== Compiled MO files ==="
-          find docs/i18n -name "*.mo" | sort
+          for LANG in $LANGUAGES; do
+            [ "$LANG" = "en" ] && continue
+
+            echo ""
+            echo "===== $LANG ====="
+
+            for f in i18n/$LANG/*.po; do
+              printf "%s: " "$(basename "$f")"
+              msgfmt --statistics "$f" 2>&1
+            done
+          done
 
       - name: copy datamodel documentation
         # Download artifact only if datamodel step ran (i.e., not a fast-doc PR)
