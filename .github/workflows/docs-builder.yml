@@ -46,12 +46,16 @@ jobs:
         with:
           fetch-depth: 0
 
-
       - name: Restore existing site
         run: |
           git clone --depth 1 --branch gh-pages https://github.com/${{ github.repository }} gh-pages || true
           mkdir -p docs/build/html
           rsync -a gh-pages/ docs/build/html/ || true
+
+      - name: Clean Sphinx build (for diagnostics)
+        working-directory: docs
+        run: |
+          rm -rf build
 
       - name: install requirements
         working-directory: docs
@@ -117,6 +121,7 @@ jobs:
         run: |
           for LANG in $LANGUAGES; do
             [ "$LANG" = "en" ] && continue
+            [ ! -d "i18n/$LANG" ] && continue
 
             echo ""
             echo "===== $LANG ====="
