@@ -212,11 +212,6 @@ jobs:
           </html>
           EOF
 
-      - name: Merge generated docs
-        run: |
-          rm -rf docs/published-site/$DOCS_VERSION
-          rsync -a docs/site/ docs/published-site/
-
       - name: Deduplicate static assets
         working-directory: docs
         run: |
@@ -233,6 +228,7 @@ jobs:
 
       - name: Merge generated docs
         run: |
+          rm -rf docs/published-site/$DOCS_VERSION
           rsync -a docs/site/ docs/published-site/
 
       - name: Generate versions list
