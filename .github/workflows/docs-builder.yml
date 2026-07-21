@@ -73,10 +73,6 @@ jobs:
           tar -xvzf tx-linux-amd64.tar.gz
           make gettext
 
-      - name: Show gettext catalogs
-        run: |
-          find docs/i18n -name "*.po" | sort | head -50
-
       - name: Remove legacy root docs
         run: |
           cd docs/published-site
@@ -207,18 +203,25 @@ jobs:
 
           touch ./site/.nojekyll
 
-      - name: Verify language build
-        run: |
-          grep -R "lang=\"de\"" docs/site/latest/de/index.html || true
 
-      - name: Verify translated output
+      - name: Compare source, mo and html
+        working-directory: docs
         run: |
-          echo "=== German translation hits ==="
-          grep -R "TEKSI Abwasser" docs/site/latest/de | head -1 || true
-           echo "=== .mo file check ==="
-          strings docs/i18n/de/LC_MESSAGES/features-guide.mo | grep Abwasser || true
+          echo "=== MO ==="
+          strings i18n/de/LC_MESSAGES/features-guide.mo | grep -m 1 "TEKSI"
+
           echo "=== HTML ==="
-          grep -R -m 1 "TEKSI Abwasser" docs/site/latest/de || true
+          grep -n "TEKSI" site/latest/de/features-guide/index.html | head
+
+
+      - name: Compare EN and DE
+        working-directory: docs
+        run: |
+          echo "=== DE ==="
+          grep -n "TEKSI" site/latest/de/features-guide/index.html | head -20 || true
+
+          echo "=== EN ==="
+          grep -n "TEKSI" site/latest/en/features-guide/index.html | head -20 || true
 
 
       - name: Add root redirect
