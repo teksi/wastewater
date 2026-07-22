@@ -51,6 +51,13 @@ jobs:
       - name: Docker build
         run: docker compose --profile qgis up --build -d
 
+      - name: Wait for DB
+        run: |
+          until docker compose exec db pg_isready -U postgres; do
+            echo "Waiting for PostgreSQL..."
+            sleep 2
+          done
+
       - name: Initialize database
         run: |
           docker compose exec db sh -c "dropdb -U postgres --if-exists ${DB_NAME}"
