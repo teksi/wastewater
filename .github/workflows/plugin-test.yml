@@ -53,12 +53,8 @@ jobs:
 
       - name: Run QGIS tests
         run: |
-          docker compose exec qgis pytest /usr/src/plugin/tests/qgis -v
-
-
-      - name: Run pytest (QGIS)
-        run: |
-          docker compose exec qgis pytest /usr/src/plugin/tests -m qgis -v
+          docker compose exec qgis \
+            sh -c "xvfb-run pytest /usr/src/plugin/tests/qgis -v"
 
       - name: docker logs
         run: docker compose logs db
@@ -91,8 +87,8 @@ jobs:
       - name: Download Interlis libs
         run: sudo ./plugin/scripts/download-interlis-libs.sh
 
-      - name: Start DB
-        run: docker compose up db -d
+      - name: Start services
+        run: docker compose up db qgis -d
 
       - name: Wait for DB
         run: |
@@ -106,7 +102,7 @@ jobs:
           docker compose exec db sh -c "createdb -U postgres ${DB_NAME}"
           docker compose run pum -p ${PGSERVICE} -d datamodel install -p SRID 2056
 
-      - name: Run pytest (no QGIS)
+      - name: Run pytest (no QGIS Python library)
         run: pytest plugin/tests/no_qgis -v -c plugin/pytest.ini -m no_qgis
         env:
           PYTHONPATH: ${{ github.workspace }}
