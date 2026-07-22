@@ -110,7 +110,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install pytest
-          pip install -r plugin/requirements.txt
+          pip install -r plugin/teksi_wastewater/requirements.txt
 
       - name: Download Interlis libs
         run: sudo ./plugin/scripts/download-interlis-libs.sh
