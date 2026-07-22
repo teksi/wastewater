@@ -1,4 +1,9 @@
-#!/usr/bin/env bash
 
-wget https://github.com/teksi/wastewater/archive/refs/tags/plugin-ili-libs-2025.tar.gz
-tar xvzf plugin-ili-libs-2025.tar.gz --strip-components=1
+ILIVALIDATOR_VERSION=1.15.0
+
+
+wget \
+  "https://downloads.interlis.ch/ilivalidator/ilivalidator-${ILIVALIDATOR_VERSION}.zip"
+
+
+unzip -o "ilivalidator-${ILIVALIDATOR_VERSION}.zip" -d plugin/teksi_wastewater/interlis/bin/
