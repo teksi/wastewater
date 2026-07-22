@@ -4,7 +4,7 @@ from .helpers import run_cli
 
 
 @pytest.mark.no_qgis
-def test_interlis_importer_exporter_importable_without_qgis(no_qgis):
+def test_interlis_importer_exporter_importable_without_qgis():
 
     from teksi_wastewater.interlis.utils.ili2db import InterlisTools
 

@@ -30,7 +30,7 @@ def wait_for_db():
 
 @pytest.fixture
 def clean_db():
-    run('docker compose exec db sh -c "dropdb -U postgres --if-exists tww')
+    run('docker compose exec db sh -c "dropdb -U postgres --if-exists tww"')
     run('docker compose exec db sh -c "createdb -U postgres tww"')
     run("docker compose run db pum -s pg_tww -d datamodel install -p SRID 2056")
     yield
