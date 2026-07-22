@@ -103,7 +103,7 @@ class TestInterlis(unittest.TestCase):
         DatabaseUtils.databaseConfig.PGPASS = "postgres"
         DatabaseUtils.databaseConfig.PGPORT = str(PG_PORT)
 
-    def test_minimal_import_export(self):
+    def test_minimal_import_export(self, clean_db):
         # Import organisation
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_ORGANISATION_ARBON_ONLY)
         interlisImporterExporter = InterlisImporterExporter()
@@ -341,7 +341,7 @@ class TestInterlis(unittest.TestCase):
         )
         self.assertIsNotNone(interlis_object)
 
-    def test_dss_dataset_import_export(self):
+    def test_dss_dataset_import_export(self, clean_db):
         # Import organisation
         xtf_file_input = self._get_data_filename(TEST_DATASET_ORGANISATIONS)
         interlisImporterExporter = InterlisImporterExporter()
