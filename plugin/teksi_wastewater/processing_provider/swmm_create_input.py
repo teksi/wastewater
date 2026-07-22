@@ -27,9 +27,9 @@ from qgis.core import (
     QgsProcessingParameterFile,
     QgsProcessingParameterFileDestination,
     QgsProcessingParameterString,
-    QgsProject,
 )
 
+from ..utils.twwlayermanager import TwwLayerManager
 from .tww_algorithm import TwwAlgorithm
 from .TwwSwmm import TwwSwmm
 
@@ -63,13 +63,11 @@ class SwmmCreateInputAlgorithm(TwwAlgorithm):
         If \"Export only selected network\" is selected, the entire selected network is exported, including the secondary network.
         Note that at this stage of the development, export of special structures (pumps, weirs, dividers) and related curves must be checked.
         Advices to improve the export can be submited as github issues.
-        See: https://teksi.github.io/wastewater/tww_swmm/Generate-SWMM-File.html#swmm-create-input
+        See: https://teksi.github.io/wastewater/latest/en/tww_swmm/Generate-SWMM-File.html#swmm-create-input
         """)
 
     def helpUrl(self):
-        return (
-            "https://teksi.github.io/wastewater/tww_swmm/Generate-SWMM-File.html#swmm-create-input"
-        )
+        return "https://teksi.github.io/wastewater/latest/en/tww_swmm/Generate-SWMM-File.html#swmm-create-input"
 
     def initAlgorithm(self, config=None):
         """Here we define the inputs and output of the algorithm, along
@@ -140,9 +138,7 @@ class SwmmCreateInputAlgorithm(TwwAlgorithm):
         # Get selection
         if only_selected:
             hierarchy = None
-            structures_layers = QgsProject.instance().mapLayersByName(
-                "vw_tww_wastewater_structure"
-            )
+            structures_layers = TwwLayerManager.layer("vw_tww_wastewater_structure")
             if structures_layers:
                 structures = structures_layers[0].selectedFeatures()
                 selected_structures = []
@@ -151,7 +147,7 @@ class SwmmCreateInputAlgorithm(TwwAlgorithm):
             else:
                 self.structures = []
 
-            reaches_layers = QgsProject.instance().mapLayersByName("vw_tww_reach")
+            reaches_layers = TwwLayerManager.layer("vw_tww_reach")
             if reaches_layers:
                 reaches = reaches_layers[0].selectedFeatures()
                 selected_reaches = []

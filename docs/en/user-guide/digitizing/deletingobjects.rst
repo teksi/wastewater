@@ -42,7 +42,7 @@ Delete Manhole or other Wastewater Structure
 .. note:: Delete wastewater structures deletes also all connected structure parts (cover, access_aid etc) and all connected wastewater nodes. fk_wastewater_networkelement in reachpoints, that where connected to the node, are set to NULL.
 
 Delete Wastewater Structure, but keep the wastewater_node and the connections to the wastewater_node
----------------------------------------------------------
+---------------------------------------------------------------------------------------------------------
 First, you have to kill the connection between wastewater_node and wastewater_structure. Because the fk_wastewater_structure field is not visible in the wastewater_node feature attribut window (this field make no sense in other cases, where the form is also used), you have to follow this way:
 
 * Select **vw_tww_wastewater_structure** and change to edit mode
@@ -54,7 +54,8 @@ First, you have to kill the connection between wastewater_node and wastewater_st
 .. figure:: images/unlink_childe.jpg
 
 * Click **OK** and close the form window
-The wastewater node is no no more part of the wastewater_structure
+
+The wastewater node is now no more part of the wastewater_structure
 
 * Select the object (**manhole**, **special structure** etc.) you want to delete
 * Use **Edit** --> **Delete Selected** to delete.

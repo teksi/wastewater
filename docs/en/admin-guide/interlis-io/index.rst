@@ -62,10 +62,10 @@ The export only supports up-to-date TWW data model (`2020.1 <https://www.vsa.ch/
 
 
 Usage (GUI)
-^^^^^^^^^^^^^
+^^^^^^^^^^^
 
 Enable admin mode
--------------------------------------------------
+-----------------
 
 In the `plugin>TWW>settings` dialog, under the `Developer options` tab, ensure `Admin mode` is enabled. Restart QGIS.
 
@@ -78,7 +78,10 @@ You should now see new `import` and `export` buttons in the TWW toolbar.
 .. _interlis_export:
 
 INTERLIS Export
-^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^
+
+Launch export wizard
+--------------------
 
 .. figure:: images/tww_interlis_export_button.png
 
@@ -89,16 +92,25 @@ The following dialog will appear.
 
 .. figure:: images/tww_interlis_export.png
 
+Export model
+------------
 At first, select the export model.
 
-If you have an active selection in the nodes and/or reaches layer, you can choose to restrict the export to that selection. This is especially useful in combination with the upstream/downstream selection tools.
+If you have an active selection in the nodes and/or reaches layer, you can choose to restrict the export to that selection. This is especially useful in combination with the upstream/downstream selection or `extend selection tools (see :ref:`extend_selection_tool`).
 
 .. figure:: images/tww_interlis_export_selection.png
+
+
+Label export
+------------
 
 The export tools is capable of exporting label positions for different scales. You can choose which scales you are interested in exporting by selected/deselecting them.
 
 .. note::
    Only choose either Werkplan 1:500 or Werkplan 1:250. The latter may give you a more accurarte placement while printing labels in the scale 1:500. Choosing both scales will give you duplicate label positions - so avoid this! You will not be able to distinguish anymore which are the labels for 1:250 and 1:500 in the exported xtf file as both will get the plantype = "Werkplan" (currently VSA-DSS / SIA405 Abwasser 2020.x only supports one scale - this might change in a future release).
+
+File name and location
+----------------------
 
 Then, confirm the dialog and choose where to save the `.xtf` file.
 
@@ -118,7 +130,10 @@ Then, confirm the dialog and choose where to save the `.xtf` file.
    Note that remark fields are truncated to 80 characters on INTERLIS Export, as the INTERLIS definition is like this. If you have remark fields with more text then consider to move this data to documentation with the classes "file" and "data_media" so it can be exported to INTERLIS completely where you can add any document, photo or video to a class.
 
 .. note::
-   More information on `QGIS label export https://docs.qgis.org/3.44/en/docs/user_manual/processing_algs/qgis/cartography.html#extract-labels`_
+   More information on `QGIS label export <https://docs.qgis.org/3.44/en/docs/user_manual/processing_algs/qgis/cartography.html#extract-labels>`_
+
+Validation pre-processing
+-------------------------
 
 The following validations are run as pre-process:
 
@@ -133,11 +148,18 @@ You will get a new summary window that tells you, if any of these pre-checks fai
 
 You can choose to continue export, if you think the pre-check results will not be relevant for your export (e.g. if you export SIA405 Abwaser, but there are reference check errors that are within the VSA-DSS part that are beyond SIA405 Abwasser).
 
+Validation Post-processing ilivalidator
+---------------------------------------
 
-Exports include also a validation step at the end using `ilivalidator`, which will inform you whether the export contains INTERLIS validation errors.
+
+Exports include also a validation step at the end using `ilivalidator`, which will inform you whether the export contains INTERLIS model validation errors.
 
 If the export was successful a green success message appears.
 If the export is not successfull you will get either error messages during the export process or an error warning at the end of the process.
+
+
+Error logs
+----------
 
 You can check the protocol window and the text logs for further details.
 
@@ -154,7 +176,7 @@ You can check the protocol window and the text logs for further details.
      - ``*.ili2pg-schemaimport.log``
    * - Data export intermediatary schema
      - Export of data from tww_od to the new intermediary schema, translation from English to German
-     - *.tww2ili-export.log
+     - \*.tww2ili-export.log
    * - Data export to xtf
      - Data export from intermediary schema to INTERLIS Transfer file (xtf)
      - ``*.ili2pg-export-MODELNAME.log``
@@ -164,7 +186,7 @@ You can check the protocol window and the text logs for further details.
 
 
 Export extra organisations
--------------------------------------------------
+--------------------------
 
 .. figure:: images/tww_interlis_export_organisation.jpg
 
@@ -180,7 +202,7 @@ Extra organisations could be for example bigger private organisations that are u
 .. _interlis_import:
 
 INTERLIS Import
-^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^
 
 .. figure:: images/tww_interlis_import_button.png
 
@@ -223,6 +245,11 @@ Once you're happy with the import options, confirm the dialog to persist the cha
 
 If the import was successful a green success message appears.
 
+If you imported an (organisation) dataset, TWW automatically sets the ``tww_active`` flag on those organisations that have been used by any foreign key to the class organisation.
+
+If you import the organisation dataset before any network data (as proposed), you will not see any organisation in the layer organisations. You have to turn off the pre-defined filter ``tww_active``.
+
+.. figure:: images/organisation_tww_active.png
 
 
 Usage (command line)

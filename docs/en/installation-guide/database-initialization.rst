@@ -32,20 +32,23 @@ See the current `TMMT Documentation for a step by step help <https://github.com/
 
 .. note::
 
-It is highly recommended to use these when using TWW in a production environment.
+ It is highly recommended to use these when using TWW in a production environment.
+
+Note that since 2026.0.1, the obj_id prefix can be set through TMMT as well.
+
 
 .. _install-datamodel-demodata:
 
 Install data model with or without demodata
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. info:: Demodata is available as an option during the setup process with TMMT. You can select to add demodata or leave this.
+.. note:: Demodata is available as an option during the setup process with TMMT. You can select to add demodata or leave this.
 
 See the current `TMMT Documentation for a step by step help <https://github.com/teksi/TMMT/discussions/34>`_
 
 After you have setup successfully the database with or without demodata, you can check the schemata via pgAdmin
 
-There will be 6 `schemas <https://teksi.github.io/wastewater/en/user-guide/layerexplanations/namingconventions.html#schemas-in-the-tww-database>`_ in the database
+There will be 6 `schemas <../user-guide/layerexplanations/namingconventions.html#schemas-in-the-tww-database>`_ in the database
 
 + public
 + tww_app

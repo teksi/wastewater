@@ -1,7 +1,10 @@
 import logging
 import os
+import socket
 import tempfile
 from pathlib import Path
+
+import requests
 
 from ..utils.database_utils import DatabaseUtils
 from . import config
@@ -96,6 +99,8 @@ class InterlisImporterExporter:
         logs_next_to_file=True,
         filter_nulls=True,
         srid: int = None,
+        import_orgs=False,
+        user_interaction=False,
     ):
         # Configure logging
         if logs_next_to_file:
@@ -152,6 +157,9 @@ class InterlisImporterExporter:
         self._create_ili_schema(
             [import_model], ext_columns_no_constraints=True, create_basket_col=True
         )
+
+        if import_orgs:
+            self.import_vsa_orgs()
 
         # Import from xtf file to ili2pg model
         self._progress_done(30, "Importing XTF data...")
@@ -234,6 +242,7 @@ class InterlisImporterExporter:
         selected_labels_scales_indices=[],
         selected_ids=None,
         include_unplaced: bool = False,
+        import_orgs: bool = False,
     ):
         # File name without extension (used later for export)
         file_name_base, _ = os.path.splitext(xtf_file_output)
@@ -278,6 +287,8 @@ class InterlisImporterExporter:
             abs_file_path = Path(__file__).parent.resolve() / file_path
             logger.info("Importing AG-64 organisation to intermediate schema")
             self._import_xtf_file(abs_file_path)
+        elif import_orgs:
+            self.import_vsa_orgs()
 
         # Export to the temporary ili2pg model
         self._progress_done(35, "Converting from TEKSI Wastewater...")
@@ -310,6 +321,7 @@ class InterlisImporterExporter:
         selected_ids=None,
         srid: int = None,
         include_unplaced: bool = False,
+        import_orgs: bool = False,
     ):
 
         if srid:
@@ -350,6 +362,7 @@ class InterlisImporterExporter:
                 labels_file,
                 selected_labels_scales_indices,
                 selected_ids,
+                import_orgs,
             )
         else:
             if user_interaction:
@@ -403,6 +416,7 @@ class InterlisImporterExporter:
                         labels_file,
                         selected_labels_scales_indices,
                         selected_ids,
+                        import_orgs,
                     )
             else:
                 logger.error(f"Failed checks:\n{results['failed_checks']}")
@@ -756,3 +770,50 @@ class InterlisImporterExporter:
         self.current_progress = progress
         if self.progress_done_callback:
             self.progress_done_callback(int(progress), text)
+
+    def _has_internet(self, url: str = None, timeout=1):
+        from urllib.parse import urlparse
+
+        try:
+            if url:
+                host = urlparse(url).hostname
+            else:
+                host = "vsa.ch"
+
+            if not isinstance(host, str):
+                return False
+
+            socket.create_connection((host, 443), timeout=timeout)
+            return True
+
+        except OSError:
+            return False
+
+    def import_vsa_orgs(self):
+        if self._has_internet():
+            try:
+                response = requests.get(config.VSA_ORG_URL, timeout=(2, 10))
+                response.raise_for_status()
+
+                tmp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".xtf")
+                tmp_file.write(response.content)
+                tmp_file.close()
+
+                logger.info(f"Downloaded VSA organisations file to {tmp_file.name}")
+                orgs_path = Path(tmp_file.name)
+                logger.info("Importing VSA organisation to intermediate schema")
+                self._progress_done(25, "Importing VSA organisations data...")
+                self._import_xtf_file(orgs_path)
+
+            except Exception as e:
+                logger.warning(f"Could not download VSA file: {e}")
+            finally:
+                try:
+                    os.remove(tmp_file.name)
+                except Exception:
+                    pass
+
+        else:
+            logger.warning(
+                "No internet connection detected → skipping download of vsa organisations"
+            )
