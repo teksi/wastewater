@@ -1,8 +1,8 @@
 import subprocess
 import sys
 import time
-import pytest
 
+import pytest
 
 DB_CONTAINER = "db"
 
@@ -32,10 +32,9 @@ def wait_for_db():
 def clean_db():
     run('docker compose exec db sh -c "dropdb -U postgres --if-exists tww')
     run('docker compose exec db sh -c "createdb -U postgres tww"')
-    run(
-        "docker compose run db pum -s pg_tww -d datamodel install -p SRID 2056"
-    )
+    run("docker compose run db pum -s pg_tww -d datamodel install -p SRID 2056")
     yield
+
 
 @pytest.fixture(autouse=True)
 def forbid_qgis_import(request, monkeypatch):
