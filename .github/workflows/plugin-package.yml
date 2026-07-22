@@ -58,7 +58,6 @@ jobs:
             --no-validation \
             package ${VERSION} \
             --allow-uncommitted-changes \
-            --asset-path plugin/teksi_wastewater/libs \
             --asset-path plugin/teksi_wastewater/interlis/bin \
             --transifex-token "${{ secrets.TX_TOKEN }}"
 
