@@ -78,14 +78,62 @@ jobs:
           docker compose exec db sh -c "dropdb -U postgres ${DB_NAME}"
           docker compose exec db sh -c "createdb -U postgres ${DB_NAME}"
           docker compose run pum -p ${PGSERVICE} -d datamodel install -p SRID 2056
-      - name: Test command line import orgs
-        run: docker compose exec qgis sh -c "xvfb-run /usr/src/plugin/tww_cmd.py interlis_import --xtf_file /usr/src/plugin/teksi_wastewater/tests/data/minimal-dataset-organisation-arbon-only.xtf --pghost db --pgdatabase ${DB_NAME} --pguser postgres --pgpass postgres --pgport 5432"
 
-      - name: Test command line import minimal sia405
-        run: docker compose exec qgis sh -c "xvfb-run /usr/src/plugin/tww_cmd.py interlis_import --xtf_file /usr/src/plugin/teksi_wastewater/tests/data/minimal-dataset-SIA405-ABWASSER.xtf --pghost db --pgdatabase ${DB_NAME} --pguser postgres --pgpass postgres --pgport 5432"
-
-      - name: Test command line minimal export
-        run: docker compose exec qgis sh -c "xvfb-run /usr/src/plugin/tww_cmd.py interlis_export --xtf_file \"output.xtf\" --pghost db --pgdatabase ${DB_NAME} --pguser postgres --pgpass postgres --pgport 5432"
+      - name: Run pytest (QGIS)
+        run: |
+          docker compose exec qgis pytest /usr/src/plugin/tests -m qgis -v
 
       - name: docker logs
+        run: docker compose logs db
+
+
+
+
+  plugin-tests-no-qgis:
+    name: Tests (no QGIS)
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+
+      - name: Setup env
+        run: cp .env.example .env
+
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install pytest
+          pip install -r plugin/requirements.txt
+
+      - name: Download Interlis libs
+        run: sudo ./plugin/scripts/download-interlis-libs.sh
+
+      - name: Start DB
+        run: docker compose up db -d
+
+      - name: Wait for DB
+        run: |
+          until docker compose exec db pg_isready -U postgres; do
+            echo "Waiting for PostgreSQL..."
+            sleep 2
+          done
+
+      - name: Init DB
+        run: |
+          docker compose exec db createdb tww
+          docker compose run pum -p ${PGSERVICE} -d datamodel install -p SRID 2056
+
+      - name: Run pytest (no QGIS)
+        run: pytest -m no_qgis -v
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+
+      - name: Show logs
         run: docker compose logs db
