@@ -1,11 +1,11 @@
 import pytest
-from .helpers import run_cli
 
+from .helpers import run_cli
 
 
 @pytest.mark.no_qgis
 def test_interlis_importer_exporter_importable_without_qgis(no_qgis):
-    
+
     from teksi_wastewater.utils.ili2db import InterlisTools
 
     assert InterlisTools is not None
