@@ -1,8 +1,8 @@
 import subprocess
 import sys
 import time
-
 import pytest
+
 
 DB_CONTAINER = "db"
 
@@ -30,12 +30,14 @@ def wait_for_db():
 
 @pytest.fixture
 def clean_db():
-    run("docker compose exec db dropdb --if-exists tww")
-    run("docker compose exec db createdb tww")
-    run("docker compose run db pum -s pg_tww -d datamodel install -p SRID 2056")
+    run('docker compose exec db sh -c "dropdb -U postgres --if-exists tww')
+    run('docker compose exec db sh -c "createdb -U postgres tww"')
+    run(
+        "docker compose run db pum -s pg_tww -d datamodel install -p SRID 2056"
+    )
     yield
 
-
-@pytest.fixture
-def no_qgis(monkeypatch):
-    monkeypatch.setitem(sys.modules, "qgis", None)
+@pytest.fixture(autouse=True)
+def forbid_qgis_import(request, monkeypatch):
+    if request.node.get_closest_marker("no_qgis"):
+        monkeypatch.setitem(sys.modules, "qgis", None)
