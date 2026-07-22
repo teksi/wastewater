@@ -89,7 +89,9 @@ jobs:
   plugin-tests-no-qgis:
     name: Tests (no QGIS)
     runs-on: ubuntu-24.04
-
+    env:
+      PGSERVICE: pg_tww
+      DB_NAME: tww
     steps:
       - name: Checkout
         uses: actions/checkout@v7
