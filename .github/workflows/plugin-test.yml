@@ -51,10 +51,32 @@ jobs:
       - name: Docker build
         run: docker compose --profile qgis up --build -d
 
-      - name: Run QGIS tests
+      - name: Initialize database
+        run: |
+          docker compose exec db sh -c "dropdb -U postgres --if-exists ${DB_NAME}"
+          docker compose exec db sh -c "createdb -U postgres ${DB_NAME}"
+          docker compose run pum -p ${PGSERVICE} -d datamodel install -p SRID 2056
+
+      - name: Run QGIS tests (except DSS)
         run: |
           docker compose exec qgis \
-            sh -c "xvfb-run pytest /usr/src/plugin/tests/qgis -v"
+            sh -c "xvfb-run pytest \
+              /usr/src/plugin/tests/qgis/test_interlis.py \
+              -k 'not test_dss_dataset_import_export' \
+              -v -c /usr/src/plugin/pytest.ini"
+
+      - name: Reset database
+        run: |
+          docker compose exec db sh -c "dropdb -U postgres --if-exists ${DB_NAME}"
+          docker compose exec db sh -c "createdb -U postgres ${DB_NAME}"
+          docker compose run pum -p ${PGSERVICE} -d datamodel install -p SRID 2056
+
+      - name: Run QGIS DSS test
+        run: |
+          docker compose exec qgis \
+            sh -c "xvfb-run pytest \
+              /usr/src/plugin/tests/qgis/test_interlis.py::TestInterlis::test_dss_dataset_import_export \
+              -v -c /usr/src/plugin/pytest.ini"
 
       - name: docker logs
         run: docker compose logs db
