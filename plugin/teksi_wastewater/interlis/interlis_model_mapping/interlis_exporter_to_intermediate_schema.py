@@ -3576,7 +3576,7 @@ class InterlisExporterToIntermediateSchema:
 
         else:
             logger.warning(
-                f"No labels found for layer '{label_name}' - check if layer labels are activated!"
+                f"No labels found - check if labels in tww-layers are activated!"
             )
 
     def close_sessions(self):
