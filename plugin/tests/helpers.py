@@ -1,8 +1,8 @@
 import re
+import time
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from subprocess import run as sp_run
-import time
 
 OUTPUT_DIR = Path(__file__).parent / "output"
 OUTPUT_DIR.mkdir(exist_ok=True)
