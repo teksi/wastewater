@@ -4,6 +4,9 @@ import time
 
 import pytest
 
+from teksi_wastewater.utils.database_utils import DatabaseUtils
+
+
 DB_CONTAINER = "db"
 
 
@@ -40,3 +43,13 @@ def clean_db_once():
     run('docker compose exec db sh -c "createdb -U postgres tww"')
     run("docker compose run pum -p pg_tww -d datamodel install -p SRID 2056")
     yield
+
+@pytest.fixture(scope="module", autouse=True)
+def configure_database():
+    DatabaseUtils.databaseConfig.PGSERVICE = None
+
+    DatabaseUtils.databaseConfig.PGHOST = "db"
+    DatabaseUtils.databaseConfig.PGPORT = "5432"
+    DatabaseUtils.databaseConfig.PGDATABASE = "tww"
+    DatabaseUtils.databaseConfig.PGUSER = "postgres"
+    DatabaseUtils.databaseConfig.PGPASS = "postgres"
