@@ -153,7 +153,7 @@ def exported_dss_selection(
         "interlis_export "
         f'--xtf_file "{_container_output_file(base_name)}" '
         f"--export_model {config.MODEL_NAME_DSS} "
-        "--selected_ids ch000000WN000002,ch000000WN000003,ch000000RE000002 "
+        '--selected_ids "ch000000WN000002,ch000000WN000003,ch000000RE000002" '
         "--logs_next_to_file "
         f"{DB_ARGS}"
     )
