@@ -27,15 +27,6 @@ def wait_for_db():
         time.sleep(2)
     raise RuntimeError("Database not ready")
 
-
-@pytest.fixture
-def clean_db():
-    run('docker compose exec db sh -c "dropdb -U postgres --if-exists tww"')
-    run('docker compose exec db sh -c "createdb -U postgres tww"')
-    run("docker compose run pum -p pg_tww -d datamodel install -p SRID 2056")
-    yield
-
-
 @pytest.fixture(autouse=True)
 def forbid_qgis_import(request, monkeypatch):
     if request.node.get_closest_marker("no_qgis"):
@@ -43,12 +34,8 @@ def forbid_qgis_import(request, monkeypatch):
 
 
 @pytest.fixture(scope="module")
-def clean_db_once(clean_db):
-    """
-    Clean the database once for the full no-QGIS import/export scenario.
-
-    The existing ``clean_db`` fixture must be compatible with module scope. If
-    it is function-scoped, replace this fixture with a direct DB cleanup
-    implementation.
-    """
-    return None
+def clean_db_once():
+    run('docker compose exec db sh -c "dropdb -U postgres --if-exists tww"')
+    run('docker compose exec db sh -c "createdb -U postgres tww"')
+    run("docker compose run pum -p pg_tww -d datamodel install -p SRID 2056")
+    yield
