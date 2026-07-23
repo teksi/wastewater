@@ -242,10 +242,10 @@ def test_export_kek():
 
 
 @pytest.mark.no_qgis
-def test_import_sia405():
+def test_import_sia405_modified():
     run_cli(
         "interlis_import "
-        "--xtf_file /usr/src/plugin/tests/qgis/data/minimal-dataset-SIA405-ABWASSER.xtf "
+        "--xtf_file /usr/src/plugin/tests/qgis/data/minimal-dataset-SIA405-ABWASSER-modified.xtf "
         "--pghost db --pgdatabase tww --pguser postgres --pgpass postgres --pgport 5432"
     )
 
