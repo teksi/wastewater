@@ -5,7 +5,7 @@ import pytest
 from teksi_wastewater.interlis import config
 from teksi_wastewater.utils.database_utils import DatabaseUtils
 
-from .helpers import (
+from ..helpers import (
     get_output_filename,
     get_xtf_object,
     get_xtf_object_node_text,
