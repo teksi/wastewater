@@ -47,8 +47,7 @@ def clean_db_once():
 @pytest.fixture(scope="module", autouse=True)
 def configure_database():
     DatabaseUtils.databaseConfig.PGSERVICE = None
-
-    DatabaseUtils.databaseConfig.PGHOST = "db"
+    DatabaseUtils.databaseConfig.PGHOST = "localhost"
     DatabaseUtils.databaseConfig.PGPORT = "5432"
     DatabaseUtils.databaseConfig.PGDATABASE = "tww"
     DatabaseUtils.databaseConfig.PGUSER = "postgres"
