@@ -92,7 +92,7 @@ def exported_sia405_base_abwasser(
     run_cli(
         "interlis_export "
         f'--xtf_file "{_container_output_file(base_name)}" '
-        f"--models {config.MODEL_NAME_SIA405_BASE_ABWASSER} "
+        f"--export_model {config.MODEL_NAME_SIA405_BASE_ABWASSER} "
         "--logs_next_to_file "
         f"{DB_ARGS}"
     )
@@ -112,7 +112,7 @@ def exported_sia405_abwasser(
     run_cli(
         "interlis_export "
         f'--xtf_file "{_container_output_file(base_name)}" '
-        f"--models {config.MODEL_NAME_SIA405_ABWASSER} "
+        f"--export_model {config.MODEL_NAME_SIA405_ABWASSER} "
         "--logs_next_to_file "
         f"{DB_ARGS}"
     )
@@ -132,7 +132,7 @@ def exported_dss(
     run_cli(
         "interlis_export "
         f'--xtf_file "{_container_output_file(base_name)}" '
-        f"--models {config.MODEL_NAME_DSS} "
+        f"--export_model {config.MODEL_NAME_DSS} "
         "--logs_next_to_file "
         f"{DB_ARGS}"
     )
@@ -152,7 +152,7 @@ def exported_dss_selection(
     run_cli(
         "interlis_export "
         f'--xtf_file "{_container_output_file(base_name)}" '
-        f"--models {config.MODEL_NAME_DSS} "
+        f"--export_model {config.MODEL_NAME_DSS} "
         '--selection "ch000000WN000002","ch000000WN000003","ch000000RE000002" '
         "--logs_next_to_file "
         f"{DB_ARGS}"
@@ -173,7 +173,7 @@ def exported_kek(
     run_cli(
         "interlis_export "
         f'--xtf_file "{_container_output_file(base_name)}" '
-        f"--models {config.MODEL_NAME_VSA_KEK} "
+        f"--export_model {config.MODEL_NAME_VSA_KEK} "
         "--logs_next_to_file "
         f"{DB_ARGS}"
     )
