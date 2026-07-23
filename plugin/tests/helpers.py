@@ -2,6 +2,7 @@ import re
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from subprocess import run as sp_run
+import time
 
 OUTPUT_DIR = Path(__file__).parent / "output"
 OUTPUT_DIR.mkdir(exist_ok=True)
@@ -58,13 +59,18 @@ def get_xtf_object_node_text(
 
 
 def run_cli(command: str):
+    start = time.time()
     cmd = f"""
     docker compose exec qgis sh -c '
     xvfb-run python3 /usr/src/plugin/tww_cmd.py {command}
     '
     """
-
+    duration = time.time() - start
+    print(f"CLI duration: {duration:.1f}s")
     result = sp_run(cmd, shell=True, capture_output=True, text=True)
+
+    print("STDOUT")
     print(result.stdout)
+    print("STDERR")
     print(result.stderr)
     assert result.returncode == 0
