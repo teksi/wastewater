@@ -41,6 +41,7 @@ def forbid_qgis_import(request, monkeypatch):
     if request.node.get_closest_marker("no_qgis"):
         monkeypatch.setitem(sys.modules, "qgis", None)
 
+
 @pytest.fixture(scope="module")
 def clean_db_once(clean_db):
     """
