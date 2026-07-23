@@ -89,10 +89,9 @@ jobs:
         run: docker compose logs db
 
   plugin-tests-no-qgis:
-    name: Tests (no QGIS)
+    name: Run unit tests on cli
     runs-on: ubuntu-24.04
     env:
-      PGSERVICE: pg_tww
       DB_NAME: tww
     steps:
       - name: Checkout
@@ -129,7 +128,7 @@ jobs:
       - name: Init DB
         run: |
           docker compose exec db sh -c "createdb -U postgres ${DB_NAME}"
-          docker compose run pum -p ${PGSERVICE} -d datamodel install -p SRID 2056
+          docker compose run pum -p pg_tww -d datamodel install -p SRID 2056
 
       - name: Run pytest (no QGIS Python library)
         run: pytest plugin/tests/no_qgis -v -c plugin/pytest.ini -m no_qgis
