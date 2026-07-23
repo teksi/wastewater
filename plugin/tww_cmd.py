@@ -67,10 +67,6 @@ class TeksiWastewaterCmd:
 
         subparser.add_argument("--xtf_file", help="XTF output file", required=True)
         subparser.add_argument(
-            "--selection",
-            help="if provided, limits the export to networkelements that are provided in the selection (comma separated list of ids)",
-        )
-        subparser.add_argument(
             "--export_model",
             default=config.MODEL_NAME_DSS,
             choices=[
