@@ -27,6 +27,7 @@ def wait_for_db():
         time.sleep(2)
     raise RuntimeError("Database not ready")
 
+
 @pytest.fixture(autouse=True)
 def forbid_qgis_import(request, monkeypatch):
     if request.node.get_closest_marker("no_qgis"):
