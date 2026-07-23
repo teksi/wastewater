@@ -40,3 +40,14 @@ def clean_db():
 def forbid_qgis_import(request, monkeypatch):
     if request.node.get_closest_marker("no_qgis"):
         monkeypatch.setitem(sys.modules, "qgis", None)
+
+@pytest.fixture(scope="module")
+def clean_db_once(clean_db):
+    """
+    Clean the database once for the full no-QGIS import/export scenario.
+
+    The existing ``clean_db`` fixture must be compatible with module scope. If
+    it is function-scoped, replace this fixture with a direct DB cleanup
+    implementation.
+    """
+    return None
