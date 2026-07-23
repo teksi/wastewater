@@ -3575,7 +3575,7 @@ class InterlisExporterToIntermediateSchema:
                 self.abwasser_session.flush()
 
         else:
-            logger.warning(f"No labels found - check if labels in tww-layers are activated!")
+            logger.warning("No labels found - check if labels in tww-layers are activated!")
 
     def close_sessions(self):
         self.tww_session.close()
