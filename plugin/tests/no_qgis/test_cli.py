@@ -5,7 +5,8 @@ import pytest
 from teksi_wastewater.interlis import config
 from teksi_wastewater.utils.database_utils import DatabaseUtils
 
-from .helpers import run_cli
+from .helpers import run_cli, get_output_filename, get_xtf_object, get_xtf_object_node_text
+
 
 OUTPUT_DIR = Path(__file__).parent / "output"
 OUTPUT_DIR.mkdir(exist_ok=True)
