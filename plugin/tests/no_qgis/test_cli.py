@@ -31,7 +31,7 @@ DB_ARGS = (
 def _container_output_file(
     name: str,
 ) -> str:
-    return f"{CONTAINER_OUTPUT_DIR}/{name}"
+    return f"{CONTAINER_OUTPUT_DIR}/{name}.xtf"
 
 
 def _host_exported_file(
@@ -87,7 +87,7 @@ def exported_sia405_base_abwasser(
 ) -> Path:
     DatabaseUtils.execute("UPDATE tww_od.organisation SET tww_local_extension=true;")
 
-    base_name = "export_minimal_dataset_sia405_base.xtf"
+    base_name = "export_minimal_dataset_sia405_base"
 
     run_cli(
         "interlis_export "
@@ -107,7 +107,7 @@ def exported_sia405_base_abwasser(
 def exported_sia405_abwasser(
     imported_kek,
 ) -> Path:
-    base_name = "export_minimal_dataset_sia405.xtf"
+    base_name = "export_minimal_dataset_sia405"
 
     run_cli(
         "interlis_export "
@@ -127,7 +127,7 @@ def exported_sia405_abwasser(
 def exported_dss(
     imported_kek,
 ) -> Path:
-    base_name = "export_minimal_dataset_dss.xtf"
+    base_name = "export_minimal_dataset_dss"
 
     run_cli(
         "interlis_export "
@@ -147,7 +147,7 @@ def exported_dss(
 def exported_dss_selection(
     imported_kek,
 ) -> Path:
-    base_name = "export_minimal_dataset_dss_selection.xtf"
+    base_name = "export_minimal_dataset_dss_selection"
 
     run_cli(
         "interlis_export "
@@ -168,7 +168,7 @@ def exported_dss_selection(
 def exported_kek(
     imported_kek,
 ) -> Path:
-    base_name = "export_minimal_dataset_kek.xtf"
+    base_name = "export_minimal_dataset_kek"
 
     run_cli(
         "interlis_export "
