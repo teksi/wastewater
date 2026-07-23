@@ -3,7 +3,6 @@ import os
 import re
 import sys
 import xml.etree.ElementTree as ET
-from decimal import Decimal
 
 from qgis.testing import start_app, unittest
 from teksi_wastewater.interlis import config

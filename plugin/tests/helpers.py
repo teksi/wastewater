@@ -1,14 +1,15 @@
-from subprocess import run as sp_run
-from pathlib import Path
 import re
-
 import xml.etree.ElementTree as ET
+from pathlib import Path
+from subprocess import run as sp_run
 
 OUTPUT_DIR = Path(__file__).parent / "output"
 OUTPUT_DIR.mkdir(exist_ok=True)
 
+
 def get_output_filename(name: str) -> str:
     return str(OUTPUT_DIR / name)
+
 
 def get_xtf_object(xtf_file, topicname, classname, tid):
     # from xml file
@@ -33,6 +34,7 @@ def get_xtf_object(xtf_file, topicname, classname, tid):
 
     return None
 
+
 def get_xtf_object_node_text(
     xtf_file, topicname: str, classname: str, tid: str, attributename: str
 ) -> str:
@@ -53,6 +55,7 @@ def get_xtf_object_node_text(
         f"/{namespace}{topicname}.{classname}[@TID='{tid}']"
         f"/{namespace}{attributename}"
     )
+
 
 def run_cli(command: str):
     cmd = f"""

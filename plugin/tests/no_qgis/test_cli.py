@@ -1,23 +1,21 @@
+from decimal import Decimal
 from pathlib import Path
 
 import pytest
-
-from decimal import Decimal
+from teksi_wastewater.interlis import config
+from teksi_wastewater.utils.database_utils import DatabaseUtils
 
 from .helpers import run_cli
-from teksi_wastewater.utils.database_utils import DatabaseUtils
-from teksi_wastewater.interlis import config
-
 
 OUTPUT_DIR = Path(__file__).parent / "output"
 OUTPUT_DIR.mkdir(exist_ok=True)
-
 
 
 @pytest.mark.no_qgis
 def test_interlis_importer_exporter_importable_without_qgis():
 
     from teksi_wastewater.interlis.utils.ili2db import InterlisTools
+
     assert InterlisTools is not None
 
     from teksi_wastewater.interlis.interlis_importer_exporter import (
@@ -39,6 +37,7 @@ def test_import_orgs(clean_db):
         "SELECT identifier FROM tww_od.organisation WHERE obj_id='ch20p3q400001497';"
     )
     assert result[0] == "Arbon"
+
 
 @pytest.mark.no_qgis
 def test_import_sia405():
@@ -71,6 +70,7 @@ def test_import_sia405():
     # adapted after November 2025 patch is online
     assert result[0] == Decimal("1.12857")
 
+
 @pytest.mark.no_qgis
 def test_import_dss():
     run_cli(
@@ -90,6 +90,7 @@ def test_import_dss():
     )
     assert result[0] == 448.0
 
+
 @pytest.mark.no_qgis
 def test_import_kek():
     run_cli(
@@ -99,14 +100,15 @@ def test_import_kek():
     )
 
     result = DatabaseUtils.fetchone(
-            "SELECT fk_maintenance_event FROM tww_od.re_maintenance_event_wastewater_structure WHERE fk_wastewater_structure='ch000000WS000001';"
-        )
+        "SELECT fk_maintenance_event FROM tww_od.re_maintenance_event_wastewater_structure WHERE fk_wastewater_structure='ch000000WS000001';"
+    )
     assert result[0] == "fk11abk6EX000002"
     # Check that we don't loose Z information on third import
     result = DatabaseUtils.fetchone(
         "SELECT bottom_level FROM tww_od.wastewater_node WHERE obj_id='ch000000WN000001';"
     )
     assert result[0] == 448.0
+
 
 @pytest.mark.no_qgis
 def test_export_sia405_base_abwasser():
@@ -120,15 +122,16 @@ def test_export_sia405_base_abwasser():
         "--pghost db --pgdatabase tww --pguser postgres --pgpass postgres --pgport 5432"
     )
     exported_xtf_filename = get_output_filename(
-            f"{output_file}_{config.MODEL_NAME_SIA405_BASE_ABWASSER}.xtf"
-        )
+        f"{output_file}_{config.MODEL_NAME_SIA405_BASE_ABWASSER}.xtf"
+    )
     interlis_object = get_xtf_object(
-            exported_xtf_filename,
-            config.TOPIC_NAME_SIA405_ADMINISTRATION,
-            "Organisation",
-            "ch20p3q400001497",
-        )
+        exported_xtf_filename,
+        config.TOPIC_NAME_SIA405_ADMINISTRATION,
+        "Organisation",
+        "ch20p3q400001497",
+    )
     assert interlis_object
+
 
 @pytest.mark.no_qgis
 def test_export_sia405_abwasser():
@@ -141,14 +144,14 @@ def test_export_sia405_abwasser():
         "--pghost db --pgdatabase tww --pguser postgres --pgpass postgres --pgport 5432"
     )
     exported_xtf_filename = get_output_filename(
-            f"{output_file}_{config.MODEL_NAME_SIA405_ABWASSER}.xtf"
-        )
+        f"{output_file}_{config.MODEL_NAME_SIA405_ABWASSER}.xtf"
+    )
     interlis_object = get_xtf_object(
-            exported_xtf_filename,
-            config.TOPIC_NAME_SIA405_ABWASSER,
-            "Haltung",
-            "ch000000RE000001",
-        )
+        exported_xtf_filename,
+        config.TOPIC_NAME_SIA405_ABWASSER,
+        "Haltung",
+        "ch000000RE000001",
+    )
     assert interlis_object
 
     interlis_object = get_xtf_object(
@@ -169,6 +172,7 @@ def test_export_sia405_abwasser():
 
     assert HoehenBreitenverhaeltnis_Text == "1.12857"
 
+
 @pytest.mark.no_qgis
 def test_export_dss():
     output_file = OUTPUT_DIR / "export_minimal_dataset_dss.xtf"
@@ -179,15 +183,13 @@ def test_export_dss():
         "--logs_next_to_file"
         "--pghost db --pgdatabase tww --pguser postgres --pgpass postgres --pgport 5432"
     )
-    exported_xtf_filename = get_output_filename(
-            f"{output_file}_{config.MODEL_NAME_DSS}.xtf"
-        )
+    exported_xtf_filename = get_output_filename(f"{output_file}_{config.MODEL_NAME_DSS}.xtf")
     interlis_object = get_xtf_object(
-            exported_xtf_filename,
-            config.TOPIC_NAME_DSS,
-            "Rohrprofil",
-            "ch000000PP000001",
-        )
+        exported_xtf_filename,
+        config.TOPIC_NAME_DSS,
+        "Rohrprofil",
+        "ch000000PP000001",
+    )
     assert interlis_object
 
     run_cli(
@@ -199,19 +201,20 @@ def test_export_dss():
         "--pghost db --pgdatabase tww --pguser postgres --pgpass postgres --pgport 5432"
     )
     interlis_object = get_xtf_object(
-            exported_xtf_filename,
-            config.TOPIC_NAME_DSS,
-            "Rohrprofil",
-            "ch000000PP000001",
-        )
+        exported_xtf_filename,
+        config.TOPIC_NAME_DSS,
+        "Rohrprofil",
+        "ch000000PP000001",
+    )
     assert interlis_object
     interlis_object = get_xtf_object(
-            exported_xtf_filename,
-            config.TOPIC_NAME_DSS,
-            "Rohrprofil",
-            "ch000000PP000002",
-        )
+        exported_xtf_filename,
+        config.TOPIC_NAME_DSS,
+        "Rohrprofil",
+        "ch000000PP000002",
+    )
     assert interlis_object
+
 
 @pytest.mark.no_qgis
 def test_export_kek():
@@ -223,16 +226,15 @@ def test_export_kek():
         "--logs_next_to_file"
         "--pghost db --pgdatabase tww --pguser postgres --pgpass postgres --pgport 5432"
     )
-    exported_xtf_filename = get_output_filename(
-            f"{output_file}_{config.MODEL_NAME_VSA_KEK}.xtf"
-        )
+    exported_xtf_filename = get_output_filename(f"{output_file}_{config.MODEL_NAME_VSA_KEK}.xtf")
     interlis_object = get_xtf_object(
-            exported_xtf_filename,
-            config.TOPIC_NAME_KEK,
-            "Untersuchung",
-            "fk11abk6EX000002",
-        )
+        exported_xtf_filename,
+        config.TOPIC_NAME_KEK,
+        "Untersuchung",
+        "fk11abk6EX000002",
+    )
     assert interlis_object
+
 
 @pytest.mark.no_qgis
 def test_import_sia405():
