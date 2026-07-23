@@ -3346,7 +3346,7 @@ class InterlisExporterToIntermediateSchema:
         with open(self.labels_file) as labels_file_handle:
             labels = json.load(labels_file_handle)
 
-        label_name = labels["name"]
+        labels["name"]
 
         # Check that labels were generated
         labels_count = len(labels["features"])
@@ -3575,9 +3575,7 @@ class InterlisExporterToIntermediateSchema:
                 self.abwasser_session.flush()
 
         else:
-            logger.warning(
-                f"No labels found - check if labels in tww-layers are activated!"
-            )
+            logger.warning(f"No labels found - check if labels in tww-layers are activated!")
 
     def close_sessions(self):
         self.tww_session.close()
