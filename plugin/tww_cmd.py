@@ -207,6 +207,10 @@ class TeksiWastewaterCmd:
         selected_ids = []
         if self.args.selected_ids:
             selected_ids = self.args.selected_ids.split(",")
+            print(f"self.args.selected_ids = {self.args.selected_ids!r}") # debug only
+            print(f"selected_ids = {selected_ids!r}")
+        else:
+            print("No selection argument. Exporting the whole dataset.")
 
         interlisImporterExporter = InterlisImporterExporter()
         try:
