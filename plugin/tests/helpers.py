@@ -26,7 +26,10 @@ def get_xtf_object(xtf_file, topicname, classname, tid):
     interlis_objects = root.findall(
         "./{0}DATASECTION/{0}{1}/{0}{1}.{2}".format(namespace, topicname, classname)
     )
-
+    print(
+        f"{classname} TIDs:",
+        [obj.attrib.get("TID") for obj in interlis_objects],
+        )
     for interlis_object in interlis_objects:
         xml_tid = interlis_object.attrib.get("TID", None)
 
