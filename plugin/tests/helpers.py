@@ -16,7 +16,9 @@ def get_xtf_object(xtf_file, topicname, classname, tid):
     # from xml file
     tree = ET.parse(xtf_file)
     root = tree.getroot()
-
+    for elem in root.iter():
+        if "." in elem.tag:
+            print(elem.tag)
     def get_namespace(element):
         m = re.match(r"\{.*\}", element.tag)
         return m.group(0) if m else ""
