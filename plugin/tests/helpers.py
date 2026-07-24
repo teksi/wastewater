@@ -29,7 +29,7 @@ def get_xtf_object(xtf_file, topicname, classname, tid):
     print(
         f"{classname} TIDs:",
         [obj.attrib.get("TID") for obj in interlis_objects],
-        )
+    )
     for interlis_object in interlis_objects:
         xml_tid = interlis_object.attrib.get("TID", None)
 
