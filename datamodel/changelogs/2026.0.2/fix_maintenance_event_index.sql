@@ -1,0 +1,1 @@
+DROP INDEX IF EXISTS in_od_maintenance_event_identifier;
