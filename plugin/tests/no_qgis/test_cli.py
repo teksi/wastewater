@@ -143,7 +143,6 @@ def exported_dss(
     )
 
 
-
 @pytest.fixture(scope="module")
 def exported_kek(
     imported_kek,
@@ -204,6 +203,7 @@ def exported_dss_selection(
         base_name,
         config.MODEL_NAME_DSS,
     )
+
 
 def test_import_orgs(
     imported_orgs,
@@ -333,6 +333,7 @@ def test_export_dss(
 
     assert interlis_object is not None
 
+
 def test_export_kek(
     exported_kek,
 ) -> None:
@@ -390,4 +391,3 @@ def test_export_dss_selection(
         "ch000000PP000002",
     )
     assert interlis_object is not None
-
