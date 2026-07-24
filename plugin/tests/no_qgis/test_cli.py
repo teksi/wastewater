@@ -339,7 +339,7 @@ def test_export_dss_selection(
 ) -> None:
 
     assert exported_dss_selection.exists()
-    
+
     interlis_object = get_xtf_object(
         exported_dss_selection,
         config.TOPIC_NAME_DSS,
