@@ -143,26 +143,6 @@ def exported_dss(
     )
 
 
-@pytest.fixture(scope="module")
-def exported_dss_selection(
-    imported_kek,
-) -> Path:
-    base_name = "export_minimal_dataset_dss_selection"
-
-    run_cli(
-        "interlis_export "
-        f'--xtf_file "{_container_output_file(base_name)}" '
-        f"--export_model {config.MODEL_NAME_DSS} "
-        '--selected_ids "ch000000WN000002,ch000000WN000003,ch000000RE000002" '
-        "--logs_next_to_file "
-        f"{DB_ARGS}"
-    )
-
-    return _host_exported_file(
-        base_name,
-        config.MODEL_NAME_DSS,
-    )
-
 
 @pytest.fixture(scope="module")
 def exported_kek(
@@ -204,6 +184,26 @@ def test_interlis_importer_exporter_importable_without_qgis() -> None:
     assert InterlisTools is not None
     assert InterlisImporterExporter is not None
 
+
+@pytest.fixture(scope="module")
+def exported_dss_selection(
+    imported_sia405_modified,
+) -> Path:
+    base_name = "export_minimal_dataset_dss_selection"
+
+    run_cli(
+        "interlis_export "
+        f'--xtf_file "{_container_output_file(base_name)}" '
+        f"--export_model {config.MODEL_NAME_DSS} "
+        '--selected_ids "ch000000WN000002,ch000000WN000003,ch000000RE000002" '
+        "--logs_next_to_file "
+        f"{DB_ARGS}"
+    )
+
+    return _host_exported_file(
+        base_name,
+        config.MODEL_NAME_DSS,
+    )
 
 def test_import_orgs(
     imported_orgs,
@@ -333,30 +333,6 @@ def test_export_dss(
 
     assert interlis_object is not None
 
-
-def test_export_dss_selection(
-    exported_dss_selection,
-) -> None:
-
-    assert exported_dss_selection.exists()
-
-    interlis_object = get_xtf_object(
-        exported_dss_selection,
-        config.TOPIC_NAME_DSS,
-        "Rohrprofil",
-        "ch000000PP000001",
-    )
-    assert interlis_object is None
-
-    interlis_object = get_xtf_object(
-        exported_dss_selection,
-        config.TOPIC_NAME_DSS,
-        "Rohrprofil",
-        "ch000000PP000002",
-    )
-    assert interlis_object is not None
-
-
 def test_export_kek(
     exported_kek,
 ) -> None:
@@ -391,3 +367,27 @@ def test_import_sia405_modified(
     )
     assert result is not None
     assert result[0] == 448.0
+
+
+def test_export_dss_selection(
+    exported_dss_selection,
+) -> None:
+
+    assert exported_dss_selection.exists()
+
+    interlis_object = get_xtf_object(
+        exported_dss_selection,
+        config.TOPIC_NAME_DSS,
+        "Rohrprofil",
+        "ch000000PP000001",
+    )
+    assert interlis_object is None
+
+    interlis_object = get_xtf_object(
+        exported_dss_selection,
+        config.TOPIC_NAME_DSS,
+        "Rohrprofil",
+        "ch000000PP000002",
+    )
+    assert interlis_object is not None
+
