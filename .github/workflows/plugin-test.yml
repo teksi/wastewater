@@ -45,50 +45,95 @@ jobs:
       - name: Setup env
         run: cp .env.example .env
 
-      - name: Package PyPI Packages
-        run: sudo ./plugin/scripts/package-pip-packages.sh
-
       - name: Download Interlis libs
         run: sudo ./plugin/scripts/download-interlis-libs.sh
 
       - name: Docker build
         run: docker compose --profile qgis up --build -d
 
-      - name: Clear Database
+      - name: Wait for DB
         run: |
           until docker compose exec db pg_isready -U postgres; do
-            echo "Waiting for PostgreSQL to be ready..."
+            echo "Waiting for PostgreSQL..."
             sleep 2
           done
-          # create the database
-          docker compose exec db sh -c "createdb -U postgres ${DB_NAME}"
-          docker compose run pum -p ${PGSERVICE} -d datamodel install -p SRID 2056
 
-      - name: Test on QGIS
-        run: docker compose exec qgis /usr/src/plugin/.docker/run-docker-tests.sh --deselect teksi_wastewater/tests/test_interlis.py::TestInterlis::test_dss_dataset_import_export
-
-      - name: Clear Database
+      - name: Initialize database
         run: |
-          docker compose exec db sh -c "dropdb -U postgres ${DB_NAME}"
+          docker compose exec db sh -c "dropdb -U postgres --if-exists ${DB_NAME}"
           docker compose exec db sh -c "createdb -U postgres ${DB_NAME}"
           docker compose run pum -p ${PGSERVICE} -d datamodel install -p SRID 2056
 
-      - name: Test on QGIS DSS dataset
-        run: docker compose exec qgis /usr/src/plugin/.docker/run-docker-tests.sh teksi_wastewater/tests/test_interlis.py::TestInterlis::test_dss_dataset_import_export
-
-      - name: Clear Database
+      - name: Run QGIS tests (except DSS)
         run: |
-          docker compose exec db sh -c "dropdb -U postgres ${DB_NAME}"
+          docker compose exec qgis \
+            sh -c "xvfb-run pytest \
+              /usr/src/plugin/tests/qgis/test_interlis.py \
+              -k 'not test_dss_dataset_import_export' \
+              -v -c /usr/src/plugin/pytest.ini"
+
+      - name: Reset database
+        run: |
+          docker compose exec db sh -c "dropdb -U postgres --if-exists ${DB_NAME}"
           docker compose exec db sh -c "createdb -U postgres ${DB_NAME}"
           docker compose run pum -p ${PGSERVICE} -d datamodel install -p SRID 2056
-      - name: Test command line import orgs
-        run: docker compose exec qgis sh -c "xvfb-run /usr/src/plugin/tww_cmd.py interlis_import --xtf_file /usr/src/plugin/teksi_wastewater/tests/data/minimal-dataset-organisation-arbon-only.xtf --pghost db --pgdatabase ${DB_NAME} --pguser postgres --pgpass postgres --pgport 5432"
 
-      - name: Test command line import minimal sia405
-        run: docker compose exec qgis sh -c "xvfb-run /usr/src/plugin/tww_cmd.py interlis_import --xtf_file /usr/src/plugin/teksi_wastewater/tests/data/minimal-dataset-SIA405-ABWASSER.xtf --pghost db --pgdatabase ${DB_NAME} --pguser postgres --pgpass postgres --pgport 5432"
-
-      - name: Test command line minimal export
-        run: docker compose exec qgis sh -c "xvfb-run /usr/src/plugin/tww_cmd.py interlis_export --xtf_file \"output.xtf\" --pghost db --pgdatabase ${DB_NAME} --pguser postgres --pgpass postgres --pgport 5432"
+      - name: Run QGIS DSS test
+        run: |
+          docker compose exec qgis \
+            sh -c "xvfb-run pytest \
+              /usr/src/plugin/tests/qgis/test_interlis.py::TestInterlis::test_dss_dataset_import_export \
+              -v -c /usr/src/plugin/pytest.ini"
 
       - name: docker logs
+        run: docker compose logs db
+
+  plugin-tests-no-qgis:
+    name: Run unit tests on cli
+    runs-on: ubuntu-24.04
+    env:
+      DB_NAME: tww
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+
+      - name: Setup env
+        run: cp .env.example .env
+
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install pytest
+          pip install -r plugin/teksi_wastewater/requirements.txt
+
+      - name: Download Interlis libs
+        run: sudo ./plugin/scripts/download-interlis-libs.sh
+
+      - name: Start services
+        run: docker compose up db qgis -d
+
+      - name: Wait for DB
+        run: |
+          until docker compose exec db pg_isready -U postgres; do
+            echo "Waiting for PostgreSQL..."
+            sleep 2
+          done
+
+      - name: Init DB
+        run: |
+          docker compose exec db sh -c "createdb -U postgres ${DB_NAME}"
+          docker compose run pum -p pg_tww -d datamodel install -p SRID 2056
+
+      - name: Run pytest (no QGIS Python library)
+        run: pytest plugin/tests/no_qgis -v -c plugin/pytest.ini -m no_qgis
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+
+      - name: Show logs
         run: docker compose logs db
