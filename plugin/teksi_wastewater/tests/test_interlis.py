@@ -107,7 +107,7 @@ class TestInterlis(unittest.TestCase):
         DatabaseUtils.databaseConfig.PGPORT = str(PG_PORT)
 
     def test_minimal_import_export(self):
-        # Import organisation
+        # Import organisation MINIMAL_DATASET_ORGANISATION_ARBON_ONLY
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_ORGANISATION_ARBON_ONLY)
         interlisImporterExporter = InterlisImporterExporter()
         interlisImporterExporter.interlis_import(
@@ -188,14 +188,15 @@ class TestInterlis(unittest.TestCase):
         self.assertIsNotNone(result)
         self.assertEqual(result[0], 448.0)
 
-        # Import minimal kek
+        # Import minimal kek with MINIMAL_DATASET_ORGANISATION_ARBON_ONLY
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_KEK_MANHOLE_DAMAGE)
         interlisImporterExporter = InterlisImporterExporter()
         interlisImporterExporter.interlis_import(
             xtf_file_input=xtf_file_input,
             use_refdata=True,
             # refdatapath="{config.VSA_ORG_URL}",
-            refdatapath={config.VSA_ORG_URL},
+            #refdatapath={config.VSA_ORG_URL},
+            refdatapath=self._get_data_filename(MINIMAL_DATASET_ORGANISATION_ARBON_ONLY)
         )
 
         result = DatabaseUtils.fetchone(
