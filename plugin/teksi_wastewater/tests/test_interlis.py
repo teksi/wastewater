@@ -311,7 +311,8 @@ class TestInterlis(unittest.TestCase):
             logs_next_to_file=True,
             user_interaction=True,
             use_refdata=True,
-            refdatapath="{config.EXTERNAL_ORGANISATION}",
+            #refdatapath="{config.EXTERNAL_ORGANISATION}",
+            refdatapath={config.VSA_ORG_URL},
         )
 
         # Check exported TID examination
