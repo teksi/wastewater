@@ -1,0 +1,1 @@
+DROP INDEX IF EXISTS tww_od.in_od_maintenance_event_identifier;
