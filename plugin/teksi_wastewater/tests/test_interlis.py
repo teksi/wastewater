@@ -312,7 +312,7 @@ class TestInterlis(unittest.TestCase):
             user_interaction=True,
             use_refdata=True,
             # refdatapath="{config.EXTERNAL_ORGANISATION}",
-            refdatapath={config.VSA_ORG_URL},
+            refdatapath=self._get_data_filename(TEST_DATASET_ORGANISATIONS),
         )
 
         # Check exported TID examination
