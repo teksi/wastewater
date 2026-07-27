@@ -195,8 +195,8 @@ class TestInterlis(unittest.TestCase):
             xtf_file_input=xtf_file_input,
             use_refdata=True,
             # refdatapath="{config.VSA_ORG_URL}",
-            #refdatapath={config.VSA_ORG_URL},
-            refdatapath=self._get_data_filename(MINIMAL_DATASET_ORGANISATION_ARBON_ONLY)
+            # refdatapath={config.VSA_ORG_URL},
+            refdatapath=self._get_data_filename(MINIMAL_DATASET_ORGANISATION_ARBON_ONLY),
         )
 
         result = DatabaseUtils.fetchone(
