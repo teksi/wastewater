@@ -1719,10 +1719,6 @@
          <index name="pkey_tww_od_maintenance_event_obj_id" unique="true">
             <column ascending="true" name="obj_id"/>
          </index>
-         <index name="in_od_maintenance_event_identifier" unique="true">
-            <column ascending="true" name="identifier"/>
-            <column ascending="true" name="fk_dataowner"/>
-         </index>
          <index name="in_od_maintenance_event_identifier_time_point" unique="true">
             <column ascending="true" name="identifier"/>
             <column ascending="true" name="fk_dataowner"/>
@@ -3127,7 +3123,7 @@
          </column>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="label_text" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="3" id="3" name="azimuth" nullable="true" remarks="azimuth of respective reach" size="4" type="numeric" typeCode="2"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="_usage_current" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="_usage_current" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <primaryKey column="fk_reach_point" sequenceNumberInPK="1"/>
          <index name="pkey_tww_od_tww_reach_point_label_fk_reach_point" unique="true">
             <column ascending="true" name="fk_reach_point"/>

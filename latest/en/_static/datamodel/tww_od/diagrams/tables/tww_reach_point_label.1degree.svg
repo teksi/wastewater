@@ -40,7 +40,7 @@
 <polygon fill="none" stroke="black" points="313,-464 313,-486 515,-486 515,-464 313,-464"/>
 <text text-anchor="start" x="333" y="-472.2" font-family="Helvetica,sans-Serif" font-size="11.00">_usage_current</text>
 <polygon fill="none" stroke="black" points="515,-464 515,-486 621,-486 621,-464 515,-464"/>
-<text text-anchor="start" x="518" y="-472.2" font-family="Helvetica,sans-Serif" font-size="11.00">int2[5]</text>
+<text text-anchor="start" x="518" y="-472.2" font-family="Helvetica,sans-Serif" font-size="11.00">int4[10]</text>
 <polygon fill="#ffffff" stroke="transparent" points="313,-446 313,-464 621,-464 621,-446 313,-446"/>
 <polygon fill="none" stroke="black" points="313,-446 313,-464 621,-464 621,-446 313,-446"/>
 <polygon fill="#ffffff" stroke="transparent" points="314,-447 314,-463 420,-463 420,-447 314,-447"/>
