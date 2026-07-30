@@ -2,10 +2,10 @@
 ------ version 30.07.2026 16:03:26
 ------ with 3D coordinates
 
---- Adapt tdh_sys.dictionary_od_table
-INSERT INTO tdh_sys.dictionary_od_table (id, tablename) VALUES (8500,'sia405cc_cable') ON CONFLICT DO NOTHING;
+--- Adapt tww_sys.dictionary_od_table
+INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (8500,'sia405cc_cable') ON CONFLICT DO NOTHING;
 
-UPDATE tdh_sys.dictionary_od_table SET
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'sia405cc_cable',
    name_en = 'cable',
    display_en = 'cable',
@@ -24,10 +24,10 @@ UPDATE tdh_sys.dictionary_od_table SET
    shortcut_ro = ''
 WHERE (id = 8500 AND tablename = 'sia405cc_cable');
 
---- Adapt tdh_sys.dictionary_od_table
-INSERT INTO tdh_sys.dictionary_od_table (id, tablename) VALUES (8501,'sia405cc_cable_point') ON CONFLICT DO NOTHING;
+--- Adapt tww_sys.dictionary_od_table
+INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (8501,'sia405cc_cable_point') ON CONFLICT DO NOTHING;
 
-UPDATE tdh_sys.dictionary_od_table SET
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'sia405cc_cable_point',
    name_en = 'cable_point',
    display_en = 'cable point',

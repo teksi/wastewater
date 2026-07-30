@@ -2,10 +2,10 @@
 ------ version 30.07.2026 16:02:40
 ------ with 3D coordinates
 
---- Adapt tdh_sys.dictionary_od_table
-INSERT INTO tdh_sys.dictionary_od_table (id, tablename) VALUES (8502,'sia405pt_protection_tube') ON CONFLICT DO NOTHING;
+--- Adapt tww_sys.dictionary_od_table
+INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (8502,'sia405pt_protection_tube') ON CONFLICT DO NOTHING;
 
-UPDATE tdh_sys.dictionary_od_table SET
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'sia405pt_protection_tube',
    name_en = 'protection_tube',
    display_en = 'protection tube',
