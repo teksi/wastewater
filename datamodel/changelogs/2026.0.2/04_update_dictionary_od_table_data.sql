@@ -6,7 +6,7 @@
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (1001,'dryweather_downspout') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'dryweather_downspout',
    name_en = 'dryweather_downspout',
    display_en = 'dryweather downspout',
@@ -28,7 +28,7 @@ WHERE (id = 1001 AND tablename = 'dryweather_downspout');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (1022,'param_ca_mouse1') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'param_ca_mouse1',
    name_en = 'param_ca_mouse1',
    display_en = 'param ca mouse1',
@@ -50,7 +50,7 @@ WHERE (id = 1022 AND tablename = 'param_ca_mouse1');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (1033,'fountain') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'fountain',
    name_en = 'fountain',
    display_en = 'fountain',
@@ -72,7 +72,7 @@ WHERE (id = 1033 AND tablename = 'fountain');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (1034,'reservoir') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'reservoir',
    name_en = 'reservoir',
    display_en = 'reservoir',
@@ -94,7 +94,7 @@ WHERE (id = 1034 AND tablename = 'reservoir');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (1035,'building') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'building',
    name_en = 'building',
    display_en = 'building',
@@ -116,7 +116,7 @@ WHERE (id = 1035 AND tablename = 'building');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (1036,'individual_surface') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'individual_surface',
    name_en = 'individual_surface',
    display_en = 'individual surface',
@@ -138,7 +138,7 @@ WHERE (id = 1036 AND tablename = 'individual_surface');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (105,'zone') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'zone',
    name_en = 'zone',
    display_en = 'zone',
@@ -160,7 +160,7 @@ WHERE (id = 105 AND tablename = 'zone');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (106,'infiltration_zone') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'infiltration_zone',
    name_en = 'infiltration_zone',
    display_en = 'infiltration zone',
@@ -182,7 +182,7 @@ WHERE (id = 106 AND tablename = 'infiltration_zone');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (107,'benching') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'benching',
    name_en = 'benching',
    display_en = 'benching',
@@ -204,7 +204,7 @@ WHERE (id = 107 AND tablename = 'benching');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (108,'wwtp_energy_use') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'wwtp_energy_use',
    name_en = 'wwtp_energy_use',
    display_en = 'wwtp energy use',
@@ -226,7 +226,7 @@ WHERE (id = 108 AND tablename = 'wwtp_energy_use');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (109,'electric_equipment') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'electric_equipment',
    name_en = 'electric_equipment',
    display_en = 'electric equipment',
@@ -248,7 +248,7 @@ WHERE (id = 109 AND tablename = 'electric_equipment');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (110,'electromechanical_equipment') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'electromechanical_equipment',
    name_en = 'electromechanical_equipment',
    display_en = 'electromechanical equipment',
@@ -270,7 +270,7 @@ WHERE (id = 110 AND tablename = 'electromechanical_equipment');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (111,'maintenance_event') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'maintenance_event',
    name_en = 'maintenance_event',
    display_en = 'maintenance event',
@@ -292,7 +292,7 @@ WHERE (id = 111 AND tablename = 'maintenance_event');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (13,'structure_part') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'structure_part',
    name_en = 'structure_part',
    display_en = 'structure part',
@@ -314,7 +314,7 @@ WHERE (id = 13 AND tablename = 'structure_part');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (15,'cover') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'cover',
    name_en = 'cover',
    display_en = 'cover',
@@ -336,7 +336,7 @@ WHERE (id = 15 AND tablename = 'cover');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (16,'throttle_shut_off_unit') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'throttle_shut_off_unit',
    name_en = 'throttle_shut_off_unit',
    display_en = 'throttle shut off unit',
@@ -358,7 +358,7 @@ WHERE (id = 16 AND tablename = 'throttle_shut_off_unit');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (18,'access_aid') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'access_aid',
    name_en = 'access_aid',
    display_en = 'access aid',
@@ -380,7 +380,7 @@ WHERE (id = 18 AND tablename = 'access_aid');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (19,'catchment_area') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'catchment_area',
    name_en = 'catchment_area',
    display_en = 'catchment area',
@@ -402,7 +402,7 @@ WHERE (id = 19 AND tablename = 'catchment_area');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (2,'wastewater_structure') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'wastewater_structure',
    name_en = 'wastewater_structure',
    display_en = 'wastewater structure',
@@ -424,7 +424,7 @@ WHERE (id = 2 AND tablename = 'wastewater_structure');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (2721,'drainage_system') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'drainage_system',
    name_en = 'drainage_system',
    display_en = 'drainage system',
@@ -446,7 +446,7 @@ WHERE (id = 2721 AND tablename = 'drainage_system');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (2723,'control_center') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'control_center',
    name_en = 'control_center',
    display_en = 'control center',
@@ -468,7 +468,7 @@ WHERE (id = 2723 AND tablename = 'control_center');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (2964,'profile_geometry') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'profile_geometry',
    name_en = 'profile_geometry',
    display_en = 'profile geometry',
@@ -490,7 +490,7 @@ WHERE (id = 2964 AND tablename = 'profile_geometry');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (3,'waste_water_treatment') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'waste_water_treatment',
    name_en = 'waste_water_treatment',
    display_en = 'waste water treatment',
@@ -512,7 +512,7 @@ WHERE (id = 3 AND tablename = 'waste_water_treatment');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (31,'reach') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'reach',
    name_en = 'reach',
    display_en = 'reach',
@@ -534,7 +534,7 @@ WHERE (id = 31 AND tablename = 'reach');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (3189,'param_ca_general') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'param_ca_general',
    name_en = 'param_ca_general',
    display_en = 'param ca general',
@@ -556,7 +556,7 @@ WHERE (id = 3189 AND tablename = 'param_ca_general');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (32,'reach_point') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'reach_point',
    name_en = 'reach_point',
    display_en = 'reach point',
@@ -578,7 +578,7 @@ WHERE (id = 32 AND tablename = 'reach_point');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (33,'hq_relation') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'hq_relation',
    name_en = 'hq_relation',
    display_en = 'hq relation',
@@ -600,7 +600,7 @@ WHERE (id = 33 AND tablename = 'hq_relation');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (36,'hydr_geometry') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'hydr_geometry',
    name_en = 'hydr_geometry',
    display_en = 'hydraulic geometry',
@@ -622,7 +622,7 @@ WHERE (id = 36 AND tablename = 'hydr_geometry');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (37,'hydr_geom_relation') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'hydr_geom_relation',
    name_en = 'hydr_geom_relation',
    display_en = 'hydr geom relation',
@@ -644,7 +644,7 @@ WHERE (id = 37 AND tablename = 'hydr_geom_relation');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (38,'channel') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'channel',
    name_en = 'channel',
    display_en = 'channel',
@@ -666,7 +666,7 @@ WHERE (id = 38 AND tablename = 'channel');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (4,'wastewater_node') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'wastewater_node',
    name_en = 'wastewater_node',
    display_en = 'wastewater node',
@@ -688,7 +688,7 @@ WHERE (id = 4 AND tablename = 'wastewater_node');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (41,'leapingweir') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'leapingweir',
    name_en = 'leapingweir',
    display_en = 'leapingweir',
@@ -710,7 +710,7 @@ WHERE (id = 41 AND tablename = 'leapingweir');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (42,'measurement_series') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'measurement_series',
    name_en = 'measurement_series',
    display_en = 'measurement series',
@@ -732,7 +732,7 @@ WHERE (id = 42 AND tablename = 'measurement_series');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (43,'measurement_result') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'measurement_result',
    name_en = 'measurement_result',
    display_en = 'measurement result',
@@ -754,7 +754,7 @@ WHERE (id = 43 AND tablename = 'measurement_result');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (44,'measuring_point') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'measuring_point',
    name_en = 'measuring_point',
    display_en = 'measuring point',
@@ -776,7 +776,7 @@ WHERE (id = 44 AND tablename = 'measuring_point');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (45,'manhole') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'manhole',
    name_en = 'manhole',
    display_en = 'manhole',
@@ -798,7 +798,7 @@ WHERE (id = 45 AND tablename = 'manhole');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (46,'surface_runoff_parameters') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'surface_runoff_parameters',
    name_en = 'surface_runoff_parameters',
    display_en = 'surface runoff parameters',
@@ -820,7 +820,7 @@ WHERE (id = 46 AND tablename = 'surface_runoff_parameters');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (47,'organisation') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'organisation',
    name_en = 'organisation',
    display_en = 'organisation',
@@ -842,7 +842,7 @@ WHERE (id = 47 AND tablename = 'organisation');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (49,'pipe_profile') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'pipe_profile',
    name_en = 'pipe_profile',
    display_en = 'pipe profile',
@@ -864,7 +864,7 @@ WHERE (id = 49 AND tablename = 'pipe_profile');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (5,'wastewater_networkelement') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'wastewater_networkelement',
    name_en = 'wastewater_networkelement',
    display_en = 'wastewater networkelement',
@@ -886,7 +886,7 @@ WHERE (id = 5 AND tablename = 'wastewater_networkelement');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (50,'pump') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'pump',
    name_en = 'pump',
    display_en = 'pump',
@@ -908,7 +908,7 @@ WHERE (id = 50 AND tablename = 'pump');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (5100,'log_card') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'log_card',
    name_en = 'log_card',
    display_en = 'log card',
@@ -930,7 +930,7 @@ WHERE (id = 5100 AND tablename = 'log_card');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (5101,'tank_emptying') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'tank_emptying',
    name_en = 'tank_emptying',
    display_en = 'tank emptying',
@@ -952,7 +952,7 @@ WHERE (id = 5101 AND tablename = 'tank_emptying');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (5102,'tank_cleaning') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'tank_cleaning',
    name_en = 'tank_cleaning',
    display_en = 'tank cleaning',
@@ -974,7 +974,7 @@ WHERE (id = 5102 AND tablename = 'tank_cleaning');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (5103,'solids_retention') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'solids_retention',
    name_en = 'solids_retention',
    display_en = 'solids retention',
@@ -996,7 +996,7 @@ WHERE (id = 5103 AND tablename = 'solids_retention');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (5104,'backflow_prevention') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'backflow_prevention',
    name_en = 'backflow_prevention',
    display_en = 'backflow prevention',
@@ -1018,7 +1018,7 @@ WHERE (id = 5104 AND tablename = 'backflow_prevention');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (5105,'catchment_area_totals') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'catchment_area_totals',
    name_en = 'catchment_area_totals',
    display_en = 'catchment area totals',
@@ -1040,7 +1040,7 @@ WHERE (id = 5105 AND tablename = 'catchment_area_totals');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (5106,'bio_ecol_assessment') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'bio_ecol_assessment',
    name_en = 'bio_ecol_assessment',
    display_en = 'biological and ecological overall assessment',
@@ -1062,7 +1062,7 @@ WHERE (id = 5106 AND tablename = 'bio_ecol_assessment');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (5107,'hydraulic_char_data') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'hydraulic_char_data',
    name_en = 'hydraulic_char_data',
    display_en = 'hydraulic characteristic data',
@@ -1084,7 +1084,7 @@ WHERE (id = 5107 AND tablename = 'hydraulic_char_data');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (53,'retention_body') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'retention_body',
    name_en = 'retention_body',
    display_en = 'retention body',
@@ -1106,7 +1106,7 @@ WHERE (id = 53 AND tablename = 'retention_body');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (55,'sludge_treatment') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'sludge_treatment',
    name_en = 'sludge_treatment',
    display_en = 'sludge treatment',
@@ -1128,7 +1128,7 @@ WHERE (id = 55 AND tablename = 'sludge_treatment');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (57,'special_structure') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'special_structure',
    name_en = 'special_structure',
    display_en = 'special structure',
@@ -1150,7 +1150,7 @@ WHERE (id = 57 AND tablename = 'special_structure');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (60,'prank_weir') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'prank_weir',
    name_en = 'prank_weir',
    display_en = 'prank weir',
@@ -1172,7 +1172,7 @@ WHERE (id = 60 AND tablename = 'prank_weir');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (6100,'building_group') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'building_group',
    name_en = 'building_group',
    display_en = 'building group',
@@ -1194,7 +1194,7 @@ WHERE (id = 6100 AND tablename = 'building_group');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (6101,'farm') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'farm',
    name_en = 'farm',
    display_en = 'farm',
@@ -1216,7 +1216,7 @@ WHERE (id = 6101 AND tablename = 'farm');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (6103,'small_treatment_plant') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'small_treatment_plant',
    name_en = 'small_treatment_plant',
    display_en = 'small treatment plant',
@@ -1238,7 +1238,7 @@ WHERE (id = 6103 AND tablename = 'small_treatment_plant');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (6105,'building_group_baugwr') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'building_group_baugwr',
    name_en = 'building_group_baugwr',
    display_en = 'building group baugwr',
@@ -1260,7 +1260,7 @@ WHERE (id = 6105 AND tablename = 'building_group_baugwr');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (6106,'disposal') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'disposal',
    name_en = 'disposal',
    display_en = 'disposal',
@@ -1282,7 +1282,7 @@ WHERE (id = 6106 AND tablename = 'disposal');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (6107,'drainless_toilet') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'drainless_toilet',
    name_en = 'drainless_toilet',
    display_en = 'toilet',
@@ -1304,7 +1304,7 @@ WHERE (id = 6107 AND tablename = 'drainless_toilet');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (62,'dryweather_flume') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'dryweather_flume',
    name_en = 'dryweather_flume',
    display_en = 'dryweather flume',
@@ -1326,7 +1326,7 @@ WHERE (id = 62 AND tablename = 'dryweather_flume');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (63,'overflow') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'overflow',
    name_en = 'overflow',
    display_en = 'overflow',
@@ -1348,7 +1348,7 @@ WHERE (id = 63 AND tablename = 'overflow');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (64,'overflow_char') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'overflow_char',
    name_en = 'overflow_char',
    display_en = 'overflow characteristic',
@@ -1370,7 +1370,7 @@ WHERE (id = 64 AND tablename = 'overflow_char');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (68,'infiltration_installation') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'infiltration_installation',
    name_en = 'infiltration_installation',
    display_en = 'infiltration installation',
@@ -1392,7 +1392,7 @@ WHERE (id = 68 AND tablename = 'infiltration_installation');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (69,'discharge_point') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'discharge_point',
    name_en = 'discharge_point',
    display_en = 'discharge point',
@@ -1414,7 +1414,7 @@ WHERE (id = 69 AND tablename = 'discharge_point');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (70,'mechanical_pretreatment') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'mechanical_pretreatment',
    name_en = 'mechanical_pretreatment',
    display_en = 'mechanical pretreatment',
@@ -1436,7 +1436,7 @@ WHERE (id = 70 AND tablename = 'mechanical_pretreatment');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (74,'measure') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'measure',
    name_en = 'measure',
    display_en = 'mesure',
@@ -1458,7 +1458,7 @@ WHERE (id = 74 AND tablename = 'measure');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (76,'flushing_nozzle') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'flushing_nozzle',
    name_en = 'flushing_nozzle',
    display_en = 'Flushing nozzle',
@@ -1480,7 +1480,7 @@ WHERE (id = 76 AND tablename = 'flushing_nozzle');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (8,'connection_object') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'connection_object',
    name_en = 'connection_object',
    display_en = 'connection object',
@@ -1502,7 +1502,7 @@ WHERE (id = 8 AND tablename = 'connection_object');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (83,'maintenance') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'maintenance',
    name_en = 'maintenance',
    display_en = 'maintencance',
@@ -1524,7 +1524,7 @@ WHERE (id = 83 AND tablename = 'maintenance');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (9,'waste_water_treatment_plant') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'waste_water_treatment_plant',
    name_en = 'waste_water_treatment_plant',
    display_en = 'waste water treatment plant',
@@ -1546,7 +1546,7 @@ WHERE (id = 9 AND tablename = 'waste_water_treatment_plant');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (97,'wwtp_structure') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'wwtp_structure',
    name_en = 'wwtp_structure',
    display_en = 'wwtp structure',
@@ -1568,7 +1568,7 @@ WHERE (id = 97 AND tablename = 'wwtp_structure');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (99,'measuring_device') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'measuring_device',
    name_en = 'measuring_device',
    display_en = 'measuring device',
@@ -1590,7 +1590,7 @@ WHERE (id = 99 AND tablename = 'measuring_device');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (99700,'wastewater_structure_symbol') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'wastewater_structure_symbol',
    name_en = 'wastewater_structure_symbol',
    display_en = 'wastewater structure symbol',
@@ -1612,7 +1612,7 @@ WHERE (id = 99700 AND tablename = 'wastewater_structure_symbol');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (99800,'reach_progression_alternative') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'reach_progression_alternative',
    name_en = 'reach_progression_alternative',
    display_en = 'reach progression alternative',
@@ -1634,7 +1634,7 @@ WHERE (id = 99800 AND tablename = 'reach_progression_alternative');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (99900,'wastewater_structure_text') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'wastewater_structure_text',
    name_en = 'wastewater_structure_text',
    display_en = 'wastewater structure text',
@@ -1656,7 +1656,7 @@ WHERE (id = 99900 AND tablename = 'wastewater_structure_text');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (99901,'reach_text') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'reach_text',
    name_en = 'reach_text',
    display_en = 'reach text',
@@ -1678,7 +1678,7 @@ WHERE (id = 99901 AND tablename = 'reach_text');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (99902,'catchment_area_text') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'catchment_area_text',
    name_en = 'catchment_area_text',
    display_en = 'catchment area text',
@@ -1700,7 +1700,7 @@ WHERE (id = 99902 AND tablename = 'catchment_area_text');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (9998,'mutation') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'mutation',
    name_en = 'mutation',
    display_en = 'mutation',
@@ -1722,7 +1722,7 @@ WHERE (id = 9998 AND tablename = 'mutation');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (99982,'re_maintenance_event_wastewater_structure') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 're_maintenance_event_wastewater_structure',
    name_en = 'maintenance_event_wastewater_structure',
    display_en = 'maintenance event wastewater structure',
@@ -1744,7 +1744,7 @@ WHERE (id = 99982 AND tablename = 're_maintenance_event_wastewater_structure');
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (99985,'re_building_group_disposal') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 're_building_group_disposal',
    name_en = 'building_group_disposal',
    display_en = 'building group disposal',
@@ -1762,4 +1762,3 @@ UPDATE tww_sys.dictionary_od_table SET
    display_ro = 'rrr_Gebaeudegruppe_Entsorgung',
    shortcut_ro = 'ZZ'
 WHERE (id = 99985 AND tablename = 're_building_group_disposal');
-
