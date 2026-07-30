@@ -134,4 +134,3 @@ UPDATE tww_sys.dictionary_od_table SET
    display_ro = 'rrr_Datentraeger',
    shortcut_ro = ''
 WHERE (id = 3776 AND tablename = 'data_media');
-
