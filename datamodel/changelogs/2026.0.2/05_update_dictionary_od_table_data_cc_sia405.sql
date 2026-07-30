@@ -45,4 +45,3 @@ UPDATE tdh_sys.dictionary_od_table SET
    display_ro = 'Punct de cablu',
    shortcut_ro = ''
 WHERE (id = 8501 AND tablename = 'sia405cc_cable_point');
-

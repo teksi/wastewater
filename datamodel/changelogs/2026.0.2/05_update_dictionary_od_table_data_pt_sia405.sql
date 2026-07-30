@@ -23,4 +23,3 @@ UPDATE tdh_sys.dictionary_od_table SET
    display_ro = 'rrr_Schutzrohr',
    shortcut_ro = ''
 WHERE (id = 8502 AND tablename = 'sia405pt_protection_tube');
-

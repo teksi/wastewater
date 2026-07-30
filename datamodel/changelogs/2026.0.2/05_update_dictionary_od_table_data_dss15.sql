@@ -46,4 +46,3 @@ UPDATE tww_sys.dictionary_od_table SET
    display_ro = 'rrr_Planungszone',
    shortcut_ro = ''
 WHERE (id = 104 AND tablename = 'dss15_planning_zone');
-
