@@ -100,6 +100,8 @@ class InterlisImporterExporter:
         logs_next_to_file=True,
         filter_nulls=True,
         srid: int = None,
+        use_refdata=True,
+        refdatapath=None,
         import_orgs=False,
         user_interaction=False,
     ):
@@ -116,7 +118,7 @@ class InterlisImporterExporter:
 
         # Validating the input file
         self._progress_done(5, "Validating the input file...")
-        self._import_validate_xtf_file(xtf_file_input)
+        self._import_validate_xtf_file(xtf_file_input, use_refdata, refdatapath)
 
         # Get model to import from xtf file
         self._progress_done(10, "Extract model from xtf...")
@@ -232,6 +234,8 @@ class InterlisImporterExporter:
         self,
         xtf_file_output,
         export_models,
+        use_refdata,
+        refdatapath,
         logs_next_to_file=True,
         limit_to_selection=False,
         export_orientation=90.0,
@@ -300,7 +304,7 @@ class InterlisImporterExporter:
         tempdir.cleanup()  # Cleanup
 
         self._progress_done(75)
-        self._export_xtf_files(file_name_base, export_models)
+        self._export_xtf_files(file_name_base, export_models, use_refdata, refdatapath)
 
         self._progress_done(100)
         logger.info("INTERLIS export finished.")
@@ -318,6 +322,8 @@ class InterlisImporterExporter:
         selected_ids=None,
         srid: int = None,
         include_unplaced: bool = False,
+        use_refdata=True,
+        refdatapath=None,
         import_orgs: bool = False,
     ):
 
@@ -353,6 +359,8 @@ class InterlisImporterExporter:
             self.execute_export(
                 xtf_file_output,
                 export_models,
+                use_refdata,
+                refdatapath,
                 logs_next_to_file,
                 limit_to_selection,
                 export_orientation,
@@ -407,6 +415,8 @@ class InterlisImporterExporter:
                     self.execute_export(
                         xtf_file_output,
                         export_models,
+                        use_refdata,
+                        refdatapath,
                         logs_next_to_file,
                         limit_to_selection,
                         export_orientation,
@@ -429,12 +439,14 @@ class InterlisImporterExporter:
                     None,
                 )
 
-    def _import_validate_xtf_file(self, xtf_file_input):
+    def _import_validate_xtf_file(self, xtf_file_input, use_refdata, refdatapath):
         log_path = make_log_path(self.base_log_path, "ilivalidator")
         try:
             self.interlisTools.validate_xtf_data(
                 xtf_file_input,
                 log_path,
+                use_refdata,
+                refdatapath,
             )
         except CmdException:
             raise InterlisImporterExporterError(
@@ -657,7 +669,7 @@ class InterlisImporterExporter:
                     None,
                 )
 
-    def _export_xtf_files(self, file_name_base, export_models):
+    def _export_xtf_files(self, file_name_base, export_models, use_refdata, refdatapath):
         progress_step = (100 - self.current_progress) / (2 * len(export_models))
         progress_step = int(progress_step)
 
@@ -696,6 +708,8 @@ class InterlisImporterExporter:
                 self.interlisTools.validate_xtf_data(
                     export_file_name,
                     log_path,
+                    use_refdata,
+                    refdatapath,
                 )
             except CmdException:
                 xtf_export_errors.append(
