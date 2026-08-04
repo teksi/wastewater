@@ -112,6 +112,18 @@ jobs:
         working-directory: docs
         run: make compile_messages
 
+      - name: Verify Translation Files
+        working-directory: docs
+        run: |
+          # List translation files to verify their presence
+          find i18n -name "*.po" | wc -l
+          if [ $? -eq 0 ]; then
+            echo "Translation files are present."
+          else
+            echo "No translation files found. Check Transifex pull process."
+            exit 1
+          fi
+
       - name: copy datamodel documentation
         # Download artifact only if datamodel step ran (i.e., not a fast-doc PR)
         if: ${{ !(github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'PR-fast-doc')) }}
