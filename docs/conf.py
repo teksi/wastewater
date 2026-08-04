@@ -241,5 +241,9 @@ texinfo_documents = [
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 # texinfo_no_detailmenu = False
 
-# Path for sphinx to find *.mo files for translation
-locale_dirs = ["./i18n"]
+# Path for sphinx to find *.mo files for translation.
+# Note: locale_dirs is resolved relative to the source directory (srcdir),
+# which is `docs/en` at build time — not relative to conf.py's directory.
+# The compiled .mo files live in `docs/i18n/<lang>/LC_MESSAGES/`,
+# so we need to go one level up from srcdir.
+locale_dirs = ["../i18n"]

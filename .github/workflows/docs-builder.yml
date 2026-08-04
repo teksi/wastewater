@@ -169,10 +169,10 @@ jobs:
           done
           touch ./build/html/.nojekyll
 
-      - name: "Tmate SSH"
-        uses: mxschmitt/action-tmate@v3
-        with:
-          command: "tmate -S /tmp/tmate.sock new-session -d && tmate -L /tmp/tmate.sock wait tmate-ready && cat /tmp/tmate-ready-url.txt"
+      # - name: "Tmate SSH"
+      #   uses: mxschmitt/action-tmate@v3
+      #   with:
+      #     command: "tmate -S /tmp/tmate.sock new-session -d && tmate -L /tmp/tmate.sock wait tmate-ready && cat /tmp/tmate-ready-url.txt"
 
       - name: Add root redirect
         working-directory: docs
