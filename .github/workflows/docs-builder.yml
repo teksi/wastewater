@@ -26,7 +26,6 @@ on:
   workflow_dispatch:
 
 
-
 jobs:
   datamodel-documentation:
     # Skip generating datamodel docs on PRs labeled PR-fast-doc
@@ -169,6 +168,11 @@ jobs:
             test -f ./build/html/$DOCS_VERSION/$LANG/index.html || (echo "Missing index for $LANG" && exit 1)
           done
           touch ./build/html/.nojekyll
+
+      - name: "Tmate SSH"
+        uses: mxschmitt/action-tmate@v3
+        with:
+          command: "tmate -S /tmp/tmate.sock new-session -d && tmate -L /tmp/tmate.sock wait tmate-ready && cat /tmp/tmate-ready-url.txt"
 
       - name: Add root redirect
         working-directory: docs
