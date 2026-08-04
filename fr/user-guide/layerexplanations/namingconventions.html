@@ -1,0 +1,179 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Conventions de nommage &mdash; Documentation TWW latest</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=4e6483d5"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/translations.js?v=e6b791cb"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../search.html" />
+    <link rel="next" title="Propriétés et paramètres du projet TWW" href="twwproject.html" />
+    <link rel="prev" title="Explication des couches" href="layerexplanation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            TWW
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">TEKSI Assainissement (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">Guide d’installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Guide utilisateur</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Aperçu de TWW</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="overview.html">Introduction et aperçu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="layerexplanation.html">Explication des couches</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Conventions de nommage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#schemas-in-the-tww-database">Schémas de la base de données TWW</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#layer-names">Noms de couches</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#attribute-names">Noms d’attributs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="twwproject.html">Propriétés et paramètres du projet TWW</a></li>
+<li class="toctree-l3"><a class="reference internal" href="addviewlayer.html">Ajout d’une couche vue</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../digitizing/index.html">Numérisation dans TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../editing/index.html">Édition dans TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">Profils en long</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">Outils de poursuite de réseau</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">Impression de plans</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/index.html">Historique dans TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../How-To/index.html">Mode d’emploi</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">Guide d’administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Versions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extensions-guide/index.html">Extensions officielles de TEKSI assainissement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">Traduction</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">TWW</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Guide utilisateur</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Aperçu de TWW</a></li>
+      <li class="breadcrumb-item active">Conventions de nommage</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/user-guide/layerexplanations/namingconventions.rst.txt" rel="nofollow"> Afficher la source de la page</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <blockquote>
+<div></div></blockquote>
+<section id="naming-conventions">
+<h1>Conventions de nommage<a class="headerlink" href="#naming-conventions" title="Lien vers cette rubrique"></a></h1>
+<section id="schemas-in-the-tww-database">
+<h2>Schémas de la base de données TWW<a class="headerlink" href="#schemas-in-the-tww-database" title="Lien vers cette rubrique"></a></h2>
+<p>Le schéma des bases de données TEKSI suit toutes les mêmes règles. Pour les distinguer, chaque infrastructure possède son propre préfixe (3 lettres). TWW (TEKSI wastewater) est le préfixe du module de gestion du réseau d’assainissement. La base de données TWW comporte quatre schémas tww :</p>
+<ul class="simple">
+<li><p>tww_od : dans ce schéma se trouvent les tables stockées de manière persistante. Elles correspondent principalement au modèle de données VSA-DSS (cover, wastewater_node, channel, etc.), mais incluent aussi certaines couches nécessaires à la symbologie et à l’étiquetage, ainsi que les séquences de ces tables. En raison de la nouvelle gestion des mises à jour, les vues ne se trouvent plus dans le schéma <a href="#id1"><span class="problematic" id="id2">*</span></a>_od, mais dans le schéma <a href="#id3"><span class="problematic" id="id4">*</span></a>_app.</p></li>
+<li><p>tww_vl : c’est le schéma des listes de valeurs. Il existe une table pour chaque liste de valeurs du VSA-DSS. En tant qu’utilisateur TWW, vous ne pouvez pas modifier ces tables.</p></li>
+<li><p>tww_app : schéma pour toutes les vues, vues matérialisées, fonctions, triggers, etc. spécifiques au module, ainsi que pour les vues et fonctions des extensions complémentaires (SWMM, QField). En cas de mise à jour de la base de données, ce schéma sera écrasé.</p></li>
+<li><p>tww_sys : tables spéciales pour l’administration de la base de données. En tant qu’utilisateur TWW, vous ne pouvez pas modifier ces tables.</p></li>
+</ul>
+<p>Si l’import ou l’export INTERLIS est utilisé, des schémas supplémentaires tels que « tww_app_pg2ili » seront créés. Ils sont recréés à chaque import ou export. N’ajoutez pas ces schémas au projet TWW.</p>
+</section>
+<section id="layer-names">
+<h2>Noms de couches<a class="headerlink" href="#layer-names" title="Lien vers cette rubrique"></a></h2>
+<ul class="simple">
+<li><p>Noms de couches sans préfixe</p></li>
+</ul>
+<p>Cela indique que vous trouverez la table dans le schéma tww_od (ou, si elle se trouve dans le groupe de couches « Value Lists », dans le schéma tww_vl). Si vous n’êtes pas sûr du schéma dans lequel chercher la table : placez la souris sur la couche et regardez dans l’infobulle jaune la mention “table= »tww_*”.</p>
+<ul class="simple">
+<li><p>Noms de couches commençant par <code class="docutils literal notranslate"><span class="pre">vw_</span></code></p></li>
+</ul>
+<p>Deux tables VSA-DSS ou plus sont jointes dans une vue (vw). La couche porte le nom de la table principale. Exemple : vw_tww_reach : la couche principale est la table reach (et non la table channel). Il est important de connaître la table principale pour être sûr d’utiliser les bons attributs.</p>
+</section>
+<section id="attribute-names">
+<h2>Noms d’attributs<a class="headerlink" href="#attribute-names" title="Lien vers cette rubrique"></a></h2>
+<ul class="simple">
+<li><p>Préfixes dans les noms d’attributs</p></li>
+</ul>
+<p>Dans une vue, vous trouvez des champs provenant de différentes tables. Dans les cas simples, seules une sous-classe et une superclasse sont incluses. Dans les couches principales de TWW, plusieurs sous-classes et superclasses sont présentes. Le préfixe du nom d’attribut indique à quelle table appartient l’attribut. Le préfixe est constitué de deux lettres correspondant à une table du modèle de données VSA-DSS. Exemple : co = cover, ws = wastewater structure. La convention est la suivante : les attributs de la table principale n’ont pas de préfixe, tous les autres attributs ont un préfixe indiquant la table dont ils proviennent. Dans le cas d’une sous-classe et d’une superclasse, les deux tables sont considérées ensemble. Exemple dans la couche vw_tww_reach : identifier est un attribut de la table wastewater_networkelement (la superclasse de la table principale reach) et n’a donc pas de préfixe. Material se trouve dans la table reach, sans préfixe car c’est la table principale. ch_usage_current est un attribut de la table channel. ws_remark est l’attribut remark de la table wastewater_structure.</p>
+<ul class="simple">
+<li><p>Champs <code class="docutils literal notranslate"><span class="pre">fk_</span></code></p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">fk_</span></code> n’est pas le préfixe d’une table particulière. Il signifie « foreign key » (clé étrangère).</p>
+<ul class="simple">
+<li><p>Champs commençant par _</p></li>
+</ul>
+<p>Les attributs commençant par _ (tiret bas) sont des champs calculés. Vous ne les trouverez pas dans les schémas. Exemples : _slope_per_mill dans vw_tww_reach. _channel_usage_current dans vw_tww_wastewater_structure est calculé à partir du champ usage_current du channel, connecté via la clé étrangère du wastewater_networkelement en tant qu’exutoire (outlet) vers un regard ou un ouvrage spécial.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
+        <a href="layerexplanation.html" class="btn btn-neutral float-left" title="Explication des couches" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+        <a href="twwproject.html" class="btn btn-neutral float-right" title="Propriétés et paramètres du projet TWW" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2026, The TWW Project www.teksi.ch.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

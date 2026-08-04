@@ -1,0 +1,233 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Déplacer des structures assainissement avec tronçons, couvercles et noeuds &mdash; Documentation TWW latest</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=4e6483d5"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/translations.js?v=e6b791cb"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../search.html" />
+    <link rel="next" title="Ajout et édition d’événements de maintenance" href="maintenance_events.html" />
+    <link rel="prev" title="Modification de données existantes" href="editing.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            TWW
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">TEKSI Assainissement (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">Guide d’installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Guide utilisateur</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">Aperçu de TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../digitizing/index.html">Numérisation dans TWW</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Édition dans TWW</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="editing.html">Modification de données existantes</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Déplacer des structures assainissement avec tronçons, couvercles et noeuds</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#general">Généralités</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#moving-a-manhole">Déplacer un regard</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#moving-a-cover-a-node">Déplacer un couvercle / un regard</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#moving-a-reachpoint">Déplacer un point de tronçon</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#video-tutorial-outdated">Tutoriel vidéo (obsolète)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="maintenance_events.html">Ajout et édition d’événements de maintenance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="connect_wastewater_network_elements.html">Connexion des éléments du réseau assainissement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="log_card.html">Ajout et édition d’événements de maintenance « Log Cards »</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">Profils en long</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">Outils de poursuite de réseau</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">Impression de plans</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/index.html">Historique dans TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../How-To/index.html">Mode d’emploi</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">Guide d’administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Versions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extensions-guide/index.html">Extensions officielles de TEKSI assainissement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">Traduction</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">TWW</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Guide utilisateur</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Édition dans TWW</a></li>
+      <li class="breadcrumb-item active">Déplacer des structures assainissement avec tronçons, couvercles et noeuds</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/user-guide/editing/moving.rst.txt" rel="nofollow"> Afficher la source de la page</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <blockquote>
+<div></div></blockquote>
+<section id="moving-wastewater-structures-with-reaches-covers-and-nodes">
+<span id="moving-covers-with-reaches-and-wastewater-nodes"></span><h1>Déplacer des structures assainissement avec tronçons, couvercles et noeuds<a class="headerlink" href="#moving-wastewater-structures-with-reaches-covers-and-nodes" title="Lien vers cette rubrique"></a></h1>
+<p>Ceci constitue un guide sur la manière de déplacer des ouvrages d’assainissement avec leurs tronçons et regards, par rapport au simple déplacement du couvercle dans TWW.</p>
+<section id="general">
+<h2>Généralités<a class="headerlink" href="#general" title="Lien vers cette rubrique"></a></h2>
+<p>Il n’est pas rare que les regards soient numérisés une première fois avec une faible précision. Par la suite, les regards sont mesurés, et il devient nécessaire de déplacer l’ensemble de l’ouvrage d’assainissement (c’est-à-dire le(s) couvercle(s), le(s) regard(s) et les points de tronçon de tous les tronçons concernés) vers le point mesuré.</p>
+<p>Il existe deux outils pour déplacer un regard : l’outil Vertex Tool (outil de sommet) et l’outil Move Feature (déplacer une entité). Il y a également une option très importante dans la barre <strong>d’outils d’accrochage</strong> (Snapping Toolbar) : <strong>activer l’édition topologique</strong> (Enable Topological Editing).</p>
+<figure class="align-default">
+<img alt="../../_images/tools_moving.jpg" src="../../_images/tools_moving.jpg" />
+</figure>
+<p>Les outils <strong>Vertex Tool</strong> et <strong>Move Feature</strong> fonctionnent de manière similaire pour les couches de points (simples).</p>
+<p>Comme dans le modèle de données DSS, le couvercle, le regard et les points de tronçon ne sont pas connectés par leur position mais par des clés étrangères dans la base de données, TWW est conçu pour déplacer ensemble le(s) couvercle(s), le(s) regard(s) et les points de tronçon (et donc aussi les tronçons) selon la même distance. Cela signifie qu’il est préférable, dans plusieurs cas, de ne pas activer l’édition topologique.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Vous devez activer la barre d’outils de numérisation avancée dans votre projet pour pouvoir sélectionner l’outil <strong>Move Feature</strong>.</p>
+</div>
+<figure class="align-default">
+<a class="reference internal image-reference" href="../../_images/advanced_digitizing_tools.jpg"><img alt="../../_images/advanced_digitizing_tools.jpg" height="377" src="../../_images/advanced_digitizing_tools.jpg" width="370" />
+</a>
+</figure>
+</section>
+<section id="moving-a-manhole">
+<h2>Déplacer un regard<a class="headerlink" href="#moving-a-manhole" title="Lien vers cette rubrique"></a></h2>
+<ul class="simple">
+<li><p>Sélectionnez la couche <strong>vw_tww_wastewater_structure</strong></p></li>
+<li><p>Passez la couche en mode édition</p></li>
+<li><p>Sélectionnez l’outil Move Feature (outil QGIS standard dans la barre d’outils de numérisation avancée) ou l’outil Vertex Tool</p></li>
+<li><p>Désactivez le bouton Enable Topological Editing</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/moving_wws_before.jpg" src="../../_images/moving_wws_before.jpg" />
+</figure>
+<p>Dans cet exemple, le regard a un couvercle, deux regards (wastewater nodes), quatre tronçons qui se terminent/commencent aux emplacements des regards, et un tronçon présentant un écart par rapport au regard connecté. Il y a également une géométrie de détail.</p>
+<ul class="simple">
+<li><p>Cliquez avec le bouton gauche sur le point de l’ouvrage d’assainissement (wastewater_structure) que vous souhaitez déplacer, puis cliquez à nouveau au nouvel emplacement.</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/moving_wws_manhole1.jpg" src="../../_images/moving_wws_manhole1.jpg" />
+</figure>
+<p>Le regard « 1.070 » a été déplacé. Le couvercle, les 2 regards et les 5 points de tronçon (tronçons) sont déplacés vers un nouvel emplacement. La distance entre les points reste la même. La géométrie de détail ne se déplace pas (couche wastewater_structure dans le groupe de couches Wastewater Structures). La géométrie de détail doit être déplacée séparément avec l’outil Move Feature. Il n’existe actuellement pas de bonne solution pour automatiser cette opération.</p>
+<ul class="simple">
+<li><p>Pour visualiser le déplacement, il est recommandé de rendre visibles les couches <strong>Topology</strong> :</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/moving_wws_manhole1topology.jpg" src="../../_images/moving_wws_manhole1topology.jpg" />
+</figure>
+<ul class="simple">
+<li><p>Pour mettre à jour la topologie, cliquez sur le bouton TWW - SQL</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/moving_wws_manhole1topologynew.jpg" src="../../_images/moving_wws_manhole1topologynew.jpg" />
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Les tronçons connectés à l’un des tronçons déplacés restent connectés via la clé étrangère, mais ne se sont pas déplacés. Vous devez les corriger manuellement si nécessaire.</p>
+</div>
+</section>
+<section id="moving-a-cover-a-node">
+<h2>Déplacer un couvercle / un regard<a class="headerlink" href="#moving-a-cover-a-node" title="Lien vers cette rubrique"></a></h2>
+<p>Pour déplacer uniquement un couvercle ou uniquement un regard, travaillez avec la couche spécifique : Couvercle : groupe de couches Wastewater Structures / Structure Parts, couche vw_cover — Regards : groupe de couches Hydraulic, couche vw_wastewater_node</p>
+<ul class="simple">
+<li><p>Sélectionnez la couche spécifique</p></li>
+<li><p>Passez la couche en mode édition</p></li>
+<li><p>Sélectionnez l’outil Move Feature (outil QGIS standard dans la barre d’outils de numérisation avancée) ou l’outil Vertex Tool</p></li>
+<li><p>Désactivez le bouton Enable Topological Editing</p></li>
+<li><p>Cliquez avec le bouton gauche sur le point du couvercle/regard que vous souhaitez déplacer, puis cliquez à nouveau au nouvel emplacement.</p></li>
+<li><p>Pour mettre à jour la topologie, cliquez sur le bouton <strong>TWW - SQL</strong> (non nécessaire si seuls des couvercles ont été déplacés).</p></li>
+</ul>
+</section>
+<section id="moving-a-reachpoint">
+<h2>Déplacer un point de tronçon<a class="headerlink" href="#moving-a-reachpoint" title="Lien vers cette rubrique"></a></h2>
+<p>Il n’y a pas de couche de points de tronçon dans le projet TWW. Vous modifiez les points de tronçon en tant que partie du tronçon, dans la couche <strong>vw_tww_reach</strong>.</p>
+<ul class="simple">
+<li><p>Sélectionnez la couche <strong>vw_tww_reach</strong></p></li>
+<li><p>Passez la couche en mode édition</p></li>
+<li><p>Sélectionnez l’outil <strong>Vertex Tool</strong> (l’outil Move Feature déplace le tronçon entier)</p></li>
+<li><p>Désactivez le bouton Enable Topological Editing</p></li>
+<li><p>Cliquez avec le bouton gauche sur le point de départ ou d’arrivée du tronçon que vous souhaitez déplacer, puis cliquez à nouveau au nouvel emplacement.</p></li>
+<li><p>Pour mettre à jour la topologie, cliquez sur le bouton TWW - SQL</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Rendez la couche <strong>Topology</strong>/<strong>vw_network_node</strong> visible pour voir l’emplacement des points de tronçon (mais pas leurs attributs).</p>
+</div>
+</section>
+<section id="video-tutorial-outdated">
+<h2>Tutoriel vidéo (obsolète)<a class="headerlink" href="#video-tutorial-outdated" title="Lien vers cette rubrique"></a></h2>
+<ul class="simple">
+<li><p>Voir <cite>ce tutoriel vidéo (version QGIS 2) &lt;https://vimeo.com/162978741&gt;_</cite></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
+        <a href="editing.html" class="btn btn-neutral float-left" title="Modification de données existantes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+        <a href="maintenance_events.html" class="btn btn-neutral float-right" title="Ajout et édition d’événements de maintenance" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2026, The TWW Project www.teksi.ch.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

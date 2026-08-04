@@ -1,0 +1,187 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ajout et édition d’événements de maintenance « Log Cards » &mdash; Documentation TWW latest</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=4e6483d5"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/translations.js?v=e6b791cb"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../search.html" />
+    <link rel="next" title="Profils en long" href="../length-profile/index.html" />
+    <link rel="prev" title="Connexion des éléments du réseau assainissement" href="connect_wastewater_network_elements.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            TWW
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">TEKSI Assainissement (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">Guide d’installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Guide utilisateur</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">Aperçu de TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../digitizing/index.html">Numérisation dans TWW</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Édition dans TWW</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="editing.html">Modification de données existantes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="moving.html">Déplacer des structures assainissement avec tronçons, couvercles et noeuds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="maintenance_events.html">Ajout et édition d’événements de maintenance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="connect_wastewater_network_elements.html">Connexion des éléments du réseau assainissement</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Ajout et édition d’événements de maintenance « Log Cards »</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#creating-editing-log-cards">Création / modification des fiches synthétiques (log_cards)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#connect-the-catchment-area-to-the-log-card">Connecter le bassin versant (catchment_area) à la fiche synthétique (log_card)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#control-the-connected-catchment-area-in-layer-vw-tww-catchment-area-totals-polygon">Contrôlez les catchment_area connectés dans la couche <code class="docutils literal notranslate"><span class="pre">vw_tww_catchment_area_totals</span></code> (polygone)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#edit-hydraulic-char-data">Modifier hydraulic_char_data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#edit-catchment-area-totals">Modifier catchment_area_totals</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">Profils en long</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">Outils de poursuite de réseau</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">Impression de plans</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/index.html">Historique dans TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../How-To/index.html">Mode d’emploi</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">Guide d’administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Versions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extensions-guide/index.html">Extensions officielles de TEKSI assainissement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">Traduction</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">TWW</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Guide utilisateur</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Édition dans TWW</a></li>
+      <li class="breadcrumb-item active">Ajout et édition d’événements de maintenance « Log Cards »</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/user-guide/editing/log_card.rst.txt" rel="nofollow"> Afficher la source de la page</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <blockquote>
+<div></div></blockquote>
+<section id="adding-or-editing-of-log-cards">
+<span id="log-cards"></span><h1>Ajout et édition d’événements de maintenance « Log Cards »<a class="headerlink" href="#adding-or-editing-of-log-cards" title="Lien vers cette rubrique"></a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">Ajouté dans la version 2025.0.</span></p>
+</div>
+<p>Ceci constitue un guide expliquant comment ajouter ou modifier des données de fiches de journal « Log Cards » dans TWW.</p>
+<section id="creating-editing-log-cards">
+<h2>Création / modification des fiches synthétiques (log_cards)<a class="headerlink" href="#creating-editing-log-cards" title="Lien vers cette rubrique"></a></h2>
+<ul class="simple">
+<li><p>Ajoutez un nouvel enregistrement ponctuel dans la couche vw_tww_log_card en cliquant n’importe où sur la carte avec l’outil QGIS « Ajouter une entité ponctuelle ».</p></li>
+<li><p>Sélectionnez le regard (wastewater_node) de la fiche synthétique sur la carte.</p></li>
+<li><p>Ne tentez pas de modifier l’identifiant de la fiche synthétique (log_card) : l’identifiant sera défini par défaut comme identique à celui du regard (wastewater_node).</p></li>
+<li><p>Sélectionnez fk_agency (obligatoire, car cette valeur est obligatoire dans DSS-mini).</p></li>
+<li><p>Cliquez sur OK.</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/new_log_card1.jpg" src="../../_images/new_log_card1.jpg" />
+</figure>
+</section>
+<section id="connect-the-catchment-area-to-the-log-card">
+<h2>Connecter le bassin versant (catchment_area) à la fiche synthétique (log_card)<a class="headerlink" href="#connect-the-catchment-area-to-the-log-card" title="Lien vers cette rubrique"></a></h2>
+<p>La base de données est maintenant prête à connecter les enregistrements de catchment_area à la fiche synthétique (log_card). Dans vw_tww_catchment_area.fk_special_building_*, les log_cards appartenant à un special_structure sont sélectionnables. Utilisez le multiedit ou le calculateur de champs pour modifier les champs fk_special_building.</p>
+<figure class="align-default">
+<img alt="../../_images/connect_ca_to_log_card.jpg" src="../../_images/connect_ca_to_log_card.jpg" />
+</figure>
+</section>
+<section id="control-the-connected-catchment-area-in-layer-vw-tww-catchment-area-totals-polygon">
+<h2>Contrôlez les catchment_area connectés dans la couche <code class="docutils literal notranslate"><span class="pre">vw_tww_catchment_area_totals</span></code> (polygone)<a class="headerlink" href="#control-the-connected-catchment-area-in-layer-vw-tww-catchment-area-totals-polygon" title="Lien vers cette rubrique"></a></h2>
+<p>Les catchment_area connectés via fk_special_building_ww_current s’affichent dans la couche vw_tww_catchment_area_totals (polygone) après avoir cliqué sur le bouton TWW-SQL (Refresh network topology / Actualiser la topologie du réseau). Les champs de cette couche (population, surface_area,…) ne sont pas calculés automatiquement dans la version actuelle (2025.0.2). Utilisez les fonctions statistiques pour obtenir les valeurs nécessaires. Dans la version 2025.0.2, il n’y a pas de visualisation des autres connexions (fk_special_building_ww_planned ou fk_special_building_rw_current/planned).</p>
+</section>
+<section id="edit-hydraulic-char-data">
+<h2>Modifier hydraulic_char_data<a class="headerlink" href="#edit-hydraulic-char-data" title="Lien vers cette rubrique"></a></h2>
+<p>Pour modifier hydraulic_char_data, modifiez à nouveau l’enregistrement dans la couche vw_tww_log_card. Dans l’onglet Hydraulic char data, ajoutez un nouvel enregistrement et choisissez un statut. L’identifiant de hydraulic_char_record est défini automatiquement sur l’identifiant du statut du log_card (problème : si l’identifiant du wastewater_node est trop long → l’identifiant du log_card est long → hydraulic_char_data est trop long !).</p>
+<p>Les champs modifiables dépendent de la fonction de l’ouvrage spécial (special_structure) : les attributs de pompe ne sont visibles que pour les pompes, les attributs de déversoir (overflow_results également) ne sont visibles que pour les ouvrages spéciaux avec déversement.</p>
+<figure class="align-default">
+<img alt="../../_images/new_hydraulic_char_data.jpg" src="../../_images/new_hydraulic_char_data.jpg" />
+</figure>
+</section>
+<section id="edit-catchment-area-totals">
+<h2>Modifier catchment_area_totals<a class="headerlink" href="#edit-catchment-area-totals" title="Lien vers cette rubrique"></a></h2>
+<p>Les catchment_area_totals sont également modifiés dans l’enregistrement de la couche vw_tww_log_card. Sélectionnez les hydraulic char data, utilisez l’onglet catchment_area_totals et ajoutez un nouvel enregistrement. L’identifiant doit être défini sur l’identifiant du hydraulic_char_data. Les valeurs doivent actuellement être saisies manuellement (2025.02).</p>
+<figure class="align-default">
+<img alt="../../_images/new_catchment_area_totals.jpg" src="../../_images/new_catchment_area_totals.jpg" />
+</figure>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
+        <a href="connect_wastewater_network_elements.html" class="btn btn-neutral float-left" title="Connexion des éléments du réseau assainissement" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+        <a href="../length-profile/index.html" class="btn btn-neutral float-right" title="Profils en long" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2026, The TWW Project www.teksi.ch.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
