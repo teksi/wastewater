@@ -151,7 +151,7 @@ jobs:
       - name: build documentation
         working-directory: docs
         run: |
-          make html BUILDDIR=build/html/$DOCS_VERSION
+          make html BUILDDIR=build/$DOCS_VERSION
 
           for LANG in $LANGUAGES; do
             test -f ./build/html/$DOCS_VERSION/$LANG/index.html || (echo "Missing index for $LANG" && exit 1)
