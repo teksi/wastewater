@@ -383,7 +383,7 @@ class TeksiWastewaterPlugin:
                 if wastewater_node:
                     messages.append(
                         self.tr(
-                            f"Project uses tww_app.vw_wastewater_node instead of tww_app.vw_tww_wastewater_node. This will make plugin functionalities fail."
+                            "Project uses tww_app.vw_wastewater_node instead of tww_app.vw_tww_wastewater_node. This will make plugin functionalities fail."
                         )
                     )
                 else:
