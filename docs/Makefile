@@ -125,8 +125,8 @@ html: compile_messages
 		  mkdir -p $(BUILDDIR)/doctrees/$$lang; \
 			$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $$lang $(BUILDDIR)/html/$$lang; \
 		else \
-		  if [[ "$(TRANSLATIONS_I18N)" =~ "$$lang" ]]; then \
-				$(SPHINXBUILD) -b html $(ALLSPHINXOPTSI18N) en build/html/$$lang; \
+		if [[ "$(TRANSLATIONS_I18N)" =~ "$$lang" ]]; then \
+				$(SPHINXBUILD) -b html $(ALLSPHINXOPTSI18N) en $(BUILDDIR)/html/$$lang; \
 			fi \
 		fi \
 	done
