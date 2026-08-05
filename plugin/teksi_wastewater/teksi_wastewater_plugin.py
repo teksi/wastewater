@@ -389,7 +389,7 @@ class TeksiWastewaterPlugin:
                 else:
                     messages.append(
                         self.tr(
-                            f"Project does not load tww_app.vw_tww_wastewater_node. This will make plugin functionalities fail."
+                            "Project does not load tww_app.vw_tww_wastewater_node. This will make plugin functionalities fail."
                         )
                     )
 
