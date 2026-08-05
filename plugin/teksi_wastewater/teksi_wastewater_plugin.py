@@ -377,6 +377,15 @@ class TeksiWastewaterPlugin:
         except Exception as exception:
             messages.append(self.tr(f"Could not check database validity: {exception}"))
 
+            wastewater_node = TwwLayerManager.layer("vw_tww_wastewater_node")
+            if not wastewater_node:
+                wastewater_node = TwwLayerManager.layer("vw_wastewater_node")
+                if wastewater_node:
+                    messages.append(self.tr(f"Project uses tww_app.vw_wastewater_node instead of tww_app.vw_tww_wastewater_node. This will make plugin functionalities fail."))
+                else:
+                    messages.append(self.tr(f"Project does not load tww_app.vw_tww_wastewater_node. This will make plugin functionalities fail."))
+
+
         for message in messages:
             self.iface.messageBar().pushMessage(
                 "Warning",
