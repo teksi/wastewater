@@ -118,15 +118,10 @@ compile_messages: init
 
 html: compile_messages
 	@set -e; \
-	lang=en; \
-	mkdir -p $(HTMLDIR) $(BUILDDIR)/doctrees/$$lang; \
-	echo $(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $$lang $(HTMLDIR); \
-	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $$lang $(HTMLDIR); \
 	for lang in $(BUILD_LANGUAGES); \
 	do \
 		mkdir -p $(HTMLDIR)/$$lang $(BUILDDIR)/doctrees/$$lang; \
 		if [[ "$(TRANSLATIONS_STATIC)" =~ "$$lang" ]]; then \
-		  mkdir -p $(BUILDDIR)/doctrees/$$lang; \
 			$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $$lang $(HTMLDIR)/$$lang; \
 		else \
 		if [[ "$(TRANSLATIONS_I18N)" =~ "$$lang" ]]; then \
