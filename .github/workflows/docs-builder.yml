@@ -148,7 +148,7 @@ jobs:
           echo "LC_ALL=en_US.UTF-8" >> $GITHUB_ENV
 
 
-      - name: build documentation
+      - name: Build documentation
         working-directory: docs
         run: |
           make html BUILDDIR=build/$DOCS_VERSION

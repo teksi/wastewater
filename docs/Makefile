@@ -140,7 +140,7 @@ gettext:
 	@echo "Build finished. The pot files pages are in i18n/pot.";\
 
 singlehtml: compile_messages
-	@set -e; for lang in en $(TRANSLATIONS_STATIC);\
+	@set -e; for lang in $(TRANSLATIONS_STATIC);\
 	do \
 		mkdir -p $(BUILDDIR)/singlehtml/$$lang $(BUILDDIR)/doctrees/$$lang; \
 		$(SPHINXBUILD) -b singlehtml $(ALLSPHINXOPTS) $$lang $(BUILDDIR)/singlehtml/$$lang;\
@@ -154,7 +154,7 @@ singlehtml: compile_messages
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/singlehtml/<language>.";\
 
 pickle: compile_messages
-	@set -e; for lang in en $(TRANSLATIONS_STATIC);\
+	@set -e; for lang in $(TRANSLATIONS_STATIC);\
 	do \
 		mkdir -p $(BUILDDIR)/pickle/$$lang $(BUILDDIR)/doctrees/$$lang; \
 		$(SPHINXBUILD) -b pickle $(ALLSPHINXOPTS) $$lang $(BUILDDIR)/pickle/$$lang;\
@@ -170,7 +170,7 @@ pickle: compile_messages
 web: pickle
 
 json: compile_messages
-	@set -e; for lang in en $(TRANSLATIONS_STATIC);\
+	@set -e; for lang in $(TRANSLATIONS_STATIC);\
 	do \
 		mkdir -p $(BUILDDIR)/json/$$lang $(BUILDDIR)/doctrees/$$lang; \
 		$(SPHINXBUILD) -b json $(ALLSPHINXOPTS) $$lang $(BUILDDIR)/json/$$lang;\
@@ -184,7 +184,7 @@ json: compile_messages
 	@echo "Build finished; now you can process the JSON files."
 
 htmlhelp: compile_messages
-	@set -e; for lang in en $(TRANSLATIONS_STATIC);\
+	@set -e; for lang in $(TRANSLATIONS_STATIC);\
 	do \
 		mkdir -p $(BUILDDIR)/htmlhelp/$$lang $(BUILDDIR)/doctrees/$$lang; \
 		$(SPHINXBUILD) -b htmlhelp $(ALLSPHINXOPTS) $$lang $(BUILDDIR)/htmlhelp/$$lang;\
