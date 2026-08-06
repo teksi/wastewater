@@ -14,4 +14,3 @@ The database is automatically loaded with the necessary tables and attributes fo
 In order to be able to use an extension, activate the corresponding app modification :ref:`modification-framework`
 
 For official models, the corresponding app modification can be triggered via TMMT using the corresponding flags on db update (i.e. ``modification_agxx`` for AG64/96 support) .
-
