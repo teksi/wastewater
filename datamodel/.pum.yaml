@@ -16,7 +16,7 @@ roles:
     inherit: tww_viewer
     permissions:
       - type: write
-        schemas: [tww_od, tww_app_pg2ili]
+        schemas: [tww_od, tww_app, tww_app_pg2ili]
 
   - name: tww_manager
     description: Role for users who can view and edit the TWW data, and manage the TWW application.
