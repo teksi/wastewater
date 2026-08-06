@@ -45,7 +45,7 @@ master_doc = "index"
 
 # General information about the project.
 project = "TWW"
-copyright = "2025, The TWW Project www.teksi.ch"
+copyright = "2026, The TWW Project www.teksi.ch"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -222,10 +222,10 @@ texinfo_documents = [
         "index",
         "TWW",
         "TWW Documentation",
-        "The TWW Project/OPENGIS.ch",
+        "The TWW Project www.teksi.ch",
         "TWW",
-        "One line description of project.",
-        "Miscellaneous",
+        "Module Wastewater & GEP Infrastructure Management",
+        "Wastewater",
     ),
 ]
 
@@ -241,5 +241,8 @@ texinfo_documents = [
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 # texinfo_no_detailmenu = False
 
-# Path for sphinx to find *.mo files for translation
-locale_dirs = ["./i18n"]
+# Path for sphinx to find *.po files for translation.
+# Note: locale_dirs is resolved relative to the source directory (srcdir),
+# which is `docs/en` at build time — not relative to conf.py's directory.
+# The compiled .po files live in `docs/i18n/<lang>/
+locale_dirs = ["../i18n"]

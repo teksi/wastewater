@@ -114,6 +114,8 @@ Import the `VSA organisation 2020.1-dataset <https://vsa.ch/models/organisation/
 
 In order to use the organisations efficiently, one can flag an organisation as active using the field ``tww_active``. This flag filters the organisations accessible from the QGIS project.
 
+See `INTERLIS Import <../../admin-guide/interlis-io/index.html>`_ for more information.
+
 
 Layergroup Examination-Maintenance
 ----------------------------------
@@ -154,11 +156,28 @@ Documents have now there own layergroup (before in layergroup Wastewater Structu
 Hydraulic
 ---------
 
-Wastewater nodes ``tww_app.vw_tww_wastewater_node``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Wastewater nodes ``tww_app.vw_wastewater_node``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Use this layer to change the situation of one selected wastewater node (and not the whole wastewater structure) or if you want to add a new wastewater node to an existing wastewater structure. You can add additional wastewater nodes in the wastewater nodes-tab of the `vw_tww_wastewater_structure` too.
 When moving the geometry of the wastewater node, the geometry of the connected reaches is updated automatically. If you want to move a wastewater node without moving the reaches, disconnect the reaches, move the node and reconnect the reaches.
+
+Wastewater nodes ``tww_app.vw_tww_wastewater_node``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. versionchanged:: 2026.0
+
+This view replaces in some way the tww_app.vw_wastewater_node (it still exists for backward compatibility) as it integrates the symbology of the following views, that handle symbology now separatly:
+
+* a table tww_od.tww_reach_point_labels
+* a table tww_od.tww_wastewater_structure_labels
+* a table tww_od.tww_wastewater_node_symbology
+
+This allows to better mark the different inlets and outlets:
+
+.. figure:: images/comparison_2025_and_2026symbolisation.png
+
+Introduction of these new views needs adaption of existing TWW project files (for details see `2026 Release notes <../releases/2026.html>`_ )
 
 Overflow tables ``tww_app.vw_tww_overflow``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

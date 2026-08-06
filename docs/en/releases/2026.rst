@@ -1,20 +1,125 @@
 .. _2026:
 
-2026.0.1 (future)
-=================
+Here you can find information about the future 2026.x release of TEKSI wastewater
 
-Here you can find information about the future 2026.X release of TEKSI wastewater
+2026.0.1
+=========
 
 Main features
 ----------------
 
- - New great feature 1
-    - New great feature 2
- - New great feature 3
-    - New great feature 4
+- Version of TEKSI wastewater module for QGIS 3.40 LTR and initialized and upgrade via the PostgreSQL Update Manager (PUM) and the TEKSI Module Management Tool (TMMT).
+- Check the `installation guide <../installation-guide/index.html>`__ for more information on how to install TEKSI wastewater module (TWW) via TMMT.
 
+
+ - `The OID Prefix can be set in TMMT from 2026.0.1 on <../admin-guide/db-production-readiness/index.html>`_
+ - `The 'Extend selection tool' allows users to expand a selection made on the vw_tww_reach layer to related objects <../user-guide/editing/editing.html>`_
+
+  .. figure:: ../user-guide/editing/images/selection_extender_2.png
+
+ - `The 'Refresh network topology' is only visible in Admin mode <../user-guide/network-following/index.html>`_ as the query can take quite long for big networks.
+ - create _ch copies of translation files ( '\*.qm' )
+ - Import VSA organisation from internet if not present
+
+Documentation
+--------------
+ - Release Notes 2025.0 added (incl. Video)
+ - Docu: Correction about organisation table in configuration-layergroup
+ - Fix installation documentation
+ - Versionized docs
+ - `Doc changes in dataowner fields <../user-guide/layerexplanations/twwproject.html>`_
+ - Document labeling and symbology flags
+ - Add chapter Obj_ID in TWW docs/en/admin-guide/db-production-readiness/index.rst
+ - Adapt links and make these relative where possible
+ - List common editing mistakes in docs
+ - Release Notes 2026.0 added
+ - Update copyright year
 
 Bug fixes and performance improvements
 -----------------------------------------
 
- - Various bug fixes for ...
+ - Snapping fails on freshly created wastewater nodes
+ - Improve identifier synchronization for wastewater structures (https://github.com/teksi/wastewater/pull/904#issuecomment-3723192972)
+ - Handle pg2ili as an app schema and fix roles granting
+ - Drop schema if exists
+ - Support of different SRID - SRID as a parameter
+ - Add indexes for main views
+ - Fix creation of ili schema on import/export
+ - Drop uuid-ossp (as already integrated in Postgres 17)
+ - First steps towards QGIS 4 and QT6
+ - Make error details more accessible https://github.com/teksi/wastewater/pull/971
+ - Fix integrity checker on INTERLIS Export
+ - Separate symbology and labels
+ - Improvements on network refresh
+ - Fix reach view limitations
+ - use wastewater node identifiers in reach wizard identifier creation
+ - Fix SWMM input creation
+ - Refresh materialized views concurrently
+ - Fix reach point label generation
+ - Provide / fix translations for the plugin
+ - Update wastewater node cache after updating wastewater_structure
+ -
+
+Extension improvements
+----------------------
+ - Exclude drainage catchment areas from AG-xx export
+ - Fix AG-xx last modification reference
+ - Make AG-xx last modification selection locale-unaware
+ - Fix AG-xx import reach point coordinates
+
+
+CI improvements
+---------------
+
+ - Separate pum from db images in compose
+ - Use pum docker image
+ - Generalize workflows
+ - Add sticky to easy dev plugin download and tests
+ - Fix plugin package
+ - Add stale issue checker
+ - Fix transifex
+ - Versionized Documentation
+
+
+Adaptions to project file
+----------------------------------------
+
+ The following new views have been integrated in this release:
+
+
+* tww_app.vw_tww_wastewater_node (in addition to tww_app.vw_wastewater_node)
+* tww_od.tww_reach_point_labels
+* tww_od.tww_wastewater_structure_labels
+* tww_od.tww_wastewater_node_symbology
+
+Please export and use the corresponding :literal:`* \ `.qml files to integrate them into your existing TWW 2025 project files
+
+
+The following views have been adapted and need an adaption of existing TWW 2025 project files:
+
+ - Better configuration in vw_tww_catchment_area_totals (point-layer)
+ - Hint about necessary logcards in vw_catchment_area, tab fk_logcard
+ - Added info whether ws has log card to main view
+ - Added layer vw_tww_damage
+
+ - vw_tww_reach. labeldefinition for rp_from_label und rp_to_label renamed and with the replace-function so it will work with the variables for translation
+ - vw_tww_wastewater_structure: Symbology: replaced some 'not "tww_is_primary" ' with '(not "tww_is_primary" or "tww_is_primary" is NULL)'
+ - vw_tww_wastewater_structure: Attributs Form: wn_elevation_accuracy also with option reuse last entered value (similar as co_position_accuracy)
+ - vw_tww_wastewater_structure: Attributs Form: _input_label, _output_label replaced with _reach_point_label
+ - New Project variable tww_language: values should be _en, _de or _fr
+ - vw_tww_reach labeldefinition: changed "material_abbr_en" to case when @tww_language = '_de' then "material_abbr_de" when @tww_language = '_fr' then "material_abbr_fr" else "material_abbr_en" end
+ - new layer tww_od.profile_geometry
+ - new relation pipe_profile.obj_id to profile_geometry.fk_pipeprofile
+ - profile_geometry Attribute form
+ - pipe_profile Attribute form (profile_geometry subtable only for profile_type special, mouth, open)
+ - vw_tww_additional_ws: field wn_fk_wastewater_structure no more in vw
+ - all identifier-fields: new enforced constraints length("identifier" )<=nn or "identifier" is NULL (otherwise you loose all entries, if the identifier is to long)
+ - added a project-stored SQL "visualize profile_geometry"
+ - vw_tww_wastewater_structure: tww_is_primary, tww_has_log_card, _owner_organisation_type is not editable, owner_organisation_type configured as value relation
+ - vw_tww_additional_wws: reach_point_label, tww_is_primary, _channel_usage_current, _channel_function_hierarchic, _owner_organisation_type is not editable. _channel_usage_current, _channel_function_hierarchic, owner_organisation_type configured as value relation
+ - vw_wastewater_structure : tww_is_primary, _channel_usage_current, _channel_function_hierarchic, _owner_organisation_type is not editable. _channel_usage_current, _channel_function_hierarchic, owner_organisation_type configured as value relation
+ - vw_tww_reach: owner_organisation_type is not editable. owner_organisation_type configured as value relation
+ - vw_tww_overflow: _channel_usage_current, _channel_function_hierarchic is not editable. _channel_usage_current, _channel_function_hierarchic configured as value relation
+ - all fields with value relation: "order by" set to value
+
+ For Reference see https://github.com/teksi/wastewater/issues/995#issuecomment-4803889291

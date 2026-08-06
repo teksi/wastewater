@@ -245,6 +245,11 @@ Once you're happy with the import options, confirm the dialog to persist the cha
 
 If the import was successful a green success message appears.
 
+If you imported an (organisation) dataset, TWW automatically sets the ``tww_active`` flag on those organisations that have been used by any foreign key to the class organisation.
+
+If you import the organisation dataset before any network data (as proposed), you will not see any organisation in the layer organisations. You have to turn off the pre-defined filter ``tww_active``.
+
+.. figure:: images/organisation_tww_active.png
 
 
 Usage (command line)
