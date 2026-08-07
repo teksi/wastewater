@@ -30,3 +30,8 @@ AS
      LEFT JOIN tww_od.wastewater_networkelement ne_ww ON ca.fk_wastewater_networkelement_ww_planned::text = ne_ww.obj_id::text
      LEFT JOIN tww_vl.catchment_area_drainage_system_current ds_chk ON ds.code = ca.drainage_system_current
 WITH DATA;
+
+CREATE UNIQUE INDEX in_app_mvw_web_catchment_area_planned_obj_id
+    ON tww_app.mvw_web_catchment_area_planned USING btree
+    (obj_id COLLATE pg_catalog."default")
+    TABLESPACE pg_default;

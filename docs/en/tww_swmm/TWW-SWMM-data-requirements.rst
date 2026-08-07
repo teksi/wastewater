@@ -1,4 +1,3 @@
-.. _TWW-SWMM-data-requirements:
 
 TWW-SWMM data requirements
 ===========================
@@ -6,7 +5,7 @@ TWW-SWMM data requirements
 To run a sucessful simulation in SWMM the following minimal data has to be filled in to be matched to the swmm objects
 
 JUNCTIONS and COORDINATES
-^^^^^^^^^^^^^^^^^^^^^^^^^
+-------------------------
 
 .. csv-table:: JUNCTIONS and COORDINATES
    :header: "SWMM attribute", "Description", "TWW equivalent"
@@ -20,7 +19,7 @@ JUNCTIONS and COORDINATES
    "Max. Depth", "Maximum depth at the junction (i.e., the distance from the invert to the ground surface) (feet or meters). If zero, then the distance from the invert to the top of the highest connecting link will be used.", "Difference of cover.level minus wastewater_node.bottom_level"
 
 CONDUITS
-^^^^^^^^
+--------
 
 .. csv-table:: CONDUITS
    :header: "SWMM attribute", "Description", "TWW equivalent"
@@ -38,7 +37,7 @@ CONDUITS
     "OutletOffset", "Depth or elevation of the conduit invert above the node invert at the outlet end of the conduit ", "reach_point_to.level minus to_wastewater_node.bottom_level"
 
 XSECTIONS
-^^^^^^^^^
+---------
 
 .. csv-table:: XSECTIONS
    :header: "SWMM attribute", "Description", "TWW equivalent"

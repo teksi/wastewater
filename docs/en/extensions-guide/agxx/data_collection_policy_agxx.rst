@@ -247,7 +247,7 @@ In order to follow these limitations, there is an additional foreign key on ``tw
 Additionally, the attribute ``wastewater_node.ag64_function`` can be set to "andere".
 
 Handling of the attribute "IstSchnittstelle"
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 AG-96 has an attribute ``IstSchnittstelle`` which is not present in VSA DSS 2020.1. The value is stored in ``tww_od.wastewater_node.ag96_isgateway``.
 
 Infrastrukturhaltung/GEPHaltung

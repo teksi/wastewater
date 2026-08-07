@@ -65,6 +65,7 @@ class InterlisImporterExporterGui(QObject):
             return
         settings = QSettings()
         srid = settings.value("/TWW/SRID", 2056, type=int)
+        import_orgs = settings.value("/TWW/OrgImportMode", False, type=bool)
 
         QgsSettings().setValue("tww_plugin/last_interlis_path", os.path.dirname(xtf_file_input))
 
@@ -82,6 +83,7 @@ class InterlisImporterExporterGui(QObject):
                     logs_next_to_file=import_dialog.logs_next_to_file,
                     filter_nulls=import_dialog.filter_nulls,
                     srid=srid,
+                    import_orgs=import_orgs,
                 )
                 iface.mapCanvas().refreshAllLayers()
 
@@ -125,6 +127,7 @@ class InterlisImporterExporterGui(QObject):
         QgsSettings().setValue("tww_plugin/last_interlis_path", os.path.dirname(file_name))
         settings = QSettings()
         srid = settings.value("/TWW/SRID", 2056, type=int)
+        import_orgs = settings.value("/TWW/OrgExportMode", False, type=bool)
 
         self.progress_dialog = QProgressDialog("", "", 0, 100)
         self.progress_dialog.setMinimumWidth(self._PROGRESS_DIALOG_MINIMUM_WIDTH)
@@ -144,6 +147,7 @@ class InterlisImporterExporterGui(QObject):
                 selected_labels_scales_indices=export_dialog.selected_labels_scales_indices,
                 selected_ids=export_dialog.selected_ids,
                 srid=srid,
+                import_orgs=import_orgs,
             )
 
             self.show_success(
