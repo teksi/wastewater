@@ -5,6 +5,10 @@
 
 # You can set these variables from the command line.
 BUILDDIR     = build
+# Optional version subfolder for multi-version output. When DOCS_VERSION is set
+# (e.g. by CI), HTML is built under $(BUILDDIR)/html/$(DOCS_VERSION)/<language>.
+# When unset, HTML is built directly under $(BUILDDIR)/html/<language>.
+HTMLDIR      = $(BUILDDIR)/html$(if $(DOCS_VERSION),/$(DOCS_VERSION))
 SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
 PAPER         = a4
@@ -19,7 +23,7 @@ PAPEROPT_a4     = -D latex_paper_size=a4
 PAPEROPT_letter = -D latex_paper_size=letter
 ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees/$$lang $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) -c . -A language=$$lang -D language=$$lang -A languages='$(LANGUAGES)'
 
-ALLSPHINXOPTSI18N = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) -c . -a -A language=$$lang -D language=$$lang -A languages='$(LANGUAGES)'
+ALLSPHINXOPTSI18N = -d $(BUILDDIR)/doctrees/$$lang $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) -c . -a -A language=$$lang -D language=$$lang -A languages='$(LANGUAGES)'
 
 # Only for Gettext
 I18NSPHINXOPTS   = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) -c . -A language=en -D language=en -A languages='en'
@@ -114,23 +118,18 @@ compile_messages: init
 
 html: compile_messages
 	@set -e; \
-	lang=en; \
-	mkdir -p $(BUILDDIR)/html $(BUILDDIR)/doctrees/$$lang; \
-	echo $(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $$lang $(BUILDDIR)/html; \
-	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $$lang $(BUILDDIR)/html; \
 	for lang in $(BUILD_LANGUAGES); \
 	do \
-		mkdir -p $(BUILDDIR)/html/$$lang $(BUILDDIR)/doctrees/$$lang; \
+		mkdir -p $(HTMLDIR)/$$lang $(BUILDDIR)/doctrees/$$lang; \
 		if [[ "$(TRANSLATIONS_STATIC)" =~ "$$lang" ]]; then \
-		  mkdir -p $(BUILDDIR)/doctrees/$$lang; \
-			$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $$lang $(BUILDDIR)/html/$$lang; \
+			$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $$lang $(HTMLDIR)/$$lang; \
 		else \
-		  if [[ "$(TRANSLATIONS_I18N)" =~ "$$lang" ]]; then \
-				$(SPHINXBUILD) -b html $(ALLSPHINXOPTSI18N) en build/html/$$lang; \
+		if [[ "$(TRANSLATIONS_I18N)" =~ "$$lang" ]]; then \
+				$(SPHINXBUILD) -b html $(ALLSPHINXOPTSI18N) en $(HTMLDIR)/$$lang; \
 			fi \
 		fi \
 	done
-	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html/<language>.";
+	@echo "Build finished. The HTML pages are in $(HTMLDIR)/<language>.";
 
 gettext:
 		mkdir -p $(BUILDDIR)/gettext/en $(BUILDDIR)/doctrees/en; \
@@ -140,12 +139,12 @@ gettext:
 	@echo "Build finished. The pot files pages are in i18n/pot.";\
 
 singlehtml: compile_messages
-	@set -e; for lang in en $(TRANSLATIONS_STATIC);\
+	@set -e; for lang in $(TRANSLATIONS_STATIC);\
 	do \
 		mkdir -p $(BUILDDIR)/singlehtml/$$lang $(BUILDDIR)/doctrees/$$lang; \
 		$(SPHINXBUILD) -b singlehtml $(ALLSPHINXOPTS) $$lang $(BUILDDIR)/singlehtml/$$lang;\
 	done
-	@set -e; for lang in $(TRANSLATIONI18N);\
+	@set -e; for lang in $(TRANSLATIONS_I18N);\
 	do \
 		mkdir -p $(BUILDDIR)/singlehtml/$$lang $(BUILDDIR)/doctrees/$$lang; \
 		$(SPHINXBUILD) -b singlehtml $(ALLSPHINXOPTSI18N) en $(BUILDDIR)/singlehtml/$$lang;\
@@ -154,12 +153,12 @@ singlehtml: compile_messages
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/singlehtml/<language>.";\
 
 pickle: compile_messages
-	@set -e; for lang in en $(TRANSLATIONS_STATIC);\
+	@set -e; for lang in $(TRANSLATIONS_STATIC);\
 	do \
 		mkdir -p $(BUILDDIR)/pickle/$$lang $(BUILDDIR)/doctrees/$$lang; \
 		$(SPHINXBUILD) -b pickle $(ALLSPHINXOPTS) $$lang $(BUILDDIR)/pickle/$$lang;\
 	done
-	@set -e; for lang in $(TRANSLATIONI18N);\
+	@set -e; for lang in $(TRANSLATIONS_I18N);\
 	do \
 		mkdir -p $(BUILDDIR)/pickle/$$lang $(BUILDDIR)/doctrees/$$lang; \
 		$(SPHINXBUILD) -b pickle $(ALLSPHINXOPTSI18N) en $(BUILDDIR)/pickle/$$lang;\
@@ -170,12 +169,12 @@ pickle: compile_messages
 web: pickle
 
 json: compile_messages
-	@set -e; for lang in en $(TRANSLATIONS_STATIC);\
+	@set -e; for lang in $(TRANSLATIONS_STATIC);\
 	do \
 		mkdir -p $(BUILDDIR)/json/$$lang $(BUILDDIR)/doctrees/$$lang; \
 		$(SPHINXBUILD) -b json $(ALLSPHINXOPTS) $$lang $(BUILDDIR)/json/$$lang;\
 	done
-	@set -e; for lang in $(TRANSLATIONI18N);\
+	@set -e; for lang in $(TRANSLATIONS_I18N);\
 	do \
 		mkdir -p $(BUILDDIR)/json/$$lang $(BUILDDIR)/doctrees/$$lang; \
 		$(SPHINXBUILD) -b json $(ALLSPHINXOPTSI18N) en $(BUILDDIR)/json/$$lang;\
@@ -184,7 +183,7 @@ json: compile_messages
 	@echo "Build finished; now you can process the JSON files."
 
 htmlhelp: compile_messages
-	@set -e; for lang in en $(TRANSLATIONS_STATIC);\
+	@set -e; for lang in $(TRANSLATIONS_STATIC);\
 	do \
 		mkdir -p $(BUILDDIR)/htmlhelp/$$lang $(BUILDDIR)/doctrees/$$lang; \
 		$(SPHINXBUILD) -b htmlhelp $(ALLSPHINXOPTS) $$lang $(BUILDDIR)/htmlhelp/$$lang;\
