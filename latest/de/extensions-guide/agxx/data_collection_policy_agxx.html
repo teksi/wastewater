@@ -411,7 +411,11 @@
 <p>Abgesehen von Strassen- und Platzwasser werden die NutzungsartAG-Werte nicht als Wertelistenerweiterungen modelliert. Nutzen Sie stattdessen die Rückwärtsbeziehungen.</p>
 <section id="handling-of-reach-reach-connections">
 <h3>Umgang mit Haltung–Haltung-Verbindungen<a class="headerlink" href="#handling-of-reach-reach-connections" title="Link to this heading"></a></h3>
-<p>AG-64/96 unterstützt keine Haltung–Haltung-Verbindungen. Bei Bedarf wird die DSS-Topologie beim Export nach AG-64/96 durch einen Fremdschlüssel auf „tww_od.agxx_reach_point.ag64_fk_wastewater_node“ überschrieben, der auf „tww_od.agxx_unconnected_node_bwrel“ verweist. Diese sind im Datenmodell als Infrastrukturknoten/GEP-Knoten mit der Funktion „Anschluss“ definiert. Ist dieser Fremdschlüssel nicht gesetzt, führen Haltung–Haltung-Verbindungen beim Export zu einem Fehler.</p>
+<p>AG-64/96 does not support reach-reach connections.
+If needed, the DSS topology is overridden on AG-64/96 export by a foreign key on <code class="docutils literal notranslate"><span class="pre">tww_od.agxx_reach_point.ag64_fk_wastewater_node</span></code> that points to <code class="docutils literal notranslate"><span class="pre">tww_od.agxx_unconnected_node_bwrel</span></code>.
+On Export, a <code class="docutils literal notranslate"><span class="pre">Infrastrukturknoten/GEPKnoten</span></code> with the reach point’s <code class="docutils literal notranslate"><span class="pre">obj_id</span></code> and  funktionag <code class="docutils literal notranslate"><span class="pre">Leitungsknoten</span></code> is created.
+Note that using this type of mapping will break sequential imports from  AG-64 and AG-96, but ensures VSA-DSS compatibility.
+When the foreign key <code class="docutils literal notranslate"><span class="pre">tww_od.agxx_reach_point.ag64_fk_wastewater_node</span></code> is not set, reach-reach connections throw an error on export.</p>
 </section>
 </section>
 <section id="ueberlauf-foerderaggregat">

@@ -115,18 +115,27 @@
 <li><p>VersickerungsbereichAG is mapped to <code class="docutils literal notranslate"><span class="pre">tww_od.infiltration_zone</span></code></p></li>
 </ul>
 </div></blockquote>
-<p>Wherever possible, the value lists of VSA DSS are used. In cases where a 1:1 mapping is possible, there is no additional value list entry for AG-64/96. Instead, one can use the corresponding VSA-DSS value which is translated on export. These cases are listed below.</p>
-<p>Almost all VSA-DSS values of the mentioned layers that do not exist in AG-64/96 are mapped to AG-64/96 using a backwards relation. Per default, the VSA-specific value list codes which are ambiguous in AG-64/96 are set to <code class="docutils literal notranslate"><span class="pre">inactive</span></code>.</p>
+<p>Wherever possible, the value lists of VSA DSS are used.
+In cases where a 1:1 mapping is possible, there is no additional value list entry for AG-64/96.
+Instead, one can use the corresponding VSA-DSS value which is translated on export. These cases are listed below.</p>
+<p>Almost all VSA-DSS values of the mentioned layers that do not exist in AG-64/96 are mapped to AG-64/96 using a backwards relation.
+Per default, the VSA-specific value list codes which are ambiguous in AG-64/96 are set to <code class="docutils literal notranslate"><span class="pre">inactive</span></code>.</p>
 <p>The AG-64/96 values are automatically mapped to VSA DSS where sensible, allowing to export both models.</p>
 <section id="handling-of-organisations">
 <h3>Handling of organisations<a class="headerlink" href="#handling-of-organisations" title="Link to this heading"></a></h3>
-<p>In the models AG-64/AG-96, the organisations table differs from VSA. It has 20 characters and uses a different prefix. In order to maintain the VSA compatibility, TWW 2 AG-64/96 uses the VSA tables.</p>
-<p>There is a set of private entities in the AG-64/AG-96 organisations dataset that were not ported to VSA DSS. For these organisations, we use a OID prefix that was generated solely for this purpose and the AG-64/AG-96 postfix. The corresponding data is imported on initialisation.</p>
-<p>When exporting a dataset, the organisations are not exported from the TEKSI database. Instead, the AG-64/96 Organisation dataset is stored within the plugin and added to the export dataset.</p>
+<p>In the models AG-64/AG-96, the organisations table differs from VSA. It has 20 characters and uses a different prefix.
+In order to maintain the VSA compatibility, TWW 2 AG-64/96 uses the VSA tables.</p>
+<p>There is a set of private entities in the AG-64/AG-96 organisations dataset that were not ported to VSA DSS.
+For these organisations, we use a OID prefix that was generated solely for this purpose and the AG-64/AG-96 postfix.
+The corresponding data is imported on initialisation.</p>
+<p>When exporting a dataset, the organisations are not exported from the TEKSI database.
+Instead, the AG-64/96 Organisation dataset is stored within the plugin and added to the export dataset.</p>
 </section>
 <section id="last-modification">
 <h3>Last Modification<a class="headerlink" href="#last-modification" title="Link to this heading"></a></h3>
-<p>in AG-64/96, the last modification value of cadastre and general planning are separated. To keep track of them, they are managed on the database. There is a widget in the settings to alter the current value, <a class="reference external" href="./plugin_setup_agxx.html">see here</a> .</p>
+<p>in AG-64/96, the last modification value of cadastre and general planning are separated.
+To keep track of them, they are managed on the database.
+There is a widget in the settings to alter the current value, <a class="reference external" href="./plugin_setup_agxx.html">see here</a> .</p>
 </section>
 </section>
 <section id="infrastrukturknoten-gepknoten">
@@ -145,7 +154,9 @@
 </ul>
 </div></blockquote>
 <p>The FunktionAG <code class="docutils literal notranslate"><span class="pre">Kontrollschacht</span></code> is not included in the value list. Use <code class="docutils literal notranslate"><span class="pre">manhole</span></code> or <code class="docutils literal notranslate"><span class="pre">combined_manhole</span></code> instead, which are mapped using a backwards relation.</p>
-<p>The following table explains the mapping of FunktionAG in detail. If there are multiple options for TWW class, the type is defined dependent on whether a detail geometry exists. The value_de is only listed if the AG-64/96 value is not eligible</p>
+<p>The following table explains the mapping of FunktionAG in detail.
+If there are multiple options for TWW class, the type is defined dependent on whether a detail geometry exists.
+The value_de is only listed if the AG-64/96 value is not eligible</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 30.0%" />
@@ -412,7 +423,11 @@ Additionally, the attribute <code class="docutils literal notranslate"><span cla
 <p>Apart from street water and square water, the NutzungsartAG are not modelled as a value list extensions. Use the backwards relation instead.</p>
 <section id="handling-of-reach-reach-connections">
 <h3>Handling of reach-reach connections<a class="headerlink" href="#handling-of-reach-reach-connections" title="Link to this heading"></a></h3>
-<p>AG-64/96 does not support reach-reach connections. If needed, the DSS topology is overridden on AG-64/96 export by a foreign key on <code class="docutils literal notranslate"><span class="pre">tww_od.agxx_reach_point.ag64_fk_wastewater_node</span></code> that points to <code class="docutils literal notranslate"><span class="pre">tww_od.agxx_unconnected_node_bwrel</span></code>.  are defined in the datamodel as Infrastrukturknoten/GEPKnoten with funktionag “Anschluss”. When this foreign key is not set, reach-reach connections throw an error on export.</p>
+<p>AG-64/96 does not support reach-reach connections.
+If needed, the DSS topology is overridden on AG-64/96 export by a foreign key on <code class="docutils literal notranslate"><span class="pre">tww_od.agxx_reach_point.ag64_fk_wastewater_node</span></code> that points to <code class="docutils literal notranslate"><span class="pre">tww_od.agxx_unconnected_node_bwrel</span></code>.
+On Export, a <code class="docutils literal notranslate"><span class="pre">Infrastrukturknoten/GEPKnoten</span></code> with the reach point’s <code class="docutils literal notranslate"><span class="pre">obj_id</span></code> and  funktionag <code class="docutils literal notranslate"><span class="pre">Leitungsknoten</span></code> is created.
+Note that using this type of mapping will break sequential imports from  AG-64 and AG-96, but ensures VSA-DSS compatibility.
+When the foreign key <code class="docutils literal notranslate"><span class="pre">tww_od.agxx_reach_point.ag64_fk_wastewater_node</span></code> is not set, reach-reach connections throw an error on export.</p>
 </section>
 </section>
 <section id="ueberlauf-foerderaggregat">
