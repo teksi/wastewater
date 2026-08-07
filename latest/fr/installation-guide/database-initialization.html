@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Database initialization &mdash; Documentation TWW latest</title>
+  <title>Initialisation de la base de données &mdash; Documentation TWW latest</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
 
@@ -20,8 +20,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Recherche" href="../search.html" />
-    <link rel="next" title="Setup workstation" href="workstation.html" />
-    <link rel="prev" title="Setup database server" href="server.html" /> 
+    <link rel="next" title="Configuration du poste de travail" href="workstation.html" />
+    <link rel="prev" title="Configuration du serveur de base de données" href="server.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,27 +44,27 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">TEKSI wastewater (TWW)</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Installation Guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="requirements.html">Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="server.html">Setup database server</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Database initialization</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#process">Process</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#create-minimal-roles-and-access">Create  minimal roles and access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">TEKSI Assainissement (TWW)</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Guide d’installation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="requirements.html">Prérequis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server.html">Configuration du serveur de base de données</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Initialisation de la base de données</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#process">Procédure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#create-minimal-roles-and-access">Créer les roles minimaux et accès</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#install-data-model-with-or-without-demodata">Install data model with or without demodata</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="workstation.html">Setup workstation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workstation.html">Configuration du poste de travail</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">User Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">Admin Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Releases</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../extensions-guide/index.html">Official TWW extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">Guide utilisateur</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">Guide d’administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Versions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions-guide/index.html">Extensions officielles de TEKSI assainissement</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tww_swmm/index.html">SWMM Data Exchange</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">Traduction</a></li>
 </ul>
 
         </div>
@@ -81,8 +81,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">Installation Guide</a></li>
-      <li class="breadcrumb-item active">Database initialization</li>
+          <li class="breadcrumb-item"><a href="index.html">Guide d’installation</a></li>
+      <li class="breadcrumb-item active">Initialisation de la base de données</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/installation-guide/database-initialization.rst.txt" rel="nofollow"> Afficher la source de la page</a>
       </li>
@@ -95,23 +95,22 @@
   <blockquote>
 <div></div></blockquote>
 <section id="database-initialization">
-<span id="id1"></span><h1>Database initialization<a class="headerlink" href="#database-initialization" title="Lien vers cette rubrique"></a></h1>
-<p>You can use <a class="reference internal" href="../admin-guide/pgadmin/index.html#pgadmin"><span class="std std-ref">pgAdmin</span></a> to access and manage the database server.</p>
+<span id="id1"></span><h1>Initialisation de la base de données<a class="headerlink" href="#database-initialization" title="Lien vers cette rubrique"></a></h1>
+<p>Vous pouvez utiliser <a class="reference internal" href="../admin-guide/pgadmin/index.html#pgadmin"><span class="std std-ref">pgAdmin</span></a> afin d’accéder et gérer le serveur de base de données.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>By clicking the link you can learn how to <a class="reference internal" href="../admin-guide/pgadmin/install.html#install-pgadmin"><span class="std std-ref">Install pgAdmin</span></a></p>
+<p>En cliquant sur ce lien vous apprendrez à <span class="xref std std-ref">install pgAdmin</span></p>
 </div>
 <section id="process">
-<h2>Process<a class="headerlink" href="#process" title="Lien vers cette rubrique"></a></h2>
-<p>In pgAdmin4</p>
+<h2>Procédure<a class="headerlink" href="#process" title="Lien vers cette rubrique"></a></h2>
+<p>Dans pgAdmin 4</p>
 <ul class="simple">
-<li><p>Connect to the database server</p></li>
-<li><p>Create a new database with UTF8 encoding</p></li>
+<li><p>Se connecter au serveur de la base de données</p></li>
+<li><p>Créer une base de donnée encodée en UTF8</p></li>
 </ul>
-<p>E.g. <cite>tww_demo</cite>, avoid spaces, dots, uppercases and special characters
-As proposed in <a class="reference external" href="https://stackoverflow.com/questions/2878248/postgresql-naming-conventions">https://stackoverflow.com/questions/2878248/postgresql-naming-conventions</a></p>
+<p>Ex. <cite>tww_demo</cite>, éviter les espaces, points, majuscules et caractères spéciaux comme proposé dans <a class="reference external" href="https://stackoverflow.com/questions/2878248/postgresql-naming-conventions">https://stackoverflow.com/questions/2878248/postgresql-naming-conventions</a></p>
 <section id="create-minimal-roles-and-access">
-<h3>Create  minimal roles and access<a class="headerlink" href="#create-minimal-roles-and-access" title="Lien vers cette rubrique"></a></h3>
+<h3>Créer les roles minimaux et accès<a class="headerlink" href="#create-minimal-roles-and-access" title="Lien vers cette rubrique"></a></h3>
 <p>TWW can be installed per database cluster using the new TEKSI Module Management Tool. They only have to be installed once!</p>
 <p>See the current <a class="reference external" href="https://github.com/teksi/TMMT/discussions/34">TMMT Documentation for a step by step help</a></p>
 <div class="admonition note">
@@ -145,8 +144,8 @@ As proposed in <a class="reference external" href="https://stackoverflow.com/que
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
-        <a href="server.html" class="btn btn-neutral float-left" title="Setup database server" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
-        <a href="workstation.html" class="btn btn-neutral float-right" title="Setup workstation" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="server.html" class="btn btn-neutral float-left" title="Configuration du serveur de base de données" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+        <a href="workstation.html" class="btn btn-neutral float-right" title="Configuration du poste de travail" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

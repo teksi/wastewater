@@ -1,15 +1,1 @@
-admin-guide
-de
-en
-extensions-guide
-features-guide
-fr
-_images
-installation-guide
 latest
-releases
-_sources
-_static
-translation
-tww_swmm
-user-guide

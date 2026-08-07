@@ -1,7 +1,0 @@
-pum_migrations
-oid_prefixes
-logged_relations
-logged_actions
-dictionary_od_values
-dictionary_od_table
-dictionary_od_field

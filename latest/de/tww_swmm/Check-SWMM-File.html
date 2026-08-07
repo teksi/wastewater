@@ -44,12 +44,12 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">TEKSI wastewater (TWW)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../installation-guide/index.html">Installation Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">User Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">Admin Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">TEKSI Abwasser (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation-guide/index.html">Installationsanleitung</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">Benutzerhandbuch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">Administratorhandbuch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Releases</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../extensions-guide/index.html">Official TWW extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions-guide/index.html">Offizielle TWW-Erweiterungen</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">SWMM Data Exchange</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="SWMM.html">Storm Water Management Model (SWMM)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TWW-SWMM-installation.html">TWW-SWMM installation</a></li>
@@ -57,8 +57,8 @@
 <li class="toctree-l2"><a class="reference internal" href="Prepare-Data.html">Prepare Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Generate-SWMM-File.html">Generate SWMM File</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Check SWMM File</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#common-import-errors">Common import errors</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#missing-status-or-function-hierarchic-wn-function-hierarchic">Missing status or _function_hierarchic (wn_function_hierarchic)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#common-import-errors">Häufige Importfehler</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#missing-status-or-function-hierarchic-wn-function-hierarchic">Fehlender Status oder _FunktionHierarchisch (wn_function_hierarchic)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#catchment-area-connected-to-secondary-wastewater-structure">Catchment area connected to secondary wastewater structure</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#missing-discharge-coefficients">Missing discharge coefficients</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#missing-population-densities">Missing population densities</a></li>
@@ -73,7 +73,7 @@
 <li class="toctree-l2"><a class="reference internal" href="Developpers-Advanced-Users.html">For developpers and advanced users</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">Übersetzungen</a></li>
 </ul>
 
         </div>
@@ -116,16 +116,16 @@
 <li><p>etc.</p></li>
 </ul>
 <section id="common-import-errors">
-<span id="id2"></span><h2>Common import errors<a class="headerlink" href="#common-import-errors" title="Link to this heading"></a></h2>
+<span id="id2"></span><h2>Häufige Importfehler<a class="headerlink" href="#common-import-errors" title="Link to this heading"></a></h2>
 <section id="missing-status-or-function-hierarchic-wn-function-hierarchic">
-<h3>Missing status or _function_hierarchic (wn_function_hierarchic)<a class="headerlink" href="#missing-status-or-function-hierarchic-wn-function-hierarchic" title="Link to this heading"></a></h3>
-<p>The catchment area is linked to node which is not exported or a reach cannot be drawn because of a missing node:</p>
+<h3>Fehlender Status oder _FunktionHierarchisch (wn_function_hierarchic)<a class="headerlink" href="#missing-status-or-function-hierarchic-wn-function-hierarchic" title="Link to this heading"></a></h3>
+<p>Das Einzugsgebiet ist mit einem Knoten verbunden, der nicht exportiert wird, oder eine Haltung kann aufgrund eines fehlenden Knotens nicht gezeichnet werden:</p>
 <ul class="simple">
-<li><p>because of its status (abandonned etc.) or status is not defined (is Null)</p></li>
-<li><p>the node is not connected (correctly) to a conduit</p></li>
-<li><p>the node is secondary (the linked reach are secondary)</p></li>
+<li><p>aufgrund seines Status (aufgehoben usw.) oder der Status ist nicht definiert (ist Null)</p></li>
+<li><p>Der Knoten ist nicht (korrekt) mit einer Leitung verbunden.</p></li>
+<li><p>Der Knoten ist sekundär (die verbundenen Haltungen sind sekundär).</p></li>
 </ul>
-<p>and therefore not export in the vw_junctions.</p>
+<p>und daher nicht in die vw_junctions exportiert.</p>
 <p>Check your data manually before the export if wastwater_structure.status is not empty. Check whether wastwater_structure._function_hierarchic is filled in on Primary network nodes (PAA nodes).</p>
 <p><a class="reference external" href="https://github.com/TWW/TWW/issues/613">For more details see related Github issue</a></p>
 </section>
