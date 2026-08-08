@@ -48,9 +48,6 @@ jobs:
         if: ${{ github.event_name == 'push' }}
         run: qgis-plugin-ci push-translation ${{ secrets.TX_TOKEN }}
 
-      - name: Package PyPI Packages
-        run: ./plugin/scripts/package-pip-packages.sh
-
       - name: Download Interlis libs
         run: ./plugin/scripts/download-interlis-libs.sh
 
@@ -61,7 +58,6 @@ jobs:
             --no-validation \
             package ${VERSION} \
             --allow-uncommitted-changes \
-            --asset-path plugin/teksi_wastewater/libs \
             --asset-path plugin/teksi_wastewater/interlis/bin \
             --transifex-token "${{ secrets.TX_TOKEN }}"
 
