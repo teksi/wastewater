@@ -8,7 +8,7 @@ The final product can be found here:
  * [English](https://teksi.github.io/wastewater)
  * [Deutsch](https://teksi.github.io/wastewater/latest/de)
  * [Français](https://teksi.github.io/wastewater/latest/fr)
- * [Italiano](https://teksi.github.io/wastewater/latest/it) -- deactivated need translators
+ * [Italiano](https://teksi.github.io/wastewater/latest/it) -- need translation efforts see  https://github.com/teksi/wastewater/discussions/1091#discussioncomment-17702576
  * [Română](https://teksi.github.io/wastewater/latest/ro) --deactivated need translators
  * [Español](https://teksi.github.io/wastewater/latest/es) --deactivated need translators
 
