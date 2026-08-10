@@ -162,6 +162,15 @@ Running modification {modification.get('id')}
             if value:
                 self.extra_definitions[key] = self.abspath / value
 
+        vw_tww_wastewater_node(
+            connection=connection,
+            srid=SRID,
+            extra_definition=(
+                self.load_yaml(self.extra_definitions["vw_tww_wastewater_node"])
+                if self.extra_definitions.get("vw_tww_wastewater_node")
+                else {}
+            ),
+        )
         vw_wastewater_structure(
             connection=self._connection,
             extra_definition=(
@@ -176,15 +185,6 @@ Running modification {modification.get('id')}
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_wastewater_structure"])
                 if self.extra_definitions.get("vw_tww_wastewater_structure")
-                else {}
-            ),
-        )
-        vw_tww_wastewater_node(
-            connection=connection,
-            srid=SRID,
-            extra_definition=(
-                self.load_yaml(self.extra_definitions["vw_tww_wastewater_node"])
-                if self.extra_definitions.get("vw_tww_wastewater_node")
                 else {}
             ),
         )
