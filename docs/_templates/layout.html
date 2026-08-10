@@ -1,0 +1,41 @@
+{% extends "!layout.html" %}
+
+{% block extrahead %}
+  <style>
+    .version-selector {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: white;
+      padding: 5px;
+    }
+  </style>
+{% endblock %}
+
+{% block body %}
+  <div class="version-selector">
+    <select onchange="location = this.value;">
+  </div>
+
+  <script>
+  fetch("/versions.json")
+    .then(r => r.json())
+    .then(versions => {
+      const select = document.getElementById("version-select");
+
+      versions.forEach(v => {
+        const opt = document.createElement("option");
+        opt.value = "/" + v + "/";
+        opt.text = v;
+
+        if (window.location.pathname.includes("/" + v + "/")) {
+          opt.selected = true;
+        }
+
+        select.appendChild(opt);
+      });
+    });
+  </script>
+
+  {{ super() }}
+{% endblock %}

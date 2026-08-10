@@ -21,8 +21,8 @@ import logging
 import os
 
 from processing.core.ProcessingConfig import ProcessingConfig, Setting
-from PyQt5.QtGui import QIcon
 from qgis.core import Qgis, QgsProcessingProvider
+from qgis.PyQt.QtGui import QIcon
 from qgis.utils import iface
 
 from .change_reach_direction import ChangeReachDirection
@@ -99,7 +99,8 @@ class TwwProcessingProvider(QgsProcessingProvider):
         except ImportError as e:
             iface.messageBar().pushMessage(
                 "Error",
-                "Could not load tww2ili due to unmet dependencies. See logs for more details.",
+                "Could not load tww2ili due to unmet dependencies.",
+                showMore=f"Error details:\n{str(e)}",
                 level=Qgis.Critical,
             )
             logger.error(str(e))

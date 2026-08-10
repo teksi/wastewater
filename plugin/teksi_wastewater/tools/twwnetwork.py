@@ -143,8 +143,8 @@ class TwwGraphManager(QObject):
         and recreate the graph.
         """
         try:
-            with OverrideCursor(Qt.WaitCursor):
-                DatabaseUtils.refresh_matviews()
+            with OverrideCursor(Qt.CursorShape.WaitCursor):
+                DatabaseUtils.refresh_network_simple()
             self.message_emitted.emit(
                 self.tr("Success"),
                 self.tr("Materialized Views successfully updated"),

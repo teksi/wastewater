@@ -17,8 +17,8 @@
  ***************************************************************************/
 """
 
-from PyQt5.QtCore import QCoreApplication
 from qgis.core import QgsProcessingAlgorithm
+from qgis.PyQt.QtCore import QCoreApplication
 
 __author__ = "Matthias Kuhn"
 __date__ = "2018-08-15"

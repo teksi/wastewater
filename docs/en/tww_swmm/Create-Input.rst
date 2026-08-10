@@ -1,4 +1,3 @@
-.. _Create-Input:
 
 SWMM Create Input
 -----------------

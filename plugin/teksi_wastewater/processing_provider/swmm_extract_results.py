@@ -17,7 +17,6 @@
  ***************************************************************************/
 """
 
-from PyQt5.QtCore import QVariant
 from qgis.core import (
     QgsFeature,
     QgsFeatureSink,
@@ -29,6 +28,7 @@ from qgis.core import (
     QgsProcessingParameterFeatureSink,
     QgsProcessingParameterFile,
 )
+from qgis.PyQt.QtCore import QVariant
 
 from .tww_algorithm import TwwAlgorithm
 from .TwwSwmm import TwwSwmm
@@ -59,11 +59,11 @@ class SwmmExtractResultsAlgorithm(TwwAlgorithm):
     def shortHelpString(self):
         return self.tr("""
         Import SWMM results in QGIS temporary tables.
-        See: https://teksi.github.io/wastewater/tww_swmm/Process-Results.html
+        See: https://teksi.github.io/wastewater/latest/en/tww_swmm/Process-Results.html
         """)
 
     def helpUrl(self):
-        return "https://teksi.github.io/wastewater/tww_swmm/Process-Results.html"
+        return "https://teksi.github.io/wastewater/latest/en/tww_swmm/Process-Results.html"
 
     def initAlgorithm(self, config=None):
         """Here we define the inputs and output of the algorithm, along

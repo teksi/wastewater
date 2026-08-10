@@ -164,3 +164,8 @@ CREATE MATERIALIZED VIEW tww_app.vw_catchment_area_totals_aggregated AS
       )ca_agg
         ON ca_agg.fk_pwwf_wastewater_node::text = wn.obj_id::text
    WITH DATA;
+
+CREATE UNIQUE INDEX in_app_vw_catchment_area_totals_aggregated_obj_id
+    ON tww_app.vw_catchment_area_totals_aggregated USING btree
+    (obj_id COLLATE pg_catalog."default")
+    TABLESPACE pg_default;

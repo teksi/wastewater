@@ -34,7 +34,7 @@ SELECT
 		ELSE 'current'
 	END as state,
 	CASE
-		WHEN cfhi.vsacode in (5062, 5064, 5066, 5068, 5069, 5070, 5071, 5072, 5074) THEN 'primary'
+		WHEN cfhi.tww_is_primary THEN 'primary'
 		ELSE 'secondary'
 	END as hierarchy,
 	wn.obj_id as obj_id
@@ -45,6 +45,7 @@ LEFT JOIN tww_od.overflow_char oc ON of.fk_overflow_char = oc.obj_id
 LEFT JOIN tww_vl.overflow_char_kind_overflow_char vl_oc_ki ON oc.kind_overflow_char = vl_oc_ki.code
 LEFT JOIN tww_od.wastewater_node wn ON wn.obj_id = of.fk_wastewater_node
 LEFT JOIN tww_od.wastewater_structure ws ON ws.fk_main_wastewater_node = wn.obj_id
+LEFT JOIN tww_od.tww_wastewater_node_symbology wns ON wns.fk_wastewater_node = wn.obj_id
 LEFT JOIN tww_vl.wastewater_structure_status ws_st ON ws.status = ws_st.code
-LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=wn._function_hierarchic
+LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=wns._function_hierarchic
 WHERE ws_st.vsacode IN (6530, 6533, 8493, 6529, 6526, 7959);

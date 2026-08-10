@@ -156,7 +156,7 @@ class TeksiWastewaterPlugin:
 
         fp = os.path.join(os.path.abspath(os.path.dirname(__file__)), "metadata.txt")
 
-        ini_text = QSettings(fp, QSettings.IniFormat)
+        ini_text = QSettings(fp, QSettings.Format.IniFormat)
         verno = ini_text.value("version")
 
         self.logger.info("TEKSI Wastewater plugin version " + verno + " started")
@@ -201,7 +201,7 @@ class TeksiWastewaterPlugin:
 
         self.wizardAction = QAction(
             QIcon(os.path.join(plugin_root_path(), "icons/wizard.svg")),
-            "Wizard",
+            self.tr("Wizard"),
             self.iface.mainWindow(),
         )
         self.wizardAction.setWhatsThis(self.tr("Create new manholes and reaches"))
@@ -211,7 +211,7 @@ class TeksiWastewaterPlugin:
 
         self.connectNetworkElementsAction = QAction(
             QIcon(os.path.join(plugin_root_path(), "icons/link-wastewater-networkelement.svg")),
-            QApplication.translate("teksi_wastewater", "Connect wastewater networkelements"),
+            self.tr("Connect wastewater networkelements"),
             self.iface.mainWindow(),
         )
         self.connectNetworkElementsAction.setEnabled(False)
@@ -220,7 +220,7 @@ class TeksiWastewaterPlugin:
 
         self.refreshNetworkTopologyAction = QAction(
             QIcon(os.path.join(plugin_root_path(), "icons/refresh-network.svg")),
-            "Refresh network topology",
+            self.tr("Refresh network topology"),
             self.iface.mainWindow(),
         )
         self.refreshNetworkTopologyAction.setWhatsThis(self.tr("Refresh network topology"))
@@ -245,6 +245,11 @@ class TeksiWastewaterPlugin:
             self.tr("Disable symbology triggers"), self.iface.mainWindow()
         )
         self.disableSymbologyTriggersAction.triggered.connect(self.disable_symbology_triggers)
+
+        self.refreshmaterializedViewsAction = QAction(
+            self.tr("Refresh materialized views"), self.iface.mainWindow()
+        )
+        self.refreshmaterializedViewsAction.triggered.connect(self.refresh_materialized_views)
 
         self.settingsAction = QAction(
             QIcon(QgsApplication.getThemeIcon("/mActionOptions.svg")),
@@ -296,6 +301,7 @@ class TeksiWastewaterPlugin:
         self.iface.addPluginToMenu(self.main_menu_name, self.validityCheckAction)
         self.iface.addPluginToMenu(self.main_menu_name, self.enableSymbologyTriggersAction)
         self.iface.addPluginToMenu(self.main_menu_name, self.disableSymbologyTriggersAction)
+        self.iface.addPluginToMenu(self.main_menu_name, self.refreshmaterializedViewsAction)
         self.iface.addPluginToMenu(self.main_menu_name, self.settingsAction)
         self.iface.addPluginToMenu(self.main_menu_name, self.aboutAction)
 
@@ -433,6 +439,22 @@ class TeksiWastewaterPlugin:
                 self.tr(f"Symbology triggers cannot be disabled:\n\n{exception}"),
             )
 
+    def refresh_materialized_views(self):
+        try:
+            DatabaseUtils.refresh_matviews()
+            QMessageBox.information(
+                self.iface.mainWindow(),
+                self.refreshmaterializedViewsAction.text(),
+                self.tr("Materialized views have been successfully refreshed"),
+            )
+
+        except Exception as exception:
+            QMessageBox.critical(
+                self.iface.mainWindow(),
+                self.refreshmaterializedViewsAction.text(),
+                self.tr(f"Materialized views cannot be refreshed:\n\n{exception}"),
+            )
+
     def unload(self):
         """
         Called when unloading
@@ -459,6 +481,7 @@ class TeksiWastewaterPlugin:
         self.iface.removePluginMenu(self.main_menu_name, self.aboutAction)
         self.iface.removePluginMenu(self.main_menu_name, self.enableSymbologyTriggersAction)
         self.iface.removePluginMenu(self.main_menu_name, self.disableSymbologyTriggersAction)
+        self.iface.removePluginMenu(self.main_menu_name, self.refreshmaterializedViewsAction)
 
         QgsApplication.processingRegistry().removeProvider(self.processing_provider)
 
@@ -545,7 +568,7 @@ class TeksiWastewaterPlugin:
         if not self.wizarddock:
             self.wizarddock = TwwWizard(self.iface.mainWindow(), self.iface)
         self.logger.debug("Opening Wizard")
-        self.iface.addDockWidget(Qt.LeftDockWidgetArea, self.wizarddock)
+        self.iface.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, self.wizarddock)
         self.wizarddock.show()
 
     def connectNetworkElements(self, checked):
@@ -608,7 +631,7 @@ class TeksiWastewaterPlugin:
 
     def updateSymbology(self):
         try:
-            with OverrideCursor(Qt.WaitCursor):
+            with OverrideCursor(Qt.CursorShape.WaitCursor):
                 DatabaseUtils.update_symbology()
             QMessageBox.information(
                 self.iface.mainWindow(),
@@ -625,14 +648,14 @@ class TeksiWastewaterPlugin:
 
     def showSettings(self):
         settings_dlg = TwwSettingsDialog(self.iface.mainWindow())
-        settings_dlg.exec_()
+        settings_dlg.exec()
 
         self.update_admin_mode()
 
     def about(self):
         from .gui.about_dialog import AboutDialog
 
-        AboutDialog(self.iface.mainWindow()).exec_()
+        AboutDialog(self.iface.mainWindow()).exec()
 
     def actionExportClicked(self):
         if self.interlisImporterExporter is None:
@@ -647,7 +670,8 @@ class TeksiWastewaterPlugin:
             except ImportError as e:
                 self.iface.messageBar().pushMessage(
                     "Error",
-                    "Could not load Interlis exporter due to unmet dependencies. See logs for more details.",
+                    "Could not load Interlis exporter due to unmet dependencies.",
+                    showMore=f"Error details:\n{str(e)}",
                     level=Qgis.Critical,
                 )
                 self.logger.error(str(e))
@@ -656,7 +680,8 @@ class TeksiWastewaterPlugin:
             except JavaNotFoundError as e:
                 self.iface.messageBar().pushMessage(
                     "Error",
-                    "Could not load Interlis exporter due to missing Java. See logs for more details.",
+                    "Could not load Interlis exporter due to missing Java.",
+                    showMore=f"Error details:\n{str(e)}",
                     level=Qgis.Critical,
                 )
                 self.logger.error(str(e))
@@ -687,7 +712,8 @@ class TeksiWastewaterPlugin:
             except ImportError as e:
                 self.iface.messageBar().pushMessage(
                     "Error",
-                    "Could not load Interlis importer due to unmet dependencies. See logs for more details.",
+                    "Could not load Interlis importer due to unmet dependencies.",
+                    showMore=f"Error details:\n{str(e)}",
                     level=Qgis.Critical,
                 )
                 self.logger.error(str(e))
@@ -696,7 +722,8 @@ class TeksiWastewaterPlugin:
             except JavaNotFoundError as e:
                 self.iface.messageBar().pushMessage(
                     "Error",
-                    "Could not load Interlis importer due to missing Java. See logs for more details.",
+                    "Could not load Interlis importer due to missing Java.",
+                    showMore=f"Error details:\n{str(e)}",
                     level=Qgis.Critical,
                 )
                 self.logger.error(str(e))
@@ -756,15 +783,18 @@ class TeksiWastewaterPlugin:
         # seems QGIS loads True as "true" on restart ?!
         if admin_mode and admin_mode != "false":
             admin_mode = True
+            self.toolbar.addAction(self.refreshNetworkTopologyAction)
             self.toolbar.addAction(self.importAction)
             self.toolbar.addAction(self.exportAction)
         else:
+            self.toolbar.removeAction(self.refreshNetworkTopologyAction)
             self.toolbar.removeAction(self.importAction)
             self.toolbar.removeAction(self.exportAction)
             admin_mode = False
 
         self.enableSymbologyTriggersAction.setEnabled(admin_mode)
         self.disableSymbologyTriggersAction.setEnabled(admin_mode)
+        self.refreshmaterializedViewsAction.setEnabled(admin_mode)
 
     def toggleSelectionExtenderWidget(self, checked: bool):
         if checked:
@@ -775,7 +805,9 @@ class TeksiWastewaterPlugin:
                 )
                 self.selectionExtenderWidget.setController(self.selectionExtenderController)
 
-                self.iface.addDockWidget(Qt.RightDockWidgetArea, self.selectionExtenderWidget)
+                self.iface.addDockWidget(
+                    Qt.DockWidgetArea.RightDockWidgetArea, self.selectionExtenderWidget
+                )
 
                 self.selectionExtenderWidget.visibilityChanged.connect(
                     self._onSelectionExtenderVisibilityChanged
