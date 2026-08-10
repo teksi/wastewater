@@ -9,7 +9,6 @@ wastewater_structure:
 wastewater_networkelement:
   referencing:
     - "reach_point"
-    - "connection_object"
   inherits_to:
     - "reach"
     - "wastewater_node"
@@ -27,10 +26,6 @@ wastewater_node:
 reach:
   inherits_from:
     - "wastewater_networkelement"
-  referencing:
-    - "overflow"
-    - "throttle_shut_off_unit"
-    - "hydraulic_char_data"
   referenced:
     - "pipe_profile"
 
