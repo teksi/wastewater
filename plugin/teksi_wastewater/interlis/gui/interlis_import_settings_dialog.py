@@ -43,7 +43,7 @@ class InterlisImportSettingsDialog(QDialog):
 
     @property
     def show_selection_dialog(self):
-        return not(self.suppress_import_dialog_checkbox.isChecked())
+        return not (self.suppress_import_dialog_checkbox.isChecked())
 
     @property
     def filter_nulls(self):
