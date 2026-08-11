@@ -178,7 +178,7 @@ def vw_tww_additional_ws(
             table_alias="ne",
             remove_pkey=True,
             indent=4,
-            skip_columns=["fk_wastewater_structure"],
+            skip_columns=["fk_wastewater_structure", "fk_provider", "fk_dataowner"],
             prefix="wn_",
             remap_columns={},
         ),
@@ -301,8 +301,8 @@ def vw_tww_additional_ws(
                 "identifier": "COALESCE(NULLIF(NEW.wn_identifier,''), NEW.identifier)",
                 "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )",
                 "last_modification": "NOW()",
-                "fk_provider": "COALESCE(NULLIF(NEW.wn_fk_provider,''), NEW.fk_provider)",
-                "fk_dataowner": "COALESCE(NULLIF(NEW.wn_fk_dataowner,''), NEW.fk_dataowner)",
+                "fk_provider": "NEW.fk_provider",
+                "fk_dataowner": "NEW.fk_dataowner",
                 "fk_wastewater_structure": "NEW.obj_id",
             },
         ),
@@ -344,7 +344,6 @@ def vw_tww_additional_ws(
       {update_sp}
       {update_ws}
       {update_wn}
-      {update_ne}
       {update_extra}
 
       IF OLD.ws_type <> NEW.ws_type THEN
@@ -535,23 +534,15 @@ def vw_tww_additional_ws(
         ),
         update_wn=update_command(
             connection=connection,
-            table_schema="tww_od",
-            table_name="wastewater_node",
+            table_schema="tww_app",
+            table_name="vw_tww_wastewater_node",
             table_alias="wn",
             prefix="wn_",
+            pkey="obj_id",
             indent=6,
             skip_columns=[
                 "situation3d_geometry",
             ],
-        ),
-        update_ne=update_command(
-            connection=connection,
-            table_schema="tww_od",
-            table_name="wastewater_networkelement",
-            table_alias="ne",
-            prefix="wn_",
-            indent=6,
-            skip_columns=[],
             update_values={
                 "last_modification": "NEW.last_modification",
                 "fk_dataowner": "NEW.fk_dataowner",
