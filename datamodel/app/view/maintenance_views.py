@@ -94,8 +94,10 @@ def mvw_tww_channel(
         , re_agg._re_materials
         , rpc.fk_reach_point_from
         , rp_from.fk_wastewater_networkelement as _from_ne
+        , rp_from.level as _from_level
         , rpc.fk_reach_point_to
         , rp_to.fk_wastewater_networkelement as _to_ne
+        , rp_to.level as _to_level
         , vl_fh.tww_is_primary
       FROM tww_od.channel ch
          JOIN rp_channel rpc ON rpc.obj_id::text = ch.obj_id::text
