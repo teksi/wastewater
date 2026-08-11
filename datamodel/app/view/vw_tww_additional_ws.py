@@ -538,6 +538,7 @@ def vw_tww_additional_ws(
             table_name="vw_tww_wastewater_node",
             table_alias="wn",
             prefix="wn_",
+            pkey="obj_id",
             indent=6,
             skip_columns=[
                 "situation3d_geometry",
