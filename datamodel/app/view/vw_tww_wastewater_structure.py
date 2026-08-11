@@ -640,6 +640,7 @@ def vw_tww_wastewater_structure(
             table_alias="wn",
             prefix="wn_",
             indent=6,
+            pkey="obj_id",
             skip_columns=[
                 "situation3d_geometry",
             ],
