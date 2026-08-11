@@ -82,6 +82,7 @@ class InterlisImporterExporterGui(QObject):
                     show_selection_dialog=True,
                     logs_next_to_file=import_dialog.logs_next_to_file,
                     filter_nulls=import_dialog.filter_nulls,
+                    show_selection_dialog=import_dialog.show_selection_dialog,
                     srid=srid,
                     import_orgs=import_orgs,
                 )
