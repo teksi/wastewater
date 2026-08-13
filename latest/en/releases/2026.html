@@ -105,7 +105,7 @@
 <blockquote>
 <div><ul class="simple">
 <li><p><a class="reference external" href="../admin-guide/db-production-readiness/index.html">The OID Prefix can be set in TMMT from 2026.0.1 on</a></p></li>
-<li><p><a class="reference external" href="../user-guide/editing/editing.html">The ‘Extend selection tool’ allows users to expand a selection made on the vw_tww_reach layer to related objects</a></p></li>
+<li><p><a class="reference external" href="../user-guide/editing/editing.html#id1">The ‘Extend selection tool’ allows users to expand a selection made on the vw_tww_reach layer to related objects</a></p></li>
 </ul>
 <blockquote>
 <div><figure class="align-default">
@@ -114,7 +114,7 @@
 </div></blockquote>
 <ul class="simple">
 <li><p><a class="reference external" href="../user-guide/network-following/index.html">The ‘Refresh network topology’ is only visible in Admin mode</a> as the query can take quite long for big networks.</p></li>
-<li><p>create _ch copies of translation files ( ‘*.qm’ )</p></li>
+<li><p>create _CH copies of translation files ( ‘*.qm’ )</p></li>
 <li><p>Import VSA organisation from internet if not present</p></li>
 </ul>
 </div></blockquote>
@@ -197,37 +197,37 @@
 <div><p>The following new views have been integrated in this release:</p>
 </div></blockquote>
 <ul class="simple">
-<li><p>tww_app.vw_tww_wastewater_node (in addition to tww_app.vw_wastewater_node)</p></li>
-<li><p>tww_od.tww_reach_point_labels</p></li>
-<li><p>tww_od.tww_wastewater_structure_labels</p></li>
-<li><p>tww_od.tww_wastewater_node_symbology</p></li>
+<li><p><cite>tww_app.vw_tww_wastewater_node</cite> (in addition to <cite>tww_app.vw_wastewater_node</cite>)</p></li>
+<li><p><cite>tww_od.tww_reach_point_labels</cite></p></li>
+<li><p><cite>tww_od.tww_wastewater_structure_labels</cite></p></li>
+<li><p><cite>tww_od.tww_wastewater_node_symbology</cite></p></li>
+<li><p>new layer <cite>tww_od.profile_geometry</cite></p></li>
+<li><p>Added layer <cite>vw_tww_damage</cite></p></li>
 </ul>
-<p>Please export and use the corresponding <code class="docutils literal notranslate"><span class="pre">*</span> </code>.qml files to integrate them into your existing TWW 2025 project files</p>
+<p>Please export and use the corresponding <code class="docutils literal notranslate"><span class="pre">*</span> <span class="pre">.qml</span></code> files to integrate them into your existing TWW 2025 project files</p>
 <p>The following views have been adapted and need an adaption of existing TWW 2025 project files:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>Better configuration in vw_tww_catchment_area_totals (point-layer)</p></li>
-<li><p>Hint about necessary logcards in vw_catchment_area, tab fk_logcard</p></li>
+<li><p>Better configuration in <cite>vw_tww_catchment_area_totals</cite> (point-layer)</p></li>
+<li><p>Hint about necessary logcards in <cite>vw_catchment_area</cite>, tab fk_logcard</p></li>
 <li><p>Added info whether ws has log card to main view</p></li>
-<li><p>Added layer vw_tww_damage</p></li>
-<li><p>vw_tww_reach. labeldefinition for rp_from_label und rp_to_label renamed and with the replace-function so it will work with the variables for translation</p></li>
-<li><p>vw_tww_wastewater_structure: Symbology: replaced some ‘not “tww_is_primary” ‘ with ‘(not “tww_is_primary” or “tww_is_primary” is NULL)’</p></li>
-<li><p>vw_tww_wastewater_structure: Attributs Form: wn_elevation_accuracy also with option reuse last entered value (similar as co_position_accuracy)</p></li>
-<li><p>vw_tww_wastewater_structure: Attributs Form: _input_label, _output_label replaced with _reach_point_label</p></li>
-<li><p>New Project variable tww_language: values should be _en, _de or _fr</p></li>
-<li><p>vw_tww_reach labeldefinition: changed “material_abbr_en” to case when &#64;tww_language = ‘_de’ then “material_abbr_de” when &#64;tww_language = ‘_fr’ then “material_abbr_fr” else “material_abbr_en” end</p></li>
-<li><p>new layer tww_od.profile_geometry</p></li>
-<li><p>new relation pipe_profile.obj_id to profile_geometry.fk_pipeprofile</p></li>
-<li><p>profile_geometry Attribute form</p></li>
-<li><p>pipe_profile Attribute form (profile_geometry subtable only for profile_type special, mouth, open)</p></li>
-<li><p>vw_tww_additional_ws: field wn_fk_wastewater_structure no more in vw</p></li>
-<li><p>all identifier-fields: new enforced constraints length(“identifier” )&lt;=nn or “identifier” is NULL (otherwise you loose all entries, if the identifier is to long)</p></li>
+<li><p><cite>vw_tww_reach</cite>: labeldefinition for <cite>rp_from_label</cite> and <cite>rp_to_label</cite> renamed and with the replace-function so it will work with the variables for translation</p></li>
+<li><p><cite>vw_tww_wastewater_structure</cite>: Symbology: replaced some <cite>not “tww_is_primary” ` with `(not “tww_is_primary” or “tww_is_primary” is NULL)</cite></p></li>
+<li><p><cite>vw_tww_wastewater_structure</cite>: Attributs Form: <cite>wn_elevation_accuracy</cite> also with option reuse last entered value (similar as <cite>co_position_accuracy</cite>)</p></li>
+<li><p><cite>vw_tww_wastewater_structure</cite>: Attributs Form: <cite>_input_label</cite>, <cite>_output_label</cite> replaced with <cite>_reach_point_label</cite></p></li>
+<li><p>New Project variable <cite>tww_language</cite>: values should be <cite>_en</cite>, _de` or <cite>_fr</cite></p></li>
+<li><p>vw_tww_reach labeldefinition: changed “material_abbr_en” to <cite>case when &#64;tww_language = ‘_de’ then “material_abbr_de” when &#64;tww_language = ‘_fr’ then “material_abbr_fr” else “material_abbr_en” end</cite></p></li>
+<li><p>new relation <cite>pipe_profile.obj_id</cite> to <cite>profile_geometry.fk_pipeprofile</cite></p></li>
+<li><p><cite>profile_geometry</cite> Attribute form</p></li>
+<li><p><cite>pipe_profile</cite> Attribute form (profile_geometry subtable only for profile_type special, mouth, open)</p></li>
+<li><p><cite>vw_tww_additional_ws</cite>: field wn_fk_wastewater_structure` no more in view</p></li>
+<li><p>all identifier-fields: new enforced constraints <cite>length(“identifier” )&lt;=nn or “identifier” is NULL</cite> (otherwise you loose all entries, if the identifier is to long)</p></li>
 <li><p>added a project-stored SQL “visualize profile_geometry”</p></li>
-<li><p>vw_tww_wastewater_structure: tww_is_primary, tww_has_log_card, _owner_organisation_type is not editable, owner_organisation_type configured as value relation</p></li>
-<li><p>vw_tww_additional_wws: reach_point_label, tww_is_primary, _channel_usage_current, _channel_function_hierarchic, _owner_organisation_type is not editable. _channel_usage_current, _channel_function_hierarchic, owner_organisation_type configured as value relation</p></li>
-<li><p>vw_wastewater_structure : tww_is_primary, _channel_usage_current, _channel_function_hierarchic, _owner_organisation_type is not editable. _channel_usage_current, _channel_function_hierarchic, owner_organisation_type configured as value relation</p></li>
-<li><p>vw_tww_reach: owner_organisation_type is not editable. owner_organisation_type configured as value relation</p></li>
-<li><p>vw_tww_overflow: _channel_usage_current, _channel_function_hierarchic is not editable. _channel_usage_current, _channel_function_hierarchic configured as value relation</p></li>
+<li><p><cite>vw_tww_wastewater_structure</cite>: tww_is_primary, tww_has_log_card, _owner_organisation_type` is not editable, owner_organisation_type` configured as value relation</p></li>
+<li><p><cite>vw_tww_additional_wws</cite>: <cite>reach_point_label</cite>, <cite>tww_is_primary</cite>, <cite>_channel_usage_current</cite>, <cite>_channel_function_hierarchic</cite>, <cite>_owner_organisation_type</cite> is not editable. <cite>_channel_usage_current</cite>, <cite>_channel_function_hierarchic</cite>, <cite>owner_organisation_type</cite> configured as value relation</p></li>
+<li><p><cite>vw_wastewater_structure</cite> : <cite>tww_is_primary</cite>, <cite>_channel_usage_current</cite>, <cite>_channel_function_hierarchic</cite>, <cite>_owner_organisation_type</cite> is not editable. <cite>_channel_usage_current</cite>, <cite>_channel_function_hierarchic</cite>, <cite>owner_organisation_type</cite> configured as value relation</p></li>
+<li><p><cite>vw_tww_reach</cite>: <cite>owner_organisation_type</cite> is not editable. <cite>owner_organisation_type</cite> configured as value relation</p></li>
+<li><p><cite>vw_tww_overflow</cite>: <cite>_channel_usage_current</cite>, <cite>_channel_function_hierarchic</cite> is not editable. <cite>_channel_usage_current</cite>, <cite>_channel_function_hierarchic</cite> configured as value relation</p></li>
 <li><p>all fields with value relation: “order by” set to value</p></li>
 </ul>
 <p>For Reference see <a class="reference external" href="https://github.com/teksi/wastewater/issues/995#issuecomment-4803889291">https://github.com/teksi/wastewater/issues/995#issuecomment-4803889291</a></p>
