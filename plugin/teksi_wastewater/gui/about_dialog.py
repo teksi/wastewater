@@ -28,8 +28,8 @@ from qgis.PyQt.QtCore import QSettings
 from qgis.PyQt.QtGui import QPixmap
 from qgis.PyQt.QtWidgets import QDialog
 
-from ..utils.ui import get_ui_class
 from ..utils.plugin_utils import plugin_root_path
+from ..utils.ui import get_ui_class
 
 DIALOG_UI = get_ui_class("about_dialog.ui")
 
