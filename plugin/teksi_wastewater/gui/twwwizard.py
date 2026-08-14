@@ -28,7 +28,7 @@ from qgis.PyQt.QtCore import pyqtSlot
 from qgis.PyQt.QtWidgets import QDockWidget
 
 from ..tools.twwmaptooladdfeature import TwwMapToolAddReach
-from ..utils import get_ui_class
+from ..utils.ui import get_ui_class
 from ..utils.twwlayermanager import TwwLayerManager
 
 DOCK_WIDGET = get_ui_class("twwwizard.ui")

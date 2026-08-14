@@ -35,7 +35,7 @@ from qgis.PyQt.QtWidgets import (
     QMessageBox,
 )
 
-from ..utils import get_ui_class
+from ..utils.ui import get_ui_class
 from ..utils.twwlayermanager import TwwLayerManager
 
 DOCK_WIDGET_UI = get_ui_class("twwdockwidget.ui")
