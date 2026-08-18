@@ -117,12 +117,12 @@
 <p>Ensuite, vous devez activer la journalisation (logging) sur les tables ou vues souhaitées.</p>
 <ul>
 <li><p>Pour les vues</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_sys</span><span class="o">.</span><span class="n">audit_view</span><span class="p">(</span><span class="s1">&#39;tww_od.vw_tww_wastewater_structure&#39;</span><span class="p">,</span> <span class="s1">&#39;true&#39;</span><span class="p">::</span><span class="n">boolean</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="p">::</span><span class="n">text</span><span class="p">[],</span> <span class="s1">&#39;</span><span class="si">{obj_id}</span><span class="s1">&#39;</span><span class="p">::</span><span class="n">text</span><span class="p">[]);</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_sys</span><span class="o">.</span><span class="n">audit_view</span><span class="p">(</span><span class="s1">'tww_od.vw_tww_wastewater_structure'</span><span class="p">,</span> <span class="s1">'true'</span><span class="p">::</span><span class="n">boolean</span><span class="p">,</span> <span class="s1">'</span><span class="si">{}</span><span class="s1">'</span><span class="p">::</span><span class="n">text</span><span class="p">[],</span> <span class="s1">'</span><span class="si">{obj_id}</span><span class="s1">'</span><span class="p">::</span><span class="n">text</span><span class="p">[]);</span>
 </pre></div>
 </div>
 </li>
 <li><p>Pour les tables</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_sys</span><span class="o">.</span><span class="n">audit_table</span><span class="p">(</span><span class="s1">&#39;tww_od.reach_point&#39;</span><span class="p">);</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_sys</span><span class="o">.</span><span class="n">audit_table</span><span class="p">(</span><span class="s1">'tww_od.reach_point'</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
@@ -130,8 +130,8 @@
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Vous pouvez désactiver la journalisation avec</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_sys</span><span class="o">.</span><span class="n">unaudit_view</span><span class="p">(</span><span class="s1">&#39;tww_od.vw_tww_wastewater_structure&#39;</span><span class="p">);</span>
-<span class="n">SELECT</span> <span class="n">tww_sys</span><span class="o">.</span><span class="n">unaudit_table</span><span class="p">(</span><span class="s1">&#39;tww_od.reach_point&#39;</span><span class="p">);</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_sys</span><span class="o">.</span><span class="n">unaudit_view</span><span class="p">(</span><span class="s1">'tww_od.vw_tww_wastewater_structure'</span><span class="p">);</span>
+<span class="n">SELECT</span> <span class="n">tww_sys</span><span class="o">.</span><span class="n">unaudit_table</span><span class="p">(</span><span class="s1">'tww_od.reach_point'</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>

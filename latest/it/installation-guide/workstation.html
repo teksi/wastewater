@@ -220,7 +220,7 @@ choose <em>advanced installation</em> and install qgis-dev.</p></li>
 </pre></div>
 </div>
 <p>Or for Windows users, directly in QGIS via the Python Console with:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pip</span><span class="p">;</span> <span class="n">pip</span><span class="o">.</span><span class="n">main</span><span class="p">([</span><span class="s2">&quot;install&quot;</span><span class="p">,</span> <span class="s2">&quot;networkx&quot;</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pip</span><span class="p">;</span> <span class="n">pip</span><span class="o">.</span><span class="n">main</span><span class="p">([</span><span class="s2">"install"</span><span class="p">,</span> <span class="s2">"networkx"</span><span class="p">])</span>
 </pre></div>
 </div>
 <section id="plugin-installation-with-tmmt-plugin">
@@ -335,10 +335,10 @@ choose <em>advanced installation</em> and install qgis-dev.</p></li>
 <img alt="../_images/add_own_oid_prefix.jpg" src="../_images/add_own_oid_prefix.jpg" />
 </figure>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">-- sample entry for myorganisation - you need to add an entry for your own organization</span>
-<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">tww_sys</span><span class="p">.</span><span class="n">oid_prefixes</span><span class="w"> </span><span class="p">(</span><span class="k">prefix</span><span class="p">,</span><span class="n">organization</span><span class="p">,</span><span class="n">active</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;ch11h8mw&#39;</span><span class="p">,</span><span class="s1">&#39;myorganisation&#39;</span><span class="p">,</span><span class="k">TRUE</span><span class="p">);</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">tww_sys</span><span class="p">.</span><span class="n">oid_prefixes</span><span class="w"> </span><span class="p">(</span><span class="k">prefix</span><span class="p">,</span><span class="n">organization</span><span class="p">,</span><span class="n">active</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s1">'ch11h8mw'</span><span class="p">,</span><span class="s1">'myorganisation'</span><span class="p">,</span><span class="k">TRUE</span><span class="p">);</span>
 
 <span class="c1">-- sample code to set Invalid organisation to FALSE</span>
-<span class="k">UPDATE</span><span class="w"> </span><span class="n">tww_sys</span><span class="p">.</span><span class="n">oid_prefixes</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">active</span><span class="o">=</span><span class="k">FALSE</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">prefix</span><span class="o">=</span><span class="s1">&#39;ch000000&#39;</span><span class="p">;</span>
+<span class="k">UPDATE</span><span class="w"> </span><span class="n">tww_sys</span><span class="p">.</span><span class="n">oid_prefixes</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">active</span><span class="o">=</span><span class="k">FALSE</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">prefix</span><span class="o">=</span><span class="s1">'ch000000'</span><span class="p">;</span>
 </pre></div>
 </div>
 <div class="admonition note">

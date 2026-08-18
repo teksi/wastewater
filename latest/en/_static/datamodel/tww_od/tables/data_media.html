@@ -110,8 +110,8 @@
                                 <tbody>
                                 <tr>
                                     <td class='primaryKey' title='Primary Key'><i class='icon ion-key iconkey' style='padding-left: 5px;'></i><span id="obj_id">obj_id</span></td>
-                                    <td>varchar</td>
-                                    <td>16</td>
+                                    <td>&quot;tww_od&quot;.&quot;interlis_standardoid&quot;</td>
+                                    <td>2147483647</td>
                                     <td title=''></td>
                                     <td title=''></td>
                                     <td>tww_app.generate_oid(&#39;tww_od&#39;::text, &#39;data_media&#39;::text)</td>
@@ -352,20 +352,20 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td>vo_path_length_max_1023</td>
-                                    <td>((char_length(path) &lt;&#61; 1023))</td>
-                                </tr>
-                                <tr>
-                                    <td>vo_remark_length_max_80</td>
-                                    <td>((char_length(remark) &lt;&#61; 80))</td>
-                                </tr>
-                                <tr>
                                     <td>vo_identifier_length_max_60</td>
                                     <td>((char_length(identifier) &lt;&#61; 60))</td>
                                 </tr>
                                 <tr>
                                     <td>vo_location_length_max_50</td>
                                     <td>((char_length(location) &lt;&#61; 50))</td>
+                                </tr>
+                                <tr>
+                                    <td>vo_remark_length_max_80</td>
+                                    <td>((char_length(remark) &lt;&#61; 80))</td>
+                                </tr>
+                                <tr>
+                                    <td>vo_path_length_max_1023</td>
+                                    <td>((char_length(path) &lt;&#61; 1023))</td>
                                 </tr>
                                 </tbody>
                             </table>
