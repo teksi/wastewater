@@ -191964,7 +191964,7 @@ obj_id are set, no cover will be added&lt;\font&gt;&lt;\b&gt;</attributeEditorTe
                 <Option name="show_first_feature" type="bool" value="true"></Option>
               </editor_configuration>
             </attributeEditorRelation>
-            <attributeEditorRelation forceSuppressFormPopup="0" horizontalStretch="0" label="Elecromechanical_Equipement" name="vw_electro_fk_wastewater_structure_vw_tww_was_obj_id" nmRelationId="" relation="vw_electro_fk_wastewater_structure_vw_tww_was_obj_id" relationWidgetTypeId="linking_relation_editor" showLabel="1" verticalStretch="0">
+            <attributeEditorRelation forceSuppressFormPopup="0" horizontalStretch="0" label="Electromechanical_Equipment" name="vw_electro_fk_wastewater_structure_vw_tww_was_obj_id" nmRelationId="" relation="vw_electro_fk_wastewater_structure_vw_tww_was_obj_id" relationWidgetTypeId="linking_relation_editor" showLabel="1" verticalStretch="0">
               <labelStyle labelColor="" overrideLabelColor="0" overrideLabelFont="0">
                 <labelFont bold="0" description="MS Shell Dlg 2,8.3,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
               </labelStyle>
