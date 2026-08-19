@@ -79,9 +79,9 @@ class InterlisImporterExporterGui(QObject):
             with OverrideCursor(Qt.CursorShape.WaitCursor):
                 self.interlis_importer_exporter.interlis_import(
                     xtf_file_input=xtf_file_input,
-                    show_selection_dialog=True,
                     logs_next_to_file=import_dialog.logs_next_to_file,
                     filter_nulls=import_dialog.filter_nulls,
+                    show_selection_dialog=import_dialog.show_selection_dialog,
                     srid=srid,
                     import_orgs=import_orgs,
                 )
