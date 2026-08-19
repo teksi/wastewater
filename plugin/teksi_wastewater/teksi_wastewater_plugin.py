@@ -393,9 +393,9 @@ class TeksiWastewaterPlugin:
                             self.tr(
                                 "Project uses tww_app.vw_wastewater_node instead of "
                                 "tww_app.vw_tww_wastewater_node. This will make plugin functionalities fail."
-                                ),
-                                IssueLevel.ERROR,
-                            )
+                            ),
+                            IssueLevel.ERROR,
+                        )
                     )
                 else:
                     messages.append(
@@ -403,9 +403,9 @@ class TeksiWastewaterPlugin:
                             self.tr(
                                 "Project does not load tww_app.vw_tww_wastewater_node. "
                                 "This will make plugin functionalities fail."
-                                ),
-                                IssueLevel.ERROR,
-                            )
+                            ),
+                            IssueLevel.ERROR,
+                        )
                     )
 
         except Exception as exception:
