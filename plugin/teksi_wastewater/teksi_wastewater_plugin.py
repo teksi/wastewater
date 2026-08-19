@@ -42,7 +42,7 @@ from .gui.twwprofiledockwidget import TwwProfileDockWidget
 from .gui.twwselectionextenderwidget import TwwSelectionExtenderWidget
 from .gui.twwsettingsdialog import TwwSettingsDialog
 from .gui.twwwizard import TwwWizard
-from .libs.modelbaker.iliwrapper.ili2dbutils import JavaNotFoundError
+from .interlis.utils.modelbaker.iliwrapper.ili2dbutils import JavaNotFoundError
 from .processing_provider.provider import TwwProcessingProvider
 from .tools.twwmaptools import TwwMapToolConnectNetworkElements, TwwTreeMapTool
 from .tools.twwnetwork import TwwGraphManager
@@ -370,7 +370,7 @@ class TeksiWastewaterPlugin:
         self.toolbarButtons.append(self.selectionExtenderAction)
         self.selectionExtenderController = TwwSelectionExtender(self.iface)
 
-    def _get_validity_issues(self) -> list[Issue]:
+    def _get_validity_issues(self, messages=[]) -> list[Issue]:
         try:
             return DatabaseUtils.get_validity_check_issues(include_ili=True, logger=self.logger)
         except Exception as exception:
@@ -382,6 +382,39 @@ class TeksiWastewaterPlugin:
             ]
 
     def tww_validity_check_startup(self):
+        try:
+            messages = []
+            wastewater_node = TwwLayerManager.layer("vw_tww_wastewater_node")
+            if not wastewater_node:
+                wastewater_node = TwwLayerManager.layer("vw_wastewater_node")
+                if wastewater_node:
+                    messages.append(
+                        Issue(
+                            self.tr(
+                                "Project uses tww_app.vw_wastewater_node instead of "
+                                "tww_app.vw_tww_wastewater_node. This will make plugin functionalities fail."
+                                ),
+                                IssueLevel.ERROR,
+                            )
+                    )
+                else:
+                    messages.append(
+                        Issue(
+                            self.tr(
+                                "Project does not load tww_app.vw_tww_wastewater_node. "
+                                "This will make plugin functionalities fail."
+                                ),
+                                IssueLevel.ERROR,
+                            )
+                    )
+
+        except Exception as exception:
+            return [
+                Issue(
+                    self.tr(f"Could not check database validity: {exception}"),
+                    IssueLevel.ERROR,
+                )
+            ]
         issues = self._get_validity_issues()
 
         for issue in issues:

@@ -31,7 +31,7 @@ from qgis.PyQt.QtWidgets import QDialog, QFileDialog
 from teksi_wastewater.utils.database_utils import DatabaseUtils
 from teksi_wastewater.utils.twwlayermanager import TwwLayerManager
 
-from ..utils import get_ui_class
+from ..utils.ui import get_ui_class
 
 DIALOG_UI = get_ui_class("twwsettingsdialog.ui")
 

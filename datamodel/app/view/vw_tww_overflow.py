@@ -287,7 +287,7 @@ def vw_tww_overflow(connection: psycopg.Connection, extra_definition: dict = Non
     $BODY$
     DECLARE
     BEGIN
-      DELETE FROM tww_od.wastewater_structure WHERE obj_id = OLD.obj_id;
+      DELETE FROM tww_od.overflow WHERE obj_id = OLD.obj_id;
     RETURN OLD;
     END; $BODY$ LANGUAGE plpgsql VOLATILE;
 
