@@ -37,7 +37,6 @@ class InterlisImportSettingsDialog(QDialog):
         # Remember save next to file checkbox
         QgsSettings().setValue("tww_plugin/filter_nulls_import", self.filter_nulls)
 
-
     @property
     def logs_next_to_file(self):
         return self.save_logs_next_to_file_checkbox.isChecked()
