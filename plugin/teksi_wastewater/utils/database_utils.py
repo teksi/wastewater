@@ -218,7 +218,7 @@ class DatabaseUtils:
         return row[0]
 
     @staticmethod
-    def check_oid_prefix() -> list[str]:
+    def check_oid_prefix() -> list[Issue]:
         """Check whether the oid_prefix is set up for production"""
         logger.info("Checking setup of oid prefix")
         prefixes = DatabaseUtils.fetchall("SELECT prefix FROM tww_sys.oid_prefixes WHERE active;")
@@ -247,7 +247,7 @@ class DatabaseUtils:
         return issues
 
     @staticmethod
-    def check_fk_defaults() -> list[str]:
+    def check_fk_defaults() -> list[Issue]:
         """Check whether the database is set up for production"""
         logger.info("Checking setup of default_values")
 
@@ -278,7 +278,7 @@ class DatabaseUtils:
         return msg_list
 
     @staticmethod
-    def get_validity_check_issues(include_ili: bool = False, logger=None) -> list[str]:
+    def get_validity_check_issues(include_ili: bool = False, logger=None) -> list[Issue]:
         messages = []
         messages = DatabaseUtils.check_oid_prefix()
         messages.extend(DatabaseUtils.check_fk_defaults())
