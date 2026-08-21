@@ -2,10 +2,12 @@ from qgis.PyQt.QtWidgets import (
     QMainWindow,
     QTableWidgetItem,
 )
-from ..utils.ui import get_ui_class
+
 from ..tools.tww_pipe_profile_editor import TwwPipeProfileEditor
+from ..utils.ui import get_ui_class
 
 DIALOG_UI = get_ui_class("twwsettingsdialog.ui")
+
 
 class PipeProfileEditorWindow(QMainWindow, DIALOG_UI):
 
@@ -35,25 +37,15 @@ class PipeProfileEditorWindow(QMainWindow, DIALOG_UI):
 
     def _connect_signals(self):
 
-        self.actionDeleteVertex.triggered.connect(
-            self.editor.delete_selected_vertex
-        )
+        self.actionDeleteVertex.triggered.connect(self.editor.delete_selected_vertex)
 
-        self.actionAddVertex.triggered.connect(
-            self._add_vertex
-        )
+        self.actionAddVertex.triggered.connect(self._add_vertex)
 
-        self.tblVertices.itemSelectionChanged.connect(
-            self._table_selection_changed
-        )
+        self.tblVertices.itemSelectionChanged.connect(self._table_selection_changed)
 
-        self.spnX.valueChanged.connect(
-            self._coordinates_changed
-        )
+        self.spnX.valueChanged.connect(self._coordinates_changed)
 
-        self.spnY.valueChanged.connect(
-            self._coordinates_changed
-        )
+        self.spnY.valueChanged.connect(self._coordinates_changed)
 
     # ------------------------------------------------------------------
     # Toolbar Actions
@@ -95,25 +87,19 @@ class PipeProfileEditorWindow(QMainWindow, DIALOG_UI):
             self.tblVertices.setItem(
                 row,
                 0,
-                QTableWidgetItem(
-                    str(vertex.sequence)
-                ),
+                QTableWidgetItem(str(vertex.sequence)),
             )
 
             self.tblVertices.setItem(
                 row,
                 1,
-                QTableWidgetItem(
-                    f"{vertex.x_coord:.2f}"
-                ),
+                QTableWidgetItem(f"{vertex.x_coord:.2f}"),
             )
 
             self.tblVertices.setItem(
                 row,
                 2,
-                QTableWidgetItem(
-                    f"{vertex.y_coord:.2f}"
-                ),
+                QTableWidgetItem(f"{vertex.y_coord:.2f}"),
             )
 
         self.tblVertices.blockSignals(False)
@@ -164,11 +150,7 @@ class PipeProfileEditorWindow(QMainWindow, DIALOG_UI):
     def _selected_vertex(self):
 
         return next(
-            (
-                v
-                for v in self.editor.vertex_items
-                if v.isSelected()
-            ),
+            (v for v in self.editor.vertex_items if v.isSelected()),
             None,
         )
 
@@ -196,10 +178,7 @@ class PipeProfileEditorWindow(QMainWindow, DIALOG_UI):
         if self.editor.profile_line_item is None:
             return
 
-        rect = (
-            self.editor.profile_line_item
-            .sceneBoundingRect()
-        )
+        rect = self.editor.profile_line_item.sceneBoundingRect()
 
         self.graphicsView.fitInView(
             rect,

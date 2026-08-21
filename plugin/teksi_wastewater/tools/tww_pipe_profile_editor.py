@@ -6,8 +6,8 @@ from qgis.PyQt.QtCore import QObject
 from qgis.PyQt.QtGui import QColor, QPainterPath, QPen
 from qgis.PyQt.QtWidgets import QGraphicsPathItem
 
-from ..utils.database_utils import DatabaseUtils
 from ..gui.vertex_item import VertexItem
+from ..utils.database_utils import DatabaseUtils
 
 
 class TwwPipeProfileEditor(QObject):
@@ -81,12 +81,8 @@ class TwwPipeProfileEditor(QObject):
                 {geometry}::jsonb
             );
             """,
-            pipe_profile=DatabaseUtils.wrap_literal(
-                self.pipe_profile_obj_id
-            ),
-            geometry=DatabaseUtils.wrap_literal(
-                self.profile_as_json()
-            ),
+            pipe_profile=DatabaseUtils.wrap_literal(self.pipe_profile_obj_id),
+            geometry=DatabaseUtils.wrap_literal(self.profile_as_json()),
         )
 
         DatabaseUtils.execute(query)
@@ -146,11 +142,7 @@ class TwwPipeProfileEditor(QObject):
     def delete_selected_vertex(self):
 
         selected = next(
-            (
-                v
-                for v in self.vertex_items
-                if v.isSelected()
-            ),
+            (v for v in self.vertex_items if v.isSelected()),
             None,
         )
 
@@ -197,11 +189,7 @@ class TwwPipeProfileEditor(QObject):
     def move_vertex_up(self):
 
         selected = next(
-            (
-                v
-                for v in self.vertex_items
-                if v.isSelected()
-            ),
+            (v for v in self.vertex_items if v.isSelected()),
             None,
         )
 
@@ -233,11 +221,7 @@ class TwwPipeProfileEditor(QObject):
     def move_vertex_down(self):
 
         selected = next(
-            (
-                v
-                for v in self.vertex_items
-                if v.isSelected()
-            ),
+            (v for v in self.vertex_items if v.isSelected()),
             None,
         )
 
@@ -288,9 +272,7 @@ class TwwPipeProfileEditor(QObject):
 
         if self.profile_line_item is not None:
 
-            self.window.scene.removeItem(
-                self.profile_line_item
-            )
+            self.window.scene.removeItem(self.profile_line_item)
 
             self.profile_line_item = None
 
@@ -318,9 +300,7 @@ class TwwPipeProfileEditor(QObject):
                 vertex.y_coord,
             )
 
-        self.profile_line_item = QGraphicsPathItem(
-            path
-        )
+        self.profile_line_item = QGraphicsPathItem(path)
 
         self.profile_line_item.setPen(
             QPen(
@@ -331,9 +311,7 @@ class TwwPipeProfileEditor(QObject):
 
         self.profile_line_item.setZValue(10)
 
-        self.window.scene.addItem(
-            self.profile_line_item
-        )
+        self.window.scene.addItem(self.profile_line_item)
 
     # ------------------------------------------------------------------
     # GUI callbacks
