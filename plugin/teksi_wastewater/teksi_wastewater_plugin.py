@@ -421,7 +421,7 @@ class TeksiWastewaterPlugin:
             self.iface.messageBar().pushMessage(
                 issue.level.name.title(),
                 issue.message,
-                level=self._qgis_level(issue.level),
+                level=self._qgis_issue_level(issue.level),
             )
 
     def tww_validity_check_action(self):
