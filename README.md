@@ -16,9 +16,9 @@ The project is maintained by the [TEKSI community](https://www.teksi.ch)
 [TEKSI](https://www.teksi.ch) is a non profit Swiss association set up to support open source professional GIS projects aiming to ease the management of public infrastructures.
 
 ## How to start
-* [TEKSI wastewater features](https://teksi.github.io/wastewater/features-guide/)
+* [TEKSI wastewater features](https://teksi.github.io/wastewater/latest/en/features-guide/)
 * [Getting started with TWW](https://github.com/teksi/wastewater/discussions/72)
-* [Installation Guide](https://teksi.github.io/wastewater/installation-guide/)
+* [Installation Guide](https://teksi.github.io/wastewater/latest/en/installation-guide/)
 * [How to contribute](https://github.com/teksi/Home/wiki/TEKSI-Contributor-Guide)
 
 ## Issues, features, ideas

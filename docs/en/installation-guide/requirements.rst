@@ -48,7 +48,7 @@ The following Python packages (installed via OSGEO4W or using `pip <https://pypi
 * `geoalchemy2 <https://github.com/geoalchemy/geoalchemy2>`_ for INTERLIS imports and exports
 
 PostgreSQL Server side :
--------------------
+--------------------------------------
 
 Allow the connexion of your clients through the `postgresql.conf` file and make sure your client
 is allowed to reach the server postgresql port (default is 5432).

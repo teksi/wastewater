@@ -35,8 +35,8 @@ from qgis.PyQt.QtWidgets import (
     QMessageBox,
 )
 
-from ..utils import get_ui_class
 from ..utils.twwlayermanager import TwwLayerManager
+from ..utils.ui import get_ui_class
 
 DOCK_WIDGET_UI = get_ui_class("twwdockwidget.ui")
 
@@ -170,7 +170,7 @@ class TwwProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
                 wastewater_nodes.append(item["objId"])
 
         tww_wastewater_structures_layer = TwwLayerManager.layer("vw_tww_wastewater_structure")
-        wastewater_nodes_layer = TwwLayerManager.layer("vw_wastewater_node")
+        wastewater_nodes_layer = TwwLayerManager.layer("vw_tww_wastewater_node")
         tww_reach_layer = TwwLayerManager.layer("vw_tww_reach")
         catchment_areas_layer = TwwLayerManager.layer("vw_tww_catchment_area")
 

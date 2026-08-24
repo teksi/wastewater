@@ -99,7 +99,8 @@ class TwwProcessingProvider(QgsProcessingProvider):
         except ImportError as e:
             iface.messageBar().pushMessage(
                 "Error",
-                "Could not load tww2ili due to unmet dependencies. See logs for more details.",
+                "Could not load tww2ili due to unmet dependencies.",
+                showMore=f"Error details:\n{str(e)}",
                 level=Qgis.Critical,
             )
             logger.error(str(e))

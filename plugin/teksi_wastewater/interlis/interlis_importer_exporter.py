@@ -1,11 +1,13 @@
 import logging
 import os
+import socket
 import tempfile
 from pathlib import Path
 
-from ..utils.database_utils import DatabaseUtils
+import requests
+
+from ..utils.database_utils import DatabaseUtils, TWWIntegrityChecker
 from . import config
-from .gui.interlis_import_selection_dialog import InterlisImportSelectionDialog
 from .interlis_model_mapping.interlis_exporter_to_intermediate_schema import (
     InterlisExporterToIntermediateSchema,
     InterlisExporterToIntermediateSchemaError,
@@ -27,7 +29,6 @@ from .interlis_model_mapping.model_tww import ModelTwwSys, ModelTwwVl
 from .interlis_model_mapping.model_tww_ag6496 import ModelTwwAG6496
 from .interlis_model_mapping.model_tww_od import ModelTwwOd
 from .utils.ili2db import InterlisTools
-from .utils.interlis_integrity_checker import TWWIntegrityChecker
 from .utils.various import (
     CmdException,
     InterlisImporterExporterError,
@@ -97,6 +98,8 @@ class InterlisImporterExporter:
         logs_next_to_file=True,
         filter_nulls=True,
         srid: int = None,
+        import_orgs=False,
+        user_interaction=False,
     ):
         # Configure logging
         if logs_next_to_file:
@@ -154,6 +157,9 @@ class InterlisImporterExporter:
             [import_model], ext_columns_no_constraints=True, create_basket_col=True
         )
 
+        if import_orgs:
+            self.import_vsa_orgs()
+
         # Import from xtf file to ili2pg model
         self._progress_done(30, "Importing XTF data...")
         self._import_xtf_file(xtf_file_input=xtf_file_input)
@@ -170,6 +176,10 @@ class InterlisImporterExporter:
             if show_selection_dialog:
                 from qgis.PyQt.QtCore import Qt
                 from qgis.PyQt.QtWidgets import QApplication, QDialog
+
+                from .gui.interlis_import_selection_dialog import (
+                    InterlisImportSelectionDialog,
+                )
 
                 self._progress_done(90, "Import objects selection...")
                 import_dialog = InterlisImportSelectionDialog()
@@ -194,7 +204,7 @@ class InterlisImporterExporter:
             self._import_update_main_cover_and_refresh_mat_views()
 
             # Validate subclasses after import
-            integrityChecker = TWWIntegrityChecker()
+            integrityChecker = TWWIntegrityChecker(logger=logger)
             _ = integrityChecker._check_subclass_counts(raise_err=True)
 
             # Update organisations
@@ -231,6 +241,7 @@ class InterlisImporterExporter:
         selected_labels_scales_indices=[],
         selected_ids=None,
         include_unplaced: bool = False,
+        import_orgs: bool = False,
     ):
         # File name without extension (used later for export)
         file_name_base, _ = os.path.splitext(xtf_file_output)
@@ -275,6 +286,8 @@ class InterlisImporterExporter:
             abs_file_path = Path(__file__).parent.resolve() / file_path
             logger.info("Importing AG-64 organisation to intermediate schema")
             self._import_xtf_file(abs_file_path)
+        elif import_orgs:
+            self.import_vsa_orgs()
 
         # Export to the temporary ili2pg model
         self._progress_done(35, "Converting from TEKSI Wastewater...")
@@ -307,12 +320,13 @@ class InterlisImporterExporter:
         selected_ids=None,
         srid: int = None,
         include_unplaced: bool = False,
+        import_orgs: bool = False,
     ):
 
         if srid:
             self.srid = srid
         exportChecker = TWWIntegrityChecker(
-            models=export_models, limit_to_selection=limit_to_selection
+            models=export_models, limit_to_selection=limit_to_selection, logger=logger
         )
         if export_models[0] == "SIA405_Base_Abwasser_1_LV95":
             failed, errormsg, _ = exportChecker._check_organisation_tww_local_extension_count()
@@ -336,8 +350,7 @@ class InterlisImporterExporter:
         # go thru all available checks and register if check failed or not.
 
         results = exportChecker.run_integrity_checks()
-        if not results["failed"]:
-            logger.info(f"All checks passed! ({results['stats']['ok']} OK)")
+        if not results.failed:
             self.execute_export(
                 xtf_file_output,
                 export_models,
@@ -347,6 +360,7 @@ class InterlisImporterExporter:
                 labels_file,
                 selected_labels_scales_indices,
                 selected_ids,
+                import_orgs,
             )
         else:
             if user_interaction:
@@ -371,7 +385,7 @@ class InterlisImporterExporter:
                     "Stop exporting: Some export checks failed - check the logs for details. (if you have a selection you can still try (click Cancel) "
                 )
                 mb.setInformativeText(
-                    f" {results['stats']['failed']} failed, {results['stats']['ok']} passed"
+                    f" {results.stats['failed']} failed, {results.stats['ok']} passed"
                 )
                 mb.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
                 return_value = mb.exec()
@@ -400,18 +414,18 @@ class InterlisImporterExporter:
                         labels_file,
                         selected_labels_scales_indices,
                         selected_ids,
+                        import_orgs,
                     )
             else:
-                logger.error(f"Failed checks:\n{results['failed_checks']}")
-                logger.info(
-                    f" {results['stats']['failed']} failed, {results['stats']['ok']} passed"
-                )
+                msg = "\n".join(issue.message for issue in results.failed_checks)
+                logger.error(f"Failed checks:{msg}")
+                logger.info(f" {results.stats['failed']} failed, {results.stats['ok']} passed")
                 logger.info(
                     "INTERLIS export has been stopped due to failing export checks - see logs for details."
                 )
                 raise InterlisImporterExporterError(
                     "INTERLIS Export aborted!",
-                    results["failed_checks"],
+                    "\n".join(issue.message for issue in results.failed_checks),
                     None,
                 )
 
@@ -753,3 +767,50 @@ class InterlisImporterExporter:
         self.current_progress = progress
         if self.progress_done_callback:
             self.progress_done_callback(int(progress), text)
+
+    def _has_internet(self, url: str = None, timeout=1):
+        from urllib.parse import urlparse
+
+        try:
+            if url:
+                host = urlparse(url).hostname
+            else:
+                host = "vsa.ch"
+
+            if not isinstance(host, str):
+                return False
+
+            socket.create_connection((host, 443), timeout=timeout)
+            return True
+
+        except OSError:
+            return False
+
+    def import_vsa_orgs(self):
+        if self._has_internet():
+            try:
+                response = requests.get(config.VSA_ORG_URL, timeout=(2, 10))
+                response.raise_for_status()
+
+                tmp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".xtf")
+                tmp_file.write(response.content)
+                tmp_file.close()
+
+                logger.info(f"Downloaded VSA organisations file to {tmp_file.name}")
+                orgs_path = Path(tmp_file.name)
+                logger.info("Importing VSA organisation to intermediate schema")
+                self._progress_done(25, "Importing VSA organisations data...")
+                self._import_xtf_file(orgs_path)
+
+            except Exception as e:
+                logger.warning(f"Could not download VSA file: {e}")
+            finally:
+                try:
+                    os.remove(tmp_file.name)
+                except Exception:
+                    pass
+
+        else:
+            logger.warning(
+                "No internet connection detected → skipping download of vsa organisations"
+            )

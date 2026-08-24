@@ -29,7 +29,7 @@ jobs:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 2
 
@@ -75,33 +75,24 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - modification_ci: false
-          modification_agxx: false
+        - modification_agxx: false
           webgis: false
           srid: 2056
 
-        - modification_ci: true
-          modification_agxx: false
+        - modification_agxx: true
           webgis: false
           srid: 2056
 
-        - modification_ci: false
-          modification_agxx: true
-          webgis: false
-          srid: 2056
-
-        - modification_ci: false
-          modification_agxx: false
+        - modification_agxx: false
           webgis: true
           srid: 2056
 
-        - modification_ci: false
-          modification_agxx: false
+        - modification_agxx: false
           webgis: false
           srid: 21781
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Initialize container
         run: |
@@ -114,7 +105,6 @@ jobs:
           docker compose exec db createdb -U postgres ${DB_NAME}
           docker compose run pum \
               -vvv -p ${PGSERVICE} -d datamodel install \
-              -p modification_ci ${{ matrix.modification_ci}} \
               -p modification_agxx ${{ matrix.modification_agxx}} \
               -p webgis ${{ matrix.webgis}} \
               -p SRID ${{ matrix.srid }}
@@ -132,5 +122,5 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
     - run: ./datamodel/test/static_tests.sh

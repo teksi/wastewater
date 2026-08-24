@@ -43,7 +43,7 @@ How to connect reaches to nodes or reaches to reaches
 
 
 Video Tutorial (not adapted for TWW)
---------------
+------------------------------------------
 
 * See `this video tutorial (QGIS version 2): <https://vimeo.com/171536774>`_
 

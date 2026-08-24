@@ -19,7 +19,7 @@ SELECT
 		ELSE 'current'
 	END as state,
 	CASE
-		WHEN ch_fh.vsacode in (5062, 5064, 5066, 5068, 5069, 5070, 5071, 5072, 5074) THEN 'primary'
+		WHEN ch_fh.tww_is_primary THEN 'primary'
 		ELSE 'secondary'
 	END as hierarchy,
 	wn.obj_id as obj_id
@@ -27,10 +27,11 @@ FROM tww_od.manhole ma
 LEFT JOIN tww_od.wastewater_structure ws ON ws.obj_id::text = ma.obj_id::text
 LEFT JOIN tww_od.wastewater_networkelement we ON we.fk_wastewater_structure::text = ws.obj_id::text
 LEFT JOIN tww_od.wastewater_node wn on wn.obj_id = we.obj_id
+LEFT JOIN tww_od.tww_wastewater_node_symbology wns ON wns.fk_wastewater_node = wn.obj_id
 LEFT JOIN tww_od.cover co on ws.fk_main_cover = co.obj_id
 LEFT JOIN tww_vl.manhole_function mf on ma.function = mf.code
 LEFT JOIN tww_vl.wastewater_structure_status ws_st on ws_st.code=ws.status
-LEFT JOIN tww_vl.channel_function_hierarchic ch_fh on ch_fh.code=wn._function_hierarchic
+LEFT JOIN tww_vl.channel_function_hierarchic ch_fh on ch_fh.code=wns._function_hierarchic
 WHERE wn.obj_id IS NOT NULL
 AND ws_st.vsacode IN (6530, 6533, 8493, 6529, 6526, 7959)
 
@@ -52,7 +53,7 @@ SELECT
 		ELSE 'current'
 	END as state,
 	CASE
-		WHEN ch_fh.vsacode in (5062, 5064, 5066, 5068, 5069, 5070, 5071, 5072, 5074) THEN 'primary'
+		WHEN ch_fh.tww_is_primary THEN 'primary'
 		ELSE 'secondary'
 	END as hierarchy,
 	wn.obj_id as obj_id
@@ -60,10 +61,11 @@ FROM tww_od.special_structure ss
 LEFT JOIN tww_od.wastewater_structure ws ON ws.obj_id::text = ss.obj_id::text
 LEFT JOIN tww_od.wastewater_networkelement we ON we.fk_wastewater_structure::text = ws.obj_id::text
 LEFT JOIN tww_od.wastewater_node wn on wn.obj_id = we.obj_id
+LEFT JOIN tww_od.tww_wastewater_node_symbology wns ON wns.fk_wastewater_node = wn.obj_id
 LEFT JOIN tww_od.cover co on ws.fk_main_cover = co.obj_id
 LEFT JOIN tww_vl.special_structure_function ss_fu on ss_fu.code=ss.function
 LEFT JOIN tww_vl.wastewater_structure_status ws_st on ws_st.code=ws.status
-LEFT JOIN tww_vl.channel_function_hierarchic ch_fh on ch_fh.code=wn._function_hierarchic
+LEFT JOIN tww_vl.channel_function_hierarchic ch_fh on ch_fh.code=wns._function_hierarchic
 WHERE wn.obj_id IS NOT NULL
 AND ws_st.vsacode IN (6530, 6533, 8493, 6529, 6526, 7959)
 AND ss_fu.vsacode NOT IN ( -- must be the same list in vw_swmm_storages
@@ -117,7 +119,7 @@ SELECT
 		ELSE 'current'
 	END as state,
 	CASE
-		WHEN ch_fh.vsacode in (5062, 5064, 5066, 5068, 5069, 5070, 5071, 5072, 5074) THEN 'primary'
+		WHEN ch_fh.tww_is_primary THEN 'primary'
 		ELSE 'secondary'
 	END as hierarchy,
 	coalesce(from_wn.obj_id, re.obj_id)  as obj_id
@@ -153,7 +155,7 @@ SELECT
 		ELSE 'current'
 	END as state,
 	CASE
-		WHEN ch_fh.vsacode in (5062, 5064, 5066, 5068, 5069, 5070, 5071, 5072, 5074) THEN 'primary'
+		WHEN ch_fh.tww_is_primary THEN 'primary'
 		ELSE 'secondary'
 	END as hierarchy,
 	coalesce(to_wn.obj_id, re.obj_id) as obj_id
