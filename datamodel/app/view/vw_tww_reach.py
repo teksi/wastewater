@@ -100,7 +100,11 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
             table_alias="ne",
             remove_pkey=True,
             indent=4,
-            skip_columns=["fk_wastewater_structure"],
+            skip_columns=[
+                "fk_wastewater_structure",
+                "fk_dataowner",
+                "fk_provider",
+            ],
         ),
         ch_cols=select_columns(
             connection=connection,
@@ -124,11 +128,13 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
                 "detail_geometry3d_geometry",
                 "status",
                 "fk_owner",
-                "fk_dataowner",
-                "fk_provider",
                 "_depth",
                 "fk_main_cover",
             ],
+            remap_columns={
+                "fk_dataowner": "fk_dataowner",
+                "fk_provider": "fk_provider",
+            },
         ),
         rp_from_cols=select_columns(
             connection=connection,
@@ -138,7 +144,11 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
             prefix="rp_from_",
             remove_pkey=False,
             indent=4,
-            skip_columns=["situation3d_geometry"],
+            skip_columns=[
+                "situation3d_geometry",
+                "fk_dataowner",
+                "fk_provider",
+            ],
         ),
         rp_to_cols=select_columns(
             connection=connection,
@@ -148,7 +158,11 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
             prefix="rp_to_",
             remove_pkey=False,
             indent=4,
-            skip_columns=["situation3d_geometry"],
+            skip_columns=[
+                "situation3d_geometry",
+                "fk_dataowner",
+                "fk_provider",
+            ],
         ),
         extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
     )
@@ -197,8 +211,8 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
             coalesce_pkey_default=True,
             insert_values={
                 "situation3d_geometry": "ST_StartPoint(NEW.progression3d_geometry)",
-                "fk_provider": "COALESCE(NULLIF(NEW.rp_from_fk_provider,''), NEW.fk_provider)",
-                "fk_dataowner": "COALESCE(NULLIF(NEW.rp_from_fk_dataowner,''), NEW.fk_dataowner)",
+                "fk_provider": "NEW.fk_provider",
+                "fk_dataowner": "NEW.fk_dataowner",
             },
             returning="obj_id INTO NEW.rp_from_obj_id",
         ),
@@ -213,8 +227,8 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
             coalesce_pkey_default=True,
             insert_values={
                 "situation3d_geometry": "ST_EndPoint(NEW.progression3d_geometry)",
-                "fk_provider": "COALESCE(NULLIF(NEW.rp_to_fk_provider,''), NEW.fk_provider)",
-                "fk_dataowner": "COALESCE(NULLIF(NEW.rp_to_fk_dataowner,''), NEW.fk_dataowner)",
+                "fk_provider": "NEW.fk_provider",
+                "fk_dataowner": "NEW.fk_dataowner",
             },
             returning="obj_id INTO NEW.rp_to_obj_id",
         ),
@@ -346,7 +360,11 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
             prefix="rp_from_",
             remove_pkey=True,
             indent=6,
-            update_values={"situation3d_geometry": "ST_StartPoint(NEW.progression3d_geometry)"},
+            update_values={
+                "situation3d_geometry": "ST_StartPoint(NEW.progression3d_geometry)",
+                "fk_provider": "NEW.fk_provider",
+                "fk_dataowner": "NEW.fk_dataowner",
+            },
         ),
         rp_to=update_command(
             connection=connection,
@@ -355,7 +373,11 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
             prefix="rp_to_",
             remove_pkey=True,
             indent=6,
-            update_values={"situation3d_geometry": "ST_EndPoint(NEW.progression3d_geometry)"},
+            update_values={
+                "situation3d_geometry": "ST_EndPoint(NEW.progression3d_geometry)",
+                "fk_provider": "NEW.fk_provider",
+                "fk_dataowner": "NEW.fk_dataowner",
+            },
         ),
         ch=update_command(
             connection=connection,
