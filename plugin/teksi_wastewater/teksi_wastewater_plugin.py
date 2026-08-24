@@ -370,9 +370,11 @@ class TeksiWastewaterPlugin:
         self.toolbarButtons.append(self.selectionExtenderAction)
         self.selectionExtenderController = TwwSelectionExtender(self.iface)
 
-    def _get_validity_issues(self, include_ili: bool=False) -> list[Issue]:
+    def _get_validity_issues(self, include_ili: bool = False) -> list[Issue]:
         try:
-            return DatabaseUtils.get_validity_check_issues(include_ili=include_ili, logger=self.logger)
+            return DatabaseUtils.get_validity_check_issues(
+                include_ili=include_ili, logger=self.logger
+            )
         except Exception as exception:
             return [
                 Issue(
