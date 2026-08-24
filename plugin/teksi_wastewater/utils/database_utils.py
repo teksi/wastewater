@@ -296,7 +296,7 @@ class DatabaseUtils:
                 models=[config.MODEL_NAME_DSS, config.MODEL_NAME_VSA_KEK], logger=logger
             )
             IntegrityChecker.run_integrity_checks()
-            messages.extend(IntegrityChecker.issues)
+            messages.extend(IntegrityChecker.check_result.issues)
 
         return messages
 
@@ -315,7 +315,7 @@ class TWWIntegrityChecker:
     def __init__(self, models=[], limit_to_selection=False, logger=None):
         self.limit_to_selection = limit_to_selection
         self.models = models
-        self.issues = CheckResult()
+        self.check_result = CheckResult()
         self.logger = logger or logging.getLogger(__name__)
 
     def add_issue(
@@ -323,7 +323,7 @@ class TWWIntegrityChecker:
         message: str,
         level: IssueLevel = IssueLevel.WARNING,
     ):
-        self.issues.add(message, level)
+        self.check_result.add(message, level)
 
         if level == IssueLevel.ERROR:
             self.logger.error(message)
@@ -363,21 +363,21 @@ class TWWIntegrityChecker:
                     IssueLevel.ERROR,
                 )
 
-        return self.issues
+        return self.check_result
 
     @property
     def failed(self) -> bool:
-        return any(i.level == IssueLevel.ERROR for i in self.issues)
+        return any(i.level == IssueLevel.ERROR for i in self.check_result.issues)
 
     @property
     def failed_checks(self) -> list:
-        return [i for i in self.issues if i.level == IssueLevel.ERROR]
+        return [i for i in self.check_result.issues if i.level == IssueLevel.ERROR]
 
     @property
     def stats(self):
         return {
             "failed": len(self.failed_checks),
-            "total": len(self.issues),
+            "total": len(self.check_result.issues),
         }
 
     def _check_subclass_counts(self, raise_err=False):
