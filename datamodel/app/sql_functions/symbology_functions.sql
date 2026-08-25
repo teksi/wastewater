@@ -395,7 +395,7 @@ BEGIN
   UPDATE tww_od.wastewater_structure ws
   SET _depth = calc_depth
   FROM (
-    SELECT ws.obj_id, 
+    SELECT ws.obj_id,
       nullif(MAX(co.level),0) - COALESCE(nullif(MIN(wn.bottom_level),0), nullif(MIN(RP.level),0)) as calc_depth
       FROM tww_od.wastewater_structure ws
       LEFT JOIN tww_od.cover co on ws.fk_main_cover = co.obj_id
