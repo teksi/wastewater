@@ -243,126 +243,119 @@ CREATE UNIQUE INDEX in_app_vw_agxx_knoten_bauwerksattribute_obj_id
     TABLESPACE pg_default;
 
 DROP VIEW IF EXISTS tww_app.vw_agxx_gepknoten;
-CREATE VIEW tww_app.vw_agxx_gepknoten
-AS
-SELECT
-	  wn.obj_id AS obj_id
-	, COALESCE(wn.wwtp_number,unc.wwtp_number) AS ara_nr
-	, COALESCE(ws.year_of_construction,1800) AS baujahr
-	, COALESCE(sc.value_de,'unbekannt') AS baulicherzustand
-	, CASE WHEN st.value_de = 'in_Betrieb' THEN 'in_Betrieb.in_Betrieb' ELSE COALESCE(st.value_de,'unbekannt') END AS bauwerkstatus
-	, ne_agxx.ag64_remark AS bemerkung_wi
-	, ne.identifier AS bezeichnung
-	, COALESCE(co.level,main_co.level,unc.co_level) AS deckelkote
-	, ST_Force2D(COALESCE(main_ws.detail_geometry3d_geometry,unc.detail_geometry3d_geometry)) AS detailgeometrie
-	, COALESCE(fi.value_de,'unbekannt') AS finanzierung
-	, COALESCE(
-		CASE
-		when
-			meas_pt.obj_id IS NOT NULL
-			AND ss_fu.value_de NOT LIKE ANY (ARRAY['Regenbecken%','Regenueberlauf','Pumpwerk','Dueker%','Versickerungsanlage%'])
-		THEN
-			'Messstelle'
-		when wn_agxx.ag64_function IS NOT NULL THEN 'Anschluss'
-		when wwtp.obj_id IS NOT NULL THEN 'Abwasserreinigungsanlage'
-		ELSE NULL
-		END
-		, ma_fu_rev.value_de
-		, ma_fu.value_de
-		, ss_fu_rev.value_de
-		, ss_fu.value_de
-		,'Einleitstelle_'||dp_rel.value_de
-		,'Versickerungsanlage.'||ii_ki_rev.value_de --Versickerungsanlage.andere wird auf unbekannt gemappt
-		,'Versickerungsanlage.'||ii_ki.value_de --Versickerungsanlage.andere wird auf unbekannt gemappt
-		, 'Leitungsknoten'
-		) AS funktionag
-	, COALESCE(left(fhi.value_de,3),'SAA')  AS funktionhierarchisch
-	, COALESCE(isgate.value_de,'unbekannt') AS istschnittstelle
-	, COALESCE(ws.status_survey_year,1800) AS jahr_zustandserhebung
-	, ST_Force2D(COALESCE(co.situation3d_geometry,wn.situation3d_geometry)) AS lage
-	, ne_agxx_lm.ag64_last_modification AS letzte_aenderung_wi
-	, co_pa.value_de AS lagegenauigkeit
-	, wn.backflow_level_current AS maxrueckstauhoehe
-	, COALESCE(rn.value_de,'unbekannt') AS sanierungsbedarf
-	, wn.bottom_level AS sohlenkote
-	, COALESCE(ac.value_de,'unbekannt') AS zugaenglichkeit
-	, concat_ws('','ch113jqg0000',right(COALESCE(ws.fk_operator,'00000107'),8)) AS betreiber
-	, concat_ws('','ch113jqg0000',right(COALESCE(ne_agxx.ag64_fk_provider,'00000107'),8)) AS datenbewirtschafter_wi
-	, concat_ws('','ch113jqg0000',right(COALESCE(ws.fk_owner,'00000107'),8)) AS eigentuemer
-	, ws_agxx.ag96_fk_measure AS gepmassnahmeref
-	, concat_ws('','ch113jqg0000',right(COALESCE(ne_agxx.ag96_fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
-	, ne_agxx.ag96_remark AS bemerkung_gep
-	, COALESCE(ne_agxx_lm.ag96_last_modification,TO_TIMESTAMP('1800-01-01','YYYY-MM-DD')) AS letzte_aenderung_gep
-  , NULL::boolean AS ignore_ws
-  , CASE
-      WHEN ma.obj_id IS NOT NULL THEN 'manhole'
-      WHEN ss.obj_id IS NOT NULL THEN 'special_structure'
-      WHEN dp.obj_id IS NOT NULL THEN 'discharge_point'
-      WHEN ii.obj_id IS NOT NULL THEN 'infiltration_installation'
-      WHEN wwtp.obj_id IS NOT NULL THEN 'wwtp_structure'
-      ELSE 'unknown'
-    END AS ws_type
-
-
-FROM (
-	SELECT obj_id, wwtp_number, situation3d_geometry, backflow_level_current, bottom_level,wns._function_hierarchic
-	FROM tww_od.wastewater_node wn
-    LEFT JOIN tww_od.tww_wastewater_node_symbology wns
-	ON wns.fk_wastewater_node = wn.obj_id
-	UNION (
-		SELECT obj_id, wwtp_number, situation3d_geometry, backflow_level_current, bottom_level, ch_function_hierarchic as _function_hierarchic
-		FROM tww_od.agxx_unconnected_node_bwrel un
-		EXCEPT
-		SELECT obj_id, wwtp_number, situation3d_geometry, backflow_level_current, bottom_level,ch_function_hierarchic as _function_hierarchic
-		FROM tww_od.agxx_unconnected_node_bwrel un
-		WHERE un.obj_id IN (SELECT obj_id FROM tww_od.wastewater_node wn)
-	)
-) wn
-LEFT JOIN tww_od.wastewater_networkelement ne ON wn.obj_id = ne.obj_id
-LEFT JOIN tww_app.vw_agxx_knoten_bauwerksattribute ws ON wn.obj_id=ws.obj_id
-LEFT JOIN tww_od.wastewater_structure main_ws ON wn.obj_id=main_ws.fk_main_wastewater_node
-
-LEFT JOIN tww_od.agxx_wastewater_node wn_agxx ON wn_agxx.fk_wastewater_node = wn.obj_id
-LEFT JOIN tww_od.agxx_wastewater_networkelement ne_agxx ON ne_agxx.fk_wastewater_networkelement = ne.obj_id
-LEFT JOIN tww_od.agxx_last_modification ne_agxx_lm ON ne_agxx_lm.fk_element = ne.obj_id
-LEFT JOIN tww_od.agxx_wastewater_structure ws_agxx ON ws_agxx.fk_wastewater_structure = ws.obj_id
-LEFT JOIN tww_od.measuring_point meas_pt ON main_ws.obj_id=meas_pt.fk_wastewater_structure
-LEFT JOIN tww_od.wwtp_structure wwtp ON main_ws.obj_id=wwtp.obj_id --tbd: Filtern, dass nur ARA-Zulauf gemappt wird
-
-LEFT JOIN tww_vl.wastewater_node_ag96_is_gateway isgate ON wn_agxx.ag96_is_gateway=isgate.code
-LEFT JOIN (SELECT
-		   obj_id,
-		   co_level,
-		   detail_geometry3d_geometry,
-		   co_positional_accuracy,
-		   wwtp_number
-		   FROM
-		   tww_od.agxx_unconnected_node_bwrel) unc ON unc.obj_id=wn.obj_id
-
-LEFT JOIN tww_vl.wastewater_structure_status st ON st.code=ws.status
-
-LEFT JOIN tww_od.manhole ma ON main_ws.obj_id = ma.obj_id
-LEFT JOIN tww_vl.manhole_function ma_fu ON ma_fu.code=ma.function
-LEFT JOIN tww_vl.manhole_function_export_rel_agxx ma_fu_rev ON ma_fu_rev.code=ma.function
-LEFT JOIN tww_od.special_structure ss ON main_ws.obj_id = ss.obj_id
-LEFT JOIN tww_vl.special_structure_function ss_fu ON ss_fu.code=ss.function
-LEFT JOIN tww_vl.special_structure_function_export_rel_agxx ss_fu_rev ON ss_fu_rev.code=ss.function
-LEFT JOIN tww_od.infiltration_installation ii ON main_ws.obj_id = ii.obj_id
-LEFT JOIN tww_vl.infiltration_installation_kind ii_ki ON ii_ki.code=ii.kind
-LEFT JOIN tww_vl.infiltration_installation_kind_export_rel_agxx ii_ki_rev ON ii_ki_rev.code=ii.kind
-LEFT JOIN tww_od.discharge_point dp ON main_ws.obj_id = dp.obj_id
-LEFT JOIN tww_vl.discharge_point_relevance dp_rel ON dp_rel.code=dp.relevance
-
-LEFT JOIN tww_vl.wastewater_structure_structure_condition sc ON sc.code=ws.structure_condition
-LEFT JOIN tww_vl.wastewater_structure_renovation_necessity rn ON rn.code=ws.renovation_necessity
-LEFT JOIN tww_vl.wastewater_structure_financing fi ON fi.code=ws.financing
-LEFT JOIN tww_vl.channel_function_hierarchic fhi ON fhi.code=wn._function_hierarchic
-
-LEFT JOIN tww_od.agxx_cover co_agxx ON co_agxx.ag64_fk_wastewater_node = wn.obj_id -- only overwrite position of main wn
-LEFT JOIN tww_od.cover co on co.obj_id=co_agxx.fk_cover
-LEFT JOIN tww_od.cover main_co ON main_co.obj_id=ws.fk_main_cover
-LEFT JOIN tww_vl.cover_positional_accuracy co_pa ON co_pa.code=coalesce(co.positional_accuracy,main_co.positional_accuracy,unc.co_positional_accuracy)
-LEFT JOIN tww_vl.wastewater_structure_accessibility  ac ON ac.code=ws.accessibility
+CREATE OR REPLACE VIEW tww_app.vw_agxx_gepknoten
+ AS
+ SELECT wn.obj_id,
+    COALESCE(wn.wwtp_number, unc.wwtp_number) AS ara_nr,
+    COALESCE(ws.year_of_construction, 1800) AS baujahr,
+    COALESCE(sc.value_de, 'unbekannt'::character varying) AS baulicherzustand,
+        CASE
+            WHEN st.value_de::text = 'in_Betrieb'::text THEN 'in_Betrieb.in_Betrieb'::character varying
+            ELSE COALESCE(st.value_de, 'unbekannt'::character varying)
+        END AS bauwerkstatus,
+    ne_agxx.ag64_remark AS bemerkung_wi,
+    COALESCE(ne.identifier, rp.identifier) AS bezeichnung,
+    COALESCE(co.level, main_co.level, unc.co_level) AS deckelkote,
+    st_force2d(COALESCE(main_ws.detail_geometry3d_geometry, unc.detail_geometry3d_geometry)) AS detailgeometrie,
+    COALESCE(fi.value_de, 'unbekannt'::character varying) AS finanzierung,
+    COALESCE(
+        CASE
+            WHEN meas_pt.obj_id IS NOT NULL AND (ss_fu.value_de::text !~~ ANY (ARRAY['Regenbecken%'::text, 'Regenueberlauf'::text, 'Pumpwerk'::text, 'Dueker%'::text, 'Versickerungsanlage%'::text])) THEN 'Messstelle'::text
+            WHEN wn_agxx.ag64_function IS NOT NULL THEN 'Anschluss'::text
+            WHEN wwtp.obj_id IS NOT NULL THEN 'Abwasserreinigungsanlage'::text
+            ELSE NULL::text
+        END, ma_fu_rev.value_de::text, ma_fu.value_de::text, ss_fu_rev.value_de::text, ss_fu.value_de::text, 'Einleitstelle_'::text || dp_rel.value_de::text, 'Versickerungsanlage.'::text || ii_ki_rev.value_de::text, 'Versickerungsanlage.'::text || ii_ki.value_de::text, 'Leitungsknoten'::text) AS funktionag,
+    COALESCE("left"(fhi.value_de::text, 3), 'SAA'::text) AS funktionhierarchisch,
+    COALESCE(isgate.value_de, 'unbekannt'::character varying) AS istschnittstelle,
+    COALESCE(ws.status_survey_year, 1800) AS jahr_zustandserhebung,
+    st_force2d(COALESCE(co.situation3d_geometry, wn.situation3d_geometry)) AS lage,
+    COALESCE(ne_agxx_lm.ag64_last_modification, rp.last_modification) AS letzte_aenderung_wi,
+    co_pa.value_de AS lagegenauigkeit,
+    wn.backflow_level_current AS maxrueckstauhoehe,
+    COALESCE(rn.value_de, 'unbekannt'::character varying) AS sanierungsbedarf,
+    wn.bottom_level AS sohlenkote,
+    COALESCE(ac.value_de, 'unbekannt'::character varying) AS zugaenglichkeit,
+    concat_ws(''::text, 'ch113jqg0000', "right"(COALESCE(ws.fk_operator, '00000107'::character varying)::text, 8)) AS betreiber,
+    concat_ws(''::text, 'ch113jqg0000', "right"(COALESCE(ne_agxx.ag64_fk_provider, '00000107'::character varying)::text, 8)) AS datenbewirtschafter_wi,
+    concat_ws(''::text, 'ch113jqg0000', "right"(COALESCE(ws.fk_owner, '00000107'::character varying)::text, 8)) AS eigentuemer,
+    ws_agxx.ag96_fk_measure AS gepmassnahmeref,
+    concat_ws(''::text, 'ch113jqg0000', "right"(COALESCE(ne_agxx.ag96_fk_provider, '00000107'::character varying)::text, 8)) AS datenbewirtschafter_gep,
+    ne_agxx.ag96_remark AS bemerkung_gep,
+    COALESCE(ne_agxx_lm.ag96_last_modification::timestamp with time zone, to_timestamp('1800-01-01'::text, 'YYYY-MM-DD'::text)) AS letzte_aenderung_gep,
+    NULL::boolean AS ignore_ws,
+        CASE
+            WHEN ma.obj_id IS NOT NULL THEN 'manhole'::text
+            WHEN ss.obj_id IS NOT NULL THEN 'special_structure'::text
+            WHEN dp.obj_id IS NOT NULL THEN 'discharge_point'::text
+            WHEN ii.obj_id IS NOT NULL THEN 'infiltration_installation'::text
+            WHEN wwtp.obj_id IS NOT NULL THEN 'wwtp_structure'::text
+            ELSE 'unknown'::text
+        END AS ws_type
+    FROM ( SELECT wn_1.obj_id,
+            wn_1.wwtp_number,
+            wn_1.situation3d_geometry,
+            wn_1.backflow_level_current,
+            wn_1.bottom_level,
+            wns._function_hierarchic
+           FROM tww_od.wastewater_node wn_1
+             LEFT JOIN tww_od.tww_wastewater_node_symbology wns ON wns.fk_wastewater_node::text = wn_1.obj_id::text
+        UNION (
+                 SELECT un.obj_id,
+                    un.wwtp_number,
+                    un.situation3d_geometry,
+                    un.backflow_level_current,
+                    un.bottom_level,
+                    un.ch_function_hierarchic AS _function_hierarchic
+                   FROM tww_od.agxx_unconnected_node_bwrel un
+                EXCEPT
+                 SELECT un.obj_id,
+                    un.wwtp_number,
+                    un.situation3d_geometry,
+                    un.backflow_level_current,
+                    un.bottom_level,
+                    un.ch_function_hierarchic AS _function_hierarchic
+                   FROM tww_od.agxx_unconnected_node_bwrel un
+                  WHERE (un.obj_id::text IN ( SELECT wn_1.obj_id
+                           FROM tww_od.wastewater_node wn_1))
+        )) wn
+    LEFT JOIN tww_od.wastewater_networkelement ne ON wn.obj_id::text = ne.obj_id::text
+    LEFT JOIN tww_app.vw_agxx_knoten_bauwerksattribute ws ON wn.obj_id::text = ws.obj_id::text
+    LEFT JOIN tww_od.wastewater_structure main_ws ON wn.obj_id::text = main_ws.fk_main_wastewater_node::text
+    LEFT JOIN tww_od.agxx_wastewater_node wn_agxx ON wn_agxx.fk_wastewater_node::text = wn.obj_id::text
+    LEFT JOIN tww_od.agxx_wastewater_networkelement ne_agxx ON ne_agxx.fk_wastewater_networkelement::text = ne.obj_id::text
+    LEFT JOIN tww_od.agxx_last_modification ne_agxx_lm ON ne_agxx_lm.fk_element::text = ne.obj_id::text
+    LEFT JOIN tww_od.agxx_wastewater_structure ws_agxx ON ws_agxx.fk_wastewater_structure::text = ws.obj_id::text
+    LEFT JOIN tww_od.measuring_point meas_pt ON main_ws.obj_id::text = meas_pt.fk_wastewater_structure::text
+    LEFT JOIN tww_od.wwtp_structure wwtp ON main_ws.obj_id::text = wwtp.obj_id::text
+    LEFT JOIN tww_vl.wastewater_node_ag96_is_gateway isgate ON wn_agxx.ag96_is_gateway = isgate.code
+    LEFT JOIN ( SELECT agxx_unconnected_node_bwrel.obj_id,
+            agxx_unconnected_node_bwrel.co_level,
+            agxx_unconnected_node_bwrel.detail_geometry3d_geometry,
+            agxx_unconnected_node_bwrel.co_positional_accuracy,
+            agxx_unconnected_node_bwrel.wwtp_number
+           FROM tww_od.agxx_unconnected_node_bwrel) unc ON unc.obj_id::text = wn.obj_id::text
+    LEFT JOIN tww_vl.wastewater_structure_status st ON st.code = ws.status
+    LEFT JOIN tww_od.manhole ma ON main_ws.obj_id::text = ma.obj_id::text
+    LEFT JOIN tww_vl.manhole_function ma_fu ON ma_fu.code = ma.function
+    LEFT JOIN tww_vl.manhole_function_export_rel_agxx ma_fu_rev ON ma_fu_rev.code = ma.function
+    LEFT JOIN tww_od.special_structure ss ON main_ws.obj_id::text = ss.obj_id::text
+    LEFT JOIN tww_vl.special_structure_function ss_fu ON ss_fu.code = ss.function
+    LEFT JOIN tww_vl.special_structure_function_export_rel_agxx ss_fu_rev ON ss_fu_rev.code = ss.function
+    LEFT JOIN tww_od.infiltration_installation ii ON main_ws.obj_id::text = ii.obj_id::text
+    LEFT JOIN tww_vl.infiltration_installation_kind ii_ki ON ii_ki.code = ii.kind
+    LEFT JOIN tww_vl.infiltration_installation_kind_export_rel_agxx ii_ki_rev ON ii_ki_rev.code = ii.kind
+    LEFT JOIN tww_od.discharge_point dp ON main_ws.obj_id::text = dp.obj_id::text
+    LEFT JOIN tww_vl.discharge_point_relevance dp_rel ON dp_rel.code = dp.relevance
+    LEFT JOIN tww_vl.wastewater_structure_structure_condition sc ON sc.code = ws.structure_condition
+    LEFT JOIN tww_vl.wastewater_structure_renovation_necessity rn ON rn.code = ws.renovation_necessity
+    LEFT JOIN tww_vl.wastewater_structure_financing fi ON fi.code = ws.financing
+    LEFT JOIN tww_vl.channel_function_hierarchic fhi ON fhi.code = wn._function_hierarchic
+    LEFT JOIN tww_od.agxx_cover co_agxx ON co_agxx.ag64_fk_wastewater_node::text = wn.obj_id::text
+    LEFT JOIN tww_od.cover co ON co.obj_id::text = co_agxx.fk_cover::text
+    LEFT JOIN tww_od.cover main_co ON main_co.obj_id::text = ws.fk_main_cover::text
+    LEFT JOIN tww_vl.cover_positional_accuracy co_pa ON co_pa.code = COALESCE(co.positional_accuracy::bigint, main_co.positional_accuracy::bigint, unc.co_positional_accuracy)
+    LEFT JOIN tww_vl.wastewater_structure_accessibility ac ON ac.code = ws.accessibility
+    LEFT JOIN tww_od.reach_point rp ON rp.obj_id::text = wn.obj_id::text
 ;
 
 ------------------
@@ -371,88 +364,87 @@ LEFT JOIN tww_vl.wastewater_structure_accessibility  ac ON ac.code=ws.accessibil
 
 DROP VIEW IF EXISTS tww_app.vw_agxx_gephaltung;
 CREATE OR REPLACE VIEW tww_app.vw_agxx_gephaltung
-AS
-
-SELECT
-	  re.obj_id AS obj_id
-	, ws.year_of_construction AS baujahr
-	, sc.value_de AS baulicherzustand
-	, CASE WHEN st.value_de = 'in_Betrieb' THEN 'in_Betrieb.in_Betrieb' ELSE st.value_de END AS bauwerkstatus
-	, ne_agxx.ag64_remark AS bemerkung_wi
-	, ne.identifier AS bezeichnung
-	, fi.value_de AS finanzierung
-	, fhi.value_de AS funktionhierarchisch
-	, fhy.value_de AS funktionhydraulisch
-	, ea_to.value_de AS hoehengenauigkeit_nach
-	, ea_from.value_de AS hoehengenauigkeit_von
-	, re.hydraulic_load_current AS hydraulischebelastung
-	, ws.status_survey_year AS jahr_zustandserhebung
-	, NULLIF(rp_from.level,0) AS kote_beginn
-	, NULLIF(rp_to.level,0)AS kote_ende
-	, ne_agxx_lm.ag64_last_modification AS letzte_aenderung_wi
-	, re_agxx.ag96_clear_width_planned AS lichte_breite_geplant
-	, CASE
+  AS
+  SELECT re.obj_id,
+    ws.year_of_construction AS baujahr,
+    sc.value_de AS baulicherzustand,
+        CASE
+            WHEN st.value_de::text = 'in_Betrieb'::text THEN 'in_Betrieb.in_Betrieb'::character varying
+            ELSE st.value_de
+        END AS bauwerkstatus,
+    ne_agxx.ag64_remark AS bemerkung_wi,
+    ne.identifier AS bezeichnung,
+    fi.value_de AS finanzierung,
+    fhi.value_de AS funktionhierarchisch,
+    fhy.value_de AS funktionhydraulisch,
+    ea_to.value_de AS hoehengenauigkeit_nach,
+    ea_from.value_de AS hoehengenauigkeit_von,
+    re.hydraulic_load_current AS hydraulischebelastung,
+    ws.status_survey_year AS jahr_zustandserhebung,
+    NULLIF(rp_from.level, 0::numeric) AS kote_beginn,
+    NULLIF(rp_to.level, 0::numeric) AS kote_ende,
+    ne_agxx_lm.ag64_last_modification AS letzte_aenderung_wi,
+    re_agxx.ag96_clear_width_planned AS lichte_breite_geplant,
+        CASE
             WHEN pp.height_width_ratio IS NOT NULL THEN round(re.clear_height::numeric / pp.height_width_ratio)::smallint::integer
             ELSE re.clear_height
-      END AS lichte_breite_ist
-	, re_agxx.ag96_clear_height_planned AS lichte_hoehe_geplant
-	, re.clear_height AS lichte_hoehe_ist
-	, re.length_effective AS laengeeffektiv
-	, mat.value_de AS material
-	, ppt.value_de AS profiltyp
-	, COALESCE (up_rev.value_de,up.value_de) AS nutzungsartag_geplant
-	, COALESCE (uc_rev.value_de, uc.value_de) AS nutzungsartag_ist
-	, relkind.value_de AS reliner_art
-	, relcons.value_de AS reliner_bautechnik
-	, relmat.value_de AS reliner_material
-	, re.reliner_nominal_size  AS reliner_nennweite
-	, rn.value_de  AS sanierungsbedarf
-	, ST_Force2D(re.progression3d_geometry) AS verlauf
-	, ws.rv_base_year AS wbw_basisjahr
-	, ws.replacement_value AS wiederbeschaffungswert
-	, concat_ws('','ch113jqg0000',right(COALESCE(ws.fk_operator,'00000107'),8)) AS betreiber
-	, concat_ws('','ch113jqg0000',right(COALESCE(ne_agxx.ag64_fk_provider,'00000107'),8)) AS datenbewirtschafter_wi
-	, concat_ws('','ch113jqg0000',right(COALESCE(ws.fk_owner,'00000107'),8)) AS eigentuemer
-	, coalesce(agxx_rp_to.ag64_fk_wastewater_node, rp_to.fk_wastewater_networkelement)  AS endknoten
-	, coalesce(agxx_rp_from.ag64_fk_wastewater_node,rp_from.fk_wastewater_networkelement) AS startknoten
-	, ws_agxx.ag96_fk_measure AS gepmassnahmeref
-	, concat_ws('','ch113jqg0000',right(COALESCE(ne_agxx.ag96_fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
-	, ne_agxx.ag96_remark AS bemerkung_gep
-	, COALESCE(ne_agxx_lm.ag96_last_modification,TO_TIMESTAMP('1800-01-01','YYYY-MM-DD')) AS letzte_aenderung_gep
-
-FROM tww_od.reach re
-	LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = re.obj_id
-    LEFT JOIN tww_od.reach_point rp_from ON rp_from.obj_id = re.fk_reach_point_from
-    LEFT JOIN tww_od.agxx_reach_point agxx_rp_from ON rp_from.obj_id = agxx_rp_from.fk_reach_point
-    LEFT JOIN tww_od.reach_point rp_to ON rp_to.obj_id = re.fk_reach_point_to
-    LEFT JOIN tww_od.agxx_reach_point agxx_rp_to ON rp_to.obj_id = agxx_rp_to.fk_reach_point
-    LEFT JOIN tww_od.wastewater_structure ws ON ne.fk_wastewater_structure = ws.obj_id
-    LEFT JOIN tww_od.channel ch ON ch.obj_id = ws.obj_id
-    LEFT JOIN tww_od.pipe_profile pp ON re.fk_pipe_profile = pp.obj_id
-
-	LEFT JOIN tww_vl.reach_reliner_material relmat ON relmat.code=re.reliner_material
-	LEFT JOIN tww_vl.reach_relining_construction relcons ON relcons.code=re.relining_construction
-	LEFT JOIN tww_vl.reach_relining_kind relkind ON relkind.code=re.relining_kind
-	LEFT JOIN tww_vl.reach_point_elevation_accuracy ea_from ON ea_from.code=rp_from.elevation_accuracy
-	LEFT JOIN tww_vl.reach_point_elevation_accuracy ea_to ON ea_to.code=rp_to.elevation_accuracy
-	LEFT JOIN tww_vl.wastewater_structure_financing fi ON fi.code=ws.financing
-	LEFT JOIN tww_vl.wastewater_structure_renovation_necessity rn ON rn.code=ws.renovation_necessity
-	LEFT JOIN tww_vl.wastewater_structure_structure_condition sc ON sc.code=ws.structure_condition
-
-	LEFT JOIN tww_vl.channel_function_hierarchic fhi ON fhi.code=ch.function_hierarchic
-	LEFT JOIN tww_vl.channel_function_hydraulic fhy ON fhy.code=ch.function_hydraulic
-	LEFT JOIN tww_vl.reach_material mat ON mat.code=re.material
-	LEFT JOIN tww_vl.pipe_profile_profile_type ppt ON ppt.code=pp.profile_type
-	LEFT JOIN tww_vl.wastewater_structure_status st ON st.code=ws.status
-	LEFT JOIN tww_vl.channel_usage_current uc ON uc.code=ch.usage_current
-	LEFT JOIN tww_vl.channel_usage_current_export_rel_agxx uc_rev ON uc_rev.code=ch.usage_current
-	LEFT JOIN tww_vl.channel_usage_planned up ON up.code=ch.usage_planned
-	LEFT JOIN tww_vl.channel_usage_planned_export_rel_agxx up_rev ON up_rev.code=ch.usage_planned
-
-    LEFT JOIN tww_od.agxx_reach re_agxx ON re_agxx.fk_reach = re.obj_id
-    LEFT JOIN tww_od.agxx_wastewater_networkelement ne_agxx ON ne_agxx.fk_wastewater_networkelement = ne.obj_id
-    LEFT JOIN tww_od.agxx_last_modification ne_agxx_lm ON ne_agxx_lm.fk_element = ne.obj_id
-	LEFT JOIN tww_od.agxx_wastewater_structure ws_agxx ON ws_agxx.fk_wastewater_structure = ws.obj_id
+        END AS lichte_breite_ist,
+    re_agxx.ag96_clear_height_planned AS lichte_hoehe_geplant,
+    re.clear_height AS lichte_hoehe_ist,
+    re.length_effective AS laengeeffektiv,
+    mat.value_de AS material,
+    ppt.value_de AS profiltyp,
+    COALESCE(up_rev.value_de, up.value_de) AS nutzungsartag_geplant,
+    COALESCE(uc_rev.value_de, uc.value_de) AS nutzungsartag_ist,
+    relkind.value_de AS reliner_art,
+    relcons.value_de AS reliner_bautechnik,
+    relmat.value_de AS reliner_material,
+    re.reliner_nominal_size AS reliner_nennweite,
+    rn.value_de AS sanierungsbedarf,
+    st_force2d(re.progression3d_geometry) AS verlauf,
+    ws.rv_base_year AS wbw_basisjahr,
+    ws.replacement_value AS wiederbeschaffungswert,
+    concat_ws(''::text, 'ch113jqg0000', "right"(COALESCE(ws.fk_operator, '00000107'::character varying)::text, 8)) AS betreiber,
+    concat_ws(''::text, 'ch113jqg0000', "right"(COALESCE(ne_agxx.ag64_fk_provider, '00000107'::character varying)::text, 8)) AS datenbewirtschafter_wi,
+    concat_ws(''::text, 'ch113jqg0000', "right"(COALESCE(ws.fk_owner, '00000107'::character varying)::text, 8)) AS eigentuemer,
+    COALESCE(agxx_rp_to.ag64_fk_wastewater_node, rp_agxx_t.ag64_fk_wastewater_node, rp_to.fk_wastewater_networkelement, rp_to.obj_id) AS endknoten,
+    COALESCE(agxx_rp_from.ag64_fk_wastewater_node, rp_agxx_f.ag64_fk_wastewater_node, rp_from.fk_wastewater_networkelement, rp_from.obj_id) AS startknoten,
+    ws_agxx.ag96_fk_measure AS gepmassnahmeref,
+    concat_ws(''::text, 'ch113jqg0000', "right"(COALESCE(ne_agxx.ag96_fk_provider, '00000107'::character varying)::text, 8)) AS datenbewirtschafter_gep,
+    ne_agxx.ag96_remark AS bemerkung_gep,
+    COALESCE(ne_agxx_lm.ag96_last_modification::timestamp with time zone, to_timestamp('1800-01-01'::text, 'YYYY-MM-DD'::text)) AS letzte_aenderung_gep
+  FROM tww_od.reach re
+    LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id::text = re.obj_id::text
+    LEFT JOIN tww_od.reach_point rp_from ON rp_from.obj_id::text = re.fk_reach_point_from::text
+    LEFT JOIN tww_od.agxx_reach_point agxx_rp_from ON rp_from.obj_id::text = agxx_rp_from.fk_reach_point::text
+    LEFT JOIN tww_od.reach_point rp_to ON rp_to.obj_id::text = re.fk_reach_point_to::text
+    LEFT JOIN tww_od.agxx_reach_point agxx_rp_to ON rp_to.obj_id::text = agxx_rp_to.fk_reach_point::text
+    LEFT JOIN tww_od.wastewater_structure ws ON ne.fk_wastewater_structure::text = ws.obj_id::text
+    LEFT JOIN tww_od.channel ch ON ch.obj_id::text = ws.obj_id::text
+    LEFT JOIN tww_od.pipe_profile pp ON re.fk_pipe_profile::text = pp.obj_id::text
+    LEFT JOIN tww_vl.reach_reliner_material relmat ON relmat.code = re.reliner_material
+    LEFT JOIN tww_vl.reach_relining_construction relcons ON relcons.code = re.relining_construction
+    LEFT JOIN tww_vl.reach_relining_kind relkind ON relkind.code = re.relining_kind
+    LEFT JOIN tww_vl.reach_point_elevation_accuracy ea_from ON ea_from.code = rp_from.elevation_accuracy
+    LEFT JOIN tww_vl.reach_point_elevation_accuracy ea_to ON ea_to.code = rp_to.elevation_accuracy
+    LEFT JOIN tww_vl.wastewater_structure_financing fi ON fi.code = ws.financing
+    LEFT JOIN tww_vl.wastewater_structure_renovation_necessity rn ON rn.code = ws.renovation_necessity
+    LEFT JOIN tww_vl.wastewater_structure_structure_condition sc ON sc.code = ws.structure_condition
+    LEFT JOIN tww_vl.channel_function_hierarchic fhi ON fhi.code = ch.function_hierarchic
+    LEFT JOIN tww_vl.channel_function_hydraulic fhy ON fhy.code = ch.function_hydraulic
+    LEFT JOIN tww_vl.reach_material mat ON mat.code = re.material
+    LEFT JOIN tww_vl.pipe_profile_profile_type ppt ON ppt.code = pp.profile_type
+    LEFT JOIN tww_vl.wastewater_structure_status st ON st.code = ws.status
+    LEFT JOIN tww_vl.channel_usage_current uc ON uc.code = ch.usage_current
+    LEFT JOIN tww_vl.channel_usage_current_export_rel_agxx uc_rev ON uc_rev.code = ch.usage_current
+    LEFT JOIN tww_vl.channel_usage_planned up ON up.code = ch.usage_planned
+    LEFT JOIN tww_vl.channel_usage_planned_export_rel_agxx up_rev ON up_rev.code = ch.usage_planned
+    LEFT JOIN tww_od.agxx_reach re_agxx ON re_agxx.fk_reach::text = re.obj_id::text
+    LEFT JOIN tww_od.agxx_wastewater_networkelement ne_agxx ON ne_agxx.fk_wastewater_networkelement::text = ne.obj_id::text
+    LEFT JOIN tww_od.agxx_last_modification ne_agxx_lm ON ne_agxx_lm.fk_element::text = ne.obj_id::text
+    LEFT JOIN tww_od.agxx_wastewater_structure ws_agxx ON ws_agxx.fk_wastewater_structure::text = ws.obj_id::text
+    LEFT JOIN tww_od.agxx_reach_point rp_agxx_t ON rp_agxx_t.fk_reach_point::text = rp_to.obj_id::text
+    LEFT JOIN tww_od.agxx_reach_point rp_agxx_f ON rp_agxx_f.fk_reach_point::text = rp_from.obj_id::text
 
 ;
 
