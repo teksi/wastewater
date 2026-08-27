@@ -3,13 +3,12 @@ from __future__ import annotations
 import json
 
 from qgis.PyQt.QtCore import QObject, QPointF
-from qgis.PyQt.QtGui import QColor, QBrush, QPainterPath, QPen
+from qgis.PyQt.QtGui import QBrush, QColor, QPainterPath, QPen
 from qgis.PyQt.QtWidgets import (
     QGraphicsEllipseItem,
     QGraphicsItem,
     QGraphicsPathItem,
 )
-
 
 from ..utils.database_utils import DatabaseUtils
 
@@ -69,10 +68,7 @@ class VertexItem(QGraphicsEllipseItem):
 
         result = super().itemChange(change, value)
 
-        if (
-            change == QGraphicsItem.ItemPositionHasChanged
-            and self.scene() is not None
-        ):
+        if change == QGraphicsItem.ItemPositionHasChanged and self.scene() is not None:
             self.x_coord = self.pos().x()
             self.y_coord = self.pos().y()
 

@@ -10,7 +10,6 @@ from ..utils.ui import get_ui_class
 DIALOG_UI = get_ui_class("tww_pipe_profile_editor.ui")
 
 
-
 class PipeProfileEditorWindow(QMainWindow, DIALOG_UI):
 
     def __init__(
@@ -45,25 +44,15 @@ class PipeProfileEditorWindow(QMainWindow, DIALOG_UI):
     # ------------------------------------------------------------------
 
     def _connect_signals(self):
-        self.actionDeleteVertex.triggered.connect(
-            self.editor.delete_selected_vertex
-        )
+        self.actionDeleteVertex.triggered.connect(self.editor.delete_selected_vertex)
 
-        self.actionAddVertex.triggered.connect(
-            self._add_vertex
-        )
+        self.actionAddVertex.triggered.connect(self._add_vertex)
 
-        self.tblVertices.itemSelectionChanged.connect(
-            self._table_selection_changed
-        )
+        self.tblVertices.itemSelectionChanged.connect(self._table_selection_changed)
 
-        self.spnX.valueChanged.connect(
-            self._coordinates_changed
-        )
+        self.spnX.valueChanged.connect(self._coordinates_changed)
 
-        self.spnY.valueChanged.connect(
-            self._coordinates_changed
-        )
+        self.spnY.valueChanged.connect(self._coordinates_changed)
 
     # ------------------------------------------------------------------
     # Toolbar Actions
@@ -163,11 +152,7 @@ class PipeProfileEditorWindow(QMainWindow, DIALOG_UI):
 
     def _selected_vertex(self):
         return next(
-            (
-                vertex
-                for vertex in self.editor.vertex_items
-                if vertex.isSelected()
-            ),
+            (vertex for vertex in self.editor.vertex_items if vertex.isSelected()),
             None,
         )
 
@@ -202,4 +187,3 @@ class PipeProfileEditorWindow(QMainWindow, DIALOG_UI):
             rect,
             1,
         )
-
