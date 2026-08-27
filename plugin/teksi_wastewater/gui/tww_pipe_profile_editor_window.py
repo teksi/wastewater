@@ -1,4 +1,5 @@
 from qgis.PyQt.QtWidgets import (
+    QGraphicsScene,
     QMainWindow,
     QTableWidgetItem,
 )
@@ -6,7 +7,8 @@ from qgis.PyQt.QtWidgets import (
 from ..tools.tww_pipe_profile_editor import TwwPipeProfileEditor
 from ..utils.ui import get_ui_class
 
-DIALOG_UI = get_ui_class("twwsettingsdialog.ui")
+DIALOG_UI = get_ui_class("tww_pipe_profile_editor.ui")
+
 
 
 class PipeProfileEditorWindow(QMainWindow, DIALOG_UI):
@@ -19,7 +21,15 @@ class PipeProfileEditorWindow(QMainWindow, DIALOG_UI):
     ):
         super().__init__(parent)
 
+        # Create all widgets and actions from the .ui file
+        self.setupUi(self)
+
         self.iface = iface
+        self.pipe_profile_obj_id = pipe_profile_obj_id
+
+        # The tool expects window.scene to exist
+        self.scene = QGraphicsScene(self)
+        self.graphicsView.setScene(self.scene)
 
         self.editor = TwwPipeProfileEditor(
             iface=iface,
@@ -28,7 +38,6 @@ class PipeProfileEditorWindow(QMainWindow, DIALOG_UI):
         )
 
         self._connect_signals()
-
         self.editor.load_profile()
 
     # ------------------------------------------------------------------
@@ -36,23 +45,31 @@ class PipeProfileEditorWindow(QMainWindow, DIALOG_UI):
     # ------------------------------------------------------------------
 
     def _connect_signals(self):
+        self.actionDeleteVertex.triggered.connect(
+            self.editor.delete_selected_vertex
+        )
 
-        self.actionDeleteVertex.triggered.connect(self.editor.delete_selected_vertex)
+        self.actionAddVertex.triggered.connect(
+            self._add_vertex
+        )
 
-        self.actionAddVertex.triggered.connect(self._add_vertex)
+        self.tblVertices.itemSelectionChanged.connect(
+            self._table_selection_changed
+        )
 
-        self.tblVertices.itemSelectionChanged.connect(self._table_selection_changed)
+        self.spnX.valueChanged.connect(
+            self._coordinates_changed
+        )
 
-        self.spnX.valueChanged.connect(self._coordinates_changed)
-
-        self.spnY.valueChanged.connect(self._coordinates_changed)
+        self.spnY.valueChanged.connect(
+            self._coordinates_changed
+        )
 
     # ------------------------------------------------------------------
     # Toolbar Actions
     # ------------------------------------------------------------------
 
     def _add_vertex(self):
-
         self.editor.add_vertex(
             x=0,
             y=0,
@@ -63,53 +80,51 @@ class PipeProfileEditorWindow(QMainWindow, DIALOG_UI):
     # ------------------------------------------------------------------
 
     def update_vertex_table(self):
-
         vertices = sorted(
             self.editor.vertex_items,
-            key=lambda v: v.sequence,
+            key=lambda vertex: vertex.sequence,
         )
 
         self.tblVertices.blockSignals(True)
 
-        self.tblVertices.setColumnCount(3)
-        self.tblVertices.setRowCount(len(vertices))
+        try:
+            self.tblVertices.setColumnCount(3)
+            self.tblVertices.setRowCount(len(vertices))
 
-        self.tblVertices.setHorizontalHeaderLabels(
-            [
-                "Seq",
-                "X",
-                "Y",
-            ]
-        )
-
-        for row, vertex in enumerate(vertices):
-
-            self.tblVertices.setItem(
-                row,
-                0,
-                QTableWidgetItem(str(vertex.sequence)),
+            self.tblVertices.setHorizontalHeaderLabels(
+                [
+                    "Seq",
+                    "X",
+                    "Y",
+                ]
             )
 
-            self.tblVertices.setItem(
-                row,
-                1,
-                QTableWidgetItem(f"{vertex.x_coord:.2f}"),
-            )
+            for row, vertex in enumerate(vertices):
+                self.tblVertices.setItem(
+                    row,
+                    0,
+                    QTableWidgetItem(str(vertex.sequence)),
+                )
 
-            self.tblVertices.setItem(
-                row,
-                2,
-                QTableWidgetItem(f"{vertex.y_coord:.2f}"),
-            )
+                self.tblVertices.setItem(
+                    row,
+                    1,
+                    QTableWidgetItem(f"{vertex.x_coord:.2f}"),
+                )
 
-        self.tblVertices.blockSignals(False)
+                self.tblVertices.setItem(
+                    row,
+                    2,
+                    QTableWidgetItem(f"{vertex.y_coord:.2f}"),
+                )
+        finally:
+            self.tblVertices.blockSignals(False)
 
     # ------------------------------------------------------------------
-    # Selection Synchronisation
+    # Selection synchronization
     # ------------------------------------------------------------------
 
     def _table_selection_changed(self):
-
         row = self.tblVertices.currentRow()
 
         if row < 0:
@@ -117,45 +132,46 @@ class PipeProfileEditorWindow(QMainWindow, DIALOG_UI):
 
         vertices = sorted(
             self.editor.vertex_items,
-            key=lambda v: v.sequence,
+            key=lambda vertex: vertex.sequence,
         )
 
         if row >= len(vertices):
             return
 
-        vertex = vertices[row]
+        selected_vertex = vertices[row]
 
-        for v in self.editor.vertex_items:
-            v.setSelected(False)
+        for vertex in self.editor.vertex_items:
+            vertex.setSelected(False)
 
-        vertex.setSelected(True)
-
-        self.show_vertex(vertex)
+        selected_vertex.setSelected(True)
+        self.show_vertex(selected_vertex)
 
     def show_vertex(self, vertex):
-
         self.spnX.blockSignals(True)
         self.spnY.blockSignals(True)
 
-        self.spnX.setValue(vertex.x_coord)
-        self.spnY.setValue(vertex.y_coord)
-
-        self.spnX.blockSignals(False)
-        self.spnY.blockSignals(False)
+        try:
+            self.spnX.setValue(vertex.x_coord)
+            self.spnY.setValue(vertex.y_coord)
+        finally:
+            self.spnX.blockSignals(False)
+            self.spnY.blockSignals(False)
 
     # ------------------------------------------------------------------
     # Coordinate Editor
     # ------------------------------------------------------------------
 
     def _selected_vertex(self):
-
         return next(
-            (v for v in self.editor.vertex_items if v.isSelected()),
+            (
+                vertex
+                for vertex in self.editor.vertex_items
+                if vertex.isSelected()
+            ),
             None,
         )
 
     def _coordinates_changed(self):
-
         vertex = self._selected_vertex()
 
         if vertex is None:
@@ -167,20 +183,23 @@ class PipeProfileEditorWindow(QMainWindow, DIALOG_UI):
         vertex.update_position()
 
         self.editor.rebuild_polyline()
-        self.editor.update_vertex_table()
+        self.update_vertex_table()
 
     # ------------------------------------------------------------------
     # Graphics helpers
     # ------------------------------------------------------------------
 
     def fit_to_profile(self):
-
         if self.editor.profile_line_item is None:
             return
 
         rect = self.editor.profile_line_item.sceneBoundingRect()
 
+        if rect.isNull() or not rect.isValid():
+            return
+
         self.graphicsView.fitInView(
             rect,
-            mode=1,
+            1,
         )
+

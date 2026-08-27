@@ -2,12 +2,91 @@ from __future__ import annotations
 
 import json
 
-from qgis.PyQt.QtCore import QObject
-from qgis.PyQt.QtGui import QColor, QPainterPath, QPen
-from qgis.PyQt.QtWidgets import QGraphicsPathItem
+from qgis.PyQt.QtCore import QObject, QPointF
+from qgis.PyQt.QtGui import QColor, QBrush, QPainterPath, QPen
+from qgis.PyQt.QtWidgets import (
+    QGraphicsEllipseItem,
+    QGraphicsItem,
+    QGraphicsPathItem,
+)
 
-from ..gui.vertex_item import VertexItem
+
 from ..utils.database_utils import DatabaseUtils
+
+
+class VertexItem(QGraphicsEllipseItem):
+    """Movable and selectable vertex in the pipe profile scene."""
+
+    SIZE = 8.0
+
+    def __init__(
+        self,
+        sequence: int,
+        x: float,
+        y: float,
+        editor,
+    ):
+        radius = self.SIZE / 2.0
+
+        # Center the ellipse around its item position.
+        super().__init__(
+            -radius,
+            -radius,
+            self.SIZE,
+            self.SIZE,
+        )
+
+        self.sequence = sequence
+        self.x_coord = float(x)
+        self.y_coord = float(y)
+        self.editor = editor
+
+        self.setBrush(QBrush(QColor(220, 70, 70)))
+        self.setPen(QPen(QColor(80, 30, 30), 0))
+        self.setZValue(20)
+
+        self.setFlags(
+            QGraphicsItem.ItemIsMovable
+            | QGraphicsItem.ItemIsSelectable
+            | QGraphicsItem.ItemSendsGeometryChanges
+        )
+
+        self.setToolTip(f"Vertex {self.sequence}")
+        self.update_position()
+
+    def update_position(self):
+        """Update the graphics position from the stored coordinates."""
+
+        self.setPos(
+            QPointF(
+                self.x_coord,
+                self.y_coord,
+            )
+        )
+
+    def itemChange(self, change, value):
+        """Synchronize coordinates when the vertex is moved or selected."""
+
+        result = super().itemChange(change, value)
+
+        if (
+            change == QGraphicsItem.ItemPositionHasChanged
+            and self.scene() is not None
+        ):
+            self.x_coord = self.pos().x()
+            self.y_coord = self.pos().y()
+
+            self.editor.rebuild_polyline()
+            self.editor.update_vertex_table()
+
+            if self.isSelected():
+                self.editor.show_vertex(self)
+
+        elif change == QGraphicsItem.ItemSelectedHasChanged:
+            if bool(value):
+                self.editor.show_vertex(self)
+
+        return result
 
 
 class TwwPipeProfileEditor(QObject):
