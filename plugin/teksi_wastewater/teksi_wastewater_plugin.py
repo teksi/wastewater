@@ -550,6 +550,16 @@ class TeksiWastewaterPlugin:
 
         self._on_tww_project_available()
 
+    def _check_layers_in_edit_mode(self):
+        # Check that layers are not in edit mode
+        if (
+            TwwLayerManager.layer("vw_network_segment").isEditable()
+            or TwwLayerManager.layer("vw_network_node").isEditable()
+        ):
+            return True
+
+        return False
+
     def _on_tww_project_available(self):
         network_segment = TwwLayerManager.layer("vw_network_segment")
         network_node = TwwLayerManager.layer("vw_network_node")
@@ -596,6 +606,16 @@ class TeksiWastewaterPlugin:
         """
         Is executed when the user clicks the refreshNetworkTopologyAction tool
         """
+
+        # Check that layers are not in edit mode
+        if self._check_layers_in_edit_mode():
+            self.iface.messageBar().pushMessage(
+                "Error",
+                "Cannot refresh network topology while layers are in edit mode. Please save or discard your edits first.",
+                level=Qgis.Critical,
+            )
+            return
+
         self.network_analyzer.refresh()
 
     def wizard(self):
@@ -693,6 +713,16 @@ class TeksiWastewaterPlugin:
         AboutDialog(self.iface.mainWindow()).exec()
 
     def actionExportClicked(self):
+
+        # Check that layers are not in edit mode
+        if self._check_layers_in_edit_mode():
+            self.iface.messageBar().pushMessage(
+                "Error",
+                "Cannot export data while layers are in edit mode. Please save or discard your edits first.",
+                level=Qgis.Critical,
+            )
+            return
+
         if self.interlisImporterExporter is None:
             try:
                 # We only import now to avoid useless exception if dependencies aren't met
@@ -736,6 +766,16 @@ class TeksiWastewaterPlugin:
         self.interlisImporterExporter.action_export()
 
     def actionImportClicked(self):
+
+        # Check that layers are not in edit mode
+        if self._check_layers_in_edit_mode():
+            self.iface.messageBar().pushMessage(
+                "Error",
+                "Cannot export data while layers are in edit mode. Please save or discard your edits first.",
+                level=Qgis.Critical,
+            )
+            return
+
         if self.interlisImporterExporter is None:
             try:
                 # We only import now to avoid useless exception if dependencies aren't met
