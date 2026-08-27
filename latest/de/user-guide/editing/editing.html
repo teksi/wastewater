@@ -60,7 +60,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#snap-reach-geometry">Schnappe auf Haltungsgeometrie</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#working-with-codes-of-value-list">Arbeiten mit den Codes der Wertelisten</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#an-other-way-to-choose-an-object">Ein andere Möglichkeit ein Objekt auszuwählen</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id1">Extend selection tool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Selektions-Erweiterungs-Tool</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#adding-additional-covers-and-nodes-to-an-existing-wastewater-structure">Hinzufügen weiterer Deckel und Abwasserknoten zu bestehenden Abwasserbauwerken</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#adding-a-wastewater-node-to-an-existing-reach">Einen Abwasserknoten mit einer bestehenden Haltung verknüpfen</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#change-multiple-records-at-once">Mehrere Datensätze gleichzeitig ändern</a></li>
@@ -196,25 +196,22 @@
 <p>Diese Funktion passt die Synchronisierung von Bezeichnungen an und folgt dabei dem Grundsatz, dass Identifikatoren niemals NULL sind.</p>
 <p>Für Abwasserbauwerke / Deckel / Abwasserknoten werden sie synchronisiert:</p>
 <blockquote>
-<div><p>insert: if only main is provided, all 3 get the same value
-update: if they were the same and the main changes =&gt; all changes</p>
+<div><p>insert: wenn nur die Bezeichnung des Abwasserbauwerks gesetzt wird, werden alle 3 Bezeichnungen auf die des Abwasserbauwerks gesetzt Update: Wenn alle denselben Wert hatten, werden alle drei überschrieben</p>
 </div></blockquote>
-<p>Implemented behavior for covers:</p>
+<p>Implementiertes Verhalten für Deckel:</p>
 <blockquote>
 <div><dl>
-<dt>INSERT</dt><dd><p>if cover with same identifier doesn’t exist, then it’s created
-if cover with same identifier already exist with identifier, no creation + notification</p>
+<dt>Erstellen</dt><dd><p>Wenn kein Deckel mit derselben Bezeichnung existiert, wird der Deckel erstellt. Ansonsten wird er nicht erstellt und eine Fehlermeldung erscheint.</p>
 </dd>
-<dt>UPDATE</dt><dd><p>if linked cover exists, it’s updated (but it’s not yet checked if the identifier is updated to an already existing one)</p>
+<dt>Update</dt><dd><p>Wenn ein verknüpfter Deckel existiert, wird er upgedatet (Es wird aber nicht geprüft, ob die neue Deckelbezeichnung schon verwendet wird).</p>
 <dl class="simple">
-<dt>if linked cover doesn’t exists</dt><dd><p>if cover with same identifier doesn’t exist, then it’s created
-if cover with same identifier already exist with identifier, no creation + notification</p>
+<dt>Wenn kein verknüpfter Deckel existiert</dt><dd><p>Wenn kein Deckel mit derselben Bezeichnung existiert, wird der Deckel erstellt. Ansonsten wird er nicht erstellt und eine Fehlermeldung erscheint.</p>
 </dd>
 </dl>
 </dd>
 </dl>
 </div></blockquote>
-<p>Plus in general, if there is no cover data, no cover is created</p>
+<p>Allgemein wird kein Deckel erstellt, wenn keine Deckeldaten eingefügt werden.</p>
 </section>
 <section id="changing-attributes-of-linear-elements-channels">
 <h2>Attribute der Linienelemente ändern (Kanäle)<a class="headerlink" href="#changing-attributes-of-linear-elements-channels" title="Link to this heading"></a></h2>
@@ -329,7 +326,7 @@ if cover with same identifier already exist with identifier, no creation + notif
 </div></blockquote>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>The expression <cite>„ch_usage_current“ &lt;&gt; „ch_usage_planned“</cite> does not work because of the unique codes!</p>
+<p>Der Ausdruck <cite>„ch_usage_current“ &lt;&gt; „ch_usage_planned“</cite> funktioniert wegen der eindeutigen code-Werten nicht.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
@@ -354,16 +351,13 @@ if cover with same identifier already exist with identifier, no creation + notif
 </div>
 </section>
 <section id="id1">
-<h2>Extend selection tool<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
-<p>With the extend selection tool allows users to expand a selection made on the vw_tww_reach layer to related objects in:
-- vw_tww_wastewater_node
-- vw_tww_wastewater_structure
-- vw_tww_catchment_area</p>
+<h2>Selektions-Erweiterungs-Tool<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>Das Selektions-Erweiterungs-Tool erlaubt es nutzern, eine bestehende Selektion des Layers vw_tww_Haltung auf verknüpfte Objekte in vw_tww_Abwasserknoten - vw_tww_Abwasserbauwerk und - vw_tww_Einzugsgebiet zu erweitern</p>
 <p><strong>Features</strong></p>
 <figure class="align-default">
 <img alt="../../_images/selection_extender_only.jpg" src="../../_images/selection_extender_only.jpg" />
 </figure>
-<p>A new dock widget has been added (right-side panel) allowing users to:</p>
+<p>Ein neues Dock Widget wurde hinzugefügt (rechts), welches den Nutzern erlaubt:</p>
 <ul class="simple">
 <li><p>Choose the selection mode:
 - Add          -&gt; Union
