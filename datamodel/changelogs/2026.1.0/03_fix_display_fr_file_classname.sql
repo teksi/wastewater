@@ -210,3 +210,15 @@ WHERE display_fr IN (
     'ZONE',
     'ZONE_RESERVEE'
 );
+
+UPDATE tww_vl.file_classname
+SET display_fr = CASE code
+    WHEN 3824 THEN 'système d’évacuation des eaux'
+    WHEN 3827 THEN 'cours d’eau'
+    WHEN 3843 THEN 'zone de protection des eaux souterraines'
+    WHEN 3868 THEN 'volume de rétention'
+    WHEN 3872 THEN 'traitement des boues'
+    WHEN 3880 THEN 'tuyau de chute par temps sec'
+    WHEN 3888 THEN 'zone d’infiltration'
+END
+WHERE code IN (3824, 3827, 3843, 3868, 3872, 3880, 3888);
