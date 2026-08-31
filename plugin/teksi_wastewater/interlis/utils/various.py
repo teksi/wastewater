@@ -90,7 +90,16 @@ def make_log_path(next_to_path, step_name):
         os.makedirs(temp_path, exist_ok=True)
         return os.path.join(temp_path, f"{now}.{step_name}.log")
 
-
+def make_xtflog_path(next_to_path, step_name):
+    """Returns a path for xtf logging purposes. If next_to_path is None, it will be saved in the temp directory"""
+    now = f"{datetime.datetime.now():%y%m%d%H%M%S}"
+    if next_to_path:
+        return f"{next_to_path}.{now}.{step_name}.log.xtf"
+    else:
+        temp_path = os.path.join(tempfile.gettempdir(), "tww2ili")
+        os.makedirs(temp_path, exist_ok=True)
+        return os.path.join(temp_path, f"{now}.{step_name}.log.xtf")
+        
 class LoggingHandlerContext:
     """Temporarily sets a log handler, then removes it"""
 
