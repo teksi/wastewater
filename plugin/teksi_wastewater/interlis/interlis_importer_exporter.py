@@ -307,8 +307,21 @@ class InterlisImporterExporter:
         # add step to translate to French
         # only do if ilivalidatior check of German xtf is ok
         
+        # get export_models_fr
+        export_models_fr=None 
+        if config.MODEL_NAME_SIA405_BASE_ABWASSER in export_models:
+            export_models_fr.append(config.MODEL_NAME_SIA405_BASE_ABWASSER_FR)
+        elif config.MODEL_NAME_SIA405_ABWASSER in export_models:
+            export_models_fr.append(config.MODEL_NAME_SIA405_ABWASSER_FR)
+        elif config.MODEL_NAME_VSA_KEK in export_models:
+            export_models_fr.append(config.MODEL_NAME_VSA_KEK_FR)
+        elif config.MODEL_NAME_DSS in export_models:
+            export_models_fr.append(config.MODEL_NAME_DSS_FR)
         
-        export_models_de_fr = export_models
+        export_models_de_fr=None
+        export_models_de_fr == export_models_de_fr.extend(export_models)
+        export_models_de_fr == export_models_de_fr.extend(export_models_fr)
+        
         self._create_ili_schema(export_models_de_fr, create_basket_col=true)
 
 
