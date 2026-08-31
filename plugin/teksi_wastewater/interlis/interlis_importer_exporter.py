@@ -304,6 +304,14 @@ class InterlisImporterExporter:
         self._progress_done(75)
         self._export_xtf_files(file_name_base, export_models)
 
+        # add step to translate to French
+        # only do if ilivalidatior check of German xtf is ok
+        
+        
+        export_models_de_fr = export_models
+        self._create_ili_schema(export_models_de_fr, create_basket_col=true)
+
+
         self._progress_done(100)
         logger.info("INTERLIS export finished.")
 
