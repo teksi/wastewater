@@ -36,6 +36,7 @@ from .utils.various import (
     LoggingHandlerContext,
     logger,
     make_log_path,
+    make_xtflog_path,
 )
 
 
@@ -431,10 +432,14 @@ class InterlisImporterExporter:
 
     def _import_validate_xtf_file(self, xtf_file_input):
         log_path = make_log_path(self.base_log_path, "ilivalidator")
+        
+        xtflog_path = make_xtflog_path(self.base_log_path, "ilivalidator")
+        
         try:
             self.interlisTools.validate_xtf_data(
                 xtf_file_input,
                 log_path,
+                xtflog_path,
             )
         except CmdException:
             raise InterlisImporterExporterError(
@@ -692,10 +697,14 @@ class InterlisImporterExporter:
                 f"Validating XTF for '{export_model_name}'...",
             )
             log_path = make_log_path(self.base_log_path, f"ilivalidator-{export_model_name}")
+            
+            xtflog_path = make_xtflog_path(self.base_log_path, f"ilivalidator-{export_model_name}")
+            
             try:
                 self.interlisTools.validate_xtf_data(
                     export_file_name,
                     log_path,
+                    xtflog_path,
                 )
             except CmdException:
                 xtf_export_errors.append(
