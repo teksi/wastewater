@@ -110,6 +110,73 @@ class InterlisTools:
             )
         )
 
+    # Datenimport aus exportiertem Transferdatensatz deutsch ins Schema
+    def translate_import_xtf_data(self, schema, xtf_file, log_path, srid=2056):
+        logger.info("IMPORTING XTF DATA IN TRANSLATION SCHEMA ...")
+        execute_subprocess(
+            " ".join(
+                [
+                    f'"{self.java_executable_path}"',
+                    "-jar",
+                    f'"{self.ili2pg_executable_path}"',
+                    "--import",
+                    "--importBid", # extra
+                    "--deleteData",
+                    *get_pgconf_as_ili_args(),
+                    "--dbschema",
+                    f'"{schema}"',
+                    "--disableValidation",
+                    "--skipReferenceErrors",
+                    "--createTidCol",
+                    "--noSmartMapping",
+                    "--defaultSrsCode",
+                    "–-createBasketCol" # extra
+                    "--createEnumTabs", # extra
+                    "--createFk", # extra
+                    f"{srid}",
+                    "--log",
+                    f'"{log_path}"',
+                    f'"{xtf_file}"',
+                ]
+            )
+        )
+
+    # Datenexport (inkl. Übersetzung nach Französisch)
+    def translate_export_xtf_data(self, schema, xtf_file_fr, log_path_fr, srid=2056):
+        logger.info("EXPORT FRENCH ILIDB ...")
+        execute_subprocess(
+            " ".join(
+                [
+                    f'"{self.java_executable_path}"',
+                    "-jar",
+                    f'"{self.ili2pg_executable_path}"',
+                    "--export",
+                    "--models",
+                    f"{model_name}",
+                    *export_model_name_args,
+                    "--exportmodels",
+                    f"{model_name_fr}",
+                    *export_model_name_args,
+                    "--baskets BASKET1"
+                    *get_pgconf_as_ili_args(),
+                    "--dbschema",
+                    f'"{schema}"',
+                    # "--disableValidation",
+                    "--skipReferenceErrors",
+                    #"--createTidCol",
+                    "--noSmartMapping",
+                    "--defaultSrsCode",
+                    "--sqlEnableNull", # extra
+                    "--createEnumTabs", # extra
+                    "--createFk", # extra
+                    f"{srid}",
+                    "--log",
+                    f'"{log_path_fr}"',
+                    f'"{xtf_file_fr}"',
+                ]
+            )
+        )
+
     def export_xtf_data(
         self, schema, xtf_file, log_path, model_name, export_model_name, srid=2056
     ):
