@@ -93,7 +93,6 @@ class InterlisTools:
                     "-jar",
                     f'"{self.ili2pg_executable_path}"',
                     "--import",
-                    "--deleteData",
                     *get_pgconf_as_ili_args(),
                     "--dbschema",
                     f'"{schema}"',
