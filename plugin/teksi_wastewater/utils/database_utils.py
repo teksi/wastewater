@@ -268,7 +268,7 @@ class TWWIntegrityChecker:
             self.add_issue(
                 "'fk_provider' or 'fk_dataowner' not set in tww_od.default_values",
                 IssueLevel.ERROR,
-            )        
+            )
 
         if not DatabaseUtils.check_symbology_triggers_enabled():
             self.add_issue(

@@ -48,7 +48,7 @@ from .processing_provider.provider import TwwProcessingProvider
 from .tools.twwmaptools import TwwMapToolConnectNetworkElements, TwwTreeMapTool
 from .tools.twwnetwork import TwwGraphManager
 from .tools.twwselectionextender import TwwSelectionExtender
-from .utils.database_utils import DatabaseUtils,TWWIntegrityChecker
+from .utils.database_utils import DatabaseUtils, TWWIntegrityChecker
 from .utils.issues import Issue, IssueLevel
 from .utils.plugin_utils import plugin_root_path
 from .utils.qt_utils import OverrideCursor
@@ -373,10 +373,10 @@ class TeksiWastewaterPlugin:
 
     def _get_validity_issues(self, include_ili: bool = False) -> list[Issue]:
         try:
-            IntegrityChecker=TWWIntegrityChecker(models=[config.MODEL_NAME_DSS, config.MODEL_NAME_VSA_KEK], logger=self.logger)
-            return IntegrityChecker.get_validity_check_issues(
-                include_ili=include_ili
+            IntegrityChecker = TWWIntegrityChecker(
+                models=[config.MODEL_NAME_DSS, config.MODEL_NAME_VSA_KEK], logger=self.logger
             )
+            return IntegrityChecker.get_validity_check_issues(include_ili=include_ili)
         except Exception as exception:
             return [
                 Issue(
@@ -481,7 +481,9 @@ class TeksiWastewaterPlugin:
     def refresh_materialized_views(self):
         try:
             self.logger.info("Refreshing materialized views")
-            DatabaseUtils.execute("SELECT tww_app.refresh_materialized_views('tww_app', NULL, True);")
+            DatabaseUtils.execute(
+                "SELECT tww_app.refresh_materialized_views('tww_app', NULL, True);"
+            )
             QMessageBox.information(
                 self.iface.mainWindow(),
                 self.refreshmaterializedViewsAction.text(),
@@ -692,10 +694,18 @@ class TeksiWastewaterPlugin:
     def updateSymbology(self):
         try:
             with OverrideCursor(Qt.CursorShape.WaitCursor):
-                self.logger.info("update_wastewater_node symbology for all datasets - please be patient")
-                DatabaseUtils.execute("SELECT tww_app.update_wastewater_node_symbology(NULL, True);")
-                self.logger.info("update_wastewater_structure label for all datasets - please be patient")
-                DatabaseUtils.execute("SELECT tww_app.update_wastewater_structure_label(NULL, True);")
+                self.logger.info(
+                    "update_wastewater_node symbology for all datasets - please be patient"
+                )
+                DatabaseUtils.execute(
+                    "SELECT tww_app.update_wastewater_node_symbology(NULL, True);"
+                )
+                self.logger.info(
+                    "update_wastewater_structure label for all datasets - please be patient"
+                )
+                DatabaseUtils.execute(
+                    "SELECT tww_app.update_wastewater_structure_label(NULL, True);"
+                )
             QMessageBox.information(
                 self.iface.mainWindow(),
                 self.updateSymbologyAction.text(),
