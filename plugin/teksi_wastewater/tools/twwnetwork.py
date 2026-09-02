@@ -144,7 +144,7 @@ class TwwGraphManager(QObject):
         """
         try:
             with OverrideCursor(Qt.CursorShape.WaitCursor):
-                DatabaseUtils.refresh_network_simple()
+                DatabaseUtils.execute("SELECT tww_app.network_refresh_network_simple();")
             self.message_emitted.emit(
                 self.tr("Success"),
                 self.tr("Materialized Views successfully updated"),

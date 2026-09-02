@@ -175,141 +175,6 @@ class DatabaseUtils:
         logger.debug(f"psycopg dsn: {dsn_masked_pwd}")
         return " ".join(parts)
 
-    @staticmethod
-    def disable_symbology_triggers():
-        logger.info("Disable symbology triggers")
-        DatabaseUtils.execute("SELECT tww_app.alter_symbology_triggers('disable');")
-
-    @staticmethod
-    def enable_symbology_triggers():
-        logger.info("Enable symbology triggers")
-        DatabaseUtils.execute("SELECT tww_app.alter_symbology_triggers('enable');")
-
-    @staticmethod
-    def check_symbology_triggers_enabled():
-        logger.info("Check symbology triggers enabled")
-        row = DatabaseUtils.fetchone("SELECT tww_app.check_symbology_triggers_enabled();")
-        return row[0]
-
-    @staticmethod
-    def update_symbology():
-        with DatabaseUtils.PsycopgConnection() as connection:
-            cursor = connection.cursor()
-
-            logger.info("update_wastewater_node symbology for all datasets - please be patient")
-            cursor.execute("SELECT tww_app.update_wastewater_node_symbology(NULL, True);")
-            logger.info("update_wastewater_structure label for all datasets - please be patient")
-            cursor.execute("SELECT tww_app.update_wastewater_structure_label(NULL, True);")
-
-    @staticmethod
-    def disable_modification_triggers():
-        logger.info("Disable modification triggers")
-        DatabaseUtils.execute("SELECT tww_app.alter_modification_triggers('disable');")
-
-    @staticmethod
-    def enable_modification_triggers():
-        logger.info("Enable modification triggers")
-        DatabaseUtils.execute("SELECT tww_app.alter_modification_triggers('enable');")
-
-    @staticmethod
-    def check_modification_triggers_enabled():
-        logger.info("Check if modification triggers are enabled")
-        row = DatabaseUtils.fetchone("SELECT tww_app.check_modification_enabled();")
-        return row[0]
-
-    @staticmethod
-    def check_oid_prefix() -> list[Issue]:
-        """Check whether the oid_prefix is set up for production"""
-        logger.info("Checking setup of oid prefix")
-        prefixes = DatabaseUtils.fetchall("SELECT prefix FROM tww_sys.oid_prefixes WHERE active;")
-
-        issues = []
-        if len(prefixes) > 1:
-            issues.append(
-                Issue(
-                    "More than one oid_prefix set to active. Generation of "
-                    "Object-ID will not work. Set the OID prefix for your "
-                    "production database to active.",
-                    IssueLevel.ERROR,
-                )
-            )
-
-        if len(prefixes) > 0:
-            active_pref = prefixes[0][0]
-            if active_pref == "ch000000":
-                issues.append(
-                    Issue(
-                        "OID prefix set to 'ch000000'. Database not safe for production.",
-                        IssueLevel.ERROR,
-                    )
-                )
-
-        return issues
-
-    @staticmethod
-    def check_fk_defaults() -> list[Issue]:
-        """Check whether the database is set up for production"""
-        logger.info("Checking setup of default_values")
-
-        defaults = []
-        vals = []
-        for item in DatabaseUtils.fetchall(
-            "SELECT fieldname,value_obj_id from tww_od.default_values;"
-        ):
-            defaults.append(item[0])
-            vals.append(item[1])
-
-        msg_list = []
-        if None in vals:
-            msg_list.append(
-                Issue(
-                    "There is an undefined default value in tww_od.default_values",
-                    IssueLevel.ERROR,
-                )
-            )
-        elif not all(x in defaults for x in ["fk_provider", "fk_dataowner"]):
-            msg_list.append(
-                Issue(
-                    "'fk_provider' or 'fk_dataowner' not set in tww_od.default_values",
-                    IssueLevel.ERROR,
-                )
-            )
-
-        return msg_list
-
-    @staticmethod
-    def get_validity_check_issues(include_ili: bool = False, logger=None) -> list[Issue]:
-        messages = []
-        messages = DatabaseUtils.check_oid_prefix()
-        messages.extend(DatabaseUtils.check_fk_defaults())
-
-        if not DatabaseUtils.check_symbology_triggers_enabled():
-            messages.extend(
-                Issue(
-                    "Symbology triggers are disabled",
-                    IssueLevel.ERROR,
-                )
-            )
-
-        if include_ili:
-            IntegrityChecker = TWWIntegrityChecker(
-                models=[config.MODEL_NAME_DSS, config.MODEL_NAME_VSA_KEK], logger=logger
-            )
-            IntegrityChecker.run_integrity_checks()
-            messages.extend(IntegrityChecker.check_result.issues)
-
-        return messages
-
-    @staticmethod
-    def refresh_network_simple():
-        logger.info("Refreshing network")
-        DatabaseUtils.execute("SELECT tww_app.network_refresh_network_simple();")
-
-    @staticmethod
-    def refresh_matviews():
-        logger.info("Refreshing materialized views")
-        DatabaseUtils.execute("SELECT tww_app.refresh_materialized_views('tww_app', NULL, True);")
-
 
 class TWWIntegrityChecker:
     def __init__(self, models=[], limit_to_selection=False, logger=None):
@@ -364,6 +229,57 @@ class TWWIntegrityChecker:
                 )
 
         return self.check_result
+
+    @staticmethod
+    def get_validity_check_issues(self, include_ili: bool = False) -> list[Issue]:
+        self.logger.info("Checking setup of oid prefix")
+        prefixes = DatabaseUtils.fetchall("SELECT prefix FROM tww_sys.oid_prefixes WHERE active;")
+
+        if len(prefixes) > 1:
+            self.add_issue(
+                "More than one oid_prefix set to active. Generation of "
+                "Object-ID will not work. Set the OID prefix for your "
+                "production database to active.",
+                IssueLevel.ERROR,
+            )
+
+        if len(prefixes) > 0:
+            active_pref = prefixes[0][0]
+            if active_pref == "ch000000":
+                self.add_issue(
+                    "OID prefix set to 'ch000000'. Database not safe for production.",
+                    IssueLevel.ERROR,
+                )
+        self.logger.info("Checking setup of default_values")
+
+        defaults = []
+        vals = []
+        for item in DatabaseUtils.fetchall(
+            "SELECT fieldname,value_obj_id from tww_od.default_values;"
+        ):
+            defaults.append(item[0])
+            vals.append(item[1])
+        if None in vals:
+            self.add_issue(
+                "There is an undefined default value in tww_od.default_values",
+                IssueLevel.ERROR,
+            )
+        elif not all(x in defaults for x in ["fk_provider", "fk_dataowner"]):
+            self.add_issue(
+                "'fk_provider' or 'fk_dataowner' not set in tww_od.default_values",
+                IssueLevel.ERROR,
+            )        
+
+        if not DatabaseUtils.check_symbology_triggers_enabled():
+            self.add_issue(
+                "Symbology triggers are disabled",
+                IssueLevel.ERROR,
+            )
+
+        if include_ili:
+            self.run_integrity_checks()
+
+        return self.check_result.issues
 
     @property
     def failed(self) -> bool:
