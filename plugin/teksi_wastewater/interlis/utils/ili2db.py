@@ -110,7 +110,7 @@ class InterlisTools:
             )
         )
 
-    # Datenimport aus exportiertem Transferdatensatz deutsch ins Schema
+    # Datenimport aus exportiertem Transferdatensatz deutsch ins Translation schema
     def translate_import_xtf_data(self, schema, xtf_file, log_path, srid=2056):
         logger.info("IMPORTING XTF DATA IN TRANSLATION SCHEMA ...")
         execute_subprocess(
