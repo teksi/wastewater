@@ -42,12 +42,13 @@ from .gui.twwprofiledockwidget import TwwProfileDockWidget
 from .gui.twwselectionextenderwidget import TwwSelectionExtenderWidget
 from .gui.twwsettingsdialog import TwwSettingsDialog
 from .gui.twwwizard import TwwWizard
+from .interlis import config
 from .interlis.utils.modelbaker.iliwrapper.ili2dbutils import JavaNotFoundError
 from .processing_provider.provider import TwwProcessingProvider
 from .tools.twwmaptools import TwwMapToolConnectNetworkElements, TwwTreeMapTool
 from .tools.twwnetwork import TwwGraphManager
 from .tools.twwselectionextender import TwwSelectionExtender
-from .utils.database_utils import DatabaseUtils
+from .utils.database_utils import DatabaseUtils, TWWIntegrityChecker
 from .utils.issues import Issue, IssueLevel
 from .utils.plugin_utils import plugin_root_path
 from .utils.qt_utils import OverrideCursor
@@ -372,9 +373,10 @@ class TeksiWastewaterPlugin:
 
     def _get_validity_issues(self, include_ili: bool = False) -> list[Issue]:
         try:
-            return DatabaseUtils.get_validity_check_issues(
-                include_ili=include_ili, logger=self.logger
+            IntegrityChecker = TWWIntegrityChecker(
+                models=[config.MODEL_NAME_DSS, config.MODEL_NAME_VSA_KEK], logger=self.logger
             )
+            return IntegrityChecker.get_validity_check_issues(include_ili=include_ili)
         except Exception as exception:
             return [
                 Issue(
@@ -444,7 +446,8 @@ class TeksiWastewaterPlugin:
 
     def enable_symbology_triggers(self):
         try:
-            DatabaseUtils.enable_symbology_triggers()
+            self.logger.info("Enable symbology triggers")
+            DatabaseUtils.execute("SELECT tww_app.alter_symbology_triggers('enable');")
             QMessageBox.information(
                 self.iface.mainWindow(),
                 self.enableSymbologyTriggersAction.text(),
@@ -460,7 +463,8 @@ class TeksiWastewaterPlugin:
 
     def disable_symbology_triggers(self):
         try:
-            DatabaseUtils.disable_symbology_triggers()
+            self.logger.info("Disable symbology triggers")
+            DatabaseUtils.execute("SELECT tww_app.alter_symbology_triggers('disable');")
             QMessageBox.information(
                 self.iface.mainWindow(),
                 self.disableSymbologyTriggersAction.text(),
@@ -476,7 +480,10 @@ class TeksiWastewaterPlugin:
 
     def refresh_materialized_views(self):
         try:
-            DatabaseUtils.refresh_matviews()
+            self.logger.info("Refreshing materialized views")
+            DatabaseUtils.execute(
+                "SELECT tww_app.refresh_materialized_views('tww_app', NULL, True);"
+            )
             QMessageBox.information(
                 self.iface.mainWindow(),
                 self.refreshmaterializedViewsAction.text(),
@@ -687,7 +694,18 @@ class TeksiWastewaterPlugin:
     def updateSymbology(self):
         try:
             with OverrideCursor(Qt.CursorShape.WaitCursor):
-                DatabaseUtils.update_symbology()
+                self.logger.info(
+                    "update_wastewater_node symbology for all datasets - please be patient"
+                )
+                DatabaseUtils.execute(
+                    "SELECT tww_app.update_wastewater_node_symbology(NULL, True);"
+                )
+                self.logger.info(
+                    "update_wastewater_structure label for all datasets - please be patient"
+                )
+                DatabaseUtils.execute(
+                    "SELECT tww_app.update_wastewater_structure_label(NULL, True);"
+                )
             QMessageBox.information(
                 self.iface.mainWindow(),
                 self.updateSymbologyAction.text(),
