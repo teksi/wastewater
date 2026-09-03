@@ -65,11 +65,11 @@ Adaptions to project file
 
  xxx
 
- 
+
 For more details see https://github.com/teksi/wastewater/releases/tag/2026.1.0
 
- 
- 
+
+
 
 
 
