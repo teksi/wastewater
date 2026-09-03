@@ -5,6 +5,39 @@ Here you can find information about the future 2026.x release of TEKSI wastewate
 
 2026.1.0
 =========
+Bump actions/setup-python from 6 to 7 by @dependabot[bot] in #1108
+Update pum requirement from <2.0.0,>=1.7.2 to >=1.8.0,<2.0.0 by @dependabot[bot] in #1109
+Bump actions/stale from 10 to 11 by @dependabot[bot] in #1107
+Use makefile to build the docs by @domi4484 in #1111
+2026-07-17-channel-damage-BCBF-correct-description-German by @sjib in #1090
+Add bot response for stale enhancements by @cymed in #1046
+Fix #1116 by @cymed in #1117
+Restore documentation structure with version/language by @domi4484 in #1114
+Add italian for docs by @ponceta in #1118
+Update AG-XX docs by @cymed in #1115
+Update README.md Italian docs by @sjib in #1120
+add from and to levels to tww_app.mvw_tww_channel by @cymed in #1122
+2026-07-16-labels-export-prevent-crash-if-no-labels by @sjib in #1089
+2026 07 13 minor corrections documentation by @sjib in #1085
+Remove qgis dependency from cmd by @cymed in #763
+Add standardoid as domain by @cymed in #976
+Fix a bug where overflows couldn't be removed by @cymed in #1127
+Check tww_app.vw_tww_wastewater_node existence by @cymed in #1113
+fix Generell in project by @Sebastienfavre in #1128
+fix Elecromechanical in project by @Sebastienfavre in #1130
+Add option to suppress selection dialog on xtf import by @cymed in #1121
+add integrity checks to manual validity checks by @cymed in #1061
+2026-08-24-demodata-aletsch-fk-wwne-added by @sjib in #1135
+Fix Error with depth calculation when updating a node or cover by @cymed in #1136
+Fix Bug in gepknoten and gephaltung agxx export view by @cymed in #1137
+Fix display_fr translation by @ponceta in #1143
+Create 03_fix_display_fr_file_classname.sql by @Sebastienfavre in #1144
+Check that layers are not in edit mode for admin actions by @domi4484 in #1141
+
+
+
+
+
 
 Main features
 ----------------
@@ -32,7 +65,8 @@ Adaptions to project file
 
  xxx
  
- 
+For more details see https://github.com/teksi/wastewater/releases/tag/2026.1.0
+
  
  
 
