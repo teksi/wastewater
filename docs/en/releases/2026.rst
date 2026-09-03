@@ -48,27 +48,34 @@ Main features
 
 Documentation
 --------------
- - Release Notes 2025.0 added (incl. Video)
+ - xxx
 
 Bug fixes and performance improvements
 -----------------------------------------
 
- - xxx
- 
- 
+ - add the bug fixes pull requests here
+
+
 Extension improvements
 ----------------------
  - xxx
- 
+
 Adaptions to project file
 ----------------------------------------
 
  xxx
+
  
 For more details see https://github.com/teksi/wastewater/releases/tag/2026.1.0
 
  
  
+
+
+
+
+
+
 
 2026.0.1
 =========
