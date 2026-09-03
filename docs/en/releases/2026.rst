@@ -20,7 +20,7 @@ Documentation
 Bug fixes and performance improvements
 -----------------------------------------
 
- - xxx
+ - bla bla \ stefan TODO
 
 
 Extension improvements
