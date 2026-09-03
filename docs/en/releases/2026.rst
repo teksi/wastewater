@@ -21,20 +21,20 @@ Bug fixes and performance improvements
 -----------------------------------------
 
  - xxx
- 
- 
+
+
 Extension improvements
 ----------------------
  - xxx
- 
+
 Adaptions to project file
 ----------------------------------------
 
  xxx
- 
- 
- 
- 
+
+
+
+
 
 2026.0.1
 =========
