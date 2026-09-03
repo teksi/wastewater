@@ -2,6 +2,40 @@
 
 Here you can find information about the future 2026.x release of TEKSI wastewater
 
+
+2026.1.0
+=========
+
+Main features
+----------------
+
+- Latest version of TEKSI wastewater module for QGIS 3.xx
+- The next version will be based on QGIS 4
+
+
+Documentation
+--------------
+ - Release Notes 2025.0 added (incl. Video)
+
+Bug fixes and performance improvements
+-----------------------------------------
+
+ - xxx
+ 
+ 
+Extension improvements
+----------------------
+ - xxx
+ 
+Adaptions to project file
+----------------------------------------
+
+ xxx
+ 
+ 
+ 
+ 
+
 2026.0.1
 =========
 
