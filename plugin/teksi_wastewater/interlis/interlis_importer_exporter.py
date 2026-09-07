@@ -507,13 +507,20 @@ class InterlisImporterExporter:
             cursor.execute("SELECT tww_app.network_refresh_network_simple();")
 
     def _import_disable_symbology_and_modification_triggers(self):
-        DatabaseUtils.disable_symbology_triggers()
-        DatabaseUtils.disable_modification_triggers()
+        logger.info("Disable symbology triggers")
+        DatabaseUtils.execute("SELECT tww_app.alter_symbology_triggers('disable');")
+        logger.info("Disable modification triggers")
+        DatabaseUtils.execute("SELECT tww_app.alter_modification_triggers('disable');")
 
     def _import_enable_symbology_and_modification_triggers(self):
-        DatabaseUtils.enable_symbology_triggers()
-        DatabaseUtils.update_symbology()
-        DatabaseUtils.enable_modification_triggers()
+        logger.info("Enable symbology triggers")
+        DatabaseUtils.execute("SELECT tww_app.alter_symbology_triggers('enable');")
+        logger.info("update_wastewater_node symbology for all datasets - please be patient")
+        DatabaseUtils.execute("SELECT tww_app.update_wastewater_node_symbology(NULL, True);")
+        logger.info("update_wastewater_structure label for all datasets - please be patient")
+        DatabaseUtils.execute("SELECT tww_app.update_wastewater_structure_label(NULL, True);")
+        logger.info("Enable modification triggers")
+        DatabaseUtils.execute("SELECT tww_app.alter_modification_triggers('enable');")
 
     def _export_labels_file(
         self,
