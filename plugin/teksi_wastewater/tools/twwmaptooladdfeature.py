@@ -424,6 +424,7 @@ class TwwMapToolAddReach(TwwMapToolAddFeature):
         else:  # no valid match or reach-reach connection
             return feat.attribute(f"rp_{idx}_obj_id")
 
+
 class TwwMapToolRectangularGeometryBase(QgsMapTool):
     """
     Base class for rectangular geometry digitizing.
@@ -438,28 +439,24 @@ class TwwMapToolRectangularGeometryBase(QgsMapTool):
 
     geometryDigitized = pyqtSignal()
 
-    def __init__(self, iface, layer,ws_oid):
+    def __init__(self, iface, layer, ws_oid):
         super().__init__(iface.mapCanvas())
 
         self.iface = iface
         self.canvas = iface.mapCanvas()
         self.layer = layer
-        self.can_start=True
+        self.can_start = True
         self.ws_geom_layer = TwwLayerManager.layer("vw_wastewater_structure")
         assert self.ws_geom_layer is not None
-        request = QgsFeatureRequest().setFilterExpression(
-            f"obj_id = '{ws_oid}'"
-        )
+        request = QgsFeatureRequest().setFilterExpression(f"obj_id = '{ws_oid}'")
 
         ws_feature = next(self.ws_geom_layer.getFeatures(request), None)
         if not ws_feature:
-            raise RuntimeError(
-                self.tr("Wastewater structure could not be found.")
-            )
+            raise RuntimeError(self.tr("Wastewater structure could not be found."))
         detail_geometry = ws_feature.geometry().asPolygon()
         if detail_geometry and not self.validateReplacement():
-            self.can_start=False
-            
+            self.can_start = False
+
         self.geometry = None
         self.messageBarItem = None
 
@@ -477,9 +474,7 @@ class TwwMapToolRectangularGeometryBase(QgsMapTool):
         self.setAdvancedDigitizingAllowed(True)
         self.setAutoSnapEnabled(True)
 
-        self.snapping_utils = QgsMapCanvasSnappingUtils(
-            self.iface.mapCanvas()
-        )
+        self.snapping_utils = QgsMapCanvasSnappingUtils(self.iface.mapCanvas())
 
     # ------------------------------------------------------------------
     # Common helpers
@@ -493,20 +488,14 @@ class TwwMapToolRectangularGeometryBase(QgsMapTool):
         reply = QMessageBox.question(
             self.iface.mainWindow(),
             self.tr("Replace geometry"),
-            self.tr(
-                "A detailed geometry already exists.\n\n"
-                "Do you want to replace it?"
-            ),
+            self.tr("A detailed geometry already exists.\n\n" "Do you want to replace it?"),
             QMessageBox.Yes | QMessageBox.No,
         )
 
         return reply == QMessageBox.Yes
 
     def createRectangle(self, lp1, lp2, width):
-        length = math.sqrt(
-            math.pow(lp1.x() - lp2.x(), 2)
-            + math.pow(lp1.y() - lp2.y(), 2)
-        )
+        length = math.sqrt(math.pow(lp1.x() - lp2.x(), 2) + math.pow(lp1.y() - lp2.y(), 2))
 
         if length == 0:
             return None
@@ -534,9 +523,7 @@ class TwwMapToolRectangularGeometryBase(QgsMapTool):
             lp2.y() - width * (xd / length),
         )
 
-        return QgsGeometry.fromPolygonXY(
-            [[pt1, pt2, pt3, pt4, pt1]]
-        )
+        return QgsGeometry.fromPolygonXY([[pt1, pt2, pt3, pt4, pt1]])
 
     def askWidth(self, default_value="0.20"):
         dlg = QDialog()
@@ -550,8 +537,7 @@ class TwwMapToolRectangularGeometryBase(QgsMapTool):
         dlg.layout().addWidget(txt)
 
         bb = QDialogButtonBox(
-            QDialogButtonBox.StandardButton.Ok
-            | QDialogButtonBox.StandardButton.Cancel
+            QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel
         )
 
         dlg.layout().addWidget(bb)
@@ -600,16 +586,12 @@ class TwwMapToolRectangularGeometryBase(QgsMapTool):
 
             self.snapping_utils.setConfig(config)
 
-            match = self.snapping_utils.snapToMap(
-                QgsPointXY(event.originalMapPoint())
-            )
+            match = self.snapping_utils.snapToMap(QgsPointXY(event.originalMapPoint()))
 
             if match.isValid():
                 return QgsPointXY(match.point()), match
 
-        match = self.canvas.snappingUtils().snapToMap(
-            QgsPointXY(event.originalMapPoint())
-        )
+        match = self.canvas.snappingUtils().snapToMap(QgsPointXY(event.originalMapPoint()))
 
         if match.isValid():
             return QgsPointXY(match.point()), match
@@ -621,9 +603,7 @@ class TwwMapToolRectangularGeometryBase(QgsMapTool):
         if not match.isValid():
 
             if self.snapping_marker is not None:
-                self.canvas.scene().removeItem(
-                    self.snapping_marker
-                )
+                self.canvas.scene().removeItem(self.snapping_marker)
                 self.snapping_marker = None
 
             return
@@ -632,9 +612,7 @@ class TwwMapToolRectangularGeometryBase(QgsMapTool):
 
             self.snapping_marker = QgsVertexMarker(self.canvas)
             self.snapping_marker.setPenWidth(3)
-            self.snapping_marker.setColor(
-                QColor(Qt.magenta)
-            )
+            self.snapping_marker.setColor(QColor(Qt.magenta))
 
         self.snapping_marker.setCenter(match.point())
 
@@ -649,25 +627,19 @@ class TwwMapToolRectangularGeometryBase(QgsMapTool):
             self.deactivate()
             return
 
-        self.canvas.setCursor(
-            QCursor(Qt.CursorShape.CrossCursor)
-        )
+        self.canvas.setCursor(QCursor(Qt.CursorShape.CrossCursor))
 
     def deactivate(self):
 
         super().deactivate()
 
         try:
-            self.canvas.scene().removeItem(
-                self.rubberband
-            )
+            self.canvas.scene().removeItem(self.rubberband)
         except Exception:
             pass
 
         try:
-            self.canvas.scene().removeItem(
-                self.snapping_marker
-            )
+            self.canvas.scene().removeItem(self.snapping_marker)
         except Exception:
             pass
 
@@ -685,20 +657,15 @@ class TwwMapToolRectangularGeometryBase(QgsMapTool):
 
             length = self.firstPoint.distance(mousepos)
 
-            self.iface.statusBarIface().showMessage(
-                self.tr(
-                    f"Length: {length:.2f} m"
-                )
-            )
+            self.iface.statusBarIface().showMessage(self.tr(f"Length: {length:.2f} m"))
 
 
 # ======================================================================
 # Drainage Channel
 # ======================================================================
 
-class TwwMapToolDigitizeDrainageChannel(
-    TwwMapToolRectangularGeometryBase
-):
+
+class TwwMapToolDigitizeDrainageChannel(TwwMapToolRectangularGeometryBase):
     """
     Drainage channel:
 
@@ -720,19 +687,13 @@ class TwwMapToolDigitizeDrainageChannel(
         assert self.node_layer is not None
         self.ws_layer = TwwLayerManager.layer("vw_tww_wastewater_structure")
         assert self.ws_layer is not None
-        request = QgsFeatureRequest().setFilterExpression(
-            f"obj_id = '{ws_oid}'"
-        )
+        request = QgsFeatureRequest().setFilterExpression(f"obj_id = '{ws_oid}'")
 
         ws_feature = next(self.ws_layer.getFeatures(request), None)
         if not ws_feature:
-            raise RuntimeError(
-                self.tr("Wastewater structure could not be found.")
-            )
-        wn_oid=ws_feature.value('wn_obj_id')
-        request = QgsFeatureRequest().setFilterExpression(
-            f"obj_id = '{wn_oid}'"
-        )
+            raise RuntimeError(self.tr("Wastewater structure could not be found."))
+        wn_oid = ws_feature.value("wn_obj_id")
+        request = QgsFeatureRequest().setFilterExpression(f"obj_id = '{wn_oid}'")
 
         self.wn_feature = next(self.node_layer.getFeatures(request), None)
         if self.wn_feature:
@@ -746,10 +707,7 @@ class TwwMapToolDigitizeDrainageChannel(
             QMessageBox.warning(
                 self.iface.mainWindow(),
                 self.tr("Drainage channel"),
-                self.tr(
-                    "The selected wastewater structure "
-                    "has no associated wastewater node."
-                ),
+                self.tr("The selected wastewater structure " "has no associated wastewater node."),
             )
             return
 
@@ -763,26 +721,18 @@ class TwwMapToolDigitizeDrainageChannel(
 
         self.rubberband.addPoint(self.firstPoint)
 
-        msgtitle = self.tr(
-            "Digitize Drainage Channel"
-        )
+        msgtitle = self.tr("Digitize Drainage Channel")
 
         msg = self.tr(
-            "Click channel endpoint. "
-            "Hold CTRL for custom width. "
-            "Right click to abort."
+            "Click channel endpoint. " "Hold CTRL for custom width. " "Right click to abort."
         )
 
-        self.messageBarItem = (
-            self.iface.messageBar().createMessage(
-                msgtitle,
-                msg,
-            )
+        self.messageBarItem = self.iface.messageBar().createMessage(
+            msgtitle,
+            msg,
         )
 
-        self.iface.messageBar().pushWidget(
-            self.messageBarItem
-        )
+        self.iface.messageBar().pushWidget(self.messageBarItem)
 
     def canvasReleaseEvent(self, event):
 
@@ -820,9 +770,8 @@ class TwwMapToolDigitizeDrainageChannel(
 # Generic rectangular detail geometry
 # ======================================================================
 
-class TwwMapToolDigitizeRectangularGeometry(
-    TwwMapToolRectangularGeometryBase
-):
+
+class TwwMapToolDigitizeRectangularGeometry(TwwMapToolRectangularGeometryBase):
     """
     Generic rectangular detail geometry.
 
@@ -843,9 +792,7 @@ class TwwMapToolDigitizeRectangularGeometry(
 
         super().activate()
 
-        msgtitle = self.tr(
-            "Digitize Rectangular Detail Geometry"
-        )
+        msgtitle = self.tr("Digitize Rectangular Detail Geometry")
 
         msg = self.tr(
             "Digitize start and end point. "
@@ -853,16 +800,12 @@ class TwwMapToolDigitizeRectangularGeometry(
             "Right click to abort."
         )
 
-        self.messageBarItem = (
-            self.iface.messageBar().createMessage(
-                msgtitle,
-                msg,
-            )
+        self.messageBarItem = self.iface.messageBar().createMessage(
+            msgtitle,
+            msg,
         )
 
-        self.iface.messageBar().pushWidget(
-            self.messageBarItem
-        )
+        self.iface.messageBar().pushWidget(self.messageBarItem)
 
     def canvasReleaseEvent(self, event):
 
