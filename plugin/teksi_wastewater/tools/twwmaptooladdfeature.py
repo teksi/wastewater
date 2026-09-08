@@ -425,7 +425,7 @@ class TwwMapToolAddReach(TwwMapToolAddFeature):
             return feat.attribute(f"rp_{idx}_obj_id")
 
 
-class TwwMapToolRectangularGeometryBase(QgsMapTool):
+class TwwMapToolRectangularGeometryBase(QgsMapToolAdvancedDigitizing):
     """
     Base class for rectangular geometry digitizing.
 
@@ -440,7 +440,7 @@ class TwwMapToolRectangularGeometryBase(QgsMapTool):
     geometryDigitized = pyqtSignal()
 
     def __init__(self, iface, layer, ws_oid):
-        super().__init__(iface.mapCanvas())
+        QgsMapToolAdvancedDigitizing.__init__(self, iface.mapCanvas(), iface.cadDockWidget())
 
         self.iface = iface
         self.canvas = iface.mapCanvas()
@@ -452,9 +452,10 @@ class TwwMapToolRectangularGeometryBase(QgsMapTool):
 
         ws_feature = next(self.ws_geom_layer.getFeatures(request), None)
         if not ws_feature:
-            raise RuntimeError(self.tr("Wastewater structure could not be found."))
-        detail_geometry = ws_feature.geometry().asPolygon()
-        if detail_geometry and not self.validateReplacement():
+            raise RuntimeError(self.tr(f"Wastewater structure could not be found. OID: {ws_oid} "))
+
+        geom = ws_feature.geometry()
+        if not (geom is None or geom.isNull()) and not self.validateReplacement():
             self.can_start = False
 
         self.geometry = None
@@ -623,7 +624,7 @@ class TwwMapToolRectangularGeometryBase(QgsMapTool):
     def activate(self):
 
         super().activate()
-        if not self.canStart():
+        if not self.can_start:
             self.deactivate()
             return
 
@@ -644,6 +645,7 @@ class TwwMapToolRectangularGeometryBase(QgsMapTool):
             pass
 
         self.canvas.unsetCursor()
+        self.iface.actionIdentify().trigger()
 
     def canvasMoveEvent(self, event):
 
@@ -652,12 +654,7 @@ class TwwMapToolRectangularGeometryBase(QgsMapTool):
         self.updateSnapMarker(match)
 
         if self.firstPoint:
-
             self.rubberband.movePoint(mousepos)
-
-            length = self.firstPoint.distance(mousepos)
-
-            self.iface.statusBarIface().showMessage(self.tr(f"Length: {length:.2f} m"))
 
 
 # ======================================================================
@@ -686,13 +683,15 @@ class TwwMapToolDigitizeDrainageChannel(TwwMapToolRectangularGeometryBase):
         self.node_layer = TwwLayerManager.layer("vw_tww_wastewater_node")
         assert self.node_layer is not None
         self.ws_layer = TwwLayerManager.layer("vw_tww_wastewater_structure")
+        if not self.ws_layer:
+            self.ws_layer = TwwLayerManager.layer("vw_tww_additional_wastewater_structure")
         assert self.ws_layer is not None
         request = QgsFeatureRequest().setFilterExpression(f"obj_id = '{ws_oid}'")
 
         ws_feature = next(self.ws_layer.getFeatures(request), None)
         if not ws_feature:
-            raise RuntimeError(self.tr("Wastewater structure could not be found."))
-        wn_oid = ws_feature.value("wn_obj_id")
+            raise RuntimeError(self.tr(f"Wastewater structure could not be found. OID: {ws_oid} "))
+        wn_oid = ws_feature["wn_obj_id"]
         request = QgsFeatureRequest().setFilterExpression(f"obj_id = '{wn_oid}'")
 
         self.wn_feature = next(self.node_layer.getFeatures(request), None)
@@ -780,9 +779,9 @@ class TwwMapToolDigitizeRectangularGeometry(TwwMapToolRectangularGeometryBase):
     * not tied to wastewater node
     """
 
-    def __init__(self, iface, layer):
+    def __init__(self, iface, layer, ws_oid):
 
-        super().__init__(iface, layer)
+        super().__init__(iface, layer, ws_oid)
 
         self.firstPoint = None
 
@@ -795,7 +794,7 @@ class TwwMapToolDigitizeRectangularGeometry(TwwMapToolRectangularGeometryBase):
         msgtitle = self.tr("Digitize Rectangular Detail Geometry")
 
         msg = self.tr(
-            "Digitize start and end point. "
+            "Digitize start and end point of middle axis. "
             "Width will be requested afterwards. "
             "Right click to abort."
         )
