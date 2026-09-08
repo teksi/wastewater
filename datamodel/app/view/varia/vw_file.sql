@@ -58,8 +58,8 @@ CREATE OR REPLACE FUNCTION tww_app.vw_file_insert()
 $BODY$
 DECLARE
   dm_oid varchar(16);
-  dm_path str;
-  relative_path str;
+  dm_path text;
+  relative_path text;
   BEGIN
 
     NEW._url = replace(NEW._url, '\', '/');
