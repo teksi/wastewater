@@ -64,7 +64,7 @@ DECLARE
 
     NEW._url = replace(NEW._url, '\', '/');
 
-    SELECT obj_id, "path" INTO dm_oid, dm_path 
+    SELECT obj_id, "path" INTO dm_oid, dm_path
     FROM tww_od.data_media
     WHERE "path" = SUBSTRING(NEW._url FROM 1 FOR LENGTH("path"))
     ORDER BY LENGTH("path") DESC
