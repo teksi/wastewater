@@ -47,7 +47,6 @@ from qgis.gui import (
     QgsAttributeEditorContext,
     QgsMapCanvas,
     QgsMapCanvasSnappingUtils,
-    QgsMapTool,
     QgsMapToolAdvancedDigitizing,
     QgsMessageBar,
     QgsRubberBand,
