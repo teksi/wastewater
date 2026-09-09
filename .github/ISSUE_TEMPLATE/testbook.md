@@ -1,6 +1,6 @@
 ---
-name: Release testbook
-about: Create a release testbook to help us improve TEKSI Modules
+name: Testbook
+about: Create a testbook to help us improve TEKSI Modules
 title: 'Testing 202X.X rc# - your name'
 type: Task
 labels: Testing
