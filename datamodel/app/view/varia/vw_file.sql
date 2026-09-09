@@ -22,7 +22,7 @@ CREATE OR REPLACE VIEW tww_app.vw_file AS
     f.object,
     f.classname,
     -- dm.path,
-    COALESCE(dm.path::text ||'/'|| f.path_relative::text, f.path_relative::text) AS _url,
+    COALESCE(regexp_replace(dm.path, '[\\/]+$', '')||'/'|| f.path_relative::text, f.path_relative::text) AS _url,
     f.fk_dataowner as dataowner,
     f.fk_provider as provider,
     f.remark
@@ -88,8 +88,8 @@ DECLARE
       (
         dm_path,
         CASE
-          WHEN url ~* '^https?://' THEN 9318 -- webserver
-          WHEN url ~ '^\\\\' THEN 3789       -- server
+          WHEN _url ~* '^https?://' THEN 9318 -- webserver
+          WHEN _url ~ '^\\\\' THEN 3789       -- server
           ELSE 3788                          -- harddisc
         END,
         NEW.dataowner,
