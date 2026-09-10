@@ -192,7 +192,7 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="changelog_files" nullable="true" remarks="" size="2147483647" type="_text" typeCode="2003"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="parameters" nullable="true" remarks="" size="2147483647" type="jsonb" typeCode="1111"/>
          <column autoUpdated="false" defaultValue="3" digits="0" id="7" name="migration_table_version" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
-         <column autoUpdated="false" defaultValue="'1.8.0'::character varying" digits="0" id="8" name="pum_version" nullable="false" remarks="" size="50" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="'1.9.0'::character varying" digits="0" id="8" name="pum_version" nullable="false" remarks="" size="50" type="varchar" typeCode="12"/>
          <primaryKey column="id" sequenceNumberInPK="1"/>
          <index name="pum_migrations_pkey" unique="true">
             <column ascending="true" name="id"/>
