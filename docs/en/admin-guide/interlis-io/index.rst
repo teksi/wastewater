@@ -389,7 +389,7 @@ Motivation
 
 So far, TEKSI Wastewater only is able to import INTERLIS data in german. For any non-german speaking user, this means that any incoming INTERLIS delivery has to be translated into german before starting the import.
 
-The following description relies heavily on `sjib's blog post in 2022 <https://www.sjib.ch/wie-uebersetze-ich-eine-interlis-transferdatei-in-eine-andere-sprache/>`_, where the process was described in german: 
+The following description relies heavily on `sjib's blog post in 2022 <https://www.sjib.ch/wie-uebersetze-ich-eine-interlis-transferdatei-in-eine-andere-sprache/>`_, where the process was described in german:
 
 Step by step
 ------------
@@ -450,4 +450,3 @@ The basket name can be found in the original transfer dataset.
    java -jar %ili2pg_path% –export –models DSS_2020_1_LV95 –exportModels DSS_2020_1_LV95 –baskets %baskets% –skipReferenceErrors –sqlEnableNull –createEnumTabs –createFk –noSmartMapping –defaultSrsAuth EPSG –defaultSrsCode 2056 –dbhost %host% –dbport %port% –dbdatabase %db% –dbschema %dbschema% –dbusr %user% –dbpwd %pwd% –log %xtf_path%%dbschema%_export.log –trace %xtf_path%%xtf_filename%.xtf
 
 The generated transfer dataset now contains the data in German, except for free-text attributes such as names, labels, or comments.
-
