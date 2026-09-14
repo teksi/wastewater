@@ -7,7 +7,7 @@ from sqlalchemy import inspect
 from sqlalchemy.exc import NoInspectionAvailable
 
 from ...interlis import config
-from ...interlis.config import (
+from ...interlis.model_config import (
     TwwInterlisModelSelection,
 )
 

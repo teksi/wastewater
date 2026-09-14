@@ -40,7 +40,7 @@ from .utils.various import (
     logger,
     make_log_path,
 )
-from .config import (
+from .model_config import (
     InterlisLangModel,
     InterlisModel,
     interlis_models,

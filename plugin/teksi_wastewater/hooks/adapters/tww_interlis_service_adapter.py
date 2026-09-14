@@ -6,7 +6,7 @@ from pathlib import Path
 from collections.abc import Sequence
 
 from ...interlis.interlis_importer_exporter import InterlisImporterExporter
-from ...interlis.config import TwwInterlisModelSelection
+from ...interlis.model_config import TwwInterlisModelSelection
 
 from teksi_hooks.services.interlis import (
     InterlisContext,

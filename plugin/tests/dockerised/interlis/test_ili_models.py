@@ -1,4 +1,4 @@
-from teksi_wastewater.interlis.config import (
+from teksi_wastewater.interlis.model_selection import (
     groups_for_models,
     interlis_models,
 )
