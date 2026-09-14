@@ -164,7 +164,7 @@ def main() -> int:
         "live_schema": config.TWW_OD_SCHEMA,
         "orgs_path": args.orgs_path,
         "incremental_xtf": args.incremental_xtf,
-        "incremental_import-schema": config.IMPORT_SCHEMA_INCR,
+        "incremental_import_schema": config.IMPORT_SCHEMA_INCR,
         "rights_profile": args.rights_profile,
         "hook_config_dir": args.hook_config_dir,
         "skip_rights_evaluation": args.skip_rights_evaluation,

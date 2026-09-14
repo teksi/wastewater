@@ -1,18 +1,13 @@
 from .. import config
-from .model_base import ModelBase
+from .model_interlis_base import ModelInterlisBase
 
 
-class ModelInterlisSia405BaseAbwasser(ModelBase):
+class ModelInterlisSia405BaseAbwasser(ModelInterlisBase):
     def __init__(self, schema):
         super().__init__(schema)
 
-        class baseclass(self.Base):
-            __tablename__ = "baseclass"
-            __table_args__ = {"schema": self.schema}
 
-        ModelInterlisSia405BaseAbwasser.baseclass = baseclass
-
-        class sia405_baseclass(baseclass):
+        class sia405_baseclass(ModelInterlisBase.baseclass):
             __tablename__ = "sia405_baseclass"
             __table_args__ = {"schema": self.schema}
 
@@ -26,7 +21,7 @@ class ModelInterlisSia405BaseAbwasser(ModelBase):
 
         # TEXTS
 
-        class textpos(baseclass):
+        class textpos(ModelInterlisBase.baseclass):
             __tablename__ = "textpos"
             __table_args__ = {"schema": self.schema}
 
@@ -40,7 +35,7 @@ class ModelInterlisSia405BaseAbwasser(ModelBase):
 
         # SymbolPos
 
-        class symbolpos(baseclass):
+        class symbolpos(ModelInterlisBase.baseclass):
             __tablename__ = "symbolpos"
             __table_args__ = {"schema": self.schema}
 

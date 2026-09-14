@@ -39,9 +39,19 @@ from teksi_hooks.capabilities.rights import (
 )
 from teksi_hooks.capabilities.privilege import ResolvedProviderCapability
 from teksi_hooks.capabilities.conditions import ConditionsCapability
+from teksi_hooks.capabilities.mapping import (
+    EffectiveModelMappingCapability,
+    ModelMappingCapability,
+)
 
 from teksi_wastewater.interlis import (
     config,
+)
+from teksi_wastewater.hooks.capabilities.tww_implicit_model_mapper_capability import (
+    TwwImplicitModelMappingCapability,
+)
+from teksi_wastewater.hooks.adapters.tww_relation_context_provider import (
+    TwwRelationContextProvider,
 )
 from teksi_wastewater.hooks.adapters.tww_canonical_model_adapter import (
     TwwCanonicalModelAdapter,
@@ -58,9 +68,13 @@ from teksi_wastewater.hooks.adapters.tww_interlis_service_adapter import (
 from teksi_wastewater.hooks.adapters.tww_relation_lookup_adapter import (
     TwwRelationLookupAdapter,
 )
+from teksi_wastewater.hooks.services.tww_quarantine_effect_projector import (
+    TwwQuarantineEffectProjector
+)
+
+
 from teksi_wastewater.hooks.services.tww_change_creation_service import (
     ChangeObjectProviderFactory,
-    QuarantineEffectProjector,
     TwwChangeCreationService,
 )
 from teksi_wastewater.hooks.services.tww_diff_schema_service import (
@@ -78,7 +92,6 @@ class Hook(
 
     required_capabilities = frozenset(
         {
-            QuarantineEffectProjector,
             ChangeObjectProviderFactory,
         }
     )
@@ -102,8 +115,25 @@ class Hook(
     ) -> None:
         parameters = context.parameters
 
-        job_id = parameters.get("job_id",str(uuid4()))
-        job_mode = DiffJobMode(
+
+        self.connection_factory = context.capability(
+            DatabaseConnectionFactory,
+        )
+
+        if not isinstance(
+            self.connection_factory,
+            TwwDatabaseConnectionFactory,
+        ):
+            raise TypeError(
+                "The TWW diff hook requires TwwDatabaseConnectionFactory."
+            )
+
+        self.interlis_service = TwwInterlisServiceAdapter(
+            connection_factory=self.connection_factory,
+        )
+
+        self.job_id = parameters.get("job_id",str(uuid4()))
+        self.job_mode = DiffJobMode(
             parameters.get(
                 "job_mode",
                 DiffJobMode.CREATE,
@@ -114,13 +144,13 @@ class Hook(
         )
         import_schema = parameters.get(
             "import_schema",
-            config.IMPORT_SCHEMA,
+            config.import_schema,
         )
-        live_schema = parameters.get(
+        self.live_schema = parameters.get(
             "live_schema",
             config.TWW_OD_SCHEMA,
         )
-        orgs_path = self._optional_path(
+        self.orgs_path = self._optional_path(
             parameters.get(
                 "orgs_path",
             )
@@ -134,7 +164,7 @@ class Hook(
             "skip_rights_evaluation",
         )
         incremental_import_schema = parameters.get(
-                "incremental_import_schema",
+                "incremental_self.import_schema",
                 config.IMPORT_SCHEMA_INCR
             )
         hook_config_dir = (
@@ -152,20 +182,17 @@ class Hook(
             )
         )
 
-        provider_oid = Standardoid(parameters["provider_oid"])
-        dataowner_oid = Standardoid(parameters["dataowner_oid"])
+        self.provider_oid = Standardoid(parameters["provider_oid"])
+        self.dataowner_oid = Standardoid(parameters["dataowner_oid"])
+        
+        self.model_config_dir = self._model_config_dir()
 
-        model_config_dir = self._model_config_dir()
-
-        validation_definition = ValidationParser().parse_file(
-            model_config_dir
-            / "validation.yaml",
+        self.validation_definition = ValidationParser().parse_file(
+            self.model_config_dir
+            / "validations.yaml",
         )
 
-        incremental_mapping = ModelMappingParser().parse_file(
-            model_config_dir
-            / "agxx_mapping.yaml",
-        )
+
 
         provider_rights_path,rights_definition_path = self._eval_rights_profile(
             hook_config_dir,
@@ -174,7 +201,7 @@ class Hook(
                 'default',
             )
         )
-        rights_definition=RightsParser().parse_file(
+        self.rights_definition=RightsParser().parse_file(
             rights_definition_path
         )
         raw_provider_rights=ProviderRightsParser().parse_file(
@@ -184,59 +211,92 @@ class Hook(
         if skip_rights_evaluation:
             resolved_providers = self._grant_all(resolved_providers)
         try:
-            resolved_provider = resolved_providers[provider_oid]
+            self.resolved_provider = resolved_providers[self.provider_oid]
         except KeyError as exception:
             raise RightsEvaluationError.from_message(
                 "No provider-rights definition exists for "
-                f"provider {provider_oid!s}."
+                f"provider {self.provider_oid!s}."
             ) from exception
 
-        rights_context = RightsEvaluationContext(
-            provider_oid=provider_oid,
-            dataowner_oid=dataowner_oid,
+        self.rights_context = RightsEvaluationContext(
+            provider_oid=self.provider_oid,
+            dataowner_oid=self.dataowner_oid,
             context_values={
-                "provider_oid": provider_oid,
-                "dataowner_oid": dataowner_oid,
+                "provider_oid": self.provider_oid,
+                "dataowner_oid": self.dataowner_oid,
             },
         )
 
-        connection_factory = context.capability(
-            DatabaseConnectionFactory,
+        self.run_sub_verification(xtf_file=xtf_file,schema=import_schema, context=context)
+        self.run_sub_verification(xtf_file=incremental_xtf,
+                                  schema=incremental_import_schema,
+                                  context=context,
+                                  is_incremental=True)
+
+    def run_sub_verification(self, xtf_file, schema, context, is_incremental: bool=False):
+
+        model_selection = self.interlis_service.identify_model(xtf_file)
+        explicit_mapping = ModelMappingParser().parse_file(
+            self.model_config_dir
+            / "explicit_mapping.yaml",
+            model_id=model_selection.mapping_model_id,
         )
 
-        if not isinstance(
-            connection_factory,
-            TwwDatabaseConnectionFactory,
-        ):
-            raise TypeError(
-                "The TWW diff hook requires TwwDatabaseConnectionFactory."
+
+
+        explicit_mapping_capability = ModelMappingCapability(
+            mapping=explicit_mapping,
+        )
+
+        quarantine_classes = self._get_quarantine_classes(model_selection=model_selection,schema=schema)
+
+        implicit_mapping_capability = (
+            TwwImplicitModelMappingCapability(
+                quarantine_classes=quarantine_classes,
+                connection_factory=self.connection_factory,
+                import_schema=schema,
             )
-
-        interlis_service = TwwInterlisServiceAdapter(
-            connection_factory=connection_factory,
         )
 
+        effective_mapping = EffectiveModelMappingCapability(
+            explicit_mapping=explicit_mapping_capability,
+            implicit_mapping=implicit_mapping_capability,
+        )
+
+        relation_context_provider = TwwRelationContextProvider(
+            quarantine_classes=quarantine_classes,
+            model_mapping=effective_mapping,
+            import_schema=schema,
+        )
+
+        effect_projector = TwwQuarantineEffectProjector(
+            connection_factory=self.connection_factory,
+            relation_context_provider=relation_context_provider,
+            model_mapping=effective_mapping,
+        )
+
+        # create adapters and services
         quarantine_runner = TwwQuarantineRunner(
-            interlis_service=interlis_service,
+            interlis_service=self.interlis_service,
         )
 
         canonical_model = TwwCanonicalModelAdapter(
-            connection_factory=connection_factory,
+            connection_factory=self.connection_factory,
         )
         canonical_metadata=canonical_model.canonical_model()
 
         diff_schema_service = TwwDiffSchemaService(
-            connection_factory=connection_factory,
+            connection_factory=self.connection_factory,
         )
         relation_lookup = TwwRelationLookupAdapter(
-            schema=live_schema,
-            connection_factory=connection_factory,
+            schema=self.live_schema,
+            connection_factory=self.connection_factory,
         )
 
 
         resolved_rights = RightsResolver().resolve(
-            definition=rights_definition,
-            validation_definition=validation_definition,
+            definition=self.rights_definition,
+            validation_definition=self.validation_definition,
             canonical_metadata=canonical_metadata,
         )
 
@@ -245,7 +305,7 @@ class Hook(
         )
 
         provider_capability = ResolvedProviderCapability(
-            resolved_provider,
+            self.resolved_provider,
         )
 
         conditions_capability = ConditionsCapability()
@@ -268,12 +328,10 @@ class Hook(
         )
 
         service = TwwChangeCreationService(
-            connection_factory=connection_factory,
+            connection_factory=self.connection_factory,
             quarantine_runner=quarantine_runner,
             canonical_model=canonical_model,
-            effect_projector=context.capability(
-                QuarantineEffectProjector,
-            ),
+            effect_projector=effect_projector,
             rights_evaluator=rights_evaluator,
             object_provider_factory=context.capability(
                 ChangeObjectProviderFactory,
@@ -282,27 +340,15 @@ class Hook(
         )
 
         result = service.create_diff_job_from_xtf(
-            job_id=job_id,
-            job_mode=job_mode,
+            job_id=self.job_id,
+            job_mode=self.job_mode,
             xtf_file=xtf_file,
-            orgs_path=orgs_path,
-            incremental_xtf=incremental_xtf,
-            incremental_import_schema=incremental_import_schema,
-            rights_context=rights_context,
-            import_schema=import_schema,
-            live_schema=live_schema,
-            metadata={
-                "provider_rights_path": (
-                    str(provider_rights_path)
-                    if provider_rights_path is not None
-                    else None
-                ),
-                "resolved_provider": (
-                    str(resolved_provider)
-                    if resolved_provider is not None
-                    else None
-                ),
-            },
+            orgs_path=self.orgs_path,
+            rights_context=self.rights_context,
+            import_schema=self.import_schema,
+            live_schema=self.live_schema,
+            incremental=is_incremental,
+            metadata={},
         )
 
         context.logger.info(
@@ -554,3 +600,19 @@ class Hook(
             for provider_oid, provider
             in providers.items()
     }
+
+    def _get_quarantine_classes(self, model_selection, schema):
+
+    
+        quarantine_model = (
+            model_selection
+            .primary_component
+            .quarantine_model(
+                schema=schema,
+            )
+        )
+
+        return (
+            quarantine_model.classes()
+        )
+

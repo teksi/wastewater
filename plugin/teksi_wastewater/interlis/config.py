@@ -1,8 +1,26 @@
 from __future__ import annotations
 
 from collections.abc import Iterable
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Callable
+
+from .interlis_model_mapping.model_base import ModelBase
+from .interlis_model_mapping.model_interlis_ag64 import ModelInterlisAG64
+from .interlis_model_mapping.model_interlis_ag96 import ModelInterlisAG96
+from .interlis_model_mapping.model_interlis_dss import ModelInterlisDss
+from .interlis_model_mapping.model_interlis_sia405_abwasser import ModelInterlisSia405Abwasser
+from .interlis_model_mapping.model_interlis_sia405_base_abwasser import ModelInterlisSia405BaseAbwasser
+from .interlis_model_mapping.model_interlis_vsa_kek import ModelInterlisVsaKek
+from .interlis_model_mapping.model_tww_od import ModelTwwOd
+from .interlis_model_mapping.model_interlis_sia405_cable import ModelInterlisSia405Fernwirkkabel
+from .interlis_model_mapping.model_interlis_sia405_protection_tube import ModelInterlisSia405Schutzrohr
+
+
+ModelFactory = Callable[
+    [],
+    ModelBase,
+]
 
 
 BASE = Path(
@@ -61,6 +79,31 @@ class InterlisModel:
     models: frozenset[
         InterlisLangModel
     ]
+
+    orm_quarantine_factory: ModelFactory
+    orm_live_factory: ModelFactory = field(
+        default=ModelTwwOd,
+    )
+
+    def quarantine_model(
+        self,
+        schema: str,
+    ) -> ModelBase:
+        """
+        Return a new ORM model for the quarantine schema.
+        """
+
+        return self.orm_quarantine_factory(schema=schema)
+
+    def live_model(
+        self,
+        schema: str,
+    ) -> ModelBase:
+        """
+        Return a new ORM model for the canonical live schema.
+        """
+
+        return self.orm_live_factory(schema=schema)
 
     @property
     def names(
@@ -144,7 +187,121 @@ class InterlisModel:
             f"{fallback_lang!r}. Available languages: "
             f"{sorted(self.languages)}"
         )
+@dataclass(
+    slots=True,
+    frozen=True,
+)
+class TwwInterlisModelComponent:
+    """
+    One configured model participating in an INTERLIS import.
+    """
 
+    group: str
+    language: str
+    model_name: str
+    configuration: InterlisModel
+
+    def quarantine_model(
+        self,
+        schema: str,
+    ) -> ModelBase:
+        """
+        Return a new quarantine ORM model for this component.
+        """
+
+        return self.configuration.quarantine_model(schema)
+
+    def live_model(
+        self,
+        schema: str,
+    ) -> ModelBase:
+        """
+        Return a new live ORM model for this component.
+        """
+
+        return self.configuration.live_model(schema)
+
+
+@dataclass(
+    slots=True,
+    frozen=True,
+)
+class TwwInterlisModelSelection:
+    """
+    Describe the configured models selected for an XTF transfer.
+
+    The primary group is detected from the XTF header. Components contain
+    the primary group and its inherited model groups in dependency-first
+    order.
+    """
+
+    group: str
+    language: str
+    imported_models: tuple[str, ...]
+    components: tuple[
+        TwwInterlisModelComponent,
+        ...,
+    ]
+
+    @property
+    def primary_component(
+        self,
+    ) -> TwwInterlisModelComponent:
+        """
+        Return the component representing the primary model group.
+        """
+
+        return self.components[-1]
+
+    @property
+    def import_model(
+        self,
+    ) -> str:
+        """
+        Return the primary model name used for the INTERLIS import.
+        """
+
+        return self.primary_component.model_name
+
+    @property
+    def created_models(
+        self,
+    ) -> tuple[str, ...]:
+        """
+        Return all dependency and primary model names.
+
+        Names are returned in dependency-first order.
+        """
+
+        return tuple(
+            component.model_name
+            for component in self.components
+        )
+
+    @property
+    def groups(
+        self,
+    ) -> tuple[str, ...]:
+        """
+        Return all selected semantic model groups.
+        """
+
+        return tuple(
+            component.group
+            for component in self.components
+        )
+
+    @property
+    def mapping_model_id(
+        self,
+    ) -> str:
+        if self.group in {
+            "ag64",
+            "ag96",
+        }:
+            return "agxx"
+
+        return self.group
 
 interlis_models: dict[
     str,
@@ -176,6 +333,7 @@ interlis_models: dict[
                 ),
             }
         ),
+        orm_quarantine_factory=ModelInterlisDss,
     ),
     "vsa_kek": InterlisModel(
         models=frozenset(
@@ -200,6 +358,7 @@ interlis_models: dict[
                 ),
             }
         ),
+        orm_quarantine_factory=ModelInterlisVsaKek,
     ),
     "sia405_abwasser": InterlisModel(
         models=frozenset(
@@ -224,6 +383,7 @@ interlis_models: dict[
                 ),
             }
         ),
+        orm_quarantine_factory=ModelInterlisSia405Abwasser,
     ),
     "sia405_base_abwasser": InterlisModel(
         models=frozenset(
@@ -248,6 +408,7 @@ interlis_models: dict[
                 ),
             }
         ),
+        orm_quarantine_factory=ModelInterlisSia405BaseAbwasser,
     ),
     "sia405_cable": InterlisModel(
         models=frozenset(
@@ -278,6 +439,7 @@ interlis_models: dict[
                 ),
             }
         ),
+        orm_quarantine_factory=ModelInterlisSia405Fernwirkkabel,
     ),
     "sia405_protection_tube": InterlisModel(
         models=frozenset(
@@ -302,6 +464,7 @@ interlis_models: dict[
                 ),
             }
         ),
+        orm_quarantine_factory=ModelInterlisSia405Schutzrohr,
     ),
     "ag96": InterlisModel(
         models=frozenset(
@@ -317,6 +480,7 @@ interlis_models: dict[
                 ),
             }
         ),
+        orm_quarantine_factory=ModelInterlisAG96,
     ),
     "ag64": InterlisModel(
         models=frozenset(
@@ -332,6 +496,7 @@ interlis_models: dict[
                 ),
             }
         ),
+        orm_quarantine_factory=ModelInterlisAG64,
     ),
 }
 
@@ -422,6 +587,115 @@ def model_names_for_language(
         for group in selected_groups
     }
 
+
+def model_selection_for_imported_models(
+    imported_models: str | Iterable[str],
+) -> TwwInterlisModelSelection:
+    """
+    Resolve the authoritative model selection for imported INTERLIS models.
+
+    The imported models must resolve to exactly one configured semantic
+    model group and exactly one language-specific import model.
+    """
+
+    if isinstance(
+        imported_models,
+        str,
+    ):
+        imported_model_names = {
+            imported_models,
+        }
+    else:
+        imported_model_names = set(
+            imported_models,
+        )
+
+    if not imported_model_names:
+        raise LookupError(
+            "No imported INTERLIS models were provided."
+        )
+
+    matches = tuple(
+        (
+            group,
+            language_model,
+            model,
+        )
+        for group, model in interlis_models.items()
+        for language_model in model.models
+        if (
+            language_model.model
+            in imported_model_names
+        )
+    )
+
+    if not matches:
+        raise LookupError(
+            "No configured INTERLIS model matches imported "
+            f"models {sorted(imported_model_names)!r}."
+        )
+
+    matched_groups = {
+        group
+        for group, _language_model, _model
+        in matches
+    }
+
+    if len(
+        matched_groups,
+    ) != 1:
+        raise LookupError(
+            "Imported models resolve to multiple semantic "
+            f"model groups: {sorted(matched_groups)!r}."
+        )
+
+    if len(
+        matches,
+    ) != 1:
+        matched_models = tuple(
+            sorted(
+                language_model.model
+                for (
+                    _group,
+                    language_model,
+                    _model,
+                ) in matches
+            )
+        )
+
+        raise LookupError(
+            "Imported models do not resolve to exactly one "
+            "configured model and language. Matching models: "
+            f"{matched_models!r}."
+        )
+
+    (
+        group,
+        language_model,
+        model,
+    ) = matches[0]
+
+    created_models = tuple(
+        model.names or (),
+    )
+
+    if not created_models:
+        raise LookupError(
+            "No created model names are configured for "
+            f"semantic model group {group!r}."
+        )
+
+    return TwwInterlisModelSelection(
+        group=group,
+        language=language_model.lang,
+        imported_models=tuple(
+            sorted(
+                imported_model_names,
+            )
+        ),
+        import_model=language_model.model,
+        created_models=created_models,
+    )
 
 def groups_for_models(
     imported_models: str | Iterable[str],
@@ -555,3 +829,4 @@ def resolved_model_names(
         ]
         for group in resolved_groups
     )
+

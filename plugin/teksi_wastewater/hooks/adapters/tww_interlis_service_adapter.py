@@ -3,6 +3,7 @@ from pathlib import Path
 from collections.abc import Sequence
 
 from ...interlis.interlis_importer_exporter import InterlisImporterExporter
+from ...interlis.config import TwwInterlisModelSelection
 
 from teksi_hooks.services.interlis import (
     InterlisContext,
@@ -12,6 +13,12 @@ from teksi_hooks.capabilities.connection import (
     DatabaseConnectionFactory,
 )
 from .tww_database_connection_factory import TwwDatabaseConnectionFactory
+
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from pathlib import Path
 
 
 @dataclass(slots=True, frozen=True)
@@ -211,10 +218,14 @@ class TwwInterlisServiceAdapter(InterlisService):
             ),
         )
 
-    def find_models(
+    def identify_model(
         self,
         xtf_file: Path,
-    ):
-        return self._importer_exporter.find_import_ilimodels(
+    ) -> TwwInterlisModelSelection:
+        """
+        Identify the configured model group and language of an XTF.
+        """
+
+        return self._importer_exporter.identify_import_model(
             xtf_file_input=xtf_file,
         )

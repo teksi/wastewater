@@ -5,6 +5,7 @@ import os
 import socket
 import tempfile
 from pathlib import Path
+from typing import Iterable
 
 import requests
 
@@ -39,7 +40,12 @@ from .utils.various import (
     logger,
     make_log_path,
 )
-
+from .config import (
+    InterlisLangModel,
+    InterlisModel,
+    interlis_models,
+    TwwInterlisModelSelection,
+)
 
 @dataclass(slots=True, frozen=True)
 class ProgressScope:
@@ -84,35 +90,17 @@ class InterlisImporterExporter:
         self.current_progress = 0
         self.schema =None
 
-    def _init_model_classes(self, model):
-        model_interlis = None
-        groups = config.groups_for_models(model)
-
-        if "ag96" in groups:
-            model_interlis = ModelInterlisAG96
-        elif "ag64" in groups:
-            model_interlis = ModelInterlisAG64
-
-        if "sia405_base_abwasser" in groups:
-            model_interlis = ModelInterlisSia405BaseAbwasser
-
-        if "sia405_abwasser" in groups:
-            model_interlis = ModelInterlisSia405Abwasser
-
-        if "dss" in groups:
-            model_interlis = ModelInterlisDss
-
-        if "vsa_kek" in groups:
-            model_interlis = ModelInterlisVsaKek
+    def _init_model_classes(self, model_selection):
+        model_interlis = model_selection.primary_component.quarantine_model(self.schema)
 
         if model_interlis is None:
             raise InterlisImporterExporterError(
                 "Unsupported INTERLIS model",
-                f"No model class found for groups {sorted(groups)!r}.",
+                "No model class found.",
                 None,
             )
 
-        self.model_classes_interlis = model_interlis(self.schema,).classes()
+        self.model_classes_interlis = model_interlis.classes()
         self._progress_done(self.current_progress + 1)
 
         if self.model_classes_tww_od is None:
@@ -127,7 +115,7 @@ class InterlisImporterExporter:
             self.model_classes_tww_sys = ModelTwwSys().classes()
             self._progress_done(self.current_progress + 1)
 
-        if {"ag64", "ag96"} & groups and self.model_classes_tww_app is None:
+        if {"ag64", "ag96"} & model_selection.groups and self.model_classes_tww_app is None:
             self.model_classes_tww_app = ModelTwwAG6496().classes()
             self._progress_done(self.current_progress + 1)
 
@@ -159,7 +147,7 @@ class InterlisImporterExporter:
             self.schema=config.IMPORT_SCHEMA
 
         self._clear_ili_schema(recreate_tables=True)
-        import_model=self.interlis_import_to_quarantine(
+        model_selection=self.interlis_import_to_quarantine(
             xtf_file_input=xtf_file_input,
             logs_next_to_file=logs_next_to_file,
             filter_nulls=filter_nulls,
@@ -173,7 +161,7 @@ class InterlisImporterExporter:
             incremental_only=incremental_only,
         )
         self.interlis_import_from_quarantine_to_live(
-            import_model=import_model,
+            model_selection=model_selection,
             show_selection_dialog=show_selection_dialog,
             logs_next_to_file=logs_next_to_file,
             filter_nulls=filter_nulls,
@@ -182,6 +170,7 @@ class InterlisImporterExporter:
                 start=35,
                 end=100,
             ),
+            incremental_only=incremental_only,
         )
 
     def _prepare_interlis_import(
@@ -190,11 +179,10 @@ class InterlisImporterExporter:
         logs_next_to_file=True,
         filter_nulls=True,
         srid: int = 2056,
-        import_model=None,
-        created_models=None,
+        model_selection: TwwInterlisModelSelection | None = None,
         progress_scope: ProgressScope = ProgressScope(),
         incremental_only=False,
-    ):
+    ) -> TwwInterlisModelSelection:
         if logs_next_to_file and xtf_file_input:
             self.base_log_path = xtf_file_input
         else:
@@ -208,34 +196,41 @@ class InterlisImporterExporter:
         if srid:
             self.srid = srid
 
-        if import_model is not None:
-            if import_model not in (
-                "Genereller_Entwaesserungsplan_AG",
-                "Abwasserkataster_AG_V2_LV95",
-            ) and incremental_only:
+        if model_selection is not None:
+            if (
+                model_selection.import_model
+                not in {
+                    "Genereller_Entwaesserungsplan_AG",
+                    "Abwasserkataster_AG_V2_LV95",
+                }
+                and incremental_only
+            ):
                 raise InterlisImporterExporterError(
                     error=(
                         "incremental_only flag is not applicable "
-                        f"to {import_model}."
+                        f"to {model_selection.import_model}."
                     )
                 )
-            return import_model, created_models
+
+            return model_selection
 
         if not xtf_file_input:
             raise InterlisImporterExporterError(
                 error=(
                     "Cannot prepare INTERLIS import without either "
-                    "import_model or xtf_file_input."
+                    "model_selection or xtf_file_input."
                 )
             )
 
-        self._progress_done_in_scope(progress_scope, 5, "Extract model from xtf...")
-
-        import_model, created_models = self.find_import_ilimodels(
-            xtf_file_input,
+        self._progress_done_in_scope(
+            progress_scope,
+            5,
+            "Extract model from xtf...",
         )
 
-        return import_model, created_models
+        return self.find_import_model_selection(
+            xtf_file_input,
+        )
 
     def interlis_import_to_quarantine(
         self,
@@ -250,7 +245,7 @@ class InterlisImporterExporter:
         incremental_only=False,
         
     ):
-            import_model, created_models=self._prepare_interlis_import(
+            model_selection=self._prepare_interlis_import(
                 xtf_file_input=xtf_file_input,
                 logs_next_to_file=logs_next_to_file,
                 filter_nulls=filter_nulls,
@@ -259,7 +254,7 @@ class InterlisImporterExporter:
                 incremental_only=incremental_only,
                 )
 
-            created_models = tuple(created_models)
+            created_models = tuple(model_selection.created_models)
 
             if not created_models:
                 raise InterlisImporterExporterError(
@@ -295,24 +290,26 @@ class InterlisImporterExporter:
             self._import_xtf_file(xtf_file_input=xtf_file_input)
             self._progress_done_in_scope(progress_scope, 100, "INTERLIS import into quarantine schema finished.")
 
-            return import_model
+            return model_selection
 
     def interlis_import_from_quarantine_to_live(
         self,
-        import_model=None,
+        model_selection: TwwInterlisModelSelection,
         show_selection_dialog=False,
         logs_next_to_file=True,
         filter_nulls=True,
         srid: int = None,
         progress_scope: ProgressScope = ProgressScope(),
+        incremental_only=False,
     ):
 
-            _, _ =self._prepare_interlis_import(
+            model_selection =self._prepare_interlis_import(
                 logs_next_to_file=logs_next_to_file,
                 filter_nulls=filter_nulls,
                 srid=srid,
-                import_model=import_model,
+                model_selection=model_selection,
                 progress_scope=progress_scope,
+                incremental_only=incremental_only,
                 )
             
             # Disable symbology triggers
@@ -320,28 +317,36 @@ class InterlisImporterExporter:
             self._import_disable_symbology_and_modification_triggers()
 
             try:
-                # Import from the temporary ili2pg model
-                self._progress_done_in_scope(progress_scope, 20, "Converting to TEKSI Wastewater...")
-                tww_session = self._import_from_intermediate_schema(import_model)
-
-                if show_selection_dialog:
-                    from qgis.PyQt.QtCore import Qt
-                    from qgis.PyQt.QtWidgets import QApplication, QDialog
-                    from .gui.interlis_import_selection_dialog import InterlisImportSelectionDialog
-
-                    self._progress_done_in_scope(progress_scope, 80, "Import objects selection...")
-                    import_dialog = InterlisImportSelectionDialog()
-                    import_dialog.init_with_session(tww_session)
-                    QApplication.restoreOverrideCursor()
-                    if import_dialog.exec() == QDialog.DialogCode.Rejected:
-                        tww_session.rollback()
-                        tww_session.close()
-                        raise InterlisImporterExporterStopped()
-                    QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
-                else:
+                if incremental_only:
+                    # Import from the temporary ili2pg model
+                    self._progress_done_in_scope(progress_scope, 20, "Converting incremental values to TEKSI Wastewater...")
+                    tww_session = self._import_incremental(model_selection.import_model)
                     self._progress_done_in_scope(progress_scope, 80, "Commit session...")
                     tww_session.commit()
-                tww_session.close()
+                    tww_session.close()
+                else:
+                    # Import from the temporary ili2pg model
+                    self._progress_done_in_scope(progress_scope, 20, "Converting to TEKSI Wastewater...")
+                    tww_session = self._import_from_intermediate_schema(model_selection)
+
+                    if show_selection_dialog:
+                        from qgis.PyQt.QtCore import Qt
+                        from qgis.PyQt.QtWidgets import QApplication, QDialog
+                        from .gui.interlis_import_selection_dialog import InterlisImportSelectionDialog
+
+                        self._progress_done_in_scope(progress_scope, 80, "Import objects selection...")
+                        import_dialog = InterlisImportSelectionDialog()
+                        import_dialog.init_with_session(tww_session)
+                        QApplication.restoreOverrideCursor()
+                        if import_dialog.exec() == QDialog.DialogCode.Rejected:
+                            tww_session.rollback()
+                            tww_session.close()
+                            raise InterlisImporterExporterStopped()
+                        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
+                    else:
+                        self._progress_done_in_scope(progress_scope, 80, "Commit session...")
+                        tww_session.commit()
+                    tww_session.close()
 
                 # Update the sequence values
                 self._progress_done_in_scope(progress_scope, 85, "Update sequence values...")
@@ -378,36 +383,21 @@ class InterlisImporterExporter:
             self._progress_done_in_scope(progress_scope, 100)
             logger.info("INTERLIS import finished.")
 
-    def find_import_ilimodels(self,xtf_file_input):
-        import_models = self.interlisTools.get_xtf_models(xtf_file_input)
-
-        groups = config.groups_for_models(import_models)
-        if not groups:
-            error_text = f"No supported model was found among '{import_models}'."
-            if len(import_models) == 1:
-                error_text = f"The model '{import_models[0]}' is not supported."
-            raise InterlisImporterExporterError("Import error", error_text, None)
-
-        group = next(group for group in config.interlis_models if group in groups)
-        model = config.interlis_models[group]
-
-        import_model = model.lang_name('de')
-
-        if not import_model:
-            error_text = f"No german name found in model '{model}'."
-            raise InterlisImporterExporterError("Import error", error_text, None)
-
-        created_models = tuple(model.names or ())
-        if not created_models:
-            raise InterlisImporterExporterError(
-            "Import error",
-            (f"No created model names configured for model '{model}'. "
-            f"Found import models: {import_models!r}."),None,)
+    def find_import_model_selection(
+        self,
+        xtf_file_input: Path,
+    ) -> TwwInterlisModelSelection:
+        selection = self.identify_import_model(
+            xtf_file_input,
+        )
 
         logger.info(
-            f"Models '{created_models}' were chosen for import among found models '{import_models}'"
+            "Models %r were chosen for import among imported models %r.",
+            selection.created_models,
+            selection.imported_models,
         )
-        return import_model, created_models
+
+        return selection
 
     def execute_export(
         self,
@@ -495,8 +485,8 @@ class InterlisImporterExporter:
             self._progress_done_in_scope(progress_scope, 15, "Creating ili schema...")
             create_basket_col = False
             export_models = set(export_models)
-            groups = config.groups_for_models(export_models)
-            if "vsa_kek" in groups:
+            model_selection = config.model_selection_for_imported_models(export_models)
+            if "vsa_kek" in model_selection.groups:
                 create_basket_col = True
             self._create_ili_schema(export_models, create_basket_col=create_basket_col)
 
@@ -511,19 +501,19 @@ class InterlisImporterExporter:
                         limit_to_selection=limit_to_selection,
                         selected_labels_scales_indices=selected_labels_scales_indices,
                         labels_file_path=labels_file,
-                        model_groups=groups,
+                        model_groups=model_selection.groups,
                         export_orientation=export_orientation,
                         include_unplaced=include_unplaced,
                     )
 
 
-            if "ag96" in groups:
+            if "ag96" in model_selection.groups:
                 self._progress_done_in_scope(progress_scope, 35, "Importing AG-96 organisations to intermediate schema")
                 file_path = "data/Organisationstabelle_AG96.xtf"
                 abs_file_path = Path(__file__).parent.resolve() / file_path
                 logger.info("Importing AG-96 organisation to intermediate schema")
                 self._import_xtf_file(abs_file_path)
-            elif "ag64" in groups:
+            elif "ag64" in model_selection.groups:
                 self._progress_done_in_scope(progress_scope, 35, "Importing AG-64 organisations to intermediate schema")
                 file_path = "data/Organisationstabelle_AG64.xtf"
                 abs_file_path = Path(__file__).parent.resolve() / file_path
@@ -536,7 +526,7 @@ class InterlisImporterExporter:
             # Export to the temporary ili2pg model
             self._progress_done_in_scope(progress_scope, 45, "Converting from TEKSI Wastewater to intermediate schema...")
             self._export_to_intermediate_schema(
-                export_model_groups=groups,
+                model_selection=model_selection,
                 file_name=xtf_file_output,
                 selected_ids=selected_ids,
                 export_orientation=export_orientation,
@@ -765,17 +755,17 @@ class InterlisImporterExporter:
                 log_path,
             )
 
-    def _import_from_intermediate_schema(self, import_model):
+    def _import_from_intermediate_schema(self, model_selection):
         log_handler = logging.FileHandler(
             make_log_path(self.base_log_path, "tww2ili-import"), mode="w", encoding="utf-8"
         )
         log_handler.setLevel(logging.INFO)
         log_handler.setFormatter(logging.Formatter("%(levelname)-8s %(message)s"))
 
-        self._init_model_classes(import_model)
+        self._init_model_classes(model_selection)
 
         interlisImporterFromIntermediateSchema = InterlisImporterFromIntermediateSchema(
-            model=import_model,
+            model=model_selection.import_model,
             model_classes_interlis=self.model_classes_interlis,
             model_classes_tww_od=self.model_classes_tww_od,
             model_classes_tww_vl=self.model_classes_tww_vl,
@@ -923,7 +913,7 @@ class InterlisImporterExporter:
 
     def _export_to_intermediate_schema(
         self,
-        export_model_groups,
+        model_selection,
         file_name=None,
         selected_ids=None,
         export_orientation=90.0,
@@ -936,10 +926,10 @@ class InterlisImporterExporter:
         log_handler.setLevel(logging.INFO)
         log_handler.setFormatter(logging.Formatter("%(levelname)-8s %(message)s"))
 
-        self._init_model_classes(export_model_groups)
+        self._init_model_classes(model_selection)
 
         twwInterlisExporter = InterlisExporterToIntermediateSchema(
-            export_model_groups=export_model_groups,
+            export_model_groups=model_selection.groups,
             model_classes_interlis=self.model_classes_interlis,
             model_classes_tww_od=self.model_classes_tww_od,
             model_classes_tww_vl=self.model_classes_tww_vl,
@@ -1121,3 +1111,139 @@ class InterlisImporterExporter:
                 "No internet connection detected → skipping download of vsa organisations"
             )
 
+    def identify_import_model(
+        self,
+        xtf_file_input: Path,
+    ) -> TwwInterlisModelSelection:
+        """
+        Identify the semantic model group and language used by an XTF transfer.
+
+        The returned selection is the authoritative model context for subsequent
+        import, mapping and relation-context construction.
+        """
+
+        imported_models = tuple(
+            self.interlisTools.get_xtf_models(
+                xtf_file_input,
+            )
+        )
+
+        if not imported_models:
+            raise InterlisImporterExporterError(
+                "Import error",
+                f"No model was found in {xtf_file_input!s}.",
+                None,
+            )
+
+        try:
+            (
+                group,
+                language_model,
+                model,
+            ) = config.model_selection_for_imported_models(
+                imported_models,
+            )
+        except LookupError as exception:
+            raise InterlisImporterExporterError(
+                "Import error",
+                str(
+                    exception,
+                ),
+                None,
+            ) from exception
+
+        created_models = tuple(
+            model.names or (),
+        )
+
+        if not created_models:
+            raise InterlisImporterExporterError(
+                "Import error",
+                (
+                    "No created model names are configured for "
+                    f"model group {group!r}. Found imported models: "
+                    f"{imported_models!r}."
+                ),
+                None,
+            )
+
+        return TwwInterlisModelSelection(
+            group=group,
+            language=language_model.lang,
+            imported_models=imported_models,
+            import_model=language_model.model,
+            created_models=created_models,
+        )
+
+    def model_selection_for_imported_models(
+        imported_models: str | Iterable[str],
+    ) -> tuple[
+        str,
+        InterlisLangModel,
+        InterlisModel,
+    ]:
+        """
+        Resolve one configured semantic model from imported INTERLIS names.
+        """
+
+        if isinstance(
+            imported_models,
+            str,
+        ):
+            imported_model_names = {
+                imported_models,
+            }
+        else:
+            imported_model_names = set(
+                imported_models,
+            )
+
+        matches = [
+            (
+                group,
+                language_model,
+                model,
+            )
+            for group, model in interlis_models.items()
+            for language_model in model.models
+            if language_model.model in imported_model_names
+        ]
+
+        if not matches:
+            raise LookupError(
+                "No configured INTERLIS model matches imported models "
+                f"{sorted(imported_model_names)!r}."
+            )
+
+        matched_groups = {
+            group
+            for group, _, _ in matches
+        }
+
+        if len(
+            matched_groups,
+        ) != 1:
+            raise LookupError(
+                "Imported models resolve to multiple semantic model "
+                f"groups: {sorted(matched_groups)!r}."
+            )
+
+        exact_matches = [
+            match
+            for match in matches
+            if match[1].model in imported_model_names
+        ]
+
+        if len(
+            exact_matches,
+        ) != 1:
+            raise LookupError(
+                "Imported models do not resolve to exactly one configured "
+                "model and language: "
+                f"{sorted(imported_model_names)!r}."
+            )
+
+        return exact_matches[0]
+
+    def _import_incremental(self, import_model):
+        pass
