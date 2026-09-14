@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>2026.0.1 &mdash; TWW latest documentation</title>
+  <title>2026.1.0 &mdash; TWW latest documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
 
@@ -50,13 +50,21 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Releases</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="2024.html">2024.0.5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="2025.html">2025.0.2</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">2026.0.1</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2026.1.0</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#main-features">Main features</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#documentation">Documentation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#bug-fixes-and-performance-improvements">Bug fixes and performance improvements</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#extension-improvements">Extension improvements</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ci-improvements">CI improvements</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#adaptions-to-project-file">Adaptions to project file</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">2026.0.1</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Main features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">Bug fixes and performance improvements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">Extension improvements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ci-improvements">CI improvements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">Adaptions to project file</a></li>
 </ul>
 </li>
 </ul>
@@ -81,7 +89,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">Releases</a></li>
-      <li class="breadcrumb-item active">2026.0.1</li>
+      <li class="breadcrumb-item active">2026.1.0</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/releases/2026.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -95,9 +103,74 @@
 <div></div></blockquote>
 <p id="id1">Here you can find information about the future 2026.x release of TEKSI wastewater</p>
 <section id="id2">
-<h1>2026.0.1<a class="headerlink" href="#id2" title="Link to this heading"></a></h1>
+<h1>2026.1.0<a class="headerlink" href="#id2" title="Link to this heading"></a></h1>
 <section id="main-features">
 <h2>Main features<a class="headerlink" href="#main-features" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Version of TEKSI wastewater module for QGIS 3.44 LTR and initialized and upgrade via the PostgreSQL Update Manager (PUM) and the TEKSI Module Management Tool (TMMT).</dt><dd><ul>
+<li><p>Latest version of TEKSI wastewater module for QGIS 3.xx</p></li>
+<li><p>The next version will be based on QGIS 4</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Check the <a class="reference external" href="../installation-guide/index.html">installation guide</a> for more information on how to install TEKSI wastewater module (TWW) via TMMT.</p></li>
+</ul>
+</section>
+<section id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>Use makefile to build the docs</p></li>
+<li><p>Update README.md Italian docs</p></li>
+<li><p>Restore documentation structure with version/language</p></li>
+<li><p>Update AG-XX docs</p></li>
+<li><p>Add italian for docs</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="bug-fixes-and-performance-improvements">
+<h2>Bug fixes and performance improvements<a class="headerlink" href="#bug-fixes-and-performance-improvements" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>Add standardoid as domain</p></li>
+<li><p>Remove qgis dependency from cmd</p></li>
+<li><p>Check that layers are not in edit mode for admin actions</p></li>
+<li><p>Fix display_fr translation</p></li>
+<li><p>Fix a bug where overflows couldn’t be removed</p></li>
+<li><p>Fix Error with depth calculation when updating a node or cover</p></li>
+<li><p>add from and to levels to tww_app.mvw_tww_channel</p></li>
+<li><p>labels-export-prevent-crash-if-no-labels</p></li>
+<li><p>Check tww_app.vw_tww_wastewater_node existence</p></li>
+<li><p>add integrity checks to manual validity checks</p></li>
+<li><p>Add option to suppress selection dialog on xtf import</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="extension-improvements">
+<h2>Extension improvements<a class="headerlink" href="#extension-improvements" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>Fix Bug in gepknoten and gephaltung agxx export view</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="adaptions-to-project-file">
+<h2>Adaptions to project file<a class="headerlink" href="#adaptions-to-project-file" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>fix Elecromechanical in project</p></li>
+<li><p>fix Generell in project</p></li>
+</ul>
+</div></blockquote>
+<p>For more details see <a class="reference external" href="https://github.com/teksi/wastewater/releases/tag/2026.1.0">https://github.com/teksi/wastewater/releases/tag/2026.1.0</a></p>
+</section>
+</section>
+<section id="id3">
+<h1>2026.0.1<a class="headerlink" href="#id3" title="Link to this heading"></a></h1>
+<section id="id4">
+<h2>Main features<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Version of TEKSI wastewater module for QGIS 3.40 LTR and initialized and upgrade via the PostgreSQL Update Manager (PUM) and the TEKSI Module Management Tool (TMMT).</p></li>
 <li><p>Check the <a class="reference external" href="../installation-guide/index.html">installation guide</a> for more information on how to install TEKSI wastewater module (TWW) via TMMT.</p></li>
@@ -119,8 +192,8 @@
 </ul>
 </div></blockquote>
 </section>
-<section id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading"></a></h2>
+<section id="id5">
+<h2>Documentation<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
 <blockquote>
 <div><ul class="simple">
 <li><p>Release Notes 2025.0 added (incl. Video)</p></li>
@@ -137,8 +210,8 @@
 </ul>
 </div></blockquote>
 </section>
-<section id="bug-fixes-and-performance-improvements">
-<h2>Bug fixes and performance improvements<a class="headerlink" href="#bug-fixes-and-performance-improvements" title="Link to this heading"></a></h2>
+<section id="id6">
+<h2>Bug fixes and performance improvements<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
 <blockquote>
 <div><ul class="simple">
 <li><p>Snapping fails on freshly created wastewater nodes</p></li>
@@ -165,8 +238,8 @@
 </ul>
 </div></blockquote>
 </section>
-<section id="extension-improvements">
-<h2>Extension improvements<a class="headerlink" href="#extension-improvements" title="Link to this heading"></a></h2>
+<section id="id7">
+<h2>Extension improvements<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
 <blockquote>
 <div><ul class="simple">
 <li><p>Exclude drainage catchment areas from AG-xx export</p></li>
@@ -191,8 +264,8 @@
 </ul>
 </div></blockquote>
 </section>
-<section id="adaptions-to-project-file">
-<h2>Adaptions to project file<a class="headerlink" href="#adaptions-to-project-file" title="Link to this heading"></a></h2>
+<section id="id8">
+<h2>Adaptions to project file<a class="headerlink" href="#id8" title="Link to this heading"></a></h2>
 <blockquote>
 <div><p>The following new views have been integrated in this release:</p>
 </div></blockquote>
