@@ -144,7 +144,7 @@ class Hook(
         )
         import_schema = parameters.get(
             "import_schema",
-            config.import_schema,
+            config.IMPORT_SCHEMA,
         )
         self.live_schema = parameters.get(
             "live_schema",
@@ -164,7 +164,7 @@ class Hook(
             "skip_rights_evaluation",
         )
         incremental_import_schema = parameters.get(
-                "incremental_self.import_schema",
+                "incremental_import_schema",
                 config.IMPORT_SCHEMA_INCR
             )
         hook_config_dir = (
@@ -227,13 +227,110 @@ class Hook(
             },
         )
 
-        self.run_sub_verification(xtf_file=xtf_file,schema=import_schema, context=context)
-        self.run_sub_verification(xtf_file=incremental_xtf,
-                                  schema=incremental_import_schema,
-                                  context=context,
-                                  is_incremental=True)
 
-    def run_sub_verification(self, xtf_file, schema, context, is_incremental: bool=False):
+        # create adapters and services
+        quarantine_runner = TwwQuarantineRunner(
+            interlis_service=self.interlis_service,
+        )
+
+        canonical_model = TwwCanonicalModelAdapter(
+            connection_factory=self.connection_factory,
+        )
+
+        diff_schema_service = TwwDiffSchemaService(
+            connection_factory=self.connection_factory,
+        )
+        relation_lookup = TwwRelationLookupAdapter(
+            schema=self.live_schema,
+            connection_factory=self.connection_factory,
+        )
+
+        canonical_metadata=canonical_model.canonical_model()
+
+        resolved_rights = RightsResolver().resolve(
+            definition=self.rights_definition,
+            validation_definition=self.validation_definition,
+            canonical_metadata=canonical_metadata,
+        )
+
+
+        rights_capability = RightsCapability(
+            resolved_rights,
+        )
+
+        provider_capability = ResolvedProviderCapability(
+            self.resolved_provider,
+        )
+
+        conditions_capability = ConditionsCapability()
+
+        derived_rights_capability = DerivedRightsCapability(
+            resolved_rights,
+        )
+
+        subclass_rights_capability = SubclassRightsCapability(
+            resolved_rights,
+        )
+
+        rights_evaluator = RightsEvaluator(
+            rights=rights_capability,
+            provider=provider_capability,
+            conditions=conditions_capability,
+            derived_rights=derived_rights_capability,
+            relation_lookup=relation_lookup,
+            subclass_rights=subclass_rights_capability,
+        )
+
+        if incremental_xtf is None:
+            self.run_sub_verification(
+                xtf_file=xtf_file,
+                schema=import_schema,
+                quarantine_runner=quarantine_runner,
+                canonical_model=canonical_model,
+                diff_schema_service=diff_schema_service,
+                rights_evaluator=rights_evaluator,
+                context=context,
+                is_incremental=False,
+                final_diff_run=True,
+            )
+        else:
+            self.run_sub_verification(
+                xtf_file=xtf_file,
+                schema=import_schema,
+                quarantine_runner=quarantine_runner,
+                canonical_model=canonical_model,
+                diff_schema_service=diff_schema_service,
+                rights_evaluator=rights_evaluator,
+                context=context,
+                is_incremental=False,
+                final_diff_run=False,
+            )
+
+            self.run_sub_verification(
+                xtf_file=incremental_xtf,
+                schema=incremental_import_schema,
+                quarantine_runner=quarantine_runner,
+                canonical_model=canonical_model,
+                diff_schema_service=diff_schema_service,
+                rights_evaluator=rights_evaluator,
+                context=context,
+                is_incremental=True,
+                final_diff_run=True,
+            )
+
+    def run_sub_verification(
+            self,
+            xtf_file,
+            schema,
+            quarantine_runner,
+            canonical_model,
+            diff_schema_service,
+            rights_evaluator,
+            context,
+            is_incremental: bool = False,
+            final_diff_run: bool = True,
+        ):
+
 
         model_selection = self.interlis_service.identify_model(xtf_file)
         explicit_mapping = ModelMappingParser().parse_file(
@@ -241,8 +338,6 @@ class Hook(
             / "explicit_mapping.yaml",
             model_id=model_selection.mapping_model_id,
         )
-
-
 
         explicit_mapping_capability = ModelMappingCapability(
             mapping=explicit_mapping,
@@ -275,57 +370,6 @@ class Hook(
             model_mapping=effective_mapping,
         )
 
-        # create adapters and services
-        quarantine_runner = TwwQuarantineRunner(
-            interlis_service=self.interlis_service,
-        )
-
-        canonical_model = TwwCanonicalModelAdapter(
-            connection_factory=self.connection_factory,
-        )
-        canonical_metadata=canonical_model.canonical_model()
-
-        diff_schema_service = TwwDiffSchemaService(
-            connection_factory=self.connection_factory,
-        )
-        relation_lookup = TwwRelationLookupAdapter(
-            schema=self.live_schema,
-            connection_factory=self.connection_factory,
-        )
-
-
-        resolved_rights = RightsResolver().resolve(
-            definition=self.rights_definition,
-            validation_definition=self.validation_definition,
-            canonical_metadata=canonical_metadata,
-        )
-
-        rights_capability = RightsCapability(
-            resolved_rights,
-        )
-
-        provider_capability = ResolvedProviderCapability(
-            self.resolved_provider,
-        )
-
-        conditions_capability = ConditionsCapability()
-
-        derived_rights_capability = DerivedRightsCapability(
-            resolved_rights,
-        )
-
-        subclass_rights_capability = SubclassRightsCapability(
-            resolved_rights,
-        )
-
-        rights_evaluator = RightsEvaluator(
-            rights=rights_capability,
-            provider=provider_capability,
-            conditions=conditions_capability,
-            derived_rights=derived_rights_capability,
-            relation_lookup=relation_lookup,
-            subclass_rights=subclass_rights_capability,
-        )
 
         service = TwwChangeCreationService(
             connection_factory=self.connection_factory,
@@ -345,21 +389,41 @@ class Hook(
             xtf_file=xtf_file,
             orgs_path=self.orgs_path,
             rights_context=self.rights_context,
-            import_schema=self.import_schema,
+            import_schema=schema,
             live_schema=self.live_schema,
-            incremental=is_incremental,
-            metadata={},
+            metadata={
+                "source_role": (
+                    "incremental"
+                    if is_incremental
+                    else "base"
+                ),
+                "source_xtf": str(
+                    xtf_file,
+                ),
+                "source_schema": schema,
+                "model_group": model_selection.group,
+                "model_language": model_selection.language,
+                "persist_job": final_diff_run,
+            }
         )
 
         context.logger.info(
-            "Created tww_diff review job '%s' with %s rows.",
+            "Prepared tww_diff review job '%s' for xtf file %s.",
             result.job_id,
-            (
-                result.diff_schema_result.row_count
-                if result.diff_schema_result is not None
-                else "unknown"
-            ),
+            xtf_file,
         )
+        if final_diff_run:
+            context.logger.info(
+                "Created tww_diff review job '%s' with %s rows.",
+                result.job_id,
+                (
+                    result.diff_schema_result.row_count
+                    if result.diff_schema_result is not None
+                    else "unknown"
+                ),
+            )
+
+
 
     def _optional_path(
         self,

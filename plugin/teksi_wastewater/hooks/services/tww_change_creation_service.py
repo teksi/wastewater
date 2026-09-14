@@ -1,24 +1,19 @@
 from __future__ import annotations
 
 from collections import defaultdict
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field, replace
-from enum import StrEnum
 from pathlib import Path
-from typing import Any, Protocol
+from typing import Any
 
 from teksi_hooks.capabilities.canonical_object import (
     CanonicalGeometryCapability,
-    CanonicalModelCapability,
-)
-from teksi_hooks.capabilities.relation_lookup import (
-    RelationLookupCapability,
-)
-from teksi_hooks.capabilities.review import (
-    ChangeObjectProvider,
 )
 from teksi_hooks.capabilities.connection import (
     DatabaseConnectionFactory,
+)
+from teksi_hooks.capabilities.relation_lookup import (
+    RelationLookupCapability,
 )
 from teksi_hooks.evaluators.rights import (
     RightsEvaluationContext,
@@ -35,17 +30,14 @@ from teksi_hooks.models.effects import (
     EnforceNotExistsEffect,
     UpdateAttributeEffect,
 )
+from teksi_hooks.models.persistence import (
+    DiffJobMode,
+)
 from teksi_hooks.models.review import (
-    ReviewFeature,
-    DiffSchemaWriteResult,
+    ChangeCreationResult,
 )
 from teksi_hooks.models.validation import (
     Change,
-    ClassifiedChanges,
-    ValidationFinding,
-)
-from teksi_hooks.models.persistence import (
-    DiffJobMode,
 )
 from teksi_hooks.services.change_builder import (
     ChangeBuilder,
@@ -53,14 +45,15 @@ from teksi_hooks.services.change_builder import (
 from teksi_hooks.services.change_classifier import (
     ChangeClassifier,
 )
+from teksi_hooks.services.change_creation_protocols import (
+    ChangeObjectProviderFactory,
+    QuarantineEffectProjector,
+)
 from teksi_hooks.services.change_review_export import (
     ChangeReviewExportService,
 )
 
 from ...interlis import config
-from ..adapters.tww_canonical_model_adapter import (
-    TwwCanonicalModelAdapter,
-)
 from ..adapters.tww_interlis_service_adapter import (
     TwwInterlisContext,
 )
@@ -75,118 +68,33 @@ from .tww_diff_schema_service import (
 )
 
 
-class QuarantineEffectProjector(Protocol):
-    """
-    Protocol for projecting imported quarantine data into canonical effects.
-
-    Implementations read an ili2pg quarantine schema, apply the effective
-    source-model mapping and produce an EffectDocument.
-    """
-
-    def effect_document_from_quarantine(
-        self,
-        *,
-        schema: str,
-        source_model: str,
-        canonical_metadata: CanonicalModelMetadata,
-    ) -> EffectDocument:
-        """
-        Project one populated quarantine schema into canonical effects.
-        """
-
-
-class ChangeObjectProviderFactory(Protocol):
-    """
-    Factory protocol for creating a canonical object provider used during
-    review-feature generation.
-    """
-
-    def change_object_provider(
-        self,
-        *,
-        live_schema: str,
-        import_schema: str,
-        canonical_metadata: CanonicalModelMetadata,
-    ) -> ChangeObjectProvider:
-        """
-        Return a ChangeObjectProvider implementation.
-        """
-
-
-@dataclass(slots=True)
-class ChangeCreationResult:
-    """
-    Result of a change-creation workflow.
-
-    The result exposes intermediate products for diagnostics, tests and
-    subsequent review or persistence workflows.
-    """
-
-    job_id: str | None = None
-
-    import_model: str | None = None
-
-    incremental_import_model: str | None = None
-
-    created_models: list[str] = field(
-        default_factory=list,
-    )
-
-    incremental_created_models: list[str] = field(
-        default_factory=list,
-    )
-
-    effect_document: EffectDocument | None = None
-
-    changes: list[Change] = field(
-        default_factory=list,
-    )
-
-    validation_findings: list[ValidationFinding] = field(
-        default_factory=list,
-    )
-
-    classified_changes: ClassifiedChanges | None = None
-
-    features_by_class: dict[
-        str,
-        list[ReviewFeature],
-    ] = field(
-        default_factory=dict,
-    )
-
-    diff_schema_result: DiffSchemaWriteResult | None = None
-
-
 @dataclass(slots=True)
 class TwwChangeCreationService:
     """
-    Create a tww_diff review job from imported wastewater data.
+    Prepare and persist a TWW diff review job from imported wastewater data.
 
-    The service coordinates:
+    Each service invocation processes exactly one XTF source:
 
-    - importing a base XTF into quarantine;
-    - optionally importing an incremental XTF into a separate quarantine;
-    - validating imported quarantine schemas;
-    - loading canonical wastewater metadata;
-    - projecting quarantine rows into canonical effects;
-    - overlaying incremental effects on base-delivery effects;
-    - resolving current canonical objects;
-    - building row-level changes;
-    - evaluating rights;
-    - classifying changes;
-    - preparing review features;
-    - writing the resulting review job into tww_diff.
+    - a base source;
+    - or an incremental source.
 
-    Incremental effects override matching base effects only. A matching update
-    effect is identified by canonical object identity and canonical attribute
-    identifier.
+    A base source with ``persist_job=False`` is projected and staged as a
+    prepared workflow source. It is not written as a reviewable diff job.
 
-    The service does not apply accepted changes to live data.
+    A subsequent incremental source with the same job identifier retrieves
+    the staged base source, overlays its effects, builds the combined changes,
+    and persists one pending review job.
+
+    A base-only workflow uses ``persist_job=True`` and is written directly as
+    a pending review job.
+
+    Accepted changes are applied to the live schema by a separate workflow.
     """
 
     connection_factory: DatabaseConnectionFactory
+
     canonical_metadata: CanonicalModelMetadata
+
     quarantine_runner: TwwQuarantineRunner = field(
         default_factory=TwwQuarantineRunner,
     )
@@ -207,7 +115,6 @@ class TwwChangeCreationService:
 
     live_relation_lookup: RelationLookupCapability | None = None
 
-
     def create_diff_job_from_xtf(
         self,
         *,
@@ -216,8 +123,6 @@ class TwwChangeCreationService:
         xtf_file: Path,
         rights_context: RightsEvaluationContext,
         orgs_path: Path | None = None,
-        incremental_xtf: Path | None = None,
-        incremental_import_schema: str = config.IMPORT_SCHEMA_INCR,
         context: TwwInterlisContext | None = None,
         validation_log_path: Path | None = None,
         import_schema: str = config.IMPORT_SCHEMA,
@@ -225,29 +130,60 @@ class TwwChangeCreationService:
         metadata: dict[str, Any] | None = None,
     ) -> ChangeCreationResult:
         """
-        Import one or two XTF deliveries and create a tww_diff review job.
+        Import and process one XTF workflow source.
 
-        The source model is discovered from each XTF by the quarantine runner.
-        No source-model identifier needs to be supplied by the caller.
+        Workflow behavior is controlled through metadata:
+
+        ``source_role``
+            Either ``base`` or ``incremental``.
+
+        ``persist_job``
+            If false, stage the source as a prepared result. If true, write
+            the final combined result as a pending review job.
         """
 
         self._ensure_ready_for_diff_job()
+
         self._assert_supported_job_mode(
             job_mode,
         )
 
-        base_context = self._import_context(
+        workflow_metadata = self._workflow_metadata(
+            job_id=job_id,
+            job_mode=job_mode,
+            rights_context=rights_context,
+            import_schema=import_schema,
+            live_schema=live_schema,
+            metadata=metadata,
+            source_file=xtf_file,
+        )
+
+        source_role = self._source_role(
+            workflow_metadata,
+        )
+
+        persist_job = self._persist_job(
+            workflow_metadata,
+        )
+
+        self._validate_workflow_transition(
+            source_role=source_role,
+            persist_job=persist_job,
+        )
+
+        import_context = self._import_context(
             context=context,
             schema=import_schema,
             orgs_path=orgs_path,
         )
 
-        import_model, created_models = (
-            self.quarantine_runner.import_xtf_to_quarantine(
-                xtf_file=xtf_file,
-                context=base_context,
-                schema=import_schema,
-            )
+        (
+            import_model,
+            created_models,
+        ) = self.quarantine_runner.import_xtf_to_quarantine(
+            xtf_file=xtf_file,
+            context=import_context,
+            schema=import_schema,
         )
 
         self.quarantine_runner.validate_quarantine_or_raise(
@@ -262,95 +198,30 @@ class TwwChangeCreationService:
             schema=import_schema,
         )
 
-        incremental_import_model: str | None = None
-        incremental_created_models: tuple[str, ...] = ()
-
-        if incremental_xtf is not None:
-            effective_incremental_schema = (
-                incremental_import_schema
-                or f"{import_schema}_incremental"
-            )
-
-            incremental_context = self._import_context(
-                context=context,
-                schema=effective_incremental_schema,
-                orgs_path=None,
-            )
-
-            (
-                incremental_import_model,
-                incremental_created_models,
-            ) = self.quarantine_runner.import_xtf_to_quarantine(
-                xtf_file=incremental_xtf,
-                context=incremental_context,
-                schema=effective_incremental_schema,
-            )
-
-            self.quarantine_runner.validate_quarantine_or_raise(
-                model_names=(
-                    incremental_import_model,
+        workflow_metadata.update(
+            {
+                "source_model": import_model,
+                "created_models": list(
+                    created_models,
                 ),
-                log_path=self._validation_log_path(
-                    validation_log_path=None,
-                    xtf_file=incremental_xtf,
-                    name="validate_incremental_quarantine",
-                ),
-                schema=effective_incremental_schema,
-            )
-        else:
-            effective_incremental_schema = None
-
-        workflow_metadata = {
-            **dict(
-                metadata or {},
-            ),
-            "job_id": job_id,
-            "job_mode": job_mode.value,
-            "source_model": import_model,
-            "source_file": str(
-                xtf_file,
-            ),
-            "import_schema": import_schema,
-            "live_schema": live_schema,
-            "provider_oid": str(
-                rights_context.provider_oid,
-            ),
-            "dataowner_oid": str(
-                rights_context.dataowner_oid,
-            ),
-        }
+            }
+        )
 
         if orgs_path is not None:
-            workflow_metadata["orgs_path"] = str(
+            workflow_metadata[
+                "orgs_path"
+            ] = str(
                 orgs_path,
-            )
-
-        if incremental_xtf is not None:
-            workflow_metadata.update(
-                {
-                    "incremental_xtf": str(
-                        incremental_xtf,
-                    ),
-                    "incremental_import_schema": (
-                        effective_incremental_schema
-                    ),
-                    "incremental_source_model": (
-                        incremental_import_model
-                    ),
-                }
             )
 
         return self.create_diff_job_from_quarantine(
             job_id=job_id,
             job_mode=job_mode,
             source_model=import_model,
-            created_models=created_models,
             rights_context=rights_context,
+            created_models=created_models,
             import_schema=import_schema,
             live_schema=live_schema,
-            incremental_source_model=incremental_import_model,
-            incremental_created_models=incremental_created_models,
-            incremental_import_schema=effective_incremental_schema,
             metadata=workflow_metadata,
         )
 
@@ -364,13 +235,14 @@ class TwwChangeCreationService:
         created_models: Sequence[str] = (),
         import_schema: str = config.IMPORT_SCHEMA,
         live_schema: str = config.TWW_OD_SCHEMA,
-        incremental_source_model: str | None = None,
-        incremental_created_models: Sequence[str] = (),
-        incremental_import_schema: str | None = None,
         metadata: dict[str, Any] | None = None,
     ) -> ChangeCreationResult:
         """
-        Create a tww_diff review job from populated quarantine schemas.
+        Process one populated quarantine source.
+
+        A non-persisting base invocation stages its projected effect document.
+        A persisting incremental invocation overlays its effects on the staged
+        base document and writes one combined pending review job.
         """
 
         self._ensure_ready_for_diff_job()
@@ -378,120 +250,282 @@ class TwwChangeCreationService:
         self._assert_supported_job_mode(
             job_mode,
         )
-        self._validate_incremental_quarantine(
-            source_model=incremental_source_model,
-            import_schema=incremental_import_schema,
+
+        workflow_metadata = self._workflow_metadata(
+            job_id=job_id,
+            job_mode=job_mode,
+            rights_context=rights_context,
+            import_schema=import_schema,
+            live_schema=live_schema,
+            metadata=metadata,
         )
 
-        workflow_metadata = {
-            **dict(
-                metadata or {},
-            ),
-            "job_id": job_id,
-            "job_mode": job_mode.value,
-            "source_model": source_model,
-            "import_schema": import_schema,
-            "live_schema": live_schema,
-            "provider_oid": str(
-                rights_context.provider_oid,
-            ),
-            "dataowner_oid": str(
-                rights_context.dataowner_oid,
-            ),
-        }
+        source_role = self._source_role(
+            workflow_metadata,
+        )
 
-        if incremental_source_model is not None:
+        persist_job = self._persist_job(
+            workflow_metadata,
+        )
+
+        self._validate_workflow_transition(
+            source_role=source_role,
+            persist_job=persist_job,
+        )
+
+        source_document = (
+            self.effect_projector
+            .effect_document_from_quarantine(
+                schema=import_schema,
+                source_model=source_model,
+                canonical_metadata=(
+                    self.canonical_metadata
+                ),
+            )
+        )
+
+        if source_role == "base":
+            effect_document = source_document
+
+            base_source_model = source_model
+            base_created_models = tuple(
+                created_models,
+            )
+            incremental_source_model = None
+            incremental_created_models: tuple[
+                str,
+                ...,
+            ] = ()
+        else:
+            prepared = (
+                self.diff_schema_service
+                .prepared_source(
+                    job_id=job_id,
+                )
+            )
+
+            base_document = prepared.effect_document
+
+            effect_document = (
+                self._merge_effect_documents(
+                    base_document=base_document,
+                    incremental_document=(
+                        source_document
+                    ),
+                )
+            )
+
+            base_source_model = (
+                prepared.source_model
+            )
+
+            base_created_models = tuple(
+                prepared.created_models,
+            )
+
+            incremental_source_model = (
+                source_model
+            )
+
+            incremental_created_models = tuple(
+                created_models,
+            )
+
             workflow_metadata.update(
                 {
+                    "base_source_model": (
+                        base_source_model
+                    ),
+                    "base_created_models": list(
+                        base_created_models,
+                    ),
                     "incremental_source_model": (
                         incremental_source_model
                     ),
-                    "incremental_import_schema": (
-                        incremental_import_schema
+                    "incremental_created_models": list(
+                        incremental_created_models,
+                    ),
+                    "base_source_metadata": dict(
+                        prepared.metadata,
                     ),
                 }
             )
 
-        canonical_metadata = self.canonical_metadata
-
-        base_document = (
-            self.effect_projector.effect_document_from_quarantine(
-                schema=import_schema,
+        if not persist_job:
+            self.diff_schema_service.prepare_source(
+                job_id=job_id,
                 source_model=source_model,
-                canonical_metadata=canonical_metadata,
+                created_models=tuple(
+                    created_models,
+                ),
+                effect_document=effect_document,
+                metadata=workflow_metadata,
             )
+
+            return self._prepared_result(
+                job_id=job_id,
+                source_model=source_model,
+                created_models=created_models,
+                effect_document=effect_document,
+                rights_context=rights_context,
+                import_schema=import_schema,
+                live_schema=live_schema,
+                metadata=workflow_metadata,
+            )
+
+        result = self._persist_pending_job(
+            job_id=job_id,
+            job_mode=job_mode,
+            effect_document=effect_document,
+            rights_context=rights_context,
+            import_schema=import_schema,
+            live_schema=live_schema,
+            base_source_model=base_source_model,
+            base_created_models=base_created_models,
+            incremental_source_model=(
+                incremental_source_model
+            ),
+            incremental_created_models=(
+                incremental_created_models
+            ),
+            metadata=workflow_metadata,
         )
 
-        if incremental_source_model is None:
-            effect_document = base_document
-        else:
-            incremental_document = (
-                self.effect_projector.effect_document_from_quarantine(
-                    schema=incremental_import_schema,
-                    source_model=incremental_source_model,
-                    canonical_metadata=canonical_metadata,
-                )
+        if source_role == "incremental":
+            self.diff_schema_service.clear_prepared_source(
+                job_id=job_id,
             )
 
-            effect_document = self._merge_effect_documents(
-                base_document=base_document,
-                incremental_document=incremental_document,
-            )
+        return result
 
-        relation_lookup = self._live_relation_lookup(
-            live_schema,
-        )
+    def _prepared_result(
+        self,
+        *,
+        job_id: str,
+        source_model: str,
+        created_models: Sequence[str],
+        effect_document: EffectDocument,
+        rights_context: RightsEvaluationContext,
+        import_schema: str,
+        live_schema: str,
+        metadata: Mapping[str, Any],
+    ) -> ChangeCreationResult:
+        """
+        Return an unpersisted prepared result for one base source.
+        """
 
         changes = self._build_changes(
             effect_document=effect_document,
-            relation_lookup=relation_lookup,
+            relation_lookup=self._live_relation_lookup(
+                live_schema,
+            ),
         )
-
 
         classified_changes = ChangeClassifier(
             rights_evaluator=self.rights_evaluator,
         ).classify(
             changes=changes,
             context=rights_context,
-            metadata=workflow_metadata,
-        )
-
-        object_provider = (
-            self.object_provider_factory.change_object_provider(
-                live_schema=live_schema,
-                import_schema=import_schema,
-                canonical_metadata=canonical_metadata,
-            )
-        )
-
-        review_service = ChangeReviewExportService(
-            object_provider=object_provider,
-            geometry_attribute_names_by_class=(
-                self._geometry_attribute_map(
-                    canonical_metadata,
-                )
+            metadata=dict(
+                metadata,
             ),
         )
 
-        features_by_class = review_service.export(
-            classified_changes,
-        )
-
-        diff_schema_result = self.diff_schema_service.write(
-            job_id=job_id,
-            job_mode=job_mode,
-            features_by_class=features_by_class,
-            metadata=workflow_metadata,
-            validation_success=True,
-            job_status="pending",
+        features_by_class = (
+            self._review_features(
+                classified_changes=classified_changes,
+                live_schema=live_schema,
+                import_schema=import_schema,
+            )
         )
 
         return ChangeCreationResult(
             job_id=job_id,
             import_model=source_model,
-            incremental_import_model=incremental_source_model,
+            incremental_import_model=None,
             created_models=list(
                 created_models,
+            ),
+            incremental_created_models=[],
+            effect_document=effect_document,
+            changes=list(
+                changes,
+            ),
+            classified_changes=classified_changes,
+            features_by_class=features_by_class,
+            diff_schema_result=None,
+            validation_findings=(
+                self._validation_findings(
+                    classified_changes,
+                )
+            ),
+        )
+
+    def _persist_pending_job(
+        self,
+        *,
+        job_id: str,
+        job_mode: DiffJobMode,
+        effect_document: EffectDocument,
+        rights_context: RightsEvaluationContext,
+        import_schema: str,
+        live_schema: str,
+        base_source_model: str,
+        base_created_models: Sequence[str],
+        incremental_source_model: str | None,
+        incremental_created_models: Sequence[str],
+        metadata: Mapping[str, Any],
+    ) -> ChangeCreationResult:
+        """
+        Build and persist one pending review job.
+        """
+
+        changes = self._build_changes(
+            effect_document=effect_document,
+            relation_lookup=self._live_relation_lookup(
+                live_schema,
+            ),
+        )
+
+        classified_changes = ChangeClassifier(
+            rights_evaluator=self.rights_evaluator,
+        ).classify(
+            changes=changes,
+            context=rights_context,
+            metadata=dict(
+                metadata,
+            ),
+        )
+
+        features_by_class = (
+            self._review_features(
+                classified_changes=classified_changes,
+                live_schema=live_schema,
+                import_schema=import_schema,
+            )
+        )
+
+        diff_schema_result = (
+            self.diff_schema_service.write(
+                job_id=job_id,
+                job_mode=job_mode,
+                features_by_class=features_by_class,
+                metadata=dict(
+                    metadata,
+                ),
+                validation_success=True,
+                job_status="pending",
+            )
+        )
+
+        return ChangeCreationResult(
+            job_id=job_id,
+            import_model=base_source_model,
+            incremental_import_model=(
+                incremental_source_model
+            ),
+            created_models=list(
+                base_created_models,
             ),
             incremental_created_models=list(
                 incremental_created_models,
@@ -503,14 +537,161 @@ class TwwChangeCreationService:
             classified_changes=classified_changes,
             features_by_class=features_by_class,
             diff_schema_result=diff_schema_result,
-            validation_findings=[
-                finding
-                for classified_change
-                in classified_changes.changes
-                for finding
-                in classified_change.validation_findings
-            ]
+            validation_findings=(
+                self._validation_findings(
+                    classified_changes,
+                )
+            ),
         )
+
+    def _review_features(
+        self,
+        *,
+        classified_changes,
+        live_schema: str,
+        import_schema: str,
+    ):
+        """
+        Export classified changes to review features.
+        """
+
+        object_provider = (
+            self.object_provider_factory
+            .change_object_provider(
+                live_schema=live_schema,
+                import_schema=import_schema,
+                canonical_metadata=(
+                    self.canonical_metadata
+                ),
+            )
+        )
+
+        review_service = ChangeReviewExportService(
+            object_provider=object_provider,
+            geometry_attribute_names_by_class=(
+                self._geometry_attribute_map(
+                    self.canonical_metadata,
+                )
+            ),
+        )
+
+        return review_service.export(
+            classified_changes,
+        )
+
+    def _workflow_metadata(
+        self,
+        *,
+        job_id: str,
+        job_mode: DiffJobMode,
+        rights_context: RightsEvaluationContext,
+        import_schema: str,
+        live_schema: str,
+        metadata: Mapping[str, Any] | None,
+        source_file: Path | None = None,
+    ) -> dict[str, Any]:
+        """
+        Return normalized workflow metadata.
+        """
+
+        workflow_metadata = {
+            **dict(
+                metadata or {},
+            ),
+            "job_id": job_id,
+            "job_mode": job_mode.value,
+            "import_schema": import_schema,
+            "live_schema": live_schema,
+            "provider_oid": str(
+                rights_context.provider_oid,
+            ),
+            "dataowner_oid": str(
+                rights_context.dataowner_oid,
+            ),
+        }
+
+        if source_file is not None:
+            workflow_metadata[
+                "source_file"
+            ] = str(
+                source_file,
+            )
+
+        return workflow_metadata
+
+    def _source_role(
+        self,
+        metadata: Mapping[str, Any],
+    ) -> str:
+        """
+        Return and validate the workflow source role.
+        """
+
+        source_role = metadata.get(
+            "source_role",
+            "base",
+        )
+
+        if not isinstance(
+            source_role,
+            str,
+        ):
+            raise TypeError(
+                "metadata['source_role'] must be a string."
+            )
+
+        if source_role not in {
+            "base",
+            "incremental",
+        }:
+            raise ValueError(
+                "metadata['source_role'] must be either "
+                f"'base' or 'incremental', got {source_role!r}."
+            )
+
+        return source_role
+
+    def _persist_job(
+        self,
+        metadata: Mapping[str, Any],
+    ) -> bool:
+        """
+        Return and validate the final-persistence flag.
+        """
+
+        persist_job = metadata.get(
+            "persist_job",
+            True,
+        )
+
+        if not isinstance(
+            persist_job,
+            bool,
+        ):
+            raise TypeError(
+                "metadata['persist_job'] must be a boolean."
+            )
+
+        return persist_job
+
+    def _validate_workflow_transition(
+        self,
+        *,
+        source_role: str,
+        persist_job: bool,
+    ) -> None:
+        """
+        Validate the supported prepared-to-pending workflow transitions.
+        """
+
+        if (
+            source_role == "incremental"
+            and not persist_job
+        ):
+            raise ValueError(
+                "An incremental source must finalize the workflow. "
+                "Use metadata['persist_job']=True."
+            )
 
     def _merge_effect_documents(
         self,
@@ -519,14 +700,14 @@ class TwwChangeCreationService:
         incremental_document: EffectDocument,
     ) -> EffectDocument:
         """
-        Overlay incremental effects onto a base effect document.
+        Overlay incremental effects onto a prepared base effect document.
 
-        Update effects are keyed by canonical identity and attribute. An
-        incremental update replaces a matching base update while leaving
-        unrelated base updates intact.
+        Update effects are keyed by canonical identity and attribute.
+        Incremental updates replace matching base updates.
 
-        Existence constraints are keyed by canonical identity and concrete
-        effect type.
+        Existence constraints are keyed by canonical identity. An incremental
+        existence constraint replaces any base existence constraint for the
+        same canonical identity.
         """
 
         update_effects: dict[
@@ -538,10 +719,7 @@ class TwwChangeCreationService:
         ] = {}
 
         constraint_effects: dict[
-            tuple[
-                tuple,
-                type,
-            ],
+            tuple,
             Effect,
         ] = {}
 
@@ -565,6 +743,7 @@ class TwwChangeCreationService:
                     identity_key,
                     effect.attribute_id,
                 )
+
                 order_key = (
                     "update",
                     payload_key,
@@ -575,7 +754,10 @@ class TwwChangeCreationService:
                         order_key,
                     )
 
-                update_effects[payload_key] = effect
+                update_effects[
+                    payload_key
+                ] = effect
+
                 return
 
             if isinstance(
@@ -585,12 +767,8 @@ class TwwChangeCreationService:
                     EnforceNotExistsEffect,
                 ),
             ):
-                payload_key = (
-                    identity_key,
-                    type(
-                        effect,
-                    ),
-                )
+                payload_key = identity_key
+
                 order_key = (
                     "constraint",
                     payload_key,
@@ -601,11 +779,15 @@ class TwwChangeCreationService:
                         order_key,
                     )
 
-                constraint_effects[payload_key] = effect
+                constraint_effects[
+                    payload_key
+                ] = effect
+
                 return
 
             raise TypeError(
-                f"Unsupported effect type: {type(effect)!r}"
+                "Unsupported effect type: "
+                f"{type(effect)!r}"
             )
 
         for effect in base_document.effects:
@@ -618,25 +800,37 @@ class TwwChangeCreationService:
                 effect,
             )
 
-        merged_effects: list[Effect] = []
+        merged_effects: list[
+            Effect
+        ] = []
 
-        for effect_kind, effect_key in ordered_keys:
+        for (
+            effect_kind,
+            effect_key,
+        ) in ordered_keys:
             if effect_kind == "update":
                 merged_effects.append(
-                    update_effects[effect_key],
+                    update_effects[
+                        effect_key
+                    ],
                 )
-                continue
-
-            merged_effects.append(
-                constraint_effects[effect_key],
-            )
+            else:
+                merged_effects.append(
+                    constraint_effects[
+                        effect_key
+                    ],
+                )
 
         return EffectDocument(
-            source=base_document.source,
+            source=(
+                incremental_document.source
+            ),
             effects=tuple(
                 merged_effects,
             ),
-            created_at=base_document.created_at,
+            created_at=(
+                incremental_document.created_at
+            ),
             version=max(
                 base_document.version,
                 incremental_document.version,
@@ -648,17 +842,22 @@ class TwwChangeCreationService:
         *,
         effect_document: EffectDocument,
         relation_lookup: RelationLookupCapability,
-    ) -> tuple[Change, ...]:
+    ) -> tuple[
+        Change,
+        ...,
+    ]:
         """
         Build row-level changes from update effects.
 
-        EnforceExistsEffect and EnforceNotExistsEffect are constraints and
-        therefore do not produce Change objects.
+        Existence effects are constraints and do not directly produce
+        ``Change`` objects.
         """
 
         effects_by_identity: dict[
             tuple,
-            list[UpdateAttributeEffect],
+            list[
+                UpdateAttributeEffect
+            ],
         ] = defaultdict(
             list,
         )
@@ -675,26 +874,43 @@ class TwwChangeCreationService:
             ):
                 continue
 
-            key = effect.identity.key()
+            identity_key = (
+                effect.identity.key()
+            )
 
-            identities[key] = effect.identity
+            identities[
+                identity_key
+            ] = effect.identity
 
-            effects_by_identity[key].append(
+            effects_by_identity[
+                identity_key
+            ].append(
                 effect,
             )
 
-        changes: list[Change] = []
+        changes: list[
+            Change
+        ] = []
 
-        for key, effects in effects_by_identity.items():
-            identity = identities[key]
+        for (
+            identity_key,
+            effects,
+        ) in effects_by_identity.items():
+            identity = identities[
+                identity_key
+            ]
 
-            current_object = relation_lookup.current_object(
-                identity,
+            current_object = (
+                relation_lookup.current_object(
+                    identity,
+                )
             )
 
             changes.append(
                 self.change_builder.build(
-                    current_object=current_object,
+                    current_object=(
+                        current_object
+                    ),
                     effects=tuple(
                         effects,
                     ),
@@ -705,12 +921,28 @@ class TwwChangeCreationService:
             changes,
         )
 
+    def _validation_findings(
+        self,
+        classified_changes,
+    ) -> list:
+        """
+        Return all validation findings from classified changes.
+        """
+
+        return [
+            finding
+            for classified_change
+            in classified_changes.changes
+            for finding
+            in classified_change.validation_findings
+        ]
+
     def _live_relation_lookup(
         self,
         live_schema: str,
     ) -> RelationLookupCapability:
         """
-        Return the lookup used to access live canonical objects.
+        Return the relation lookup for live canonical objects.
         """
 
         if self.live_relation_lookup is not None:
@@ -718,26 +950,40 @@ class TwwChangeCreationService:
 
         return TwwRelationLookupAdapter(
             schema=live_schema,
-            connection_factory=self.connection_factory
+            connection_factory=(
+                self.connection_factory
+            ),
         )
 
     def _geometry_attribute_map(
         self,
         canonical_metadata: CanonicalModelMetadata,
-    ) -> dict[str, tuple[str, ...]]:
+    ) -> dict[
+        str,
+        tuple[
+            str,
+            ...,
+        ],
+    ]:
         """
         Return geometry attribute identifiers keyed by canonical class.
         """
 
-        geometry_capability = CanonicalGeometryCapability(
-            metadata=canonical_metadata,
+        geometry_capability = (
+            CanonicalGeometryCapability(
+                metadata=canonical_metadata,
+            )
         )
 
         return {
-            class_id: geometry_capability.geometry_attribute_names(
-                class_id,
+            class_id: (
+                geometry_capability
+                .geometry_attribute_names(
+                    class_id,
+                )
             )
-            for class_id in canonical_metadata.classes
+            for class_id
+            in canonical_metadata.classes
         }
 
     def _import_context(
@@ -748,7 +994,7 @@ class TwwChangeCreationService:
         orgs_path: Path | None,
     ) -> TwwInterlisContext:
         """
-        Return an import context configured for one quarantine schema.
+        Return the import context for one source quarantine schema.
         """
 
         if context is None:
@@ -774,7 +1020,7 @@ class TwwChangeCreationService:
         job_mode: DiffJobMode,
     ) -> None:
         """
-        Reject workflow modes that are not implemented yet.
+        Reject workflow modes that are not implemented.
         """
 
         if job_mode == DiffJobMode.REFRESH:
@@ -790,7 +1036,9 @@ class TwwChangeCreationService:
         Ensure all required collaborators are configured.
         """
 
-        missing = []
+        missing: list[
+            str
+        ] = []
 
         if self.effect_projector is None:
             missing.append(
@@ -809,8 +1057,11 @@ class TwwChangeCreationService:
 
         if missing:
             raise RuntimeError(
-                "TwwChangeCreationService is not ready for diff-job "
-                f"creation. Missing: {', '.join(missing)}"
+                "TwwChangeCreationService is not ready for "
+                "diff-job creation. Missing: "
+                + ", ".join(
+                    missing,
+                )
             )
 
     def _validation_log_path(
@@ -821,7 +1072,7 @@ class TwwChangeCreationService:
         name: str,
     ) -> Path:
         """
-        Return a validation log path.
+        Return the quarantine validation log path.
         """
 
         if validation_log_path is not None:
@@ -830,27 +1081,3 @@ class TwwChangeCreationService:
         return xtf_file.with_name(
             f"{xtf_file.stem}_{name}.log"
         )
-
-    def _validate_incremental_quarantine(
-        self,
-        *,
-        source_model: str | None,
-        import_schema: str | None,
-    ) -> None:
-        if (
-            source_model is not None
-            and import_schema is None
-        ):
-            raise ValueError(
-                "incremental_import_schema is required when "
-                "incremental_source_model is configured."
-            )
-
-        if (
-            source_model is None
-            and import_schema is not None
-        ):
-            raise ValueError(
-                "incremental_source_model is required when "
-                "incremental_import_schema is configured."
-            )
