@@ -1,3 +1,6 @@
+
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from pathlib import Path
 from collections.abc import Sequence
@@ -15,10 +18,6 @@ from teksi_hooks.capabilities.connection import (
 from .tww_database_connection_factory import TwwDatabaseConnectionFactory
 
 
-from __future__ import annotations
-
-from dataclasses import dataclass
-from pathlib import Path
 
 
 @dataclass(slots=True, frozen=True)
