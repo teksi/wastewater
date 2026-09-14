@@ -26,7 +26,7 @@ Bug fixes and performance improvements
 -----------------------------------------
  - Add standardoid as domain
  - Remove qgis dependency from cmd
- - Check that layers are not in edit mode for admin actions 
+ - Check that layers are not in edit mode for admin actions
  - Fix display_fr translation
  - Fix a bug where overflows couldn't be removed
  - Fix Error with depth calculation when updating a node or cover
