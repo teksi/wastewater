@@ -766,7 +766,10 @@ class TwwChangeCreationService:
         ] = {}
 
         constraint_effects: dict[
-            tuple,
+            tuple[
+                tuple,
+                type,
+            ],
             Effect,
         ] = {}
 
@@ -816,7 +819,12 @@ class TwwChangeCreationService:
                     EnforceNotExistsEffect,
                 ),
             ):
-                payload_key = identity_key
+                payload_key = (
+                    identity_key,
+                    type(
+                        effect,
+                    ),
+                )
 
                 order_key = (
                     "constraint",

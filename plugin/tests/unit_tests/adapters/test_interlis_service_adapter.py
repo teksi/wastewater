@@ -10,7 +10,7 @@ from teksi_wastewater.hooks.adapters.tww_interlis_service_adapter import (
     TwwInterlisContext,
     TwwInterlisServiceAdapter,
 )
-from teksi_wastewater.interlis import model_config
+from teksi_wastewater.interlis import model_selection
 from ..helpers import (
     FakeConnectionFactory,
 )
@@ -55,6 +55,25 @@ class FakeInterlisImporterExporter:
                 "SIA405_ABWASSER_2020_1_LV95",
             ),
         )
+
+    def identify_import_model(
+        self,
+        *,
+        xtf_file_input: Path,
+    ):
+        self.identify_import_model_calls.append(
+            {
+                "xtf_file_input": xtf_file_input,
+            }
+        )
+
+        return model_selection.model_selection_for_imported_models(
+            (
+                "SIA405_ABWASSER_2020_1_LV95",
+            )
+        )
+
+    
 def _adapter(
 ) -> tuple[
     TwwInterlisServiceAdapter,
@@ -143,6 +162,7 @@ def test_interlis_service_adapter_delegates_import_with_tww_context() -> None:
             "filter_nulls": True,
             "import_orgs": False,
             "srid": 2056,
+            "incremental_only": False,
         }
     ]
 

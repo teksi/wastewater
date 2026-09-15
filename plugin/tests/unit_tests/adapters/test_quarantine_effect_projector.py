@@ -32,10 +32,6 @@ from teksi_hooks.models.mapping import (
     ValueMapping,
 )
 
-from teksi_wastewater.hooks.adapters.tww_quarantine_effect_projector import (
-    TwwQuarantineEffectProjector,
-)
-
 from ..helpers import (
     FakeQueryResult,
     fake_connection_factory,
@@ -153,7 +149,7 @@ def _projector(
     contexts: tuple[
         RelationContext,
         ...,
-    ],
+    ]=(),
     results: tuple[
         FakeQueryResult,
         ...,
@@ -168,7 +164,7 @@ def _projector(
     relation_context_provider.contexts = contexts
 
     return (
-        TwwQuarantineEffectProjector(
+        projector_module(
             connection_factory=connection_factory,
             model_mapping=model_mapping,
             relation_context_provider=relation_context_provider,
