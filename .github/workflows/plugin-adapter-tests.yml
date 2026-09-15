@@ -71,7 +71,6 @@ jobs:
       DB_NAME: tww
       QGIS_TEST_VERSION: ${{ matrix.qgis_version }}
       COMPOSE_PROFILES: qgis
-      ILI_CACHE: /usr/src/.ilicache
       
     steps:
       - name: Checkout
