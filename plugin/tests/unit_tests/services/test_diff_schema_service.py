@@ -592,27 +592,6 @@ def test_change_creation_service_builds_default_live_relation_lookup(
     )
 
 
-def test_change_creation_service_requires_incremental_schema() -> None:
-    rights_context = SimpleNamespace(
-        provider_oid="ch000000pr000001",
-        dataowner_oid="ch000000do000001",
-    )
-
-    with pytest.raises(
-        ValueError,
-        match="incremental_import_schema is required",
-    ):
-        _ready_service().create_diff_job_from_quarantine(
-            job_id="job-1",
-            job_mode=DiffJobMode.CREATE,
-            source_model="DSS_2020_1_LV95",
-            rights_context=rights_context,
-            incremental_source_model=(
-                "Genereller_Entwaesserungsplan_AG"
-            ),
-            incremental_import_schema=None,
-        )
-
 def test_change_creation_service_imports_base_and_incremental_xtf(
     monkeypatch,
 ) -> None:
@@ -677,18 +656,23 @@ def test_change_creation_service_imports_base_and_incremental_xtf(
         job_id="job-1",
         job_mode=DiffJobMode.CREATE,
         xtf_file=xtf_file,
-        rights_context=rights_context,
         orgs_path=orgs_path,
-        incremental_xtf=incremental_xtf,
-        incremental_import_schema=None,
+        rights_context=rights_context,
         import_schema="xtf_import",
         live_schema="tww_od",
         metadata={
-            "correlation_id": "run-1",
-        },
+                "source_role": "base",
+                "source_xtf": str(
+                    xtf_file,
+                ),
+                "source_schema": "xtf_import",
+                "persist_job": False,
+            },
     )
 
     assert result is delegated_result
+
+    assert result.diff_schema_result is None
 
     assert (
         quarantine_runner
@@ -801,3 +785,43 @@ def test_change_creation_service_imports_base_and_incremental_xtf(
     assert delegated_arguments[
         "rights_context"
     ] is rights_context
+
+def test_change_creation_service_rejects_unpersisted_incremental_source(
+    service,
+    rights_context,
+) -> None:
+    with pytest.raises(
+        ValueError,
+        match="incremental source must finalize",
+    ):
+        service.create_diff_job_from_quarantine(
+            job_id="job-1",
+            job_mode=DiffJobMode.CREATE,
+            source_model="AG96",
+            rights_context=rights_context,
+            import_schema="incremental_schema",
+            metadata={
+                "source_role": "incremental",
+                "persist_job": False,
+            },
+        ) 
+
+def test_change_creation_service_requires_prepared_base_source(
+    service,
+    rights_context,
+) -> None:
+    with pytest.raises(
+        KeyError,
+        match="prepared",
+    ):
+        service.create_diff_job_from_quarantine(
+            job_id="missing-job",
+            job_mode=DiffJobMode.CREATE,
+            source_model="AG96",
+            rights_context=rights_context,
+            import_schema="incremental_schema",
+            metadata={
+                "source_role": "incremental",
+                "persist_job": True,
+            },
+        )

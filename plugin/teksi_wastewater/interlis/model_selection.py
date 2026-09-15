@@ -1,6 +1,7 @@
 from __future__ import annotations
+from typing import Iterable
 
-from collections.abc import Iterable
+
 from .config import DEFAULT_INTERLIS_LANGUAGE
 from .model_config import (
     interlis_models,

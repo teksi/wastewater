@@ -1,10 +1,10 @@
 from __future__ import annotations
 
+
 from collections import defaultdict
-from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field, replace
 from pathlib import Path
-from typing import Any
+from typing import Any, Mapping, Sequence
 
 from teksi_hooks.capabilities.canonical_object import (
     CanonicalGeometryCapability,
@@ -35,6 +35,7 @@ from teksi_hooks.models.persistence import (
 )
 from teksi_hooks.models.review import (
     ChangeCreationResult,
+    PreparedSource,
 )
 from teksi_hooks.models.validation import (
     Change,
@@ -73,20 +74,22 @@ class TwwChangeCreationService:
     """
     Prepare and persist a TWW diff review job from imported wastewater data.
 
-    Each service invocation processes exactly one XTF source:
+    Each invocation processes exactly one XTF source. A source has one of
+    two roles:
 
-    - a base source;
-    - or an incremental source.
+    - ``base``;
+    - ``incremental``.
 
-    A base source with ``persist_job=False`` is projected and staged as a
-    prepared workflow source. It is not written as a reviewable diff job.
+    A base source with ``persist_job=False`` is imported, validated,
+    projected and staged as a ``PreparedSource``. It is not persisted as a
+    reviewable diff job.
 
     A subsequent incremental source with the same job identifier retrieves
-    the staged base source, overlays its effects, builds the combined changes,
-    and persists one pending review job.
+    the prepared base source and overlays its effects. The combined changes
+    are classified and persisted as one pending review job.
 
-    A base-only workflow uses ``persist_job=True`` and is written directly as
-    a pending review job.
+    A base-only workflow uses ``persist_job=True`` and is persisted directly
+    as a pending review job.
 
     Accepted changes are applied to the live schema by a separate workflow.
     """
@@ -127,19 +130,19 @@ class TwwChangeCreationService:
         validation_log_path: Path | None = None,
         import_schema: str = config.IMPORT_SCHEMA,
         live_schema: str = config.TWW_OD_SCHEMA,
-        metadata: dict[str, Any] | None = None,
+        metadata: Mapping[str, Any] | None = None,
     ) -> ChangeCreationResult:
         """
         Import and process one XTF workflow source.
 
-        Workflow behavior is controlled through metadata:
+        Workflow behavior is controlled through metadata.
 
         ``source_role``
             Either ``base`` or ``incremental``.
 
         ``persist_job``
-            If false, stage the source as a prepared result. If true, write
-            the final combined result as a pending review job.
+            If false, stage the source as a prepared result. If true, persist
+            the final result as a pending review job.
         """
 
         self._ensure_ready_for_diff_job()
@@ -184,6 +187,10 @@ class TwwChangeCreationService:
             xtf_file=xtf_file,
             context=import_context,
             schema=import_schema,
+        )
+
+        created_models = tuple(
+            created_models,
         )
 
         self.quarantine_runner.validate_quarantine_or_raise(
@@ -235,14 +242,17 @@ class TwwChangeCreationService:
         created_models: Sequence[str] = (),
         import_schema: str = config.IMPORT_SCHEMA,
         live_schema: str = config.TWW_OD_SCHEMA,
-        metadata: dict[str, Any] | None = None,
+        metadata: Mapping[str, Any] | None = None,
     ) -> ChangeCreationResult:
         """
         Process one populated quarantine source.
 
         A non-persisting base invocation stages its projected effect document.
-        A persisting incremental invocation overlays its effects on the staged
-        base document and writes one combined pending review job.
+
+        A persisting incremental invocation overlays its effects on the
+        staged base document and writes one combined pending review job.
+
+        A persisting base invocation writes a pending review job directly.
         """
 
         self._ensure_ready_for_diff_job()
@@ -284,31 +294,40 @@ class TwwChangeCreationService:
             )
         )
 
+        created_models_tuple = tuple(
+            created_models,
+        )
+
         if source_role == "base":
             effect_document = source_document
 
             base_source_model = source_model
-            base_created_models = tuple(
-                created_models,
+
+            base_created_models = (
+                created_models_tuple
             )
+
             incremental_source_model = None
+
             incremental_created_models: tuple[
                 str,
                 ...,
             ] = ()
+
         else:
-            prepared = (
+            prepared_source = (
                 self.diff_schema_service
                 .prepared_source(
                     job_id=job_id,
                 )
             )
 
-            base_document = prepared.effect_document
-
             effect_document = (
                 self._merge_effect_documents(
-                    base_document=base_document,
+                    base_document=(
+                        prepared_source
+                        .effect_document
+                    ),
                     incremental_document=(
                         source_document
                     ),
@@ -316,19 +335,19 @@ class TwwChangeCreationService:
             )
 
             base_source_model = (
-                prepared.source_model
+                prepared_source.source_model
             )
 
             base_created_models = tuple(
-                prepared.created_models,
+                prepared_source.created_models,
             )
 
             incremental_source_model = (
                 source_model
             )
 
-            incremental_created_models = tuple(
-                created_models,
+            incremental_created_models = (
+                created_models_tuple
             )
 
             workflow_metadata.update(
@@ -346,27 +365,39 @@ class TwwChangeCreationService:
                         incremental_created_models,
                     ),
                     "base_source_metadata": dict(
-                        prepared.metadata,
+                        prepared_source.metadata,
                     ),
                 }
             )
 
         if not persist_job:
+            prepared_source = PreparedSource(
+                source_model=source_model,
+                created_models=(
+                    created_models_tuple
+                ),
+                effect_document=(
+                    effect_document
+                ),
+                metadata=dict(
+                    workflow_metadata,
+                ),
+            )
+
             self.diff_schema_service.prepare_source(
                 job_id=job_id,
-                source_model=source_model,
-                created_models=tuple(
-                    created_models,
-                ),
-                effect_document=effect_document,
-                metadata=workflow_metadata,
+                source=prepared_source,
             )
 
             return self._prepared_result(
                 job_id=job_id,
                 source_model=source_model,
-                created_models=created_models,
-                effect_document=effect_document,
+                created_models=(
+                    created_models_tuple
+                ),
+                effect_document=(
+                    effect_document
+                ),
                 rights_context=rights_context,
                 import_schema=import_schema,
                 live_schema=live_schema,
@@ -380,8 +411,12 @@ class TwwChangeCreationService:
             rights_context=rights_context,
             import_schema=import_schema,
             live_schema=live_schema,
-            base_source_model=base_source_model,
-            base_created_models=base_created_models,
+            base_source_model=(
+                base_source_model
+            ),
+            base_created_models=(
+                base_created_models
+            ),
             incremental_source_model=(
                 incremental_source_model
             ),
@@ -416,13 +451,17 @@ class TwwChangeCreationService:
 
         changes = self._build_changes(
             effect_document=effect_document,
-            relation_lookup=self._live_relation_lookup(
-                live_schema,
+            relation_lookup=(
+                self._live_relation_lookup(
+                    live_schema,
+                )
             ),
         )
 
         classified_changes = ChangeClassifier(
-            rights_evaluator=self.rights_evaluator,
+            rights_evaluator=(
+                self.rights_evaluator
+            ),
         ).classify(
             changes=changes,
             context=rights_context,
@@ -431,12 +470,12 @@ class TwwChangeCreationService:
             ),
         )
 
-        features_by_class = (
-            self._review_features(
-                classified_changes=classified_changes,
-                live_schema=live_schema,
-                import_schema=import_schema,
-            )
+        features_by_class = self._review_features(
+            classified_changes=(
+                classified_changes
+            ),
+            live_schema=live_schema,
+            import_schema=import_schema,
         )
 
         return ChangeCreationResult(
@@ -482,13 +521,17 @@ class TwwChangeCreationService:
 
         changes = self._build_changes(
             effect_document=effect_document,
-            relation_lookup=self._live_relation_lookup(
-                live_schema,
+            relation_lookup=(
+                self._live_relation_lookup(
+                    live_schema,
+                )
             ),
         )
 
         classified_changes = ChangeClassifier(
-            rights_evaluator=self.rights_evaluator,
+            rights_evaluator=(
+                self.rights_evaluator
+            ),
         ).classify(
             changes=changes,
             context=rights_context,
@@ -497,19 +540,21 @@ class TwwChangeCreationService:
             ),
         )
 
-        features_by_class = (
-            self._review_features(
-                classified_changes=classified_changes,
-                live_schema=live_schema,
-                import_schema=import_schema,
-            )
+        features_by_class = self._review_features(
+            classified_changes=(
+                classified_changes
+            ),
+            live_schema=live_schema,
+            import_schema=import_schema,
         )
 
         diff_schema_result = (
             self.diff_schema_service.write(
                 job_id=job_id,
                 job_mode=job_mode,
-                features_by_class=features_by_class,
+                features_by_class=(
+                    features_by_class
+                ),
                 metadata=dict(
                     metadata,
                 ),
@@ -646,7 +691,8 @@ class TwwChangeCreationService:
         }:
             raise ValueError(
                 "metadata['source_role'] must be either "
-                f"'base' or 'incremental', got {source_role!r}."
+                f"'base' or 'incremental', got "
+                f"{source_role!r}."
             )
 
         return source_role
@@ -681,7 +727,7 @@ class TwwChangeCreationService:
         persist_job: bool,
     ) -> None:
         """
-        Validate the supported prepared-to-pending workflow transitions.
+        Validate supported prepared-to-pending workflow transitions.
         """
 
         if (
@@ -689,8 +735,9 @@ class TwwChangeCreationService:
             and not persist_job
         ):
             raise ValueError(
-                "An incremental source must finalize the workflow. "
-                "Use metadata['persist_job']=True."
+                "An incremental source must finalize the "
+                "workflow. Use "
+                "metadata['persist_job']=True."
             )
 
     def _merge_effect_documents(
@@ -705,9 +752,9 @@ class TwwChangeCreationService:
         Update effects are keyed by canonical identity and attribute.
         Incremental updates replace matching base updates.
 
-        Existence constraints are keyed by canonical identity. An incremental
-        existence constraint replaces any base existence constraint for the
-        same canonical identity.
+        Existence constraints are keyed only by canonical identity. The last
+        constraint for an identity wins, even when its concrete effect type
+        differs from the previous constraint.
         """
 
         update_effects: dict[
@@ -733,7 +780,9 @@ class TwwChangeCreationService:
         def add_effect(
             effect: Effect,
         ) -> None:
-            identity_key = effect.identity.key()
+            identity_key = (
+                effect.identity.key()
+            )
 
             if isinstance(
                 effect,
@@ -822,9 +871,7 @@ class TwwChangeCreationService:
                 )
 
         return EffectDocument(
-            source=(
-                incremental_document.source
-            ),
+            source=incremental_document.source,
             effects=tuple(
                 merged_effects,
             ),

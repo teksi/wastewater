@@ -69,6 +69,10 @@ class TwwCanonicalModelAdapter:
         init=False,
         repr=False,
     )
+    automap_classes: Mapping[
+        str,
+        Any,
+    ] | None = None
 
     def canonical_model(
         self,
@@ -80,8 +84,7 @@ class TwwCanonicalModelAdapter:
         dictionary_attributes = self._dictionary_attributes()
         dictionary_values = self._dictionary_values()
 
-        model = ModelTwwOd()
-        automap_classes = model.classes()
+        automap_classes = self._automap_classes()
 
         reflected_classes = self._reflected_classes(
             automap_classes=automap_classes,
@@ -229,6 +232,17 @@ class TwwCanonicalModelAdapter:
                 )
             )
         )
+
+    def _automap_classes(
+        self,
+    ) -> Mapping[
+        str,
+        Any,
+    ]:
+        if self.automap_classes is not None:
+            return self.automap_classes
+
+        return ModelTwwOd().classes()
 
     def _reflected_classes(
         self,

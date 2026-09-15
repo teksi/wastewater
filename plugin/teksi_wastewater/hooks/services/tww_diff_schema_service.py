@@ -10,17 +10,21 @@ from collections.abc import Mapping, Sequence
 from teksi_hooks.models.review import (
     ReviewFeature,
     DiffSchemaWriteResult,
+    PreparedSource,
+)
+from teksi_hooks.models.persistence import (
+    DiffJobMode,
 )
 from teksi_hooks.capabilities.connection import (
     DatabaseConnectionFactory,
 )
-
-from teksi_hooks.models.persistence import (
-    DiffJobMode,
+from teksi_hooks.capabilities.review import (
+    SourcePreparer,
 )
 
+
 @dataclass(slots=True)
-class TwwDiffSchemaService:
+class TwwDiffSchemaService(SourcePreparer):
     """
     Plugin-side database writer for hook-side diff review state.
 
@@ -46,6 +50,15 @@ class TwwDiffSchemaService:
     connection_factory: DatabaseConnectionFactory
     schema: str = "tww_diff"
     srid: int = 2056
+
+    _prepared_sources: dict[
+        str,
+        PreparedSource,
+    ] = field(
+        default_factory=dict,
+        init=False,
+        repr=False,
+    )
 
     def write(
         self,

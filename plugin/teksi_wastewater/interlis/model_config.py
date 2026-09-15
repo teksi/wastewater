@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-from collections.abc import Iterable
 from dataclasses import dataclass, field
 from .config import DEFAULT_INTERLIS_LANGUAGE
-from typing import Callable
+from typing import Callable,Iterable
 
 from .interlis_model_mapping.model_base import ModelBase
 from .interlis_model_mapping.model_interlis_ag64 import ModelInterlisAG64
