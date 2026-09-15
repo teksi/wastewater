@@ -1137,12 +1137,11 @@ class InterlisImporterExporter:
             )
 
         try:
-            (
-                group,
-                language_model,
-                model,
-            ) = model_selection.model_selection_for_imported_models(
-                imported_models,
+            return (
+                model_selection
+                .model_selection_for_imported_models(
+                    imported_models,
+                )
             )
         except LookupError as exception:
             raise InterlisImporterExporterError(
@@ -1152,29 +1151,6 @@ class InterlisImporterExporter:
                 ),
                 None,
             ) from exception
-
-        created_models = tuple(
-            model.names or (),
-        )
-
-        if not created_models:
-            raise InterlisImporterExporterError(
-                "Import error",
-                (
-                    "No created model names are configured for "
-                    f"model group {group!r}. Found imported models: "
-                    f"{imported_models!r}."
-                ),
-                None,
-            )
-
-        return TwwInterlisModelSelection(
-            group=group,
-            language=language_model.lang,
-            imported_models=imported_models,
-            import_model=language_model.model,
-            created_models=created_models,
-        )
 
     def selection_models_for_imported_models(
         imported_models: str | Iterable[str],
