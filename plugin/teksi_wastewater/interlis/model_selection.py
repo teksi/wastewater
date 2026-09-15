@@ -6,6 +6,7 @@ from .config import DEFAULT_INTERLIS_LANGUAGE
 from .model_config import (
     interlis_models,
     TwwInterlisModelSelection,
+    TwwInterlisModelComponent,
     INTERLIS_INHERITANCE_TREE,
 )
 
@@ -76,15 +77,18 @@ def model_names_for_language(
         for group in selected_groups
     }
 
-
 def model_selection_for_imported_models(
     imported_models: str | Iterable[str],
 ) -> TwwInterlisModelSelection:
     """
     Resolve the authoritative model selection for imported INTERLIS models.
 
-    The imported models must resolve to exactly one configured semantic
-    model group and exactly one language-specific import model.
+    Imported model names may include both the primary model and inherited
+    dependency models. The most specific matching group is selected as the
+    primary group.
+
+    Selection components are returned in dependency-first order, with the
+    primary model component last.
     """
 
     if isinstance(
@@ -108,10 +112,11 @@ def model_selection_for_imported_models(
         (
             group,
             language_model,
-            model,
         )
-        for group, model in interlis_models.items()
-        for language_model in model.models
+        for group, model
+        in interlis_models.items()
+        for language_model
+        in model.models
         if (
             language_model.model
             in imported_model_names
@@ -126,66 +131,110 @@ def model_selection_for_imported_models(
 
     matched_groups = {
         group
-        for group, _language_model, _model
+        for group, _language_model
         in matches
     }
 
-    if len(
-        matched_groups,
-    ) != 1:
-        raise LookupError(
-            "Imported models resolve to multiple semantic "
-            f"model groups: {sorted(matched_groups)!r}."
-        )
+    inherited_matched_groups = {
+        inherited_group
+        for group in matched_groups
+        for inherited_group
+        in resolve_interlis_model_groups(
+            group,
+        )[:-1]
+    }
+
+    primary_groups = (
+        matched_groups
+        - inherited_matched_groups
+    )
 
     if len(
-        matches,
+        primary_groups,
+    ) != 1:
+        raise LookupError(
+            "Imported models do not resolve to exactly one "
+            "primary semantic model group. "
+            f"Matching groups: {sorted(matched_groups)!r}. "
+            f"Primary candidates: {sorted(primary_groups)!r}."
+        )
+
+    primary_group = next(
+        iter(
+            primary_groups,
+        )
+    )
+
+    primary_language_models = tuple(
+        language_model
+        for group, language_model
+        in matches
+        if group == primary_group
+    )
+
+    if len(
+        primary_language_models,
     ) != 1:
         matched_models = tuple(
             sorted(
                 language_model.model
-                for (
-                    _group,
-                    language_model,
-                    _model,
-                ) in matches
+                for language_model
+                in primary_language_models
             )
         )
 
         raise LookupError(
             "Imported models do not resolve to exactly one "
-            "configured model and language. Matching models: "
-            f"{matched_models!r}."
+            "configured primary model and language. "
+            f"Matching primary models: {matched_models!r}."
         )
 
-    (
-        group,
-        language_model,
-        model,
-    ) = matches[0]
-
-    created_models = tuple(
-        model.names or (),
+    primary_language_model = (
+        primary_language_models[
+            0
+        ]
     )
 
-    if not created_models:
-        raise LookupError(
-            "No created model names are configured for "
-            f"semantic model group {group!r}."
+    language = (
+        primary_language_model.lang
+    )
+
+    resolved_groups = (
+        resolve_interlis_model_groups(
+            primary_group,
         )
+    )
+
+    components = tuple(
+        TwwInterlisModelComponent(
+            group=group,
+            language=language,
+            model_name=(
+                interlis_models[
+                    group
+                ].lang_name(
+                    lang=language,
+                )
+            ),
+            configuration=(
+                interlis_models[
+                    group
+                ]
+            ),
+        )
+        for group in resolved_groups
+    )
 
     return TwwInterlisModelSelection(
-        group=group,
-        language=language_model.lang,
+        group=primary_group,
+        language=language,
         imported_models=tuple(
             sorted(
                 imported_model_names,
             )
         ),
-        import_model=language_model.model,
-        created_models=created_models,
+        components=components,
     )
-
 def groups_for_models(
     imported_models: str | Iterable[str],
 ) -> set:

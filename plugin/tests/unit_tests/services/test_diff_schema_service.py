@@ -1,118 +1,30 @@
 from __future__ import annotations
 
 from datetime import datetime
-from pathlib import Path
-from types import SimpleNamespace
-from typing import Any
 from unittest.mock import Mock
 
 import pytest
 
-from teksi_hooks.models.canonical_object import (
-    CanonicalClassMetadata,
-    CanonicalModelMetadata,
-    CanonicalObjectIdentity,
-)
 from teksi_hooks.models.effects import (
     EffectDocument,
-    EnforceExistsEffect,
-    EnforceNotExistsEffect,
-    UpdateAttributeEffect,
 )
 from teksi_hooks.models.review import (
-    ReviewFeature,
+    PreparedSource,
 )
 
-from teksi_wastewater.hooks.services import (
-    tww_change_creation_service as service_module,
-)
-from teksi_wastewater.hooks.services.tww_change_creation_service import (
-    TwwChangeCreationService,
-)
 from teksi_wastewater.hooks.services.tww_diff_schema_service import (
-    DiffJobMode,
-    DiffSchemaWriteResult,
+    TwwDiffSchemaService,
 )
 
 
-@pytest.fixture
-def service() -> TwwChangeCreationService:
-    return _ready_service()
-
-
-@pytest.fixture
-def rights_context():
-    return SimpleNamespace(
-        provider_oid="ch080qwzPR000017",
-        dataowner_oid="ch080qwzPR000018",
-    )
-
-def _identity(
-    object_id: str,
+def _effect_document(
     *,
-    class_id: str = "wastewater_structure",
-) -> CanonicalObjectIdentity:
-    return CanonicalObjectIdentity(
-        class_id=class_id,
-        attributes={
-            "obj_id": object_id,
-        },
-    )
-
-
-def _effect(
-    effect_type,
-    **attributes: Any,
-):
-    effect = effect_type.__new__(
-        effect_type,
-    )
-
-    for name, value in attributes.items():
-        object.__setattr__(
-            effect,
-            name,
-            value,
-        )
-
-    return effect
-
-
-def _update_effect(
-    *,
-    identity: CanonicalObjectIdentity,
-    attribute_id: str,
-    value: Any,
-) -> UpdateAttributeEffect:
-    return _effect(
-        UpdateAttributeEffect,
-        identity=identity,
-        attribute_id=attribute_id,
-        value=value,
-    )
-
-
-def _constraint_effect(
-    effect_type,
-    *,
-    identity: CanonicalObjectIdentity,
-):
-    return _effect(
-        effect_type,
-        identity=identity,
-    )
-
-
-def _document(
-    *effects,
-    source: Any = None,
+    source: str = "base",
     version: int = 1,
 ) -> EffectDocument:
     return EffectDocument(
         source=source,
-        effects=tuple(
-            effects,
-        ),
+        effects=(),
         created_at=datetime(
             2026,
             1,
@@ -125,956 +37,300 @@ def _document(
     )
 
 
-def _canonical_metadata() -> CanonicalModelMetadata:
-    return CanonicalModelMetadata(
-        classes={},
-        attributes={},
-        values={},
+def _prepared_source(
+    *,
+    source_model: str = "DSS_2020_1_LV95",
+    schema: str = "xtf_import",
+    version: int = 1,
+) -> PreparedSource:
+    return PreparedSource(
+        source_model=source_model,
+        created_models=(
+            source_model,
+        ),
+        effect_document=_effect_document(
+            source=schema,
+            version=version,
+        ),
+        metadata={
+            "source_role": "base",
+            "source_schema": schema,
+            "persist_job": False,
+        },
     )
 
 
-def _ready_service(
-    **overrides,
-) -> TwwChangeCreationService:
-    values = {
-        "connection_factory": Mock(),
-        "quarantine_runner": Mock(),
-        "canonical_metadata": _canonical_metadata(),
-        "effect_projector": Mock(),
-        "rights_evaluator": Mock(),
-        "object_provider_factory": Mock(),
-        "diff_schema_service": Mock(),
-    }
-
-    values.update(
-        overrides,
-    )
-
-    return TwwChangeCreationService(
-        **values,
-    )
-
-
-def test_change_creation_service_requires_collaborators() -> None:
-    service = TwwChangeCreationService(
+def _service() -> TwwDiffSchemaService:
+    return TwwDiffSchemaService(
         connection_factory=Mock(),
-        quarantine_runner=Mock(),
-        canonical_metadata=_canonical_metadata(),
-        effect_projector=None,
-        rights_evaluator=None,
-        object_provider_factory=None,
-        diff_schema_service=Mock(),
     )
 
-    with pytest.raises(
-        RuntimeError,
-        match=(
-            "effect_projector, rights_evaluator, "
-            "object_provider_factory"
-        ),
-    ):
-        service._ensure_ready_for_diff_job()
 
-
-@pytest.mark.parametrize(
-    "job_mode",
-    (
-        DiffJobMode.CREATE,
-        DiffJobMode.REPLACE,
-    ),
-)
-def test_change_creation_service_accepts_supported_job_modes(
-    job_mode: DiffJobMode,
+def test_diff_schema_service_prepares_and_returns_source(
 ) -> None:
-    _ready_service()._assert_supported_job_mode(
-        job_mode,
+    service = _service()
+
+    source = _prepared_source()
+
+    service.prepare_source(
+        job_id="job-1",
+        source=source,
     )
 
-
-def test_change_creation_service_rejects_refresh_mode() -> None:
-    with pytest.raises(
-        NotImplementedError,
-        match="refresh is not implemented",
-    ):
-        _ready_service()._assert_supported_job_mode(
-            DiffJobMode.REFRESH,
-        )
-
-
-def test_change_creation_service_builds_default_import_context() -> None:
-    service = _ready_service()
-
-    orgs_path = Path(
-        "/tmp/organisations.xtf",
+    result = service.prepared_source(
+        job_id="job-1",
     )
 
-    context = service._import_context(
-        context=None,
-        schema="xtf_import",
-        orgs_path=orgs_path,
-    )
+    assert result is source
 
-    assert context.schema == "xtf_import"
-    assert context.import_orgs is True
-    assert context.orgs_path == orgs_path
 
-
-def test_change_creation_service_builds_context_without_organisations() -> None:
-    context = _ready_service()._import_context(
-        context=None,
-        schema="xtf_agxx",
-        orgs_path=None,
-    )
-
-    assert context.schema == "xtf_agxx"
-    assert context.import_orgs is False
-    assert context.orgs_path is None
-
-
-def test_change_creation_service_replaces_import_context_values() -> None:
-    service = _ready_service()
-
-    original = service._import_context(
-        context=None,
-        schema="original_schema",
-        orgs_path=Path(
-            "/tmp/original-organisations.xtf",
-        ),
-    )
-
-    updated = service._import_context(
-        context=original,
-        schema="incremental_schema",
-        orgs_path=None,
-    )
-
-    assert updated is not original
-    assert updated.schema == "incremental_schema"
-    assert updated.import_orgs is False
-    assert updated.orgs_path is None
-
-    assert original.schema == "original_schema"
-    assert original.import_orgs is True
-
-
-def test_change_creation_service_uses_explicit_validation_log_path() -> None:
-    explicit_path = Path(
-        "/tmp/explicit.log",
-    )
-
-    assert _ready_service()._validation_log_path(
-        validation_log_path=explicit_path,
-        xtf_file=Path(
-            "/tmp/delivery.xtf",
-        ),
-        name="validate_import_quarantine",
-    ) == explicit_path
-
-
-def test_change_creation_service_derives_validation_log_path() -> None:
-    assert _ready_service()._validation_log_path(
-        validation_log_path=None,
-        xtf_file=Path(
-            "/tmp/delivery.xtf",
-        ),
-        name="validate_import_quarantine",
-    ) == Path(
-        "/tmp/delivery_validate_import_quarantine.log",
-    )
-
-
-def test_change_creation_service_incremental_updates_override_base_updates() -> None:
-    identity = _identity(
-        "ch000000ws000001",
-    )
-
-    base_status = _update_effect(
-        identity=identity,
-        attribute_id="status",
-        value="operational",
-    )
-
-    base_identifier = _update_effect(
-        identity=identity,
-        attribute_id="identifier",
-        value="Base identifier",
-    )
-
-    incremental_status = _update_effect(
-        identity=identity,
-        attribute_id="status",
-        value="inoperative",
-    )
-
-    incremental_remark = _update_effect(
-        identity=identity,
-        attribute_id="remark",
-        value="Incremental remark",
-    )
-
-    merged = _ready_service()._merge_effect_documents(
-        base_document=_document(
-            base_status,
-            base_identifier,
-            version=1,
-        ),
-        incremental_document=_document(
-            incremental_status,
-            incremental_remark,
-            version=2,
-        ),
-    )
-
-    assert merged.effects == (
-        incremental_status,
-        base_identifier,
-        incremental_remark,
-    )
-
-    assert merged.version == 2
-
-
-def test_change_creation_service_keeps_updates_for_different_objects() -> None:
-    first_status = _update_effect(
-        identity=_identity(
-            "ch000000ws000001",
-        ),
-        attribute_id="status",
-        value="operational",
-    )
-
-    second_status = _update_effect(
-        identity=_identity(
-            "ch000000ws000002",
-        ),
-        attribute_id="status",
-        value="inoperative",
-    )
-
-    merged = _ready_service()._merge_effect_documents(
-        base_document=_document(
-            first_status,
-        ),
-        incremental_document=_document(
-            second_status,
-        ),
-    )
-
-    assert merged.effects == (
-        first_status,
-        second_status,
-    )
-
-
-def test_change_creation_service_merges_constraint_effects_by_type() -> None:
-    identity = _identity(
-        "ch000000ws000001",
-    )
-
-    base_exists = _constraint_effect(
-        EnforceExistsEffect,
-        identity=identity,
-    )
-
-    incremental_exists = _constraint_effect(
-        EnforceExistsEffect,
-        identity=identity,
-    )
-
-    incremental_not_exists = _constraint_effect(
-        EnforceNotExistsEffect,
-        identity=identity,
-    )
-
-    merged = _ready_service()._merge_effect_documents(
-        base_document=_document(
-            base_exists,
-        ),
-        incremental_document=_document(
-            incremental_exists,
-            incremental_not_exists,
-        ),
-    )
-
-    assert merged.effects == (
-        incremental_exists,
-        incremental_not_exists,
-    )
-
-
-def test_change_creation_service_rejects_unsupported_effect_type() -> None:
-    unsupported_effect = SimpleNamespace(
-        identity=_identity(
-            "ch000000ws000001",
-        ),
-    )
-
-    with pytest.raises(
-        TypeError,
-        match="Unsupported effect type",
-    ):
-        _ready_service()._merge_effect_documents(
-            base_document=_document(
-                unsupported_effect,
-            ),
-            incremental_document=_document(),
-        )
-
-
-def test_change_creation_service_builds_one_change_per_identity() -> None:
-    identity = _identity(
-        "ch000000ws000001",
-    )
-
-    status_effect = _update_effect(
-        identity=identity,
-        attribute_id="status",
-        value="operational",
-    )
-
-    identifier_effect = _update_effect(
-        identity=identity,
-        attribute_id="identifier",
-        value="Updated identifier",
-    )
-
-    constraint_effect = _constraint_effect(
-        EnforceExistsEffect,
-        identity=identity,
-    )
-
-    current_object = object()
-    built_change = object()
-
-    relation_lookup = Mock()
-    relation_lookup.current_object.return_value = current_object
-
-    change_builder = Mock()
-    change_builder.build.return_value = built_change
-
-    changes = _ready_service(
-        change_builder=change_builder,
-    )._build_changes(
-        effect_document=_document(
-            status_effect,
-            identifier_effect,
-            constraint_effect,
-        ),
-        relation_lookup=relation_lookup,
-    )
-
-    assert changes == (
-        built_change,
-    )
-
-    relation_lookup.current_object.assert_called_once_with(
-        identity,
-    )
-
-    change_builder.build.assert_called_once_with(
-        current_object=current_object,
-        effects=(
-            status_effect,
-            identifier_effect,
-        ),
-    )
-
-
-def test_change_creation_service_builds_separate_changes_per_identity() -> None:
-    first_effect = _update_effect(
-        identity=_identity(
-            "ch000000ws000001",
-        ),
-        attribute_id="status",
-        value="operational",
-    )
-
-    second_effect = _update_effect(
-        identity=_identity(
-            "ch000000ws000002",
-        ),
-        attribute_id="status",
-        value="inoperative",
-    )
-
-    relation_lookup = Mock()
-
-    relation_lookup.current_object.side_effect = (
-        object(),
-        object(),
-    )
-
-    first_change = object()
-    second_change = object()
-
-    change_builder = Mock()
-
-    change_builder.build.side_effect = (
-        first_change,
-        second_change,
-    )
-
-    changes = _ready_service(
-        change_builder=change_builder,
-    )._build_changes(
-        effect_document=_document(
-            first_effect,
-            second_effect,
-        ),
-        relation_lookup=relation_lookup,
-    )
-
-    assert changes == (
-        first_change,
-        second_change,
-    )
-
-
-def test_change_creation_service_ignores_constraint_only_documents() -> None:
-    identity = _identity(
-        "ch000000ws000001",
-    )
-
-    relation_lookup = Mock()
-    change_builder = Mock()
-
-    changes = _ready_service(
-        change_builder=change_builder,
-    )._build_changes(
-        effect_document=_document(
-            _constraint_effect(
-                EnforceExistsEffect,
-                identity=identity,
-            ),
-            _constraint_effect(
-                EnforceNotExistsEffect,
-                identity=identity,
-            ),
-        ),
-        relation_lookup=relation_lookup,
-    )
-
-    assert changes == ()
-
-    relation_lookup.current_object.assert_not_called()
-    change_builder.build.assert_not_called()
-
-
-def test_change_creation_service_uses_configured_live_relation_lookup() -> None:
-    relation_lookup = Mock()
-
-    service = _ready_service(
-        live_relation_lookup=relation_lookup,
-    )
-
-    assert service._live_relation_lookup(
-        "custom_live_schema",
-    ) is relation_lookup
-
-
-def test_change_creation_service_builds_default_live_relation_lookup(
-    monkeypatch,
+def test_diff_schema_service_preserves_prepared_source_data(
 ) -> None:
-    relation_lookup = object()
+    service = _service()
 
-    constructor = Mock(
-        return_value=relation_lookup,
+    effect_document = _effect_document(
+        source="xtf_import",
+        version=2,
     )
 
-    monkeypatch.setattr(
-        service_module,
-        "TwwRelationLookupAdapter",
-        constructor,
-    )
-
-    connection_factory = Mock()
-
-    service = _ready_service(
-        connection_factory=connection_factory,
-        live_relation_lookup=None,
-    )
-
-    assert service._live_relation_lookup(
-        "custom_live_schema",
-    ) is relation_lookup
-
-    constructor.assert_called_once_with(
-        connection_factory=connection_factory,
-        schema="custom_live_schema",
-    )
-
-
-def test_change_creation_service_imports_base_and_incremental_xtf(
-    monkeypatch,
-) -> None:
-    quarantine_runner = Mock()
-
-    quarantine_runner.import_xtf_to_quarantine.side_effect = (
-        (
+    source = PreparedSource(
+        source_model="DSS_2020_1_LV95",
+        created_models=(
+            "SIA405_Base_Abwasser_1_LV95",
+            "SIA405_ABWASSER_2020_1_LV95",
             "DSS_2020_1_LV95",
-            (
-                "DSS_2020_1_LV95",
-            ),
         ),
-        (
-            "Genereller_Entwaesserungsplan_AG",
-            (
-                "Genereller_Entwaesserungsplan_AG",
-            ),
-        ),
+        effect_document=effect_document,
+        metadata={
+            "source_role": "base",
+            "source_schema": "xtf_import",
+            "model_group": "dss",
+            "model_language": "de",
+            "persist_job": False,
+        },
     )
 
-    base_service = _ready_service(
-        quarantine_runner=quarantine_runner,
+    service.prepare_source(
+        job_id="job-1",
+        source=source,
     )
 
-    incremental_service = _ready_service(
-        quarantine_runner=quarantine_runner,
+    result = service.prepared_source(
+        job_id="job-1",
     )
 
-    delegated_results = (
-        SimpleNamespace(
-            diff_schema_result=None,
-        ),
-        SimpleNamespace(
-            diff_schema_result=object(),
-        ),
-    )
+    assert result.source_model == "DSS_2020_1_LV95"
 
-    delegated_arguments: list[
-        dict[
-            str,
-            Any,
-        ]
-    ] = []
-
-    def fake_create_diff_job_from_quarantine(
-        self,
-        **kwargs,
-    ):
-        delegated_arguments.append(
-            kwargs,
-        )
-
-        return delegated_results[
-            len(
-                delegated_arguments,
-            )
-            - 1
-        ]
-
-    monkeypatch.setattr(
-        TwwChangeCreationService,
-        "create_diff_job_from_quarantine",
-        fake_create_diff_job_from_quarantine,
-    )
-
-    rights_context = SimpleNamespace(
-        provider_oid="ch080qwzPR000017",
-        dataowner_oid="ch080qwzPR000018",
-    )
-
-    base_xtf = Path(
-        "/tmp/base.xtf",
-    )
-
-    incremental_xtf = Path(
-        "/tmp/incremental.xtf",
-    )
-
-    orgs_path = Path(
-        "/tmp/organisations.xtf",
-    )
-
-    base_result = (
-        base_service
-        .create_diff_job_from_xtf(
-            job_id="job-1",
-            job_mode=DiffJobMode.CREATE,
-            xtf_file=base_xtf,
-            orgs_path=orgs_path,
-            rights_context=rights_context,
-            import_schema="xtf_import",
-            live_schema="tww_od",
-            metadata={
-                "source_role": "base",
-                "source_xtf": str(
-                    base_xtf,
-                ),
-                "source_schema": (
-                    "xtf_import"
-                ),
-                "persist_job": False,
-            },
-        )
-    )
-
-    incremental_result = (
-        incremental_service
-        .create_diff_job_from_xtf(
-            job_id="job-1",
-            job_mode=DiffJobMode.CREATE,
-            xtf_file=incremental_xtf,
-            orgs_path=None,
-            rights_context=rights_context,
-            import_schema=(
-                "xtf_import_incremental"
-            ),
-            live_schema="tww_od",
-            metadata={
-                "source_role": "incremental",
-                "source_xtf": str(
-                    incremental_xtf,
-                ),
-                "source_schema": (
-                    "xtf_import_incremental"
-                ),
-                "persist_job": True,
-            },
-        )
-    )
-
-    assert (
-        base_result
-        is delegated_results[
-            0
-        ]
-    )
-
-    assert base_result.diff_schema_result is None
-
-    assert (
-        incremental_result
-        is delegated_results[
-            1
-        ]
-    )
-
-    assert (
-        incremental_result
-        .diff_schema_result
-        is not None
-    )
-
-    assert (
-        quarantine_runner
-        .import_xtf_to_quarantine
-        .call_count
-        == 2
-    )
-
-    base_import_call = (
-        quarantine_runner
-        .import_xtf_to_quarantine
-        .call_args_list[
-            0
-        ]
-    )
-
-    assert (
-        base_import_call.kwargs[
-            "xtf_file"
-        ]
-        == base_xtf
-    )
-
-    assert (
-        base_import_call.kwargs[
-            "schema"
-        ]
-        == "xtf_import"
-    )
-
-    assert (
-        base_import_call.kwargs[
-            "context"
-        ].schema
-        == "xtf_import"
-    )
-
-    assert (
-        base_import_call.kwargs[
-            "context"
-        ].import_orgs
-        is True
-    )
-
-    assert (
-        base_import_call.kwargs[
-            "context"
-        ].orgs_path
-        == orgs_path
-    )
-
-    incremental_import_call = (
-        quarantine_runner
-        .import_xtf_to_quarantine
-        .call_args_list[
-            1
-        ]
-    )
-
-    assert (
-        incremental_import_call.kwargs[
-            "xtf_file"
-        ]
-        == incremental_xtf
-    )
-
-    assert (
-        incremental_import_call.kwargs[
-            "schema"
-        ]
-        == "xtf_import_incremental"
-    )
-
-    assert (
-        incremental_import_call.kwargs[
-            "context"
-        ].schema
-        == "xtf_import_incremental"
-    )
-
-    assert (
-        incremental_import_call.kwargs[
-            "context"
-        ].import_orgs
-        is False
-    )
-
-    assert (
-        incremental_import_call.kwargs[
-            "context"
-        ].orgs_path
-        is None
-    )
-
-    assert (
-        quarantine_runner
-        .validate_quarantine_or_raise
-        .call_count
-        == 2
-    )
-
-    base_validation_call = (
-        quarantine_runner
-        .validate_quarantine_or_raise
-        .call_args_list[
-            0
-        ]
-    )
-
-    assert (
-        base_validation_call.kwargs[
-            "model_names"
-        ]
-        == (
-            "DSS_2020_1_LV95",
-        )
-    )
-
-    assert (
-        base_validation_call.kwargs[
-            "schema"
-        ]
-        == "xtf_import"
-    )
-
-    assert (
-        base_validation_call.kwargs[
-            "log_path"
-        ]
-        == Path(
-            "/tmp/"
-            "base_validate_import_quarantine.log"
-        )
-    )
-
-    incremental_validation_call = (
-        quarantine_runner
-        .validate_quarantine_or_raise
-        .call_args_list[
-            1
-        ]
-    )
-
-    assert (
-        incremental_validation_call.kwargs[
-            "model_names"
-        ]
-        == (
-            "Genereller_Entwaesserungsplan_AG",
-        )
-    )
-
-    assert (
-        incremental_validation_call.kwargs[
-            "schema"
-        ]
-        == "xtf_import_incremental"
-    )
-
-    assert (
-        incremental_validation_call.kwargs[
-            "log_path"
-        ]
-        == Path(
-            "/tmp/"
-            "incremental_validate_import_quarantine.log"
-        )
-    )
-
-    assert len(
-        delegated_arguments,
-    ) == 2
-
-    base_arguments = delegated_arguments[
-        0
-    ]
-
-    assert base_arguments[
-        "job_id"
-    ] == "job-1"
-
-    assert base_arguments[
-        "job_mode"
-    ] == DiffJobMode.CREATE
-
-    assert base_arguments[
-        "source_model"
-    ] == "DSS_2020_1_LV95"
-
-    assert base_arguments[
-        "created_models"
-    ] == (
+    assert result.created_models == (
+        "SIA405_Base_Abwasser_1_LV95",
+        "SIA405_ABWASSER_2020_1_LV95",
         "DSS_2020_1_LV95",
     )
 
-    assert base_arguments[
-        "import_schema"
-    ] == "xtf_import"
+    assert result.effect_document is effect_document
 
-    assert base_arguments[
-        "live_schema"
-    ] == "tww_od"
+    assert result.metadata == {
+        "source_role": "base",
+        "source_schema": "xtf_import",
+        "model_group": "dss",
+        "model_language": "de",
+        "persist_job": False,
+    }
 
-    assert base_arguments[
-        "rights_context"
-    ] is rights_context
 
-    assert base_arguments[
-        "metadata"
-    ][
-        "source_role"
-    ] == "base"
+def test_diff_schema_service_replaces_source_for_same_job(
+) -> None:
+    service = _service()
 
-    assert base_arguments[
-        "metadata"
-    ][
-        "persist_job"
-    ] is False
-
-    assert base_arguments[
-        "metadata"
-    ][
-        "orgs_path"
-    ] == str(
-        orgs_path,
+    first_source = _prepared_source(
+        source_model="DSS_2020_1_LV95",
+        schema="first_schema",
+        version=1,
     )
 
-    incremental_arguments = (
-        delegated_arguments[
-            1
-        ]
+    replacement_source = _prepared_source(
+        source_model="SIA405_ABWASSER_2020_1_LV95",
+        schema="replacement_schema",
+        version=2,
     )
 
-    assert incremental_arguments[
-        "job_id"
-    ] == "job-1"
-
-    assert incremental_arguments[
-        "job_mode"
-    ] == DiffJobMode.CREATE
-
-    assert incremental_arguments[
-        "source_model"
-    ] == (
-        "Genereller_Entwaesserungsplan_AG"
+    service.prepare_source(
+        job_id="job-1",
+        source=first_source,
     )
 
-    assert incremental_arguments[
-        "created_models"
-    ] == (
-        "Genereller_Entwaesserungsplan_AG",
+    service.prepare_source(
+        job_id="job-1",
+        source=replacement_source,
     )
 
-    assert incremental_arguments[
-        "import_schema"
-    ] == "xtf_import_incremental"
+    result = service.prepared_source(
+        job_id="job-1",
+    )
 
-    assert incremental_arguments[
-        "live_schema"
-    ] == "tww_od"
+    assert result is replacement_source
+    assert result is not first_source
 
-    assert incremental_arguments[
-        "rights_context"
-    ] is rights_context
 
-    assert incremental_arguments[
-        "metadata"
-    ][
-        "source_role"
-    ] == "incremental"
+def test_diff_schema_service_keeps_sources_separate_by_job_id(
+) -> None:
+    service = _service()
 
-    assert incremental_arguments[
-        "metadata"
-    ][
-        "persist_job"
-    ] is True
+    first_source = _prepared_source(
+        source_model="DSS_2020_1_LV95",
+        schema="first_schema",
+    )
+
+    second_source = _prepared_source(
+        source_model="Genereller_Entwaesserungsplan_AG",
+        schema="second_schema",
+    )
+
+    service.prepare_source(
+        job_id="job-1",
+        source=first_source,
+    )
+
+    service.prepare_source(
+        job_id="job-2",
+        source=second_source,
+    )
 
     assert (
-        "orgs_path"
-        not in incremental_arguments[
-            "metadata"
-        ]
+        service.prepared_source(
+            job_id="job-1",
+        )
+        is first_source
     )
 
-def test_change_creation_service_rejects_unpersisted_incremental_source(
-    service,
-    rights_context,
-) -> None:
-    with pytest.raises(
-        ValueError,
-        match="incremental source must finalize",
-    ):
-        service.create_diff_job_from_quarantine(
-            job_id="job-1",
-            job_mode=DiffJobMode.CREATE,
-            source_model="AG96",
-            rights_context=rights_context,
-            import_schema="incremental_schema",
-            metadata={
-                "source_role": "incremental",
-                "persist_job": False,
-            },
-        ) 
+    assert (
+        service.prepared_source(
+            job_id="job-2",
+        )
+        is second_source
+    )
 
-def test_change_creation_service_requires_prepared_base_source(
-    service,
-    rights_context,
+
+def test_diff_schema_service_raises_for_missing_prepared_source(
 ) -> None:
+    service = _service()
+
     with pytest.raises(
         KeyError,
-        match="prepared",
+        match=(
+            "No prepared source exists for diff "
+            "workflow 'missing-job'"
+        ),
     ):
-        service.create_diff_job_from_quarantine(
+        service.prepared_source(
             job_id="missing-job",
-            job_mode=DiffJobMode.CREATE,
-            source_model="AG96",
-            rights_context=rights_context,
-            import_schema="incremental_schema",
-            metadata={
-                "source_role": "incremental",
-                "persist_job": True,
-            },
         )
+
+
+def test_diff_schema_service_clears_prepared_source(
+) -> None:
+    service = _service()
+
+    source = _prepared_source()
+
+    service.prepare_source(
+        job_id="job-1",
+        source=source,
+    )
+
+    service.clear_prepared_source(
+        job_id="job-1",
+    )
+
+    with pytest.raises(
+        KeyError,
+        match="No prepared source exists",
+    ):
+        service.prepared_source(
+            job_id="job-1",
+        )
+
+
+def test_diff_schema_service_clear_is_idempotent(
+) -> None:
+    service = _service()
+
+    service.clear_prepared_source(
+        job_id="missing-job",
+    )
+
+    service.clear_prepared_source(
+        job_id="missing-job",
+    )
+
+
+def test_diff_schema_service_clears_only_selected_job(
+) -> None:
+    service = _service()
+
+    first_source = _prepared_source(
+        schema="first_schema",
+    )
+
+    second_source = _prepared_source(
+        source_model="Genereller_Entwaesserungsplan_AG",
+        schema="second_schema",
+    )
+
+    service.prepare_source(
+        job_id="job-1",
+        source=first_source,
+    )
+
+    service.prepare_source(
+        job_id="job-2",
+        source=second_source,
+    )
+
+    service.clear_prepared_source(
+        job_id="job-1",
+    )
+
+    with pytest.raises(
+        KeyError,
+        match="No prepared source exists",
+    ):
+        service.prepared_source(
+            job_id="job-1",
+        )
+
+    assert (
+        service.prepared_source(
+            job_id="job-2",
+        )
+        is second_source
+    )
+
+
+def test_diff_schema_service_staging_does_not_use_database(
+) -> None:
+    connection_factory = Mock()
+
+    service = TwwDiffSchemaService(
+        connection_factory=connection_factory,
+    )
+
+    source = _prepared_source()
+
+    service.prepare_source(
+        job_id="job-1",
+        source=source,
+    )
+
+    assert (
+        service.prepared_source(
+            job_id="job-1",
+        )
+        is source
+    )
+
+    service.clear_prepared_source(
+        job_id="job-1",
+    )
+
+    connection_factory.connection.assert_not_called()

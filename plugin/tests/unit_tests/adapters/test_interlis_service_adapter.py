@@ -59,15 +59,36 @@ def _model_selection() -> TwwInterlisModelSelection:
             ),
         ),
     )
-
 class FakeInterlisImporterExporter:
     def __init__(
         self,
+        *,
+        model_selection: TwwInterlisModelSelection | None = None,
     ) -> None:
         self.schema = None
-        self.import_calls = []
-        self.export_calls = []
-        self.identify_import_model_calls = []
+
+        self.model_selection = model_selection
+
+        self.import_calls: list[
+            dict[
+                str,
+                Any,
+            ]
+        ] = []
+
+        self.export_calls: list[
+            dict[
+                str,
+                Any,
+            ]
+        ] = []
+
+        self.identify_import_model_calls: list[
+            dict[
+                str,
+                Any,
+            ]
+        ] = []
 
     def interlis_import(
         self,
