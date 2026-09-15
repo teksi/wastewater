@@ -9,7 +9,8 @@ from typing import Iterable
 
 import requests
 
-from ..utils.database_utils import DatabaseUtils, TWWIntegrityChecker
+from ..utils.database_utils import DatabaseUtils
+from ..utils.integrity_checker import TWWIntegrityChecker
 from . import config,model_selection
 from .interlis_model_mapping.interlis_exporter_to_intermediate_schema import (
     InterlisExporterToIntermediateSchema,
