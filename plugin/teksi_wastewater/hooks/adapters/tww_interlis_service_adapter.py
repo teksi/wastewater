@@ -242,11 +242,15 @@ class TwwInterlisServiceAdapter(InterlisService):
         """
         Return the import model and created model names.
 
-        This method implements the generic INTERLIS service contract.
-        Consumers needing the semantic group, language or ORM configuration
+        Consumers requiring the semantic group, language or ORM configuration
         should use ``identify_model()``.
         """
 
-        return self.identify_model(
+        selection = self.identify_model(
             xtf_file,
+        )
+
+        return (
+            selection.import_model,
+            selection.created_models,
         )

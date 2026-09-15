@@ -64,16 +64,15 @@ class FakeInterlisImporterExporter:
     def __init__(
         self,
         *,
-        model_selection: TwwInterlisModelSelection,
+        model_selection: TwwInterlisModelSelection | None = None,
     ) -> None:
         self.model_selection = model_selection
 
-        self.identify_import_model_calls: list[
-            dict[
-                str,
-                object,
-            ]
-        ] = []
+        self.import_calls = []
+        self.export_calls = []
+        self.identify_import_model_calls = []
+
+        self.schema = None
 
     def identify_import_model(
         self,
@@ -86,8 +85,12 @@ class FakeInterlisImporterExporter:
             }
         )
 
-        return self.model_selection
+        if self.model_selection is None:
+            raise RuntimeError(
+                "No model selection is configured for this fake."
+            )
 
+        return self.model_selection
     
 def _adapter(
 ) -> tuple[

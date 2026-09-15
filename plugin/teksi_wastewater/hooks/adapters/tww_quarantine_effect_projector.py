@@ -62,7 +62,7 @@ class TwwQuarantineEffectProjector:
 
     connection_factory: DatabaseConnectionFactory
 
-    relation_context_provider = RelationContextProvider
+    relation_context_provider: RelationContextProvider
 
     def effect_document_from_quarantine(
         self,

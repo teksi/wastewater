@@ -624,22 +624,44 @@ def test_change_creation_service_imports_base_and_incremental_xtf(
         ),
     )
 
-    service = _ready_service(
+    base_service = _ready_service(
         quarantine_runner=quarantine_runner,
     )
 
-    delegated_result = object()
-    delegated_arguments = {}
+    incremental_service = _ready_service(
+        quarantine_runner=quarantine_runner,
+    )
+
+    delegated_results = (
+        SimpleNamespace(
+            diff_schema_result=None,
+        ),
+        SimpleNamespace(
+            diff_schema_result=object(),
+        ),
+    )
+
+    delegated_arguments: list[
+        dict[
+            str,
+            Any,
+        ]
+    ] = []
 
     def fake_create_diff_job_from_quarantine(
         self,
         **kwargs,
     ):
-        delegated_arguments.update(
+        delegated_arguments.append(
             kwargs,
         )
 
-        return delegated_result
+        return delegated_results[
+            len(
+                delegated_arguments,
+            )
+            - 1
+        ]
 
     monkeypatch.setattr(
         TwwChangeCreationService,
@@ -652,39 +674,87 @@ def test_change_creation_service_imports_base_and_incremental_xtf(
         dataowner_oid="ch080qwzPR000018",
     )
 
-    xtf_file = Path(
+    base_xtf = Path(
         "/tmp/base.xtf",
-    )
-
-    orgs_path = Path(
-        "/tmp/organisations.xtf",
     )
 
     incremental_xtf = Path(
         "/tmp/incremental.xtf",
     )
 
-    result = service.create_diff_job_from_xtf(
-        job_id="job-1",
-        job_mode=DiffJobMode.CREATE,
-        xtf_file=xtf_file,
-        orgs_path=orgs_path,
-        rights_context=rights_context,
-        import_schema="xtf_import",
-        live_schema="tww_od",
-        metadata={
-                "source_role": "base",
-                "source_xtf": str(
-                    xtf_file,
-                ),
-                "source_schema": "xtf_import",
-                "persist_job": False,
-            },
+    orgs_path = Path(
+        "/tmp/organisations.xtf",
     )
 
-    assert result is delegated_result
+    base_result = (
+        base_service
+        .create_diff_job_from_xtf(
+            job_id="job-1",
+            job_mode=DiffJobMode.CREATE,
+            xtf_file=base_xtf,
+            orgs_path=orgs_path,
+            rights_context=rights_context,
+            import_schema="xtf_import",
+            live_schema="tww_od",
+            metadata={
+                "source_role": "base",
+                "source_xtf": str(
+                    base_xtf,
+                ),
+                "source_schema": (
+                    "xtf_import"
+                ),
+                "persist_job": False,
+            },
+        )
+    )
 
-    assert result.diff_schema_result is None
+    incremental_result = (
+        incremental_service
+        .create_diff_job_from_xtf(
+            job_id="job-1",
+            job_mode=DiffJobMode.CREATE,
+            xtf_file=incremental_xtf,
+            orgs_path=None,
+            rights_context=rights_context,
+            import_schema=(
+                "xtf_import_incremental"
+            ),
+            live_schema="tww_od",
+            metadata={
+                "source_role": "incremental",
+                "source_xtf": str(
+                    incremental_xtf,
+                ),
+                "source_schema": (
+                    "xtf_import_incremental"
+                ),
+                "persist_job": True,
+            },
+        )
+    )
+
+    assert (
+        base_result
+        is delegated_results[
+            0
+        ]
+    )
+
+    assert base_result.diff_schema_result is None
+
+    assert (
+        incremental_result
+        is delegated_results[
+            1
+        ]
+    )
+
+    assert (
+        incremental_result
+        .diff_schema_result
+        is not None
+    )
 
     assert (
         quarantine_runner
@@ -693,57 +763,91 @@ def test_change_creation_service_imports_base_and_incremental_xtf(
         == 2
     )
 
-    base_call = (
+    base_import_call = (
         quarantine_runner
         .import_xtf_to_quarantine
-        .call_args_list[0]
+        .call_args_list[
+            0
+        ]
     )
 
-    assert base_call.kwargs[
-        "xtf_file"
-    ] == xtf_file
+    assert (
+        base_import_call.kwargs[
+            "xtf_file"
+        ]
+        == base_xtf
+    )
 
-    assert base_call.kwargs[
-        "schema"
-    ] == "xtf_import"
+    assert (
+        base_import_call.kwargs[
+            "schema"
+        ]
+        == "xtf_import"
+    )
 
-    assert base_call.kwargs[
-        "context"
-    ].schema == "xtf_import"
+    assert (
+        base_import_call.kwargs[
+            "context"
+        ].schema
+        == "xtf_import"
+    )
 
-    assert base_call.kwargs[
-        "context"
-    ].import_orgs is True
+    assert (
+        base_import_call.kwargs[
+            "context"
+        ].import_orgs
+        is True
+    )
 
-    assert base_call.kwargs[
-        "context"
-    ].orgs_path == orgs_path
+    assert (
+        base_import_call.kwargs[
+            "context"
+        ].orgs_path
+        == orgs_path
+    )
 
-    incremental_call = (
+    incremental_import_call = (
         quarantine_runner
         .import_xtf_to_quarantine
-        .call_args_list[1]
+        .call_args_list[
+            1
+        ]
     )
 
-    assert incremental_call.kwargs[
-        "xtf_file"
-    ] == incremental_xtf
+    assert (
+        incremental_import_call.kwargs[
+            "xtf_file"
+        ]
+        == incremental_xtf
+    )
 
-    assert incremental_call.kwargs[
-        "schema"
-    ] == "xtf_import_incremental"
+    assert (
+        incremental_import_call.kwargs[
+            "schema"
+        ]
+        == "xtf_import_incremental"
+    )
 
-    assert incremental_call.kwargs[
-        "context"
-    ].schema == "xtf_import_incremental"
+    assert (
+        incremental_import_call.kwargs[
+            "context"
+        ].schema
+        == "xtf_import_incremental"
+    )
 
-    assert incremental_call.kwargs[
-        "context"
-    ].import_orgs is False
+    assert (
+        incremental_import_call.kwargs[
+            "context"
+        ].import_orgs
+        is False
+    )
 
-    assert incremental_call.kwargs[
-        "context"
-    ].orgs_path is None
+    assert (
+        incremental_import_call.kwargs[
+            "context"
+        ].orgs_path
+        is None
+    )
 
     assert (
         quarantine_runner
@@ -752,51 +856,188 @@ def test_change_creation_service_imports_base_and_incremental_xtf(
         == 2
     )
 
-    assert delegated_arguments[
+    base_validation_call = (
+        quarantine_runner
+        .validate_quarantine_or_raise
+        .call_args_list[
+            0
+        ]
+    )
+
+    assert (
+        base_validation_call.kwargs[
+            "model_names"
+        ]
+        == (
+            "DSS_2020_1_LV95",
+        )
+    )
+
+    assert (
+        base_validation_call.kwargs[
+            "schema"
+        ]
+        == "xtf_import"
+    )
+
+    assert (
+        base_validation_call.kwargs[
+            "log_path"
+        ]
+        == Path(
+            "/tmp/"
+            "base_validate_import_quarantine.log"
+        )
+    )
+
+    incremental_validation_call = (
+        quarantine_runner
+        .validate_quarantine_or_raise
+        .call_args_list[
+            1
+        ]
+    )
+
+    assert (
+        incremental_validation_call.kwargs[
+            "model_names"
+        ]
+        == (
+            "Genereller_Entwaesserungsplan_AG",
+        )
+    )
+
+    assert (
+        incremental_validation_call.kwargs[
+            "schema"
+        ]
+        == "xtf_import_incremental"
+    )
+
+    assert (
+        incremental_validation_call.kwargs[
+            "log_path"
+        ]
+        == Path(
+            "/tmp/"
+            "incremental_validate_import_quarantine.log"
+        )
+    )
+
+    assert len(
+        delegated_arguments,
+    ) == 2
+
+    base_arguments = delegated_arguments[
+        0
+    ]
+
+    assert base_arguments[
         "job_id"
     ] == "job-1"
 
-    assert delegated_arguments[
+    assert base_arguments[
         "job_mode"
     ] == DiffJobMode.CREATE
 
-    assert delegated_arguments[
+    assert base_arguments[
         "source_model"
     ] == "DSS_2020_1_LV95"
 
-    assert delegated_arguments[
+    assert base_arguments[
         "created_models"
     ] == (
         "DSS_2020_1_LV95",
     )
 
-    assert delegated_arguments[
-        "incremental_source_model"
+    assert base_arguments[
+        "import_schema"
+    ] == "xtf_import"
+
+    assert base_arguments[
+        "live_schema"
+    ] == "tww_od"
+
+    assert base_arguments[
+        "rights_context"
+    ] is rights_context
+
+    assert base_arguments[
+        "metadata"
+    ][
+        "source_role"
+    ] == "base"
+
+    assert base_arguments[
+        "metadata"
+    ][
+        "persist_job"
+    ] is False
+
+    assert base_arguments[
+        "metadata"
+    ][
+        "orgs_path"
+    ] == str(
+        orgs_path,
+    )
+
+    incremental_arguments = (
+        delegated_arguments[
+            1
+        ]
+    )
+
+    assert incremental_arguments[
+        "job_id"
+    ] == "job-1"
+
+    assert incremental_arguments[
+        "job_mode"
+    ] == DiffJobMode.CREATE
+
+    assert incremental_arguments[
+        "source_model"
     ] == (
         "Genereller_Entwaesserungsplan_AG"
     )
 
-    assert delegated_arguments[
-        "incremental_created_models"
+    assert incremental_arguments[
+        "created_models"
     ] == (
         "Genereller_Entwaesserungsplan_AG",
     )
 
-    assert delegated_arguments[
-        "incremental_import_schema"
+    assert incremental_arguments[
+        "import_schema"
     ] == "xtf_import_incremental"
 
-    assert delegated_arguments[
-        "import_schema"
-    ] == "xtf_import"
-
-    assert delegated_arguments[
+    assert incremental_arguments[
         "live_schema"
     ] == "tww_od"
 
-    assert delegated_arguments[
+    assert incremental_arguments[
         "rights_context"
     ] is rights_context
+
+    assert incremental_arguments[
+        "metadata"
+    ][
+        "source_role"
+    ] == "incremental"
+
+    assert incremental_arguments[
+        "metadata"
+    ][
+        "persist_job"
+    ] is True
+
+    assert (
+        "orgs_path"
+        not in incremental_arguments[
+            "metadata"
+        ]
+    )
 
 def test_change_creation_service_rejects_unpersisted_incremental_source(
     service,
