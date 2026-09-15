@@ -851,16 +851,46 @@ def test_change_creation_service_rejects_unpersisted_incremental_source(
         .assert_not_called()
     )
 
-
 def test_change_creation_service_requires_prepared_base_source(
     rights_context,
 ) -> None:
-    diff_schema_service = Mock()
+    class MissingPreparedSourceDiffSchemaService:
+        def prepare_source(
+            self,
+            *,
+            job_id,
+            source,
+        ) -> None:
+            raise AssertionError(
+                "prepare_source must not be called."
+            )
 
-    diff_schema_service.prepared_source.side_effect = KeyError(
-        "No prepared source exists for diff workflow "
-        "'missing-job'."
-    )
+        def prepared_source(
+            self,
+            *,
+            job_id,
+        ):
+            raise KeyError(
+                "No prepared source exists for "
+                f"diff workflow {job_id!r}."
+            )
+
+        def clear_prepared_source(
+            self,
+            *,
+            job_id,
+        ) -> None:
+            raise AssertionError(
+                "clear_prepared_source must not be called."
+            )
+
+        def write(
+            self,
+            **kwargs,
+        ):
+            raise AssertionError(
+                "write must not be called."
+            )
 
     effect_projector = Mock()
 
@@ -868,6 +898,10 @@ def test_change_creation_service_requires_prepared_base_source(
         _document(
             source="incremental",
         )
+    )
+
+    diff_schema_service = (
+        MissingPreparedSourceDiffSchemaService()
     )
 
     service = _ready_service(
@@ -903,31 +937,8 @@ def test_change_creation_service_requires_prepared_base_source(
         )
     )
 
-    (
-        diff_schema_service
-        .prepared_source
-        .assert_called_once_with(
-            job_id="missing-job",
-        )
-    )
 
-    (
-        diff_schema_service
-        .prepare_source
-        .assert_not_called()
-    )
-
-    (
-        diff_schema_service
-        .write
-        .assert_not_called()
-    )
-
-    (
-        diff_schema_service
-        .clear_prepared_source
-        .assert_not_called()
-    )
+ 
 
 
 def test_change_creation_service_rejects_unknown_source_role(
