@@ -122,9 +122,19 @@ class TwwReviewPersistenceService:
             job_id=job_id,
         )
 
+        validation_finding_row_count = (
+            self.diff_schema_service
+            .validation_finding_row_count(
+                job_id=job_id,
+            )
+        )
+
         self._assert_review_counts(
             job_id=job_id,
             counts=counts,
+            validation_finding_row_count=(
+                validation_finding_row_count
+            ),
         )
 
         import_schema = self._required_metadata_value(
@@ -153,6 +163,7 @@ class TwwReviewPersistenceService:
         )
 
         backup_path: Path | None = None
+        preparation_started = False
 
         try:
             backup_path = self.backup_service.create_backup(
@@ -167,6 +178,8 @@ class TwwReviewPersistenceService:
                     backup_path,
                 ),
             )
+
+            preparation_started = True
 
             self.quarantine_preparer.prepare(
                 job_id=job_id,
@@ -196,10 +209,18 @@ class TwwReviewPersistenceService:
             )
 
         except Exception as exception:
-            if backup_path is not None:
+            if (
+                backup_path is not None
+                and preparation_started
+            ):
                 self._restore_backup(
                     job_id=job_id,
                     import_schema=import_schema,
+                    backup_path=backup_path,
+                )
+            elif backup_path is not None:
+                self._delete_unused_backup(
+                    job_id=job_id,
                     backup_path=backup_path,
                 )
 
@@ -232,6 +253,61 @@ class TwwReviewPersistenceService:
             source_model=source_model,
             interlis_persistence=persistence_result,
         )
+
+    def validation_finding_row_count(
+        self,
+        *,
+        job_id: str,
+    ) -> int:
+        """
+        Return the number of review rows containing validation findings.
+
+        Permission findings are excluded because they are handled by destructive
+        quarantine preparation before the quarantine-to-live import.
+        """
+
+        with self.connection_factory.connection(
+            autocommit=True,
+        ) as connection:
+            cursor = connection.cursor()
+
+            job_db_id = self._job_db_id(
+                cursor=cursor,
+                job_id=job_id,
+            )
+
+            rejected_count = 0
+
+            for table_name in self._review_table_names(
+                cursor=cursor,
+            ):
+                cursor.execute(
+                    f"""
+                    SELECT count(*)
+                    FROM {self._table(table_name)}
+                    WHERE job_id = %s
+                    AND jsonb_array_length(
+                        validation_findings
+                    ) > 0;
+                    """,
+                    (
+                        job_db_id,
+                    ),
+                )
+
+                row = cursor.fetchone()
+
+                if row is None:
+                    raise RuntimeError(
+                        "Could not determine validation-finding row "
+                        f"count for {self.schema}.{table_name}."
+                    )
+
+                rejected_count += int(
+                    row[0],
+                )
+
+        return rejected_count
 
     def _assert_application_eligibility(
         self,
@@ -266,22 +342,23 @@ class TwwReviewPersistenceService:
         *,
         job_id: str,
         counts: DiffJobCounts,
+        validation_finding_row_count: int,
     ) -> None:
         """
         Validate the persisted review-row set.
 
-        Rejected rows represent changes that cannot be prepared safely for
-        persistence. Permission-restricted attributes that can be neutralized
-        in quarantine must not be included in rejected_count.
+        Validation findings block persistence. Permission findings do not block
+        persistence because the quarantine preparer neutralizes unpermitted
+        operations and values before import.
         """
 
-        if counts.rejected_count:
+        if validation_finding_row_count:
             raise DiffJobEligibilityError(
                 job_id=job_id,
                 reason=(
-                    f"{counts.rejected_count} of "
+                    f"{validation_finding_row_count} of "
                     f"{counts.total_count} review rows contain "
-                    "blocking findings."
+                    "blocking validation findings."
                 ),
             )
 

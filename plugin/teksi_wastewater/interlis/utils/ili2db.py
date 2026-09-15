@@ -79,7 +79,7 @@ class InterlisTools:
     def validate_xtf_data(self, xtf_file, log_path):
         logger.info("VALIDATING XTF DATA...")
         execute_subprocess(
-            f'"{self.java_executable_path}" -jar "{config.ILIVALIDATOR}" --model_dir https://vsa.ch/models/;%ITF_DIR;http://models.interlis.ch/;%JAR_DIR/ilimodels --log "{log_path}" "{xtf_file}"'
+            f'"{self.java_executable_path}" -jar "{config.ILIVALIDATOR}" --log "{log_path}" "{xtf_file}"'
         )
 
     def import_xtf_data(self, schema, xtf_file, log_path, srid=2056):

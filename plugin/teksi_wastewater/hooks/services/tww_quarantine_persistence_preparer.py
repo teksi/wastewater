@@ -91,6 +91,31 @@ class TwwQuarantinePersistencePreparer:
     ) -> None:
         """
         Apply persisted permission decisions to quarantine.
+        """
+
+        try:
+            self._prepare(
+                job_id=job_id,
+                import_schema=import_schema,
+            )
+
+            self.quarantine_session.commit()
+
+        except Exception:
+            self.quarantine_session.rollback()
+            raise
+
+        finally:
+            self.quarantine_session.close()
+
+    def _prepare(
+        self,
+        *,
+        job_id: str,
+        import_schema: str,
+    ) -> None:
+        """
+        Apply persisted permission decisions to quarantine.
 
         The caller must create and register a quarantine backup before calling
         this method.
