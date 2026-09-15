@@ -5,7 +5,7 @@ from dataclasses import asdict, dataclass, field, is_dataclass
 from datetime import date, datetime
 from enum import Enum
 import json
-from typing import Any
+from typing import Any, Protocol
 
 from teksi_hooks.capabilities.connection import (
     DatabaseConnectionFactory,
@@ -23,10 +23,10 @@ from teksi_hooks.models.review import (
     ReviewFeature,
 )
 
-
 from teksi_wastewater.hooks.exceptions import (
     DiffJobEligibilityError,
     DiffJobNotFoundError,
+    DiffJobPersistenceError,
     DiffJobStateError,
     DiffJobTransitionError,
     DiffSchemaContractError,
@@ -56,14 +56,95 @@ class DiffJobCounts:
         Return the number of non-rejected review rows.
         """
 
-        return (
-            self.total_count
-            - self.rejected_count
-        )
+        return self.total_count - self.rejected_count
 
 
-@dataclass(slots=True)
-class TwwDiffSchemaService(SourcePreparer):
+@dataclass(
+    slots=True,
+    frozen=True,
+)
+class TwwInterlisPersistenceResult:
+    """
+    Result of importing one prepared quarantine schema into live data.
+    """
+
+    import_schema: str
+    live_schema: str
+    source_model: str
+    committed: bool
+
+
+class TwwInterlisPersistenceAdapter(
+    Protocol,
+):
+    """
+    Persist one prepared quarantine schema through the existing importer.
+    """
+
+    def persist_quarantine(
+        self,
+        *,
+        import_schema: str,
+        live_schema: str,
+        source_model: str,
+    ) -> TwwInterlisPersistenceResult:
+        """
+        Import prepared quarantine data and commit the live write session.
+        """
+
+        ...
+
+
+class TwwQuarantinePreparer(
+    Protocol,
+):
+    """
+    Prepare quarantine data for persistence.
+
+    Implementations apply stored review decisions to the quarantine schema.
+    This includes removing or nulling values that are not authorized for
+    persistence while retaining findings in tww_diff.
+    """
+
+    def prepare(
+        self,
+        *,
+        job_id: str,
+        import_schema: str,
+    ) -> None:
+        """
+        Prepare one quarantine schema for import into live data.
+        """
+
+        ...
+
+
+@dataclass(
+    slots=True,
+    frozen=True,
+)
+class TwwJobPersistenceResult:
+    """
+    Result of applying one accepted tww_diff review job.
+    """
+
+    job_id: str
+    previous_status: str
+    job_status: str
+    review_feature_count: int
+    rejected_feature_count: int
+    import_schema: str
+    live_schema: str
+    source_model: str
+    interlis_persistence: TwwInterlisPersistenceResult
+
+
+@dataclass(
+    slots=True,
+)
+class TwwDiffSchemaService(
+    SourcePreparer,
+):
     """
     Plugin-side database adapter for tww_diff review state.
 
@@ -78,15 +159,8 @@ class TwwDiffSchemaService(SourcePreparer):
     - normalize geometries;
     - create GeoPackages;
     - build QGIS layers;
+    - prepare quarantine values;
     - apply changes to the live schema.
-
-    Expected database contract:
-
-    - tww_diff.metadata exists;
-    - one table per canonical class exists in tww_diff;
-    - class rows reference metadata.id through job_id;
-    - is_rejected is generated from permission_findings and
-      validation_findings.
     """
 
     connection_factory: DatabaseConnectionFactory
@@ -104,9 +178,7 @@ class TwwDiffSchemaService(SourcePreparer):
 
     _allowed_status_transitions: Mapping[
         str,
-        frozenset[
-            str,
-        ],
+        frozenset[str],
     ] = field(
         default_factory=lambda: {
             "preparing": frozenset(
@@ -161,9 +233,7 @@ class TwwDiffSchemaService(SourcePreparer):
         job_mode: DiffJobMode = DiffJobMode.CREATE,
         features_by_class: Mapping[
             str,
-            Sequence[
-                ReviewFeature,
-            ],
+            Sequence[ReviewFeature],
         ],
         metadata: Mapping[
             str,
@@ -208,10 +278,7 @@ class TwwDiffSchemaService(SourcePreparer):
 
             row_count = 0
 
-            for (
-                class_id,
-                features,
-            ) in features_by_class.items():
+            for class_id, features in features_by_class.items():
                 table_columns = self._table_columns(
                     cursor=cursor,
                     table_name=class_id,
@@ -249,19 +316,6 @@ class TwwDiffSchemaService(SourcePreparer):
     ) -> DiffReviewJob | None:
         """
         Return one persisted diff review job.
-
-        Parameters
-        ----------
-        job_id:
-            Stable external job identifier.
-
-        include_features:
-            Whether the class-specific review rows should be loaded.
-
-        Returns
-        -------
-        DiffReviewJob | None
-            The persisted review job or None if it does not exist.
         """
 
         with self.connection_factory.connection(
@@ -279,26 +333,20 @@ class TwwDiffSchemaService(SourcePreparer):
 
             features_by_class: dict[
                 str,
-                list[
-                    ReviewFeature,
-                ],
+                list[ReviewFeature],
             ] = {}
 
             if include_features:
-                features_by_class = (
-                    self._review_features_by_class(
-                        cursor=cursor,
-                        job_db_id=job_row["id"],
-                    )
+                features_by_class = self._review_features_by_class(
+                    cursor=cursor,
+                    job_db_id=job_row["id"],
                 )
 
         return DiffReviewJob(
             job_db_id=job_row["id"],
             job_id=job_row["job_id"],
             job_status=job_row["job_status"],
-            validation_success=job_row[
-                "validation_success"
-            ],
+            validation_success=job_row["validation_success"],
             metadata=self._merged_job_metadata(
                 row=job_row,
             ),
@@ -333,9 +381,7 @@ class TwwDiffSchemaService(SourcePreparer):
         job_id: str,
     ) -> dict[
         str,
-        list[
-            ReviewFeature,
-        ],
+        list[ReviewFeature],
     ]:
         """
         Return review features grouped by canonical class identifier.
@@ -347,13 +393,8 @@ class TwwDiffSchemaService(SourcePreparer):
         )
 
         return {
-            class_id: list(
-                features,
-            )
-            for (
-                class_id,
-                features,
-            ) in job.features_by_class.items()
+            class_id: list(features)
+            for class_id, features in job.features_by_class.items()
         }
 
     def job_counts(
@@ -375,17 +416,15 @@ class TwwDiffSchemaService(SourcePreparer):
                 job_id=job_id,
             )
 
-            table_names = self._review_table_names(
-                cursor=cursor,
-            )
-
             total_count = 0
             rejected_count = 0
             created_count = 0
             altered_count = 0
             deleted_count = 0
 
-            for table_name in table_names:
+            for table_name in self._review_table_names(
+                cursor=cursor,
+            ):
                 cursor.execute(
                     f"""
                     SELECT
@@ -413,26 +452,20 @@ class TwwDiffSchemaService(SourcePreparer):
                 row = cursor.fetchone()
 
                 if row is None:
-                    raise RuntimeError(
-                        "Could not determine review-row counts for "
-                        f"{self.schema}.{table_name}."
+                    raise DiffSchemaContractError(
+                        table_name=(
+                            f"{self.schema}.{table_name}"
+                        ),
+                        message=(
+                            "Could not determine review-row counts."
+                        ),
                     )
 
-                total_count += int(
-                    row[0],
-                )
-                rejected_count += int(
-                    row[1],
-                )
-                created_count += int(
-                    row[2],
-                )
-                altered_count += int(
-                    row[3],
-                )
-                deleted_count += int(
-                    row[4],
-                )
+                total_count += int(row[0])
+                rejected_count += int(row[1])
+                created_count += int(row[2])
+                altered_count += int(row[3])
+                deleted_count += int(row[4])
 
         return DiffJobCounts(
             total_count=total_count,
@@ -461,7 +494,7 @@ class TwwDiffSchemaService(SourcePreparer):
         job_id: str,
     ) -> int:
         """
-        Return the number of automatically rejected review rows.
+        Return the number of blocking review rows.
         """
 
         return self.job_counts(
@@ -505,8 +538,8 @@ class TwwDiffSchemaService(SourcePreparer):
             raise DiffJobEligibilityError(
                 job_id=job_id,
                 reason=(
-                    f"{rejected_count} review rows contain blocking "
-                    "permission or validation findings."
+                    f"{rejected_count} review rows contain "
+                    "blocking findings."
                 ),
             )
 
@@ -525,9 +558,6 @@ class TwwDiffSchemaService(SourcePreparer):
     ) -> None:
         """
         Atomically transition one review job to a new lifecycle state.
-
-        The update succeeds only if the current status equals
-        ``expected_status``.
         """
 
         self._assert_supported_status_transition(
@@ -555,45 +585,41 @@ class TwwDiffSchemaService(SourcePreparer):
             "job_status = %s",
             "updated_at = now()",
         ]
-        parameters: list[
-            Any,
-        ] = [
+        parameters: list[Any] = [
             new_status,
         ]
 
         if new_status == "accepted":
-            assignments.append(
-                "accepted_at = now()"
-            )
-            assignments.append(
-                "failure = '{}'::jsonb"
+            assignments.extend(
+                [
+                    "accepted_at = now()",
+                    "failure = '{}'::jsonb",
+                ]
             )
 
         elif new_status == "applying":
-            assignments.append(
-                "application_started_at = now()"
-            )
-            assignments.append(
-                "application_finished_at = NULL"
-            )
-            assignments.append(
-                "failure = '{}'::jsonb"
+            assignments.extend(
+                [
+                    "application_started_at = now()",
+                    "application_finished_at = NULL",
+                    "failure = '{}'::jsonb",
+                ]
             )
 
         elif new_status == "applied":
-            assignments.append(
-                "application_finished_at = now()"
-            )
-            assignments.append(
-                "failure = '{}'::jsonb"
+            assignments.extend(
+                [
+                    "application_finished_at = now()",
+                    "failure = '{}'::jsonb",
+                ]
             )
 
         elif new_status == "failed":
-            assignments.append(
-                "application_finished_at = now()"
-            )
-            assignments.append(
-                "failure = %s::jsonb"
+            assignments.extend(
+                [
+                    "application_finished_at = now()",
+                    "failure = %s::jsonb",
+                ]
             )
             parameters.append(
                 self._json_dumps(
@@ -622,9 +648,7 @@ class TwwDiffSchemaService(SourcePreparer):
                   AND job_status = %s
                 RETURNING id;
                 """,
-                tuple(
-                    parameters,
-                ),
+                tuple(parameters),
             )
 
             row = cursor.fetchone()
@@ -680,8 +704,6 @@ class TwwDiffSchemaService(SourcePreparer):
     ) -> None:
         """
         Acquire one accepted job for persistence.
-
-        The conditional transition prevents concurrent application attempts.
         """
 
         self.transition_job_status(
@@ -715,7 +737,7 @@ class TwwDiffSchemaService(SourcePreparer):
         message: str,
     ) -> None:
         """
-        Mark one preparing, accepted or applying job as failed.
+        Mark one active review job as failed.
         """
 
         self.transition_job_status(
@@ -745,6 +767,100 @@ class TwwDiffSchemaService(SourcePreparer):
             new_status="archived",
         )
 
+    def set_backup_path(
+        self,
+        *,
+        job_id: str,
+        expected_status: str,
+        backup_path: str | None,
+    ) -> None:
+        """
+        Store or clear the optional quarantine backup path.
+
+        The diff schema records backup metadata only. Backup creation,
+        restoration and deletion are outside this service.
+        """
+
+        with self.connection_factory.connection(
+            autocommit=False,
+        ) as connection:
+            cursor = connection.cursor()
+
+            cursor.execute(
+                f"""
+                UPDATE {self._table("metadata")}
+                SET
+                    backup_path = %s,
+                    updated_at = now()
+                WHERE job_id = %s
+                  AND job_status = %s
+                RETURNING id;
+                """,
+                (
+                    backup_path,
+                    job_id,
+                    expected_status,
+                ),
+            )
+
+            row = cursor.fetchone()
+
+            if row is None:
+                self._raise_expected_status_error(
+                    cursor=cursor,
+                    job_id=job_id,
+                    expected_status=expected_status,
+                )
+
+            connection.commit()
+
+    def clear_backup_path(
+        self,
+        *,
+        job_id: str,
+        expected_status: str,
+    ) -> None:
+        """
+        Clear the optional quarantine backup path.
+        """
+
+        self.set_backup_path(
+            job_id=job_id,
+            expected_status=expected_status,
+            backup_path=None,
+        )
+
+    def _raise_expected_status_error(
+        self,
+        *,
+        cursor,
+        job_id: str,
+        expected_status: str,
+    ) -> None:
+        cursor.execute(
+            f"""
+            SELECT job_status
+            FROM {self._table("metadata")}
+            WHERE job_id = %s;
+            """,
+            (
+                job_id,
+            ),
+        )
+
+        row = cursor.fetchone()
+
+        if row is None:
+            raise DiffJobNotFoundError(
+                job_id=job_id,
+            )
+
+        raise DiffJobStateError(
+            job_id=job_id,
+            expected_status=expected_status,
+            actual_status=str(row[0]),
+        )
+
     def _raise_transition_error(
         self,
         *,
@@ -772,10 +888,10 @@ class TwwDiffSchemaService(SourcePreparer):
             )
 
         raise DiffJobTransitionError(
-                job_id=job_id,
-                expected_status=expected_status,
-                new_status=new_status,
-                actual_status=str(row[0]),
+            job_id=job_id,
+            expected_status=expected_status,
+            new_status=new_status,
+            actual_status=str(row[0]),
         )
 
     def _assert_supported_status_transition(
@@ -784,10 +900,8 @@ class TwwDiffSchemaService(SourcePreparer):
         expected_status: str,
         new_status: str,
     ) -> None:
-        allowed_targets = (
-            self._allowed_status_transitions.get(
-                expected_status,
-            )
+        allowed_targets = self._allowed_status_transitions.get(
+            expected_status,
         )
 
         if allowed_targets is None:
@@ -827,6 +941,7 @@ class TwwDiffSchemaService(SourcePreparer):
                 source_file,
                 import_schema,
                 live_schema,
+                backup_path,
                 metadata,
                 failure
             FROM {self._table("metadata")}
@@ -891,6 +1006,9 @@ class TwwDiffSchemaService(SourcePreparer):
                 "live_schema": row.get(
                     "live_schema",
                 ),
+                "backup_path": row.get(
+                    "backup_path",
+                ),
                 "failure": self._json_object(
                     row.get(
                         "failure",
@@ -909,15 +1027,11 @@ class TwwDiffSchemaService(SourcePreparer):
         job_db_id: int,
     ) -> dict[
         str,
-        list[
-            ReviewFeature,
-        ],
+        list[ReviewFeature],
     ]:
         features_by_class: dict[
             str,
-            list[
-                ReviewFeature,
-            ],
+            list[ReviewFeature],
         ] = {}
 
         for table_name in self._review_table_names(
@@ -930,9 +1044,7 @@ class TwwDiffSchemaService(SourcePreparer):
             )
 
             if features:
-                features_by_class[
-                    table_name
-                ] = features
+                features_by_class[table_name] = features
 
         return features_by_class
 
@@ -942,9 +1054,7 @@ class TwwDiffSchemaService(SourcePreparer):
         cursor,
         table_name: str,
         job_db_id: int,
-    ) -> list[
-        ReviewFeature,
-    ]:
+    ) -> list:
         column_types = self._table_column_types(
             cursor=cursor,
             table_name=table_name,
@@ -952,9 +1062,7 @@ class TwwDiffSchemaService(SourcePreparer):
 
         self._assert_required_columns(
             table_name=table_name,
-            table_columns=set(
-                column_types,
-            ),
+            table_columns=set(column_types),
         )
 
         cursor.execute(
@@ -1050,24 +1158,17 @@ class TwwDiffSchemaService(SourcePreparer):
 
         reserved_columns = self._reserved_feature_columns()
 
-        for (
-            column_name,
-            value,
-        ) in row.items():
+        for column_name, value in row.items():
             if column_name in reserved_columns:
                 continue
 
             if column_types.get(
                 column_name,
             ) == "geometry":
-                geometries[
-                    column_name
-                ] = value
+                geometries[column_name] = value
                 continue
 
-            attributes[
-                column_name
-            ] = value
+            attributes[column_name] = value
 
         return ReviewFeature(
             class_id=class_id,
@@ -1109,9 +1210,7 @@ class TwwDiffSchemaService(SourcePreparer):
         )
 
         return tuple(
-            str(
-                row[0],
-            )
+            str(row[0])
             for row in cursor.fetchall()
         )
 
@@ -1139,9 +1238,7 @@ class TwwDiffSchemaService(SourcePreparer):
                 job_id=job_id,
             )
 
-        return int(
-            row[0],
-        )
+        return int(row[0])
 
     def _fetchone_mapping(
         self,
@@ -1234,7 +1331,9 @@ class TwwDiffSchemaService(SourcePreparer):
         ):
             raise DiffSchemaContractError(
                 column_name=field_name,
-                message="The diff field must contain a JSON object."
+                message=(
+                    "The diff field must contain a JSON object."
+                ),
             )
 
         return decoded
@@ -1244,9 +1343,7 @@ class TwwDiffSchemaService(SourcePreparer):
         value: Any,
         *,
         field_name: str,
-    ) -> list[
-        Any,
-    ]:
+    ) -> list:
         decoded = self._decode_json(
             value,
         )
@@ -1257,7 +1354,9 @@ class TwwDiffSchemaService(SourcePreparer):
         ):
             raise DiffSchemaContractError(
                 column_name=field_name,
-                message="The diff field must contain a JSON array."
+                message=(
+                    "The diff field must contain a JSON array."
+                ),
             )
 
         return decoded
@@ -1347,9 +1446,11 @@ class TwwDiffSchemaService(SourcePreparer):
                 source_file,
                 import_schema,
                 live_schema,
+                backup_path,
                 metadata
             )
             VALUES (
+                %s,
                 %s,
                 %s,
                 %s,
@@ -1377,6 +1478,9 @@ class TwwDiffSchemaService(SourcePreparer):
                 metadata.get(
                     "live_schema",
                 ),
+                metadata.get(
+                    "backup_path",
+                ),
                 self._json_dumps(
                     metadata,
                 ),
@@ -1390,9 +1494,7 @@ class TwwDiffSchemaService(SourcePreparer):
                 f"Could not create diff review job {job_id!r}."
             )
 
-        return int(
-            row[0],
-        )
+        return int(row[0])
 
     def _insert_feature(
         self,
@@ -1401,38 +1503,25 @@ class TwwDiffSchemaService(SourcePreparer):
         job_db_id: int,
         table_name: str,
         feature: ReviewFeature,
-        table_columns: set[
-            str,
-        ],
+        table_columns: set[str],
     ) -> None:
         values = self._base_column_values(
             job_db_id=job_db_id,
             feature=feature,
         )
 
-        extra_values = self._extra_column_values(
-            feature=feature,
-            table_columns=table_columns,
-        )
-
         values.update(
-            extra_values,
+            self._extra_column_values(
+                feature=feature,
+                table_columns=table_columns,
+            )
         )
 
-        columns: list[
-            str,
-        ] = []
-        expressions: list[
-            str,
-        ] = []
-        parameters: list[
-            Any,
-        ] = []
+        columns: list[str] = []
+        expressions: list[str] = []
+        parameters: list[Any] = []
 
-        for (
-            column_name,
-            value,
-        ) in values.items():
+        for column_name, value in values.items():
             if column_name not in table_columns:
                 continue
 
@@ -1442,26 +1531,21 @@ class TwwDiffSchemaService(SourcePreparer):
                 )
             )
 
-            (
-                expression,
-                expression_parameters,
-            ) = self._value_expression(
-                column_name=column_name,
-                value=value,
+            expression, expression_parameters = (
+                self._value_expression(
+                    column_name=column_name,
+                    value=value,
+                )
             )
 
             expressions.append(
                 expression,
             )
-
             parameters.extend(
                 expression_parameters,
             )
 
-        for (
-            geometry_name,
-            geometry_value,
-        ) in feature.geometries.items():
+        for geometry_name, geometry_value in feature.geometries.items():
             if geometry_name not in table_columns:
                 continue
 
@@ -1471,25 +1555,27 @@ class TwwDiffSchemaService(SourcePreparer):
                 )
             )
 
-            (
-                expression,
-                expression_parameters,
-            ) = self._geometry_expression(
-                geometry_value,
+            expression, expression_parameters = (
+                self._geometry_expression(
+                    geometry_value,
+                )
             )
 
             expressions.append(
                 expression,
             )
-
             parameters.extend(
                 expression_parameters,
             )
 
         if not columns:
             raise DiffSchemaContractError(
-                f"Review feature for {table_name!r} contains "
-                "no persistable columns."
+                table_name=(
+                    f"{self.schema}.{table_name}"
+                ),
+                message=(
+                    "The review feature contains no persistable columns."
+                ),
             )
 
         cursor.execute(
@@ -1501,9 +1587,7 @@ class TwwDiffSchemaService(SourcePreparer):
                 {", ".join(expressions)}
             );
             """,
-            tuple(
-                parameters,
-            ),
+            tuple(parameters),
         )
 
     def _base_column_values(
@@ -1562,23 +1646,16 @@ class TwwDiffSchemaService(SourcePreparer):
         self,
         *,
         feature: ReviewFeature,
-        table_columns: set[
-            str,
-        ],
+        table_columns: set[str],
     ) -> dict[
         str,
         Any,
     ]:
-        reserved_columns = (
-            self._reserved_feature_columns()
-        )
+        reserved_columns = self._reserved_feature_columns()
 
         return {
             key: value
-            for (
-                key,
-                value,
-            ) in feature.attributes.items()
+            for key, value in feature.attributes.items()
             if (
                 key in table_columns
                 and key not in reserved_columns
@@ -1587,9 +1664,7 @@ class TwwDiffSchemaService(SourcePreparer):
 
     def _reserved_feature_columns(
         self,
-    ) -> frozenset[
-        str,
-    ]:
+    ) -> frozenset:
         return frozenset(
             {
                 "diff_id",
@@ -1616,9 +1691,7 @@ class TwwDiffSchemaService(SourcePreparer):
         value: Any,
     ) -> tuple[
         str,
-        list[
-            Any,
-        ],
+        list[Any],
     ]:
         if column_name in {
             "import_values",
@@ -1651,9 +1724,7 @@ class TwwDiffSchemaService(SourcePreparer):
         value: Any,
     ) -> tuple[
         str,
-        list[
-            Any,
-        ],
+        list[Any],
     ]:
         if value is None:
             return (
@@ -1680,11 +1751,11 @@ class TwwDiffSchemaService(SourcePreparer):
         )
 
         if wkt is None:
-            return (
-                "%s",
-                [
-                    None,
-                ],
+            raise DiffSchemaContractError(
+                column_name="geometry",
+                message=(
+                    "Unsupported non-null geometry representation."
+                ),
             )
 
         return (
@@ -1763,9 +1834,7 @@ class TwwDiffSchemaService(SourcePreparer):
         *,
         cursor,
         table_name: str,
-    ) -> set[
-        str,
-    ]:
+    ) -> set:
         return set(
             self._table_column_types(
                 cursor=cursor,
@@ -1803,11 +1872,7 @@ class TwwDiffSchemaService(SourcePreparer):
         )
 
         return {
-            str(
-                row[0],
-            ): str(
-                row[1],
-            )
+            str(row[0]): str(row[1])
             for row in cursor.fetchall()
         }
 
@@ -1815,9 +1880,7 @@ class TwwDiffSchemaService(SourcePreparer):
         self,
         *,
         table_name: str,
-        table_columns: set[
-            str,
-        ],
+        table_columns: set[str],
     ) -> None:
         required_columns = {
             "job_id",
@@ -1840,8 +1903,12 @@ class TwwDiffSchemaService(SourcePreparer):
 
         if missing_columns:
             raise DiffSchemaContractError(
-                table_name=f"{self.schema}.{table_name}",
-                message=f"Missing columns on {self.schema}.{table_name}: {sorted(missing_columns)}",
+                table_name=(
+                    f"{self.schema}.{table_name}"
+                ),
+                message=(
+                    f"Missing columns: {sorted(missing_columns)}"
+                ),
             )
 
     def _json_dumps(
@@ -1915,9 +1982,7 @@ class TwwDiffSchemaService(SourcePreparer):
         Stage one prepared source in memory.
         """
 
-        self._prepared_sources[
-            job_id
-        ] = source
+        self._prepared_sources[job_id] = source
 
     def prepared_source(
         self,
@@ -1929,9 +1994,7 @@ class TwwDiffSchemaService(SourcePreparer):
         """
 
         try:
-            return self._prepared_sources[
-                job_id
-            ]
+            return self._prepared_sources[job_id]
         except KeyError as exception:
             raise KeyError(
                 "No prepared source exists for diff workflow "
@@ -1951,3 +2014,233 @@ class TwwDiffSchemaService(SourcePreparer):
             job_id,
             None,
         )
+
+
+@dataclass(
+    slots=True,
+)
+class TwwJobPersistenceService:
+    """
+    Apply one accepted tww_diff job through the existing INTERLIS importer.
+
+    The service does not create, restore or delete quarantine backups.
+    The nullable backup path remains metadata owned by TwwDiffSchemaService
+    for compatibility with workflows that manage backups externally.
+    """
+
+    diff_schema_service: TwwDiffSchemaService
+    quarantine_preparer: TwwQuarantinePreparer
+    persistence_adapter: TwwInterlisPersistenceAdapter
+
+    def persist_job(
+        self,
+        *,
+        job_id: str,
+        live_schema: str | None = None,
+    ) -> TwwJobPersistenceResult:
+        """
+        Prepare quarantine data and persist one accepted job.
+        """
+
+        job = self.diff_schema_service.require_review_job(
+            job_id=job_id,
+            include_features=False,
+        )
+
+        self._assert_application_eligibility(
+            job_id=job_id,
+            job_status=job.job_status,
+            validation_success=job.validation_success,
+        )
+
+        counts = self.diff_schema_service.job_counts(
+            job_id=job_id,
+        )
+
+        self._assert_review_counts(
+            job_id=job_id,
+            counts=counts,
+        )
+
+        import_schema = self._required_metadata_value(
+            job_id=job_id,
+            metadata=job.metadata,
+            key="import_schema",
+        )
+
+        source_model = self._required_metadata_value(
+            job_id=job_id,
+            metadata=job.metadata,
+            key="source_model",
+        )
+
+        resolved_live_schema = (
+            live_schema
+            or self._required_metadata_value(
+                job_id=job_id,
+                metadata=job.metadata,
+                key="live_schema",
+            )
+        )
+
+        self.diff_schema_service.acquire_job_for_application(
+            job_id=job_id,
+        )
+
+        try:
+            self.quarantine_preparer.prepare(
+                job_id=job_id,
+                import_schema=import_schema,
+            )
+
+            interlis_persistence = (
+                self.persistence_adapter.persist_quarantine(
+                    import_schema=import_schema,
+                    live_schema=resolved_live_schema,
+                    source_model=source_model,
+                )
+            )
+
+            if not interlis_persistence.committed:
+                raise DiffJobPersistenceError(
+                    job_id=job_id,
+                    phase="applying",
+                    message=(
+                        "The quarantine-to-live importer returned "
+                        "without confirming its transaction commit."
+                    ),
+                )
+
+            self.diff_schema_service.mark_job_applied(
+                job_id=job_id,
+            )
+
+        except Exception as exception:
+            self._mark_failed(
+                job_id=job_id,
+                exception=exception,
+            )
+
+            raise
+
+        return TwwJobPersistenceResult(
+            job_id=job_id,
+            previous_status="accepted",
+            job_status="applied",
+            review_feature_count=counts.total_count,
+            rejected_feature_count=counts.rejected_count,
+            import_schema=import_schema,
+            live_schema=resolved_live_schema,
+            source_model=source_model,
+            interlis_persistence=interlis_persistence,
+        )
+
+    def _assert_application_eligibility(
+        self,
+        *,
+        job_id: str,
+        job_status: str,
+        validation_success: bool,
+    ) -> None:
+        """
+        Validate lifecycle and source-validation eligibility.
+        """
+
+        if job_status != "accepted":
+            raise DiffJobStateError(
+                job_id=job_id,
+                expected_status="accepted",
+                actual_status=job_status,
+            )
+
+        if not validation_success:
+            raise DiffJobEligibilityError(
+                job_id=job_id,
+                reason=(
+                    "source validation was not successful."
+                ),
+            )
+
+    def _assert_review_counts(
+        self,
+        *,
+        job_id: str,
+        counts: DiffJobCounts,
+    ) -> None:
+        """
+        Validate that review rows are eligible for persistence.
+        """
+
+        if counts.rejected_count:
+            raise DiffJobEligibilityError(
+                job_id=job_id,
+                reason=(
+                    f"{counts.rejected_count} review rows contain "
+                    "blocking findings."
+                ),
+            )
+
+    def _required_metadata_value(
+        self,
+        *,
+        job_id: str,
+        metadata: Mapping[
+            str,
+            Any,
+        ],
+        key: str,
+    ) -> str:
+        """
+        Return a required non-empty string metadata value.
+        """
+
+        value = metadata.get(
+            key,
+        )
+
+        if not isinstance(
+            value,
+            str,
+        ) or not value.strip():
+            raise DiffSchemaContractError(
+                column_name=key,
+                message=(
+                    f"Diff review job {job_id!r} does not contain "
+                    f"a valid {key!r} value."
+                ),
+            )
+
+        return value
+
+    def _mark_failed(
+        self,
+        *,
+        job_id: str,
+        exception: Exception,
+    ) -> None:
+        """
+        Mark an applying job as failed.
+
+        The original persistence exception remains authoritative if recording
+        the failure state also fails.
+        """
+
+        try:
+            self.diff_schema_service.mark_job_failed(
+                job_id=job_id,
+                expected_status="applying",
+                phase="applying",
+                error_type=type(exception).__name__,
+                message=str(
+                    exception,
+                ),
+            )
+        except Exception as transition_exception:
+            if hasattr(
+                exception,
+                "add_note",
+            ):
+                exception.add_note(
+                    "Additionally, the diff job could not be marked "
+                    f"failed: {transition_exception}"
+                )

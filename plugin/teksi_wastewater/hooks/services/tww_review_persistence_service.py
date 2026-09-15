@@ -2,10 +2,11 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass
 import logging
 from pathlib import Path
-from typing import Protocol
+from typing import Any, Protocol
 
 from teksi_wastewater.hooks.exceptions import (
     DiffJobEligibilityError,
@@ -17,6 +18,9 @@ from teksi_wastewater.hooks.services.tww_diff_schema_service import (
     TwwInterlisPersistenceAdapter,
     TwwJobPersistenceResult,
 )
+from teksi_wastewater.hooks.services.tww_quarantine_persistence_preparer import (
+    TwwQuarantinePersistencePreparer,
+)
 
 
 logger = logging.getLogger(
@@ -27,12 +31,20 @@ logger = logging.getLogger(
 class TwwQuarantineBackupService(
     Protocol,
 ):
+    """
+    Create, restore and delete quarantine backups.
+    """
+
     def create_backup(
         self,
         *,
         job_id: str,
         import_schema: str,
     ) -> Path:
+        """
+        Create a backup before destructive quarantine preparation.
+        """
+
         ...
 
     def restore_backup(
@@ -41,16 +53,22 @@ class TwwQuarantineBackupService(
         backup_path: Path,
         import_schema: str,
     ) -> None:
+        """
+        Restore quarantine from a previously created backup.
+        """
+
         ...
-    
+
     def delete_backup(
         self,
         *,
         backup_path: Path,
     ) -> None:
+        """
+        Delete a quarantine backup.
+        """
+
         ...
-
-
 
 
 @dataclass(
@@ -60,14 +78,23 @@ class TwwReviewPersistenceService:
     """
     Apply one accepted tww_diff review job.
 
-    Review acceptance remains separate from persistence execution:
+    Lifecycle:
 
     pending -> accepted
     accepted -> applying
     applying -> applied or failed
+
+    Quarantine is backed up before destructive permission filtering.
+    The backup is restored when preparation or persistence fails and is
+    deleted after successful application.
     """
 
     diff_schema_service: TwwDiffSchemaService
+
+    quarantine_preparer: TwwQuarantinePersistencePreparer
+
+    backup_service: TwwQuarantineBackupService
+
     persistence_adapter: TwwInterlisPersistenceAdapter
 
     def persist_job(
@@ -125,8 +152,23 @@ class TwwReviewPersistenceService:
             job_id=job_id,
         )
 
+        backup_path: Path | None = None
+
         try:
-            preparation_result = self.quarantine_preparer.prepare(
+            backup_path = self.backup_service.create_backup(
+                job_id=job_id,
+                import_schema=import_schema,
+            )
+
+            self.diff_schema_service.set_backup_path(
+                job_id=job_id,
+                expected_status="applying",
+                backup_path=str(
+                    backup_path,
+                ),
+            )
+
+            self.quarantine_preparer.prepare(
                 job_id=job_id,
                 import_schema=import_schema,
             )
@@ -149,7 +191,18 @@ class TwwReviewPersistenceService:
                     ),
                 )
 
+            self.diff_schema_service.mark_job_applied(
+                job_id=job_id,
+            )
+
         except Exception as exception:
+            if backup_path is not None:
+                self._restore_backup(
+                    job_id=job_id,
+                    import_schema=import_schema,
+                    backup_path=backup_path,
+                )
+
             self._mark_failed(
                 job_id=job_id,
                 exception=exception,
@@ -157,8 +210,9 @@ class TwwReviewPersistenceService:
 
             raise
 
-        self.diff_schema_service.mark_job_applied(
+        self._delete_applied_backup(
             job_id=job_id,
+            backup_path=backup_path,
         )
 
         logger.info(
@@ -176,7 +230,6 @@ class TwwReviewPersistenceService:
             import_schema=import_schema,
             live_schema=resolved_live_schema,
             source_model=source_model,
-            quarantine_preparation=preparation_result,
             interlis_persistence=persistence_result,
         )
 
@@ -188,7 +241,7 @@ class TwwReviewPersistenceService:
         validation_success: bool,
     ) -> None:
         """
-        Validate application-level job eligibility.
+        Validate job-level persistence eligibility.
         """
 
         if job_status != "accepted":
@@ -216,6 +269,10 @@ class TwwReviewPersistenceService:
     ) -> None:
         """
         Validate the persisted review-row set.
+
+        Rejected rows represent changes that cannot be prepared safely for
+        persistence. Permission-restricted attributes that can be neutralized
+        in quarantine must not be included in rejected_count.
         """
 
         if counts.rejected_count:
@@ -224,7 +281,7 @@ class TwwReviewPersistenceService:
                 reason=(
                     f"{counts.rejected_count} of "
                     f"{counts.total_count} review rows contain "
-                    "blocking permission or validation findings."
+                    "blocking findings."
                 ),
             )
 
@@ -239,7 +296,8 @@ class TwwReviewPersistenceService:
                 job_id=job_id,
                 reason=(
                     f"{counts.total_count - operation_count} review "
-                    "rows do not identify a persistence operation."
+                    "rows do not identify exactly one persistence "
+                    "operation."
                 ),
             )
 
@@ -247,7 +305,10 @@ class TwwReviewPersistenceService:
         self,
         *,
         job_id: str,
-        metadata,
+        metadata: Mapping[
+            str,
+            Any,
+        ],
         key: str,
     ) -> str:
         """
@@ -270,6 +331,101 @@ class TwwReviewPersistenceService:
             )
 
         return value
+
+    def _restore_backup(
+        self,
+        *,
+        job_id: str,
+        import_schema: str,
+        backup_path: Path,
+    ) -> None:
+        """
+        Restore quarantine after preparation or persistence failure.
+
+        Restoration and cleanup failures are logged without hiding the
+        original persistence exception.
+        """
+
+        try:
+            self.backup_service.restore_backup(
+                backup_path=backup_path,
+                import_schema=import_schema,
+            )
+        except Exception:
+            logger.exception(
+                "Could not restore quarantine backup %s for "
+                "diff review job %r.",
+                backup_path,
+                job_id,
+            )
+
+            return
+
+        try:
+            self.backup_service.delete_backup(
+                backup_path=backup_path,
+            )
+        except Exception:
+            logger.exception(
+                "Could not delete restored quarantine backup %s "
+                "for diff review job %r.",
+                backup_path,
+                job_id,
+            )
+
+            return
+
+        try:
+            self.diff_schema_service.clear_backup_path(
+                job_id=job_id,
+                expected_status="applying",
+            )
+        except Exception:
+            logger.exception(
+                "Could not clear the quarantine backup path for "
+                "diff review job %r.",
+                job_id,
+            )
+
+    def _delete_applied_backup(
+        self,
+        *,
+        job_id: str,
+        backup_path: Path,
+    ) -> None:
+        """
+        Delete the quarantine backup after successful application.
+
+        A cleanup failure does not change an already applied job back to
+        failed. The retained backup_path allows later cleanup.
+        """
+
+        try:
+            self.backup_service.delete_backup(
+                backup_path=backup_path,
+            )
+        except Exception:
+            logger.exception(
+                "Could not delete quarantine backup %s for "
+                "applied diff review job %r.",
+                backup_path,
+                job_id,
+            )
+
+            return
+
+        try:
+            self.diff_schema_service.clear_backup_path(
+                job_id=job_id,
+                expected_status="applied",
+            )
+        except Exception:
+            logger.exception(
+                "Deleted quarantine backup %s but could not clear "
+                "the backup path for applied diff review job %r.",
+                backup_path,
+                job_id,
+            )
 
     def _mark_failed(
         self,
