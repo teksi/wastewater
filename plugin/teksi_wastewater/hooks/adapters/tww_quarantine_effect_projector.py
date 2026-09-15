@@ -30,15 +30,15 @@ from teksi_hooks.models.mapping import (
 from teksi_hooks.capabilities.connection import (
     DatabaseConnectionFactory,
 )
+from teksi_hooks.services.relation_context_provider import (
+    RelationContextProvider,
+)
 
 try:
     from psycopg import sql
 except ImportError:
     from psycopg2 import sql
     
-from .tww_relation_context_provider import (
-    TwwRelationContextProvider,
-)
 
 
 @dataclass(slots=True)
@@ -62,6 +62,8 @@ class TwwQuarantineEffectProjector:
 
     connection_factory: DatabaseConnectionFactory
 
+    relation_context_provider = RelationContextProvider
+
     def effect_document_from_quarantine(
         self,
         *,
@@ -76,11 +78,6 @@ class TwwQuarantineEffectProjector:
         resulting effect document represents one consistent database snapshot.
         """
 
-        relation_context_provider = TwwRelationContextProvider(
-            ili_model=source_model,
-            model_mapping=self.model_mapping,
-            import_schema=schema,
-        )
 
         effects: list[Effect] = []
 
@@ -89,7 +86,7 @@ class TwwQuarantineEffectProjector:
         ) as connection:
             with connection.cursor() as cursor:
                 for relation_context in (
-                    relation_context_provider.relation_contexts()
+                    self.relation_context_provider.relation_contexts()
                 ):
                     effects.extend(
                         self._effects_for_relation_context(
@@ -144,10 +141,6 @@ class TwwQuarantineEffectProjector:
             schema=schema,
             relation=relation_context.relation,
         ):
-            identity = self._identity(
-                row=row,
-                class_mapping=class_mapping,
-            )
 
             effects.extend(
                 self._attribute_effects(
@@ -156,7 +149,6 @@ class TwwQuarantineEffectProjector:
                         relation_context.relation.__name__
                     ),
                     class_mapping=class_mapping,
-                    identity=identity,
                     canonical_metadata=canonical_metadata,
                 )
             )
@@ -267,26 +259,61 @@ class TwwQuarantineEffectProjector:
 
         return relation.__name__
 
+
     def _identity(
         self,
         *,
-        row: dict[str, Any],
+        row: dict[
+            str,
+            Any,
+        ],
         class_mapping: ClassMapping,
+        canonical_class_id: str | None = None,
     ) -> CanonicalObjectIdentity:
-        if class_mapping.canonical_class_id is None:
+        """
+        Build the identity for one canonical target class.
+        """
+
+        target_class_id = (
+            canonical_class_id
+            or class_mapping.canonical_class_id
+        )
+
+        if target_class_id is None:
             raise ValueError(
-                "Cannot build identity for class mapping without "
-                "canonical_class_id."
+                "Cannot build an identity without a canonical "
+                "target class."
             )
 
-        identity_mapping = class_mapping.identity
+        identity_mapping = (
+            class_mapping.identities.get(
+                target_class_id,
+            )
+        )
+
+        if identity_mapping is None:
+            raise ValueError(
+                "No identity mapping exists for canonical target "
+                f"class {target_class_id!r}."
+            )
+
+        try:
+            source_value = row[
+                identity_mapping.source_attribute
+            ]
+        except KeyError as exception:
+            raise ValueError(
+                "Source identity attribute "
+                f"{identity_mapping.source_attribute!r} is missing "
+                f"for canonical target class {target_class_id!r}."
+            ) from exception
 
         return CanonicalObjectIdentity(
-            class_id=class_mapping.canonical_class_id,
+            class_id=target_class_id,
             attributes={
-                identity_mapping.canonical_attribute: row[
-                    identity_mapping.source_attribute
-                ],
+                identity_mapping.canonical_attribute: (
+                    source_value
+                ),
             },
         )
 
@@ -296,33 +323,52 @@ class TwwQuarantineEffectProjector:
         row: dict[str, Any],
         source_class_id: str,
         class_mapping: ClassMapping,
-        identity: CanonicalObjectIdentity,
         canonical_metadata: CanonicalModelMetadata,
     ) -> tuple[UpdateAttributeEffect, ...]:
-        effects: list[UpdateAttributeEffect] = []
+        """
+        Project mapped source attributes to canonical update effects.
 
-        for source_attribute, attribute_mapping in (
-            class_mapping.attributes.items()
-        ):
-            if attribute_mapping.canonical_attr_id is None:
+        Each attribute mapping may target the class mapping's primary canonical
+        class or another canonical class for which the class mapping defines an
+        identity.
+        """
+
+        effects: list[
+            UpdateAttributeEffect
+        ] = []
+
+        for (
+            source_attribute,
+            attribute_mapping,
+        ) in class_mapping.attributes.items():
+            canonical_attribute_id = (
+                attribute_mapping.canonical_attr_id
+            )
+
+            if canonical_attribute_id is None:
                 continue
 
             target_class_id = (
                 attribute_mapping.canonical_class_id
-                or identity.class_id
+                or class_mapping.canonical_class_id
             )
 
-            if target_class_id != identity.class_id:
-                raise NotImplementedError(
-                    "Simple attribute mappings to a different canonical "
-                    "class are not supported. Use a function mapping for "
+            if target_class_id is None:
+                raise ValueError(
+                    "No canonical target class is defined for "
                     f"{source_class_id}.{source_attribute}."
                 )
+
+            identity = self._identity(
+                row=row,
+                class_mapping=class_mapping,
+                canonical_class_id=target_class_id,
+            )
 
             self._assert_known_attribute(
                 canonical_metadata=canonical_metadata,
                 class_id=target_class_id,
-                attribute_id=attribute_mapping.canonical_attr_id,
+                attribute_id=canonical_attribute_id,
             )
 
             value = row.get(
@@ -339,7 +385,7 @@ class TwwQuarantineEffectProjector:
             effects.append(
                 UpdateAttributeEffect(
                     identity=identity,
-                    attribute_id=attribute_mapping.canonical_attr_id,
+                    attribute_id=canonical_attribute_id,
                     value=value,
                 )
             )

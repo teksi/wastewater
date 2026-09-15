@@ -2,7 +2,9 @@ from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
+from types import SimpleNamespace
 from typing import Any
+from unittest.mock import Mock
 
 from teksi_hooks.models.canonical_object import (
     CanonicalAttributeMetadata,
@@ -15,6 +17,10 @@ from teksi_hooks.models.canonical_object import (
 from teksi_wastewater.hooks.adapters.tww_canonical_model_adapter import (
     TwwCanonicalModelAdapter,
     TwwLanguage,
+)
+
+from teksi_wastewater.hooks.adapters import (
+    tww_canonical_model_adapter as adapter_module,
 )
 
 from ..helpers import (
@@ -383,6 +389,22 @@ class CanonicalModelCursor:
             for row in rows
         )
 
+class FakeIntegerType:
+    python_type = int
+
+
+class FakeTable:
+    name = "agxx_reach"
+    columns = (
+        SimpleNamespace(
+            name="fk_reach",
+            type=FakeIntegerType(),
+        ),
+    )
+
+
+class FakeMappedClass:
+    __table__ = FakeTable()
 
 def _adapter(
     *,
@@ -414,6 +436,13 @@ def _adapter(
         TwwLanguage.IT,
         TwwLanguage.EN,
     ),
+    automap_classes: Mapping[
+        str,
+        Any,
+    ] | None = None,
+    reflected_class_ids: frozenset[
+        str
+    ] = frozenset(),
 ) -> tuple[
     TwwCanonicalModelAdapter,
     CanonicalModelCursor,
@@ -435,6 +464,12 @@ def _adapter(
         connection_factory=connection_factory,
         schema=schema,
         languages=languages,
+        reflected_class_ids=reflected_class_ids,
+        automap_classes=(
+            {}
+            if automap_classes is None
+            else automap_classes
+        ),
     )
 
     return (
@@ -443,6 +478,27 @@ def _adapter(
         connection_factory,
     )
 
+
+def test_tww_canonical_model_adapter_adds_reflected_class() -> None:
+    adapter, _, _ = _adapter(
+        reflected_class_ids=frozenset(
+            {
+                "agxx_reach",
+            }
+        ),
+        automap_classes={
+            "agxx_reach": FakeMappedClass,
+        },
+    )
+
+    metadata = adapter.canonical_model()
+
+    assert "agxx_reach" in metadata.classes
+
+    assert (
+        "agxx_reach",
+        "fk_reach",
+    ) in metadata.attributes
 
 def test_tww_canonical_model_adapter_loads_classes() -> None:
     adapter, _, connection_factory = _adapter(
@@ -1068,3 +1124,140 @@ def test_tww_canonical_model_adapter_returns_empty_localized_metadata() -> None:
     )
 
     assert localized == LocalizedMetadata()
+
+def test_tww_canonical_model_adapter_skips_automap_without_reflected_classes(
+    monkeypatch,
+) -> None:
+    adapter, _, _ = _adapter(
+        class_rows=[
+            {
+                "source_id": 1,
+                "class_id": "reach",
+                "name_de": "Haltung",
+                "name_fr": "Tronçon",
+                "name_it": "Tratta",
+                "name_en": "Reach",
+            },
+        ],
+        reflected_class_ids=frozenset(),
+        automap_classes=None,
+    )
+
+    model_tww_od = Mock()
+
+    monkeypatch.setattr(
+        adapter_module,
+        "ModelTwwOd",
+        model_tww_od,
+    )
+
+    assert set(
+        adapter.classes(),
+    ) == {
+        "reach",
+    }
+
+    model_tww_od.assert_not_called()
+
+
+
+def test_tww_canonical_model_adapter_adds_reflected_class_and_attribute(
+) -> None:
+    adapter, _, connection_factory = _adapter(
+        reflected_class_ids=frozenset(
+            {
+                "agxx_reach",
+            }
+        ),
+        automap_classes={
+            "agxx_reach": FakeMappedClass,
+        },
+    )
+
+    metadata = adapter.canonical_model()
+
+    reflected_class = metadata.classes[
+        "agxx_reach"
+    ]
+
+    assert reflected_class == CanonicalClassMetadata(
+        source_id=adapter._reflected_source_id(
+            "class:agxx_reach",
+        ),
+        identifier="agxx_reach",
+        localized=LocalizedMetadata(),
+    )
+
+    reflected_attribute = metadata.attributes[
+        (
+            "agxx_reach",
+            "fk_reach",
+        )
+    ]
+
+    assert reflected_attribute == CanonicalAttributeMetadata(
+        source_id=adapter._reflected_source_id(
+            "attribute:agxx_reach.fk_reach",
+        ),
+        identifier="fk_reach",
+        field_datatype="integer",
+        localized=LocalizedMetadata(),
+    )
+
+    assert reflected_class.source_id < 0
+    assert reflected_attribute.source_id < 0
+
+    assert connection_factory.autocommit_values == [
+        True,
+        True,
+        True,
+    ]
+
+
+def test_tww_canonical_model_adapter_prefers_dictionary_source_ids(
+) -> None:
+    adapter, _, _ = _adapter(
+        class_rows=[
+            {
+                "source_id": 42,
+                "class_id": "agxx_reach",
+                "name_de": "AG Haltung",
+                "name_fr": None,
+                "name_it": None,
+                "name_en": None,
+            },
+        ],
+        attribute_rows=[
+            {
+                "source_id": 87,
+                "class_id": "agxx_reach",
+                "attribute_id": "fk_reach",
+                "field_datatype": "uuid",
+                "field_name_de": "Haltung",
+                "field_name_fr": None,
+                "field_name_it": None,
+                "field_name_en": None,
+            },
+        ],
+        reflected_class_ids=frozenset(
+            {
+                "agxx_reach",
+            }
+        ),
+        automap_classes={
+            "agxx_reach": FakeMappedClass,
+        },
+    )
+
+    metadata = adapter.canonical_model()
+
+    assert metadata.classes[
+        "agxx_reach"
+    ].source_id == 42
+
+    assert metadata.attributes[
+        (
+            "agxx_reach",
+            "fk_reach",
+        )
+    ].source_id == 87

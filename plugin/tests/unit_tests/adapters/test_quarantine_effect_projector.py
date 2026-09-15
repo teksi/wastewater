@@ -14,6 +14,7 @@ from teksi_hooks.capabilities.mapping import (
 from teksi_hooks.models.canonical_object import (
     CanonicalAttributeMetadata,
     CanonicalClassMetadata,
+    CanonicalIdentityMapping,
     CanonicalModelMetadata,
     CanonicalObjectIdentity,
 )
@@ -59,28 +60,6 @@ class FakeRelationContextProvider:
         ...,
     ] = ()
 
-    init_args: list[
-        dict[
-            str,
-            Any,
-        ]
-    ] = []
-
-    def __init__(
-        self,
-        *,
-        ili_model,
-        model_mapping,
-        import_schema,
-    ) -> None:
-        self.__class__.init_args.append(
-            {
-                "ili_model": ili_model,
-                "model_mapping": model_mapping,
-                "import_schema": import_schema,
-            }
-        )
-
     def relation_contexts(
         self,
     ) -> tuple[
@@ -89,6 +68,16 @@ class FakeRelationContextProvider:
     ]:
         return self.__class__.contexts
 
+
+def _identity_mapping(
+    *,
+    source_attribute: str = "t_ili_tid",
+    canonical_attribute: str = "obj_id",
+) -> CanonicalIdentityMapping:
+    return CanonicalIdentityMapping(
+        source_attribute=source_attribute,
+        canonical_attribute=canonical_attribute,
+    )
 
 def _canonical_metadata() -> CanonicalModelMetadata:
     return CanonicalModelMetadata(
@@ -139,7 +128,6 @@ def _canonical_metadata() -> CanonicalModelMetadata:
         values={},
     )
 
-
 def _mapping(
     *,
     classes: dict[
@@ -162,6 +150,10 @@ def _mapping(
 def _projector(
     *,
     model_mapping: EffectiveModelMappingCapability,
+    contexts: tuple[
+        RelationContext,
+        ...,
+    ],
     results: tuple[
         FakeQueryResult,
         ...,
@@ -170,11 +162,16 @@ def _projector(
     connection_factory, cursor = fake_connection_factory(
         results=results,
     )
+    relation_context_provider = (
+        FakeRelationContextProvider()
+    )
+    relation_context_provider.contexts = contexts
 
     return (
         TwwQuarantineEffectProjector(
             connection_factory=connection_factory,
             model_mapping=model_mapping,
+            relation_context_provider=relation_context_provider,
         ),
         cursor,
         connection_factory,
@@ -248,6 +245,9 @@ def test_projector_projects_simple_attribute_mapping(
 ) -> None:
     class_mapping = ClassMapping(
         canonical_class_id="wastewater_structure",
+        identities={
+            "wastewater_structure": _identity_mapping(),
+        },
         attributes={
             "statusag": AttributeMapping(
                 canonical_class_id="wastewater_structure",
@@ -335,6 +335,9 @@ def test_projector_applies_value_mapping(
 ) -> None:
     class_mapping = ClassMapping(
         canonical_class_id="wastewater_structure",
+        identities={
+            "wastewater_structure": _identity_mapping(),
+        },
         attributes={
             "funktionag": AttributeMapping(
                 canonical_class_id="wastewater_structure",
@@ -397,6 +400,9 @@ def test_projector_skips_unmapped_canonical_class(
 ) -> None:
     class_mapping = ClassMapping(
         canonical_class_id=None,
+        identities={
+            "wastewater_structure": _identity_mapping(),
+        },
         attributes={},
     )
 
@@ -433,6 +439,9 @@ def test_projector_rejects_unknown_canonical_class(
 ) -> None:
     class_mapping = ClassMapping(
         canonical_class_id="unknown_class",
+        identities={
+            "unknown_class": _identity_mapping(),
+        },
         attributes={},
     )
 
@@ -472,6 +481,9 @@ def test_projector_rejects_unknown_canonical_attribute(
 ) -> None:
     class_mapping = ClassMapping(
         canonical_class_id="wastewater_structure",
+        identities={
+            "wastewater_structure": _identity_mapping(),
+        },
         attributes={
             "unknownag": AttributeMapping(
                 canonical_class_id="wastewater_structure",
@@ -509,56 +521,6 @@ def test_projector_rejects_unknown_canonical_attribute(
     with pytest.raises(
         KeyError,
         match="Unknown canonical attribute",
-    ):
-        projector.effect_document_from_quarantine(
-            schema="import_schema",
-            source_model="AG64",
-            canonical_metadata=_canonical_metadata(),
-        )
-
-
-def test_projector_rejects_cross_class_simple_attribute_mapping(
-    monkeypatch,
-) -> None:
-    class_mapping = ClassMapping(
-        canonical_class_id="wastewater_structure",
-        attributes={
-            "funktionag": AttributeMapping(
-                canonical_class_id="wastewater_node",
-                canonical_attr_id="function",
-            ),
-        },
-    )
-
-    _patch_relation_context_provider(
-        monkeypatch,
-        contexts=(
-            RelationContext(
-                relation=GepKnoten,
-                class_mapping=class_mapping,
-            ),
-        ),
-    )
-
-    projector, _, _ = _projector(
-        model_mapping=_mapping(
-            classes={
-                "GepKnoten": class_mapping,
-            },
-        ),
-        results=(
-            _rows_result(
-                {
-                    "t_ili_tid": "ch000000ws000005",
-                    "funktionag": "value",
-                }
-            ),
-        ),
-    )
-
-    with pytest.raises(
-        NotImplementedError,
-        match="different canonical class",
     ):
         projector.effect_document_from_quarantine(
             schema="import_schema",
@@ -856,3 +818,128 @@ def test_projector_rejects_unsupported_function_effect_kind() -> None:
                 },
             }
         )
+
+def test_projector_projects_cross_class_attribute_mapping(
+    monkeypatch,
+) -> None:
+    class_mapping = ClassMapping(
+        canonical_class_id="wastewater_structure",
+        identities={
+            "wastewater_structure": _identity_mapping(),
+            "wastewater_node": _identity_mapping(),
+        },
+        attributes={
+            "funktionag": AttributeMapping(
+                canonical_class_id="wastewater_node",
+                canonical_attr_id="function",
+            ),
+        },
+    )
+
+    _patch_relation_context_provider(
+        monkeypatch,
+        contexts=(
+            RelationContext(
+                relation=GepKnoten,
+                class_mapping=class_mapping,
+            ),
+        ),
+    )
+
+    projector, _, _ = _projector(
+        model_mapping=_mapping(
+            classes={
+                "GepKnoten": class_mapping,
+            },
+        ),
+        results=(
+            _rows_result(
+                {
+                    "t_ili_tid": "ch000000ws000005",
+                    "funktionag": "value",
+                }
+            ),
+        ),
+    )
+
+    document = projector.effect_document_from_quarantine(
+        schema="import_schema",
+        source_model="AG64",
+        canonical_metadata=_canonical_metadata(),
+    )
+
+    assert len(
+        document.effects,
+    ) == 1
+
+    effect = document.effects[
+        0
+    ]
+
+    assert isinstance(
+        effect,
+        UpdateAttributeEffect,
+    )
+
+    assert effect.identity == CanonicalObjectIdentity(
+        class_id="wastewater_node",
+        attributes={
+            "obj_id": "ch000000ws000005",
+        },
+    )
+
+    assert effect.attribute_id == "function"
+    assert effect.value == "value"
+
+def test_projector_rejects_attribute_target_without_identity(
+    monkeypatch,
+) -> None:
+    class_mapping = ClassMapping(
+        canonical_class_id="wastewater_structure",
+        identities={
+            "wastewater_structure": _identity_mapping(),
+        },
+        attributes={
+            "funktionag": AttributeMapping(
+                canonical_class_id="wastewater_node",
+                canonical_attr_id="function",
+            ),
+        },
+    )
+
+    _patch_relation_context_provider(
+        monkeypatch,
+        contexts=(
+            RelationContext(
+                relation=GepKnoten,
+                class_mapping=class_mapping,
+            ),
+        ),
+    )
+
+    projector, _, _ = _projector(
+        model_mapping=_mapping(
+            classes={
+                "GepKnoten": class_mapping,
+            },
+        ),
+        results=(
+            _rows_result(
+                {
+                    "t_ili_tid": "ch000000ws000005",
+                    "funktionag": "value",
+                }
+            ),
+        ),
+    )
+
+    with pytest.raises(
+        ValueError,
+        match="identity",
+    ):
+        projector.effect_document_from_quarantine(
+            schema="import_schema",
+            source_model="AG64",
+            canonical_metadata=_canonical_metadata(),
+        )
+

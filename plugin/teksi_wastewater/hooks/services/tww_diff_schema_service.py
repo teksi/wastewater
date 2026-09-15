@@ -707,3 +707,60 @@ class TwwDiffSchemaService(SourcePreparer):
             )
             + '"'
         )
+
+    def prepare_source(
+        self,
+        *,
+        job_id: str,
+        source: PreparedSource,
+    ) -> None:
+        """
+        Stage one prepared source in memory.
+
+        A previously prepared source for the same job identifier is replaced.
+        No review job or review feature is persisted by this operation.
+        """
+
+        self._prepared_sources[
+            job_id
+        ] = source
+
+    def prepared_source(
+        self,
+        *,
+        job_id: str,
+    ) -> PreparedSource:
+        """
+        Return the prepared source for one diff workflow.
+
+        Raises
+        ------
+        KeyError
+            If no prepared source exists for the job identifier.
+        """
+
+        try:
+            return self._prepared_sources[
+                job_id
+            ]
+        except KeyError as exception:
+            raise KeyError(
+                "No prepared source exists for diff workflow "
+                f"{job_id!r}."
+            ) from exception
+
+    def clear_prepared_source(
+        self,
+        *,
+        job_id: str,
+    ) -> None:
+        """
+        Remove the prepared source for a completed diff workflow.
+
+        Missing prepared sources are ignored so cleanup remains idempotent.
+        """
+
+        self._prepared_sources.pop(
+            job_id,
+            None,
+        )

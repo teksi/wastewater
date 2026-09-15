@@ -10,7 +10,7 @@ from teksi_wastewater.hooks.adapters.tww_interlis_service_adapter import (
     TwwInterlisContext,
     TwwInterlisServiceAdapter,
 )
-
+from teksi_wastewater.interlis import model_config
 from ..helpers import (
     FakeConnectionFactory,
 )
@@ -23,7 +23,7 @@ class FakeInterlisImporterExporter:
         self.schema = None
         self.import_calls = []
         self.export_calls = []
-        self.find_import_ilimodels_calls = []
+        self.identify_import_model_calls = []
 
     def interlis_import(
         self,
@@ -55,8 +55,6 @@ class FakeInterlisImporterExporter:
                 "SIA405_ABWASSER_2020_1_LV95",
             ),
         )
-
-
 def _adapter(
 ) -> tuple[
     TwwInterlisServiceAdapter,
@@ -268,7 +266,6 @@ def test_interlis_service_adapter_delegates_export_without_output_file() -> None
         }
     ]
 
-
 def test_interlis_service_adapter_finds_models() -> None:
     adapter, fake, _ = _adapter()
 
@@ -279,7 +276,7 @@ def test_interlis_service_adapter_finds_models() -> None:
     )
 
     assert (
-        fake.find_import_ilimodels_calls
+        fake.identify_import_model_calls
         == [
             {
                 "xtf_file_input": Path(
@@ -292,6 +289,39 @@ def test_interlis_service_adapter_finds_models() -> None:
     assert result == (
         "SIA405_ABWASSER_2020_1_LV95",
         (
+            "SIA405_Base_Abwasser_1_LV95",
             "SIA405_ABWASSER_2020_1_LV95",
         ),
+    )
+
+def test_interlis_service_adapter_identifies_model() -> None:
+    adapter, fake, _ = _adapter()
+
+    selection = adapter.identify_model(
+        xtf_file=Path(
+            "/tmp/input.xtf",
+        ),
+    )
+
+    assert (
+        fake.identify_import_model_calls
+        == [
+            {
+                "xtf_file_input": Path(
+                    "/tmp/input.xtf",
+                ),
+            }
+        ]
+    )
+
+    assert selection.group == (
+        "sia405_abwasser"
+    )
+    assert selection.language == "de"
+    assert selection.import_model == (
+        "SIA405_ABWASSER_2020_1_LV95"
+    )
+    assert selection.created_models == (
+        "SIA405_Base_Abwasser_1_LV95",
+        "SIA405_ABWASSER_2020_1_LV95",
     )

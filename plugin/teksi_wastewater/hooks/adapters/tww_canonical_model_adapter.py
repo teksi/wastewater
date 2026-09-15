@@ -4,6 +4,7 @@ from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from enum import StrEnum
 from typing import Any
+from zlib import crc32
 
 from psycopg import sql
 
@@ -84,14 +85,29 @@ class TwwCanonicalModelAdapter:
         dictionary_attributes = self._dictionary_attributes()
         dictionary_values = self._dictionary_values()
 
-        automap_classes = self._automap_classes()
+        reflected_classes: dict[
+            str,
+            CanonicalClassMetadata,
+        ] = {}
 
-        reflected_classes = self._reflected_classes(
-            automap_classes=automap_classes,
-        )
-        reflected_attributes = self._reflected_attributes(
-            automap_classes=automap_classes,
-        )
+        reflected_attributes: dict[
+            tuple[
+                str,
+                str,
+            ],
+            CanonicalAttributeMetadata,
+        ] = {}
+
+        if self.reflected_class_ids:
+            automap_classes = self._automap_classes()
+
+            reflected_classes = self._reflected_classes(
+                automap_classes=automap_classes,
+            )
+
+            reflected_attributes = self._reflected_attributes(
+                automap_classes=automap_classes,
+            )
 
         self._canonical_model_cache = CanonicalModelMetadata(
             classes=self._merge_classes(
@@ -244,11 +260,43 @@ class TwwCanonicalModelAdapter:
 
         return ModelTwwOd().classes()
 
+    def _reflected_source_id(
+        self,
+        semantic_id: str,
+    ) -> int:
+        """
+        Return a deterministic fallback source identifier for reflected metadata.
+
+        Reflected elements without a corresponding tww_sys dictionary row do not
+        have a numeric dictionary identifier. A deterministic negative integer is
+        used to keep those elements distinguishable from ordinary positive
+        dictionary identifiers.
+
+        This value is metadata provenance only. Stable semantic identity is
+        derived separately from the canonical identifier and
+        TeksiModelNamespaces.
+        """
+
+        checksum = crc32(
+            semantic_id.encode(
+                "utf-8",
+            )
+        )
+
+        return -(
+            checksum
+            or 1
+        )
+
+
     def _reflected_classes(
         self,
         *,
         automap_classes: Any,
-    ) -> dict[str, CanonicalClassMetadata]:
+    ) -> dict[
+        str,
+        CanonicalClassMetadata,
+    ]:
         classes: dict[
             str,
             CanonicalClassMetadata,
@@ -261,13 +309,19 @@ class TwwCanonicalModelAdapter:
                 automap_classes=automap_classes,
                 class_id=class_id,
             )
+
             table = mapped_class.__table__
+
             identifier = str(
                 table.name,
             )
 
-            classes[class_id] = CanonicalClassMetadata(
-                source_id=identifier,
+            classes[
+                class_id
+            ] = CanonicalClassMetadata(
+                source_id=self._reflected_source_id(
+                    f"class:{class_id}",
+                ),
                 identifier=identifier,
                 localized=LocalizedMetadata(),
             )
@@ -279,11 +333,17 @@ class TwwCanonicalModelAdapter:
         *,
         automap_classes: Any,
     ) -> dict[
-        tuple[str, str],
+        tuple[
+            str,
+            str,
+        ],
         CanonicalAttributeMetadata,
     ]:
         attributes: dict[
-            tuple[str, str],
+            tuple[
+                str,
+                str,
+            ],
             CanonicalAttributeMetadata,
         ] = {}
 
@@ -306,7 +366,11 @@ class TwwCanonicalModelAdapter:
                         attribute_id,
                     )
                 ] = CanonicalAttributeMetadata(
-                    source_id=attribute_id,
+                    source_id=self._reflected_source_id(
+                        "attribute:"
+                        f"{class_id}."
+                        f"{attribute_id}",
+                    ),
                     identifier=attribute_id,
                     field_datatype=self._sqlalchemy_datatype(
                         column,
@@ -322,11 +386,19 @@ class TwwCanonicalModelAdapter:
         automap_classes: Any,
         class_id: str,
     ) -> Any:
-        mapped_class = getattr(
+        if isinstance(
             automap_classes,
-            class_id,
-            None,
-        )
+            Mapping,
+        ):
+            mapped_class = automap_classes.get(
+                class_id,
+            )
+        else:
+            mapped_class = getattr(
+                automap_classes,
+                class_id,
+                None,
+            )
 
         if mapped_class is None:
             raise RuntimeError(

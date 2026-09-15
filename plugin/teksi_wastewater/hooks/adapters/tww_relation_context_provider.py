@@ -6,29 +6,10 @@ from dataclasses import replace
 from sqlalchemy import inspect
 from sqlalchemy.exc import NoInspectionAvailable
 
-from ...interlis import config, model_selection
-from ...interlis.interlis_model_mapping.model_interlis_ag64 import (
-    ModelInterlisAG64,
-)
-from ...interlis.interlis_model_mapping.model_interlis_ag96 import (
-    ModelInterlisAG96,
-)
-from ...interlis.interlis_model_mapping.model_interlis_dss import (
-    ModelInterlisDss,
-)
-from ...interlis.interlis_model_mapping.model_interlis_sia405_abwasser import (
-    ModelInterlisSia405Abwasser,
-)
-from ...interlis.interlis_model_mapping.model_interlis_sia405_base_abwasser import (
-    ModelInterlisSia405BaseAbwasser,
-)
-from ...interlis.interlis_model_mapping.model_interlis_vsa_kek import (
-    ModelInterlisVsaKek,
-)
+from ...interlis import config
 
 from teksi_hooks.capabilities.mapping import (
     EffectiveModelMappingCapability,
-    ModelMappingCapability,
 )
 from teksi_hooks.models.canonical_object import (
     CanonicalIdentityMapping,
@@ -44,6 +25,7 @@ from teksi_hooks.models.mapping import (
 from teksi_hooks.services.relation_context_provider import (
     RelationContextProvider,
 )
+
 
 
 class TwwRelationContextProvider(
@@ -74,33 +56,13 @@ class TwwRelationContextProvider(
 
     def __init__(
         self,
-        ili_model: str,
+        model_selection: config.TwwInterlisModelSelection,
         model_mapping: EffectiveModelMappingCapability,
         import_schema: str = config.IMPORT_SCHEMA,
     ):
-        self.ili_model = ili_model
-
-        self.groups = model_selection.groups_for_models(
-            self.ili_model,
-        )
-
-        if len(
-            self.groups,
-        ) != 1:
-            raise ValueError(
-                f"Expected exactly one model group for {ili_model!r}, "
-                f"got {sorted(self.groups)!r}"
-            )
-
-        self.group = next(
-            iter(
-                self.groups,
-            )
-        )
-
+        self.model_selection = model_selection
         self.model_mapping = model_mapping
-
-        self.import_model = self._get_model(
+        self.import_model = self.model_selection.primary_component.quarantine_model(
             schema=import_schema,
         )
 
@@ -130,34 +92,6 @@ class TwwRelationContextProvider(
 
         return tuple(
             contexts,
-        )
-
-    def _get_model(
-        self,
-        schema: str,
-    ):
-        """
-        Return the curated SQLAlchemy model for the selected INTERLIS group.
-        """
-
-        model_cls = {
-            "dss": ModelInterlisDss,
-            "vsa_kek": ModelInterlisVsaKek,
-            "sia405_abwasser": ModelInterlisSia405Abwasser,
-            "sia405_base_abwasser": ModelInterlisSia405BaseAbwasser,
-            "ag64": ModelInterlisAG64,
-            "ag96": ModelInterlisAG96,
-        }.get(
-            self.group,
-        )
-
-        if model_cls is None:
-            raise ValueError(
-                f"No model defined for group {self.group!r}"
-            )
-
-        return model_cls(
-            schema=schema,
         )
 
     def _class_mapping_for_relation(
