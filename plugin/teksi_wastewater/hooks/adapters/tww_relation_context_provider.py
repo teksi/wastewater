@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from dataclasses import replace
+from typing import Any
 
 from sqlalchemy import inspect
 from sqlalchemy.exc import NoInspectionAvailable
@@ -56,15 +57,16 @@ class TwwRelationContextProvider(
 
     def __init__(
         self,
-        model_selection: config.TwwInterlisModelSelection,
+        *,
+        quarantine_classes: Mapping[
+            str,
+            Any,
+        ],
         model_mapping: EffectiveModelMappingCapability,
-        import_schema: str = config.IMPORT_SCHEMA,
-    ):
-        self.model_selection = model_selection
+    ) -> None:
+        self.quarantine_classes = quarantine_classes
         self.model_mapping = model_mapping
-        self.import_model = self.model_selection.primary_component.quarantine_model(
-            schema=import_schema,
-        )
+
 
     def relation_contexts(
         self,
@@ -73,19 +75,21 @@ class TwwRelationContextProvider(
         ...,
     ]:
         """
-        Return resolved relation contexts for the selected source model.
+        Return resolved relation contexts for the configured quarantine classes.
         """
 
         contexts: list[
             RelationContext
         ] = []
 
-        for relation in self.import_model.classes().values():
+        for relation in self.quarantine_classes.values():
             contexts.append(
                 RelationContext(
                     relation=relation,
-                    class_mapping=self._class_mapping_for_relation(
-                        relation,
+                    class_mapping=(
+                        self._class_mapping_for_relation(
+                            relation,
+                        )
                     ),
                 )
             )

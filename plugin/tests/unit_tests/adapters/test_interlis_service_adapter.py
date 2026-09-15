@@ -63,59 +63,30 @@ def _model_selection() -> TwwInterlisModelSelection:
 class FakeInterlisImporterExporter:
     def __init__(
         self,
+        *,
+        model_selection: TwwInterlisModelSelection,
     ) -> None:
-        self.schema = None
-        self.import_calls = []
-        self.export_calls = []
-        self.identify_import_model_calls = []
+        self.model_selection = model_selection
 
-    def interlis_import(
-        self,
-        **kwargs,
-    ) -> None:
-        self.import_calls.append(
-            kwargs,
-        )
-
-    def interlis_export(
-        self,
-        **kwargs,
-    ) -> None:
-        self.export_calls.append(
-            kwargs,
-        )
-
-    def find_import_ilimodels(
-        self,
-        **kwargs,
-    ):
-        self.find_import_ilimodels_calls.append(
-            kwargs,
-        )
-
-        return (
-            "SIA405_ABWASSER_2020_1_LV95",
-            (
-                "SIA405_ABWASSER_2020_1_LV95",
-            ),
-        )
+        self.identify_import_model_calls: list[
+            dict[
+                str,
+                object,
+            ]
+        ] = []
 
     def identify_import_model(
         self,
         *,
         xtf_file_input: Path,
-    ):
+    ) -> TwwInterlisModelSelection:
         self.identify_import_model_calls.append(
             {
                 "xtf_file_input": xtf_file_input,
             }
         )
 
-        return model_selection.model_selection_for_imported_models(
-            (
-                "SIA405_ABWASSER_2020_1_LV95",
-            )
-        )
+        return self.model_selection
 
     
 def _adapter(
@@ -331,53 +302,64 @@ def test_interlis_service_adapter_delegates_export_without_output_file() -> None
     ]
 
 def test_interlis_service_adapter_finds_models() -> None:
-    adapter, fake, _ = _adapter()
-
     selection = _model_selection()
 
-    assert (
-        fake.identify_import_model_calls
-        == [
-            {
-                "xtf_file_input": Path(
-                    "/tmp/input.xtf",
-                ),
-            }
-        ]
+    importer_exporter = FakeInterlisImporterExporter(
+        model_selection=selection,
     )
 
-    assert selection == (
-        "SIA405_ABWASSER_2020_1_LV95",
+    adapter = TwwInterlisServiceAdapter(
+        importer_exporter=importer_exporter,
+        connection_factory=FakeConnectionFactory(),
+    )
+
+    xtf_file = Path(
+        "/tmp/input.xtf",
+    )
+
+    result = adapter.find_models(
+        xtf_file,
+    )
+
+    assert result == (
+        "DSS_2020_1_LV95",
         (
             "SIA405_Base_Abwasser_1_LV95",
             "SIA405_ABWASSER_2020_1_LV95",
+            "DSS_2020_1_LV95",
         ),
     )
 
-def test_interlis_service_adapter_identifies_model() -> None:
-    adapter, fake, _ = _adapter()
+    assert importer_exporter.identify_import_model_calls == [
+        {
+            "xtf_file_input": xtf_file,
+        }
+    ]
 
+def test_interlis_service_adapter_identifies_model() -> None:
     selection = _model_selection()
 
-    assert (
-        fake.identify_import_model_calls
-        == [
-            {
-                "xtf_file_input": Path(
-                    "/tmp/input.xtf",
-                ),
-            }
-        ]
+    importer_exporter = FakeInterlisImporterExporter(
+        model_selection=selection,
     )
 
-    assert selection.group == (
-        "sia405_abwasser"
+    adapter = TwwInterlisServiceAdapter(
+        importer_exporter=importer_exporter,
+        connection_factory=FakeConnectionFactory(),
     )
-    assert selection.language == "de"
-    assert selection.import_model == (
-        "SIA405_ABWASSER_2020_1_LV95"
+
+    xtf_file = Path(
+        "/tmp/input.xtf",
     )
-    assert selection.created_models == (
-        "SIA405_Base_Abwasser_1_LV95",
-        "SIA405_ABWASSER_2020_1_LV95",
+
+    result = adapter.identify_model(
+        xtf_file,
     )
+
+    assert result is selection
+
+    assert importer_exporter.identify_import_model_calls == [
+        {
+            "xtf_file_input": xtf_file,
+        }
+    ]

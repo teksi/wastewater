@@ -73,27 +73,30 @@ class TwwQuarantineEffectProjector:
     ) -> EffectDocument:
         """
         Project the current quarantine schema into a canonical effect document.
-
-        All quarantine rows are read through one PostgreSQL transaction so the
-        resulting effect document represents one consistent database snapshot.
         """
 
-
-        effects: list[Effect] = []
+        effects: list[
+            Effect
+        ] = []
 
         with self.connection_factory.connection(
             autocommit=False,
         ) as connection:
             with connection.cursor() as cursor:
                 for relation_context in (
-                    self.relation_context_provider.relation_contexts()
+                    self.relation_context_provider
+                    .relation_contexts()
                 ):
                     effects.extend(
                         self._effects_for_relation_context(
                             cursor=cursor,
-                            relation_context=relation_context,
+                            relation_context=(
+                                relation_context
+                            ),
                             schema=schema,
-                            canonical_metadata=canonical_metadata,
+                            canonical_metadata=(
+                                canonical_metadata
+                            ),
                         )
                     )
 
@@ -107,6 +110,7 @@ class TwwQuarantineEffectProjector:
                 effects,
             ),
         )
+
 
 
     def _effects_for_relation_context(

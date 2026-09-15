@@ -247,11 +247,6 @@ class TwwInterlisServiceAdapter(InterlisService):
         should use ``identify_model()``.
         """
 
-        selection = self.identify_model(
+        return self.identify_model(
             xtf_file,
-        )
-
-        return (
-            selection.import_model,
-            selection.created_models,
         )

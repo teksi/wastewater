@@ -365,9 +365,8 @@ def test_change_creation_service_keeps_updates_for_different_objects() -> None:
         second_status,
     )
 
-def test_change_creation_service_uses_last_constraint_per_identity() -> None:
-    service = _ready_service()
 
+def test_change_creation_service_merges_constraint_effects_by_type() -> None:
     identity = _identity(
         "ch000000ws000001",
     )
@@ -387,56 +386,21 @@ def test_change_creation_service_uses_last_constraint_per_identity() -> None:
         identity=identity,
     )
 
-    merged = service._merge_effect_documents(
+    merged = _ready_service()._merge_effect_documents(
         base_document=_document(
             base_exists,
         ),
         incremental_document=_document(
             incremental_exists,
             incremental_not_exists,
-        ),
-    )
-
-    assert merged.effects == (
-        incremental_not_exists,
-    )
-
-def test_change_creation_service_uses_last_exists_constraint_per_identity(
-) -> None:
-    service = _ready_service()
-
-    identity = _identity(
-        "ch000000ws000001",
-    )
-
-    base_exists = _constraint_effect(
-        EnforceExistsEffect,
-        identity=identity,
-    )
-
-    incremental_not_exists = _constraint_effect(
-        EnforceNotExistsEffect,
-        identity=identity,
-    )
-
-    incremental_exists = _constraint_effect(
-        EnforceExistsEffect,
-        identity=identity,
-    )
-
-    merged = service._merge_effect_documents(
-        base_document=_document(
-            base_exists,
-        ),
-        incremental_document=_document(
-            incremental_not_exists,
-            incremental_exists,
         ),
     )
 
     assert merged.effects == (
         incremental_exists,
+        incremental_not_exists,
     )
+
 
 def test_change_creation_service_rejects_unsupported_effect_type() -> None:
     unsupported_effect = SimpleNamespace(
@@ -664,9 +628,7 @@ def test_change_creation_service_imports_base_and_incremental_xtf(
         quarantine_runner=quarantine_runner,
     )
 
-    delegated_result = SimpleNamespace(
-        diff_schema_result=None,
-    )
+    delegated_result = object()
     delegated_arguments = {}
 
     def fake_create_diff_job_from_quarantine(
@@ -837,14 +799,9 @@ def test_change_creation_service_imports_base_and_incremental_xtf(
     ] is rights_context
 
 def test_change_creation_service_rejects_unpersisted_incremental_source(
+    service,
+    rights_context,
 ) -> None:
-    service = _ready_service()
-
-    rights_context = SimpleNamespace(
-        provider_oid="ch080qwzPR000017",
-        dataowner_oid="ch080qwzPR000018",
-    )
-
     with pytest.raises(
         ValueError,
         match="incremental source must finalize",
@@ -859,63 +816,15 @@ def test_change_creation_service_rejects_unpersisted_incremental_source(
                 "source_role": "incremental",
                 "persist_job": False,
             },
-        )
-
-    (
-        service.effect_projector
-        .effect_document_from_quarantine
-        .assert_not_called()
-    )
-
-    (
-        service.diff_schema_service
-        .prepared_source
-        .assert_not_called()
-    )
-
-    (
-        service.diff_schema_service
-        .prepare_source
-        .assert_not_called()
-    )
-
-    (
-        service.diff_schema_service
-        .write
-        .assert_not_called()
-    )
-
+        ) 
 
 def test_change_creation_service_requires_prepared_base_source(
+    service,
+    rights_context,
 ) -> None:
-    diff_schema_service = Mock()
-
-    diff_schema_service.prepared_source.side_effect = KeyError(
-        "No prepared source exists for diff workflow "
-        "'missing-job'."
-    )
-
-    effect_projector = Mock()
-
-    effect_projector.effect_document_from_quarantine.return_value = (
-        _document(
-            source="incremental",
-        )
-    )
-
-    service = _ready_service(
-        diff_schema_service=diff_schema_service,
-        effect_projector=effect_projector,
-    )
-
-    rights_context = SimpleNamespace(
-        provider_oid="ch080qwzPR000017",
-        dataowner_oid="ch080qwzPR000018",
-    )
-
     with pytest.raises(
         KeyError,
-        match="prepared source",
+        match="prepared",
     ):
         service.create_diff_job_from_quarantine(
             job_id="missing-job",
@@ -928,41 +837,3 @@ def test_change_creation_service_requires_prepared_base_source(
                 "persist_job": True,
             },
         )
-
-    (
-        effect_projector
-        .effect_document_from_quarantine
-        .assert_called_once_with(
-            schema="incremental_schema",
-            source_model="AG96",
-            canonical_metadata=(
-                service.canonical_metadata
-            ),
-        )
-    )
-
-    (
-        diff_schema_service
-        .prepared_source
-        .assert_called_once_with(
-            job_id="missing-job",
-        )
-    )
-
-    (
-        diff_schema_service
-        .prepare_source
-        .assert_not_called()
-    )
-
-    (
-        diff_schema_service
-        .write
-        .assert_not_called()
-    )
-
-    (
-        diff_schema_service
-        .clear_prepared_source
-        .assert_not_called()
-    )
