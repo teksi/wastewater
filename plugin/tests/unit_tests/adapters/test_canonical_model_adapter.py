@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
-from dataclasses import dataclass
-from types import SimpleNamespace
 from typing import Any
 from unittest.mock import Mock
 
@@ -14,19 +12,18 @@ from teksi_hooks.models.canonical_object import (
     LocalizedMetadata,
 )
 
+from teksi_wastewater.hooks.adapters import (
+    tww_canonical_model_adapter as adapter_module,
+)
 from teksi_wastewater.hooks.adapters.tww_canonical_model_adapter import (
     TwwCanonicalModelAdapter,
     TwwLanguage,
 )
 
-from teksi_wastewater.hooks.adapters import (
-    tww_canonical_model_adapter as adapter_module,
-)
-
 from ..helpers import (
+    FakeColumn,
     FakeConnection,
     FakeConnectionFactory,
-    FakeColumn,
 )
 
 
@@ -389,22 +386,27 @@ class CanonicalModelCursor:
             for row in rows
         )
 
+
 class FakeIntegerType:
     python_type = int
+
+
+class FakeOrmColumn:
+    name = "fk_reach"
+    key = "fk_reach"
+    type = FakeIntegerType()
 
 
 class FakeTable:
     name = "agxx_reach"
     columns = (
-        SimpleNamespace(
-            name="fk_reach",
-            type=FakeIntegerType(),
-        ),
+        FakeOrmColumn(),
     )
 
 
 class FakeMappedClass:
     __table__ = FakeTable()
+
 
 def _adapter(
     *,
@@ -479,29 +481,34 @@ def _adapter(
     )
 
 
-def test_tww_canonical_model_adapter_adds_reflected_class() -> None:
-    adapter, _, _ = _adapter(
-        reflected_class_ids=frozenset(
-            {
-                "agxx_reach",
-            }
-        ),
-        automap_classes={
-            "agxx_reach": FakeMappedClass,
-        },
+def _assert_complete_dictionary_load(
+    *,
+    cursor: CanonicalModelCursor,
+    connection_factory: FakeConnectionFactory,
+) -> None:
+    """
+    Assert that the aggregate canonical dictionary was loaded once.
+    """
+
+    assert len(
+        cursor.executed_queries,
+    ) == 3
+
+    assert all(
+        parameters == ()
+        for _, parameters
+        in cursor.executed_queries
     )
 
-    metadata = adapter.canonical_model()
+    assert connection_factory.autocommit_values == [
+        True,
+        True,
+        True,
+    ]
 
-    assert "agxx_reach" in metadata.classes
-
-    assert (
-        "agxx_reach",
-        "fk_reach",
-    ) in metadata.attributes
 
 def test_tww_canonical_model_adapter_loads_classes() -> None:
-    adapter, _, connection_factory = _adapter(
+    adapter, cursor, connection_factory = _adapter(
         class_rows=[
             {
                 "source_id": 1,
@@ -551,13 +558,14 @@ def test_tww_canonical_model_adapter_loads_classes() -> None:
         ),
     }
 
-    assert connection_factory.autocommit_values == [
-        True,
-    ]
+    _assert_complete_dictionary_load(
+        cursor=cursor,
+        connection_factory=connection_factory,
+    )
 
 
 def test_tww_canonical_model_adapter_loads_attributes() -> None:
-    adapter, cursor, _ = _adapter(
+    adapter, cursor, connection_factory = _adapter(
         attribute_rows=[
             {
                 "source_id": 10,
@@ -624,15 +632,14 @@ def test_tww_canonical_model_adapter_loads_attributes() -> None:
         ),
     )
 
-    assert cursor.executed_queries[
-        0
-    ][1] == (
-        "wastewater_structure",
+    _assert_complete_dictionary_load(
+        cursor=cursor,
+        connection_factory=connection_factory,
     )
 
 
 def test_tww_canonical_model_adapter_loads_values() -> None:
-    adapter, cursor, _ = _adapter(
+    adapter, cursor, connection_factory = _adapter(
         value_rows=[
             {
                 "source_id": 100,
@@ -700,16 +707,14 @@ def test_tww_canonical_model_adapter_loads_values() -> None:
         ),
     )
 
-    assert cursor.executed_queries[
-        0
-    ][1] == (
-        "wastewater_structure",
-        "status",
+    _assert_complete_dictionary_load(
+        cursor=cursor,
+        connection_factory=connection_factory,
     )
 
 
 def test_tww_canonical_model_adapter_builds_canonical_model() -> None:
-    adapter, _, connection_factory = _adapter(
+    adapter, cursor, connection_factory = _adapter(
         class_rows=[
             {
                 "source_id": 1,
@@ -787,15 +792,14 @@ def test_tww_canonical_model_adapter_builds_canonical_model() -> None:
         "en": "Reach",
     }
 
-    assert connection_factory.autocommit_values == [
-        True,
-        True,
-        True,
-    ]
+    _assert_complete_dictionary_load(
+        cursor=cursor,
+        connection_factory=connection_factory,
+    )
 
 
 def test_tww_canonical_model_adapter_returns_single_class_metadata() -> None:
-    adapter, cursor, _ = _adapter(
+    adapter, cursor, connection_factory = _adapter(
         class_rows=[
             {
                 "source_id": 1,
@@ -826,16 +830,9 @@ def test_tww_canonical_model_adapter_returns_single_class_metadata() -> None:
         "unknown",
     ) is None
 
-    assert cursor.executed_queries[
-        0
-    ][1] == (
-        "reach",
-    )
-
-    assert cursor.executed_queries[
-        1
-    ][1] == (
-        "unknown",
+    _assert_complete_dictionary_load(
+        cursor=cursor,
+        connection_factory=connection_factory,
     )
 
 
@@ -1007,8 +1004,9 @@ def test_tww_canonical_model_adapter_returns_geometry_attribute_names() -> None:
     )
 
 
-def test_tww_canonical_model_adapter_uses_custom_schema_and_parameters() -> None:
-    adapter, cursor, _ = _adapter(
+def test_tww_canonical_model_adapter_uses_custom_schema_and_caches_model(
+) -> None:
+    adapter, cursor, connection_factory = _adapter(
         schema="custom_sys",
     )
 
@@ -1049,17 +1047,9 @@ def test_tww_canonical_model_adapter_uses_custom_schema_and_parameters() -> None
     ):
         assert column_name in combined
 
-    assert cursor.executed_queries[
-        1
-    ][1] == (
-        "reach",
-    )
-
-    assert cursor.executed_queries[
-        2
-    ][1] == (
-        "reach",
-        "status",
+    _assert_complete_dictionary_load(
+        cursor=cursor,
+        connection_factory=connection_factory,
     )
 
 
@@ -1125,10 +1115,11 @@ def test_tww_canonical_model_adapter_returns_empty_localized_metadata() -> None:
 
     assert localized == LocalizedMetadata()
 
+
 def test_tww_canonical_model_adapter_skips_automap_without_reflected_classes(
     monkeypatch,
 ) -> None:
-    adapter, _, _ = _adapter(
+    adapter, cursor, connection_factory = _adapter(
         class_rows=[
             {
                 "source_id": 1,
@@ -1159,11 +1150,15 @@ def test_tww_canonical_model_adapter_skips_automap_without_reflected_classes(
 
     model_tww_od.assert_not_called()
 
+    _assert_complete_dictionary_load(
+        cursor=cursor,
+        connection_factory=connection_factory,
+    )
 
 
 def test_tww_canonical_model_adapter_adds_reflected_class_and_attribute(
 ) -> None:
-    adapter, _, connection_factory = _adapter(
+    adapter, cursor, connection_factory = _adapter(
         reflected_class_ids=frozenset(
             {
                 "agxx_reach",
@@ -1207,11 +1202,10 @@ def test_tww_canonical_model_adapter_adds_reflected_class_and_attribute(
     assert reflected_class.source_id < 0
     assert reflected_attribute.source_id < 0
 
-    assert connection_factory.autocommit_values == [
-        True,
-        True,
-        True,
-    ]
+    _assert_complete_dictionary_load(
+        cursor=cursor,
+        connection_factory=connection_factory,
+    )
 
 
 def test_tww_canonical_model_adapter_prefers_dictionary_source_ids(

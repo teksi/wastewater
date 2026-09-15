@@ -11,10 +11,54 @@ from teksi_wastewater.hooks.adapters.tww_interlis_service_adapter import (
     TwwInterlisServiceAdapter,
 )
 from teksi_wastewater.interlis import model_selection
+from teksi_wastewater.interlis.model_config import (
+    TwwInterlisModelComponent,
+    TwwInterlisModelSelection,
+    interlis_models,
+)
+
 from ..helpers import (
     FakeConnectionFactory,
 )
 
+def _model_selection() -> TwwInterlisModelSelection:
+    return TwwInterlisModelSelection(
+        group="dss",
+        language="de",
+        imported_models=(
+            "DSS_2020_1_LV95",
+        ),
+        components=(
+            TwwInterlisModelComponent(
+                group="sia405_base_abwasser",
+                language="de",
+                model_name=(
+                    "SIA405_Base_Abwasser_1_LV95"
+                ),
+                configuration=interlis_models[
+                    "sia405_base_abwasser"
+                ],
+            ),
+            TwwInterlisModelComponent(
+                group="sia405_abwasser",
+                language="de",
+                model_name=(
+                    "SIA405_ABWASSER_2020_1_LV95"
+                ),
+                configuration=interlis_models[
+                    "sia405_abwasser"
+                ],
+            ),
+            TwwInterlisModelComponent(
+                group="dss",
+                language="de",
+                model_name="DSS_2020_1_LV95",
+                configuration=interlis_models[
+                    "dss"
+                ],
+            ),
+        ),
+    )
 
 class FakeInterlisImporterExporter:
     def __init__(
@@ -289,11 +333,7 @@ def test_interlis_service_adapter_delegates_export_without_output_file() -> None
 def test_interlis_service_adapter_finds_models() -> None:
     adapter, fake, _ = _adapter()
 
-    result = adapter.find_models(
-        xtf_file=Path(
-            "/tmp/input.xtf",
-        ),
-    )
+    selection = _model_selection()
 
     assert (
         fake.identify_import_model_calls
@@ -306,7 +346,7 @@ def test_interlis_service_adapter_finds_models() -> None:
         ]
     )
 
-    assert result == (
+    assert selection == (
         "SIA405_ABWASSER_2020_1_LV95",
         (
             "SIA405_Base_Abwasser_1_LV95",
@@ -317,11 +357,7 @@ def test_interlis_service_adapter_finds_models() -> None:
 def test_interlis_service_adapter_identifies_model() -> None:
     adapter, fake, _ = _adapter()
 
-    selection = adapter.identify_model(
-        xtf_file=Path(
-            "/tmp/input.xtf",
-        ),
-    )
+    selection = _model_selection()
 
     assert (
         fake.identify_import_model_calls
