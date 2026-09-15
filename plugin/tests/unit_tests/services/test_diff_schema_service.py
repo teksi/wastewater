@@ -9,7 +9,6 @@ from unittest.mock import Mock
 import pytest
 
 from teksi_hooks.models.canonical_object import (
-    CanonicalClassMetadata,
     CanonicalModelMetadata,
     CanonicalObjectIdentity,
 )
@@ -19,8 +18,8 @@ from teksi_hooks.models.effects import (
     EnforceNotExistsEffect,
     UpdateAttributeEffect,
 )
-from teksi_hooks.models.review import (
-    ReviewFeature,
+from teksi_hooks.models.persistence import (
+    DiffJobMode,
 )
 
 from teksi_wastewater.hooks.services import (
@@ -28,10 +27,6 @@ from teksi_wastewater.hooks.services import (
 )
 from teksi_wastewater.hooks.services.tww_change_creation_service import (
     TwwChangeCreationService,
-)
-from teksi_wastewater.hooks.services.tww_diff_schema_service import (
-    DiffJobMode,
-    DiffSchemaWriteResult,
 )
 
 
@@ -46,6 +41,7 @@ def rights_context():
         provider_oid="ch080qwzPR000017",
         dataowner_oid="ch080qwzPR000018",
     )
+
 
 def _identity(
     object_id: str,
@@ -283,7 +279,8 @@ def test_change_creation_service_derives_validation_log_path() -> None:
     )
 
 
-def test_change_creation_service_incremental_updates_override_base_updates() -> None:
+def test_change_creation_service_incremental_updates_override_base_updates(
+) -> None:
     identity = _identity(
         "ch000000ws000001",
     )
@@ -316,11 +313,13 @@ def test_change_creation_service_incremental_updates_override_base_updates() -> 
         base_document=_document(
             base_status,
             base_identifier,
+            source="base",
             version=1,
         ),
         incremental_document=_document(
             incremental_status,
             incremental_remark,
+            source="incremental",
             version=2,
         ),
     )
@@ -331,6 +330,7 @@ def test_change_creation_service_incremental_updates_override_base_updates() -> 
         incremental_remark,
     )
 
+    assert merged.source == "incremental"
     assert merged.version == 2
 
 
@@ -365,7 +365,48 @@ def test_change_creation_service_keeps_updates_for_different_objects() -> None:
         second_status,
     )
 
-def test_change_creation_service_uses_last_constraint_per_identity() -> None:
+
+def test_change_creation_service_merges_constraint_effects_by_type() -> None:
+    service = _ready_service()
+
+    identity = _identity(
+        "ch000000ws000001",
+    )
+
+    base_exists = _constraint_effect(
+        EnforceExistsEffect,
+        identity=identity,
+    )
+
+    base_not_exists = _constraint_effect(
+        EnforceNotExistsEffect,
+        identity=identity,
+    )
+
+    incremental_exists = _constraint_effect(
+        EnforceExistsEffect,
+        identity=identity,
+    )
+
+    merged = service._merge_effect_documents(
+        base_document=_document(
+            base_exists,
+            base_not_exists,
+        ),
+        incremental_document=_document(
+            incremental_exists,
+        ),
+    )
+
+    assert len(
+        merged.effects,
+    ) == 2
+
+    assert merged.effects[0] is incremental_exists
+    assert merged.effects[1] is base_not_exists
+
+
+def test_change_creation_service_replaces_constraint_of_same_type() -> None:
     service = _ready_service()
 
     identity = _identity(
@@ -382,61 +423,21 @@ def test_change_creation_service_uses_last_constraint_per_identity() -> None:
         identity=identity,
     )
 
-    incremental_not_exists = _constraint_effect(
-        EnforceNotExistsEffect,
-        identity=identity,
-    )
-
     merged = service._merge_effect_documents(
         base_document=_document(
             base_exists,
         ),
         incremental_document=_document(
             incremental_exists,
-            incremental_not_exists,
         ),
     )
 
-    assert merged.effects == (
-        incremental_not_exists,
-    )
+    assert len(
+        merged.effects,
+    ) == 1
 
-def test_change_creation_service_uses_last_exists_constraint_per_identity(
-) -> None:
-    service = _ready_service()
+    assert merged.effects[0] is incremental_exists
 
-    identity = _identity(
-        "ch000000ws000001",
-    )
-
-    base_exists = _constraint_effect(
-        EnforceExistsEffect,
-        identity=identity,
-    )
-
-    incremental_not_exists = _constraint_effect(
-        EnforceNotExistsEffect,
-        identity=identity,
-    )
-
-    incremental_exists = _constraint_effect(
-        EnforceExistsEffect,
-        identity=identity,
-    )
-
-    merged = service._merge_effect_documents(
-        base_document=_document(
-            base_exists,
-        ),
-        incremental_document=_document(
-            incremental_not_exists,
-            incremental_exists,
-        ),
-    )
-
-    assert merged.effects == (
-        incremental_exists,
-    )
 
 def test_change_creation_service_rejects_unsupported_effect_type() -> None:
     unsupported_effect = SimpleNamespace(
@@ -640,23 +641,18 @@ def test_change_creation_service_builds_default_live_relation_lookup(
     )
 
 
-def test_change_creation_service_imports_base_and_incremental_xtf(
+def test_change_creation_service_imports_one_base_xtf(
     monkeypatch,
+    rights_context,
 ) -> None:
     quarantine_runner = Mock()
 
-    quarantine_runner.import_xtf_to_quarantine.side_effect = (
+    quarantine_runner.import_xtf_to_quarantine.return_value = (
+        "DSS_2020_1_LV95",
         (
+            "SIA405_Base_Abwasser_1_LV95",
+            "SIA405_ABWASSER_2020_1_LV95",
             "DSS_2020_1_LV95",
-            (
-                "DSS_2020_1_LV95",
-            ),
-        ),
-        (
-            "Genereller_Entwaesserungsplan_AG",
-            (
-                "Genereller_Entwaesserungsplan_AG",
-            ),
         ),
     )
 
@@ -667,7 +663,11 @@ def test_change_creation_service_imports_base_and_incremental_xtf(
     delegated_result = SimpleNamespace(
         diff_schema_result=None,
     )
-    delegated_arguments = {}
+
+    delegated_arguments: dict[
+        str,
+        Any,
+    ] = {}
 
     def fake_create_diff_job_from_quarantine(
         self,
@@ -685,21 +685,12 @@ def test_change_creation_service_imports_base_and_incremental_xtf(
         fake_create_diff_job_from_quarantine,
     )
 
-    rights_context = SimpleNamespace(
-        provider_oid="ch080qwzPR000017",
-        dataowner_oid="ch080qwzPR000018",
-    )
-
     xtf_file = Path(
         "/tmp/base.xtf",
     )
 
     orgs_path = Path(
         "/tmp/organisations.xtf",
-    )
-
-    incremental_xtf = Path(
-        "/tmp/incremental.xtf",
     )
 
     result = service.create_diff_job_from_xtf(
@@ -711,84 +702,62 @@ def test_change_creation_service_imports_base_and_incremental_xtf(
         import_schema="xtf_import",
         live_schema="tww_od",
         metadata={
-                "source_role": "base",
-                "source_xtf": str(
-                    xtf_file,
-                ),
-                "source_schema": "xtf_import",
-                "persist_job": False,
-            },
+            "source_role": "base",
+            "source_xtf": str(
+                xtf_file,
+            ),
+            "source_schema": "xtf_import",
+            "persist_job": False,
+        },
     )
 
     assert result is delegated_result
 
-    assert result.diff_schema_result is None
+    quarantine_runner.import_xtf_to_quarantine.assert_called_once()
 
-    assert (
+    import_call = (
         quarantine_runner
         .import_xtf_to_quarantine
-        .call_count
-        == 2
+        .call_args
     )
 
-    base_call = (
-        quarantine_runner
-        .import_xtf_to_quarantine
-        .call_args_list[0]
-    )
-
-    assert base_call.kwargs[
+    assert import_call.kwargs[
         "xtf_file"
     ] == xtf_file
 
-    assert base_call.kwargs[
+    assert import_call.kwargs[
         "schema"
     ] == "xtf_import"
 
-    assert base_call.kwargs[
+    assert import_call.kwargs[
         "context"
     ].schema == "xtf_import"
 
-    assert base_call.kwargs[
+    assert import_call.kwargs[
         "context"
     ].import_orgs is True
 
-    assert base_call.kwargs[
+    assert import_call.kwargs[
         "context"
     ].orgs_path == orgs_path
 
-    incremental_call = (
-        quarantine_runner
-        .import_xtf_to_quarantine
-        .call_args_list[1]
-    )
+    quarantine_runner.validate_quarantine_or_raise.assert_called_once()
 
-    assert incremental_call.kwargs[
-        "xtf_file"
-    ] == incremental_xtf
-
-    assert incremental_call.kwargs[
-        "schema"
-    ] == "xtf_import_incremental"
-
-    assert incremental_call.kwargs[
-        "context"
-    ].schema == "xtf_import_incremental"
-
-    assert incremental_call.kwargs[
-        "context"
-    ].import_orgs is False
-
-    assert incremental_call.kwargs[
-        "context"
-    ].orgs_path is None
-
-    assert (
+    validation_call = (
         quarantine_runner
         .validate_quarantine_or_raise
-        .call_count
-        == 2
+        .call_args
     )
+
+    assert validation_call.kwargs[
+        "model_names"
+    ] == (
+        "DSS_2020_1_LV95",
+    )
+
+    assert validation_call.kwargs[
+        "schema"
+    ] == "xtf_import"
 
     assert delegated_arguments[
         "job_id"
@@ -805,24 +774,10 @@ def test_change_creation_service_imports_base_and_incremental_xtf(
     assert delegated_arguments[
         "created_models"
     ] == (
+        "SIA405_Base_Abwasser_1_LV95",
+        "SIA405_ABWASSER_2020_1_LV95",
         "DSS_2020_1_LV95",
     )
-
-    assert delegated_arguments[
-        "incremental_source_model"
-    ] == (
-        "Genereller_Entwaesserungsplan_AG"
-    )
-
-    assert delegated_arguments[
-        "incremental_created_models"
-    ] == (
-        "Genereller_Entwaesserungsplan_AG",
-    )
-
-    assert delegated_arguments[
-        "incremental_import_schema"
-    ] == "xtf_import_incremental"
 
     assert delegated_arguments[
         "import_schema"
@@ -836,14 +791,25 @@ def test_change_creation_service_imports_base_and_incremental_xtf(
         "rights_context"
     ] is rights_context
 
+    assert delegated_arguments[
+        "metadata"
+    ]["source_role"] == "base"
+
+    assert delegated_arguments[
+        "metadata"
+    ]["persist_job"] is False
+
+    assert delegated_arguments[
+        "metadata"
+    ]["source_model"] == (
+        "DSS_2020_1_LV95"
+    )
+
+
 def test_change_creation_service_rejects_unpersisted_incremental_source(
+    rights_context,
 ) -> None:
     service = _ready_service()
-
-    rights_context = SimpleNamespace(
-        provider_oid="ch080qwzPR000017",
-        dataowner_oid="ch080qwzPR000018",
-    )
 
     with pytest.raises(
         ValueError,
@@ -887,6 +853,7 @@ def test_change_creation_service_rejects_unpersisted_incremental_source(
 
 
 def test_change_creation_service_requires_prepared_base_source(
+    rights_context,
 ) -> None:
     diff_schema_service = Mock()
 
@@ -906,11 +873,6 @@ def test_change_creation_service_requires_prepared_base_source(
     service = _ready_service(
         diff_schema_service=diff_schema_service,
         effect_projector=effect_projector,
-    )
-
-    rights_context = SimpleNamespace(
-        provider_oid="ch080qwzPR000017",
-        dataowner_oid="ch080qwzPR000018",
     )
 
     with pytest.raises(
@@ -964,5 +926,72 @@ def test_change_creation_service_requires_prepared_base_source(
     (
         diff_schema_service
         .clear_prepared_source
+        .assert_not_called()
+    )
+
+
+def test_change_creation_service_rejects_unknown_source_role(
+    rights_context,
+) -> None:
+    service = _ready_service()
+
+    with pytest.raises(
+        ValueError,
+        match="source_role",
+    ):
+        service.create_diff_job_from_quarantine(
+            job_id="job-1",
+            job_mode=DiffJobMode.CREATE,
+            source_model="DSS",
+            rights_context=rights_context,
+            import_schema="import_schema",
+            metadata={
+                "source_role": "unknown",
+                "persist_job": True,
+            },
+        )
+
+    (
+        service.effect_projector
+        .effect_document_from_quarantine
+        .assert_not_called()
+    )
+
+
+@pytest.mark.parametrize(
+    "persist_job",
+    (
+        None,
+        0,
+        1,
+        "true",
+        "false",
+    ),
+)
+def test_change_creation_service_requires_boolean_persist_job(
+    rights_context,
+    persist_job,
+) -> None:
+    service = _ready_service()
+
+    with pytest.raises(
+        TypeError,
+        match="persist_job",
+    ):
+        service.create_diff_job_from_quarantine(
+            job_id="job-1",
+            job_mode=DiffJobMode.CREATE,
+            source_model="DSS",
+            rights_context=rights_context,
+            import_schema="import_schema",
+            metadata={
+                "source_role": "base",
+                "persist_job": persist_job,
+            },
+        )
+
+    (
+        service.effect_projector
+        .effect_document_from_quarantine
         .assert_not_called()
     )
