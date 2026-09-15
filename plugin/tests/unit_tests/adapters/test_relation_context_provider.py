@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import pytest
 
 from teksi_hooks.capabilities.mapping import (
@@ -18,11 +20,11 @@ class FakeRelation:
     pass
 
 
-class FakeModel:
-    def classes(self):
-        return {
-            "FakeRelation": FakeRelation,
-        }
+@pytest.fixture
+def quarantine_classes():
+    return {
+        "FakeRelation": FakeRelation,
+    }
 
 
 @pytest.fixture
@@ -38,7 +40,9 @@ def implicit_model_mapping():
         ModelMapping(
             classes={
                 "FakeRelation": ClassMapping(
-                    canonical_class_id="wastewater_node",
+                    canonical_class_id=(
+                        "wastewater_node"
+                    ),
                 ),
             },
         ),
@@ -56,108 +60,113 @@ def effective_mapping(
     )
 
 
-def test_relation_context_provider_uses_effective_implicit_mapping_for_dss(
-    monkeypatch,
+def test_relation_context_provider_uses_effective_implicit_mapping(
+    quarantine_classes,
     effective_mapping,
 ):
-    monkeypatch.setattr(
-        TwwRelationContextProvider,
-        "_get_model",
-        lambda self, schema: FakeModel(),
-    )
-
     provider = TwwRelationContextProvider(
-        ili_model="DSS_2020_1_LV95",
+        quarantine_classes=quarantine_classes,
         model_mapping=effective_mapping,
     )
 
     contexts = provider.relation_contexts()
 
-    assert len(contexts) == 1
+    assert len(
+        contexts,
+    ) == 1
 
-    context = contexts[0]
+    context = contexts[
+        0
+    ]
 
     assert context.relation is FakeRelation
-    assert context.class_mapping.canonical_class_id == "wastewater_node"
-
-
-def test_relation_context_provider_prefers_explicit_agxx_mapping(
-    monkeypatch,
-    implicit_model_mapping,
-):
-    monkeypatch.setattr(
-        TwwRelationContextProvider,
-        "_get_model",
-        lambda self, schema: FakeModel(),
+    assert (
+        context.class_mapping.canonical_class_id
+        == "wastewater_node"
     )
 
+
+def test_relation_context_provider_prefers_explicit_mapping(
+    quarantine_classes,
+    implicit_model_mapping,
+):
     explicit_model_mapping = ModelMappingCapability(
         ModelMapping(
             classes={
                 "FakeRelation": ClassMapping(
-                    canonical_class_id="agxx_wastewater_node",
+                    canonical_class_id=(
+                        "agxx_wastewater_node"
+                    ),
                 ),
             },
         ),
     )
 
-    effective_model_mapping = EffectiveModelMappingCapability(
-        explicit_mapping=explicit_model_mapping,
-        implicit_mapping=implicit_model_mapping,
+    effective_model_mapping = (
+        EffectiveModelMappingCapability(
+            explicit_mapping=(
+                explicit_model_mapping
+            ),
+            implicit_mapping=(
+                implicit_model_mapping
+            ),
+        )
     )
 
     provider = TwwRelationContextProvider(
-        ili_model="Abwasserkataster_AG_V2_LV95",
+        quarantine_classes=quarantine_classes,
         model_mapping=effective_model_mapping,
     )
 
     contexts = provider.relation_contexts()
 
-    assert len(contexts) == 1
+    assert len(
+        contexts,
+    ) == 1
 
-    context = contexts[0]
+    context = contexts[
+        0
+    ]
 
     assert context.relation is FakeRelation
-    assert context.class_mapping.canonical_class_id == "agxx_wastewater_node"
-
-
-def test_relation_context_provider_falls_back_to_implicit_mapping_for_unmapped_agxx_class(
-    monkeypatch,
-    effective_mapping,
-):
-    monkeypatch.setattr(
-        TwwRelationContextProvider,
-        "_get_model",
-        lambda self, schema: FakeModel(),
+    assert (
+        context.class_mapping.canonical_class_id
+        == "agxx_wastewater_node"
     )
 
+
+def test_relation_context_provider_falls_back_to_implicit_mapping(
+    quarantine_classes,
+    effective_mapping,
+):
     provider = TwwRelationContextProvider(
-        ili_model="Abwasserkataster_AG_V2_LV95",
+        quarantine_classes=quarantine_classes,
         model_mapping=effective_mapping,
     )
 
     contexts = provider.relation_contexts()
 
-    assert len(contexts) == 1
+    assert len(
+        contexts,
+    ) == 1
 
-    context = contexts[0]
+    context = contexts[
+        0
+    ]
 
     assert context.relation is FakeRelation
-    assert context.class_mapping.canonical_class_id == "wastewater_node"
+    assert (
+        context.class_mapping.canonical_class_id
+        == "wastewater_node"
+    )
 
 
 def test_relation_context_provider_returns_immutable_tuple(
-    monkeypatch,
+    quarantine_classes,
     effective_mapping,
 ):
-    monkeypatch.setattr(
-        TwwRelationContextProvider,
-        "_get_model",
-        lambda self, schema: FakeModel(),
-    )
-
     provider = TwwRelationContextProvider(
-        ili_model="DSS_2020_1_LV95",
+        quarantine_classes=quarantine_classes,
         model_mapping=effective_mapping,
     )
 
@@ -169,113 +178,93 @@ def test_relation_context_provider_returns_immutable_tuple(
     )
 
 
-def test_relation_context_provider_raises_for_unknown_group(
-    monkeypatch,
+def test_relation_context_provider_preserves_relation_order(
     effective_mapping,
 ):
-    monkeypatch.setattr(
-        "teksi_wastewater.hooks.adapters.tww_relation_context_provider.model_selection.groups_for_models",
-        lambda model: {
-            "unknown",
+    class FirstRelation:
+        pass
+
+    class SecondRelation:
+        pass
+
+    provider = TwwRelationContextProvider(
+        quarantine_classes={
+            "FirstRelation": FirstRelation,
+            "SecondRelation": SecondRelation,
         },
-    )
-
-    with pytest.raises(
-        ValueError,
-        match="No model defined for group",
-    ):
-        TwwRelationContextProvider(
-            ili_model="UnknownModel",
-            model_mapping=effective_mapping,
-        )
-
-def test_relation_context_provider_raises_for_empty_model_group(
-    monkeypatch,
-    effective_mapping,
-):
-    monkeypatch.setattr(
-        "teksi_wastewater.hooks.adapters.tww_relation_context_provider.model_selection.groups_for_models",
-        lambda model: set(),
-    )
-
-    with pytest.raises(
-        ValueError,
-        match="Expected exactly one model group",
-    ):
-        TwwRelationContextProvider(
-            ili_model="UnknownModel",
-            model_mapping=effective_mapping,
-        )
-
-
-def test_relation_context_provider_raises_for_multiple_model_groups(
-    monkeypatch,
-    effective_mapping,
-):
-    monkeypatch.setattr(
-        "teksi_wastewater.hooks.adapters.tww_relation_context_provider.model_selection.groups_for_models",
-        lambda model: {
-            "dss",
-            "ag64",
-        },
-    )
-
-    with pytest.raises(
-        ValueError,
-        match="Expected exactly one model group",
-    ):
-        TwwRelationContextProvider(
-            ili_model="AmbiguousModel",
-            model_mapping=effective_mapping,
-        )
-
-def test_relation_context_provider_passes_import_schema_to_model_loader(
-    monkeypatch,
-    effective_mapping,
-):
-    seen = {}
-
-    def fake_get_model(
-        self,
-        schema,
-    ):
-        seen["schema"] = schema
-        return FakeModel()
-
-    monkeypatch.setattr(
-        TwwRelationContextProvider,
-        "_get_model",
-        fake_get_model,
-    )
-
-    TwwRelationContextProvider(
-        ili_model="DSS_2020_1_LV95",
         model_mapping=effective_mapping,
-        import_schema="custom_import_schema",
     )
 
-    assert seen == {
-        "schema": "custom_import_schema",
-    }
+    provider.model_mapping = (
+        EffectiveModelMappingCapability(
+            explicit_mapping=(
+                ModelMappingCapability(
+                    ModelMapping(),
+                )
+            ),
+            implicit_mapping=(
+                ModelMappingCapability(
+                    ModelMapping(
+                        classes={
+                            "FirstRelation": (
+                                ClassMapping(
+                                    canonical_class_id=(
+                                        "first"
+                                    ),
+                                )
+                            ),
+                            "SecondRelation": (
+                                ClassMapping(
+                                    canonical_class_id=(
+                                        "second"
+                                    ),
+                                )
+                            ),
+                        },
+                    )
+                )
+            ),
+        )
+    )
 
-def test_relation_context_provider_raises_for_unmapped_relation(
-    monkeypatch,
+    contexts = provider.relation_contexts()
+
+    assert tuple(
+        context.relation
+        for context in contexts
+    ) == (
+        FirstRelation,
+        SecondRelation,
+    )
+
+
+def test_relation_context_provider_returns_empty_tuple_for_empty_classes(
+    effective_mapping,
 ):
-    monkeypatch.setattr(
-        TwwRelationContextProvider,
-        "_get_model",
-        lambda self, schema: FakeModel(),
+    provider = TwwRelationContextProvider(
+        quarantine_classes={},
+        model_mapping=effective_mapping,
     )
 
-    effective_model_mapping = EffectiveModelMappingCapability(
-        explicit_mapping=ModelMappingCapability(
-            ModelMapping(),
-        ),
-        implicit_mapping=None,
+    assert provider.relation_contexts() == ()
+
+
+def test_relation_context_provider_raises_for_unmapped_relation():
+    effective_model_mapping = (
+        EffectiveModelMappingCapability(
+            explicit_mapping=(
+                ModelMappingCapability(
+                    ModelMapping(),
+                )
+            ),
+            implicit_mapping=None,
+        )
     )
 
     provider = TwwRelationContextProvider(
-        ili_model="DSS_2020_1_LV95",
+        quarantine_classes={
+            "FakeRelation": FakeRelation,
+        },
         model_mapping=effective_model_mapping,
     )
 
@@ -287,17 +276,11 @@ def test_relation_context_provider_raises_for_unmapped_relation(
 
 
 def test_relation_context_provider_keeps_mapping_when_relation_is_not_inspectable(
-    monkeypatch,
+    quarantine_classes,
     effective_mapping,
 ):
-    monkeypatch.setattr(
-        TwwRelationContextProvider,
-        "_get_model",
-        lambda self, schema: FakeModel(),
-    )
-
     provider = TwwRelationContextProvider(
-        ili_model="DSS_2020_1_LV95",
+        quarantine_classes=quarantine_classes,
         model_mapping=effective_mapping,
     )
 
@@ -312,3 +295,132 @@ def test_relation_context_provider_keeps_mapping_when_relation_is_not_inspectabl
     )
 
     assert enriched == class_mapping
+
+
+def test_relation_context_provider_returns_function_mapping_unchanged(
+    quarantine_classes,
+):
+    function = object()
+
+    function_mapping = ClassMapping(
+        canonical_class_id=None,
+        function=function,
+    )
+
+    effective_model_mapping = (
+        EffectiveModelMappingCapability(
+            explicit_mapping=(
+                ModelMappingCapability(
+                    ModelMapping(
+                        classes={
+                            "FakeRelation": (
+                                function_mapping
+                            ),
+                        },
+                    )
+                )
+            ),
+            implicit_mapping=None,
+        )
+    )
+
+    provider = TwwRelationContextProvider(
+        quarantine_classes=quarantine_classes,
+        model_mapping=effective_model_mapping,
+    )
+
+    contexts = provider.relation_contexts()
+
+    assert len(
+        contexts,
+    ) == 1
+
+    assert (
+        contexts[0].class_mapping
+        is function_mapping
+    )
+
+
+def test_relation_context_provider_explicit_class_overrides_implicit_class(
+    quarantine_classes,
+):
+    explicit_mapping = ClassMapping(
+        canonical_class_id=(
+            "agxx_wastewater_node"
+        ),
+    )
+
+    implicit_mapping = ClassMapping(
+        canonical_class_id=(
+            "wastewater_node"
+        ),
+    )
+
+    provider = TwwRelationContextProvider(
+        quarantine_classes=quarantine_classes,
+        model_mapping=(
+            EffectiveModelMappingCapability(
+                explicit_mapping=(
+                    ModelMappingCapability(
+                        ModelMapping(
+                            classes={
+                                "FakeRelation": (
+                                    explicit_mapping
+                                ),
+                            },
+                        )
+                    )
+                ),
+                implicit_mapping=(
+                    ModelMappingCapability(
+                        ModelMapping(
+                            classes={
+                                "FakeRelation": (
+                                    implicit_mapping
+                                ),
+                            },
+                        )
+                    )
+                ),
+            )
+        ),
+    )
+
+    context = provider.relation_contexts()[
+        0
+    ]
+
+    assert (
+        context.class_mapping.canonical_class_id
+        == "agxx_wastewater_node"
+    )
+
+
+def test_relation_context_provider_does_not_mutate_source_mapping(
+    quarantine_classes,
+    effective_mapping,
+):
+    original_mapping = (
+        effective_mapping
+        .implicit_mapping
+        .class_definition(
+            "FakeRelation",
+        )
+    )
+
+    provider = TwwRelationContextProvider(
+        quarantine_classes=quarantine_classes,
+        model_mapping=effective_mapping,
+    )
+
+    provider.relation_contexts()
+
+    current_mapping = (
+        effective_mapping
+        .implicit_mapping
+        .class_definition(
+            "FakeRelation",
+        )
+    )
+
+    assert current_mapping == original_mapping
