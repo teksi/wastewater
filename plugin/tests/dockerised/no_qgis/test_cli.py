@@ -2,7 +2,7 @@ from decimal import Decimal
 from pathlib import Path
 
 import pytest
-from teksi_wastewater.interlis import config
+from teksi_wastewater.interlis import config, model_config
 from teksi_wastewater.utils.database_utils import DatabaseUtils
 
 from ..helpers import (
@@ -92,14 +92,14 @@ def exported_sia405_base_abwasser(
     run_cli(
         "interlis_export "
         f'--xtf_file "{_container_output_file(base_name)}" '
-        f"--export_model {config.MODEL_NAME_SIA405_BASE_ABWASSER} "
+        f"--export_model {model_names_for_language(groups=("sia405_base_abwasser"),lang="de").items["sia405_base_abwasser"]} "
         "--logs_next_to_file "
         f"{DB_ARGS}"
     )
 
     return _host_exported_file(
         base_name,
-        config.MODEL_NAME_SIA405_BASE_ABWASSER,
+        model_names_for_language(groups=("sia405_base_abwasser"),lang="de").items["sia405_base_abwasser"],
     )
 
 
@@ -112,14 +112,14 @@ def exported_sia405_abwasser(
     run_cli(
         "interlis_export "
         f'--xtf_file "{_container_output_file(base_name)}" '
-        f"--export_model {config.MODEL_NAME_SIA405_ABWASSER} "
+        f"--export_model {model_names_for_language(groups=("sia405_abwasser"),lang="de").items["sia405_abwasser"]} "
         "--logs_next_to_file "
         f"{DB_ARGS}"
     )
 
     return _host_exported_file(
         base_name,
-        config.MODEL_NAME_SIA405_ABWASSER,
+        model_config.model_names_for_language(groups=("sia405_abwasser"),lang="de").items["sia405_abwasser"],
     )
 
 
@@ -132,14 +132,14 @@ def exported_dss(
     run_cli(
         "interlis_export "
         f'--xtf_file "{_container_output_file(base_name)}" '
-        f"--export_model {config.MODEL_NAME_DSS} "
+        f"--export_model {model_config.model_names_for_language(groups=("dss"),lang="de").items["dss"]} "
         "--logs_next_to_file "
         f"{DB_ARGS}"
     )
 
     return _host_exported_file(
         base_name,
-        config.MODEL_NAME_DSS,
+        model_config.model_names_for_language(groups=("dss"),lang="de").items["dss"],
     )
 
 
@@ -152,14 +152,14 @@ def exported_kek(
     run_cli(
         "interlis_export "
         f'--xtf_file "{_container_output_file(base_name)}" '
-        f"--export_model {config.MODEL_NAME_VSA_KEK} "
+        f"--export_model {model_config.model_names_for_language(groups=("vsa_kek"),lang="de").items["vsa_kek"]} "
         "--logs_next_to_file "
         f"{DB_ARGS}"
     )
 
     return _host_exported_file(
         base_name,
-        config.MODEL_NAME_VSA_KEK,
+        model_config.model_names_for_language(groups=("vsa_kek"),lang="de").items["vsa_kek"],
     )
 
 
@@ -193,7 +193,7 @@ def exported_dss_selection(
     run_cli(
         "interlis_export "
         f'--xtf_file "{_container_output_file(base_name)}" '
-        f"--export_model {config.MODEL_NAME_DSS} "
+        f"--export_model {model_config.model_names_for_language(groups=("dss"),lang="de").items["dss"]} "
         '--selected_ids "ch000000WN000002,ch000000WN000003,ch000000RE000002" '
         "--logs_next_to_file "
         f"{DB_ARGS}"
@@ -283,7 +283,7 @@ def test_export_sia405_base_abwasser(
 ) -> None:
     interlis_object = get_xtf_object(
         exported_sia405_base_abwasser,
-        config.TOPIC_NAME_SIA405_ADMINISTRATION,
+        next(iter(model_config.topics_for_group(group="sia405_base_abwasser",lang="de"))),
         "Organisation",
         "ch20p3q400001497",
     )
@@ -296,7 +296,7 @@ def test_export_sia405_abwasser(
 ) -> None:
     interlis_object = get_xtf_object(
         exported_sia405_abwasser,
-        config.TOPIC_NAME_SIA405_ABWASSER,
+        next(iter(model_config.topics_for_group(group="sia405_abwasser",lang="de"))),
         "Haltung",
         "ch000000RE000001",
     )
@@ -304,7 +304,7 @@ def test_export_sia405_abwasser(
 
     interlis_object = get_xtf_object(
         exported_sia405_abwasser,
-        config.TOPIC_NAME_SIA405_ABWASSER,
+        next(iter(model_config.topics_for_group(group="sia405_abwasser",lang="de"))),
         "Rohrprofil",
         "ch000000PP000003",
     )
@@ -312,7 +312,7 @@ def test_export_sia405_abwasser(
 
     height_width_ratio_text = get_xtf_object_node_text(
         exported_sia405_abwasser,
-        config.TOPIC_NAME_SIA405_ABWASSER,
+        next(iter(model_config.topics_for_group(group="sia405_abwasser",lang="de"))),
         "Rohrprofil",
         "ch000000PP000003",
         "HoehenBreitenverhaeltnis",
@@ -326,7 +326,7 @@ def test_export_dss(
 ) -> None:
     interlis_object = get_xtf_object(
         exported_dss,
-        config.TOPIC_NAME_DSS,
+        next(iter(model_config.topics_for_group(group="dss",lang="de"))),
         "Rohrprofil",
         "ch000000PP000001",
     )
@@ -339,7 +339,7 @@ def test_export_kek(
 ) -> None:
     interlis_object = get_xtf_object(
         exported_kek,
-        config.TOPIC_NAME_KEK,
+        next(iter(model_config.topics_for_group(group="vsa_kek",lang="de"))),
         "Untersuchung",
         "fk11abk6EX000002",
     )
@@ -378,7 +378,7 @@ def test_export_dss_selection(
 
     interlis_object = get_xtf_object(
         exported_dss_selection,
-        config.TOPIC_NAME_DSS,
+        next(iter(model_config.topics_for_group(group="dss",lang="de"))),
         "Rohrprofil",
         "ch000000PP000001",
     )
@@ -386,7 +386,7 @@ def test_export_dss_selection(
 
     interlis_object = get_xtf_object(
         exported_dss_selection,
-        config.TOPIC_NAME_DSS,
+        next(iter(model_config.topics_for_group(group="sia405_abwasser",lang="de"))),
         "Rohrprofil",
         "ch000000PP000002",
     )

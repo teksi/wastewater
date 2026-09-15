@@ -116,7 +116,7 @@ def main() -> int:
     )
     # parser.add_argument(
     #     "--incremental_import-schema",
-    #     default=config.IMPORT_SCHEMA_INCREMENTAL,
+    #     default=config.IMPORT_SCHEMA_INCR,
     #     help="Optional Quarantine schema used for the incremental import.",
     # )
 

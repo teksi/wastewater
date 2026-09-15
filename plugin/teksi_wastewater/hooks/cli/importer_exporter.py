@@ -11,7 +11,7 @@ from teksi_wastewater.hooks.adapters.tww_interlis_service_adapter import (
     TwwInterlisContext,
     TwwInterlisServiceAdapter,
 )
-from teksi_wastewater.interlis import config
+from teksi_wastewater.interlis import config, model_config, model_selection
 from teksi_wastewater.interlis.interlis_importer_exporter import (
     InterlisImporterExporterError,
 )
@@ -128,13 +128,13 @@ class TeksiWastewaterCmd:
 
         subparser.add_argument(
             "--export_model",
-            default=config.interlis_models[
+            default=model_config.interlis_models[
                 "dss"
             ].lang_name(
                 "de",
             ),
             choices=sorted(
-                config.ALL_SUPPORTED_MODELS,
+                model_selection.ALL_SUPPORTED_MODELS,
             ),
             help="Model to export (default: %(default)s)",
         )

@@ -125,7 +125,7 @@ class TestInterlis(unittest.TestCase):
         export_xtf_file = self._get_output_filename("export_minimal_dss_dataset.xtf")
         interlisImporterExporter.interlis_export(
             xtf_file_output=self._get_output_filename(export_xtf_file),
-            export_models=[config.MODEL_NAME_DSS],
+            export_models=[model_names_for_language(groups=("dss"),lang="de").items["dss"]],
             logs_next_to_file=True,
             user_interaction=False,
         )
@@ -133,27 +133,27 @@ class TestInterlis(unittest.TestCase):
     def test_get_xtf_models(self):
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_DSS)
         models = InterlisTools.get_xtf_models(xtf_file=xtf_file_input)
-        self.assertCountEqual(models, [config.MODEL_NAME_DSS])
+        self.assertCountEqual(models, [model_names_for_language(groups=("dss"),lang="de").items["dss"]])
 
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_SIA405_ABWASSER)
         models = InterlisTools.get_xtf_models(xtf_file=xtf_file_input)
-        self.assertCountEqual(models, [config.MODEL_NAME_SIA405_ABWASSER])
+        self.assertCountEqual(models, [model_names_for_language(groups=("sia405_abwasser"),lang="de").items["sia405_abwasser"]])
 
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_ORGANISATION_ARBON_ONLY)
         models = InterlisTools.get_xtf_models(xtf_file=xtf_file_input)
-        self.assertCountEqual(models, [config.MODEL_NAME_SIA405_BASE_ABWASSER])
+        self.assertCountEqual(models, [model_names_for_language(groups=("sia405_base_abwasser"),lang="de").items["sia405_base_abwasser"]])
 
         xtf_file_input = self._get_data_filename(TEST_DATASET_DSS)
         models = InterlisTools.get_xtf_models(xtf_file=xtf_file_input)
         self.assertCountEqual(
             models,
-            ["Units", "Base", config.MODEL_NAME_SIA405_BASE_ABWASSER, config.MODEL_NAME_DSS],
+            ["Units", "Base", model_names_for_language(groups=("sia405_base_abwasser"),lang="de").items["sia405_base_abwasser"],model_names_for_language(groups=("dss"),lang="de").items["dss"]],
         )
 
         xtf_file_input = self._get_data_filename(TEST_DATASET_ORGANISATIONS)
         models = InterlisTools.get_xtf_models(xtf_file=xtf_file_input)
-        self.assertCountEqual(models, [config.MODEL_NAME_SIA405_BASE_ABWASSER])
+        self.assertCountEqual(models, [model_names_for_language(groups=("sia405_base_abwasser"),lang="de").items["sia405_base_abwasser"]])
 
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_KEK_MANHOLE_DAMAGE)
         models = InterlisTools.get_xtf_models(xtf_file=xtf_file_input)
-        self.assertCountEqual(models, [config.MODEL_NAME_VSA_KEK])
+        self.assertCountEqual(models, [model_names_for_language(groups=("vsa_kek"),lang="de").items["vsa_kek"]])

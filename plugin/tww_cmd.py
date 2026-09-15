@@ -3,7 +3,7 @@
 import argparse
 import sys
 
-from teksi_wastewater.interlis import config
+from teksi_wastewater.interlis import config, model_config
 from teksi_wastewater.interlis.interlis_importer_exporter import (
     InterlisImporterExporter,
     InterlisImporterExporterError,
@@ -79,7 +79,7 @@ class TeksiWastewaterCmd:
         subparser.add_argument("--xtf_file", help="XTF output file", required=True)
         subparser.add_argument(
             "--export_model",
-            default=config.interlis_models["dss"].lang_name("de"),
+            default=model_config.interlis_models["dss"].lang_name("de"),
             choices=config.ALL_SUPPORTED_MODELS,
             help="Model to export (default:  %(default)s)",
         )

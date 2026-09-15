@@ -174,7 +174,7 @@ def test_relation_context_provider_raises_for_unknown_group(
     effective_mapping,
 ):
     monkeypatch.setattr(
-        "teksi_wastewater.hooks.adapters.tww_relation_context_provider.config.groups_for_models",
+        "teksi_wastewater.hooks.adapters.tww_relation_context_provider.model_config.groups_for_models",
         lambda model: {
             "unknown",
         },
@@ -194,7 +194,7 @@ def test_relation_context_provider_raises_for_empty_model_group(
     effective_mapping,
 ):
     monkeypatch.setattr(
-        "teksi_wastewater.hooks.adapters.tww_relation_context_provider.config.groups_for_models",
+        "teksi_wastewater.hooks.adapters.tww_relation_context_provider.model_config.groups_for_models",
         lambda model: set(),
     )
 
@@ -213,7 +213,7 @@ def test_relation_context_provider_raises_for_multiple_model_groups(
     effective_mapping,
 ):
     monkeypatch.setattr(
-        "teksi_wastewater.hooks.adapters.tww_relation_context_provider.config.groups_for_models",
+        "teksi_wastewater.hooks.adapters.tww_relation_context_provider.model_config.groups_for_models",
         lambda model: {
             "dss",
             "ag64",

@@ -6,7 +6,7 @@ from dataclasses import replace
 from sqlalchemy import inspect
 from sqlalchemy.exc import NoInspectionAvailable
 
-from ...interlis import config
+from ...interlis import config, model_selection
 from ...interlis.interlis_model_mapping.model_interlis_ag64 import (
     ModelInterlisAG64,
 )
@@ -80,7 +80,7 @@ class TwwRelationContextProvider(
     ):
         self.ili_model = ili_model
 
-        self.groups = config.groups_for_models(
+        self.groups = model_selection.groups_for_models(
             self.ili_model,
         )
 

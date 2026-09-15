@@ -115,13 +115,13 @@ class InterlisModel:
             for model in self.models
         )
 
-    def lang_name(
+    def language_model(
         self,
         lang: str,
         fallback_lang: str = DEFAULT_INTERLIS_LANGUAGE,
-    ) -> str:
+    ) -> InterlisLangModel:
         """
-        Return the model name for a language.
+        Return the configured model variant for a language.
 
         If the requested language is unavailable, return the model configured
         for ``fallback_lang``.
@@ -129,7 +129,7 @@ class InterlisModel:
 
         requested_model = next(
             (
-                model.model
+                model
                 for model in self.models
                 if model.lang == lang
             ),
@@ -141,7 +141,7 @@ class InterlisModel:
 
         fallback_model = next(
             (
-                model.model
+                model
                 for model in self.models
                 if model.lang == fallback_lang
             ),
@@ -155,8 +155,45 @@ class InterlisModel:
             "No INTERLIS model is configured for "
             f"language {lang!r} or fallback language "
             f"{fallback_lang!r}. Available languages: "
-            f"{sorted(self.languages)}"
+            f"{sorted(self.languages)!r}."
         )
+
+
+    def lang_name(
+        self,
+        lang: str,
+        fallback_lang: str = DEFAULT_INTERLIS_LANGUAGE,
+    ) -> str:
+        """
+        Return the model name for a language.
+
+        If the requested language is unavailable, return the model configured
+        for ``fallback_lang``.
+        """
+
+        return self.language_model(
+            lang=lang,
+            fallback_lang=fallback_lang,
+        ).model
+
+
+    def topics_by_lang(
+        self,
+        lang: str,
+        fallback_lang: str = DEFAULT_INTERLIS_LANGUAGE,
+    ) -> frozenset:
+        """
+        Return the configured topics for a language.
+
+        If the requested language is unavailable, return the topics configured
+        for ``fallback_lang``.
+        """
+
+        return self.language_model(
+            lang=lang,
+            fallback_lang=fallback_lang,
+        ).topics
+    
 @dataclass(
     slots=True,
     frozen=True,
@@ -800,3 +837,35 @@ def resolved_model_names(
         for group in resolved_groups
     )
 
+def topics_for_group(
+    group: str,
+    lang: str,
+    fallback_lang: str = DEFAULT_INTERLIS_LANGUAGE,
+) -> frozenset:
+    """
+    Return the topics configured for one model group and language.
+
+    Raises
+    ------
+    KeyError
+        If the model group is unknown.
+
+    ValueError
+        If neither the requested language nor the fallback language is
+        configured for the model group.
+    """
+
+    try:
+        model = interlis_models[
+            group
+        ]
+    except KeyError as exception:
+        raise KeyError(
+            f"Unknown INTERLIS model group: {group!r}. "
+            f"Available groups: {tuple(sorted(interlis_models))!r}."
+        ) from exception
+
+    return model.topics_by_lang(
+        lang=lang,
+        fallback_lang=fallback_lang,
+    )

@@ -10,7 +10,7 @@ from typing import Iterable
 import requests
 
 from ..utils.database_utils import DatabaseUtils, TWWIntegrityChecker
-from . import config
+from . import config,model_selection
 from .interlis_model_mapping.interlis_exporter_to_intermediate_schema import (
     InterlisExporterToIntermediateSchema,
     InterlisExporterToIntermediateSchemaError,
@@ -90,8 +90,8 @@ class InterlisImporterExporter:
         self.current_progress = 0
         self.schema =None
 
-    def _init_model_classes(self, model_selection):
-        model_interlis = model_selection.primary_component.quarantine_model(self.schema)
+    def _init_model_classes(self, selection_models):
+        model_interlis = selection_models.primary_component.quarantine_model(self.schema)
 
         if model_interlis is None:
             raise InterlisImporterExporterError(
@@ -115,7 +115,7 @@ class InterlisImporterExporter:
             self.model_classes_tww_sys = ModelTwwSys().classes()
             self._progress_done(self.current_progress + 1)
 
-        if {"ag64", "ag96"} & model_selection.groups and self.model_classes_tww_app is None:
+        if {"ag64", "ag96"} & selection_models.groups and self.model_classes_tww_app is None:
             self.model_classes_tww_app = ModelTwwAG6496().classes()
             self._progress_done(self.current_progress + 1)
 
@@ -147,7 +147,7 @@ class InterlisImporterExporter:
             self.schema=config.IMPORT_SCHEMA
 
         self._clear_ili_schema(recreate_tables=True)
-        model_selection=self.interlis_import_to_quarantine(
+        selection_models=self.interlis_import_to_quarantine(
             xtf_file_input=xtf_file_input,
             logs_next_to_file=logs_next_to_file,
             filter_nulls=filter_nulls,
@@ -161,7 +161,7 @@ class InterlisImporterExporter:
             incremental_only=incremental_only,
         )
         self.interlis_import_from_quarantine_to_live(
-            model_selection=model_selection,
+            selection_models=selection_models,
             show_selection_dialog=show_selection_dialog,
             logs_next_to_file=logs_next_to_file,
             filter_nulls=filter_nulls,
@@ -179,7 +179,7 @@ class InterlisImporterExporter:
         logs_next_to_file=True,
         filter_nulls=True,
         srid: int = 2056,
-        model_selection: TwwInterlisModelSelection | None = None,
+        selection_models: TwwInterlisModelSelection | None = None,
         progress_scope: ProgressScope = ProgressScope(),
         incremental_only=False,
     ) -> TwwInterlisModelSelection:
@@ -196,9 +196,9 @@ class InterlisImporterExporter:
         if srid:
             self.srid = srid
 
-        if model_selection is not None:
+        if selection_models is not None:
             if (
-                model_selection.import_model
+                selection_models.import_model
                 not in {
                     "Genereller_Entwaesserungsplan_AG",
                     "Abwasserkataster_AG_V2_LV95",
@@ -208,17 +208,17 @@ class InterlisImporterExporter:
                 raise InterlisImporterExporterError(
                     error=(
                         "incremental_only flag is not applicable "
-                        f"to {model_selection.import_model}."
+                        f"to {selection_models.import_model}."
                     )
                 )
 
-            return model_selection
+            return selection_models
 
         if not xtf_file_input:
             raise InterlisImporterExporterError(
                 error=(
                     "Cannot prepare INTERLIS import without either "
-                    "model_selection or xtf_file_input."
+                    "selection_models or xtf_file_input."
                 )
             )
 
@@ -228,7 +228,7 @@ class InterlisImporterExporter:
             "Extract model from xtf...",
         )
 
-        return self.find_import_model_selection(
+        return self.find_import_selection_models(
             xtf_file_input,
         )
 
@@ -245,7 +245,7 @@ class InterlisImporterExporter:
         incremental_only=False,
         
     ):
-            model_selection=self._prepare_interlis_import(
+            selection_models=self._prepare_interlis_import(
                 xtf_file_input=xtf_file_input,
                 logs_next_to_file=logs_next_to_file,
                 filter_nulls=filter_nulls,
@@ -254,7 +254,7 @@ class InterlisImporterExporter:
                 incremental_only=incremental_only,
                 )
 
-            created_models = tuple(model_selection.created_models)
+            created_models = tuple(selection_models.created_models)
 
             if not created_models:
                 raise InterlisImporterExporterError(
@@ -290,11 +290,11 @@ class InterlisImporterExporter:
             self._import_xtf_file(xtf_file_input=xtf_file_input)
             self._progress_done_in_scope(progress_scope, 100, "INTERLIS import into quarantine schema finished.")
 
-            return model_selection
+            return selection_models
 
     def interlis_import_from_quarantine_to_live(
         self,
-        model_selection: TwwInterlisModelSelection,
+        selection_models: TwwInterlisModelSelection,
         show_selection_dialog=False,
         logs_next_to_file=True,
         filter_nulls=True,
@@ -303,11 +303,11 @@ class InterlisImporterExporter:
         incremental_only=False,
     ):
 
-            model_selection =self._prepare_interlis_import(
+            selection_models =self._prepare_interlis_import(
                 logs_next_to_file=logs_next_to_file,
                 filter_nulls=filter_nulls,
                 srid=srid,
-                model_selection=model_selection,
+                selection_models=selection_models,
                 progress_scope=progress_scope,
                 incremental_only=incremental_only,
                 )
@@ -320,14 +320,14 @@ class InterlisImporterExporter:
                 if incremental_only:
                     # Import from the temporary ili2pg model
                     self._progress_done_in_scope(progress_scope, 20, "Converting incremental values to TEKSI Wastewater...")
-                    tww_session = self._import_incremental(model_selection.import_model)
+                    tww_session = self._import_incremental(selection_models.import_model)
                     self._progress_done_in_scope(progress_scope, 80, "Commit session...")
                     tww_session.commit()
                     tww_session.close()
                 else:
                     # Import from the temporary ili2pg model
                     self._progress_done_in_scope(progress_scope, 20, "Converting to TEKSI Wastewater...")
-                    tww_session = self._import_from_intermediate_schema(model_selection)
+                    tww_session = self._import_from_intermediate_schema(selection_models)
 
                     if show_selection_dialog:
                         from qgis.PyQt.QtCore import Qt
@@ -383,7 +383,7 @@ class InterlisImporterExporter:
             self._progress_done_in_scope(progress_scope, 100)
             logger.info("INTERLIS import finished.")
 
-    def find_import_model_selection(
+    def find_import_selection_models(
         self,
         xtf_file_input: Path,
     ) -> TwwInterlisModelSelection:
@@ -485,8 +485,8 @@ class InterlisImporterExporter:
             self._progress_done_in_scope(progress_scope, 15, "Creating ili schema...")
             create_basket_col = False
             export_models = set(export_models)
-            model_selection = config.model_selection_for_imported_models(export_models)
-            if "vsa_kek" in model_selection.groups:
+            selection_models = model_selection.selection_models_for_imported_models(export_models)
+            if "vsa_kek" in selection_models.groups:
                 create_basket_col = True
             self._create_ili_schema(export_models, create_basket_col=create_basket_col)
 
@@ -501,19 +501,19 @@ class InterlisImporterExporter:
                         limit_to_selection=limit_to_selection,
                         selected_labels_scales_indices=selected_labels_scales_indices,
                         labels_file_path=labels_file,
-                        model_groups=model_selection.groups,
+                        model_groups=selection_models.groups,
                         export_orientation=export_orientation,
                         include_unplaced=include_unplaced,
                     )
 
 
-            if "ag96" in model_selection.groups:
+            if "ag96" in selection_models.groups:
                 self._progress_done_in_scope(progress_scope, 35, "Importing AG-96 organisations to intermediate schema")
                 file_path = "data/Organisationstabelle_AG96.xtf"
                 abs_file_path = Path(__file__).parent.resolve() / file_path
                 logger.info("Importing AG-96 organisation to intermediate schema")
                 self._import_xtf_file(abs_file_path)
-            elif "ag64" in model_selection.groups:
+            elif "ag64" in selection_models.groups:
                 self._progress_done_in_scope(progress_scope, 35, "Importing AG-64 organisations to intermediate schema")
                 file_path = "data/Organisationstabelle_AG64.xtf"
                 abs_file_path = Path(__file__).parent.resolve() / file_path
@@ -526,7 +526,7 @@ class InterlisImporterExporter:
             # Export to the temporary ili2pg model
             self._progress_done_in_scope(progress_scope, 45, "Converting from TEKSI Wastewater to intermediate schema...")
             self._export_to_intermediate_schema(
-                model_selection=model_selection,
+                selection_models=selection_models,
                 file_name=xtf_file_output,
                 selected_ids=selected_ids,
                 export_orientation=export_orientation,
@@ -755,17 +755,17 @@ class InterlisImporterExporter:
                 log_path,
             )
 
-    def _import_from_intermediate_schema(self, model_selection):
+    def _import_from_intermediate_schema(self, selection_models):
         log_handler = logging.FileHandler(
             make_log_path(self.base_log_path, "tww2ili-import"), mode="w", encoding="utf-8"
         )
         log_handler.setLevel(logging.INFO)
         log_handler.setFormatter(logging.Formatter("%(levelname)-8s %(message)s"))
 
-        self._init_model_classes(model_selection)
+        self._init_model_classes(selection_models)
 
         interlisImporterFromIntermediateSchema = InterlisImporterFromIntermediateSchema(
-            model=model_selection.import_model,
+            model=selection_models.import_model,
             model_classes_interlis=self.model_classes_interlis,
             model_classes_tww_od=self.model_classes_tww_od,
             model_classes_tww_vl=self.model_classes_tww_vl,
@@ -913,7 +913,7 @@ class InterlisImporterExporter:
 
     def _export_to_intermediate_schema(
         self,
-        model_selection,
+        selection_models,
         file_name=None,
         selected_ids=None,
         export_orientation=90.0,
@@ -926,10 +926,10 @@ class InterlisImporterExporter:
         log_handler.setLevel(logging.INFO)
         log_handler.setFormatter(logging.Formatter("%(levelname)-8s %(message)s"))
 
-        self._init_model_classes(model_selection)
+        self._init_model_classes(selection_models)
 
         twwInterlisExporter = InterlisExporterToIntermediateSchema(
-            export_model_groups=model_selection.groups,
+            export_model_groups=selection_models.groups,
             model_classes_interlis=self.model_classes_interlis,
             model_classes_tww_od=self.model_classes_tww_od,
             model_classes_tww_vl=self.model_classes_tww_vl,
@@ -1140,7 +1140,7 @@ class InterlisImporterExporter:
                 group,
                 language_model,
                 model,
-            ) = config.model_selection_for_imported_models(
+            ) = model_selection.model_selections_for_imported_models(
                 imported_models,
             )
         except LookupError as exception:
@@ -1175,7 +1175,7 @@ class InterlisImporterExporter:
             created_models=created_models,
         )
 
-    def model_selection_for_imported_models(
+    def selection_models_for_imported_models(
         imported_models: str | Iterable[str],
     ) -> tuple[
         str,
