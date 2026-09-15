@@ -1141,7 +1141,7 @@ class InterlisImporterExporter:
                 group,
                 language_model,
                 model,
-            ) = model_selection.model_selections_for_imported_models(
+            ) = model_selection.model_selection_for_imported_models(
                 imported_models,
             )
         except LookupError as exception:
