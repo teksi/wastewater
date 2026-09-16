@@ -19,6 +19,10 @@ from teksi_wastewater.interlis.model_selection import (
     model_selection_for_imported_models,
 )
 
+from teksi_wastewater.interlis.interlis_importer_exporter import (
+    InterlisImporterExporter
+)
+
 import logging
 
 logger = logging.getLogger(
@@ -40,10 +44,18 @@ class TwwInterlisPersistenceResult:
     committed: bool
 
 
-class TwwInterlisPersistenceAdapter():
+from dataclasses import dataclass
+
+
+@dataclass(
+    slots=True,
+)
+class TwwInterlisPersistenceAdapter:
     """
     Persist one prepared quarantine schema through the existing importer.
     """
+
+    importer_exporter: InterlisImporterExporter
 
     def persist_quarantine(
         self,

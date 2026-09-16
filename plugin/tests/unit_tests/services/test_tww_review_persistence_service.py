@@ -83,23 +83,12 @@ def _service(
     *,
     job: DiffReviewJob | None = None,
     counts: DiffJobCounts | None = None,
-) -> tuple[
-    TwwReviewPersistenceService,
-    Mock,
-    Mock,
-    Mock,
-    Mock,
-]:
+    validation_finding_row_count: int = 0,
+):
     diff_schema_service = Mock()
-    quarantine_preparer = Mock(
-        spec=TwwQuarantinePersistencePreparer,
-    )
-    backup_service = Mock(
-        spec=TwwQuarantineBackupService,
-    )
-    persistence_adapter = Mock(
-        spec=TwwInterlisPersistenceAdapter,
-    )
+    quarantine_preparer = Mock()
+    backup_service = Mock()
+    persistence_adapter = Mock()
 
     diff_schema_service.require_review_job.return_value = (
         job
@@ -111,6 +100,10 @@ def _service(
         counts
         if counts is not None
         else _counts()
+    )
+
+    diff_schema_service.validation_finding_row_count.return_value = (
+        validation_finding_row_count
     )
 
     backup_service.create_backup.return_value = (

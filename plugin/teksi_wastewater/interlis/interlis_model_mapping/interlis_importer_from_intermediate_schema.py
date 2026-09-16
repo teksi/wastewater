@@ -6,7 +6,7 @@ from sqlalchemy.orm.attributes import flag_dirty
 from sqlalchemy.sql import text
 
 from ...utils.plugin_utils import logger
-from .. import  utils, model_config
+from .. import  utils, model_config,model_selection
 
 
 class InterlisImporterFromIntermediateSchema:
@@ -20,7 +20,7 @@ class InterlisImporterFromIntermediateSchema:
         callback_progress_done=None,
         filter_nulls=False,
     ):
-        self.model_groups = set(model_config.groups_for_models(model))
+        self.model_groups = set(model_selection.groups_for_models(model))
         self.callback_progress_done = callback_progress_done
 
         self.model_classes_interlis = model_classes_interlis
