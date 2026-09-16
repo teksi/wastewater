@@ -14,7 +14,6 @@ from teksi_hooks.models.review import (
 from teksi_wastewater.hooks.exceptions import (
     DiffJobEligibilityError,
     DiffJobPersistenceError,
-    DiffJobStateError,
 )
 
 from teksi_wastewater.hooks.adapters.tww_interlis_persistence_adapter import (
@@ -301,7 +300,7 @@ def test_persist_job_rejects_non_accepted_job(
     )
 
     with pytest.raises(
-        DiffJobStateError,
+        DiffJobEligibilityError,
         match="expected 'accepted'",
     ):
         service.persist_job(
