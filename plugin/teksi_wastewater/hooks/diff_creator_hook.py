@@ -286,7 +286,7 @@ class Hook(
                 xtf_file=xtf_file,
                 schema=import_schema,
                 quarantine_runner=quarantine_runner,
-                canonical_model=canonical_model,
+                canonical_metadata=canonical_metadata,
                 diff_schema_service=diff_schema_service,
                 rights_evaluator=rights_evaluator,
                 context=context,
@@ -298,7 +298,7 @@ class Hook(
                 xtf_file=xtf_file,
                 schema=import_schema,
                 quarantine_runner=quarantine_runner,
-                canonical_model=canonical_model,
+                canonical_metadata=canonical_metadata,
                 diff_schema_service=diff_schema_service,
                 rights_evaluator=rights_evaluator,
                 context=context,
@@ -323,7 +323,7 @@ class Hook(
             xtf_file,
             schema,
             quarantine_runner,
-            canonical_model,
+            canonical_metadata,
             diff_schema_service,
             rights_evaluator,
             context,
@@ -374,7 +374,7 @@ class Hook(
         service = TwwChangeCreationService(
             connection_factory=self.connection_factory,
             quarantine_runner=quarantine_runner,
-            canonical_model=canonical_model,
+            canonical_metadata=canonical_metadata,
             effect_projector=effect_projector,
             rights_evaluator=rights_evaluator,
             object_provider_factory=context.capability(
@@ -401,8 +401,15 @@ class Hook(
                     xtf_file,
                 ),
                 "source_schema": schema,
-                "model_group": model_selection.group,
-                "model_language": model_selection.language,
+                "model_group": (
+                    model_selection.group
+                ),
+                "model_language": (
+                    model_selection.language
+                ),
+                "mapping_model_id": (
+                    model_selection.mapping_model_id
+                ),
                 "persist_job": final_diff_run,
             }
         )

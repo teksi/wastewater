@@ -196,7 +196,7 @@ def main() -> int:
         Path(__file__)
         .resolve()
         .parents[1]
-        / "diff_exporter_hook.py"
+        / "diff_creator_hook.py"
     )
 
     HookHandler(

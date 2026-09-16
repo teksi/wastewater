@@ -239,20 +239,36 @@ class TwwChangeCreationService:
         job_mode: DiffJobMode,
         source_model: str,
         rights_context: RightsEvaluationContext,
-        created_models: Sequence[str] = (),
+        created_models: Sequence[
+            str,
+        ] = (),
         import_schema: str = config.IMPORT_SCHEMA,
         live_schema: str = config.TWW_OD_SCHEMA,
-        metadata: Mapping[str, Any] | None = None,
+        metadata: Mapping[
+            str,
+            Any,
+        ] | None = None,
     ) -> ChangeCreationResult:
         """
         Process one populated quarantine source.
 
         A non-persisting base invocation stages its projected effect document.
 
-        A persisting incremental invocation overlays its effects on the
-        staged base document and writes one combined pending review job.
+        A persisting incremental invocation overlays its effects on the staged
+        base document and writes one combined pending review job.
 
         A persisting base invocation writes a pending review job directly.
+
+        Final job metadata contains explicit source-specific persistence inputs:
+
+        - base_source_model;
+        - base_import_schema;
+        - base_mapping_model_id;
+        - base_created_models;
+        - incremental_source_model;
+        - incremental_import_schema;
+        - incremental_mapping_model_id;
+        - incremental_created_models.
         """
 
         self._ensure_ready_for_diff_job()
@@ -302,17 +318,44 @@ class TwwChangeCreationService:
             effect_document = source_document
 
             base_source_model = source_model
-
+            base_import_schema = import_schema
+            base_mapping_model_id = (
+                workflow_metadata.get(
+                    "mapping_model_id",
+                )
+            )
             base_created_models = (
                 created_models_tuple
             )
 
             incremental_source_model = None
-
+            incremental_import_schema = None
+            incremental_mapping_model_id = None
             incremental_created_models: tuple[
                 str,
                 ...,
             ] = ()
+
+            workflow_metadata.update(
+                {
+                    "base_source_model": (
+                        base_source_model
+                    ),
+                    "base_import_schema": (
+                        base_import_schema
+                    ),
+                    "base_mapping_model_id": (
+                        base_mapping_model_id
+                    ),
+                    "base_created_models": list(
+                        base_created_models,
+                    ),
+                    "incremental_source_model": None,
+                    "incremental_import_schema": None,
+                    "incremental_mapping_model_id": None,
+                    "incremental_created_models": [],
+                }
+            )
 
         else:
             prepared_source = (
@@ -320,6 +363,55 @@ class TwwChangeCreationService:
                 .prepared_source(
                     job_id=job_id,
                 )
+            )
+
+            base_metadata = dict(
+                prepared_source.metadata,
+            )
+
+            base_import_schema = (
+                self._required_metadata_string(
+                    metadata=base_metadata,
+                    key="base_import_schema",
+                    fallback_key="import_schema",
+                )
+            )
+
+            base_source_model = (
+                self._required_metadata_string(
+                    metadata=base_metadata,
+                    key="base_source_model",
+                    fallback_value=(
+                        prepared_source.source_model
+                    ),
+                )
+            )
+
+            base_mapping_model_id = (
+                base_metadata.get(
+                    "base_mapping_model_id",
+                    base_metadata.get(
+                        "mapping_model_id",
+                    ),
+                )
+            )
+
+            base_created_models = tuple(
+                base_metadata.get(
+                    "base_created_models",
+                    prepared_source.created_models,
+                )
+            )
+
+            incremental_source_model = source_model
+            incremental_import_schema = import_schema
+            incremental_mapping_model_id = (
+                workflow_metadata.get(
+                    "mapping_model_id",
+                )
+            )
+            incremental_created_models = (
+                created_models_tuple
             )
 
             effect_document = (
@@ -334,26 +426,16 @@ class TwwChangeCreationService:
                 )
             )
 
-            base_source_model = (
-                prepared_source.source_model
-            )
-
-            base_created_models = tuple(
-                prepared_source.created_models,
-            )
-
-            incremental_source_model = (
-                source_model
-            )
-
-            incremental_created_models = (
-                created_models_tuple
-            )
-
             workflow_metadata.update(
                 {
                     "base_source_model": (
                         base_source_model
+                    ),
+                    "base_import_schema": (
+                        base_import_schema
+                    ),
+                    "base_mapping_model_id": (
+                        base_mapping_model_id
                     ),
                     "base_created_models": list(
                         base_created_models,
@@ -361,11 +443,17 @@ class TwwChangeCreationService:
                     "incremental_source_model": (
                         incremental_source_model
                     ),
+                    "incremental_import_schema": (
+                        incremental_import_schema
+                    ),
+                    "incremental_mapping_model_id": (
+                        incremental_mapping_model_id
+                    ),
                     "incremental_created_models": list(
                         incremental_created_models,
                     ),
-                    "base_source_metadata": dict(
-                        prepared_source.metadata,
+                    "base_source_metadata": (
+                        base_metadata
                     ),
                 }
             )
@@ -753,8 +841,8 @@ class TwwChangeCreationService:
         Incremental updates replace matching base updates.
 
         Existence constraints are keyed only by canonical identity. The last
-        constraint for an identity wins, even when its concrete effect type
-        differs from the previous constraint.
+        constraint for an identity wins, including when EnforceExistsEffect is
+        replaced by EnforceNotExistsEffect or vice versa.
         """
 
         update_effects: dict[
@@ -766,18 +854,15 @@ class TwwChangeCreationService:
         ] = {}
 
         constraint_effects: dict[
-            tuple[
-                tuple,
-                type,
-            ],
+            tuple,
             Effect,
         ] = {}
 
         ordered_keys: list[
             tuple[
                 str,
-                tuple,
-            ]
+                Any,
+            ],
         ] = []
 
         def add_effect(
@@ -819,12 +904,7 @@ class TwwChangeCreationService:
                     EnforceNotExistsEffect,
                 ),
             ):
-                payload_key = (
-                    identity_key,
-                    type(
-                        effect,
-                    ),
-                )
+                payload_key = identity_key
 
                 order_key = (
                     "constraint",
@@ -858,7 +938,7 @@ class TwwChangeCreationService:
             )
 
         merged_effects: list[
-            Effect
+            Effect,
         ] = []
 
         for (
@@ -869,13 +949,14 @@ class TwwChangeCreationService:
                 merged_effects.append(
                     update_effects[
                         effect_key
-                    ],
+                    ]
                 )
+
             else:
                 merged_effects.append(
                     constraint_effects[
                         effect_key
-                    ],
+                    ]
                 )
 
         return EffectDocument(
@@ -1136,3 +1217,57 @@ class TwwChangeCreationService:
         return xtf_file.with_name(
             f"{xtf_file.stem}_{name}.log"
         )
+
+    def _required_metadata_string(
+        self,
+        *,
+        metadata: Mapping[
+            str,
+            Any,
+        ],
+        key: str,
+        fallback_key: str | None = None,
+        fallback_value: str | None = None,
+    ) -> str:
+        """
+        Return one required non-empty metadata string.
+
+        A fallback metadata key or explicit fallback value may be supplied for
+        compatibility with prepared sources created before source-specific
+        metadata keys were normalized.
+        """
+
+        value = metadata.get(
+            key,
+        )
+
+        if (
+            value in (
+                None,
+                "",
+            )
+            and fallback_key is not None
+        ):
+            value = metadata.get(
+                fallback_key,
+            )
+
+        if (
+            value in (
+                None,
+                "",
+            )
+            and fallback_value is not None
+        ):
+            value = fallback_value
+
+        if not isinstance(
+            value,
+            str,
+        ) or not value.strip():
+            raise ValueError(
+                "Prepared source metadata does not contain "
+                f"a valid {key!r} value."
+            )
+
+        return value

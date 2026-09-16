@@ -23,6 +23,7 @@ import platform
 import re
 import subprocess
 import tempfile
+import time
 import zipfile
 
 import requests
@@ -84,15 +85,21 @@ def get_ili2db_bin(tool, db_ili_version, stdout, stderr):
                 ili_tool_url,
                 tmpfile.name,
             )
-        except NetworkError as e:
+        except NetworkError as exception:
             stderr.emit(
-                'Could not download {tool_name}\n\n  Error: {error}\n\nFile "{file}" not found. Please download and extract <a href="{ili2db_url}">{tool_name}</a>'.format(
+                (
+                    "Could not download {tool_name}\n\n"
+                    "Error: {error}\n\n"
+                    'File "{file}" not found. Please download and extract '
+                    '{ili2db_url}{tool_name}</a>'
+                ).format(
                     tool_name=tool_name,
                     ili2db_url=ili_tool_url,
-                    error=e.msg,
+                    error=exception.msg,
                     file=ili2db_file,
                 )
             )
+
             return None
 
         try:
@@ -237,35 +244,194 @@ class NetworkError(RuntimeError):
         self.error_code = error_code
 
 
-def download_file(
-    url,
-    filename,
-):
-    """
-    Downloads the file from url to a local filename using the requests library.
-    The method will only return once it's finished.
-    While downloading, it will repeatedly report progress by calling on_progress
-    with two parameters: bytes_received and bytes_total.
-    If an error occurs, it raises a NetworkError exception.
-    It will return the filename if everything was ok.
-    """
-    try:
-        with requests.get(url, stream=True) as response:
-            response.raise_for_status()
-            int(response.headers.get("content-length", 0))
-            bytes_received = 0
 
-            with open(filename, "wb") as file:
-                for chunk in response.iter_content(chunk_size=8192):
-                    if chunk:  # Filter out keep-alive chunks
-                        file.write(chunk)
-                        bytes_received += len(chunk)
+
+
+def download_file(
+    url: str,
+    filename: str,
+    *,
+    attempts: int = 4,
+    connect_timeout: float = 15.0,
+    read_timeout: float = 120.0,
+    chunk_size: int = 1024 * 1024,
+) -> str:
+    """
+    Download a file with retries and content-length validation.
+
+    A failed attempt is removed before the next attempt. The destination is
+    replaced only after one complete download succeeds.
+    """
+
+    if attempts < 1:
+        raise ValueError(
+            "Download attempts must be at least one."
+        )
+
+    temporary_filename = (
+        f"{filename}.part"
+    )
+
+    last_exception: Exception | None = None
+
+    for attempt in range(
+        1,
+        attempts + 1,
+    ):
+        try:
+            _remove_file_if_present(
+                temporary_filename,
+            )
+
+            with requests.get(
+                url,
+                stream=True,
+                timeout=(
+                    connect_timeout,
+                    read_timeout,
+                ),
+            ) as response:
+                response.raise_for_status()
+
+                expected_size = _content_length(
+                    response,
+                )
+                received_size = 0
+
+                with open(
+                    temporary_filename,
+                    "wb",
+                ) as file:
+                    for chunk in response.iter_content(
+                        chunk_size=chunk_size,
+                    ):
+                        if not chunk:
+                            continue
+
+                        file.write(
+                            chunk,
+                        )
+                        received_size += len(
+                            chunk,
+                        )
+
+                    file.flush()
+                    os.fsync(
+                        file.fileno(),
+                    )
+
+                if (
+                    expected_size is not None
+                    and received_size != expected_size
+                ):
+                    raise IOError(
+                        "Incomplete download from "
+                        f"{url!r}: received "
+                        f"{received_size} bytes, expected "
+                        f"{expected_size} bytes."
+                    )
+
+            os.replace(
+                temporary_filename,
+                filename,
+            )
+
             return filename
 
-    except requests.exceptions.RequestException as e:
-        error_code = getattr(e.response, "status_code", -1)
-        error_msg = str(e)
-        raise NetworkError(error_code, error_msg)
+        except (
+            requests.exceptions.RequestException,
+            OSError,
+        ) as exception:
+            last_exception = exception
+
+            _remove_file_if_present(
+                temporary_filename,
+            )
+
+            if attempt >= attempts:
+                break
+
+            time.sleep(
+                min(
+                    2 ** (attempt - 1),
+                    8,
+                )
+            )
+
+    error_code = _response_status_code(
+        last_exception,
+    )
+
+    raise NetworkError(
+        error_code,
+        (
+            f"Could not download {url!r} after "
+            f"{attempts} attempts: {last_exception}"
+        ),
+    ) from last_exception
+
+
+def _content_length(
+    response: requests.Response,
+) -> int | None:
+    """
+    Return the expected response size when provided by the server.
+    """
+
+    raw_content_length = response.headers.get(
+        "content-length",
+    )
+
+    if raw_content_length is None:
+        return None
+
+    try:
+        content_length = int(
+            raw_content_length,
+        )
+    except ValueError:
+        return None
+
+    if content_length < 0:
+        return None
+
+    return content_length
+
+
+def _response_status_code(
+    exception: Exception | None,
+) -> int:
+    """
+    Return an HTTP response status associated with an exception.
+    """
+
+    if not isinstance(
+        exception,
+        requests.exceptions.RequestException,
+    ):
+        return -1
+
+    response = exception.response
+
+    if response is None:
+        return -1
+
+    return response.status_code
+
+
+def _remove_file_if_present(
+    filename: str,
+) -> None:
+    """
+    Remove an incomplete download if it exists.
+    """
+
+    try:
+        os.remove(
+            filename,
+        )
+    except FileNotFoundError:
+        return
 
 
 def is_version_valid(
