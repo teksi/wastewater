@@ -15,13 +15,18 @@ on:
     branches:
       - main
     paths:
-      - "plugin/teksi_wastewater/**"
+      - "plugin/teksi_wastewater/hooks"
+      - "plugin/teksi_wastewater/interlis"
       - "plugin/tests/**"
       - "pyproject.toml"
       - "plugin/scripts/download-interlis-libs.sh"
       - "docker-compose.yml"
       - ".github/workflows/plugin-adapter-tests.yml"
       - ".github/actions/start_qgis_docker/action.yml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   unit-tests:
