@@ -18,9 +18,13 @@ from teksi_wastewater.hooks.exceptions import (
 from teksi_wastewater.hooks.services.tww_diff_schema_service import (
     DiffJobCounts,
     TwwDiffSchemaService,
-    TwwInterlisPersistenceAdapter,
     TwwJobPersistenceResult,
 )
+
+from teksi_wastewater.hooks.adapters.tww_interlis_persistance_adapter import (
+    TwwInterlisPersistenceAdapter,
+)
+
 from teksi_wastewater.hooks.services.tww_quarantine_persistence_preparer import (
     TwwQuarantinePersistencePreparer,
 )

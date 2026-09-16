@@ -19,16 +19,8 @@ from .interlis_model_mapping.interlis_exporter_to_intermediate_schema import (
 from .interlis_model_mapping.interlis_importer_from_intermediate_schema import (
     InterlisImporterFromIntermediateSchema,
 )
-from .interlis_model_mapping.model_interlis_ag64 import ModelInterlisAG64
-from .interlis_model_mapping.model_interlis_ag96 import ModelInterlisAG96
-from .interlis_model_mapping.model_interlis_dss import ModelInterlisDss
-from .interlis_model_mapping.model_interlis_sia405_abwasser import (
-    ModelInterlisSia405Abwasser,
-)
-from .interlis_model_mapping.model_interlis_sia405_base_abwasser import (
-    ModelInterlisSia405BaseAbwasser,
-)
-from .interlis_model_mapping.model_interlis_vsa_kek import ModelInterlisVsaKek
+from .interlis_model_mapping.interlis_incremental_importer import InterlisIncrementalImporter
+
 from .interlis_model_mapping.model_tww import ModelTwwSys, ModelTwwVl
 from .interlis_model_mapping.model_tww_ag6496 import ModelTwwAG6496
 from .interlis_model_mapping.model_tww_od import ModelTwwOd
@@ -47,6 +39,19 @@ from .model_config import (
     interlis_models,
     TwwInterlisModelSelection,
 )
+
+from __future__ import annotations
+
+from teksi_hooks.capabilities.mapping import (
+    ModelMappingLookupCapability,
+)
+
+from teksi_wastewater.hooks.capabilities.incremental_import import (
+    FunctionEffectResolver,
+    IncrementalEffectEvaluator,
+    IncrementalEffectPersister,
+)
+
 
 @dataclass(slots=True, frozen=True)
 class ProgressScope:
@@ -71,8 +76,19 @@ class ProgressScope:
 
 class InterlisImporterExporter:
 
-    def __init__(self, progress_done_callback=None, lang = 'de'):
-        self.progress_done_callback = progress_done_callback
+    def __init__(
+        self,
+        progress_done_callback=None,
+        lang="de",
+        model_mapping: ModelMappingLookupCapability | None = None,
+        function_effect_resolver: FunctionEffectResolver | None = None,
+        effect_evaluator: IncrementalEffectEvaluator | None = None,
+        effect_persister: IncrementalEffectPersister | None = None,
+    ):
+        self.progress_done_callback = (
+            progress_done_callback
+        )
+
         self.interlisTools = InterlisTools()
         self.base_log_path = None
 
@@ -80,7 +96,6 @@ class InterlisImporterExporter:
         self.model_classes_tww_od = None
         self.model_classes_tww_vl = None
         self.model_classes_tww_sys = None
-        self.model_classes_tww_app = None
 
         self.from_quarantine_only = False
         self.to_quarantine_only = False
@@ -89,7 +104,14 @@ class InterlisImporterExporter:
         self.filter_nulls = None
         self.srid = 2056
         self.current_progress = 0
-        self.schema =None
+        self.schema = None
+
+        self.model_mapping = model_mapping
+        self.function_effect_resolver = (
+            function_effect_resolver
+        )
+        self.effect_evaluator = effect_evaluator
+        self.effect_persister = effect_persister
 
     def _init_model_classes(self, selection_models):
         model_interlis = selection_models.primary_component.quarantine_model(self.schema)
@@ -321,7 +343,7 @@ class InterlisImporterExporter:
                 if incremental_only:
                     # Import from the temporary ili2pg model
                     self._progress_done_in_scope(progress_scope, 20, "Converting incremental values to TEKSI Wastewater...")
-                    tww_session = self._import_incremental(selection_models.import_model)
+                    tww_session = self._import_incremental(selection_models)
                     self._progress_done_in_scope(progress_scope, 80, "Commit session...")
                     tww_session.commit()
                     tww_session.close()
@@ -1222,5 +1244,92 @@ class InterlisImporterExporter:
 
         return exact_matches[0]
 
-    def _import_incremental(self, import_model):
-        pass
+    def _import_incremental(
+        self,
+        selection_models: TwwInterlisModelSelection,
+    ):
+        """
+        Stage one AGXX incremental import.
+
+        The returned SQLAlchemy session remains open and uncommitted. The caller
+        owns the final commit, rollback and close.
+        """
+
+        self._assert_incremental_dependencies()
+
+        log_handler = logging.FileHandler(
+            make_log_path(
+                self.base_log_path,
+                "tww2ili-incremental-import",
+            ),
+            mode="w",
+            encoding="utf-8",
+        )
+
+        log_handler.setLevel(
+            logging.INFO,
+        )
+
+        log_handler.setFormatter(
+            logging.Formatter(
+                "%(levelname)-8s %(message)s"
+            )
+        )
+
+        self._init_model_classes(
+            selection_models,
+        )
+
+        incremental_importer = (
+            InterlisIncrementalImporter(
+                model=selection_models.import_model,
+                model_classes_interlis=(
+                    self.model_classes_interlis
+                ),
+                model_classes_tww_od=(
+                    self.model_classes_tww_od
+                ),
+                model_classes_tww_vl=(
+                    self.model_classes_tww_vl
+                ),
+                model_mapping=self.model_mapping,
+                function_effect_resolver=(
+                    self.function_effect_resolver
+                ),
+                effect_evaluator=(
+                    self.effect_evaluator
+                ),
+                effect_persister=(
+                    self.effect_persister
+                ),
+                callback_progress_done=(
+                    self._progress_done_intermediate_schema
+                ),
+                filter_nulls=bool(
+                    self.filter_nulls
+                ),
+            )
+        )
+
+        with LoggingHandlerContext(
+            log_handler,
+        ):
+            incremental_importer.tww_import(
+                skip_closing_tww_session=True,
+            )
+
+        session_tww = (
+            incremental_importer.session_tww
+        )
+
+        if session_tww is None:
+            raise InterlisImporterExporterError(
+                "INTERLIS import aborted",
+                (
+                    "The incremental importer completed without "
+                    "returning an open live session."
+                ),
+                None,
+            )
+
+        return session_tww
