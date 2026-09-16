@@ -399,9 +399,17 @@ class InterlisImporterExporter:
                     )
 
                 # Raise the original exception for further error handling
-                raise exception
+                raise
             finally:
-                tww_session.close()
+                if tww_session is not None:
+                    try:
+                        tww_session.close()
+                    except Exception as close_exception:
+                        logger.warning(
+                            "Could not close the INTERLIS import "
+                            "session cleanly: %s",
+                            close_exception,   
+                        )
             self._progress_done_in_scope(progress_scope, 100)
             logger.info("INTERLIS import finished.")
 
