@@ -36,3 +36,28 @@ class TwwInterlisPersistenceCapability(
         """
 
         ...
+
+
+class TwwQuarantinePreparer(
+    Protocol,
+):
+    """
+    Prepare quarantine data for persistence.
+
+    Implementations apply stored review decisions to the quarantine schema.
+    This includes removing or nulling values that are not authorized for
+    persistence while retaining findings in tww_diff.
+    """
+
+    def prepare(
+        self,
+        *,
+        job_id: str,
+        import_schema: str,
+    ) -> None:
+        """
+        Prepare one quarantine schema for import into live data.
+        """
+
+        ...
+
