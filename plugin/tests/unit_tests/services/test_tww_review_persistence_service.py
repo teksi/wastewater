@@ -15,10 +15,13 @@ from teksi_wastewater.hooks.exceptions import (
     DiffJobEligibilityError,
     DiffJobPersistenceError,
 )
-from teksi_wastewater.hooks.services.tww_diff_schema_service import (
-    DiffJobCounts,
+
+from teksi_wastewater.hooks.adapters.tww_interlis_persistence_adapter import (
     TwwInterlisPersistenceAdapter,
     TwwInterlisPersistenceResult,
+)
+from teksi_wastewater.hooks.services.tww_diff_schema_service import (
+    DiffJobCounts,
     TwwJobPersistenceResult,
 )
 from teksi_wastewater.hooks.services.tww_quarantine_persistence_preparer import (

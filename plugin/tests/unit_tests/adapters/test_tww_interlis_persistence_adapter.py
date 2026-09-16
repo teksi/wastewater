@@ -6,14 +6,12 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from teksi_wastewater.hooks.adapters.tww_interlis_persistence_adapter import (
-    TwwInterlisPersistenceAdapter,
-)
 from teksi_wastewater.hooks.exceptions import (
     DiffJobPersistenceError,
 )
-from teksi_wastewater.hooks.services.tww_diff_schema_service import (
+from teksi_wastewater.hooks.adapters.tww_interlis_persistence_adapter import (
     TwwInterlisPersistenceResult,
+    TwwInterlisPersistenceAdapter,
 )
 
 
