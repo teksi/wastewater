@@ -21,7 +21,7 @@ from teksi_wastewater.hooks.services.tww_diff_schema_service import (
     TwwJobPersistenceResult,
 )
 
-from teksi_wastewater.hooks.adapters.tww_interlis_persistance_adapter import (
+from teksi_wastewater.hooks.adapters.tww_interlis_persistence_adapter import (
     TwwInterlisPersistenceAdapter,
 )
 
