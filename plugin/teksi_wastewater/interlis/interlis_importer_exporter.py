@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from collections.abc import Collection
 from dataclasses import dataclass
 import logging
@@ -11,7 +13,7 @@ import requests
 
 from ..utils.database_utils import DatabaseUtils
 from ..utils.integrity_checker import TWWIntegrityChecker
-from . import config,model_selection
+from . import config, model_selection
 from .interlis_model_mapping.interlis_exporter_to_intermediate_schema import (
     InterlisExporterToIntermediateSchema,
     InterlisExporterToIntermediateSchemaError,
@@ -33,14 +35,13 @@ from .utils.various import (
     logger,
     make_log_path,
 )
+
 from .model_config import (
     InterlisLangModel,
     InterlisModel,
     interlis_models,
     TwwInterlisModelSelection,
 )
-
-from __future__ import annotations
 
 from teksi_hooks.capabilities.mapping import (
     ModelMappingLookupCapability,
@@ -346,7 +347,6 @@ class InterlisImporterExporter:
                     tww_session = self._import_incremental(selection_models)
                     self._progress_done_in_scope(progress_scope, 80, "Commit session...")
                     tww_session.commit()
-                    tww_session.close()
                 else:
                     # Import from the temporary ili2pg model
                     self._progress_done_in_scope(progress_scope, 20, "Converting to TEKSI Wastewater...")
@@ -362,14 +362,11 @@ class InterlisImporterExporter:
                         import_dialog.init_with_session(tww_session)
                         QApplication.restoreOverrideCursor()
                         if import_dialog.exec() == QDialog.DialogCode.Rejected:
-                            tww_session.rollback()
-                            tww_session.close()
                             raise InterlisImporterExporterStopped()
                         QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
                     else:
                         self._progress_done_in_scope(progress_scope, 80, "Commit session...")
                         tww_session.commit()
-                    tww_session.close()
 
                 # Update the sequence values
                 self._progress_done_in_scope(progress_scope, 85, "Update sequence values...")
@@ -394,6 +391,7 @@ class InterlisImporterExporter:
             except Exception as exception:
                 # Make sure to re-enable triggers in case an exception occourred
                 try:
+                    tww_session.rollback()
                     self._import_enable_symbology_and_modification_triggers()
                 except Exception as enable_trigger_exception:
                     logger.error(
@@ -402,7 +400,8 @@ class InterlisImporterExporter:
 
                 # Raise the original exception for further error handling
                 raise exception
-
+            finally:
+                tww_session.close()
             self._progress_done_in_scope(progress_scope, 100)
             logger.info("INTERLIS import finished.")
 
