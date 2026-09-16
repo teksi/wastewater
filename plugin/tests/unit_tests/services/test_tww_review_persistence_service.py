@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from unittest.mock import Mock, call
+from unittest.mock import Mock
 
 import pytest
 
@@ -14,6 +14,7 @@ from teksi_hooks.models.review import (
 from teksi_wastewater.hooks.exceptions import (
     DiffJobEligibilityError,
     DiffJobPersistenceError,
+    DiffJobStateError,
 )
 
 from teksi_wastewater.hooks.adapters.tww_interlis_persistence_adapter import (
@@ -60,6 +61,7 @@ def _job(
 def _counts(
     *,
     total_count: int = 1,
+    restricted_count: int = 0,
     rejected_count: int = 0,
     created_count: int = 0,
     altered_count: int = 1,
@@ -67,6 +69,7 @@ def _counts(
 ) -> DiffJobCounts:
     return DiffJobCounts(
         total_count=total_count,
+        restricted_count=restricted_count,
         rejected_count=rejected_count,
         created_count=created_count,
         altered_count=altered_count,
@@ -298,7 +301,7 @@ def test_persist_job_rejects_non_accepted_job(
     )
 
     with pytest.raises(
-        DiffJobEligibilityError,
+        DiffJobStateError,
         match="expected 'accepted'",
     ):
         service.persist_job(
@@ -478,7 +481,8 @@ def test_persist_job_allows_permission_restricted_rows(
     ) = _service(
         counts=_counts(
             total_count=1,
-            rejected_count=1,
+            restricted_count=1,
+            rejected_count=0,
             created_count=0,
             altered_count=1,
             deleted_count=0,
@@ -500,109 +504,6 @@ def test_persist_job_allows_permission_restricted_rows(
     diff_schema_service.acquire_job_for_application.assert_called_once_with(
         job_id="job-1",
     )
-
-    quarantine_preparer.prepare.assert_called_once_with(
-        job_id="job-1",
-        import_schema="xtf_import",
-    )
-
-    persistence_adapter.persist_quarantine.assert_called_once_with(
-        import_schema="xtf_import",
-        live_schema="tww_od",
-        source_model="DSS_2020_1_LV95",
-    )
-
-    diff_schema_service.mark_job_applied.assert_called_once_with(
-        job_id="job-1",
-    )
-@pytest.mark.parametrize(
-    (
-        "counts",
-        "missing_operation_count",
-    ),
-    [
-        (
-            _counts(
-                total_count=1,
-                created_count=0,
-                altered_count=0,
-                deleted_count=0,
-            ),
-            1,
-        ),
-        (
-            _counts(
-                total_count=3,
-                created_count=1,
-                altered_count=1,
-                deleted_count=0,
-            ),
-            1,
-        ),
-    ],
-)
-
-def test_persist_job_rejects_blocking_validation_rows(
-) -> None:
-    (
-        service,
-        diff_schema_service,
-        quarantine_preparer,
-        backup_service,
-        persistence_adapter,
-    ) = _service(
-        counts=_counts(
-            rejected_count=1,
-        ),
-        validation_finding_row_count=1,
-    )
-
-    with pytest.raises(
-        DiffJobEligibilityError,
-        match="blocking validation findings",
-    ):
-        service.persist_job(
-            job_id="job-1",
-        )
-
-    diff_schema_service.acquire_job_for_application.assert_not_called()
-
-    backup_service.create_backup.assert_not_called()
-    backup_service.restore_backup.assert_not_called()
-    backup_service.delete_backup.assert_not_called()
-
-    quarantine_preparer.prepare.assert_not_called()
-    persistence_adapter.persist_quarantine.assert_not_called()
-
-    diff_schema_service.mark_job_applied.assert_not_called()
-    diff_schema_service.mark_job_failed.assert_not_called()
-
-
-def test_persist_job_allows_permission_restricted_rows(
-) -> None:
-    (
-        service,
-        diff_schema_service,
-        quarantine_preparer,
-        backup_service,
-        persistence_adapter,
-    ) = _service(
-        counts=_counts(
-            total_count=1,
-            rejected_count=1,
-            created_count=0,
-            altered_count=1,
-            deleted_count=0,
-        ),
-        validation_finding_row_count=0,
-    )
-
-    result = service.persist_job(
-        job_id="job-1",
-    )
-
-    assert result.job_status == "applied"
-    assert result.restricted_feature_count == 1
 
     quarantine_preparer.prepare.assert_called_once_with(
         job_id="job-1",
@@ -780,7 +681,6 @@ def test_persist_job_marks_job_failed_when_backup_creation_fails(
         message="Backup failed.",
     )
 
-
 def test_persist_job_deletes_unused_backup_when_recording_path_fails(
 ) -> None:
     (
@@ -814,7 +714,6 @@ def test_persist_job_deletes_unused_backup_when_recording_path_fails(
 
     diff_schema_service.mark_job_applied.assert_not_called()
     diff_schema_service.mark_job_failed.assert_called_once()
-
 
 def test_persist_job_restores_backup_when_preparation_fails(
 ) -> None:
@@ -863,7 +762,6 @@ def test_persist_job_restores_backup_when_preparation_fails(
         error_type="RuntimeError",
         message="Preparation failed.",
     )
-
 
 def test_persist_job_restores_backup_when_import_fails(
 ) -> None:
@@ -922,7 +820,6 @@ def test_persist_job_restores_backup_when_import_fails(
 
     diff_schema_service.mark_job_applied.assert_not_called()
 
-
 def test_persist_job_treats_uncommitted_import_as_failure(
 ) -> None:
     (
@@ -974,7 +871,6 @@ def test_persist_job_treats_uncommitted_import_as_failure(
         ),
     )
 
-
 def test_persist_job_does_not_hide_original_error_if_restore_fails(
 ) -> None:
     (
@@ -1015,7 +911,6 @@ def test_persist_job_does_not_hide_original_error_if_restore_fails(
 
     diff_schema_service.mark_job_failed.assert_called_once()
 
-
 def test_persist_job_does_not_hide_original_error_if_failure_status_fails(
 ) -> None:
     (
@@ -1049,7 +944,6 @@ def test_persist_job_does_not_hide_original_error_if_failure_status_fails(
     backup_service.restore_backup.assert_called_once()
     diff_schema_service.mark_job_applied.assert_not_called()
 
-
 def test_persist_job_deletes_backup_after_success(
 ) -> None:
     (
@@ -1074,7 +968,6 @@ def test_persist_job_deletes_backup_after_success(
         job_id="job-1",
         expected_status="applied",
     )
-
 
 def test_persist_job_keeps_applied_state_when_backup_deletion_fails(
 ) -> None:
@@ -1102,7 +995,6 @@ def test_persist_job_keeps_applied_state_when_backup_deletion_fails(
 
     diff_schema_service.clear_backup_path.assert_not_called()
     diff_schema_service.mark_job_failed.assert_not_called()
-
 
 def test_persist_job_keeps_applied_state_when_clearing_backup_path_fails(
 ) -> None:
@@ -1136,7 +1028,6 @@ def test_persist_job_keeps_applied_state_when_clearing_backup_path_fails(
 
     diff_schema_service.mark_job_failed.assert_not_called()
 
-
 def test_persist_job_uses_explicit_live_schema_override(
 ) -> None:
     (
@@ -1159,7 +1050,6 @@ def test_persist_job_uses_explicit_live_schema_override(
         live_schema="custom_live",
         source_model="DSS_2020_1_LV95",
     )
-
 
 def test_persist_job_uses_metadata_live_schema_without_override(
 ) -> None:
