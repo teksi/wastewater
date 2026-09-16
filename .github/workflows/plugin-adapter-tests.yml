@@ -9,29 +9,34 @@ on:
       - "plugin/scripts/download-interlis-libs.sh"
       - "docker-compose.yml"
       - ".github/workflows/plugin-adapter-tests.yml"
-      - ".github/actions/start_qgis_docker/action.yml"
+      - ".github/actions/start_qgis_docker/**"
 
   pull_request:
     branches:
       - main
     paths:
-      - "plugin/teksi_wastewater/hooks"
-      - "plugin/teksi_wastewater/interlis"
+      - "plugin/teksi_wastewater/hooks/**"
+      - "plugin/teksi_wastewater/interlis/**"
       - "plugin/tests/**"
       - "pyproject.toml"
       - "plugin/scripts/download-interlis-libs.sh"
       - "docker-compose.yml"
       - ".github/workflows/plugin-adapter-tests.yml"
-      - ".github/actions/start_qgis_docker/action.yml"
+      - ".github/actions/start_qgis_docker/**"
+
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   unit-tests:
-    name: Adapter unit tests
-    runs-on: ubuntu-latest
+    name: Adapter unit tests | Python ${{ matrix.python-version }}
+    runs-on: ubuntu-24.04
 
     strategy:
       fail-fast: false
@@ -42,12 +47,16 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: pyproject.toml
 
       - name: Install package dependencies
         run: |
@@ -56,13 +65,20 @@ jobs:
 
       - name: Run adapter unit tests
         env:
-          PYTHONPATH: ${{ github.workspace }}/plugin:${{ github.workspace }}/plugin_hooks:${{ github.workspace }}
+          PYTHONPATH: >-
+            ${{ github.workspace }}/plugin:
+            ${{ github.workspace }}/plugin_hooks:
+            ${{ github.workspace }}
         run: |
-          pytest -v plugin/tests/unit_tests
+          python -m pytest \
+            plugin/tests/unit_tests \
+            -v \
+            --color=yes
 
   integration-tests-db-qgis:
-    name: Adapter integration tests with DB/QGIS
-    runs-on: ubuntu-24.04
+    name: DB/QGIS integration | ${{ matrix.qgis_version }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
 
     strategy:
       fail-fast: false
@@ -76,72 +92,136 @@ jobs:
       DB_NAME: tww
       QGIS_TEST_VERSION: ${{ matrix.qgis_version }}
       COMPOSE_PROFILES: qgis
-      
+
     steps:
-      - name: Checkout
+      - name: Check out repository
         uses: actions/checkout@v7
         with:
           submodules: recursive
 
-      - name: Setup env
+      - name: Set up environment
         run: cp .env.example .env
 
-      - name: Start qgis docker compose stack
+      - name: Cache INTERLIS downloads
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/teksi-wastewater/interlis
+          key: >-
+            interlis-downloads-${{ runner.os }}-${{
+              hashFiles(
+                'plugin/scripts/download-interlis-libs.sh'
+              )
+            }}
+
+      - name: Download INTERLIS libraries
+        run: ./plugin/scripts/download-interlis-libs.sh
+
+      - name: Start QGIS Docker Compose stack
         uses: ./.github/actions/start_qgis_docker
         with:
           qgis-test-version: ${{ env.QGIS_TEST_VERSION }}
 
-      - name: Install hook dependencies in qgis container
+      - name: Install hook dependencies in QGIS container
         run: |
-          docker compose exec qgis sh -c '
+          docker compose exec -T qgis sh -c '
+            set -e
+
             apt-get update
-            apt-get install -y python3-venv git
-            python3 -m venv --system-site-packages /tmp/teksi-hooks-venv
+            apt-get install -y --no-install-recommends \
+              git \
+              python3-venv
+
+            rm -rf /var/lib/apt/lists/*
+
+            if [ ! -d /tmp/teksi-hooks-venv ]; then
+              python3 -m venv \
+                --system-site-packages \
+                /tmp/teksi-hooks-venv
+            fi
+
             . /tmp/teksi-hooks-venv/bin/activate
+
             python -m pip install --upgrade pip
             python -m pip install -e "/usr/src[dev]"
           '
 
+      - name: Wait for PostgreSQL
+        run: |
+          timeout 120 sh -c '
+            until docker compose exec -T db \
+              pg_isready -U postgres -d postgres
+            do
+              sleep 2
+            done
+          '
+
       - name: Initialize database
         run: |
-          docker compose exec db sh -c "dropdb -U postgres --if-exists ${DB_NAME}"
-          docker compose exec db sh -c "createdb -U postgres ${DB_NAME}"
-          docker compose run pum -p ${PGSERVICE} -d datamodel install -p SRID 2056 -p modification_agxx true
+          docker compose exec -T db sh -c \
+            "dropdb -U postgres --if-exists '${DB_NAME}'"
 
-      - name: Debug dependency import in qgis container
+          docker compose exec -T db sh -c \
+            "createdb -U postgres '${DB_NAME}'"
+
+          docker compose run --rm pum \
+            -p "${PGSERVICE}" \
+            -d datamodel \
+            install \
+            -p SRID 2056 \
+            -p modification_agxx true
+
+      - name: Verify dependency imports
         run: |
-          docker compose exec qgis sh -c '
+          docker compose exec -T qgis sh -c '
+            set -e
+
             . /tmp/teksi-hooks-venv/bin/activate
 
+            export PYTHONPATH="/usr/src/plugin:/usr/src/plugin_hooks:/usr/src:/usr/share/qgis/python"
+
             echo "Python executable:"
-            which python
+            command -v python
             python --version
 
             echo "Pip:"
-            which pip
+            command -v pip
             pip --version
 
             echo "Package info teksi-hooks:"
-            pip show teksi-hooks || true
+            pip show teksi-hooks
 
             echo "Package info pgserviceparser:"
-            pip show teksi-pgserviceparser || true
-            '
+            pip show teksi-pgserviceparser
 
-      - name: Run dockerised adapter tests
+            echo "Imported TEKSI Wastewater package:"
+            python -c "
+              import teksi_wastewater
+              print(teksi_wastewater.__file__)
+              "
+
+      - name: Run Dockerized adapter tests
         run: |
-          docker compose exec qgis sh -c '
+          docker compose exec -T qgis sh -c '
+            set -e
+
             . /tmp/teksi-hooks-venv/bin/activate
-            PYTHONPATH=/usr/src/plugin:/usr/src/plugin_hooks:/usr/src:/usr/share/qgis/python \
-            xvfb-run python -m pytest \
+
+            export PYTHONPATH="/usr/src/plugin:/usr/src/plugin_hooks:/usr/src:/usr/share/qgis/python"
+
+            xvfb-run -a python -m pytest \
               /usr/src/plugin/tests/dockerised/hooks \
-              -v -c /usr/src/plugin/pytest.ini -m no_qgis
+              -v \
+              --color=yes \
+              -c /usr/src/plugin/pytest.ini \
+              -m no_qgis
           '
 
-      - name: docker logs
+      - name: Show Docker logs
         if: failure()
-        run: docker compose logs db qgis
+        run: |
+          docker compose ps
+          docker compose logs --no-color --tail=500 db qgis
 
       - name: Stop services
         if: always()
-        run: docker compose down -v
+        run: docker compose down --volumes --remove-orphans
