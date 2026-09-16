@@ -17,18 +17,13 @@ from teksi_wastewater.hooks.exceptions import (
 )
 
 from teksi_wastewater.hooks.adapters.tww_interlis_persistence_adapter import (
-    TwwInterlisPersistenceAdapter,
     TwwInterlisPersistenceResult,
 )
 from teksi_wastewater.hooks.services.tww_diff_schema_service import (
     DiffJobCounts,
     TwwJobPersistenceResult,
 )
-from teksi_wastewater.hooks.services.tww_quarantine_persistence_preparer import (
-    TwwQuarantinePersistencePreparer,
-)
 from teksi_wastewater.hooks.services.tww_review_persistence_service import (
-    TwwQuarantineBackupService,
     TwwReviewPersistenceService,
 )
 
@@ -154,7 +149,7 @@ def test_persist_job_applies_accepted_job(
         previous_status="accepted",
         job_status="applied",
         review_feature_count=1,
-        rejected_feature_count=0,
+        restricted_feature_count=0,
         import_schema="xtf_import",
         live_schema="tww_od",
         source_model="DSS_2020_1_LV95",
@@ -359,8 +354,7 @@ def test_persist_job_rejects_unsuccessful_validation(
     diff_schema_service.mark_job_applied.assert_not_called()
     diff_schema_service.mark_job_failed.assert_not_called()
 
-
-def test_persist_job_rejects_blocking_review_rows(
+def test_persist_job_rejects_blocking_validation_rows(
 ) -> None:
     (
         service,
@@ -370,17 +364,26 @@ def test_persist_job_rejects_blocking_review_rows(
         persistence_adapter,
     ) = _service(
         counts=_counts(
+            total_count=1,
             rejected_count=1,
+            created_count=0,
+            altered_count=1,
+            deleted_count=0,
         ),
+        validation_finding_row_count=1,
     )
 
     with pytest.raises(
         DiffJobEligibilityError,
-        match="blocking findings",
+        match="blocking validation findings",
     ):
         service.persist_job(
             job_id="job-1",
         )
+
+    diff_schema_service.validation_finding_row_count.assert_called_once_with(
+        job_id="job-1",
+    )
 
     diff_schema_service.acquire_job_for_application.assert_not_called()
 
@@ -433,6 +436,7 @@ def test_persist_job_rejects_rows_without_operation(
         persistence_adapter,
     ) = _service(
         counts=counts,
+        validation_finding_row_count=0,
     )
 
     with pytest.raises(
@@ -446,11 +450,174 @@ def test_persist_job_rejects_rows_without_operation(
             job_id="job-1",
         )
 
+    diff_schema_service.validation_finding_row_count.assert_called_once_with(
+        job_id="job-1",
+    )
+
     diff_schema_service.acquire_job_for_application.assert_not_called()
+
     backup_service.create_backup.assert_not_called()
+    backup_service.restore_backup.assert_not_called()
+    backup_service.delete_backup.assert_not_called()
+
     quarantine_preparer.prepare.assert_not_called()
     persistence_adapter.persist_quarantine.assert_not_called()
 
+    diff_schema_service.mark_job_applied.assert_not_called()
+    diff_schema_service.mark_job_failed.assert_not_called()
+
+
+def test_persist_job_allows_permission_restricted_rows(
+) -> None:
+    (
+        service,
+        diff_schema_service,
+        quarantine_preparer,
+        backup_service,
+        persistence_adapter,
+    ) = _service(
+        counts=_counts(
+            total_count=1,
+            rejected_count=1,
+            created_count=0,
+            altered_count=1,
+            deleted_count=0,
+        ),
+        validation_finding_row_count=0,
+    )
+
+    result = service.persist_job(
+        job_id="job-1",
+    )
+
+    assert result.job_status == "applied"
+    assert result.restricted_feature_count == 1
+
+    diff_schema_service.validation_finding_row_count.assert_called_once_with(
+        job_id="job-1",
+    )
+
+    diff_schema_service.acquire_job_for_application.assert_called_once_with(
+        job_id="job-1",
+    )
+
+    quarantine_preparer.prepare.assert_called_once_with(
+        job_id="job-1",
+        import_schema="xtf_import",
+    )
+
+    persistence_adapter.persist_quarantine.assert_called_once_with(
+        import_schema="xtf_import",
+        live_schema="tww_od",
+        source_model="DSS_2020_1_LV95",
+    )
+
+    diff_schema_service.mark_job_applied.assert_called_once_with(
+        job_id="job-1",
+    )
+@pytest.mark.parametrize(
+    (
+        "counts",
+        "missing_operation_count",
+    ),
+    [
+        (
+            _counts(
+                total_count=1,
+                created_count=0,
+                altered_count=0,
+                deleted_count=0,
+            ),
+            1,
+        ),
+        (
+            _counts(
+                total_count=3,
+                created_count=1,
+                altered_count=1,
+                deleted_count=0,
+            ),
+            1,
+        ),
+    ],
+)
+
+def test_persist_job_rejects_blocking_validation_rows(
+) -> None:
+    (
+        service,
+        diff_schema_service,
+        quarantine_preparer,
+        backup_service,
+        persistence_adapter,
+    ) = _service(
+        counts=_counts(
+            rejected_count=1,
+        ),
+        validation_finding_row_count=1,
+    )
+
+    with pytest.raises(
+        DiffJobEligibilityError,
+        match="blocking validation findings",
+    ):
+        service.persist_job(
+            job_id="job-1",
+        )
+
+    diff_schema_service.acquire_job_for_application.assert_not_called()
+
+    backup_service.create_backup.assert_not_called()
+    backup_service.restore_backup.assert_not_called()
+    backup_service.delete_backup.assert_not_called()
+
+    quarantine_preparer.prepare.assert_not_called()
+    persistence_adapter.persist_quarantine.assert_not_called()
+
+    diff_schema_service.mark_job_applied.assert_not_called()
+    diff_schema_service.mark_job_failed.assert_not_called()
+
+
+def test_persist_job_allows_permission_restricted_rows(
+) -> None:
+    (
+        service,
+        diff_schema_service,
+        quarantine_preparer,
+        backup_service,
+        persistence_adapter,
+    ) = _service(
+        counts=_counts(
+            total_count=1,
+            rejected_count=1,
+            created_count=0,
+            altered_count=1,
+            deleted_count=0,
+        ),
+        validation_finding_row_count=0,
+    )
+
+    result = service.persist_job(
+        job_id="job-1",
+    )
+
+    assert result.job_status == "applied"
+    assert result.restricted_feature_count == 1
+
+    quarantine_preparer.prepare.assert_called_once_with(
+        job_id="job-1",
+        import_schema="xtf_import",
+    )
+
+    persistence_adapter.persist_quarantine.assert_called_once_with(
+        import_schema="xtf_import",
+        live_schema="tww_od",
+        source_model="DSS_2020_1_LV95",
+    )
+
+    diff_schema_service.mark_job_applied.assert_called_once_with(
+        job_id="job-1",
+    )
 
 @pytest.mark.parametrize(
     "metadata",

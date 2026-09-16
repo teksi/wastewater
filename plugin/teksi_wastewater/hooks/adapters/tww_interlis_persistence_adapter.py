@@ -23,25 +23,17 @@ from teksi_wastewater.interlis.interlis_importer_exporter import (
     InterlisImporterExporter
 )
 
+
+from teksi_wastewater.hooks.capabilities.tww_interlis_persistence_capability import (
+    TwwInterlisPersistenceCapability,
+    TwwInterlisPersistenceResult,
+)
+
 import logging
 
 logger = logging.getLogger(
     __name__,
 )
-
-@dataclass(
-    slots=True,
-    frozen=True,
-)
-class TwwInterlisPersistenceResult:
-    """
-    Result of importing one prepared quarantine schema into live data.
-    """
-
-    import_schema: str
-    live_schema: str
-    source_model: str
-    committed: bool
 
 
 from dataclasses import dataclass
@@ -50,7 +42,7 @@ from dataclasses import dataclass
 @dataclass(
     slots=True,
 )
-class TwwInterlisPersistenceAdapter:
+class TwwInterlisPersistenceAdapter(TwwInterlisPersistenceCapability):
     """
     Persist one prepared quarantine schema through the existing importer.
     """

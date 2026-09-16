@@ -8,9 +8,12 @@ import logging
 from pathlib import Path
 from typing import Any, Protocol
 
+
 from teksi_wastewater.hooks.exceptions import (
     DiffJobEligibilityError,
     DiffJobPersistenceError,
+    DiffJobStateError,
+    DiffSchemaContractError,
 )
 from teksi_wastewater.hooks.services.tww_diff_schema_service import (
     DiffJobCounts,
@@ -20,6 +23,12 @@ from teksi_wastewater.hooks.services.tww_diff_schema_service import (
 )
 from teksi_wastewater.hooks.services.tww_quarantine_persistence_preparer import (
     TwwQuarantinePersistencePreparer,
+)
+
+
+from teksi_wastewater.hooks.capabilities.tww_interlis_persistence_capability import (
+    TwwInterlisPersistenceCapability,
+    TwwQuarantinePreparer,
 )
 
 
@@ -531,3 +540,258 @@ class TwwReviewPersistenceService:
                 "Could not mark diff review job %r as failed.",
                 job_id,
             )
+
+    def _delete_unused_backup(
+        self,
+        *,
+        job_id: str,
+        backup_path: Path,
+    ) -> None:
+        """
+        Delete a backup when quarantine preparation never started.
+
+        No backup-path cleanup is required because the failure occurred before
+        the backup path was successfully stored with the review job.
+        """
+
+        try:
+            self.backup_service.delete_backup(
+                backup_path=backup_path,
+            )
+        except Exception:
+            logger.exception(
+                "Could not delete unused quarantine backup %s "
+                "for diff review job %r.",
+                backup_path,
+                job_id,
+            )
+
+
+@dataclass(
+    slots=True,
+)
+class TwwJobPersistenceService:
+    """
+    Apply one accepted tww_diff job through the existing INTERLIS importer.
+
+    The service does not create, restore or delete quarantine backups.
+    The nullable backup path remains metadata owned by TwwDiffSchemaService
+    for compatibility with workflows that manage backups externally.
+    """
+
+    diff_schema_service: TwwDiffSchemaService
+    quarantine_preparer: TwwQuarantinePreparer
+    persistence_adapter: TwwInterlisPersistenceCapability
+
+    def persist_job(
+        self,
+        *,
+        job_id: str,
+        live_schema: str | None = None,
+    ) -> TwwJobPersistenceResult:
+        """
+        Prepare quarantine data and persist one accepted job.
+        """
+
+        job = self.diff_schema_service.require_review_job(
+            job_id=job_id,
+            include_features=False,
+        )
+
+        self._assert_application_eligibility(
+            job_id=job_id,
+            job_status=job.job_status,
+            validation_success=job.validation_success,
+        )
+
+        counts = self.diff_schema_service.job_counts(
+            job_id=job_id,
+        )
+
+        self._assert_review_counts(
+            job_id=job_id,
+            counts=counts,
+        )
+
+        import_schema = self._required_metadata_value(
+            job_id=job_id,
+            metadata=job.metadata,
+            key="import_schema",
+        )
+
+        source_model = self._required_metadata_value(
+            job_id=job_id,
+            metadata=job.metadata,
+            key="source_model",
+        )
+
+        resolved_live_schema = (
+            live_schema
+            or self._required_metadata_value(
+                job_id=job_id,
+                metadata=job.metadata,
+                key="live_schema",
+            )
+        )
+
+        self.diff_schema_service.acquire_job_for_application(
+            job_id=job_id,
+        )
+
+        try:
+            self.quarantine_preparer.prepare(
+                job_id=job_id,
+                import_schema=import_schema,
+            )
+
+            interlis_persistence = (
+                self.persistence_adapter.persist_quarantine(
+                    import_schema=import_schema,
+                    live_schema=resolved_live_schema,
+                    source_model=source_model,
+                )
+            )
+
+            if not interlis_persistence.committed:
+                raise DiffJobPersistenceError(
+                    job_id=job_id,
+                    phase="applying",
+                    message=(
+                        "The quarantine-to-live importer returned "
+                        "without confirming its transaction commit."
+                    ),
+                )
+
+            self.diff_schema_service.mark_job_applied(
+                job_id=job_id,
+            )
+
+        except Exception as exception:
+            self._mark_failed(
+                job_id=job_id,
+                exception=exception,
+            )
+
+            raise
+
+        return TwwJobPersistenceResult(
+            job_id=job_id,
+            previous_status="accepted",
+            job_status="applied",
+            review_feature_count=counts.total_count,
+            restricted_feature_count=counts.restricted_count,
+            import_schema=import_schema,
+            live_schema=resolved_live_schema,
+            source_model=source_model,
+            interlis_persistence=interlis_persistence,
+        )
+
+    def _assert_application_eligibility(
+        self,
+        *,
+        job_id: str,
+        job_status: str,
+        validation_success: bool,
+    ) -> None:
+        """
+        Validate lifecycle and source-validation eligibility.
+        """
+
+        if job_status != "accepted":
+            raise DiffJobStateError(
+                job_id=job_id,
+                expected_status="accepted",
+                actual_status=job_status,
+            )
+
+        if not validation_success:
+            raise DiffJobEligibilityError(
+                job_id=job_id,
+                reason=(
+                    "source validation was not successful."
+                ),
+            )
+
+    def _assert_review_counts(
+        self,
+        *,
+        job_id: str,
+        counts: DiffJobCounts,
+    ) -> None:
+        """
+        Validate that review rows are eligible for persistence.
+        """
+
+        if counts.rejected_count:
+            raise DiffJobEligibilityError(
+                job_id=job_id,
+                reason=(
+                    f"{counts.rejected_count} review rows contain "
+                    "blocking findings."
+                ),
+            )
+
+    def _required_metadata_value(
+        self,
+        *,
+        job_id: str,
+        metadata: Mapping[
+            str,
+            Any,
+        ],
+        key: str,
+    ) -> str:
+        """
+        Return a required non-empty string metadata value.
+        """
+
+        value = metadata.get(
+            key,
+        )
+
+        if not isinstance(
+            value,
+            str,
+        ) or not value.strip():
+            raise DiffSchemaContractError(
+                column_name=key,
+                message=(
+                    f"Diff review job {job_id!r} does not contain "
+                    f"a valid {key!r} value."
+                ),
+            )
+
+        return value
+
+    def _mark_failed(
+        self,
+        *,
+        job_id: str,
+        exception: Exception,
+    ) -> None:
+        """
+        Mark an applying job as failed.
+
+        The original persistence exception remains authoritative if recording
+        the failure state also fails.
+        """
+
+        try:
+            self.diff_schema_service.mark_job_failed(
+                job_id=job_id,
+                expected_status="applying",
+                phase="applying",
+                error_type=type(exception).__name__,
+                message=str(
+                    exception,
+                ),
+            )
+        except Exception as transition_exception:
+            if hasattr(
+                exception,
+                "add_note",
+            ):
+                exception.add_note(
+                    "Additionally, the diff job could not be marked "
+                    f"failed: {transition_exception}"
+                )
