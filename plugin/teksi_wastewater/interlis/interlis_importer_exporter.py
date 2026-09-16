@@ -142,6 +142,8 @@ class InterlisImporterExporter:
         if any( group in {"ag64", "ag96"} for group in selection_models.groups) and self.model_classes_tww_app is None:
             self.model_classes_tww_app = ModelTwwAG6496().classes()
             self._progress_done(self.current_progress + 1)
+        else:
+            self.model_classes_tww_app = None
 
     def _progress_done_in_scope(
         self,
