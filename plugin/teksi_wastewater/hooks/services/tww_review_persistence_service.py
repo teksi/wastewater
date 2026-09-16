@@ -260,7 +260,7 @@ class TwwReviewPersistenceService:
             previous_status="accepted",
             job_status="applied",
             review_feature_count=counts.total_count,
-            rejected_feature_count=counts.rejected_count,
+            restricted_feature_count=counts.restricted_count,
             import_schema=import_schema,
             live_schema=resolved_live_schema,
             source_model=source_model,
