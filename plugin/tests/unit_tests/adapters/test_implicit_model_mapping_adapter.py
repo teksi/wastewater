@@ -123,6 +123,7 @@ def implicit_mapping_adapter():
     adapter = TwwImplicitModelMappingAdapter(
         connection_factory=connection_factory,
         language="de",
+        import_schema="xtf_import",
     )
 
     return (
