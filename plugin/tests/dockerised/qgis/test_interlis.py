@@ -9,6 +9,7 @@ from teksi_wastewater.interlis.interlis_importer_exporter import (
     InterlisImporterExporter,
 )
 from teksi_wastewater.interlis.utils.ili2db import InterlisTools
+from teksi_wastewater.interlis import model_config
 from teksi_wastewater.utils.database_utils import DatabaseUtils
 
 # Display logging in unittest output
@@ -124,7 +125,7 @@ class TestInterlis(unittest.TestCase):
         export_xtf_file = self._get_output_filename("export_minimal_dss_dataset.xtf")
         interlisImporterExporter.interlis_export(
             xtf_file_output=self._get_output_filename(export_xtf_file),
-            export_models=[model_names_for_language(groups=("dss"), lang="de").items["dss"]],
+            export_models=[model_config.model_names_for_language(groups=("dss"), lang="de").items["dss"]],
             logs_next_to_file=True,
             user_interaction=False,
         )
@@ -133,7 +134,7 @@ class TestInterlis(unittest.TestCase):
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_DSS)
         models = InterlisTools.get_xtf_models(xtf_file=xtf_file_input)
         self.assertCountEqual(
-            models, [model_names_for_language(groups=("dss"), lang="de").items["dss"]]
+            models, [model_config.model_names_for_language(groups=("dss"), lang="de").items["dss"]]
         )
 
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_SIA405_ABWASSER)
@@ -141,7 +142,7 @@ class TestInterlis(unittest.TestCase):
         self.assertCountEqual(
             models,
             [
-                model_names_for_language(groups=("sia405_abwasser"), lang="de").items[
+                model_config.model_names_for_language(groups=("sia405_abwasser"), lang="de").items[
                     "sia405_abwasser"
                 ]
             ],
@@ -152,7 +153,7 @@ class TestInterlis(unittest.TestCase):
         self.assertCountEqual(
             models,
             [
-                model_names_for_language(groups=("sia405_base_abwasser"), lang="de").items[
+                model_config.model_names_for_language(groups=("sia405_base_abwasser"), lang="de").items[
                     "sia405_base_abwasser"
                 ]
             ],
@@ -165,10 +166,10 @@ class TestInterlis(unittest.TestCase):
             [
                 "Units",
                 "Base",
-                model_names_for_language(groups=("sia405_base_abwasser"), lang="de").items[
+                model_config.model_names_for_language(groups=("sia405_base_abwasser"), lang="de").items[
                     "sia405_base_abwasser"
                 ],
-                model_names_for_language(groups=("dss"), lang="de").items["dss"],
+                model_config.model_names_for_language(groups=("dss"), lang="de").items["dss"],
             ],
         )
 
@@ -177,7 +178,7 @@ class TestInterlis(unittest.TestCase):
         self.assertCountEqual(
             models,
             [
-                model_names_for_language(groups=("sia405_base_abwasser"), lang="de").items[
+                model_config.model_names_for_language(groups=("sia405_base_abwasser"), lang="de").items[
                     "sia405_base_abwasser"
                 ]
             ],
@@ -186,5 +187,5 @@ class TestInterlis(unittest.TestCase):
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_KEK_MANHOLE_DAMAGE)
         models = InterlisTools.get_xtf_models(xtf_file=xtf_file_input)
         self.assertCountEqual(
-            models, [model_names_for_language(groups=("vsa_kek"), lang="de").items["vsa_kek"]]
+            models, [model_config.model_names_for_language(groups=("vsa_kek"), lang="de").items["vsa_kek"]]
         )

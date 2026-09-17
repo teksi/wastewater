@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.sql import text
 
 from ...utils.plugin_utils import logger
-from .. import config, utils
+from .. import config, model_config, utils
 
 
 class InterlisExporterToIntermediateSchemaError(Exception):

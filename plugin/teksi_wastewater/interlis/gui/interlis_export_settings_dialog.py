@@ -18,6 +18,7 @@ class InterlisExportSettingsDialog(QDialog):
         settings = QSettings()
         locale = settings.value("locale/userLocale", "de_CH")
         self.lang = locale[:2]
+        ag6496extension = QSettings().value("/TWW/AGxxExtensions", False)
         loadUi(os.path.join(os.path.dirname(__file__), "interlis_export_settings_dialog.ui"), self)
         model_names = model_selection.model_names_for_language(lang=self.lang)
         if not (ag6496extension and ag6496extension != "false"):
@@ -30,7 +31,7 @@ class InterlisExportSettingsDialog(QDialog):
         for model_name in sorted(
             model_names,
         ):
-            model_combobox.addItem(
+            self.export_model_selection_comboBox.addItem(
                 model_name,
             )
         # Fill orientation selection combobox

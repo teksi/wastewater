@@ -92,14 +92,14 @@ def exported_sia405_base_abwasser(
     run_cli(
         "interlis_export "
         f'--xtf_file "{_container_output_file(base_name)}" '
-        f"--export_model {model_names_for_language(groups=("sia405_base_abwasser"),lang="de").items["sia405_base_abwasser"]} "
+        f"--export_model {model_config.model_names_for_language(groups=("sia405_base_abwasser"),lang="de").items["sia405_base_abwasser"]} "
         "--logs_next_to_file "
         f"{DB_ARGS}"
     )
 
     return _host_exported_file(
         base_name,
-        model_names_for_language(groups=("sia405_base_abwasser"), lang="de").items[
+        model_config.model_names_for_language(groups=("sia405_base_abwasser"), lang="de").items[
             "sia405_base_abwasser"
         ],
     )
@@ -114,7 +114,7 @@ def exported_sia405_abwasser(
     run_cli(
         "interlis_export "
         f'--xtf_file "{_container_output_file(base_name)}" '
-        f"--export_model {model_names_for_language(groups=("sia405_abwasser"),lang="de").items["sia405_abwasser"]} "
+        f"--export_model {model_config.model_names_for_language(groups=("sia405_abwasser"), lang="de").items["sia405_abwasser"]} "
         "--logs_next_to_file "
         f"{DB_ARGS}"
     )
@@ -136,7 +136,7 @@ def exported_dss(
     run_cli(
         "interlis_export "
         f'--xtf_file "{_container_output_file(base_name)}" '
-        f"--export_model {model_config.model_names_for_language(groups=("dss"),lang="de").items["dss"]} "
+        f"--export_model {model_config.model_names_for_language(groups=("dss"), lang="de").items["dss"]} "
         "--logs_next_to_file "
         f"{DB_ARGS}"
     )
@@ -156,7 +156,7 @@ def exported_kek(
     run_cli(
         "interlis_export "
         f'--xtf_file "{_container_output_file(base_name)}" '
-        f"--export_model {model_config.model_names_for_language(groups=("vsa_kek"),lang="de").items["vsa_kek"]} "
+        f"--export_model {model_config.model_names_for_language(groups=("vsa_kek"), lang="de").items["vsa_kek"]} "
         "--logs_next_to_file "
         f"{DB_ARGS}"
     )
@@ -197,7 +197,7 @@ def exported_dss_selection(
     run_cli(
         "interlis_export "
         f'--xtf_file "{_container_output_file(base_name)}" '
-        f"--export_model {model_config.model_names_for_language(groups=("dss"),lang="de").items["dss"]} "
+        f"--export_model {model_config.model_names_for_language(groups=("dss"), lang="de").items["dss"]} "
         '--selected_ids "ch000000WN000002,ch000000WN000003,ch000000RE000002" '
         "--logs_next_to_file "
         f"{DB_ARGS}"

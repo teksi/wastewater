@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 
 from teksi_hooks.services.interlis import (
     InterlisContext,

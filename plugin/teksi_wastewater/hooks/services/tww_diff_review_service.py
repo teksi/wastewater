@@ -48,29 +48,6 @@ from .tww_finding_translator import (
 )
 
 
-class DiffReviewDecision(
-    StrEnum,
-):
-    ACCEPT = "accept"
-    REJECT = "reject"
-
-
-@dataclass(
-    frozen=True,
-    slots=True,
-)
-class DiffReviewDecisionResult:
-    """
-    Result of resolving a pending review job.
-    """
-
-    job_id: str
-    decision: DiffReviewDecision
-    job_status: str
-    deletion_plan: DeletionPlan | None = None
-    persistence_result: PersistenceResult | None = None
-
-
 class ChangeObjectProviderFactory(
     Protocol,
 ):
