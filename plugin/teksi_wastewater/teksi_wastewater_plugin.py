@@ -29,7 +29,7 @@ import os
 import shutil
 
 from qgis.core import Qgis, QgsApplication, QgsProject
-from qgis.PyQt.QtCore import QLocale, QSettings, Qt, QTimer
+from qgis.PyQt.QtCore import QLocale, QSettings, Qt
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QApplication, QMessageBox, QToolBar
 from qgis.utils import qgsfunction
@@ -63,11 +63,10 @@ REQUIRED_LAYERS = {
     "vw_tww_wastewater_structure",
 }
 
+
 @qgsfunction(0, "System")
 def locale(values, feature, parent):
     return QSettings().value("locale/userLocale", QLocale.system().name())
-
-
 
 
 class TeksiWastewaterPlugin:
@@ -337,7 +336,7 @@ class TeksiWastewaterPlugin:
         project.readProject.connect(self._check_tww_layers)
         project.cleared.connect(self._on_project_cleared)
         self._tww_available = False
-        
+
         # Init the object maintaining the network
         self.network_analyzer = TwwGraphManager()
         self.network_analyzer.message_emitted.connect(self.iface.messageBar().pushMessage)
@@ -387,8 +386,7 @@ class TeksiWastewaterPlugin:
             return
 
         if any(
-            any(layer.id().startswith(prefix) for prefix in REQUIRED_LAYERS)
-            for layer in layers
+            any(layer.id().startswith(prefix) for prefix in REQUIRED_LAYERS) for layer in layers
         ):
             self._check_tww_layers()
 
@@ -546,7 +544,6 @@ class TeksiWastewaterPlugin:
             self.iface.removeDockWidget(self.selectionExtenderWidget)
             self.selectionExtenderWidget.deleteLater()
             self.selectionExtenderWidget = None
-
 
     def _on_project_cleared(self):
         self._on_tww_project_unavailable()
