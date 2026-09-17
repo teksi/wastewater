@@ -341,7 +341,7 @@ class InterlisImporterExporter:
             # Disable symbology triggers
             self._progress_done_in_scope(progress_scope, 10, "Disable symbology and modification triggers...")
             self._import_disable_symbology_and_modification_triggers()
-
+            tww_session=None
             try:
                 if incremental_only:
                     # Import from the temporary ili2pg model
@@ -389,7 +389,6 @@ class InterlisImporterExporter:
                 # Reenable symbology triggers
                 self._progress_done_in_scope(progress_scope, 97, "Reenable symbology and modification triggers...")
                 self._import_enable_symbology_and_modification_triggers()
-
             except Exception as exception:
                 # Make sure to re-enable triggers in case an exception occourred
                 try:

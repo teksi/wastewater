@@ -2,6 +2,8 @@ name: Plugin Adapter Tests
 
 on:
   push:
+    branches:
+      - main
     paths:
       - "plugin/teksi_wastewater/**"
       - "plugin/tests/**"
