@@ -19,7 +19,7 @@ from teksi_hooks.capabilities.rights import (
     RightsCapability,
     SubclassRightsCapability,
 )
-from teksi_hooks.evaluators.rights import RightsEvaluationContext, RightsEvaluator
+from teksi_hooks.evaluators.rights import RightsEvaluationBaseContext, RightsEvaluator
 from teksi_hooks.exceptions import RightsEvaluationError
 from teksi_hooks.hook import (
     HookBase,
@@ -29,10 +29,10 @@ from teksi_hooks.hook import (
 from teksi_hooks.models.oid import Oid, Standardoid
 from teksi_hooks.models.privilege import ALL_PRIVILEGES
 from teksi_hooks.models.provider import ResolvedProvider
-from teksi_hooks.parsers.model_mapping_parser import ModelMappingParser
-from teksi_hooks.parsers.provider_rights_parser import ProviderRightsParser
-from teksi_hooks.parsers.rights_parser import RightsParser
-from teksi_hooks.parsers.validation import ValidationParser
+from teksi_hooks.parser.model_mapping_parser import ModelMappingParser
+from teksi_hooks.parser.provider_rights_parser import ProviderRightsParser
+from teksi_hooks.parser.rights_parser import RightsParser
+from teksi_hooks.parser.validation_parser import ValidationParser
 from teksi_hooks.resolver.provider_resolver import ProviderResolver
 from teksi_hooks.resolver.rights_resolver import RightsResolver
 from teksi_wastewater.hooks.adapters.tww_canonical_model_adapter import (
@@ -53,7 +53,7 @@ from teksi_wastewater.hooks.adapters.tww_relation_context_provider import (
 from teksi_wastewater.hooks.adapters.tww_relation_lookup_adapter import (
     TwwRelationLookupAdapter,
 )
-from teksi_wastewater.hooks.capabilities.tww_implicit_model_mapper_capability import (
+from teksi_wastewater.hooks.capabilities.tww_implicit_model_mapping_capability import (
     TwwImplicitModelMappingCapability,
 )
 from teksi_wastewater.hooks.services.tww_change_creation_service import (
@@ -64,8 +64,27 @@ from teksi_wastewater.hooks.services.tww_diff_schema_service import (
     DiffJobMode,
     TwwDiffSchemaService,
 )
-from teksi_wastewater.hooks.services.tww_quarantine_effect_projector import (
+from teksi_wastewater.hooks.adapters.tww_interlis_persistence_adapter import (
+    TwwInterlisPersistenceAdapter,
+)
+from teksi_wastewater.hooks.services.tww_database_backup_service import (
+    TwwDatabaseBackupService,
+)
+from teksi_wastewater.hooks.services.tww_diff_review_service import (
+    TwwDiffReviewService,
+)
+from teksi_wastewater.hooks.services.tww_quarantine_persistence_preparer import (
+    TwwQuarantinePersistencePreparer,
+)
+from teksi_wastewater.hooks.services.tww_review_persistence_service import (
+    TwwReviewPersistenceService,
+)
+from teksi_wastewater.hooks.adapters.tww_quarantine_effect_projector import (
     TwwQuarantineEffectProjector,
+)
+from teksi_wastewater.hooks.adapters.tww_interlis_service_adapter import (
+    TwwInterlisContext,
+    TwwInterlisServiceAdapter,
 )
 from teksi_wastewater.interlis import (
     config,
@@ -125,7 +144,7 @@ class Hook(
                 DiffJobMode.CREATE,
             )
         )
-        xtf_file = Path(
+        xtf_file = self._optional_path(
             parameters["xtf_input"],
         )
         import_schema = parameters.get(
@@ -164,6 +183,10 @@ class Hook(
             else None
         )
 
+        auto_apply = parameters.get(
+            "auto_apply", False
+        )
+
         self.provider_oid = Standardoid(parameters["provider_oid"])
         self.dataowner_oid = Standardoid(parameters["dataowner_oid"])
 
@@ -181,8 +204,8 @@ class Hook(
             ),
         )
         self.rights_definition = RightsParser().parse_file(rights_definition_path)
-        raw_provider_rights = ProviderRightsParser().parse_file(provider_rights_path)
-        resolved_providers = ProviderResolver.resolve_all(raw_provider_rights)
+        raw_provider_rights = ProviderRightsParser(oid_type=Standardoid).parse_file(provider_rights_path)
+        resolved_providers = ProviderResolver().resolve_all(providers=raw_provider_rights)
         if skip_rights_evaluation:
             resolved_providers = self._grant_all(resolved_providers)
         try:
@@ -192,7 +215,7 @@ class Hook(
                 "No provider-rights definition exists for " f"provider {self.provider_oid!s}."
             ) from exception
 
-        self.rights_context = RightsEvaluationContext(
+        self.rights_context = RightsEvaluationBaseContext(
             provider_oid=self.provider_oid,
             dataowner_oid=self.dataowner_oid,
             context_values={
@@ -202,9 +225,7 @@ class Hook(
         )
 
         # create adapters and services
-        quarantine_runner = TwwQuarantineRunner(
-            interlis_service=self.interlis_service,
-        )
+        quarantine_runner = TwwQuarantineRunner()
 
         canonical_model = TwwCanonicalModelAdapter(
             connection_factory=self.connection_factory,
@@ -223,7 +244,6 @@ class Hook(
         resolved_rights = RightsResolver().resolve(
             definition=self.rights_definition,
             validation_definition=self.validation_definition,
-            canonical_metadata=canonical_metadata,
         )
 
         rights_capability = RightsCapability(
@@ -254,7 +274,7 @@ class Hook(
         )
 
         if incremental_xtf is None:
-            self.run_sub_verification(
+            result = self.run_sub_verification(
                 xtf_file=xtf_file,
                 schema=import_schema,
                 quarantine_runner=quarantine_runner,
@@ -266,19 +286,20 @@ class Hook(
                 final_diff_run=True,
             )
         else:
-            self.run_sub_verification(
-                xtf_file=xtf_file,
-                schema=import_schema,
-                quarantine_runner=quarantine_runner,
-                canonical_metadata=canonical_metadata,
-                diff_schema_service=diff_schema_service,
-                rights_evaluator=rights_evaluator,
-                context=context,
-                is_incremental=False,
-                final_diff_run=False,
-            )
+            if xtf_file is not None:
+                _ = self.run_sub_verification(
+                    xtf_file=xtf_file,
+                    schema=import_schema,
+                    quarantine_runner=quarantine_runner,
+                    canonical_metadata=canonical_metadata,
+                    diff_schema_service=diff_schema_service,
+                    rights_evaluator=rights_evaluator,
+                    context=context,
+                    is_incremental=False,
+                    final_diff_run=False,
+                )
 
-            self.run_sub_verification(
+            result = self.run_sub_verification(
                 xtf_file=incremental_xtf,
                 schema=incremental_import_schema,
                 quarantine_runner=quarantine_runner,
@@ -289,6 +310,89 @@ class Hook(
                 is_incremental=True,
                 final_diff_run=True,
             )
+
+        if auto_apply:
+            if result.diff_schema_result is None:
+                raise RuntimeError(
+                    "The reviewed import did not create a persisted "
+                    "tww_diff review job."
+                )
+            diff_review_service = TwwDiffReviewService(
+                diff_schema_service=diff_schema_service,
+            )
+
+            quarantine_preparer = (
+                TwwQuarantinePersistencePreparer(
+                    connection_factory=(
+                        self.connection_factory
+                    ),
+                    diff_schema_service=(
+                        diff_schema_service
+                    ),
+                )
+            )
+            backup_service = TwwDatabaseBackupService(
+                connection_factory=self.connection_factory,
+            )
+            persistence_adapter = (
+                TwwInterlisPersistenceAdapter(
+                    connection_factory=(
+                        self.connection_factory
+                    ),
+                    interlis_service=(
+                        self.interlis_service
+                    ),
+                    model_config_dir=(
+                        self.model_config_dir
+                    ),
+                )
+            )
+            review_persistence_service = (
+                TwwReviewPersistenceService(
+                    diff_schema_service=(
+                        diff_schema_service
+                    ),
+                    quarantine_preparer=(
+                        quarantine_preparer
+                    ),
+                    backup_service=backup_service,
+                    persistence_adapter=(
+                        persistence_adapter
+                    ),
+                )
+            )
+            diff_review_service.accept_job(
+                job_id=result.job_id,
+            )
+
+            persistence_result = (
+                review_persistence_service.persist_job(
+                    job_id=result.job_id,
+                    live_schema=self.live_schema,
+                )
+            )
+
+            if persistence_result.job_status != "applied":
+                raise RuntimeError(
+                    "The reviewed import completed without reaching "
+                    f"the 'applied' state. Job {result.job_id!r} has "
+                    f"status {persistence_result.job_status!r}."
+                )
+
+            context.logger.info(
+                "Applied reviewed tww_diff job '%s' with %s review "
+                "features, of which %s were permission-restricted.",
+                persistence_result.job_id,
+                persistence_result.review_feature_count,
+                persistence_result.restricted_feature_count,
+            )
+
+            return
+        else:
+            # store diffs in a sensible way
+            # send out information mails if needed
+            # etc.
+            pass
 
     def run_sub_verification(
         self,
@@ -304,6 +408,39 @@ class Hook(
     ):
 
         model_selection = self.interlis_service.identify_model(xtf_file)
+        if model_selection.group in {'ag64', 'ag96'}:
+            import_context = TwwInterlisContext(
+                schema=schema,
+                import_orgs=False,
+                orgs_path=None,
+            )
+        else:
+            import_context = TwwInterlisContext(
+                schema=schema,
+                import_orgs=self.orgs_path is not None,
+                orgs_path=self.orgs_path,
+            )
+
+        (
+            import_model,
+            created_models,
+        ) = quarantine_runner.import_xtf_to_quarantine(
+            xtf_file=xtf_file,
+            context=import_context,
+            schema=schema,
+        )
+        created_models=tuple(created_models)
+
+        quarantine_runner.validate_quarantine_or_raise(
+            model_names=(
+                import_model,
+            ),
+            log_path=xtf_file.with_name(
+                f"{xtf_file.stem}_validate_import_quarantine.log"
+            ),
+            schema=schema,
+        )
+
         explicit_mapping = ModelMappingParser().parse_file(
             self.model_config_dir / "explicit_mapping.yaml",
             model_id=model_selection.mapping_model_id,
@@ -388,6 +525,8 @@ class Hook(
                     else "unknown"
                 ),
             )
+
+            return result
 
     def _optional_path(
         self,
@@ -528,11 +667,9 @@ class Hook(
         Relative paths are resolved against ``config_dir``. Absolute paths remain
         supported for explicitly configured external templates.
         """
-
         raw_path = profile.get(
             key,
         )
-
         if (
             not isinstance(
                 raw_path,

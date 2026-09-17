@@ -11,11 +11,8 @@ from teksi_hooks.hook import (
     HookContext,
     HookHandler,
 )
-from teksi_wastewater.hooks.adapters.tww_change_object_provider_factory import (
+from teksi_wastewater.hooks.adapters.tww_change_object_provider import (
     TwwChangeObjectProviderFactory,
-)
-from teksi_wastewater.hooks.adapters.tww_quarantine_effect_projector import (
-    TwwQuarantineEffectProjector,
 )
 from teksi_wastewater.hooks.adapters.tww_rights_evaluator_factory import (
     TwwRightsEvaluatorFactory,
@@ -23,8 +20,6 @@ from teksi_wastewater.hooks.adapters.tww_rights_evaluator_factory import (
 from teksi_wastewater.hooks.cli import helpers
 from teksi_wastewater.hooks.services.tww_change_creation_service import (
     ChangeObjectProviderFactory,
-    QuarantineEffectProjector,
-    RightsEvaluatorFactory,
 )
 from teksi_wastewater.interlis import (
     config,
@@ -138,6 +133,16 @@ def main() -> int:
             "should only be used when setting a baseline."
         ),
     )
+    
+    parser.add_argument(
+        "--auto-apply",
+        action="store_true",
+        help=(
+            "Create the diff checks, but automatically persist the imported xtf. "
+            "This setting should only be used when setting a baseline."
+            "Its main use case is importing an incremental baseline dataset."
+        ),
+    )
 
     helpers.add_postgres_connection_args(
         parser,
@@ -158,6 +163,7 @@ def main() -> int:
         "rights_profile": args.rights_profile,
         "hook_config_dir": args.hook_config_dir,
         "skip_rights_evaluation": args.skip_rights_evaluation,
+        "auto_apply": args.auto_apply,
     }
 
     if args.job_id is not None:
@@ -173,8 +179,6 @@ def main() -> int:
         parameters=parameters,
         logger=logger,
         capabilities={
-            QuarantineEffectProjector: TwwQuarantineEffectProjector(),
-            RightsEvaluatorFactory: TwwRightsEvaluatorFactory(),
             ChangeObjectProviderFactory: TwwChangeObjectProviderFactory(),
             DatabaseConnectionFactory: connection_factory,
         },

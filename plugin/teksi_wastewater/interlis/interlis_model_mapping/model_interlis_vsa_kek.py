@@ -5,44 +5,44 @@ class ModelInterlisVsaKek(ModelInterlisSia405Abwasser):
     def __init__(self, schema):
         super().__init__(schema)
 
-        class erhaltungsereignis(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class erhaltungsereignis(self.vsa_baseclass):
             __tablename__ = "erhaltungsereignis"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisVsaKek.erhaltungsereignis = erhaltungsereignis
+        self.erhaltungsereignis = erhaltungsereignis
 
-        class untersuchung(ModelInterlisVsaKek.erhaltungsereignis):
+        class untersuchung(self.erhaltungsereignis):
             __tablename__ = "untersuchung"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisVsaKek.untersuchung = untersuchung
+        self.untersuchung = untersuchung
 
-        class schaden(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class schaden(self.vsa_baseclass):
             __tablename__ = "schaden"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisVsaKek.schaden = schaden
+        self.schaden = schaden
 
         class normschachtschaden(schaden):
             __tablename__ = "normschachtschaden"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisVsaKek.normschachtschaden = normschachtschaden
+        self.normschachtschaden = normschachtschaden
 
         class kanalschaden(schaden):
             __tablename__ = "kanalschaden"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisVsaKek.kanalschaden = kanalschaden
+        self.kanalschaden = kanalschaden
 
-        class datentraeger(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class datentraeger(self.vsa_baseclass):
             __tablename__ = "datentraeger"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisVsaKek.datentraeger = datentraeger
+        self.datentraeger = datentraeger
 
-        class datei(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class datei(self.vsa_baseclass):
             __tablename__ = "datei"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisVsaKek.datei = datei
+        self.datei = datei

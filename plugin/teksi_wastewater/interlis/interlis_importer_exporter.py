@@ -273,9 +273,9 @@ class InterlisImporterExporter:
             incremental_only=incremental_only,
         )
 
-        created_models = tuple(selection_models.created_models)
+        import_schema_models = tuple(selection_models.import_schema_models)
 
-        if not created_models:
+        if not import_schema_models:
             raise InterlisImporterExporterError(
                 "Missing model",
                 (
@@ -294,7 +294,7 @@ class InterlisImporterExporter:
         self._progress_done_in_scope(progress_scope, 35, "Creating ili schema...")
 
         self._create_ili_schema(
-            created_models, ext_columns_no_constraints=True, create_basket_col=True
+            import_schema_models, ext_columns_no_constraints=True, create_basket_col=True
         )
 
         if import_orgs or orgs_path:
@@ -1326,3 +1326,51 @@ class InterlisImporterExporter:
             )
 
         return session_tww
+
+    def _assert_incremental_dependencies(
+        self,
+    ) -> None:
+        """
+        Ensure all collaborators required by the incremental importer exist.
+
+        Incremental persistence uses the model mapping to project imported AG-XX
+        values into canonical effects. Function-based effects are resolved,
+        evaluated against live data and persisted through the configured effect
+        persistence adapter.
+        """
+
+        required_dependencies = {
+            "model_mapping": self.model_mapping,
+            "function_effect_resolver": (
+                self.function_effect_resolver
+            ),
+            "effect_evaluator": (
+                self.effect_evaluator
+            ),
+            "effect_persister": (
+                self.effect_persister
+            ),
+        }
+
+        missing_dependencies = [
+            dependency_name
+            for (
+                dependency_name,
+                dependency,
+            ) in required_dependencies.items()
+            if dependency is None
+        ]
+
+        if missing_dependencies:
+            raise InterlisImporterExporterError(
+                "Incremental INTERLIS import is not configured",
+                (
+                    "The incremental importer requires the "
+                    "following dependencies: "
+                    + ", ".join(
+                        missing_dependencies,
+                    )
+                    + "."
+                ),
+                None,
+            )

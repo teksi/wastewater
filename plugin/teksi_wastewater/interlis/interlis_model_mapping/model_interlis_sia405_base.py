@@ -5,23 +5,23 @@ class ModelInterlisSia405Base(ModelInterlisBase):
     def __init__(self, schema):
         super().__init__(schema)
 
-        class sia405_baseclass(ModelInterlisBase.baseclass):
+        class sia405_baseclass(self.baseclass):
             __tablename__ = "sia405_baseclass"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisSia405Base.sia405_baseclass = sia405_baseclass
+        self.sia405_baseclass = sia405_baseclass
 
         # TEXTS
-        class sia405_textpos(ModelInterlisBase.textpos):
+        class sia405_textpos(self.textpos):
             __tablename__ = "sia405_textpos"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisSia405Base.sia405_textpos = sia405_textpos
+        self.sia405_textpos = sia405_textpos
 
         # SymbolPos
 
-        class sia405_symbolpos(ModelInterlisBase.symbolpos):
+        class sia405_symbolpos(self.symbolpos):
             __tablename__ = "sia405_symbolpos"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisSia405Base.sia405_symbolpos = sia405_symbolpos
+        self.sia405_symbolpos = sia405_symbolpos

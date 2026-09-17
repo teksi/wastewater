@@ -5,341 +5,341 @@ class ModelInterlisDss(ModelInterlisSia405Abwasser):
     def __init__(self, schema):
         super().__init__(schema)
 
-        class anschlussobjekt(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class anschlussobjekt(self.vsa_baseclass):
             __tablename__ = "anschlussobjekt"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.anschlussobjekt = anschlussobjekt
+        self.anschlussobjekt = anschlussobjekt
 
-        class erhaltungsereignis(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class erhaltungsereignis(self.vsa_baseclass):
             __tablename__ = "erhaltungsereignis"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.erhaltungsereignis = erhaltungsereignis
+        self.erhaltungsereignis = erhaltungsereignis
 
-        class oberflaechenabflussparameter(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class oberflaechenabflussparameter(self.vsa_baseclass):
             __tablename__ = "oberflaechenabflussparameter"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.oberflaechenabflussparameter = oberflaechenabflussparameter
+        self.oberflaechenabflussparameter = oberflaechenabflussparameter
 
-        class ueberlauf(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class ueberlauf(self.vsa_baseclass):
             __tablename__ = "ueberlauf"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.ueberlauf = ueberlauf
+        self.ueberlauf = ueberlauf
 
-        class zone(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class zone(self.vsa_baseclass):
             __tablename__ = "azone"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.zone = zone
+        self.zone = zone
 
-        class abwasserreinigungsanlage(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class abwasserreinigungsanlage(self.vsa_baseclass):
             __tablename__ = "abwasserreinigungsanlage"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.abwasserreinigungsanlage = abwasserreinigungsanlage
+        self.abwasserreinigungsanlage = abwasserreinigungsanlage
 
-        class araenergienutzung(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class araenergienutzung(self.vsa_baseclass):
             __tablename__ = "araenergienutzung"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.araenergienutzung = araenergienutzung
+        self.araenergienutzung = araenergienutzung
 
-        class abwasserbehandlung(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class abwasserbehandlung(self.vsa_baseclass):
             __tablename__ = "abwasserbehandlung"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.abwasserbehandlung = abwasserbehandlung
+        self.abwasserbehandlung = abwasserbehandlung
 
-        class schlammbehandlung(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class schlammbehandlung(self.vsa_baseclass):
             __tablename__ = "schlammbehandlung"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.schlammbehandlung = schlammbehandlung
+        self.schlammbehandlung = schlammbehandlung
 
-        class arabauwerk(ModelInterlisSia405Abwasser.abwasserbauwerk):
+        class arabauwerk(self.abwasserbauwerk):
             __tablename__ = "arabauwerk"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.arabauwerk = arabauwerk
+        self.arabauwerk = arabauwerk
 
-        class steuerungszentrale(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class steuerungszentrale(self.vsa_baseclass):
             __tablename__ = "steuerungszentrale"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.steuerungszentrale = steuerungszentrale
+        self.steuerungszentrale = steuerungszentrale
 
-        class abflusslose_toilette(ModelInterlisSia405Abwasser.abwasserbauwerk):
+        class abflusslose_toilette(self.abwasserbauwerk):
             __tablename__ = "abflusslose_toilette"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.abflusslose_toilette = abflusslose_toilette
+        self.abflusslose_toilette = abflusslose_toilette
 
-        class absperr_drosselorgan(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class absperr_drosselorgan(self.vsa_baseclass):
             __tablename__ = "absperr_drosselorgan"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.absperr_drosselorgan = absperr_drosselorgan
+        self.absperr_drosselorgan = absperr_drosselorgan
 
-        class beckenentleerung(ModelInterlisSia405Abwasser.bauwerksteil):
+        class beckenentleerung(self.bauwerksteil):
             __tablename__ = "beckenentleerung"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.beckenentleerung = beckenentleerung
+        self.beckenentleerung = beckenentleerung
 
-        class beckenreinigung(ModelInterlisSia405Abwasser.bauwerksteil):
+        class beckenreinigung(self.bauwerksteil):
             __tablename__ = "beckenreinigung"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.beckenreinigung = beckenreinigung
+        self.beckenreinigung = beckenreinigung
 
         class biol_oekol_gesamtbeurteilung(erhaltungsereignis):
             __tablename__ = "biol_oekol_gesamtbeurteilung"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.biol_oekol_gesamtbeurteilung = biol_oekol_gesamtbeurteilung
+        self.biol_oekol_gesamtbeurteilung = biol_oekol_gesamtbeurteilung
 
         class brunnen(anschlussobjekt):
             __tablename__ = "brunnen"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.brunnen = brunnen
+        self.brunnen = brunnen
 
         class ezg_parameter_allg(oberflaechenabflussparameter):
             __tablename__ = "ezg_parameter_allg"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.ezg_parameter_allg = ezg_parameter_allg
+        self.ezg_parameter_allg = ezg_parameter_allg
 
         class ezg_parameter_mouse1(oberflaechenabflussparameter):
             __tablename__ = "ezg_parameter_mouse1"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.ezg_parameter_mouse1 = ezg_parameter_mouse1
+        self.ezg_parameter_mouse1 = ezg_parameter_mouse1
 
         class einzelflaeche(anschlussobjekt):
             __tablename__ = "einzelflaeche"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.einzelflaeche = einzelflaeche
+        self.einzelflaeche = einzelflaeche
 
-        class einzugsgebiet(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class einzugsgebiet(self.vsa_baseclass):
             __tablename__ = "einzugsgebiet"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.einzugsgebiet = einzugsgebiet
+        self.einzugsgebiet = einzugsgebiet
 
-        class einzugsgebiet_text(ModelInterlisSia405Abwasser.sia405_textpos):
+        class einzugsgebiet_text(self.sia405_textpos):
             __tablename__ = "einzugsgebiet_text"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.einzugsgebiet_text = einzugsgebiet_text
+        self.einzugsgebiet_text = einzugsgebiet_text
 
-        class elektrischeeinrichtung(ModelInterlisSia405Abwasser.bauwerksteil):
+        class elektrischeeinrichtung(self.bauwerksteil):
             __tablename__ = "elektrischeeinrichtung"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.elektrischeeinrichtung = elektrischeeinrichtung
+        self.elektrischeeinrichtung = elektrischeeinrichtung
 
-        class elektromechanischeausruestung(ModelInterlisSia405Abwasser.bauwerksteil):
+        class elektromechanischeausruestung(self.bauwerksteil):
             __tablename__ = "elektromechanischeausruestung"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.elektromechanischeausruestung = elektromechanischeausruestung
+        self.elektromechanischeausruestung = elektromechanischeausruestung
 
-        class entsorgung(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class entsorgung(self.vsa_baseclass):
             __tablename__ = "entsorgung"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.entsorgung = entsorgung
+        self.entsorgung = entsorgung
 
         class entwaesserungssystem(zone):
             __tablename__ = "entwaesserungssystem"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.entwaesserungssystem = entwaesserungssystem
+        self.entwaesserungssystem = entwaesserungssystem
 
-        class feststoffrueckhalt(ModelInterlisSia405Abwasser.bauwerksteil):
+        class feststoffrueckhalt(self.bauwerksteil):
             __tablename__ = "feststoffrueckhalt"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.feststoffrueckhalt = feststoffrueckhalt
+        self.feststoffrueckhalt = feststoffrueckhalt
 
         class foerderaggregat(ueberlauf):
             __tablename__ = "foerderaggregat"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.foerderaggregat = foerderaggregat
+        self.foerderaggregat = foerderaggregat
 
         class gebaeude(anschlussobjekt):
             __tablename__ = "gebaeude"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.gebaeude = gebaeude
+        self.gebaeude = gebaeude
 
-        class gebaeudegruppe(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class gebaeudegruppe(self.vsa_baseclass):
             __tablename__ = "gebaeudegruppe"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.gebaeudegruppe = gebaeudegruppe
+        self.gebaeudegruppe = gebaeudegruppe
 
-        class gebaeudegruppe_baugwr(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class gebaeudegruppe_baugwr(self.vsa_baseclass):
             __tablename__ = "gebaeudegruppe_baugwr"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.gebaeudegruppe_baugwr = gebaeudegruppe_baugwr
+        self.gebaeudegruppe_baugwr = gebaeudegruppe_baugwr
 
-        class gesamteinzugsgebiet(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class gesamteinzugsgebiet(self.vsa_baseclass):
             __tablename__ = "gesamteinzugsgebiet"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.gesamteinzugsgebiet = gesamteinzugsgebiet
+        self.gesamteinzugsgebiet = gesamteinzugsgebiet
 
-        class hq_relation(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class hq_relation(self.vsa_baseclass):
             __tablename__ = "hq_relation"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.hq_relation = hq_relation
+        self.hq_relation = hq_relation
 
-        class hydr_geomrelation(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class hydr_geomrelation(self.vsa_baseclass):
             __tablename__ = "hydr_geomrelation"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.hydr_geomrelation = hydr_geomrelation
+        self.hydr_geomrelation = hydr_geomrelation
 
-        class hydr_geometrie(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class hydr_geometrie(self.vsa_baseclass):
             __tablename__ = "hydr_geometrie"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.hydr_geometrie = hydr_geometrie
+        self.hydr_geometrie = hydr_geometrie
 
-        class hydr_kennwerte(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class hydr_kennwerte(self.vsa_baseclass):
             __tablename__ = "hydr_kennwerte"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.hydr_kennwerte = hydr_kennwerte
+        self.hydr_kennwerte = hydr_kennwerte
 
-        class klara(ModelInterlisSia405Abwasser.abwasserbauwerk):
+        class klara(self.abwasserbauwerk):
             __tablename__ = "klara"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.klara = klara
+        self.klara = klara
 
-        class landwirtschaftsbetrieb(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class landwirtschaftsbetrieb(self.vsa_baseclass):
             __tablename__ = "landwirtschaftsbetrieb"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.landwirtschaftsbetrieb = landwirtschaftsbetrieb
+        self.landwirtschaftsbetrieb = landwirtschaftsbetrieb
 
         class leapingwehr(ueberlauf):
             __tablename__ = "leapingwehr"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.leapingwehr = leapingwehr
+        self.leapingwehr = leapingwehr
 
-        class massnahme(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class massnahme(self.vsa_baseclass):
             __tablename__ = "massnahme"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.massnahme = massnahme
+        self.massnahme = massnahme
 
-        class mechanischevorreinigung(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class mechanischevorreinigung(self.vsa_baseclass):
             __tablename__ = "mechanischevorreinigung"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.mechanischevorreinigung = mechanischevorreinigung
+        self.mechanischevorreinigung = mechanischevorreinigung
 
-        class messgeraet(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class messgeraet(self.vsa_baseclass):
             __tablename__ = "messgeraet"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.messgeraet = messgeraet
+        self.messgeraet = messgeraet
 
-        class messreihe(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class messreihe(self.vsa_baseclass):
             __tablename__ = "messreihe"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.messreihe = messreihe
+        self.messreihe = messreihe
 
-        class messresultat(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class messresultat(self.vsa_baseclass):
             __tablename__ = "messresultat"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.messresultat = messresultat
+        self.messresultat = messresultat
 
-        class messstelle(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class messstelle(self.vsa_baseclass):
             __tablename__ = "messstelle"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.messstelle = messstelle
+        self.messstelle = messstelle
 
-        class mutation(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class mutation(self.vsa_baseclass):
             __tablename__ = "mutation"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.mutation = mutation
+        self.mutation = mutation
 
         class reservoir(anschlussobjekt):
             __tablename__ = "reservoir"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.reservoir = reservoir
+        self.reservoir = reservoir
 
-        class retentionskoerper(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class retentionskoerper(self.vsa_baseclass):
             __tablename__ = "retentionskoerper"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.retentionskoerper = retentionskoerper
+        self.retentionskoerper = retentionskoerper
 
-        class rohrprofil_geometrie(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class rohrprofil_geometrie(self.vsa_baseclass):
             __tablename__ = "rohrprofil_geometrie"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.rohrprofil_geometrie = rohrprofil_geometrie
+        self.rohrprofil_geometrie = rohrprofil_geometrie
 
-        class rueckstausicherung(ModelInterlisSia405Abwasser.bauwerksteil):
+        class rueckstausicherung(self.bauwerksteil):
             __tablename__ = "rueckstausicherung"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.rueckstausicherung = rueckstausicherung
+        self.rueckstausicherung = rueckstausicherung
 
-        class stammkarte(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class stammkarte(self.vsa_baseclass):
             __tablename__ = "stammkarte"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.stammkarte = stammkarte
+        self.stammkarte = stammkarte
 
         class streichwehr(ueberlauf):
             __tablename__ = "streichwehr"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.streichwehr = streichwehr
+        self.streichwehr = streichwehr
 
-        class ueberlaufcharakteristik(ModelInterlisSia405Abwasser.vsa_baseclass):
+        class ueberlaufcharakteristik(self.vsa_baseclass):
             __tablename__ = "ueberlaufcharakteristik"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.ueberlaufcharakteristik = ueberlaufcharakteristik
+        self.ueberlaufcharakteristik = ueberlaufcharakteristik
 
         class unterhalt(erhaltungsereignis):
             __tablename__ = "unterhalt"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.unterhalt = unterhalt
+        self.unterhalt = unterhalt
 
         class versickerungsbereich(zone):
             __tablename__ = "versickerungsbereich"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.versickerungsbereich = versickerungsbereich
+        self.versickerungsbereich = versickerungsbereich
 
         class erhaltungsereignis_abwasserbauwerkassoc(self.Base):
             __tablename__ = "erhaltungsereignis_abwasserbauwerkassoc"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.erhaltungsereignis_abwasserbauwerkassoc = (
+        self.erhaltungsereignis_abwasserbauwerkassoc = (
             erhaltungsereignis_abwasserbauwerkassoc
         )
 
@@ -347,4 +347,4 @@ class ModelInterlisDss(ModelInterlisSia405Abwasser):
             __tablename__ = "gebaeudegruppe_entsorgungassoc"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisDss.gebaeudegruppe_entsorgungassoc = gebaeudegruppe_entsorgungassoc
+        self.gebaeudegruppe_entsorgungassoc = gebaeudegruppe_entsorgungassoc

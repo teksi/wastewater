@@ -9,7 +9,7 @@ class ModelInterlisBase(ModelBase):
             __tablename__ = "baseclass"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisBase.baseclass = baseclass
+        self.baseclass = baseclass
 
         # TEXTS
 
@@ -17,7 +17,7 @@ class ModelInterlisBase(ModelBase):
             __tablename__ = "textpos"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisBase.textpos = textpos
+        self.textpos = textpos
 
         # SymbolPos
 
@@ -25,4 +25,4 @@ class ModelInterlisBase(ModelBase):
             __tablename__ = "symbolpos"
             __table_args__ = {"schema": self.schema}
 
-        ModelInterlisBase.symbolpos = symbolpos
+        self.symbolpos = symbolpos

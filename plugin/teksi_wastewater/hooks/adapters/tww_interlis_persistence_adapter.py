@@ -22,7 +22,6 @@ logger = logging.getLogger(
     __name__,
 )
 
-
 @dataclass(
     slots=True,
 )

@@ -9,10 +9,10 @@ from teksi_hooks.capabilities.relation_lookup import (
 from teksi_hooks.evaluators.rights import (
     RightsEvaluator,
 )
-from teksi_hooks.parsers.rights import (
+from teksi_hooks.parser.rights_parser import (
     RightsParser,
 )
-from teksi_hooks.resolvers.rights import (
+from teksi_hooks.resolver.rights_resolver import (
     RightsResolver,
 )
 

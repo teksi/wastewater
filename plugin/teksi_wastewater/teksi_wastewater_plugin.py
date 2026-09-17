@@ -48,7 +48,7 @@ from .tools.twwmaptools import TwwMapToolConnectNetworkElements, TwwTreeMapTool
 from .tools.twwnetwork import TwwGraphManager
 from .tools.twwselectionextender import TwwSelectionExtender
 from .utils.database_utils import DatabaseUtils
-from .utils.intergrity_checker import TWWIntegrityChecker
+from .utils.integrity_checker import TWWIntegrityChecker
 from .utils.issues import Issue, IssueLevel
 from .utils.plugin_utils import plugin_root_path
 from .utils.qt_utils import OverrideCursor

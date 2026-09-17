@@ -230,7 +230,10 @@ class TwwInterlisModelSelection:
 
     group: str
     language: str
-    imported_models: tuple[str, ...]
+    imported_models: tuple[
+        str,
+        ...,
+    ]
     components: tuple[
         TwwInterlisModelComponent,
         ...,
@@ -244,7 +247,9 @@ class TwwInterlisModelSelection:
         Return the component representing the primary model group.
         """
 
-        return self.components[-1]
+        return self.components[
+            -1
+        ]
 
     @property
     def import_model(
@@ -257,31 +262,29 @@ class TwwInterlisModelSelection:
         return self.primary_component.model_name
 
     @property
-    def created_models(
-        self,
-    ) -> tuple[str, ...]:
-        """
-        Return all dependency and primary model names.
-
-        Names are returned in dependency-first order.
-        """
-
-        return tuple(component.model_name for component in self.components)
-
-    @property
     def groups(
         self,
-    ) -> tuple[str, ...]:
+    ) -> tuple[
+        str,
+        ...,
+    ]:
         """
         Return all selected semantic model groups.
         """
 
-        return tuple(component.group for component in self.components)
+        return tuple(
+            component.group
+            for component in self.components
+        )
 
     @property
     def mapping_model_id(
         self,
     ) -> str:
+        """
+        Return the model identifier used to load explicit mappings.
+        """
+
         if self.group in {
             "ag64",
             "ag96",
@@ -290,6 +293,255 @@ class TwwInterlisModelSelection:
 
         return self.group
 
+    @property
+    def import_schema_models(
+        self,
+    ) -> tuple[
+        str,
+        ...,
+    ]:
+        """
+        Return model names used to create an import quarantine schema.
+
+        Every configured language variant of every highest selected
+        inheritance level is included. Dependency models are resolved by
+        ili2pg from the selected primary model definitions.
+        """
+
+        model_names: list[
+            str,
+        ] = []
+
+        highest_levels = set(
+            self._highest_inheritance_levels,
+        )
+
+        for component in self.components:
+            if component.group not in highest_levels:
+                continue
+
+            selected_model_name = (
+                component.model_name
+            )
+
+            if selected_model_name not in model_names:
+                model_names.append(
+                    selected_model_name,
+                )
+
+            remaining_model_names = sorted(
+                model_name
+                for model_name
+                in component.configuration.names
+                if model_name
+                != selected_model_name
+            )
+
+            for model_name in remaining_model_names:
+                if model_name not in model_names:
+                    model_names.append(
+                        model_name,
+                    )
+
+        return tuple(
+            model_names,
+        )
+
+    @property
+    def export_schema_models(
+        self,
+    ) -> tuple[
+        str,
+        ...,
+    ]:
+        """
+        Return model names used to create an export quarantine schema.
+
+        One language-specific model is selected for every component
+        participating in the inheritance trees of the highest selected model
+        levels.
+
+        Components are returned in dependency-first order. Language fallback
+        is handled by ``InterlisModel.lang_name``.
+        """
+
+        model_names: list[
+            str,
+        ] = []
+
+        for component in self._components_for_highest_levels:
+            model_name = (
+                component.configuration.lang_name(
+                    self.language,
+                )
+            )
+
+            if model_name not in model_names:
+                model_names.append(
+                    model_name,
+                )
+
+        return tuple(
+            model_names,
+        )
+
+    @property
+    def created_models(
+        self,
+    ) -> tuple[
+        str,
+        ...,
+    ]:
+        """
+        Return models created for the current import workflow.
+
+        This compatibility property represents import schema creation. New
+        code should use ``import_schema_models`` explicitly.
+        """
+
+        return self.import_schema_models
+
+    @property
+    def _highest_inheritance_levels(
+        self,
+    ) -> tuple[
+        str,
+        ...,
+    ]:
+        """
+        Return the most-derived inheritance levels in the selection.
+
+        A level is excluded when it is an ancestor of another selected level.
+        Independent model families remain in the result.
+        """
+
+        available_levels = {
+            component.group
+            for component in self.components
+            if (
+                component.group
+                in INTERLIS_INHERITANCE_TREE
+            )
+        }
+
+        inherited_levels: set[
+            str,
+        ] = set()
+
+        for level in available_levels:
+            inherited_levels.update(
+                self._all_parent_levels.get(
+                    level,
+                    frozenset(),
+                )
+            )
+
+        return tuple(
+            level
+            for level
+            in INTERLIS_INHERITANCE_TREE
+            if (
+                level in available_levels
+                and level
+                not in inherited_levels
+            )
+        )
+
+    @property
+    def _all_parent_levels(
+        self,
+    ) -> dict[
+        str,
+        frozenset[
+            str,
+        ],
+    ]:
+        """
+        Return all direct and indirect parents keyed by model level.
+        """
+
+        parents_by_level: dict[
+            str,
+            frozenset[
+                str,
+            ],
+        ] = {}
+
+        for level in INTERLIS_INHERITANCE_TREE:
+            parent_levels: set[
+                str,
+            ] = set()
+
+            pending_levels = list(
+                INTERLIS_INHERITANCE_TREE.get(
+                    level,
+                    (),
+                )
+            )
+
+            while pending_levels:
+                parent_level = (
+                    pending_levels.pop()
+                )
+
+                if parent_level in parent_levels:
+                    continue
+
+                parent_levels.add(
+                    parent_level,
+                )
+
+                pending_levels.extend(
+                    INTERLIS_INHERITANCE_TREE.get(
+                        parent_level,
+                        (),
+                    )
+                )
+
+            parents_by_level[
+                level
+            ] = frozenset(
+                parent_levels,
+            )
+
+        return parents_by_level
+
+    @property
+    def _components_for_highest_levels(
+        self,
+    ) -> tuple[
+        TwwInterlisModelComponent,
+        ...,
+    ]:
+        """
+        Return components participating in the highest inheritance trees.
+
+        The result includes every highest selected level and all its direct
+        and indirect dependencies. Existing component order is preserved.
+        """
+
+        selected_levels: set[
+            str,
+        ] = set()
+
+        for level in self._highest_inheritance_levels:
+            selected_levels.add(
+                level,
+            )
+
+            selected_levels.update(
+                self._all_parent_levels.get(
+                    level,
+                    frozenset(),
+                )
+            )
+
+        return tuple(
+            component
+            for component in self.components
+            if component.group
+            in selected_levels
+        )
 
 interlis_models: dict[
     str,
@@ -493,3 +745,5 @@ INTERLIS_INHERITANCE_TREE: dict[
     "ag96": (),
     "ag64": (),
 }
+
+
