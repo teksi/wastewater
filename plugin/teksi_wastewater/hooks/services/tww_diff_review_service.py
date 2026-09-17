@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from dataclasses import dataclass, field
-from enum import StrEnum
 from typing import Any, Protocol
 
 from teksi_hooks.capabilities.canonical_object import (
@@ -22,8 +21,6 @@ from teksi_hooks.models.diff_snapshot import (
 )
 from teksi_hooks.models.persistence import (
     ChangePersistenceDocument,
-    DeletionPlan,
-    PersistenceResult,
 )
 from teksi_hooks.models.review import (
     DiffReviewDecision,
