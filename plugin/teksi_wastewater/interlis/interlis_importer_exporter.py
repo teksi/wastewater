@@ -4,10 +4,9 @@ import logging
 import os
 import socket
 import tempfile
-from collections.abc import Collection
+from collections.abc import Collection, Iterable
 from dataclasses import dataclass
 from pathlib import Path
-from collections.abc import Iterable
 
 import requests
 from teksi_hooks.capabilities.mapping import (

@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import os
+from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
-from collections.abc import Mapping
 from uuid import uuid4
 
 import yaml

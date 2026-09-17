@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
 from collections.abc import Callable
+from dataclasses import dataclass, field
 
 from .config import DEFAULT_INTERLIS_LANGUAGE
 from .interlis_model_mapping.model_base import ModelBase
