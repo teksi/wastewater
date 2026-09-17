@@ -57,10 +57,17 @@ from .utils.twwlogging import TwwQgsLogHandler
 
 LOGFORMAT = "%(asctime)s:%(levelname)s:%(module)s:%(message)s"
 
+REQUIRED_LAYERS = {
+    "vw_network_node",
+    "vw_network_segment",
+    "vw_tww_wastewater_structure",
+}
 
 @qgsfunction(0, "System")
 def locale(values, feature, parent):
     return QSettings().value("locale/userLocale", QLocale.system().name())
+
+
 
 
 class TeksiWastewaterPlugin:
@@ -104,6 +111,7 @@ class TeksiWastewaterPlugin:
         self.canvas = iface.mapCanvas()
         self.nodes = None
         self.edges = None
+        self._tww_available = False
 
         self.interlisImporterExporter = None
 
@@ -323,9 +331,13 @@ class TeksiWastewaterPlugin:
         self.toolbarButtons.append(self.importAction)
         self.toolbarButtons.append(self.exportAction)
 
-        QgsProject.instance().layerLoaded.connect(self._on_layer_loaded)
-        QgsProject.instance().cleared.connect(self._on_project_cleared)
-
+        # plugin activation
+        project = QgsProject.instance()
+        project.layersAdded.connect(self._on_layers_added)
+        project.readProject.connect(self._check_tww_layers)
+        project.cleared.connect(self._on_project_cleared)
+        self._tww_available = False
+        
         # Init the object maintaining the network
         self.network_analyzer = TwwGraphManager()
         self.network_analyzer.message_emitted.connect(self.iface.messageBar().pushMessage)
@@ -369,6 +381,16 @@ class TeksiWastewaterPlugin:
         self.toolbar.addAction(self.selectionExtenderAction)
         self.toolbarButtons.append(self.selectionExtenderAction)
         self.selectionExtenderController = TwwSelectionExtender(self.iface)
+
+    def _on_layers_added(self, layers):
+        if self._tww_available:
+            return
+
+        if any(
+            any(layer.id().startswith(prefix) for prefix in REQUIRED_LAYERS)
+            for layer in layers
+        ):
+            self._check_tww_layers()
 
     def _get_validity_issues(self, include_ili: bool = False) -> list[Issue]:
         try:
@@ -525,13 +547,6 @@ class TeksiWastewaterPlugin:
             self.selectionExtenderWidget.deleteLater()
             self.selectionExtenderWidget = None
 
-    def _on_layer_loaded(self, i, n):
-        """
-        Called during project loading for each layer. When the last layer is loaded,
-        schedule a deferred check so all C++ layer objects are fully constructed.
-        """
-        if i == n:
-            QTimer.singleShot(0, self._check_tww_layers)
 
     def _on_project_cleared(self):
         self._on_tww_project_unavailable()
@@ -541,10 +556,9 @@ class TeksiWastewaterPlugin:
         Checks whether a TWW project is available (i.e. some required TWW layers are present in the current project).
         If so, enables the plugin.
         """
-        required_layers = ["vw_network_node", "vw_network_segment", "vw_tww_wastewater_structure"]
         all_layer_ids = list(QgsProject.instance().mapLayers().keys())
 
-        for tww_id in required_layers:
+        for tww_id in REQUIRED_LAYERS:
             if not any(lyr_id.startswith(tww_id) for lyr_id in all_layer_ids):
                 return
 
@@ -561,6 +575,7 @@ class TeksiWastewaterPlugin:
         return False
 
     def _on_tww_project_available(self):
+        self._tww_available = True
         network_segment = TwwLayerManager.layer("vw_network_segment")
         network_node = TwwLayerManager.layer("vw_network_node")
 
@@ -574,6 +589,7 @@ class TeksiWastewaterPlugin:
         self.tww_validity_check_startup()
 
     def _on_tww_project_unavailable(self):
+        self._tww_available = False
         self.connectNetworkElementsAction.setEnabled(False)
         self.network_analyzer.setLayers(None, None)
 
