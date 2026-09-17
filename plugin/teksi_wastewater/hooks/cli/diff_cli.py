@@ -14,9 +14,6 @@ from teksi_hooks.hook import (
 from teksi_wastewater.hooks.adapters.tww_change_object_provider import (
     TwwChangeObjectProviderFactory,
 )
-from teksi_wastewater.hooks.adapters.tww_rights_evaluator_factory import (
-    TwwRightsEvaluatorFactory,
-)
 from teksi_wastewater.hooks.cli import helpers
 from teksi_wastewater.hooks.services.tww_change_creation_service import (
     ChangeObjectProviderFactory,
@@ -133,7 +130,7 @@ def main() -> int:
             "should only be used when setting a baseline."
         ),
     )
-    
+
     parser.add_argument(
         "--auto-apply",
         action="store_true",

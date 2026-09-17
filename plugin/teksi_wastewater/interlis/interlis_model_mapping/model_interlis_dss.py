@@ -339,9 +339,7 @@ class ModelInterlisDss(ModelInterlisSia405Abwasser):
             __tablename__ = "erhaltungsereignis_abwasserbauwerkassoc"
             __table_args__ = {"schema": self.schema}
 
-        self.erhaltungsereignis_abwasserbauwerkassoc = (
-            erhaltungsereignis_abwasserbauwerkassoc
-        )
+        self.erhaltungsereignis_abwasserbauwerkassoc = erhaltungsereignis_abwasserbauwerkassoc
 
         class gebaeudegruppe_entsorgungassoc(self.Base):
             __tablename__ = "gebaeudegruppe_entsorgungassoc"

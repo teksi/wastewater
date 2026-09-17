@@ -74,10 +74,8 @@ def get_ili2db_bin(tool, db_ili_version, stdout, stderr):
         except FileExistsError:
             pass
 
-        file_descriptor, temporary_zip_path = (
-            tempfile.mkstemp(
-                suffix=".zip",
-            )
+        file_descriptor, temporary_zip_path = tempfile.mkstemp(
+            suffix=".zip",
         )
 
         os.close(
