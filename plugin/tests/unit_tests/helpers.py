@@ -6,7 +6,9 @@ from typing import Any
 
 
 def fake_connection_factory(
-    results: FakeQueryResult,
+    results: Sequence[
+        FakeQueryResult,
+    ] = (),
 ) -> tuple[
     FakeConnectionFactory,
     FakeCursor,
@@ -14,6 +16,7 @@ def fake_connection_factory(
     """
     Create a fake connection factory and expose its cursor for assertions.
     """
+
     cursor = FakeCursor(
         results=results,
     )

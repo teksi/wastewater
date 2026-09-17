@@ -366,7 +366,8 @@ def test_change_creation_service_keeps_updates_for_different_objects() -> None:
     )
 
 
-def test_change_creation_service_merges_constraint_effects_by_type() -> None:
+def test_change_creation_service_replaces_exists_with_not_exists(
+) -> None:
     service = _ready_service()
 
     identity = _identity(
@@ -378,32 +379,24 @@ def test_change_creation_service_merges_constraint_effects_by_type() -> None:
         identity=identity,
     )
 
-    base_not_exists = _constraint_effect(
+    incremental_not_exists = _constraint_effect(
         EnforceNotExistsEffect,
-        identity=identity,
-    )
-
-    incremental_exists = _constraint_effect(
-        EnforceExistsEffect,
         identity=identity,
     )
 
     merged = service._merge_effect_documents(
         base_document=_document(
             base_exists,
-            base_not_exists,
         ),
         incremental_document=_document(
-            incremental_exists,
+            incremental_not_exists,
         ),
     )
 
-    assert len(
-        merged.effects,
-    ) == 2
+    assert merged.effects == (
+        incremental_not_exists,
+    )
 
-    assert merged.effects[0] is incremental_exists
-    assert merged.effects[1] is base_not_exists
 
 
 def test_change_creation_service_replaces_constraint_of_same_type() -> None:

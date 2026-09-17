@@ -19,6 +19,50 @@ from ..helpers import (
 )
 
 
+SOURCE_RELATION_QUERY_RESULT = FakeQueryResult(
+    column_names=(
+        "table_name",
+        "column_name",
+    ),
+    rows=(
+        (
+            "abwasserbauwerk",
+            "astatus",
+        ),
+        (
+            "haltung",
+            "geometrie",
+        ),
+        (
+            "haltung",
+            "t_ili_tid",
+        ),
+    ),
+)
+
+
+CLASS_QUERY_RESULT = FakeQueryResult(
+    column_names=(
+        "canonical_class_id",
+        "ili_class_name",
+    ),
+    rows=(
+        (
+            "wastewater_structure",
+            "Abwasserbauwerk",
+        ),
+        (
+            "reach",
+            "Haltung",
+        ),
+        (
+            "ignored_table",
+            None,
+        ),
+    ),
+)
+
+
 ATTRIBUTE_QUERY_RESULT = FakeQueryResult(
     column_names=(
         "canonical_class_id",
@@ -43,7 +87,7 @@ ATTRIBUTE_QUERY_RESULT = FakeQueryResult(
             "reach",
             "obj_id",
             "Haltung",
-            "ObjektID",
+            "t_ili_tid",
         ),
         (
             "ignored_table",
@@ -88,35 +132,14 @@ VALUE_QUERY_RESULT = FakeQueryResult(
 )
 
 
-CLASS_QUERY_RESULT = FakeQueryResult(
-    column_names=(
-        "canonical_class_id",
-        "ili_class_name",
-    ),
-    rows=(
-        (
-            "wastewater_structure",
-            "Abwasserbauwerk",
-        ),
-        (
-            "reach",
-            "Haltung",
-        ),
-        (
-            "ignored_table",
-            None,
-        ),
-    ),
-)
-
-
 @pytest.fixture
 def implicit_mapping_adapter():
     connection_factory, cursor = fake_connection_factory(
         results=(
+            SOURCE_RELATION_QUERY_RESULT,
+            CLASS_QUERY_RESULT,
             ATTRIBUTE_QUERY_RESULT,
             VALUE_QUERY_RESULT,
-            CLASS_QUERY_RESULT,
         )
     )
 
@@ -154,12 +177,12 @@ def test_implicit_model_mapping_loads_model_mapping(
     assert set(
         mapping.classes,
     ) == {
-        "Abwasserbauwerk",
-        "Haltung",
+        "abwasserbauwerk",
+        "haltung",
     }
 
     wastewater_structure = mapping.classes[
-        "Abwasserbauwerk"
+        "abwasserbauwerk"
     ]
 
     assert isinstance(
@@ -175,11 +198,11 @@ def test_implicit_model_mapping_loads_model_mapping(
     assert set(
         wastewater_structure.attributes,
     ) == {
-        "Status",
+        "astatus",
     }
 
     status = wastewater_structure.attributes[
-        "Status"
+        "astatus"
     ]
 
     assert isinstance(
@@ -192,7 +215,10 @@ def test_implicit_model_mapping_loads_model_mapping(
         == "wastewater_structure"
     )
 
-    assert status.canonical_attr_id == "status"
+    assert (
+        status.canonical_attr_id
+        == "status"
+    )
 
     assert status.values == {
         "in_Betrieb": ValueMapping(
@@ -202,44 +228,49 @@ def test_implicit_model_mapping_loads_model_mapping(
     }
 
     reach = mapping.classes[
-        "Haltung"
+        "haltung"
     ]
 
-    assert reach.canonical_class_id == "reach"
+    assert (
+        reach.canonical_class_id
+        == "reach"
+    )
 
     assert set(
         reach.attributes,
     ) == {
-        "Geometrie",
-        "ObjektID",
+        "geometrie",
+        "t_ili_tid",
     }
 
     assert (
         reach.attributes[
-            "Geometrie"
+            "geometrie"
         ].canonical_attr_id
         == "progression_geometry"
     )
 
     assert (
         reach.attributes[
-            "ObjektID"
+            "t_ili_tid"
         ].canonical_attr_id
         == "obj_id"
     )
 
     assert len(
         cursor.executed_queries,
-    ) == 3
+    ) == 4
 
     assert connection_factory.autocommit_values == [
+        True,
         True,
         True,
         True,
     ]
 
 
-def test_implicit_model_mapping_rejects_unknown_language() -> None:
+def test_implicit_model_mapping_rejects_unknown_language(
+) -> None:
     connection_factory, _ = fake_connection_factory(
         results=(),
     )
@@ -251,6 +282,24 @@ def test_implicit_model_mapping_rejects_unknown_language() -> None:
         TwwImplicitModelMappingAdapter(
             connection_factory=connection_factory,
             language="es",
+            import_schema="xtf_import",
+        )
+
+
+def test_implicit_model_mapping_rejects_empty_import_schema(
+) -> None:
+    connection_factory, _ = fake_connection_factory(
+        results=(),
+    )
+
+    with pytest.raises(
+        ValueError,
+        match="import schema must not be empty",
+    ):
+        TwwImplicitModelMappingAdapter(
+            connection_factory=connection_factory,
+            language="de",
+            import_schema=" ",
         )
 
 
@@ -260,7 +309,7 @@ def test_implicit_model_mapping_class_definition(
     adapter, _, _ = implicit_mapping_adapter
 
     class_mapping = adapter.class_definition(
-        "Abwasserbauwerk",
+        "abwasserbauwerk",
     )
 
     assert (
@@ -279,7 +328,7 @@ def test_implicit_model_mapping_class_definition_raises_for_unknown_class(
         match="Unknown class",
     ):
         adapter.class_definition(
-            "DoesNotExist",
+            "does_not_exist",
         )
 
 
@@ -290,7 +339,7 @@ def test_implicit_model_mapping_try_class_definition_returns_none(
 
     assert (
         adapter.try_class_definition(
-            "DoesNotExist",
+            "does_not_exist",
         )
         is None
     )
@@ -302,8 +351,8 @@ def test_implicit_model_mapping_attribute_definition(
     adapter, _, _ = implicit_mapping_adapter
 
     attribute_mapping = adapter.attribute_definition(
-        "Abwasserbauwerk",
-        "Status",
+        "abwasserbauwerk",
+        "astatus",
     )
 
     assert (
@@ -327,8 +376,8 @@ def test_implicit_model_mapping_attribute_definition_raises_for_unknown_attribut
         match="Unknown attribute",
     ):
         adapter.attribute_definition(
-            "Abwasserbauwerk",
-            "Missing",
+            "abwasserbauwerk",
+            "missing",
         )
 
 
@@ -339,16 +388,16 @@ def test_implicit_model_mapping_try_attribute_definition_returns_none(
 
     assert (
         adapter.try_attribute_definition(
-            "Abwasserbauwerk",
-            "Missing",
+            "abwasserbauwerk",
+            "missing",
         )
         is None
     )
 
     assert (
         adapter.try_attribute_definition(
-            "DoesNotExist",
-            "Status",
+            "does_not_exist",
+            "astatus",
         )
         is None
     )
@@ -360,8 +409,8 @@ def test_implicit_model_mapping_value_mapping(
     adapter, _, _ = implicit_mapping_adapter
 
     value_mapping = adapter.value_mapping(
-        "Abwasserbauwerk",
-        "Status",
+        "abwasserbauwerk",
+        "astatus",
         "in_Betrieb",
     )
 
@@ -381,8 +430,8 @@ def test_implicit_model_mapping_value_mapping_raises_for_unknown_value(
         match="Unknown value",
     ):
         adapter.value_mapping(
-            "Abwasserbauwerk",
-            "Status",
+            "abwasserbauwerk",
+            "astatus",
             "missing_value",
         )
 
@@ -394,8 +443,8 @@ def test_implicit_model_mapping_try_value_mapping_returns_none(
 
     assert (
         adapter.try_value_mapping(
-            "Abwasserbauwerk",
-            "Status",
+            "abwasserbauwerk",
+            "astatus",
             "missing_value",
         )
         is None
@@ -403,8 +452,8 @@ def test_implicit_model_mapping_try_value_mapping_returns_none(
 
     assert (
         adapter.try_value_mapping(
-            "Abwasserbauwerk",
-            "Missing",
+            "abwasserbauwerk",
+            "missing",
             "in_Betrieb",
         )
         is None
@@ -423,4 +472,4 @@ def test_implicit_model_mapping_returns_cached_mapping(
 
     assert len(
         cursor.executed_queries,
-    ) == 3
+    ) == 4
