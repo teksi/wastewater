@@ -1,14 +1,12 @@
 from __future__ import annotations
 
 import pytest
-
 from teksi_hooks.models.mapping import (
     AttributeMapping,
     ClassMapping,
     ModelMapping,
     ValueMapping,
 )
-
 from teksi_wastewater.hooks.adapters.tww_implicit_model_mapping_adapter import (
     TwwImplicitModelMappingAdapter,
 )
@@ -17,7 +15,6 @@ from ..helpers import (
     FakeQueryResult,
     fake_connection_factory,
 )
-
 
 SOURCE_RELATION_QUERY_RESULT = FakeQueryResult(
     column_names=(
@@ -181,19 +178,14 @@ def test_implicit_model_mapping_loads_model_mapping(
         "haltung",
     }
 
-    wastewater_structure = mapping.classes[
-        "abwasserbauwerk"
-    ]
+    wastewater_structure = mapping.classes["abwasserbauwerk"]
 
     assert isinstance(
         wastewater_structure,
         ClassMapping,
     )
 
-    assert (
-        wastewater_structure.canonical_class_id
-        == "wastewater_structure"
-    )
+    assert wastewater_structure.canonical_class_id == "wastewater_structure"
 
     assert set(
         wastewater_structure.attributes,
@@ -201,24 +193,16 @@ def test_implicit_model_mapping_loads_model_mapping(
         "astatus",
     }
 
-    status = wastewater_structure.attributes[
-        "astatus"
-    ]
+    status = wastewater_structure.attributes["astatus"]
 
     assert isinstance(
         status,
         AttributeMapping,
     )
 
-    assert (
-        status.canonical_class_id
-        == "wastewater_structure"
-    )
+    assert status.canonical_class_id == "wastewater_structure"
 
-    assert (
-        status.canonical_attr_id
-        == "status"
-    )
+    assert status.canonical_attr_id == "status"
 
     assert status.values == {
         "in_Betrieb": ValueMapping(
@@ -227,14 +211,9 @@ def test_implicit_model_mapping_loads_model_mapping(
         ),
     }
 
-    reach = mapping.classes[
-        "haltung"
-    ]
+    reach = mapping.classes["haltung"]
 
-    assert (
-        reach.canonical_class_id
-        == "reach"
-    )
+    assert reach.canonical_class_id == "reach"
 
     assert set(
         reach.attributes,
@@ -243,23 +222,16 @@ def test_implicit_model_mapping_loads_model_mapping(
         "t_ili_tid",
     }
 
-    assert (
-        reach.attributes[
-            "geometrie"
-        ].canonical_attr_id
-        == "progression_geometry"
-    )
+    assert reach.attributes["geometrie"].canonical_attr_id == "progression_geometry"
+
+    assert reach.attributes["t_ili_tid"].canonical_attr_id == "obj_id"
 
     assert (
-        reach.attributes[
-            "t_ili_tid"
-        ].canonical_attr_id
-        == "obj_id"
+        len(
+            cursor.executed_queries,
+        )
+        == 4
     )
-
-    assert len(
-        cursor.executed_queries,
-    ) == 4
 
     assert connection_factory.autocommit_values == [
         True,
@@ -269,8 +241,7 @@ def test_implicit_model_mapping_loads_model_mapping(
     ]
 
 
-def test_implicit_model_mapping_rejects_unknown_language(
-) -> None:
+def test_implicit_model_mapping_rejects_unknown_language() -> None:
     connection_factory, _ = fake_connection_factory(
         results=(),
     )
@@ -286,8 +257,7 @@ def test_implicit_model_mapping_rejects_unknown_language(
         )
 
 
-def test_implicit_model_mapping_rejects_empty_import_schema(
-) -> None:
+def test_implicit_model_mapping_rejects_empty_import_schema() -> None:
     connection_factory, _ = fake_connection_factory(
         results=(),
     )
@@ -312,10 +282,7 @@ def test_implicit_model_mapping_class_definition(
         "abwasserbauwerk",
     )
 
-    assert (
-        class_mapping.canonical_class_id
-        == "wastewater_structure"
-    )
+    assert class_mapping.canonical_class_id == "wastewater_structure"
 
 
 def test_implicit_model_mapping_class_definition_raises_for_unknown_class(
@@ -362,6 +329,7 @@ def test_implicit_model_mapping_value_mapping_raises_for_unknown_value(
             "missing_value",
         )
 
+
 def test_implicit_model_mapping_try_class_definition_returns_none(
     implicit_mapping_adapter,
 ) -> None:
@@ -385,15 +353,10 @@ def test_implicit_model_mapping_attribute_definition(
         "astatus",
     )
 
-    assert (
-        attribute_mapping.canonical_class_id
-        == "wastewater_structure"
-    )
+    assert attribute_mapping.canonical_class_id == "wastewater_structure"
 
-    assert (
-        attribute_mapping.canonical_attr_id
-        == "status"
-    )
+    assert attribute_mapping.canonical_attr_id == "status"
+
 
 def test_implicit_model_mapping_try_attribute_definition_returns_none(
     implicit_mapping_adapter,
@@ -468,6 +431,9 @@ def test_implicit_model_mapping_returns_cached_mapping(
 
     assert second is first
 
-    assert len(
-        cursor.executed_queries,
-    ) == 4
+    assert (
+        len(
+            cursor.executed_queries,
+        )
+        == 4
+    )

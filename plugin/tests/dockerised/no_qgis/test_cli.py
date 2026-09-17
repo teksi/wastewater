@@ -99,7 +99,9 @@ def exported_sia405_base_abwasser(
 
     return _host_exported_file(
         base_name,
-        model_names_for_language(groups=("sia405_base_abwasser"),lang="de").items["sia405_base_abwasser"],
+        model_names_for_language(groups=("sia405_base_abwasser"), lang="de").items[
+            "sia405_base_abwasser"
+        ],
     )
 
 
@@ -119,7 +121,9 @@ def exported_sia405_abwasser(
 
     return _host_exported_file(
         base_name,
-        model_config.model_names_for_language(groups=("sia405_abwasser"),lang="de").items["sia405_abwasser"],
+        model_config.model_names_for_language(groups=("sia405_abwasser"), lang="de").items[
+            "sia405_abwasser"
+        ],
     )
 
 
@@ -139,7 +143,7 @@ def exported_dss(
 
     return _host_exported_file(
         base_name,
-        model_config.model_names_for_language(groups=("dss"),lang="de").items["dss"],
+        model_config.model_names_for_language(groups=("dss"), lang="de").items["dss"],
     )
 
 
@@ -159,7 +163,7 @@ def exported_kek(
 
     return _host_exported_file(
         base_name,
-        model_config.model_names_for_language(groups=("vsa_kek"),lang="de").items["vsa_kek"],
+        model_config.model_names_for_language(groups=("vsa_kek"), lang="de").items["vsa_kek"],
     )
 
 
@@ -283,7 +287,7 @@ def test_export_sia405_base_abwasser(
 ) -> None:
     interlis_object = get_xtf_object(
         exported_sia405_base_abwasser,
-        next(iter(model_config.topics_for_group(group="sia405_base_abwasser",lang="de"))),
+        next(iter(model_config.topics_for_group(group="sia405_base_abwasser", lang="de"))),
         "Organisation",
         "ch20p3q400001497",
     )
@@ -296,7 +300,7 @@ def test_export_sia405_abwasser(
 ) -> None:
     interlis_object = get_xtf_object(
         exported_sia405_abwasser,
-        next(iter(model_config.topics_for_group(group="sia405_abwasser",lang="de"))),
+        next(iter(model_config.topics_for_group(group="sia405_abwasser", lang="de"))),
         "Haltung",
         "ch000000RE000001",
     )
@@ -304,7 +308,7 @@ def test_export_sia405_abwasser(
 
     interlis_object = get_xtf_object(
         exported_sia405_abwasser,
-        next(iter(model_config.topics_for_group(group="sia405_abwasser",lang="de"))),
+        next(iter(model_config.topics_for_group(group="sia405_abwasser", lang="de"))),
         "Rohrprofil",
         "ch000000PP000003",
     )
@@ -312,7 +316,7 @@ def test_export_sia405_abwasser(
 
     height_width_ratio_text = get_xtf_object_node_text(
         exported_sia405_abwasser,
-        next(iter(model_config.topics_for_group(group="sia405_abwasser",lang="de"))),
+        next(iter(model_config.topics_for_group(group="sia405_abwasser", lang="de"))),
         "Rohrprofil",
         "ch000000PP000003",
         "HoehenBreitenverhaeltnis",
@@ -326,7 +330,7 @@ def test_export_dss(
 ) -> None:
     interlis_object = get_xtf_object(
         exported_dss,
-        next(iter(model_config.topics_for_group(group="dss",lang="de"))),
+        next(iter(model_config.topics_for_group(group="dss", lang="de"))),
         "Rohrprofil",
         "ch000000PP000001",
     )
@@ -339,7 +343,7 @@ def test_export_kek(
 ) -> None:
     interlis_object = get_xtf_object(
         exported_kek,
-        next(iter(model_config.topics_for_group(group="vsa_kek",lang="de"))),
+        next(iter(model_config.topics_for_group(group="vsa_kek", lang="de"))),
         "Untersuchung",
         "fk11abk6EX000002",
     )
@@ -378,7 +382,7 @@ def test_export_dss_selection(
 
     interlis_object = get_xtf_object(
         exported_dss_selection,
-        next(iter(model_config.topics_for_group(group="dss",lang="de"))),
+        next(iter(model_config.topics_for_group(group="dss", lang="de"))),
         "Rohrprofil",
         "ch000000PP000001",
     )
@@ -386,7 +390,7 @@ def test_export_dss_selection(
 
     interlis_object = get_xtf_object(
         exported_dss_selection,
-        next(iter(model_config.topics_for_group(group="sia405_abwasser",lang="de"))),
+        next(iter(model_config.topics_for_group(group="sia405_abwasser", lang="de"))),
         "Rohrprofil",
         "ch000000PP000002",
     )

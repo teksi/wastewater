@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-
 from collections import defaultdict
 from dataclasses import dataclass, field, replace
 from pathlib import Path
-from typing import Any, Mapping, Sequence
+from typing import Any
+from collections.abc import Mapping, Sequence
 
 from teksi_hooks.capabilities.canonical_object import (
     CanonicalGeometryCapability,
@@ -194,9 +194,7 @@ class TwwChangeCreationService:
         )
 
         self.quarantine_runner.validate_quarantine_or_raise(
-            model_names=(
-                import_model,
-            ),
+            model_names=(import_model,),
             log_path=self._validation_log_path(
                 validation_log_path=validation_log_path,
                 xtf_file=xtf_file,
@@ -215,9 +213,7 @@ class TwwChangeCreationService:
         )
 
         if orgs_path is not None:
-            workflow_metadata[
-                "orgs_path"
-            ] = str(
+            workflow_metadata["orgs_path"] = str(
                 orgs_path,
             )
 
@@ -239,15 +235,16 @@ class TwwChangeCreationService:
         job_mode: DiffJobMode,
         source_model: str,
         rights_context: RightsEvaluationContext,
-        created_models: Sequence[
-            str,
-        ] = (),
+        created_models: Sequence[str,] = (),
         import_schema: str = config.IMPORT_SCHEMA,
         live_schema: str = config.TWW_OD_SCHEMA,
-        metadata: Mapping[
-            str,
-            Any,
-        ] | None = None,
+        metadata: (
+            Mapping[
+                str,
+                Any,
+            ]
+            | None
+        ) = None,
     ) -> ChangeCreationResult:
         """
         Process one populated quarantine source.
@@ -299,15 +296,10 @@ class TwwChangeCreationService:
             persist_job=persist_job,
         )
 
-        source_document = (
-            self.effect_projector
-            .effect_document_from_quarantine(
-                schema=import_schema,
-                source_model=source_model,
-                canonical_metadata=(
-                    self.canonical_metadata
-                ),
-            )
+        source_document = self.effect_projector.effect_document_from_quarantine(
+            schema=import_schema,
+            source_model=source_model,
+            canonical_metadata=(self.canonical_metadata),
         )
 
         created_models_tuple = tuple(
@@ -319,14 +311,10 @@ class TwwChangeCreationService:
 
             base_source_model = source_model
             base_import_schema = import_schema
-            base_mapping_model_id = (
-                workflow_metadata.get(
-                    "mapping_model_id",
-                )
+            base_mapping_model_id = workflow_metadata.get(
+                "mapping_model_id",
             )
-            base_created_models = (
-                created_models_tuple
-            )
+            base_created_models = created_models_tuple
 
             incremental_source_model = None
             incremental_import_schema = None
@@ -338,15 +326,9 @@ class TwwChangeCreationService:
 
             workflow_metadata.update(
                 {
-                    "base_source_model": (
-                        base_source_model
-                    ),
-                    "base_import_schema": (
-                        base_import_schema
-                    ),
-                    "base_mapping_model_id": (
-                        base_mapping_model_id
-                    ),
+                    "base_source_model": (base_source_model),
+                    "base_import_schema": (base_import_schema),
+                    "base_mapping_model_id": (base_mapping_model_id),
                     "base_created_models": list(
                         base_created_models,
                     ),
@@ -358,42 +340,31 @@ class TwwChangeCreationService:
             )
 
         else:
-            prepared_source = (
-                self.diff_schema_service
-                .prepared_source(
-                    job_id=job_id,
-                )
+            prepared_source = self.diff_schema_service.prepared_source(
+                job_id=job_id,
             )
 
             base_metadata = dict(
                 prepared_source.metadata,
             )
 
-            base_import_schema = (
-                self._required_metadata_string(
-                    metadata=base_metadata,
-                    key="base_import_schema",
-                    fallback_key="import_schema",
-                )
+            base_import_schema = self._required_metadata_string(
+                metadata=base_metadata,
+                key="base_import_schema",
+                fallback_key="import_schema",
             )
 
-            base_source_model = (
-                self._required_metadata_string(
-                    metadata=base_metadata,
-                    key="base_source_model",
-                    fallback_value=(
-                        prepared_source.source_model
-                    ),
-                )
+            base_source_model = self._required_metadata_string(
+                metadata=base_metadata,
+                key="base_source_model",
+                fallback_value=(prepared_source.source_model),
             )
 
-            base_mapping_model_id = (
+            base_mapping_model_id = base_metadata.get(
+                "base_mapping_model_id",
                 base_metadata.get(
-                    "base_mapping_model_id",
-                    base_metadata.get(
-                        "mapping_model_id",
-                    ),
-                )
+                    "mapping_model_id",
+                ),
             )
 
             base_created_models = tuple(
@@ -405,68 +376,39 @@ class TwwChangeCreationService:
 
             incremental_source_model = source_model
             incremental_import_schema = import_schema
-            incremental_mapping_model_id = (
-                workflow_metadata.get(
-                    "mapping_model_id",
-                )
+            incremental_mapping_model_id = workflow_metadata.get(
+                "mapping_model_id",
             )
-            incremental_created_models = (
-                created_models_tuple
-            )
+            incremental_created_models = created_models_tuple
 
-            effect_document = (
-                self._merge_effect_documents(
-                    base_document=(
-                        prepared_source
-                        .effect_document
-                    ),
-                    incremental_document=(
-                        source_document
-                    ),
-                )
+            effect_document = self._merge_effect_documents(
+                base_document=(prepared_source.effect_document),
+                incremental_document=(source_document),
             )
 
             workflow_metadata.update(
                 {
-                    "base_source_model": (
-                        base_source_model
-                    ),
-                    "base_import_schema": (
-                        base_import_schema
-                    ),
-                    "base_mapping_model_id": (
-                        base_mapping_model_id
-                    ),
+                    "base_source_model": (base_source_model),
+                    "base_import_schema": (base_import_schema),
+                    "base_mapping_model_id": (base_mapping_model_id),
                     "base_created_models": list(
                         base_created_models,
                     ),
-                    "incremental_source_model": (
-                        incremental_source_model
-                    ),
-                    "incremental_import_schema": (
-                        incremental_import_schema
-                    ),
-                    "incremental_mapping_model_id": (
-                        incremental_mapping_model_id
-                    ),
+                    "incremental_source_model": (incremental_source_model),
+                    "incremental_import_schema": (incremental_import_schema),
+                    "incremental_mapping_model_id": (incremental_mapping_model_id),
                     "incremental_created_models": list(
                         incremental_created_models,
                     ),
-                    "base_source_metadata": (
-                        base_metadata
-                    ),
+                    "base_source_metadata": (base_metadata),
                 }
             )
 
         if not persist_job:
             prepared_source = PreparedSource(
                 source_model=source_model,
-                created_models=(
-                    created_models_tuple
-                ),
-                effect_document=(
-                    effect_document
-                ),
+                created_models=(created_models_tuple),
+                effect_document=(effect_document),
                 metadata=dict(
                     workflow_metadata,
                 ),
@@ -480,12 +422,8 @@ class TwwChangeCreationService:
             return self._prepared_result(
                 job_id=job_id,
                 source_model=source_model,
-                created_models=(
-                    created_models_tuple
-                ),
-                effect_document=(
-                    effect_document
-                ),
+                created_models=(created_models_tuple),
+                effect_document=(effect_document),
                 rights_context=rights_context,
                 import_schema=import_schema,
                 live_schema=live_schema,
@@ -499,18 +437,10 @@ class TwwChangeCreationService:
             rights_context=rights_context,
             import_schema=import_schema,
             live_schema=live_schema,
-            base_source_model=(
-                base_source_model
-            ),
-            base_created_models=(
-                base_created_models
-            ),
-            incremental_source_model=(
-                incremental_source_model
-            ),
-            incremental_created_models=(
-                incremental_created_models
-            ),
+            base_source_model=(base_source_model),
+            base_created_models=(base_created_models),
+            incremental_source_model=(incremental_source_model),
+            incremental_created_models=(incremental_created_models),
             metadata=workflow_metadata,
         )
 
@@ -547,9 +477,7 @@ class TwwChangeCreationService:
         )
 
         classified_changes = ChangeClassifier(
-            rights_evaluator=(
-                self.rights_evaluator
-            ),
+            rights_evaluator=(self.rights_evaluator),
         ).classify(
             changes=changes,
             context=rights_context,
@@ -559,9 +487,7 @@ class TwwChangeCreationService:
         )
 
         features_by_class = self._review_features(
-            classified_changes=(
-                classified_changes
-            ),
+            classified_changes=(classified_changes),
             live_schema=live_schema,
             import_schema=import_schema,
         )
@@ -617,9 +543,7 @@ class TwwChangeCreationService:
         )
 
         classified_changes = ChangeClassifier(
-            rights_evaluator=(
-                self.rights_evaluator
-            ),
+            rights_evaluator=(self.rights_evaluator),
         ).classify(
             changes=changes,
             context=rights_context,
@@ -629,34 +553,26 @@ class TwwChangeCreationService:
         )
 
         features_by_class = self._review_features(
-            classified_changes=(
-                classified_changes
-            ),
+            classified_changes=(classified_changes),
             live_schema=live_schema,
             import_schema=import_schema,
         )
 
-        diff_schema_result = (
-            self.diff_schema_service.write(
-                job_id=job_id,
-                job_mode=job_mode,
-                features_by_class=(
-                    features_by_class
-                ),
-                metadata=dict(
-                    metadata,
-                ),
-                validation_success=True,
-                job_status="pending",
-            )
+        diff_schema_result = self.diff_schema_service.write(
+            job_id=job_id,
+            job_mode=job_mode,
+            features_by_class=(features_by_class),
+            metadata=dict(
+                metadata,
+            ),
+            validation_success=True,
+            job_status="pending",
         )
 
         return ChangeCreationResult(
             job_id=job_id,
             import_model=base_source_model,
-            incremental_import_model=(
-                incremental_source_model
-            ),
+            incremental_import_model=(incremental_source_model),
             created_models=list(
                 base_created_models,
             ),
@@ -688,15 +604,10 @@ class TwwChangeCreationService:
         Export classified changes to review features.
         """
 
-        object_provider = (
-            self.object_provider_factory
-            .change_object_provider(
-                live_schema=live_schema,
-                import_schema=import_schema,
-                canonical_metadata=(
-                    self.canonical_metadata
-                ),
-            )
+        object_provider = self.object_provider_factory.change_object_provider(
+            live_schema=live_schema,
+            import_schema=import_schema,
+            canonical_metadata=(self.canonical_metadata),
         )
 
         review_service = ChangeReviewExportService(
@@ -744,9 +655,7 @@ class TwwChangeCreationService:
         }
 
         if source_file is not None:
-            workflow_metadata[
-                "source_file"
-            ] = str(
+            workflow_metadata["source_file"] = str(
                 source_file,
             )
 
@@ -769,9 +678,7 @@ class TwwChangeCreationService:
             source_role,
             str,
         ):
-            raise TypeError(
-                "metadata['source_role'] must be a string."
-            )
+            raise TypeError("metadata['source_role'] must be a string.")
 
         if source_role not in {
             "base",
@@ -802,9 +709,7 @@ class TwwChangeCreationService:
             persist_job,
             bool,
         ):
-            raise TypeError(
-                "metadata['persist_job'] must be a boolean."
-            )
+            raise TypeError("metadata['persist_job'] must be a boolean.")
 
         return persist_job
 
@@ -818,10 +723,7 @@ class TwwChangeCreationService:
         Validate supported prepared-to-pending workflow transitions.
         """
 
-        if (
-            source_role == "incremental"
-            and not persist_job
-        ):
+        if source_role == "incremental" and not persist_job:
             raise ValueError(
                 "An incremental source must finalize the "
                 "workflow. Use "
@@ -868,9 +770,7 @@ class TwwChangeCreationService:
         def add_effect(
             effect: Effect,
         ) -> None:
-            identity_key = (
-                effect.identity.key()
-            )
+            identity_key = effect.identity.key()
 
             if isinstance(
                 effect,
@@ -891,9 +791,7 @@ class TwwChangeCreationService:
                         order_key,
                     )
 
-                update_effects[
-                    payload_key
-                ] = effect
+                update_effects[payload_key] = effect
 
                 return
 
@@ -916,16 +814,11 @@ class TwwChangeCreationService:
                         order_key,
                     )
 
-                constraint_effects[
-                    payload_key
-                ] = effect
+                constraint_effects[payload_key] = effect
 
                 return
 
-            raise TypeError(
-                "Unsupported effect type: "
-                f"{type(effect)!r}"
-            )
+            raise TypeError("Unsupported effect type: " f"{type(effect)!r}")
 
         for effect in base_document.effects:
             add_effect(
@@ -937,36 +830,24 @@ class TwwChangeCreationService:
                 effect,
             )
 
-        merged_effects: list[
-            Effect,
-        ] = []
+        merged_effects: list[Effect,] = []
 
         for (
             effect_kind,
             effect_key,
         ) in ordered_keys:
             if effect_kind == "update":
-                merged_effects.append(
-                    update_effects[
-                        effect_key
-                    ]
-                )
+                merged_effects.append(update_effects[effect_key])
 
             else:
-                merged_effects.append(
-                    constraint_effects[
-                        effect_key
-                    ]
-                )
+                merged_effects.append(constraint_effects[effect_key])
 
         return EffectDocument(
             source=incremental_document.source,
             effects=tuple(
                 merged_effects,
             ),
-            created_at=(
-                incremental_document.created_at
-            ),
+            created_at=(incremental_document.created_at),
             version=max(
                 base_document.version,
                 incremental_document.version,
@@ -991,9 +872,7 @@ class TwwChangeCreationService:
 
         effects_by_identity: dict[
             tuple,
-            list[
-                UpdateAttributeEffect
-            ],
+            list[UpdateAttributeEffect],
         ] = defaultdict(
             list,
         )
@@ -1010,43 +889,29 @@ class TwwChangeCreationService:
             ):
                 continue
 
-            identity_key = (
-                effect.identity.key()
-            )
+            identity_key = effect.identity.key()
 
-            identities[
-                identity_key
-            ] = effect.identity
+            identities[identity_key] = effect.identity
 
-            effects_by_identity[
-                identity_key
-            ].append(
+            effects_by_identity[identity_key].append(
                 effect,
             )
 
-        changes: list[
-            Change
-        ] = []
+        changes: list[Change] = []
 
         for (
             identity_key,
             effects,
         ) in effects_by_identity.items():
-            identity = identities[
-                identity_key
-            ]
+            identity = identities[identity_key]
 
-            current_object = (
-                relation_lookup.current_object(
-                    identity,
-                )
+            current_object = relation_lookup.current_object(
+                identity,
             )
 
             changes.append(
                 self.change_builder.build(
-                    current_object=(
-                        current_object
-                    ),
+                    current_object=(current_object),
                     effects=tuple(
                         effects,
                     ),
@@ -1067,10 +932,8 @@ class TwwChangeCreationService:
 
         return [
             finding
-            for classified_change
-            in classified_changes.changes
-            for finding
-            in classified_change.validation_findings
+            for classified_change in classified_changes.changes
+            for finding in classified_change.validation_findings
         ]
 
     def _live_relation_lookup(
@@ -1086,9 +949,7 @@ class TwwChangeCreationService:
 
         return TwwRelationLookupAdapter(
             schema=live_schema,
-            connection_factory=(
-                self.connection_factory
-            ),
+            connection_factory=(self.connection_factory),
         )
 
     def _geometry_attribute_map(
@@ -1105,21 +966,17 @@ class TwwChangeCreationService:
         Return geometry attribute identifiers keyed by canonical class.
         """
 
-        geometry_capability = (
-            CanonicalGeometryCapability(
-                metadata=canonical_metadata,
-            )
+        geometry_capability = CanonicalGeometryCapability(
+            metadata=canonical_metadata,
         )
 
         return {
             class_id: (
-                geometry_capability
-                .geometry_attribute_names(
+                geometry_capability.geometry_attribute_names(
                     class_id,
                 )
             )
-            for class_id
-            in canonical_metadata.classes
+            for class_id in canonical_metadata.classes
         }
 
     def _import_context(
@@ -1136,18 +993,14 @@ class TwwChangeCreationService:
         if context is None:
             return TwwInterlisContext(
                 schema=schema,
-                import_orgs=(
-                    orgs_path is not None
-                ),
+                import_orgs=(orgs_path is not None),
                 orgs_path=orgs_path,
             )
 
         return replace(
             context,
             schema=schema,
-            import_orgs=(
-                orgs_path is not None
-            ),
+            import_orgs=(orgs_path is not None),
             orgs_path=orgs_path,
         )
 
@@ -1161,8 +1014,7 @@ class TwwChangeCreationService:
 
         if job_mode == DiffJobMode.REFRESH:
             raise NotImplementedError(
-                "Diff-job refresh is not implemented yet. "
-                "Use 'create' or 'replace'."
+                "Diff-job refresh is not implemented yet. " "Use 'create' or 'replace'."
             )
 
     def _ensure_ready_for_diff_job(
@@ -1172,9 +1024,7 @@ class TwwChangeCreationService:
         Ensure all required collaborators are configured.
         """
 
-        missing: list[
-            str
-        ] = []
+        missing: list[str] = []
 
         if self.effect_projector is None:
             missing.append(
@@ -1214,9 +1064,7 @@ class TwwChangeCreationService:
         if validation_log_path is not None:
             return validation_log_path
 
-        return xtf_file.with_name(
-            f"{xtf_file.stem}_{name}.log"
-        )
+        return xtf_file.with_name(f"{xtf_file.stem}_{name}.log")
 
     def _required_metadata_string(
         self,
@@ -1242,7 +1090,8 @@ class TwwChangeCreationService:
         )
 
         if (
-            value in (
+            value
+            in (
                 None,
                 "",
             )
@@ -1253,7 +1102,8 @@ class TwwChangeCreationService:
             )
 
         if (
-            value in (
+            value
+            in (
                 None,
                 "",
             )
@@ -1261,13 +1111,15 @@ class TwwChangeCreationService:
         ):
             value = fallback_value
 
-        if not isinstance(
-            value,
-            str,
-        ) or not value.strip():
+        if (
+            not isinstance(
+                value,
+                str,
+            )
+            or not value.strip()
+        ):
             raise ValueError(
-                "Prepared source metadata does not contain "
-                f"a valid {key!r} value."
+                "Prepared source metadata does not contain " f"a valid {key!r} value."
             )
 
         return value

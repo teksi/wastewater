@@ -11,7 +11,6 @@ from teksi_hooks.models.canonical_object import (
     CanonicalValueMetadata,
     LocalizedMetadata,
 )
-
 from teksi_wastewater.hooks.adapters import (
     tww_canonical_model_adapter as adapter_module,
 )
@@ -85,10 +84,13 @@ class CanonicalModelCursor:
             ]
         ] = []
 
-        self.description: tuple[
-            FakeColumn,
-            ...,
-        ] | None = None
+        self.description: (
+            tuple[
+                FakeColumn,
+                ...,
+            ]
+            | None
+        ) = None
 
         self._rows: tuple[
             tuple[
@@ -146,16 +148,17 @@ class CanonicalModelCursor:
 
     def fetchone(
         self,
-    ) -> tuple[
-        Any,
-        ...,
-    ] | None:
+    ) -> (
+        tuple[
+            Any,
+            ...,
+        ]
+        | None
+    ):
         if not self._rows:
             return None
 
-        return self._rows[
-            0
-        ]
+        return self._rows[0]
 
     def _source_rows(
         self,
@@ -176,9 +179,7 @@ class CanonicalModelCursor:
         if "dictionary_od_table" in query_text:
             return self.class_rows
 
-        raise AssertionError(
-            f"Unexpected query: {query_text}"
-        )
+        raise AssertionError(f"Unexpected query: {query_text}")
 
     def _filtered_rows(
         self,
@@ -252,17 +253,14 @@ class CanonicalModelCursor:
         ],
         ...,
     ]:
-        class_id = parameters[
-            0
-        ]
+        class_id = parameters[0]
 
         attribute_id = (
-            parameters[
-                1
-            ]
+            parameters[1]
             if len(
                 parameters,
-            ) > 1
+            )
+            > 1
             else None
         )
 
@@ -302,27 +300,23 @@ class CanonicalModelCursor:
         ],
         ...,
     ]:
-        class_id = parameters[
-            0
-        ]
+        class_id = parameters[0]
 
         attribute_id = (
-            parameters[
-                1
-            ]
+            parameters[1]
             if len(
                 parameters,
-            ) > 1
+            )
+            > 1
             else None
         )
 
         value_id = (
-            parameters[
-                2
-            ]
+            parameters[2]
             if len(
                 parameters,
-            ) > 2
+            )
+            > 2
             else None
         )
 
@@ -363,11 +357,7 @@ class CanonicalModelCursor:
             self._rows = ()
             return
 
-        column_names = tuple(
-            rows[
-                0
-            ]
-        )
+        column_names = tuple(rows[0])
 
         self.description = tuple(
             FakeColumn(
@@ -399,9 +389,7 @@ class FakeOrmColumn:
 
 class FakeTable:
     name = "agxx_reach"
-    columns = (
-        FakeOrmColumn(),
-    )
+    columns = (FakeOrmColumn(),)
 
 
 class FakeMappedClass:
@@ -438,13 +426,14 @@ def _adapter(
         TwwLanguage.IT,
         TwwLanguage.EN,
     ),
-    automap_classes: Mapping[
-        str,
-        Any,
-    ] | None = None,
-    reflected_class_ids: frozenset[
-        str
-    ] = frozenset(),
+    automap_classes: (
+        Mapping[
+            str,
+            Any,
+        ]
+        | None
+    ) = None,
+    reflected_class_ids: frozenset[str] = frozenset(),
 ) -> tuple[
     TwwCanonicalModelAdapter,
     CanonicalModelCursor,
@@ -467,11 +456,7 @@ def _adapter(
         schema=schema,
         languages=languages,
         reflected_class_ids=reflected_class_ids,
-        automap_classes=(
-            {}
-            if automap_classes is None
-            else automap_classes
-        ),
+        automap_classes=({} if automap_classes is None else automap_classes),
     )
 
     return (
@@ -490,15 +475,14 @@ def _assert_complete_dictionary_load(
     Assert that the aggregate canonical dictionary was loaded once.
     """
 
-    assert len(
-        cursor.executed_queries,
-    ) == 3
-
-    assert all(
-        parameters == ()
-        for _, parameters
-        in cursor.executed_queries
+    assert (
+        len(
+            cursor.executed_queries,
+        )
+        == 3
     )
+
+    assert all(parameters == () for _, parameters in cursor.executed_queries)
 
     assert connection_factory.autocommit_values == [
         True,
@@ -783,9 +767,7 @@ def test_tww_canonical_model_adapter_builds_canonical_model() -> None:
         ),
     }
 
-    assert metadata.classes[
-        "reach"
-    ].localized.names == {
+    assert metadata.classes["reach"].localized.names == {
         "de": "Haltung",
         "fr": "Tronçon",
         "it": "Tratta",
@@ -826,9 +808,12 @@ def test_tww_canonical_model_adapter_returns_single_class_metadata() -> None:
         "en": "Reach",
     }
 
-    assert adapter.class_metadata(
-        "unknown",
-    ) is None
+    assert (
+        adapter.class_metadata(
+            "unknown",
+        )
+        is None
+    )
 
     _assert_complete_dictionary_load(
         cursor=cursor,
@@ -868,10 +853,13 @@ def test_tww_canonical_model_adapter_returns_single_attribute_metadata() -> None
         "en": "Progression geometry",
     }
 
-    assert adapter.attribute_metadata(
-        "reach",
-        "unknown",
-    ) is None
+    assert (
+        adapter.attribute_metadata(
+            "reach",
+            "unknown",
+        )
+        is None
+    )
 
 
 def test_tww_canonical_model_adapter_returns_single_value_metadata() -> None:
@@ -906,11 +894,14 @@ def test_tww_canonical_model_adapter_returns_single_value_metadata() -> None:
         "en": "planned",
     }
 
-    assert adapter.value_metadata(
-        "wastewater_structure",
-        "status",
-        "unknown",
-    ) is None
+    assert (
+        adapter.value_metadata(
+            "wastewater_structure",
+            "status",
+            "unknown",
+        )
+        is None
+    )
 
 
 def test_tww_canonical_model_adapter_detects_geometry_attributes() -> None:
@@ -993,19 +984,14 @@ def test_tww_canonical_model_adapter_returns_geometry_attribute_names() -> None:
 
     assert adapter.geometry_attribute_names(
         "reach",
-    ) == (
-        "progression_geometry",
-    )
+    ) == ("progression_geometry",)
 
     assert adapter.geometry_attribute_names(
         "wastewater_structure",
-    ) == (
-        "detail_geometry3d_geometry",
-    )
+    ) == ("detail_geometry3d_geometry",)
 
 
-def test_tww_canonical_model_adapter_uses_custom_schema_and_caches_model(
-) -> None:
+def test_tww_canonical_model_adapter_uses_custom_schema_and_caches_model() -> None:
     adapter, cursor, connection_factory = _adapter(
         schema="custom_sys",
     )
@@ -1025,8 +1011,7 @@ def test_tww_canonical_model_adapter_uses_custom_schema_and_caches_model(
         str(
             query,
         )
-        for query, _
-        in cursor.executed_queries
+        for query, _ in cursor.executed_queries
     )
 
     assert "custom_sys" in combined
@@ -1156,8 +1141,7 @@ def test_tww_canonical_model_adapter_skips_automap_without_reflected_classes(
     )
 
 
-def test_tww_canonical_model_adapter_adds_reflected_class_and_attribute(
-) -> None:
+def test_tww_canonical_model_adapter_adds_reflected_class_and_attribute() -> None:
     adapter, cursor, connection_factory = _adapter(
         reflected_class_ids=frozenset(
             {
@@ -1171,9 +1155,7 @@ def test_tww_canonical_model_adapter_adds_reflected_class_and_attribute(
 
     metadata = adapter.canonical_model()
 
-    reflected_class = metadata.classes[
-        "agxx_reach"
-    ]
+    reflected_class = metadata.classes["agxx_reach"]
 
     assert reflected_class == CanonicalClassMetadata(
         source_id=adapter._reflected_source_id(
@@ -1208,8 +1190,7 @@ def test_tww_canonical_model_adapter_adds_reflected_class_and_attribute(
     )
 
 
-def test_tww_canonical_model_adapter_prefers_dictionary_source_ids(
-) -> None:
+def test_tww_canonical_model_adapter_prefers_dictionary_source_ids() -> None:
     adapter, _, _ = _adapter(
         class_rows=[
             {
@@ -1245,13 +1226,14 @@ def test_tww_canonical_model_adapter_prefers_dictionary_source_ids(
 
     metadata = adapter.canonical_model()
 
-    assert metadata.classes[
-        "agxx_reach"
-    ].source_id == 42
+    assert metadata.classes["agxx_reach"].source_id == 42
 
-    assert metadata.attributes[
-        (
-            "agxx_reach",
-            "fk_reach",
-        )
-    ].source_id == 87
+    assert (
+        metadata.attributes[
+            (
+                "agxx_reach",
+                "fk_reach",
+            )
+        ].source_id
+        == 87
+    )

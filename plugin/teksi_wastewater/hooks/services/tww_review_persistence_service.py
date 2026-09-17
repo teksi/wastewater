@@ -2,13 +2,19 @@
 
 from __future__ import annotations
 
+import logging
 from collections.abc import Mapping
 from dataclasses import dataclass
-import logging
 from pathlib import Path
 from typing import Any, Protocol
 
-
+from teksi_wastewater.hooks.adapters.tww_interlis_persistence_adapter import (
+    TwwInterlisPersistenceAdapter,
+)
+from teksi_wastewater.hooks.capabilities.tww_interlis_persistence_capability import (
+    TwwInterlisPersistenceCapability,
+    TwwQuarantinePreparer,
+)
 from teksi_wastewater.hooks.exceptions import (
     DiffJobEligibilityError,
     DiffJobPersistenceError,
@@ -20,21 +26,9 @@ from teksi_wastewater.hooks.services.tww_diff_schema_service import (
     TwwDiffSchemaService,
     TwwJobPersistenceResult,
 )
-
-from teksi_wastewater.hooks.adapters.tww_interlis_persistence_adapter import (
-    TwwInterlisPersistenceAdapter,
-)
-
 from teksi_wastewater.hooks.services.tww_quarantine_persistence_preparer import (
     TwwQuarantinePersistencePreparer,
 )
-
-
-from teksi_wastewater.hooks.capabilities.tww_interlis_persistence_capability import (
-    TwwInterlisPersistenceCapability,
-    TwwQuarantinePreparer,
-)
-
 
 logger = logging.getLogger(
     __name__,
@@ -135,19 +129,14 @@ class TwwReviewPersistenceService:
             job_id=job_id,
         )
 
-        validation_finding_row_count = (
-            self.diff_schema_service
-            .validation_finding_row_count(
-                job_id=job_id,
-            )
+        validation_finding_row_count = self.diff_schema_service.validation_finding_row_count(
+            job_id=job_id,
         )
 
         self._assert_review_counts(
             job_id=job_id,
             counts=counts,
-            validation_finding_row_count=(
-                validation_finding_row_count
-            ),
+            validation_finding_row_count=(validation_finding_row_count),
         )
 
         import_schema = self._required_metadata_value(
@@ -162,13 +151,10 @@ class TwwReviewPersistenceService:
             key="source_model",
         )
 
-        resolved_live_schema = (
-            live_schema
-            or self._required_metadata_value(
-                job_id=job_id,
-                metadata=job.metadata,
-                key="live_schema",
-            )
+        resolved_live_schema = live_schema or self._required_metadata_value(
+            job_id=job_id,
+            metadata=job.metadata,
+            key="live_schema",
         )
 
         self.diff_schema_service.acquire_job_for_application(
@@ -199,12 +185,10 @@ class TwwReviewPersistenceService:
                 import_schema=import_schema,
             )
 
-            persistence_result = (
-                self.persistence_adapter.persist_quarantine(
-                    import_schema=import_schema,
-                    live_schema=resolved_live_schema,
-                    source_model=source_model,
-                )
+            persistence_result = self.persistence_adapter.persist_quarantine(
+                import_schema=import_schema,
+                live_schema=resolved_live_schema,
+                source_model=source_model,
             )
 
             if not persistence_result.committed:
@@ -222,10 +206,7 @@ class TwwReviewPersistenceService:
             )
 
         except Exception as exception:
-            if (
-                backup_path is not None
-                and preparation_started
-            ):
+            if backup_path is not None and preparation_started:
                 self._restore_backup(
                     job_id=job_id,
                     import_schema=import_schema,
@@ -303,9 +284,7 @@ class TwwReviewPersistenceService:
                         validation_findings
                     ) > 0;
                     """,
-                    (
-                        job_db_id,
-                    ),
+                    (job_db_id,),
                 )
 
                 row = cursor.fetchone()
@@ -336,18 +315,13 @@ class TwwReviewPersistenceService:
         if job_status != "accepted":
             raise DiffJobEligibilityError(
                 job_id=job_id,
-                reason=(
-                    f"the job has status {job_status!r}; "
-                    "expected 'accepted'."
-                ),
+                reason=(f"the job has status {job_status!r}; " "expected 'accepted'."),
             )
 
         if not validation_success:
             raise DiffJobEligibilityError(
                 job_id=job_id,
-                reason=(
-                    "source validation was not successful."
-                ),
+                reason=("source validation was not successful."),
             )
 
     def _assert_review_counts(
@@ -375,11 +349,7 @@ class TwwReviewPersistenceService:
                 ),
             )
 
-        operation_count = (
-            counts.created_count
-            + counts.altered_count
-            + counts.deleted_count
-        )
+        operation_count = counts.created_count + counts.altered_count + counts.deleted_count
 
         if operation_count != counts.total_count:
             raise DiffJobEligibilityError(
@@ -409,15 +379,16 @@ class TwwReviewPersistenceService:
             key,
         )
 
-        if not isinstance(
-            value,
-            str,
-        ) or not value.strip():
+        if (
+            not isinstance(
+                value,
+                str,
+            )
+            or not value.strip()
+        ):
             raise DiffJobEligibilityError(
                 job_id=job_id,
-                reason=(
-                    f"required job metadata {key!r} is missing."
-                ),
+                reason=(f"required job metadata {key!r} is missing."),
             )
 
         return value
@@ -443,8 +414,7 @@ class TwwReviewPersistenceService:
             )
         except Exception:
             logger.exception(
-                "Could not restore quarantine backup %s for "
-                "diff review job %r.",
+                "Could not restore quarantine backup %s for " "diff review job %r.",
                 backup_path,
                 job_id,
             )
@@ -457,8 +427,7 @@ class TwwReviewPersistenceService:
             )
         except Exception:
             logger.exception(
-                "Could not delete restored quarantine backup %s "
-                "for diff review job %r.",
+                "Could not delete restored quarantine backup %s " "for diff review job %r.",
                 backup_path,
                 job_id,
             )
@@ -472,8 +441,7 @@ class TwwReviewPersistenceService:
             )
         except Exception:
             logger.exception(
-                "Could not clear the quarantine backup path for "
-                "diff review job %r.",
+                "Could not clear the quarantine backup path for " "diff review job %r.",
                 job_id,
             )
 
@@ -496,8 +464,7 @@ class TwwReviewPersistenceService:
             )
         except Exception:
             logger.exception(
-                "Could not delete quarantine backup %s for "
-                "applied diff review job %r.",
+                "Could not delete quarantine backup %s for " "applied diff review job %r.",
                 backup_path,
                 job_id,
             )
@@ -564,8 +531,7 @@ class TwwReviewPersistenceService:
             )
         except Exception:
             logger.exception(
-                "Could not delete unused quarantine backup %s "
-                "for diff review job %r.",
+                "Could not delete unused quarantine backup %s " "for diff review job %r.",
                 backup_path,
                 job_id,
             )
@@ -629,13 +595,10 @@ class TwwJobPersistenceService:
             key="source_model",
         )
 
-        resolved_live_schema = (
-            live_schema
-            or self._required_metadata_value(
-                job_id=job_id,
-                metadata=job.metadata,
-                key="live_schema",
-            )
+        resolved_live_schema = live_schema or self._required_metadata_value(
+            job_id=job_id,
+            metadata=job.metadata,
+            key="live_schema",
         )
 
         self.diff_schema_service.acquire_job_for_application(
@@ -648,12 +611,10 @@ class TwwJobPersistenceService:
                 import_schema=import_schema,
             )
 
-            interlis_persistence = (
-                self.persistence_adapter.persist_quarantine(
-                    import_schema=import_schema,
-                    live_schema=resolved_live_schema,
-                    source_model=source_model,
-                )
+            interlis_persistence = self.persistence_adapter.persist_quarantine(
+                import_schema=import_schema,
+                live_schema=resolved_live_schema,
+                source_model=source_model,
             )
 
             if not interlis_persistence.committed:
@@ -711,9 +672,7 @@ class TwwJobPersistenceService:
         if not validation_success:
             raise DiffJobEligibilityError(
                 job_id=job_id,
-                reason=(
-                    "source validation was not successful."
-                ),
+                reason=("source validation was not successful."),
             )
 
     def _assert_review_counts(
@@ -729,10 +688,7 @@ class TwwJobPersistenceService:
         if counts.rejected_count:
             raise DiffJobEligibilityError(
                 job_id=job_id,
-                reason=(
-                    f"{counts.rejected_count} review rows contain "
-                    "blocking findings."
-                ),
+                reason=(f"{counts.rejected_count} review rows contain " "blocking findings."),
             )
 
     def _required_metadata_value(
@@ -753,15 +709,17 @@ class TwwJobPersistenceService:
             key,
         )
 
-        if not isinstance(
-            value,
-            str,
-        ) or not value.strip():
+        if (
+            not isinstance(
+                value,
+                str,
+            )
+            or not value.strip()
+        ):
             raise DiffSchemaContractError(
                 column_name=key,
                 message=(
-                    f"Diff review job {job_id!r} does not contain "
-                    f"a valid {key!r} value."
+                    f"Diff review job {job_id!r} does not contain " f"a valid {key!r} value."
                 ),
             )
 

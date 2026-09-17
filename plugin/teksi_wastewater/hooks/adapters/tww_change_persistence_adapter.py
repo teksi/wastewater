@@ -2,6 +2,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass, replace
 
+from teksi_hooks.capabilities.connection import (
+    DatabaseConnectionFactory,
+)
 from teksi_hooks.capabilities.persistence import (
     ChangePersistenceCapability,
 )
@@ -17,10 +20,6 @@ from teksi_hooks.models.review import (
 from teksi_hooks.models.validation import (
     Change,
     ChangeOperation,
-)
-
-from teksi_hooks.capabilities.connection import (
-    DatabaseConnectionFactory,
 )
 
 
@@ -43,7 +42,9 @@ class TwwChangePersistenceAdapter(
     The downstream TEKSI Wastewater update implementation must ignore incoming
     None values, preserving the corresponding existing live values.
     """
+
     connection_factory: DatabaseConnectionFactory
+
     def persist_snapshot(
         self,
         snapshot: DiffSnapshot,
@@ -153,10 +154,7 @@ class TwwChangePersistenceAdapter(
                 change=change,
             )
 
-        raise ValueError(
-            "Unsupported change operation: "
-            f"{change.operation!r}."
-        )
+        raise ValueError("Unsupported change operation: " f"{change.operation!r}.")
 
     def _prepare_update(
         self,
@@ -174,20 +172,14 @@ class TwwChangePersistenceAdapter(
 
         if change.operation != ChangeOperation.UPDATE:
             raise ValueError(
-                "_prepare_update() requires an update decision, "
-                f"got {change.operation!r}."
+                "_prepare_update() requires an update decision, " f"got {change.operation!r}."
             )
 
         changed_attribute_ids = {
-            attribute_change.attribute_name
-            for attribute_change
-            in change.changed_attributes
+            attribute_change.attribute_name for attribute_change in change.changed_attributes
         }
 
-        unknown_decisions = (
-            decision.decided_attributes
-            - changed_attribute_ids
-        )
+        unknown_decisions = decision.decided_attributes - changed_attribute_ids
 
         if unknown_decisions:
             raise ValueError(
@@ -195,10 +187,7 @@ class TwwChangePersistenceAdapter(
                 f"not changed: {sorted(unknown_decisions)}."
             )
 
-        missing_decisions = (
-            changed_attribute_ids
-            - decision.decided_attributes
-        )
+        missing_decisions = changed_attribute_ids - decision.decided_attributes
 
         if missing_decisions:
             raise ValueError(
@@ -211,9 +200,7 @@ class TwwChangePersistenceAdapter(
         )
 
         for attribute_id in decision.unpermitted_attributes:
-            persistence_values[
-                attribute_id
-            ] = None
+            persistence_values[attribute_id] = None
 
         return replace(
             change,
@@ -236,8 +223,7 @@ class TwwChangePersistenceAdapter(
                 attribute_change.attribute_name,
             )
             is not None
-            for attribute_change
-            in change.changed_attributes
+            for attribute_change in change.changed_attributes
         )
 
     def _assert_compatible_document(
@@ -252,8 +238,7 @@ class TwwChangePersistenceAdapter(
 
         if decisions.version != 1:
             raise ValueError(
-                "Unsupported persistence-decision document version: "
-                f"{decisions.version}."
+                "Unsupported persistence-decision document version: " f"{decisions.version}."
             )
 
         if decisions.snapshot_id != snapshot.snapshot_id:
@@ -276,9 +261,7 @@ class TwwChangePersistenceAdapter(
         implementation must use the supplied cursor and must not commit.
         """
 
-        raise NotImplementedError(
-            "TWW insert persistence is not configured."
-        )
+        raise NotImplementedError("TWW insert persistence is not configured.")
 
     def _apply_update(
         self,
@@ -294,9 +277,7 @@ class TwwChangePersistenceAdapter(
         implementation must use the supplied cursor and must not commit.
         """
 
-        raise NotImplementedError(
-            "TWW update persistence is not configured."
-        )
+        raise NotImplementedError("TWW update persistence is not configured.")
 
     def _apply_delete(
         self,
@@ -311,6 +292,4 @@ class TwwChangePersistenceAdapter(
         implementation must use the supplied cursor and must not commit.
         """
 
-        raise NotImplementedError(
-            "TWW delete persistence is not configured."
-        )
+        raise NotImplementedError("TWW delete persistence is not configured.")

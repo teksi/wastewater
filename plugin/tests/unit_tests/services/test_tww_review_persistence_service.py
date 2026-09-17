@@ -6,18 +6,15 @@ from pathlib import Path
 from unittest.mock import Mock
 
 import pytest
-
 from teksi_hooks.models.review import (
     DiffReviewJob,
 )
-
+from teksi_wastewater.hooks.adapters.tww_interlis_persistence_adapter import (
+    TwwInterlisPersistenceResult,
+)
 from teksi_wastewater.hooks.exceptions import (
     DiffJobEligibilityError,
     DiffJobPersistenceError,
-)
-
-from teksi_wastewater.hooks.adapters.tww_interlis_persistence_adapter import (
-    TwwInterlisPersistenceResult,
 )
 from teksi_wastewater.hooks.services.tww_diff_schema_service import (
     DiffJobCounts,
@@ -26,7 +23,6 @@ from teksi_wastewater.hooks.services.tww_diff_schema_service import (
 from teksi_wastewater.hooks.services.tww_review_persistence_service import (
     TwwReviewPersistenceService,
 )
-
 
 BACKUP_PATH = Path(
     "/tmp/tww-diff-job-1.dump",
@@ -87,33 +83,19 @@ def _service(
     backup_service = Mock()
     persistence_adapter = Mock()
 
-    diff_schema_service.require_review_job.return_value = (
-        job
-        if job is not None
-        else _job()
-    )
+    diff_schema_service.require_review_job.return_value = job if job is not None else _job()
 
-    diff_schema_service.job_counts.return_value = (
-        counts
-        if counts is not None
-        else _counts()
-    )
+    diff_schema_service.job_counts.return_value = counts if counts is not None else _counts()
 
-    diff_schema_service.validation_finding_row_count.return_value = (
-        validation_finding_row_count
-    )
+    diff_schema_service.validation_finding_row_count.return_value = validation_finding_row_count
 
-    backup_service.create_backup.return_value = (
-        BACKUP_PATH
-    )
+    backup_service.create_backup.return_value = BACKUP_PATH
 
-    persistence_adapter.persist_quarantine.return_value = (
-        TwwInterlisPersistenceResult(
-            import_schema="xtf_import",
-            live_schema="tww_od",
-            source_model="DSS_2020_1_LV95",
-            committed=True,
-        )
+    persistence_adapter.persist_quarantine.return_value = TwwInterlisPersistenceResult(
+        import_schema="xtf_import",
+        live_schema="tww_od",
+        source_model="DSS_2020_1_LV95",
+        committed=True,
     )
 
     service = TwwReviewPersistenceService(
@@ -132,8 +114,7 @@ def _service(
     )
 
 
-def test_persist_job_applies_accepted_job(
-) -> None:
+def test_persist_job_applies_accepted_job() -> None:
     (
         service,
         diff_schema_service,
@@ -155,11 +136,7 @@ def test_persist_job_applies_accepted_job(
         import_schema="xtf_import",
         live_schema="tww_od",
         source_model="DSS_2020_1_LV95",
-        interlis_persistence=(
-            persistence_adapter
-            .persist_quarantine
-            .return_value
-        ),
+        interlis_persistence=(persistence_adapter.persist_quarantine.return_value),
     )
 
     diff_schema_service.require_review_job.assert_called_once_with(
@@ -217,8 +194,7 @@ def test_persist_job_applies_accepted_job(
     diff_schema_service.mark_job_failed.assert_not_called()
 
 
-def test_persist_job_prepares_quarantine_before_import(
-) -> None:
+def test_persist_job_prepares_quarantine_before_import() -> None:
     (
         service,
         diff_schema_service,
@@ -227,49 +203,37 @@ def test_persist_job_prepares_quarantine_before_import(
         persistence_adapter,
     ) = _service()
 
-    call_order: list[
-        str,
-    ] = []
+    call_order: list[str,] = []
 
-    backup_service.create_backup.side_effect = (
-        lambda **_: (
-            call_order.append(
-                "create_backup",
-            )
-            or BACKUP_PATH
+    backup_service.create_backup.side_effect = lambda **_: (
+        call_order.append(
+            "create_backup",
+        )
+        or BACKUP_PATH
+    )
+
+    diff_schema_service.set_backup_path.side_effect = lambda **_: call_order.append(
+        "set_backup_path",
+    )
+
+    quarantine_preparer.prepare.side_effect = lambda **_: call_order.append(
+        "prepare",
+    )
+
+    persistence_adapter.persist_quarantine.side_effect = lambda **_: (
+        call_order.append(
+            "persist",
+        )
+        or TwwInterlisPersistenceResult(
+            import_schema="xtf_import",
+            live_schema="tww_od",
+            source_model="DSS_2020_1_LV95",
+            committed=True,
         )
     )
 
-    diff_schema_service.set_backup_path.side_effect = (
-        lambda **_: call_order.append(
-            "set_backup_path",
-        )
-    )
-
-    quarantine_preparer.prepare.side_effect = (
-        lambda **_: call_order.append(
-            "prepare",
-        )
-    )
-
-    persistence_adapter.persist_quarantine.side_effect = (
-        lambda **_: (
-            call_order.append(
-                "persist",
-            )
-            or TwwInterlisPersistenceResult(
-                import_schema="xtf_import",
-                live_schema="tww_od",
-                source_model="DSS_2020_1_LV95",
-                committed=True,
-            )
-        )
-    )
-
-    diff_schema_service.mark_job_applied.side_effect = (
-        lambda **_: call_order.append(
-            "mark_applied",
-        )
+    diff_schema_service.mark_job_applied.side_effect = lambda **_: call_order.append(
+        "mark_applied",
     )
 
     service.persist_job(
@@ -285,8 +249,7 @@ def test_persist_job_prepares_quarantine_before_import(
     ]
 
 
-def test_persist_job_rejects_non_accepted_job(
-) -> None:
+def test_persist_job_rejects_non_accepted_job() -> None:
     (
         service,
         diff_schema_service,
@@ -321,8 +284,7 @@ def test_persist_job_rejects_non_accepted_job(
     diff_schema_service.mark_job_failed.assert_not_called()
 
 
-def test_persist_job_rejects_unsuccessful_validation(
-) -> None:
+def test_persist_job_rejects_unsuccessful_validation() -> None:
     (
         service,
         diff_schema_service,
@@ -356,8 +318,8 @@ def test_persist_job_rejects_unsuccessful_validation(
     diff_schema_service.mark_job_applied.assert_not_called()
     diff_schema_service.mark_job_failed.assert_not_called()
 
-def test_persist_job_rejects_blocking_validation_rows(
-) -> None:
+
+def test_persist_job_rejects_blocking_validation_rows() -> None:
     (
         service,
         diff_schema_service,
@@ -469,8 +431,7 @@ def test_persist_job_rejects_rows_without_operation(
     diff_schema_service.mark_job_failed.assert_not_called()
 
 
-def test_persist_job_allows_permission_restricted_rows(
-) -> None:
+def test_persist_job_allows_permission_restricted_rows() -> None:
     (
         service,
         diff_schema_service,
@@ -518,6 +479,7 @@ def test_persist_job_allows_permission_restricted_rows(
     diff_schema_service.mark_job_applied.assert_called_once_with(
         job_id="job-1",
     )
+
 
 @pytest.mark.parametrize(
     "metadata",
@@ -605,8 +567,7 @@ def test_persist_job_rejects_missing_import_schema(
     persistence_adapter.persist_quarantine.assert_not_called()
 
 
-def test_persist_job_rejects_missing_live_schema(
-) -> None:
+def test_persist_job_rejects_missing_live_schema() -> None:
     (
         service,
         diff_schema_service,
@@ -636,8 +597,7 @@ def test_persist_job_rejects_missing_live_schema(
     persistence_adapter.persist_quarantine.assert_not_called()
 
 
-def test_persist_job_marks_job_failed_when_backup_creation_fails(
-) -> None:
+def test_persist_job_marks_job_failed_when_backup_creation_fails() -> None:
     (
         service,
         diff_schema_service,
@@ -680,8 +640,8 @@ def test_persist_job_marks_job_failed_when_backup_creation_fails(
         message="Backup failed.",
     )
 
-def test_persist_job_deletes_unused_backup_when_recording_path_fails(
-) -> None:
+
+def test_persist_job_deletes_unused_backup_when_recording_path_fails() -> None:
     (
         service,
         diff_schema_service,
@@ -714,8 +674,8 @@ def test_persist_job_deletes_unused_backup_when_recording_path_fails(
     diff_schema_service.mark_job_applied.assert_not_called()
     diff_schema_service.mark_job_failed.assert_called_once()
 
-def test_persist_job_restores_backup_when_preparation_fails(
-) -> None:
+
+def test_persist_job_restores_backup_when_preparation_fails() -> None:
     (
         service,
         diff_schema_service,
@@ -762,8 +722,8 @@ def test_persist_job_restores_backup_when_preparation_fails(
         message="Preparation failed.",
     )
 
-def test_persist_job_restores_backup_when_import_fails(
-) -> None:
+
+def test_persist_job_restores_backup_when_import_fails() -> None:
     (
         service,
         diff_schema_service,
@@ -772,10 +732,8 @@ def test_persist_job_restores_backup_when_import_fails(
         persistence_adapter,
     ) = _service()
 
-    persistence_adapter.persist_quarantine.side_effect = (
-        RuntimeError(
-            "Importer failed.",
-        )
+    persistence_adapter.persist_quarantine.side_effect = RuntimeError(
+        "Importer failed.",
     )
 
     with pytest.raises(
@@ -819,8 +777,8 @@ def test_persist_job_restores_backup_when_import_fails(
 
     diff_schema_service.mark_job_applied.assert_not_called()
 
-def test_persist_job_treats_uncommitted_import_as_failure(
-) -> None:
+
+def test_persist_job_treats_uncommitted_import_as_failure() -> None:
     (
         service,
         diff_schema_service,
@@ -829,13 +787,11 @@ def test_persist_job_treats_uncommitted_import_as_failure(
         persistence_adapter,
     ) = _service()
 
-    persistence_adapter.persist_quarantine.return_value = (
-        TwwInterlisPersistenceResult(
-            import_schema="xtf_import",
-            live_schema="tww_od",
-            source_model="DSS_2020_1_LV95",
-            committed=False,
-        )
+    persistence_adapter.persist_quarantine.return_value = TwwInterlisPersistenceResult(
+        import_schema="xtf_import",
+        live_schema="tww_od",
+        source_model="DSS_2020_1_LV95",
+        committed=False,
     )
 
     with pytest.raises(
@@ -870,8 +826,8 @@ def test_persist_job_treats_uncommitted_import_as_failure(
         ),
     )
 
-def test_persist_job_does_not_hide_original_error_if_restore_fails(
-) -> None:
+
+def test_persist_job_does_not_hide_original_error_if_restore_fails() -> None:
     (
         service,
         diff_schema_service,
@@ -880,16 +836,12 @@ def test_persist_job_does_not_hide_original_error_if_restore_fails(
         persistence_adapter,
     ) = _service()
 
-    persistence_adapter.persist_quarantine.side_effect = (
-        RuntimeError(
-            "Importer failed.",
-        )
+    persistence_adapter.persist_quarantine.side_effect = RuntimeError(
+        "Importer failed.",
     )
 
-    backup_service.restore_backup.side_effect = (
-        RuntimeError(
-            "Restore failed.",
-        )
+    backup_service.restore_backup.side_effect = RuntimeError(
+        "Restore failed.",
     )
 
     with pytest.raises(
@@ -910,8 +862,8 @@ def test_persist_job_does_not_hide_original_error_if_restore_fails(
 
     diff_schema_service.mark_job_failed.assert_called_once()
 
-def test_persist_job_does_not_hide_original_error_if_failure_status_fails(
-) -> None:
+
+def test_persist_job_does_not_hide_original_error_if_failure_status_fails() -> None:
     (
         service,
         diff_schema_service,
@@ -920,16 +872,12 @@ def test_persist_job_does_not_hide_original_error_if_failure_status_fails(
         persistence_adapter,
     ) = _service()
 
-    persistence_adapter.persist_quarantine.side_effect = (
-        RuntimeError(
-            "Importer failed.",
-        )
+    persistence_adapter.persist_quarantine.side_effect = RuntimeError(
+        "Importer failed.",
     )
 
-    diff_schema_service.mark_job_failed.side_effect = (
-        RuntimeError(
-            "Status update failed.",
-        )
+    diff_schema_service.mark_job_failed.side_effect = RuntimeError(
+        "Status update failed.",
     )
 
     with pytest.raises(
@@ -943,8 +891,8 @@ def test_persist_job_does_not_hide_original_error_if_failure_status_fails(
     backup_service.restore_backup.assert_called_once()
     diff_schema_service.mark_job_applied.assert_not_called()
 
-def test_persist_job_deletes_backup_after_success(
-) -> None:
+
+def test_persist_job_deletes_backup_after_success() -> None:
     (
         service,
         diff_schema_service,
@@ -968,8 +916,8 @@ def test_persist_job_deletes_backup_after_success(
         expected_status="applied",
     )
 
-def test_persist_job_keeps_applied_state_when_backup_deletion_fails(
-) -> None:
+
+def test_persist_job_keeps_applied_state_when_backup_deletion_fails() -> None:
     (
         service,
         diff_schema_service,
@@ -995,8 +943,8 @@ def test_persist_job_keeps_applied_state_when_backup_deletion_fails(
     diff_schema_service.clear_backup_path.assert_not_called()
     diff_schema_service.mark_job_failed.assert_not_called()
 
-def test_persist_job_keeps_applied_state_when_clearing_backup_path_fails(
-) -> None:
+
+def test_persist_job_keeps_applied_state_when_clearing_backup_path_fails() -> None:
     (
         service,
         diff_schema_service,
@@ -1005,10 +953,8 @@ def test_persist_job_keeps_applied_state_when_clearing_backup_path_fails(
         persistence_adapter,
     ) = _service()
 
-    diff_schema_service.clear_backup_path.side_effect = (
-        RuntimeError(
-            "Backup path cleanup failed.",
-        )
+    diff_schema_service.clear_backup_path.side_effect = RuntimeError(
+        "Backup path cleanup failed.",
     )
 
     result = service.persist_job(
@@ -1027,8 +973,8 @@ def test_persist_job_keeps_applied_state_when_clearing_backup_path_fails(
 
     diff_schema_service.mark_job_failed.assert_not_called()
 
-def test_persist_job_uses_explicit_live_schema_override(
-) -> None:
+
+def test_persist_job_uses_explicit_live_schema_override() -> None:
     (
         service,
         diff_schema_service,
@@ -1050,8 +996,8 @@ def test_persist_job_uses_explicit_live_schema_override(
         source_model="DSS_2020_1_LV95",
     )
 
-def test_persist_job_uses_metadata_live_schema_without_override(
-) -> None:
+
+def test_persist_job_uses_metadata_live_schema_without_override() -> None:
     (
         service,
         diff_schema_service,

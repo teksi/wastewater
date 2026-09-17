@@ -57,8 +57,8 @@ class, while the target ``channel`` refers to the canonical TWW model in ``tww_o
 Function-backed class
 ---------------------
 
-For complex cases, where a source row affects several canonical objects or 
-where the target depends on context, a row-level function mapping should 
+For complex cases, where a source row affects several canonical objects or
+where the target depends on context, a row-level function mapping should
 be used instead.
 
 

@@ -7,7 +7,6 @@ from typing import Any
 from unittest.mock import Mock
 
 import pytest
-
 from teksi_hooks.models.canonical_object import (
     CanonicalModelMetadata,
     CanonicalObjectIdentity,
@@ -21,7 +20,6 @@ from teksi_hooks.models.effects import (
 from teksi_hooks.models.persistence import (
     DiffJobMode,
 )
-
 from teksi_wastewater.hooks.services import (
     tww_change_creation_service as service_module,
 )
@@ -164,10 +162,7 @@ def test_change_creation_service_requires_collaborators() -> None:
 
     with pytest.raises(
         RuntimeError,
-        match=(
-            "effect_projector, rights_evaluator, "
-            "object_provider_factory"
-        ),
+        match=("effect_projector, rights_evaluator, " "object_provider_factory"),
     ):
         service._ensure_ready_for_diff_job()
 
@@ -258,13 +253,16 @@ def test_change_creation_service_uses_explicit_validation_log_path() -> None:
         "/tmp/explicit.log",
     )
 
-    assert _ready_service()._validation_log_path(
-        validation_log_path=explicit_path,
-        xtf_file=Path(
-            "/tmp/delivery.xtf",
-        ),
-        name="validate_import_quarantine",
-    ) == explicit_path
+    assert (
+        _ready_service()._validation_log_path(
+            validation_log_path=explicit_path,
+            xtf_file=Path(
+                "/tmp/delivery.xtf",
+            ),
+            name="validate_import_quarantine",
+        )
+        == explicit_path
+    )
 
 
 def test_change_creation_service_derives_validation_log_path() -> None:
@@ -279,8 +277,7 @@ def test_change_creation_service_derives_validation_log_path() -> None:
     )
 
 
-def test_change_creation_service_incremental_updates_override_base_updates(
-) -> None:
+def test_change_creation_service_incremental_updates_override_base_updates() -> None:
     identity = _identity(
         "ch000000ws000001",
     )
@@ -366,8 +363,7 @@ def test_change_creation_service_keeps_updates_for_different_objects() -> None:
     )
 
 
-def test_change_creation_service_replaces_exists_with_not_exists(
-) -> None:
+def test_change_creation_service_replaces_exists_with_not_exists() -> None:
     service = _ready_service()
 
     identity = _identity(
@@ -393,10 +389,7 @@ def test_change_creation_service_replaces_exists_with_not_exists(
         ),
     )
 
-    assert merged.effects == (
-        incremental_not_exists,
-    )
-
+    assert merged.effects == (incremental_not_exists,)
 
 
 def test_change_creation_service_replaces_constraint_of_same_type() -> None:
@@ -425,9 +418,12 @@ def test_change_creation_service_replaces_constraint_of_same_type() -> None:
         ),
     )
 
-    assert len(
-        merged.effects,
-    ) == 1
+    assert (
+        len(
+            merged.effects,
+        )
+        == 1
+    )
 
     assert merged.effects[0] is incremental_exists
 
@@ -493,9 +489,7 @@ def test_change_creation_service_builds_one_change_per_identity() -> None:
         relation_lookup=relation_lookup,
     )
 
-    assert changes == (
-        built_change,
-    )
+    assert changes == (built_change,)
 
     relation_lookup.current_object.assert_called_once_with(
         identity,
@@ -597,9 +591,12 @@ def test_change_creation_service_uses_configured_live_relation_lookup() -> None:
         live_relation_lookup=relation_lookup,
     )
 
-    assert service._live_relation_lookup(
-        "custom_live_schema",
-    ) is relation_lookup
+    assert (
+        service._live_relation_lookup(
+            "custom_live_schema",
+        )
+        is relation_lookup
+    )
 
 
 def test_change_creation_service_builds_default_live_relation_lookup(
@@ -624,9 +621,12 @@ def test_change_creation_service_builds_default_live_relation_lookup(
         live_relation_lookup=None,
     )
 
-    assert service._live_relation_lookup(
-        "custom_live_schema",
-    ) is relation_lookup
+    assert (
+        service._live_relation_lookup(
+            "custom_live_schema",
+        )
+        is relation_lookup
+    )
 
     constructor.assert_called_once_with(
         connection_factory=connection_factory,
@@ -708,95 +708,49 @@ def test_change_creation_service_imports_one_base_xtf(
 
     quarantine_runner.import_xtf_to_quarantine.assert_called_once()
 
-    import_call = (
-        quarantine_runner
-        .import_xtf_to_quarantine
-        .call_args
-    )
+    import_call = quarantine_runner.import_xtf_to_quarantine.call_args
 
-    assert import_call.kwargs[
-        "xtf_file"
-    ] == xtf_file
+    assert import_call.kwargs["xtf_file"] == xtf_file
 
-    assert import_call.kwargs[
-        "schema"
-    ] == "xtf_import"
+    assert import_call.kwargs["schema"] == "xtf_import"
 
-    assert import_call.kwargs[
-        "context"
-    ].schema == "xtf_import"
+    assert import_call.kwargs["context"].schema == "xtf_import"
 
-    assert import_call.kwargs[
-        "context"
-    ].import_orgs is True
+    assert import_call.kwargs["context"].import_orgs is True
 
-    assert import_call.kwargs[
-        "context"
-    ].orgs_path == orgs_path
+    assert import_call.kwargs["context"].orgs_path == orgs_path
 
     quarantine_runner.validate_quarantine_or_raise.assert_called_once()
 
-    validation_call = (
-        quarantine_runner
-        .validate_quarantine_or_raise
-        .call_args
-    )
+    validation_call = quarantine_runner.validate_quarantine_or_raise.call_args
 
-    assert validation_call.kwargs[
-        "model_names"
-    ] == (
-        "DSS_2020_1_LV95",
-    )
+    assert validation_call.kwargs["model_names"] == ("DSS_2020_1_LV95",)
 
-    assert validation_call.kwargs[
-        "schema"
-    ] == "xtf_import"
+    assert validation_call.kwargs["schema"] == "xtf_import"
 
-    assert delegated_arguments[
-        "job_id"
-    ] == "job-1"
+    assert delegated_arguments["job_id"] == "job-1"
 
-    assert delegated_arguments[
-        "job_mode"
-    ] == DiffJobMode.CREATE
+    assert delegated_arguments["job_mode"] == DiffJobMode.CREATE
 
-    assert delegated_arguments[
-        "source_model"
-    ] == "DSS_2020_1_LV95"
+    assert delegated_arguments["source_model"] == "DSS_2020_1_LV95"
 
-    assert delegated_arguments[
-        "created_models"
-    ] == (
+    assert delegated_arguments["created_models"] == (
         "SIA405_Base_Abwasser_1_LV95",
         "SIA405_ABWASSER_2020_1_LV95",
         "DSS_2020_1_LV95",
     )
 
-    assert delegated_arguments[
-        "import_schema"
-    ] == "xtf_import"
+    assert delegated_arguments["import_schema"] == "xtf_import"
 
-    assert delegated_arguments[
-        "live_schema"
-    ] == "tww_od"
+    assert delegated_arguments["live_schema"] == "tww_od"
 
-    assert delegated_arguments[
-        "rights_context"
-    ] is rights_context
+    assert delegated_arguments["rights_context"] is rights_context
 
-    assert delegated_arguments[
-        "metadata"
-    ]["source_role"] == "base"
+    assert delegated_arguments["metadata"]["source_role"] == "base"
 
-    assert delegated_arguments[
-        "metadata"
-    ]["persist_job"] is False
+    assert delegated_arguments["metadata"]["persist_job"] is False
 
-    assert delegated_arguments[
-        "metadata"
-    ]["source_model"] == (
-        "DSS_2020_1_LV95"
-    )
+    assert delegated_arguments["metadata"]["source_model"] == ("DSS_2020_1_LV95")
 
 
 def test_change_creation_service_rejects_unpersisted_incremental_source(
@@ -820,29 +774,14 @@ def test_change_creation_service_rejects_unpersisted_incremental_source(
             },
         )
 
-    (
-        service.effect_projector
-        .effect_document_from_quarantine
-        .assert_not_called()
-    )
+    (service.effect_projector.effect_document_from_quarantine.assert_not_called())
 
-    (
-        service.diff_schema_service
-        .prepared_source
-        .assert_not_called()
-    )
+    (service.diff_schema_service.prepared_source.assert_not_called())
 
-    (
-        service.diff_schema_service
-        .prepare_source
-        .assert_not_called()
-    )
+    (service.diff_schema_service.prepare_source.assert_not_called())
 
-    (
-        service.diff_schema_service
-        .write
-        .assert_not_called()
-    )
+    (service.diff_schema_service.write.assert_not_called())
+
 
 def test_change_creation_service_requires_prepared_base_source(
     rights_context,
@@ -854,48 +793,35 @@ def test_change_creation_service_requires_prepared_base_source(
             job_id,
             source,
         ) -> None:
-            raise AssertionError(
-                "prepare_source must not be called."
-            )
+            raise AssertionError("prepare_source must not be called.")
 
         def prepared_source(
             self,
             *,
             job_id,
         ):
-            raise KeyError(
-                "No prepared source exists for "
-                f"diff workflow {job_id!r}."
-            )
+            raise KeyError("No prepared source exists for " f"diff workflow {job_id!r}.")
 
         def clear_prepared_source(
             self,
             *,
             job_id,
         ) -> None:
-            raise AssertionError(
-                "clear_prepared_source must not be called."
-            )
+            raise AssertionError("clear_prepared_source must not be called.")
 
         def write(
             self,
             **kwargs,
         ):
-            raise AssertionError(
-                "write must not be called."
-            )
+            raise AssertionError("write must not be called.")
 
     effect_projector = Mock()
 
-    effect_projector.effect_document_from_quarantine.return_value = (
-        _document(
-            source="incremental",
-        )
+    effect_projector.effect_document_from_quarantine.return_value = _document(
+        source="incremental",
     )
 
-    diff_schema_service = (
-        MissingPreparedSourceDiffSchemaService()
-    )
+    diff_schema_service = MissingPreparedSourceDiffSchemaService()
 
     service = _ready_service(
         diff_schema_service=diff_schema_service,
@@ -919,19 +845,12 @@ def test_change_creation_service_requires_prepared_base_source(
         )
 
     (
-        effect_projector
-        .effect_document_from_quarantine
-        .assert_called_once_with(
+        effect_projector.effect_document_from_quarantine.assert_called_once_with(
             schema="incremental_schema",
             source_model="AG96",
-            canonical_metadata=(
-                service.canonical_metadata
-            ),
+            canonical_metadata=(service.canonical_metadata),
         )
     )
-
-
- 
 
 
 def test_change_creation_service_rejects_unknown_source_role(
@@ -955,11 +874,7 @@ def test_change_creation_service_rejects_unknown_source_role(
             },
         )
 
-    (
-        service.effect_projector
-        .effect_document_from_quarantine
-        .assert_not_called()
-    )
+    (service.effect_projector.effect_document_from_quarantine.assert_not_called())
 
 
 @pytest.mark.parametrize(
@@ -994,8 +909,4 @@ def test_change_creation_service_requires_boolean_persist_job(
             },
         )
 
-    (
-        service.effect_projector
-        .effect_document_from_quarantine
-        .assert_not_called()
-    )
+    (service.effect_projector.effect_document_from_quarantine.assert_not_called())

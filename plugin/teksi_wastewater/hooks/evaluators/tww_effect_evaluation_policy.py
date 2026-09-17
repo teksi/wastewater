@@ -32,9 +32,7 @@ class TwwEffectEvaluationPolicy:
     Classify unsatisfied effects for AGXX incremental persistence.
     """
 
-    creatable_classes: frozenset[
-        str,
-    ] = frozenset(
+    creatable_classes: frozenset[str,] = frozenset(
         {
             "agxx_wastewater_node",
             "agxx_wastewater_networkelement",
@@ -45,9 +43,7 @@ class TwwEffectEvaluationPolicy:
         }
     )
 
-    deletable_classes: frozenset[
-        str,
-    ] = frozenset(
+    deletable_classes: frozenset[str,] = frozenset(
         {
             "agxx_wastewater_node",
             "agxx_wastewater_networkelement",
@@ -58,9 +54,7 @@ class TwwEffectEvaluationPolicy:
         }
     )
 
-    protected_classes: frozenset[
-        str,
-    ] = frozenset(
+    protected_classes: frozenset[str,] = frozenset(
         {
             "wastewater_node",
             "wastewater_networkelement",
@@ -110,10 +104,7 @@ class TwwEffectEvaluationPolicy:
 
         return self._blocked(
             code="unsupported_effect",
-            message=(
-                f"Unsupported TWW effect type "
-                f"{type(effect).__name__!r}."
-            ),
+            message=(f"Unsupported TWW effect type " f"{type(effect).__name__!r}."),
             class_id=class_id,
         )
 
@@ -187,10 +178,7 @@ class TwwEffectEvaluationPolicy:
 
         class_id = effect.identity.class_id
 
-        if (
-            current_object is None
-            and class_id not in self.creatable_classes
-        ):
+        if current_object is None and class_id not in self.creatable_classes:
             return self._blocked(
                 code="update_target_missing",
                 message=(

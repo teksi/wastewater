@@ -75,7 +75,7 @@ classes:
 
   - id: reach_alternative
     crud_rules:
-      - privileges: [DBW_WI] 
+      - privileges: [DBW_WI]
 
   - id: reach_text
     crud_rules:
@@ -87,7 +87,7 @@ classes:
         remote_attribute: fk_reach_point_from
       - class: reach
         remote_attribute: fk_reach_point_to
-    
+
   - id: hydr_geometry
     crud_rules:
       - privileges: [DBW_WI]
@@ -103,7 +103,7 @@ classes:
   - id: profile_geometry
     crud_rules:
       - privileges: [DBW_WI, DBW_GEP]
-    
+
   # ---------------------------------------------------------
   # Abwasserbauwerke
   # ---------------------------------------------------------
@@ -138,7 +138,7 @@ classes:
       renovation_necessity:
         update: [FI_BU]
       subsidies:
-        update: [DBW_GEP]       
+        update: [DBW_GEP]
       status:
         update: [DBW_GEP, DBW_WI]
         transitions:
@@ -239,12 +239,12 @@ classes:
   - id: retention_body
     crud_rules:
       - privileges: [DBW_GEP]
-  
-  - id: wastewater_structure_symbol 
+
+  - id: wastewater_structure_symbol
     crud_rules:
       - privileges: [DBW_WI]
 
-  - id: wastewater_structure_text 
+  - id: wastewater_structure_text
     crud_rules:
       - privileges: [DBW_WI]
 
@@ -339,14 +339,14 @@ classes:
 
   - id: leapingweir
     extends: overflow
-    
+
   - id: prank_weir
     extends: overflow
 
   - id: pump
     extends: overflow
 
-  - id: throttle_shut_off_unit 
+  - id: throttle_shut_off_unit
     crud_rules:
       - privileges: [DBW_GEP]
 
@@ -404,10 +404,10 @@ classes:
   - id: measure
     crud_rules:
       - privileges: [DBW_GEP]
-    
+
   - id: maintenance_event
     rights_from_subclass: true
- 
+
   - id: maintenance
     extends: maintenance_event
     create_rules:

@@ -1,10 +1,10 @@
 from __future__ import annotations
 
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from datetime import date, datetime
 from pathlib import Path
 from typing import Any
-from collections.abc import Mapping, Sequence
 
 from teksi_hooks.capabilities.review import (
     ReviewArtifactWriter,
@@ -40,9 +40,7 @@ class TwwReviewArtifactWriter(
         path: Path,
         layers: Mapping[
             str,
-            Sequence[
-                ReviewFeature,
-            ],
+            Sequence[ReviewFeature,],
         ],
     ) -> None:
         from osgeo import ogr, osr
@@ -60,9 +58,7 @@ class TwwReviewArtifactWriter(
         )
 
         if driver is None:
-            raise RuntimeError(
-                "GDAL/OGR GeoPackage driver is not available."
-            )
+            raise RuntimeError("GDAL/OGR GeoPackage driver is not available.")
 
         data_source = driver.CreateDataSource(
             str(
@@ -71,9 +67,7 @@ class TwwReviewArtifactWriter(
         )
 
         if data_source is None:
-            raise RuntimeError(
-                f"Could not create GeoPackage: {path}"
-            )
+            raise RuntimeError(f"Could not create GeoPackage: {path}")
 
         try:
             spatial_reference = osr.SpatialReference()
@@ -98,9 +92,7 @@ class TwwReviewArtifactWriter(
         *,
         data_source,
         layer_name: str,
-        features: Sequence[
-            ReviewFeature,
-        ],
+        features: Sequence[ReviewFeature,],
         spatial_reference,
     ) -> None:
         from osgeo import ogr
@@ -110,9 +102,7 @@ class TwwReviewArtifactWriter(
         )
 
         primary_geometry_attribute = (
-            geometry_attribute_names[0]
-            if geometry_attribute_names
-            else None
+            geometry_attribute_names[0] if geometry_attribute_names else None
         )
 
         layer = data_source.CreateLayer(
@@ -122,9 +112,7 @@ class TwwReviewArtifactWriter(
         )
 
         if layer is None:
-            raise RuntimeError(
-                f"Could not create GeoPackage layer: {layer_name}"
-            )
+            raise RuntimeError(f"Could not create GeoPackage layer: {layer_name}")
 
         field_names = self._field_names(
             features=features,
@@ -155,9 +143,7 @@ class TwwReviewArtifactWriter(
         *,
         layer,
         review_feature: ReviewFeature,
-        field_names: Sequence[
-            str,
-        ],
+        field_names: Sequence[str,],
         primary_geometry_attribute: str | None,
     ) -> None:
         from osgeo import ogr
@@ -171,15 +157,11 @@ class TwwReviewArtifactWriter(
             review_feature.attributes,
         )
 
-        for geometry_attribute_name, geometry_value in (
-            review_feature.geometries.items()
-        ):
+        for geometry_attribute_name, geometry_value in review_feature.geometries.items():
             if geometry_attribute_name == primary_geometry_attribute:
                 continue
 
-            merged_attributes[
-                f"{geometry_attribute_name}_wkt"
-            ] = self._geometry_to_wkt(
+            merged_attributes[f"{geometry_attribute_name}_wkt"] = self._geometry_to_wkt(
                 geometry_value,
             )
 
@@ -219,14 +201,9 @@ class TwwReviewArtifactWriter(
     def _field_names(
         self,
         *,
-        features: Sequence[
-            ReviewFeature,
-        ],
+        features: Sequence[ReviewFeature,],
         primary_geometry_attribute: str | None,
-    ) -> tuple[
-        str,
-        ...
-    ]:
+    ) -> tuple[str, ...]:
         field_names = set()
 
         for feature in features:
@@ -238,9 +215,7 @@ class TwwReviewArtifactWriter(
                 if geometry_attribute_name == primary_geometry_attribute:
                     continue
 
-                field_names.add(
-                    f"{geometry_attribute_name}_wkt"
-                )
+                field_names.add(f"{geometry_attribute_name}_wkt")
 
         return tuple(
             sorted(
@@ -250,13 +225,8 @@ class TwwReviewArtifactWriter(
 
     def _geometry_attribute_names(
         self,
-        features: Sequence[
-            ReviewFeature,
-        ],
-    ) -> tuple[
-        str,
-        ...
-    ]:
+        features: Sequence[ReviewFeature,],
+    ) -> tuple[str, ...]:
         names = []
 
         for feature in features:
@@ -272,23 +242,14 @@ class TwwReviewArtifactWriter(
 
     def _field_values(
         self,
-        features: Sequence[
-            ReviewFeature,
-        ],
+        features: Sequence[ReviewFeature,],
         field_name: str,
-    ) -> tuple[
-        Any,
-        ...
-    ]:
+    ) -> tuple[Any, ...]:
         values = []
 
         for feature in features:
             if field_name in feature.attributes:
-                values.append(
-                    feature.attributes[
-                        field_name
-                    ]
-                )
+                values.append(feature.attributes[field_name])
 
         return tuple(
             values,
@@ -298,9 +259,7 @@ class TwwReviewArtifactWriter(
         self,
         *,
         field_name: str,
-        values: Sequence[
-            Any,
-        ],
+        values: Sequence[Any,],
     ):
         from osgeo import ogr
 

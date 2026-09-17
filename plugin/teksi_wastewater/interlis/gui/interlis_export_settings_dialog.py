@@ -7,7 +7,7 @@ from qgis.PyQt.QtWidgets import QCheckBox, QDialog
 from qgis.PyQt.uic import loadUi
 
 from ...utils.twwlayermanager import TwwLayerManager
-from .. import config, model_selection
+from .. import model_selection
 from ..processing_algs.extractlabels_interlis import ExtractlabelsInterlisAlgorithm
 
 
@@ -15,22 +15,15 @@ class InterlisExportSettingsDialog(QDialog):
     def __init__(self, parent):
         super().__init__(parent)
 
-        settings=QSettings()
-        locale = settings.value('locale/userLocale','de_CH')
+        settings = QSettings()
+        locale = settings.value("locale/userLocale", "de_CH")
         self.lang = locale[:2]
         loadUi(os.path.join(os.path.dirname(__file__), "interlis_export_settings_dialog.ui"), self)
         model_names = model_selection.model_names_for_language(lang=self.lang)
-        if not (
-            ag6496extension
-            and ag6496extension != "false"
-        ):
-            model_names.difference_update(
-                model_selection.ALL_MODELS_BY_GROUP.get("ag64",())
-            )
+        if not (ag6496extension and ag6496extension != "false"):
+            model_names.difference_update(model_selection.ALL_MODELS_BY_GROUP.get("ag64", ()))
 
-            model_names.difference_update(
-                model_selection.ALL_MODELS_BY_GROUP.get("ag96",())
-            )
+            model_names.difference_update(model_selection.ALL_MODELS_BY_GROUP.get("ag96", ()))
         self.finished.connect(self.on_finish)
 
         # Fill models selection combobox

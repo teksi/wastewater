@@ -1,16 +1,13 @@
 from __future__ import annotations
 
-from datetime import date, datetime
-from pathlib import Path
-from types import SimpleNamespace
 import sys
+from datetime import date, datetime
+from types import SimpleNamespace
 
 import pytest
-
 from teksi_hooks.models.review import (
     ReviewFeature,
 )
-
 from teksi_wastewater.hooks.adapters.tww_review_artifact_writer import (
     TwwReviewArtifactWriter,
 )
@@ -129,7 +126,9 @@ def test_review_artifact_writer_collects_geometry_attribute_names_in_order() -> 
     )
 
 
-def test_review_artifact_writer_field_names_include_attributes_and_secondary_geometry_wkt() -> None:
+def test_review_artifact_writer_field_names_include_attributes_and_secondary_geometry_wkt() -> (
+    None
+):
     writer = TwwReviewArtifactWriter()
 
     features = (
@@ -198,48 +197,69 @@ def test_review_artifact_writer_field_values_only_reads_attributes() -> None:
 def test_review_artifact_writer_converts_field_values() -> None:
     writer = TwwReviewArtifactWriter()
 
-    assert writer._field_value(
-        True,
-    ) == 1
+    assert (
+        writer._field_value(
+            True,
+        )
+        == 1
+    )
 
-    assert writer._field_value(
-        False,
-    ) == 0
+    assert (
+        writer._field_value(
+            False,
+        )
+        == 0
+    )
 
-    assert writer._field_value(
-        date(
-            2026,
-            1,
-            2,
-        ),
-    ) == "2026-01-02"
+    assert (
+        writer._field_value(
+            date(
+                2026,
+                1,
+                2,
+            ),
+        )
+        == "2026-01-02"
+    )
 
-    assert writer._field_value(
-        datetime(
-            2026,
-            1,
-            2,
-            3,
-            4,
-            5,
-        ),
-    ) == "2026-01-02T03:04:05"
+    assert (
+        writer._field_value(
+            datetime(
+                2026,
+                1,
+                2,
+                3,
+                4,
+                5,
+            ),
+        )
+        == "2026-01-02T03:04:05"
+    )
 
-    assert writer._field_value(
-        "unchanged",
-    ) == "unchanged"
+    assert (
+        writer._field_value(
+            "unchanged",
+        )
+        == "unchanged"
+    )
 
 
 def test_review_artifact_writer_safe_layer_and_field_names() -> None:
     writer = TwwReviewArtifactWriter()
 
-    assert writer._safe_layer_name(
-        "reach.point-test layer",
-    ) == "reach_point_test_layer"
+    assert (
+        writer._safe_layer_name(
+            "reach.point-test layer",
+        )
+        == "reach_point_test_layer"
+    )
 
-    assert writer._safe_field_name(
-        "progression.geometry-test field",
-    ) == "progression_geometry_test_field"
+    assert (
+        writer._safe_field_name(
+            "progression.geometry-test field",
+        )
+        == "progression_geometry_test_field"
+    )
 
 
 def test_review_artifact_writer_geometry_to_wkt_from_string(
@@ -251,9 +271,12 @@ def test_review_artifact_writer_geometry_to_wkt_from_string(
 
     writer = TwwReviewArtifactWriter()
 
-    assert writer._geometry_to_wkt(
-        "LINESTRING(0 0, 1 1)",
-    ) == "LINESTRING(0 0, 1 1)"
+    assert (
+        writer._geometry_to_wkt(
+            "LINESTRING(0 0, 1 1)",
+        )
+        == "LINESTRING(0 0, 1 1)"
+    )
 
 
 def test_review_artifact_writer_geometry_to_wkt_from_object_with_as_wkt(
@@ -271,9 +294,12 @@ def test_review_artifact_writer_geometry_to_wkt_from_object_with_as_wkt(
 
     writer = TwwReviewArtifactWriter()
 
-    assert writer._geometry_to_wkt(
-        QgisLikeGeometry(),
-    ) == "POINT(1 2)"
+    assert (
+        writer._geometry_to_wkt(
+            QgisLikeGeometry(),
+        )
+        == "POINT(1 2)"
+    )
 
 
 def test_review_artifact_writer_geometry_to_wkt_from_object_with_wkt(
@@ -288,9 +314,12 @@ def test_review_artifact_writer_geometry_to_wkt_from_object_with_wkt(
 
     writer = TwwReviewArtifactWriter()
 
-    assert writer._geometry_to_wkt(
-        ShapelyLikeGeometry(),
-    ) == "POINT(3 4)"
+    assert (
+        writer._geometry_to_wkt(
+            ShapelyLikeGeometry(),
+        )
+        == "POINT(3 4)"
+    )
 
 
 def test_review_artifact_writer_returns_none_for_unknown_geometry(
@@ -302,9 +331,12 @@ def test_review_artifact_writer_returns_none_for_unknown_geometry(
 
     writer = TwwReviewArtifactWriter()
 
-    assert writer._geometry_to_wkt(
-        object(),
-    ) is None
+    assert (
+        writer._geometry_to_wkt(
+            object(),
+        )
+        is None
+    )
 
 
 def test_review_artifact_writer_field_definition_uses_integer_for_bool(
@@ -318,9 +350,7 @@ def test_review_artifact_writer_field_definition_uses_integer_for_bool(
 
     field_definition = writer._field_definition(
         field_name="is_created",
-        values=(
-            True,
-        ),
+        values=(True,),
     )
 
     assert field_definition.name == "is_created"
@@ -338,9 +368,7 @@ def test_review_artifact_writer_field_definition_uses_integer_for_int(
 
     field_definition = writer._field_definition(
         field_name="count",
-        values=(
-            3,
-        ),
+        values=(3,),
     )
 
     assert field_definition.name == "count"
@@ -358,9 +386,7 @@ def test_review_artifact_writer_field_definition_uses_real_for_float(
 
     field_definition = writer._field_definition(
         field_name="length",
-        values=(
-            12.5,
-        ),
+        values=(12.5,),
     )
 
     assert field_definition.name == "length"

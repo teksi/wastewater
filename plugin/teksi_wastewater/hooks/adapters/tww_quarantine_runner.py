@@ -1,8 +1,15 @@
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass, field, replace
 from pathlib import Path
-from collections.abc import Sequence
+
+from teksi_hooks.exceptions import (
+    Severity,
+)
+from teksi_hooks.models.validation import (
+    ValidationFinding,
+)
 
 from ...interlis import config
 from ...interlis.interlis_importer_exporter import (
@@ -16,13 +23,6 @@ from ..exceptions import (
 )
 from .tww_interlis_service_adapter import (
     TwwInterlisContext,
-)
-
-from teksi_hooks.exceptions import (
-    Severity,
-)
-from teksi_hooks.models.validation import (
-    ValidationFinding,
 )
 
 
@@ -79,17 +79,15 @@ class TwwQuarantineRunner:
             self.importer_exporter,
         )
 
-        import_model, created_models = (
-            self.importer_exporter.interlis_import_to_quarantine(
-                xtf_file_input=str(
-                    xtf_file,
-                ),
-                logs_next_to_file=context.logs_next_to_file,
-                filter_nulls=context.filter_nulls,
-                srid=context.srid,
-                import_orgs=context.import_orgs,
-                orgs_path=context.orgs_path,
-            )
+        import_model, created_models = self.importer_exporter.interlis_import_to_quarantine(
+            xtf_file_input=str(
+                xtf_file,
+            ),
+            logs_next_to_file=context.logs_next_to_file,
+            filter_nulls=context.filter_nulls,
+            srid=context.srid,
+            import_orgs=context.import_orgs,
+            orgs_path=context.orgs_path,
         )
 
         return (
@@ -102,7 +100,7 @@ class TwwQuarantineRunner:
     def import_quarantine_to_live(
         self,
         xtf_file: Path,
-        context: TwwInterlisContext| None = None,
+        context: TwwInterlisContext | None = None,
         validation_log_path: Path | None = None,
         schema: str = config.IMPORT_SCHEMA,
     ) -> None:
@@ -122,11 +120,9 @@ class TwwQuarantineRunner:
             self.importer_exporter,
         )
 
-        import_model, created_models = (
-            self.importer_exporter.find_import_ilimodels(
-                str(
-                    xtf_file,
-                )
+        import_model, created_models = self.importer_exporter.find_import_ilimodels(
+            str(
+                xtf_file,
             )
         )
 
@@ -137,9 +133,7 @@ class TwwQuarantineRunner:
         )
 
         self.validate_quarantine_or_raise(
-            model_names=(
-                import_model,
-            ),
+            model_names=(import_model,),
             log_path=validation_log_path,
             srid=context.srid,
             schema=schema,
@@ -260,10 +254,7 @@ class TwwQuarantineRunner:
         log_path: Path,
         srid: int = 2056,
         schema: str = config.IMPORT_SCHEMA,
-    ) -> tuple[
-        ValidationFinding,
-        ...
-    ]:
+    ) -> tuple[ValidationFinding, ...]:
         """
         Validate a quarantine schema using ili2pg --validate.
 
@@ -271,9 +262,7 @@ class TwwQuarantineRunner:
         Returns ValidationFinding objects if validation fails.
         """
 
-        findings: list[
-            ValidationFinding
-        ] = []
+        findings: list[ValidationFinding] = []
 
         for model_name in model_names:
             model_log_path = self._log_path_for_model(
@@ -334,11 +323,7 @@ class TwwQuarantineRunner:
             schema=schema,
         )
 
-        errors = tuple(
-            finding
-            for finding in findings
-            if finding.severity == Severity.ERROR
-        )
+        errors = tuple(finding for finding in findings if finding.severity == Severity.ERROR)
 
         if errors:
             raise QuarantineValidationError(
@@ -351,10 +336,7 @@ class TwwQuarantineRunner:
     def _validation_findings_from_log(
         self,
         log_path: Path,
-    ) -> tuple[
-        ValidationFinding,
-        ...
-    ]:
+    ) -> tuple[ValidationFinding, ...]:
         """
         Extract validation findings from an ili2pg validation log.
         """
@@ -362,9 +344,7 @@ class TwwQuarantineRunner:
         if not log_path.exists():
             return ()
 
-        findings: list[
-            ValidationFinding
-        ] = []
+        findings: list[ValidationFinding] = []
 
         for line in log_path.read_text(
             encoding="utf-8",
@@ -418,8 +398,7 @@ class TwwQuarantineRunner:
         model_name: str,
     ) -> Path:
         safe_model_name = (
-            model_name
-            .replace(
+            model_name.replace(
                 " ",
                 "_",
             )
@@ -437,9 +416,7 @@ class TwwQuarantineRunner:
             )
         )
 
-        return log_path.with_name(
-            f"{log_path.stem}_{safe_model_name}{log_path.suffix}"
-        )
+        return log_path.with_name(f"{log_path.stem}_{safe_model_name}{log_path.suffix}")
 
     def _context(
         self,
@@ -470,10 +447,6 @@ class TwwQuarantineRunner:
             return validation_log_path
 
         if xtf_file is not None:
-            return xtf_file.with_name(
-                f"{xtf_file.stem}_{name}.log"
-            )
+            return xtf_file.with_name(f"{xtf_file.stem}_{name}.log")
 
-        return Path(
-            f"{name}.log"
-        )
+        return Path(f"{name}.log")

@@ -4,19 +4,17 @@ from __future__ import annotations
 
 import argparse
 import sys
-
 from pathlib import Path
 
 from teksi_wastewater.hooks.adapters.tww_interlis_service_adapter import (
     TwwInterlisContext,
     TwwInterlisServiceAdapter,
 )
+from teksi_wastewater.hooks.cli import helpers
 from teksi_wastewater.interlis import config, model_config, model_selection
 from teksi_wastewater.interlis.interlis_importer_exporter import (
     InterlisImporterExporterError,
 )
-
-from teksi_wastewater.hooks.cli import helpers
 
 
 class TeksiWastewaterCmd:
@@ -55,10 +53,7 @@ class TeksiWastewaterCmd:
     ) -> None:
         subparser = subparsers.add_parser(
             self.SUBPARSER_NAME_INTERLIS_IMPORT,
-            help=(
-                f"{self.SUBPARSER_NAME_INTERLIS_IMPORT} "
-                "--help"
-            ),
+            help=(f"{self.SUBPARSER_NAME_INTERLIS_IMPORT} " "--help"),
         )
 
         subparser.add_argument(
@@ -89,10 +84,7 @@ class TeksiWastewaterCmd:
             "--filter_nulls",
             action=argparse.BooleanOptionalAction,
             default=True,
-            help=(
-                "Filter NULL values during import. "
-                "Enabled by default."
-            ),
+            help=("Filter NULL values during import. " "Enabled by default."),
         )
 
         # subparser.add_argument(
@@ -114,10 +106,7 @@ class TeksiWastewaterCmd:
     ) -> None:
         subparser = subparsers.add_parser(
             self.SUBPARSER_NAME_INTERLIS_EXPORT,
-            help=(
-                f"{self.SUBPARSER_NAME_INTERLIS_EXPORT} "
-                "--help"
-            ),
+            help=(f"{self.SUBPARSER_NAME_INTERLIS_EXPORT} " "--help"),
         )
 
         subparser.add_argument(
@@ -128,9 +117,7 @@ class TeksiWastewaterCmd:
 
         subparser.add_argument(
             "--export_model",
-            default=model_config.interlis_models[
-                "dss"
-            ].lang_name(
+            default=model_config.interlis_models["dss"].lang_name(
                 "de",
             ),
             choices=sorted(
@@ -162,55 +149,37 @@ class TeksiWastewaterCmd:
 
         subparser.add_argument(
             "--label_scale_network_plan_1_250",
-            help=(
-                "Export labels at scale 1:250 "
-                "(Werkplan/Plan de réseau)"
-            ),
+            help=("Export labels at scale 1:250 " "(Werkplan/Plan de réseau)"),
             action="store_true",
         )
 
         subparser.add_argument(
             "--label_scale_network_plan_1_500",
-            help=(
-                "Export labels at scale 1:500 "
-                "(Werkplan/Plan de réseau)"
-            ),
+            help=("Export labels at scale 1:500 " "(Werkplan/Plan de réseau)"),
             action="store_true",
         )
 
         subparser.add_argument(
             "--label_scale_overviewmap_1_10000",
-            help=(
-                "Export labels at scale 1:10'000 "
-                "(Übersichtsplan/Plan d'ensemble)"
-            ),
+            help=("Export labels at scale 1:10'000 " "(Übersichtsplan/Plan d'ensemble)"),
             action="store_true",
         )
 
         subparser.add_argument(
             "--label_scale_overviewmap_1_5000",
-            help=(
-                "Export labels at scale 1:5'000 "
-                "(Übersichtsplan/Plan d'ensemble)"
-            ),
+            help=("Export labels at scale 1:5'000 " "(Übersichtsplan/Plan d'ensemble)"),
             action="store_true",
         )
 
         subparser.add_argument(
             "--label_scale_overviewmap_1_2000",
-            help=(
-                "Export labels at scale 1:2'000 "
-                "(Übersichtsplan/Plan d'ensemble)"
-            ),
+            help=("Export labels at scale 1:2'000 " "(Übersichtsplan/Plan d'ensemble)"),
             action="store_true",
         )
 
         subparser.add_argument(
             "--selected_ids",
-            help=(
-                "Limit export to comma-separated network-element "
-                "identifiers"
-            ),
+            help=("Limit export to comma-separated network-element " "identifiers"),
         )
 
         # subparser.add_argument(
@@ -235,22 +204,14 @@ class TeksiWastewaterCmd:
         self,
     ) -> None:
         if self.args is None:
-            raise RuntimeError(
-                "CLI arguments have not been parsed."
-            )
+            raise RuntimeError("CLI arguments have not been parsed.")
 
-        if (
-            self.args.subparser_name
-            == self.SUBPARSER_NAME_INTERLIS_IMPORT
-        ):
+        if self.args.subparser_name == self.SUBPARSER_NAME_INTERLIS_IMPORT:
             self.schema = config.IMPORT_SCHEMA
             self.execute_interlis_import()
             return
 
-        if (
-            self.args.subparser_name
-            == self.SUBPARSER_NAME_INTERLIS_EXPORT
-        ):
+        if self.args.subparser_name == self.SUBPARSER_NAME_INTERLIS_EXPORT:
             self.schema = config.EXPORT_SCHEMA
             self.execute_interlis_export()
             return
@@ -266,10 +227,8 @@ class TeksiWastewaterCmd:
     def execute_interlis_import(
         self,
     ) -> None:
-        connection_factory = (
-            helpers.database_connection_factory(
-                self.args,
-            )
+        connection_factory = helpers.database_connection_factory(
+            self.args,
         )
 
         service = TwwInterlisServiceAdapter(connection_factory=connection_factory)
@@ -277,12 +236,8 @@ class TeksiWastewaterCmd:
         context = TwwInterlisContext(
             schema=self.schema,
             srid=self.args.srid,
-            show_selection_dialog=(
-                self.args.show_selection_dialog
-            ),
-            logs_next_to_file=(
-                self.args.logs_next_to_file
-            ),
+            show_selection_dialog=(self.args.show_selection_dialog),
+            logs_next_to_file=(self.args.logs_next_to_file),
             filter_nulls=self.args.filter_nulls,
             incremental_only=self.args.incremental_only,
         )
@@ -304,17 +259,13 @@ class TeksiWastewaterCmd:
 
             raise
 
-        print(
-            f"\nData successfully imported from {xtf_file}"
-        )
+        print(f"\nData successfully imported from {xtf_file}")
 
     def execute_interlis_export(
         self,
     ) -> None:
-        connection_factory = (
-            helpers.database_connection_factory(
-                self.args,
-            )
+        connection_factory = helpers.database_connection_factory(
+            self.args,
         )
 
         service = TwwInterlisServiceAdapter(connection_factory=connection_factory)
@@ -322,8 +273,7 @@ class TeksiWastewaterCmd:
         selected_ids = (
             tuple(
                 selected_id.strip()
-                for selected_id
-                in self.args.selected_ids.split(
+                for selected_id in self.args.selected_ids.split(
                     ",",
                 )
                 if selected_id.strip()
@@ -333,14 +283,9 @@ class TeksiWastewaterCmd:
         )
 
         if selected_ids:
-            print(
-                f"selected_ids = {selected_ids!r}"
-            )
+            print(f"selected_ids = {selected_ids!r}")
         else:
-            print(
-                "No selection argument. "
-                "Exporting the whole dataset."
-            )
+            print("No selection argument. " "Exporting the whole dataset.")
 
         labels_file = (
             Path(
@@ -350,14 +295,10 @@ class TeksiWastewaterCmd:
             else None
         )
 
-
-
         context = TwwInterlisContext(
             schema=self.schema,
             srid=self.args.srid,
-            logs_next_to_file=(
-                self.args.logs_next_to_file
-            ),
+            logs_next_to_file=(self.args.logs_next_to_file),
             labels_file=labels_file,
             selected_label_scale_indices=tuple(
                 self.get_label_scales(),
@@ -375,9 +316,7 @@ class TeksiWastewaterCmd:
         try:
             service.export_xtf(
                 xtf_file=xtf_file,
-                export_models=(
-                    self.args.export_model,
-                ),
+                export_models=(self.args.export_model,),
                 context=context,
             )
         except InterlisImporterExporterError as exception:
@@ -388,10 +327,7 @@ class TeksiWastewaterCmd:
 
             raise
 
-        print(
-            f"\nData successfully exported to {xtf_file}"
-        )
-
+        print(f"\nData successfully exported to {xtf_file}")
 
     def _print_interlis_error(
         self,
@@ -406,8 +342,7 @@ class TeksiWastewaterCmd:
 
         if exception.additional_text:
             print(
-                f"Additional details: "
-                f"{exception.additional_text}",
+                f"Additional details: " f"{exception.additional_text}",
                 file=sys.stderr,
             )
 
@@ -425,83 +360,33 @@ class TeksiWastewaterCmd:
         """
 
         available_scales = {
-            "pipeline_registry_1_1000": (
-                "Leitungskataster"
-            ),
+            "pipeline_registry_1_1000": ("Leitungskataster"),
             "network_plan_1_250": "Werkplan.250",
             "network_plan_1_500": "Werkplan.500",
-            "overviewmap_1_10000": (
-                "Uebersichtsplan.UeP10"
-            ),
-            "overviewmap_1_5000": (
-                "Uebersichtsplan.UeP5"
-            ),
-            "overviewmap_1_2000": (
-                "Uebersichtsplan.UeP2"
-            ),
+            "overviewmap_1_10000": ("Uebersichtsplan.UeP10"),
+            "overviewmap_1_5000": ("Uebersichtsplan.UeP5"),
+            "overviewmap_1_2000": ("Uebersichtsplan.UeP2"),
         }
 
         label_scales = []
 
-        if (
-            self.args
-            .label_scale_pipeline_registry_1_1000
-        ):
-            label_scales.append(
-                available_scales[
-                    "pipeline_registry_1_1000"
-                ]
-            )
+        if self.args.label_scale_pipeline_registry_1_1000:
+            label_scales.append(available_scales["pipeline_registry_1_1000"])
 
-        if (
-            self.args
-            .label_scale_network_plan_1_250
-        ):
-            label_scales.append(
-                available_scales[
-                    "network_plan_1_250"
-                ]
-            )
+        if self.args.label_scale_network_plan_1_250:
+            label_scales.append(available_scales["network_plan_1_250"])
 
-        if (
-            self.args
-            .label_scale_network_plan_1_500
-        ):
-            label_scales.append(
-                available_scales[
-                    "network_plan_1_500"
-                ]
-            )
+        if self.args.label_scale_network_plan_1_500:
+            label_scales.append(available_scales["network_plan_1_500"])
 
-        if (
-            self.args
-            .label_scale_overviewmap_1_10000
-        ):
-            label_scales.append(
-                available_scales[
-                    "overviewmap_1_10000"
-                ]
-            )
+        if self.args.label_scale_overviewmap_1_10000:
+            label_scales.append(available_scales["overviewmap_1_10000"])
 
-        if (
-            self.args
-            .label_scale_overviewmap_1_5000
-        ):
-            label_scales.append(
-                available_scales[
-                    "overviewmap_1_5000"
-                ]
-            )
+        if self.args.label_scale_overviewmap_1_5000:
+            label_scales.append(available_scales["overviewmap_1_5000"])
 
-        if (
-            self.args
-            .label_scale_overviewmap_1_2000
-        ):
-            label_scales.append(
-                available_scales[
-                    "overviewmap_1_2000"
-                ]
-            )
+        if self.args.label_scale_overviewmap_1_2000:
+            label_scales.append(available_scales["overviewmap_1_2000"])
 
         return label_scales
 

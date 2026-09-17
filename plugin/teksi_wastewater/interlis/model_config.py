@@ -1,20 +1,27 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from .config import DEFAULT_INTERLIS_LANGUAGE
-from typing import Callable,Iterable
+from collections.abc import Callable
 
+from .config import DEFAULT_INTERLIS_LANGUAGE
 from .interlis_model_mapping.model_base import ModelBase
 from .interlis_model_mapping.model_interlis_ag64 import ModelInterlisAG64
 from .interlis_model_mapping.model_interlis_ag96 import ModelInterlisAG96
 from .interlis_model_mapping.model_interlis_dss import ModelInterlisDss
-from .interlis_model_mapping.model_interlis_sia405_abwasser import ModelInterlisSia405Abwasser
-from .interlis_model_mapping.model_interlis_sia405_base_abwasser import ModelInterlisSia405BaseAbwasser
+from .interlis_model_mapping.model_interlis_sia405_abwasser import (
+    ModelInterlisSia405Abwasser,
+)
+from .interlis_model_mapping.model_interlis_sia405_base_abwasser import (
+    ModelInterlisSia405BaseAbwasser,
+)
+from .interlis_model_mapping.model_interlis_sia405_cable import (
+    ModelInterlisSia405Fernwirkkabel,
+)
+from .interlis_model_mapping.model_interlis_sia405_protection_tube import (
+    ModelInterlisSia405Schutzrohr,
+)
 from .interlis_model_mapping.model_interlis_vsa_kek import ModelInterlisVsaKek
 from .interlis_model_mapping.model_tww_od import ModelTwwOd
-from .interlis_model_mapping.model_interlis_sia405_cable import ModelInterlisSia405Fernwirkkabel
-from .interlis_model_mapping.model_interlis_sia405_protection_tube import ModelInterlisSia405Schutzrohr
-
 
 ModelFactory = Callable[
     [],
@@ -46,9 +53,7 @@ class InterlisModel:
     Language-specific variants of one semantic model group.
     """
 
-    models: frozenset[
-        InterlisLangModel
-    ]
+    models: frozenset[InterlisLangModel]
 
     orm_quarantine_factory: ModelFactory
     orm_live_factory: ModelFactory = field(
@@ -83,10 +88,7 @@ class InterlisModel:
         Return all language-specific model names.
         """
 
-        return frozenset(
-            model.model
-            for model in self.models
-        )
+        return frozenset(model.model for model in self.models)
 
     @property
     def topics(
@@ -96,11 +98,7 @@ class InterlisModel:
         Return all topics from all language variants.
         """
 
-        return frozenset(
-            topic
-            for model in self.models
-            for topic in model.topics
-        )
+        return frozenset(topic for model in self.models for topic in model.topics)
 
     @property
     def languages(
@@ -110,10 +108,7 @@ class InterlisModel:
         Return all configured language codes.
         """
 
-        return frozenset(
-            model.lang
-            for model in self.models
-        )
+        return frozenset(model.lang for model in self.models)
 
     def language_model(
         self,
@@ -128,11 +123,7 @@ class InterlisModel:
         """
 
         requested_model = next(
-            (
-                model
-                for model in self.models
-                if model.lang == lang
-            ),
+            (model for model in self.models if model.lang == lang),
             None,
         )
 
@@ -140,11 +131,7 @@ class InterlisModel:
             return requested_model
 
         fallback_model = next(
-            (
-                model
-                for model in self.models
-                if model.lang == fallback_lang
-            ),
+            (model for model in self.models if model.lang == fallback_lang),
             None,
         )
 
@@ -157,7 +144,6 @@ class InterlisModel:
             f"{fallback_lang!r}. Available languages: "
             f"{sorted(self.languages)!r}."
         )
-
 
     def lang_name(
         self,
@@ -176,7 +162,6 @@ class InterlisModel:
             fallback_lang=fallback_lang,
         ).model
 
-
     def topics_by_lang(
         self,
         lang: str,
@@ -193,7 +178,8 @@ class InterlisModel:
             lang=lang,
             fallback_lang=fallback_lang,
         ).topics
-    
+
+
 @dataclass(
     slots=True,
     frozen=True,
@@ -280,10 +266,7 @@ class TwwInterlisModelSelection:
         Names are returned in dependency-first order.
         """
 
-        return tuple(
-            component.model_name
-            for component in self.components
-        )
+        return tuple(component.model_name for component in self.components)
 
     @property
     def groups(
@@ -293,10 +276,7 @@ class TwwInterlisModelSelection:
         Return all selected semantic model groups.
         """
 
-        return tuple(
-            component.group
-            for component in self.components
-        )
+        return tuple(component.group for component in self.components)
 
     @property
     def mapping_model_id(
@@ -309,6 +289,7 @@ class TwwInterlisModelSelection:
             return "agxx"
 
         return self.group
+
 
 interlis_models: dict[
     str,
@@ -331,10 +312,7 @@ interlis_models: dict[
                     model="SDEE_2020_1_LV95",
                     topics=frozenset(
                         {
-                            (
-                                "evacuation_des_eaux_"
-                                "des_agglomerations"
-                            ),
+                            ("evacuation_des_eaux_" "des_agglomerations"),
                         }
                     ),
                 ),
@@ -431,16 +409,10 @@ interlis_models: dict[
                 ),
                 InterlisLangModel(
                     lang="fr",
-                    model=(
-                        "SIA405_CABLE_DE_CONTROLE_"
-                        "A_DISTANCE_2015"
-                    ),
+                    model=("SIA405_CABLE_DE_CONTROLE_" "A_DISTANCE_2015"),
                     topics=frozenset(
                         {
-                            (
-                                "SIA405_Cable_de_controle_"
-                                "a_distance"
-                            ),
+                            ("SIA405_Cable_de_controle_" "a_distance"),
                         }
                     ),
                 ),
@@ -512,15 +484,9 @@ INTERLIS_INHERITANCE_TREE: dict[
     str,
     tuple[str, ...],
 ] = {
-    "dss": (
-        "sia405_abwasser",
-    ),
-    "vsa_kek": (
-        "sia405_abwasser",
-    ),
-    "sia405_abwasser": (
-        "sia405_base_abwasser",
-    ),
+    "dss": ("sia405_abwasser",),
+    "vsa_kek": ("sia405_abwasser",),
+    "sia405_abwasser": ("sia405_base_abwasser",),
     "sia405_base_abwasser": (),
     "sia405_cable": (),
     "sia405_protection_tube": (),

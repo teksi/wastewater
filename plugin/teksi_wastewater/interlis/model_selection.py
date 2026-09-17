@@ -1,30 +1,23 @@
 from __future__ import annotations
-from typing import Iterable
 
+from collections.abc import Iterable
 
 from .config import DEFAULT_INTERLIS_LANGUAGE
 from .model_config import (
-    interlis_models,
-    TwwInterlisModelSelection,
-    TwwInterlisModelComponent,
     INTERLIS_INHERITANCE_TREE,
+    TwwInterlisModelComponent,
+    TwwInterlisModelSelection,
+    interlis_models,
 )
-
-
 
 ALL_MODELS_BY_GROUP: dict[
     str,
     frozenset[str],
-] = {
-    group: model.names
-    for group, model in interlis_models.items()
-}
+] = {group: model.names for group, model in interlis_models.items()}
 
 
 ALL_SUPPORTED_MODELS: frozenset[str] = frozenset(
-    model_name
-    for model_names in ALL_MODELS_BY_GROUP.values()
-    for model_name in model_names
+    model_name for model_names in ALL_MODELS_BY_GROUP.values() for model_name in model_names
 )
 
 
@@ -50,13 +43,10 @@ def model_names_for_language(
         )
     )
 
-    unknown_groups = (
-        set(
-            selected_groups,
-        )
-        - set(
-            interlis_models,
-        )
+    unknown_groups = set(
+        selected_groups,
+    ) - set(
+        interlis_models,
     )
 
     if unknown_groups:
@@ -68,14 +58,13 @@ def model_names_for_language(
         )
 
     return {
-        group: interlis_models[
-            group
-        ].lang_name(
+        group: interlis_models[group].lang_name(
             lang=lang,
             fallback_lang=fallback_lang,
         )
         for group in selected_groups
     }
+
 
 def model_selection_for_imported_models(
     imported_models: str | Iterable[str],
@@ -104,23 +93,16 @@ def model_selection_for_imported_models(
         )
 
     if not imported_model_names:
-        raise LookupError(
-            "No imported INTERLIS models were provided."
-        )
+        raise LookupError("No imported INTERLIS models were provided.")
 
     matches = tuple(
         (
             group,
             language_model,
         )
-        for group, model
-        in interlis_models.items()
-        for language_model
-        in model.models
-        if (
-            language_model.model
-            in imported_model_names
-        )
+        for group, model in interlis_models.items()
+        for language_model in model.models
+        if (language_model.model in imported_model_names)
     )
 
     if not matches:
@@ -129,29 +111,24 @@ def model_selection_for_imported_models(
             f"models {sorted(imported_model_names)!r}."
         )
 
-    matched_groups = {
-        group
-        for group, _language_model
-        in matches
-    }
+    matched_groups = {group for group, _language_model in matches}
 
     inherited_matched_groups = {
         inherited_group
         for group in matched_groups
-        for inherited_group
-        in resolve_interlis_model_groups(
+        for inherited_group in resolve_interlis_model_groups(
             group,
         )[:-1]
     }
 
-    primary_groups = (
-        matched_groups
-        - inherited_matched_groups
-    )
+    primary_groups = matched_groups - inherited_matched_groups
 
-    if len(
-        primary_groups,
-    ) != 1:
+    if (
+        len(
+            primary_groups,
+        )
+        != 1
+    ):
         raise LookupError(
             "Imported models do not resolve to exactly one "
             "primary semantic model group. "
@@ -166,21 +143,17 @@ def model_selection_for_imported_models(
     )
 
     primary_language_models = tuple(
-        language_model
-        for group, language_model
-        in matches
-        if group == primary_group
+        language_model for group, language_model in matches if group == primary_group
     )
 
-    if len(
-        primary_language_models,
-    ) != 1:
+    if (
+        len(
+            primary_language_models,
+        )
+        != 1
+    ):
         matched_models = tuple(
-            sorted(
-                language_model.model
-                for language_model
-                in primary_language_models
-            )
+            sorted(language_model.model for language_model in primary_language_models)
         )
 
         raise LookupError(
@@ -189,20 +162,12 @@ def model_selection_for_imported_models(
             f"Matching primary models: {matched_models!r}."
         )
 
-    primary_language_model = (
-        primary_language_models[
-            0
-        ]
-    )
+    primary_language_model = primary_language_models[0]
 
-    language = (
-        primary_language_model.lang
-    )
+    language = primary_language_model.lang
 
-    resolved_groups = (
-        resolve_interlis_model_groups(
-            primary_group,
-        )
+    resolved_groups = resolve_interlis_model_groups(
+        primary_group,
     )
 
     components = tuple(
@@ -210,17 +175,11 @@ def model_selection_for_imported_models(
             group=group,
             language=language,
             model_name=(
-                interlis_models[
-                    group
-                ].lang_name(
+                interlis_models[group].lang_name(
                     lang=language,
                 )
             ),
-            configuration=(
-                interlis_models[
-                    group
-                ]
-            ),
+            configuration=(interlis_models[group]),
         )
         for group in resolved_groups
     )
@@ -235,6 +194,8 @@ def model_selection_for_imported_models(
         ),
         components=components,
     )
+
+
 def groups_for_models(
     imported_models: str | Iterable[str],
 ) -> set:
@@ -255,10 +216,7 @@ def groups_for_models(
         )
 
     return {
-        group
-        for group, models
-        in ALL_MODELS_BY_GROUP.items()
-        if imported_model_names & models
+        group for group, models in ALL_MODELS_BY_GROUP.items() if imported_model_names & models
     }
 
 
@@ -286,14 +244,9 @@ def resolve_interlis_model_groups(
                 group,
             )
 
-            cycle = (
-                visiting[
-                    cycle_start:
-                ]
-                + [
-                    group,
-                ]
-            )
+            cycle = visiting[cycle_start:] + [
+                group,
+            ]
 
             raise ValueError(
                 "Circular INTERLIS model inheritance: "
@@ -303,20 +256,13 @@ def resolve_interlis_model_groups(
             )
 
         if group not in INTERLIS_INHERITANCE_TREE:
-            raise KeyError(
-                f"Unknown INTERLIS model group: "
-                f"{group!r}."
-            )
+            raise KeyError(f"Unknown INTERLIS model group: " f"{group!r}.")
 
         visiting.append(
             group,
         )
 
-        for inherited_group in (
-            INTERLIS_INHERITANCE_TREE[
-                group
-            ]
-        ):
+        for inherited_group in INTERLIS_INHERITANCE_TREE[group]:
             visit(
                 inherited_group,
             )
@@ -361,10 +307,4 @@ def resolved_model_names(
         groups=resolved_groups,
     )
 
-    return tuple(
-        names_by_group[
-            group
-        ]
-        for group in resolved_groups
-    )
-
+    return tuple(names_by_group[group] for group in resolved_groups)

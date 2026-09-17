@@ -6,7 +6,7 @@ from sqlalchemy.orm.attributes import flag_dirty
 from sqlalchemy.sql import text
 
 from ...utils.plugin_utils import logger
-from .. import  utils, model_config,model_selection
+from .. import model_selection, utils
 
 
 class InterlisImporterFromIntermediateSchema:
@@ -70,7 +70,7 @@ class InterlisImporterFromIntermediateSchema:
 
         if not {"ag64", "ag96"} & self.model_groups:
             self._import_sia405_abwasser_base()
-            if {"dss", "kek","sia405_abwasser"} & self.model_groups:
+            if {"dss", "kek", "sia405_abwasser"} & self.model_groups:
                 self._import_sia405_abwasser()
 
         if "dss" in self.model_groups:
@@ -417,7 +417,7 @@ class InterlisImporterFromIntermediateSchema:
         logger.error("_import_sia405_cable not implemented")
         self._check_for_stop()
 
-    def _import_sia405_protection_tube(self):       
+    def _import_sia405_protection_tube(self):
         logger.error("_import_sia405_protection_tube not implemented")
         self._check_for_stop()
 

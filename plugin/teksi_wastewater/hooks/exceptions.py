@@ -61,9 +61,7 @@ class DiffJobNotFoundError(
             findings=(
                 Finding(
                     severity=Severity.ERROR,
-                    message=(
-                        f"Diff review job {job_id!r} does not exist."
-                    ),
+                    message=(f"Diff review job {job_id!r} does not exist."),
                 ),
             ),
         )
@@ -156,8 +154,7 @@ class DiffJobEligibilityError(
                 Finding(
                     severity=Severity.ERROR,
                     message=(
-                        f"Diff review job {job_id!r} is not eligible "
-                        f"for acceptance: {reason}"
+                        f"Diff review job {job_id!r} is not eligible " f"for acceptance: {reason}"
                     ),
                 ),
             ),
@@ -184,28 +181,18 @@ class DiffSchemaContractError(
         context = []
 
         if table_name is not None:
-            context.append(
-                f"table={table_name!r}"
-            )
+            context.append(f"table={table_name!r}")
 
         if column_name is not None:
-            context.append(
-                f"column={column_name!r}"
-            )
+            context.append(f"column={column_name!r}")
 
-        context_message = (
-            f" ({', '.join(context)})"
-            if context
-            else ""
-        )
+        context_message = f" ({', '.join(context)})" if context else ""
 
         super().__init__(
             findings=(
                 Finding(
                     severity=Severity.ERROR,
-                    message=(
-                        f"{message}{context_message}"
-                    ),
+                    message=(f"{message}{context_message}"),
                 ),
             ),
         )

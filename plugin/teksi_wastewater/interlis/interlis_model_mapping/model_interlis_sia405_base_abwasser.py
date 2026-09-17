@@ -1,11 +1,9 @@
-from .. import config
 from .model_interlis_base import ModelInterlisBase
 
 
 class ModelInterlisSia405BaseAbwasser(ModelInterlisBase):
     def __init__(self, schema):
         super().__init__(schema)
-
 
         class sia405_baseclass(ModelInterlisBase.baseclass):
             __tablename__ = "sia405_baseclass"

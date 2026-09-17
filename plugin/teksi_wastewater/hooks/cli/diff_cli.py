@@ -4,16 +4,12 @@ import argparse
 import logging
 from pathlib import Path
 
-from teksi_hooks.hook import (
-    HookContext,
-    HookHandler,
-)
 from teksi_hooks.capabilities.connection import (
     DatabaseConnectionFactory,
 )
-
-from teksi_wastewater.interlis import (
-    config,
+from teksi_hooks.hook import (
+    HookContext,
+    HookHandler,
 )
 from teksi_wastewater.hooks.adapters.tww_change_object_provider_factory import (
     TwwChangeObjectProviderFactory,
@@ -24,19 +20,19 @@ from teksi_wastewater.hooks.adapters.tww_quarantine_effect_projector import (
 from teksi_wastewater.hooks.adapters.tww_rights_evaluator_factory import (
     TwwRightsEvaluatorFactory,
 )
+from teksi_wastewater.hooks.cli import helpers
 from teksi_wastewater.hooks.services.tww_change_creation_service import (
     ChangeObjectProviderFactory,
     QuarantineEffectProjector,
     RightsEvaluatorFactory,
 )
-
-
-from teksi_wastewater.hooks.cli import helpers
+from teksi_wastewater.interlis import (
+    config,
+)
 
 logger = logging.getLogger(
     __name__,
 )
-
 
 
 def main() -> int:
@@ -65,9 +61,7 @@ def main() -> int:
             "refresh",
         ),
         default="create",
-        help=(
-            "How to handle an existing tww_diff job with the same job ID."
-        ),
+        help=("How to handle an existing tww_diff job with the same job ID."),
     )
 
     parser.add_argument(
@@ -123,10 +117,7 @@ def main() -> int:
     parser.add_argument(
         "--rights-profile",
         default="default",
-        help=(
-            "Rights-profile directory name below the hook configuration "
-            "directory."
-        ),
+        help=("Rights-profile directory name below the hook configuration " "directory."),
     )
 
     parser.add_argument(
@@ -149,9 +140,8 @@ def main() -> int:
     )
 
     helpers.add_postgres_connection_args(
-            parser,
-        )
-
+        parser,
+    )
 
     args = parser.parse_args()
 
@@ -173,10 +163,8 @@ def main() -> int:
     if args.job_id is not None:
         parameters["job_id"] = args.job_id
 
-    connection_factory = (
-        helpers.database_connection_factory(
-            args,
-        )
+    connection_factory = helpers.database_connection_factory(
+        args,
     )
 
     connection_factory.apply_to_database_config()
@@ -192,12 +180,7 @@ def main() -> int:
         },
     )
 
-    hook_file = (
-        Path(__file__)
-        .resolve()
-        .parents[1]
-        / "diff_creator_hook.py"
-    )
+    hook_file = Path(__file__).resolve().parents[1] / "diff_creator_hook.py"
 
     HookHandler(
         file=hook_file,
@@ -209,8 +192,5 @@ def main() -> int:
     return 0
 
 
-
 if __name__ == "__main__":
-    raise SystemExit(
-        main()
-    )
+    raise SystemExit(main())

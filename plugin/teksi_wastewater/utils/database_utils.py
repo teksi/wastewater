@@ -5,7 +5,7 @@ import re
 from collections.abc import Sequence
 from typing import Any
 
-from .issues import  Issue, IssueLevel
+from .issues import Issue, IssueLevel
 from .plugin_utils import logger
 
 try:
@@ -80,9 +80,7 @@ class DatabaseUtils:
     @staticmethod
     def join_sql(
         separator: str,
-        expressions: Sequence[
-            sql.Composable,
-        ],
+        expressions: Sequence[sql.Composable,],
     ) -> sql.Composed:
         """
         Join composable SQL expressions using a static SQL separator.
@@ -119,7 +117,15 @@ class DatabaseUtils:
 
             column_names = [column[0] for column in cursor.description]
 
-        return [dict(zip(column_names,row,))for row in rows]
+        return [
+            dict(
+                zip(
+                    column_names,
+                    row,
+                )
+            )
+            for row in rows
+        ]
 
     @staticmethod
     def execute(query: str):
@@ -190,11 +196,7 @@ class DatabaseUtils:
 
         return collections.defaultdict(
             str,
-            {
-                key: str(value)
-                for key, value in pgconf.items()
-                if value is not None
-            },
+            {key: str(value) for key, value in pgconf.items() if value is not None},
         )
 
     @staticmethod
@@ -311,7 +313,6 @@ class DatabaseUtils:
 
         return msg_list
 
-
     @staticmethod
     def refresh_network_simple():
         logger.info("Refreshing network")
@@ -321,4 +322,3 @@ class DatabaseUtils:
     def refresh_matviews():
         logger.info("Refreshing materialized views")
         DatabaseUtils.execute("SELECT tww_app.refresh_materialized_views('tww_app', NULL, True);")
-

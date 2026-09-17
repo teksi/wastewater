@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import pytest
-
 from teksi_hooks.capabilities.mapping import (
     EffectiveModelMappingCapability,
     ModelMappingCapability,
@@ -10,7 +9,6 @@ from teksi_hooks.models.mapping import (
     ClassMapping,
     ModelMapping,
 )
-
 from teksi_wastewater.hooks.adapters.tww_relation_context_provider import (
     TwwRelationContextProvider,
 )
@@ -40,9 +38,7 @@ def implicit_model_mapping():
         ModelMapping(
             classes={
                 "FakeRelation": ClassMapping(
-                    canonical_class_id=(
-                        "wastewater_node"
-                    ),
+                    canonical_class_id=("wastewater_node"),
                 ),
             },
         ),
@@ -71,19 +67,17 @@ def test_relation_context_provider_uses_effective_implicit_mapping(
 
     contexts = provider.relation_contexts()
 
-    assert len(
-        contexts,
-    ) == 1
+    assert (
+        len(
+            contexts,
+        )
+        == 1
+    )
 
-    context = contexts[
-        0
-    ]
+    context = contexts[0]
 
     assert context.relation is FakeRelation
-    assert (
-        context.class_mapping.canonical_class_id
-        == "wastewater_node"
-    )
+    assert context.class_mapping.canonical_class_id == "wastewater_node"
 
 
 def test_relation_context_provider_prefers_explicit_mapping(
@@ -94,23 +88,15 @@ def test_relation_context_provider_prefers_explicit_mapping(
         ModelMapping(
             classes={
                 "FakeRelation": ClassMapping(
-                    canonical_class_id=(
-                        "agxx_wastewater_node"
-                    ),
+                    canonical_class_id=("agxx_wastewater_node"),
                 ),
             },
         ),
     )
 
-    effective_model_mapping = (
-        EffectiveModelMappingCapability(
-            explicit_mapping=(
-                explicit_model_mapping
-            ),
-            implicit_mapping=(
-                implicit_model_mapping
-            ),
-        )
+    effective_model_mapping = EffectiveModelMappingCapability(
+        explicit_mapping=(explicit_model_mapping),
+        implicit_mapping=(implicit_model_mapping),
     )
 
     provider = TwwRelationContextProvider(
@@ -120,19 +106,17 @@ def test_relation_context_provider_prefers_explicit_mapping(
 
     contexts = provider.relation_contexts()
 
-    assert len(
-        contexts,
-    ) == 1
+    assert (
+        len(
+            contexts,
+        )
+        == 1
+    )
 
-    context = contexts[
-        0
-    ]
+    context = contexts[0]
 
     assert context.relation is FakeRelation
-    assert (
-        context.class_mapping.canonical_class_id
-        == "agxx_wastewater_node"
-    )
+    assert context.class_mapping.canonical_class_id == "agxx_wastewater_node"
 
 
 def test_relation_context_provider_falls_back_to_implicit_mapping(
@@ -146,19 +130,17 @@ def test_relation_context_provider_falls_back_to_implicit_mapping(
 
     contexts = provider.relation_contexts()
 
-    assert len(
-        contexts,
-    ) == 1
+    assert (
+        len(
+            contexts,
+        )
+        == 1
+    )
 
-    context = contexts[
-        0
-    ]
+    context = contexts[0]
 
     assert context.relation is FakeRelation
-    assert (
-        context.class_mapping.canonical_class_id
-        == "wastewater_node"
-    )
+    assert context.class_mapping.canonical_class_id == "wastewater_node"
 
 
 def test_relation_context_provider_returns_immutable_tuple(
@@ -195,44 +177,35 @@ def test_relation_context_provider_preserves_relation_order(
         model_mapping=effective_mapping,
     )
 
-    provider.model_mapping = (
-        EffectiveModelMappingCapability(
-            explicit_mapping=(
-                ModelMappingCapability(
-                    ModelMapping(),
+    provider.model_mapping = EffectiveModelMappingCapability(
+        explicit_mapping=(
+            ModelMappingCapability(
+                ModelMapping(),
+            )
+        ),
+        implicit_mapping=(
+            ModelMappingCapability(
+                ModelMapping(
+                    classes={
+                        "FirstRelation": (
+                            ClassMapping(
+                                canonical_class_id=("first"),
+                            )
+                        ),
+                        "SecondRelation": (
+                            ClassMapping(
+                                canonical_class_id=("second"),
+                            )
+                        ),
+                    },
                 )
-            ),
-            implicit_mapping=(
-                ModelMappingCapability(
-                    ModelMapping(
-                        classes={
-                            "FirstRelation": (
-                                ClassMapping(
-                                    canonical_class_id=(
-                                        "first"
-                                    ),
-                                )
-                            ),
-                            "SecondRelation": (
-                                ClassMapping(
-                                    canonical_class_id=(
-                                        "second"
-                                    ),
-                                )
-                            ),
-                        },
-                    )
-                )
-            ),
-        )
+            )
+        ),
     )
 
     contexts = provider.relation_contexts()
 
-    assert tuple(
-        context.relation
-        for context in contexts
-    ) == (
+    assert tuple(context.relation for context in contexts) == (
         FirstRelation,
         SecondRelation,
     )
@@ -250,15 +223,13 @@ def test_relation_context_provider_returns_empty_tuple_for_empty_classes(
 
 
 def test_relation_context_provider_raises_for_unmapped_relation():
-    effective_model_mapping = (
-        EffectiveModelMappingCapability(
-            explicit_mapping=(
-                ModelMappingCapability(
-                    ModelMapping(),
-                )
-            ),
-            implicit_mapping=None,
-        )
+    effective_model_mapping = EffectiveModelMappingCapability(
+        explicit_mapping=(
+            ModelMappingCapability(
+                ModelMapping(),
+            )
+        ),
+        implicit_mapping=None,
     )
 
     provider = TwwRelationContextProvider(
@@ -307,21 +278,17 @@ def test_relation_context_provider_returns_function_mapping_unchanged(
         function=function,
     )
 
-    effective_model_mapping = (
-        EffectiveModelMappingCapability(
-            explicit_mapping=(
-                ModelMappingCapability(
-                    ModelMapping(
-                        classes={
-                            "FakeRelation": (
-                                function_mapping
-                            ),
-                        },
-                    )
+    effective_model_mapping = EffectiveModelMappingCapability(
+        explicit_mapping=(
+            ModelMappingCapability(
+                ModelMapping(
+                    classes={
+                        "FakeRelation": (function_mapping),
+                    },
                 )
-            ),
-            implicit_mapping=None,
-        )
+            )
+        ),
+        implicit_mapping=None,
     )
 
     provider = TwwRelationContextProvider(
@@ -331,29 +298,25 @@ def test_relation_context_provider_returns_function_mapping_unchanged(
 
     contexts = provider.relation_contexts()
 
-    assert len(
-        contexts,
-    ) == 1
-
     assert (
-        contexts[0].class_mapping
-        is function_mapping
+        len(
+            contexts,
+        )
+        == 1
     )
+
+    assert contexts[0].class_mapping is function_mapping
 
 
 def test_relation_context_provider_explicit_class_overrides_implicit_class(
     quarantine_classes,
 ):
     explicit_mapping = ClassMapping(
-        canonical_class_id=(
-            "agxx_wastewater_node"
-        ),
+        canonical_class_id=("agxx_wastewater_node"),
     )
 
     implicit_mapping = ClassMapping(
-        canonical_class_id=(
-            "wastewater_node"
-        ),
+        canonical_class_id=("wastewater_node"),
     )
 
     provider = TwwRelationContextProvider(
@@ -364,9 +327,7 @@ def test_relation_context_provider_explicit_class_overrides_implicit_class(
                     ModelMappingCapability(
                         ModelMapping(
                             classes={
-                                "FakeRelation": (
-                                    explicit_mapping
-                                ),
+                                "FakeRelation": (explicit_mapping),
                             },
                         )
                     )
@@ -375,9 +336,7 @@ def test_relation_context_provider_explicit_class_overrides_implicit_class(
                     ModelMappingCapability(
                         ModelMapping(
                             classes={
-                                "FakeRelation": (
-                                    implicit_mapping
-                                ),
+                                "FakeRelation": (implicit_mapping),
                             },
                         )
                     )
@@ -386,26 +345,17 @@ def test_relation_context_provider_explicit_class_overrides_implicit_class(
         ),
     )
 
-    context = provider.relation_contexts()[
-        0
-    ]
+    context = provider.relation_contexts()[0]
 
-    assert (
-        context.class_mapping.canonical_class_id
-        == "agxx_wastewater_node"
-    )
+    assert context.class_mapping.canonical_class_id == "agxx_wastewater_node"
 
 
 def test_relation_context_provider_does_not_mutate_source_mapping(
     quarantine_classes,
     effective_mapping,
 ):
-    original_mapping = (
-        effective_mapping
-        .implicit_mapping
-        .class_definition(
-            "FakeRelation",
-        )
+    original_mapping = effective_mapping.implicit_mapping.class_definition(
+        "FakeRelation",
     )
 
     provider = TwwRelationContextProvider(
@@ -415,12 +365,8 @@ def test_relation_context_provider_does_not_mutate_source_mapping(
 
     provider.relation_contexts()
 
-    current_mapping = (
-        effective_mapping
-        .implicit_mapping
-        .class_definition(
-            "FakeRelation",
-        )
+    current_mapping = effective_mapping.implicit_mapping.class_definition(
+        "FakeRelation",
     )
 
     assert current_mapping == original_mapping

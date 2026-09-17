@@ -3,14 +3,13 @@
 
 from __future__ import annotations
 
+import logging
 from collections.abc import Callable
 from dataclasses import dataclass, field
-import logging
 from typing import Any
 
 from sqlalchemy import text
 from sqlalchemy.orm import Session
-
 from teksi_hooks.capabilities.mapping import (
     ModelMappingLookupCapability,
 )
@@ -28,7 +27,6 @@ from teksi_hooks.models.mapping import (
 from teksi_hooks.models.validation import (
     ValidationFinding,
 )
-
 from teksi_wastewater.hooks.capabilities.incremental_import import (
     FunctionEffectResolver,
     IncrementalEffectEvaluator,
@@ -41,7 +39,6 @@ from teksi_wastewater.interlis import (
 from teksi_wastewater.interlis.utils.various import (
     InterlisImporterExporterError,
 )
-
 
 logger = logging.getLogger(
     __name__,
@@ -89,16 +86,17 @@ class InterlisIncrementalImporter:
 
     effect_persister: IncrementalEffectPersister
 
-    callback_progress_done: Callable[
-        [],
-        None,
-    ] | None = None
+    callback_progress_done: (
+        Callable[
+            [],
+            None,
+        ]
+        | None
+    ) = None
 
     filter_nulls: bool = True
 
-    model_groups: frozenset[
-        str,
-    ] = field(
+    model_groups: frozenset[str,] = field(
         default_factory=frozenset,
         init=False,
     )
@@ -115,17 +113,13 @@ class InterlisIncrementalImporter:
         repr=False,
     )
 
-    effect_documents: list[
-        EffectDocument,
-    ] = field(
+    effect_documents: list[EffectDocument,] = field(
         default_factory=list,
         init=False,
         repr=False,
     )
 
-    evaluation_results: list[
-        EffectEvaluationResult,
-    ] = field(
+    evaluation_results: list[EffectEvaluationResult,] = field(
         default_factory=list,
         init=False,
         repr=False,
@@ -158,27 +152,24 @@ class InterlisIncrementalImporter:
             )
         )
 
-        incremental_groups = (
-            self.model_groups
-            & {
-                "ag64",
-                "ag96",
-            }
-        )
+        incremental_groups = self.model_groups & {
+            "ag64",
+            "ag96",
+        }
 
         if not incremental_groups:
             raise InterlisImporterExporterError(
                 "INTERLIS import aborted",
-                (
-                    "No incremental import exists for selected "
-                    f"model {self.model!r}."
-                ),
+                ("No incremental import exists for selected " f"model {self.model!r}."),
                 None,
             )
 
-        if len(
-            incremental_groups,
-        ) != 1:
+        if (
+            len(
+                incremental_groups,
+            )
+            != 1
+        ):
             raise InterlisImporterExporterError(
                 "INTERLIS import aborted",
                 (
@@ -192,10 +183,7 @@ class InterlisIncrementalImporter:
         if self.model_classes_tww_app is None:
             raise InterlisImporterExporterError(
                 "INTERLIS import aborted",
-                (
-                    "Incremental AGXX import requires the "
-                    "TWW AG64/96 application ORM model."
-                ),
+                ("Incremental AGXX import requires the " "TWW AG64/96 application ORM model."),
                 None,
             )
 
@@ -219,9 +207,7 @@ class InterlisIncrementalImporter:
 
         try:
             self._tww_import(
-                skip_closing_tww_session=(
-                    skip_closing_tww_session
-                ),
+                skip_closing_tww_session=(skip_closing_tww_session),
             )
 
         except Exception:
@@ -239,9 +225,7 @@ class InterlisIncrementalImporter:
 
         self._reset_results()
 
-        engine = (
-            utils.tww_sqlalchemy.create_engine()
-        )
+        engine = utils.tww_sqlalchemy.create_engine()
 
         self.session_interlis = Session(
             engine,
@@ -255,11 +239,7 @@ class InterlisIncrementalImporter:
             autoflush=False,
         )
 
-        self.session_tww.execute(
-            text(
-                "SET CONSTRAINTS ALL DEFERRED;"
-            )
-        )
+        self.session_tww.execute(text("SET CONSTRAINTS ALL DEFERRED;"))
 
         if "ag96" in self.model_groups:
             self._import_ag96()
@@ -270,10 +250,7 @@ class InterlisIncrementalImporter:
         else:
             raise InterlisImporterExporterError(
                 "INTERLIS import aborted",
-                (
-                    "The selected model does not resolve to an "
-                    "AG64 or AG96 incremental import."
-                ),
+                ("The selected model does not resolve to an " "AG64 or AG96 incremental import."),
                 None,
             )
 
@@ -284,9 +261,7 @@ class InterlisIncrementalImporter:
         self._require_live_session().flush()
 
         self.close_sessions(
-            skip_closing_tww_session=(
-                skip_closing_tww_session
-            ),
+            skip_closing_tww_session=(skip_closing_tww_session),
         )
 
     def _reset_results(
@@ -390,10 +365,8 @@ class InterlisIncrementalImporter:
             orm_class_name,
         )
 
-        class_mapping = (
-            self.model_mapping.class_definition(
-                source_class_id,
-            )
+        class_mapping = self.model_mapping.class_definition(
+            source_class_id,
         )
 
         for source_row in self._source_rows(
@@ -447,13 +420,10 @@ class InterlisIncrementalImporter:
         no blocked effects remain.
         """
 
-        document = (
-            self.function_effect_resolver
-            .resolve_effects(
-                source_class_id=source_class_id,
-                source_row=source_row,
-                class_mapping=class_mapping,
-            )
+        document = self.function_effect_resolver.resolve_effects(
+            source_class_id=source_class_id,
+            source_row=source_row,
+            class_mapping=class_mapping,
         )
 
         self._assert_effect_source(
@@ -541,10 +511,7 @@ class InterlisIncrementalImporter:
             source_row,
         )
 
-        if (
-            document.source.class_id
-            != source_class_id
-        ):
+        if document.source.class_id != source_class_id:
             raise InterlisImporterExporterError(
                 "Incremental import aborted",
                 (
@@ -555,10 +522,7 @@ class InterlisIncrementalImporter:
                 None,
             )
 
-        if (
-            document.source.object_id
-            != expected_object_id
-        ):
+        if document.source.object_id != expected_object_id:
             raise InterlisImporterExporterError(
                 "Incremental import aborted",
                 (
@@ -605,10 +569,7 @@ class InterlisIncrementalImporter:
             )
         )
 
-        actual_indices = tuple(
-            evaluation.effect_index
-            for evaluation in evaluations
-        )
+        actual_indices = tuple(evaluation.effect_index for evaluation in evaluations)
 
         if actual_indices != expected_indices:
             raise InterlisImporterExporterError(
@@ -632,18 +593,13 @@ class InterlisIncrementalImporter:
         blocked_results = tuple(
             evaluation
             for evaluation in self.evaluation_results
-            if (
-                evaluation.status
-                == EffectEvaluationStatus.BLOCKED
-            )
+            if (evaluation.status == EffectEvaluationStatus.BLOCKED)
         )
 
         if not blocked_results:
             return
 
-        findings: list[
-            ValidationFinding,
-        ] = []
+        findings: list[ValidationFinding,] = []
 
         for evaluation in blocked_results:
             findings.extend(
@@ -686,21 +642,18 @@ class InterlisIncrementalImporter:
             None,
         )
 
-        resolved = (
-            t_ili_tid
-            or obj_id
-        )
+        resolved = t_ili_tid or obj_id
 
-        if not isinstance(
-            resolved,
-            str,
-        ) or not resolved.strip():
+        if (
+            not isinstance(
+                resolved,
+                str,
+            )
+            or not resolved.strip()
+        ):
             raise InterlisImporterExporterError(
                 "Incremental import aborted",
-                (
-                    "AGXX source row does not contain a valid "
-                    "t_ili_tid or obj_id."
-                ),
+                ("AGXX source row does not contain a valid " "t_ili_tid or obj_id."),
                 None,
             )
 
@@ -723,10 +676,7 @@ class InterlisIncrementalImporter:
         if source_class is None:
             raise InterlisImporterExporterError(
                 "Incremental import aborted",
-                (
-                    "The quarantine ORM model does not expose "
-                    f"class {orm_class_name!r}."
-                ),
+                ("The quarantine ORM model does not expose " f"class {orm_class_name!r}."),
                 None,
             )
 
@@ -740,9 +690,7 @@ class InterlisIncrementalImporter:
         Return source rows for one quarantine ORM class.
         """
 
-        session_interlis = (
-            self._require_interlis_session()
-        )
+        session_interlis = self._require_interlis_session()
 
         return session_interlis.query(
             source_class,
@@ -756,9 +704,7 @@ class InterlisIncrementalImporter:
         """
 
         if self.session_interlis is None:
-            raise RuntimeError(
-                "The incremental quarantine session is not initialized."
-            )
+            raise RuntimeError("The incremental quarantine session is not initialized.")
 
         return self.session_interlis
 
@@ -770,9 +716,7 @@ class InterlisIncrementalImporter:
         """
 
         if self.session_tww is None:
-            raise RuntimeError(
-                "The incremental live session is not initialized."
-            )
+            raise RuntimeError("The incremental live session is not initialized.")
 
         return self.session_tww
 
@@ -789,13 +733,9 @@ class InterlisIncrementalImporter:
         retrieve it from ``session_tww``.
         """
 
-        session_tww = (
-            self._require_live_session()
-        )
+        session_tww = self._require_live_session()
 
-        session_interlis = (
-            self._require_interlis_session()
-        )
+        session_interlis = self._require_interlis_session()
 
         try:
             if not skip_closing_tww_session:
@@ -826,17 +766,13 @@ class InterlisIncrementalImporter:
                 self.session_tww.rollback()
 
             except Exception:
-                logger.exception(
-                    "Could not roll back incremental live session."
-                )
+                logger.exception("Could not roll back incremental live session.")
 
             try:
                 self.session_tww.close()
 
             except Exception:
-                logger.exception(
-                    "Could not close incremental live session."
-                )
+                logger.exception("Could not close incremental live session.")
 
             self.session_tww = None
 
@@ -845,9 +781,7 @@ class InterlisIncrementalImporter:
                 self.session_interlis.close()
 
             except Exception:
-                logger.exception(
-                    "Could not close incremental quarantine session."
-                )
+                logger.exception("Could not close incremental quarantine session.")
 
             self.session_interlis = None
 

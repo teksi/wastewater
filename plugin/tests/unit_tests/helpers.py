@@ -6,9 +6,7 @@ from typing import Any
 
 
 def fake_connection_factory(
-    results: Sequence[
-        FakeQueryResult,
-    ] = (),
+    results: Sequence[FakeQueryResult,] = (),
 ) -> tuple[
     FakeConnectionFactory,
     FakeCursor,
@@ -33,6 +31,7 @@ def fake_connection_factory(
         factory,
         cursor,
     )
+
 
 @dataclass(
     frozen=True,
@@ -85,9 +84,7 @@ class FakeCursor:
 
     def __init__(
         self,
-        results: Sequence[
-            FakeQueryResult,
-        ] = (),
+        results: Sequence[FakeQueryResult,] = (),
     ) -> None:
         self.results = list(
             results,
@@ -103,9 +100,7 @@ class FakeCursor:
             ]
         ] = []
 
-        self._current_result = (
-            FakeQueryResult()
-        )
+        self._current_result = FakeQueryResult()
 
         self.description = None
 
@@ -124,23 +119,17 @@ class FakeCursor:
         )
 
         if not self.results:
-            raise AssertionError(
-                "No fake query result remains for executed query: "
-                f"{query!r}"
-            )
+            raise AssertionError("No fake query result remains for executed query: " f"{query!r}")
 
-        self._current_result = (
-            self.results.pop(
-                0,
-            )
+        self._current_result = self.results.pop(
+            0,
         )
 
         self.description = tuple(
             FakeColumn(
                 name=column_name,
             )
-            for column_name
-            in self._current_result.column_names
+            for column_name in self._current_result.column_names
         )
 
     def fetchall(
@@ -157,16 +146,17 @@ class FakeCursor:
 
     def fetchone(
         self,
-    ) -> tuple[
-        Any,
-        ...,
-    ] | None:
+    ) -> (
+        tuple[
+            Any,
+            ...,
+        ]
+        | None
+    ):
         if not self._current_result.rows:
             return None
 
-        return self._current_result.rows[
-            0
-        ]
+        return self._current_result.rows[0]
 
 
 class FakeCursorContext:
@@ -245,9 +235,7 @@ class FakeConnectionFactory:
         )
 
         if self.connection_instance is None:
-            raise AssertionError(
-                "No fake connection was configured."
-            )
+            raise AssertionError("No fake connection was configured.")
 
         return FakeConnectionContext(
             self.connection_instance,

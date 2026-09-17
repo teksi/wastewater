@@ -67,17 +67,11 @@ class TwwRightsEvaluatorFactory:
             else Path(__file__).resolve().parents[1] / "config"
         )
 
-        profile = (
-            self.rights_profile
-            if self.rights_profile is not None
-            else "default"
-        )
+        profile = self.rights_profile if self.rights_profile is not None else "default"
 
         path = config_dir / "profiles" / f"{profile}.yaml"
 
         if not path.is_file():
-            raise FileNotFoundError(
-                f"Rights profile does not exist: {path}"
-            )
+            raise FileNotFoundError(f"Rights profile does not exist: {path}")
 
         return path

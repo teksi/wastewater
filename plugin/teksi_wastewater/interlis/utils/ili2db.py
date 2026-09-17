@@ -178,9 +178,7 @@ class InterlisTools:
         model_name,
         srid=2056,
     ):
-        logger.info(
-            f"VALIDATING ILIDB DATA IN {schema}..."
-        )
+        logger.info(f"VALIDATING ILIDB DATA IN {schema}...")
 
         execute_subprocess(
             " ".join(
@@ -232,5 +230,3 @@ class TidMaker:
         """Get an arbitrary unused tid"""
         key = len(self._autoincrementer)
         return self._autoincrementer[key]
-
-

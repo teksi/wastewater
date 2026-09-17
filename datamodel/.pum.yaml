@@ -99,7 +99,7 @@ uninstall:
   - code: DROP SCHEMA IF EXISTS tww_app_pg2xtf CASCADE;
   - code: DROP SCHEMA IF EXISTS tww_app_xtf2pg_incr CASCADE;
   - code: DROP SCHEMA IF EXISTS tww_app_xtf2pg CASCADE;
-  
+
 demo_data:
   - name: Aletsch
     file: demo_data/demo_data_aletsch.sql

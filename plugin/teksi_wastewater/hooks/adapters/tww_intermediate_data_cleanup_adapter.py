@@ -6,7 +6,6 @@ from typing import Any
 from uuid import UUID
 
 from psycopg import sql
-
 from teksi_hooks.capabilities.cleanup import (
     IntermediateDataCleanupCapability,
 )
@@ -32,9 +31,7 @@ class TwwIntermediateDataCleanupAdapter(
 
     connection_factory: TwwDatabaseConnectionFactory
 
-    protected_schemas: frozenset[
-        str
-    ] = field(
+    protected_schemas: frozenset[str] = field(
         default_factory=lambda: frozenset(
             {
                 config.TWW_OD_SCHEMA,
@@ -134,11 +131,9 @@ class TwwIntermediateDataCleanupAdapter(
         Drop one intermediate schema if it exists.
         """
 
-        query = sql.SQL(
-            """
+        query = sql.SQL("""
             DROP SCHEMA IF EXISTS {} CASCADE;
-            """
-        ).format(
+            """).format(
             sql.Identifier(
                 schema,
             )

@@ -3,7 +3,6 @@ from __future__ import annotations
 from teksi_hooks.models.canonical_object import (
     CanonicalObjectIdentity,
 )
-
 from teksi_wastewater.hooks.adapters.tww_relation_lookup_adapter import (
     TwwRelationLookupAdapter,
 )
@@ -49,14 +48,8 @@ def test_tww_relation_lookup_adapter_returns_canonical_identities() -> None:
         schema="tww_app",
         results=(
             FakeQueryResult(
-                column_names=(
-                    "obj_id",
-                ),
-                rows=(
-                    (
-                        "ch000000ws000001",
-                    ),
-                ),
+                column_names=("obj_id",),
+                rows=(("ch000000ws000001",),),
             ),
         ),
     )
@@ -69,21 +62,25 @@ def test_tww_relation_lookup_adapter_returns_canonical_identities() -> None:
         value="ch000000ws000001",
     )
 
-    assert len(
-        objects,
-    ) == 1
-
-    assert objects[0].class_id == (
-        "wastewater_structure"
+    assert (
+        len(
+            objects,
+        )
+        == 1
     )
+
+    assert objects[0].class_id == ("wastewater_structure")
 
     assert objects[0].attributes == {
         "obj_id": "ch000000ws000001",
     }
 
-    assert len(
-        cursor.executed_queries,
-    ) == 1
+    assert (
+        len(
+            cursor.executed_queries,
+        )
+        == 1
+    )
 
     assert connection_factory.autocommit_values == [
         True,
@@ -95,9 +92,7 @@ def test_tww_relation_lookup_adapter_returns_empty_tuple_without_matches() -> No
         schema="tww_app",
         results=(
             FakeQueryResult(
-                column_names=(
-                    "obj_id",
-                ),
+                column_names=("obj_id",),
                 rows=(),
             ),
         ),
@@ -113,9 +108,12 @@ def test_tww_relation_lookup_adapter_returns_empty_tuple_without_matches() -> No
 
     assert objects == ()
 
-    assert len(
-        cursor.executed_queries,
-    ) == 1
+    assert (
+        len(
+            cursor.executed_queries,
+        )
+        == 1
+    )
 
     assert connection_factory.autocommit_values == [
         True,
@@ -147,9 +145,12 @@ def test_tww_relation_lookup_adapter_current_object_returns_none_without_match()
 
     assert current is None
 
-    assert len(
-        cursor.executed_queries,
-    ) == 1
+    assert (
+        len(
+            cursor.executed_queries,
+        )
+        == 1
+    )
 
     assert connection_factory.autocommit_values == [
         True,
@@ -197,10 +198,7 @@ def test_tww_relation_lookup_adapter_current_object_returns_canonical_object() -
         "fk_provider": "ch000000provider1",
     }
 
-    assert (
-        current.last_modification
-        == "2026-01-01T12:00:00"
-    )
+    assert current.last_modification == "2026-01-01T12:00:00"
 
     query, parameters = cursor.executed_queries[0]
 
@@ -208,9 +206,7 @@ def test_tww_relation_lookup_adapter_current_object_returns_canonical_object() -
         query,
     )
 
-    assert parameters == (
-        "ch000000ws000001",
-    )
+    assert parameters == ("ch000000ws000001",)
 
 
 def test_tww_relation_lookup_adapter_current_object_excludes_identity_attributes() -> None:
@@ -254,10 +250,7 @@ def test_tww_relation_lookup_adapter_current_object_excludes_identity_attributes
         "status": "operational",
     }
 
-    assert (
-        current.last_modification
-        == "2026-01-01T12:00:00"
-    )
+    assert current.last_modification == "2026-01-01T12:00:00"
 
 
 def test_tww_relation_lookup_adapter_current_object_uses_first_row() -> None:
@@ -297,10 +290,7 @@ def test_tww_relation_lookup_adapter_current_object_uses_first_row() -> None:
     assert current is not None
     assert current.values["status"] == "first"
 
-    assert (
-        current.last_modification
-        == "2026-01-01T12:00:00"
-    )
+    assert current.last_modification == "2026-01-01T12:00:00"
 
 
 def test_tww_relation_lookup_adapter_current_object_supports_non_obj_id_identity() -> None:
@@ -341,10 +331,7 @@ def test_tww_relation_lookup_adapter_current_object_supports_non_obj_id_identity
         "status": "operational",
     }
 
-    assert (
-        current.last_modification
-        == "2026-01-01T12:00:00"
-    )
+    assert current.last_modification == "2026-01-01T12:00:00"
 
     query, parameters = cursor.executed_queries[0]
 
@@ -352,6 +339,4 @@ def test_tww_relation_lookup_adapter_current_object_supports_non_obj_id_identity
         query,
     )
 
-    assert parameters == (
-        "external-1",
-    )
+    assert parameters == ("external-1",)

@@ -2,15 +2,14 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping
-from dataclasses import dataclass, field
 import json
 import re
+from collections.abc import Mapping
+from dataclasses import dataclass, field
 from typing import Any
 
 from sqlalchemy import inspect, text
 from sqlalchemy.orm import Session
-
 from teksi_hooks.capabilities.incremental_import import (
     FunctionEffectResolver,
 )
@@ -24,10 +23,7 @@ from teksi_hooks.parsers.effects import (
     EffectParser,
 )
 
-
-_SAFE_IDENTIFIER = re.compile(
-    r"^[A-Za-z_][A-Za-z0-9_]*$"
-)
+_SAFE_IDENTIFIER = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
 
 
 @dataclass(
@@ -63,9 +59,7 @@ class TwwFunctionEffectResolver(
         function = class_mapping.function
 
         if function is None:
-            raise ValueError(
-                f"Class {source_class_id!r} has no function mapping."
-            )
+            raise ValueError(f"Class {source_class_id!r} has no function mapping.")
 
         row_payload = self._source_row_payload(
             source_row,
@@ -151,19 +145,14 @@ class TwwFunctionEffectResolver(
             parameter_name,
             configured_value,
         ) in configured_parameters.items():
-            if (
-                isinstance(
-                    configured_value,
-                    str,
-                )
-                and configured_value.startswith(
-                    "$",
-                )
+            if isinstance(
+                configured_value,
+                str,
+            ) and configured_value.startswith(
+                "$",
             ):
                 try:
-                    resolved_value = available_bindings[
-                        configured_value
-                    ]
+                    resolved_value = available_bindings[configured_value]
                 except KeyError as exception:
                     raise ValueError(
                         "Unsupported mapping-function parameter "
@@ -173,9 +162,7 @@ class TwwFunctionEffectResolver(
             else:
                 resolved_value = configured_value
 
-            parameters[
-                parameter_name
-            ] = resolved_value
+            parameters[parameter_name] = resolved_value
 
         return parameters
 
@@ -228,9 +215,7 @@ class TwwFunctionEffectResolver(
             parameter_name,
             parameter_value,
         ) in parameters.items():
-            bind_name = (
-                f"parameter_{len(bound_parameters)}"
-            )
+            bind_name = f"parameter_{len(bound_parameters)}"
 
             if isinstance(
                 parameter_value,
@@ -240,25 +225,19 @@ class TwwFunctionEffectResolver(
                 ),
             ):
                 argument_expression = (
-                    f"{self._quote_identifier(parameter_name)} "
-                    f"=> CAST(:{bind_name} AS jsonb)"
+                    f"{self._quote_identifier(parameter_name)} " f"=> CAST(:{bind_name} AS jsonb)"
                 )
 
-                bound_parameters[
-                    bind_name
-                ] = json.dumps(
+                bound_parameters[bind_name] = json.dumps(
                     parameter_value,
                     default=str,
                 )
             else:
                 argument_expression = (
-                    f"{self._quote_identifier(parameter_name)} "
-                    f"=> :{bind_name}"
+                    f"{self._quote_identifier(parameter_name)} " f"=> :{bind_name}"
                 )
 
-                bound_parameters[
-                    bind_name
-                ] = parameter_value
+                bound_parameters[bind_name] = parameter_value
 
             argument_expressions.append(
                 argument_expression,
@@ -279,10 +258,7 @@ class TwwFunctionEffectResolver(
         ).scalar_one()
 
         if result is None:
-            raise ValueError(
-                "Mapping function "
-                f"{schema!r}.{name!r} returned NULL."
-            )
+            raise ValueError("Mapping function " f"{schema!r}.{name!r} returned NULL.")
 
         if isinstance(
             result,
@@ -320,9 +296,7 @@ class TwwFunctionEffectResolver(
         ) or not _SAFE_IDENTIFIER.fullmatch(
             value,
         ):
-            raise ValueError(
-                f"Invalid {label}: {value!r}."
-            )
+            raise ValueError(f"Invalid {label}: {value!r}.")
 
     def _quote_identifier(
         self,

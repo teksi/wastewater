@@ -3,11 +3,9 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-
 from teksi_hooks.exceptions import (
     Severity,
 )
-
 from teksi_wastewater.hooks.adapters.tww_interlis_service_adapter import (
     TwwInterlisContext,
 )
@@ -105,9 +103,7 @@ class FakeInterlisTools:
         )
 
         if self.should_fail:
-            raise RuntimeError(
-                "Validation failed."
-            )
+            raise RuntimeError("Validation failed.")
 
 
 def test_import_xtf_to_quarantine_delegates_to_importer() -> None:
@@ -255,9 +251,7 @@ def test_export_live_to_quarantine_delegates_to_importer() -> None:
         xtf_file=Path(
             "/tmp/output.xtf",
         ),
-        export_models=(
-            "SIA405_ABWASSER_2020",
-        ),
+        export_models=("SIA405_ABWASSER_2020",),
         context=TwwInterlisContext(
             schema="ignored_schema",
             srid=2056,
@@ -269,9 +263,7 @@ def test_export_live_to_quarantine_delegates_to_importer() -> None:
                 "1000",
                 "5000",
             ),
-            selected_ids=(
-                "ch000000ws000001",
-            ),
+            selected_ids=("ch000000ws000001",),
             import_orgs=True,
         ),
         schema="export_schema",
@@ -282,9 +274,7 @@ def test_export_live_to_quarantine_delegates_to_importer() -> None:
     assert importer.export_live_to_quarantine_calls == [
         {
             "xtf_file_output": "/tmp/output.xtf",
-            "export_models": (
-                "SIA405_ABWASSER_2020",
-            ),
+            "export_models": ("SIA405_ABWASSER_2020",),
             "logs_next_to_file": True,
             "limit_to_selection": False,
             "export_orientation": 90,
@@ -370,9 +360,7 @@ def test_validate_quarantine_returns_empty_tuple_on_success(
     )
 
     findings = runner.validate_quarantine(
-        model_names=(
-            "SIA405_ABWASSER_2020",
-        ),
+        model_names=("SIA405_ABWASSER_2020",),
         log_path=tmp_path / "validation.log",
         srid=2056,
         schema="import_schema",
@@ -418,30 +406,25 @@ def test_validate_quarantine_extracts_findings_from_log(
     )
 
     findings = runner.validate_quarantine(
-        model_names=(
-            "SIA405_ABWASSER_2020",
-        ),
+        model_names=("SIA405_ABWASSER_2020",),
         log_path=tmp_path / "validation.log",
         srid=2056,
         schema="import_schema",
     )
 
-    assert len(
-        findings,
-    ) == 2
+    assert (
+        len(
+            findings,
+        )
+        == 2
+    )
 
-    assert {
-        finding.message
-        for finding in findings
-    } == {
+    assert {finding.message for finding in findings} == {
         "Error: geometry is invalid",
         "Validation failed for object",
     }
 
-    assert all(
-        finding.severity == Severity.ERROR
-        for finding in findings
-    )
+    assert all(finding.severity == Severity.ERROR for finding in findings)
 
 
 def test_validate_quarantine_falls_back_to_exception_message_when_log_is_empty(
@@ -457,17 +440,18 @@ def test_validate_quarantine_falls_back_to_exception_message_when_log_is_empty(
     )
 
     findings = runner.validate_quarantine(
-        model_names=(
-            "SIA405_ABWASSER_2020",
-        ),
+        model_names=("SIA405_ABWASSER_2020",),
         log_path=tmp_path / "validation.log",
         srid=2056,
         schema="import_schema",
     )
 
-    assert len(
-        findings,
-    ) == 1
+    assert (
+        len(
+            findings,
+        )
+        == 1
+    )
 
     assert findings[0].code == "quarantine_validation_failed"
     assert findings[0].severity == Severity.ERROR
@@ -490,9 +474,7 @@ def test_validate_quarantine_or_raise_raises_on_error(
         QuarantineValidationError,
     ):
         runner.validate_quarantine_or_raise(
-            model_names=(
-                "SIA405_ABWASSER_2020",
-            ),
+            model_names=("SIA405_ABWASSER_2020",),
             log_path=tmp_path / "validation.log",
             srid=2056,
             schema="import_schema",

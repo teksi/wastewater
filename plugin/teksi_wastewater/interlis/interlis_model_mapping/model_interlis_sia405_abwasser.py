@@ -1,4 +1,3 @@
-from .. import config
 from .model_interlis_sia405_base_abwasser import ModelInterlisSia405BaseAbwasser
 
 

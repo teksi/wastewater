@@ -17,23 +17,21 @@ from teksi_hooks.capabilities.review import (
 from teksi_hooks.models.canonical_object import (
     CanonicalModelMetadata,
 )
-from teksi_hooks.models.persistence import (
-    ChangePersistenceDocument,
-    PersistenceResult,
-    DeletionPlan,
-)
 from teksi_hooks.models.diff_snapshot import (
     DiffSnapshot,
 )
-
+from teksi_hooks.models.persistence import (
+    ChangePersistenceDocument,
+    DeletionPlan,
+    PersistenceResult,
+)
 from teksi_hooks.models.review import (
-    ReviewFeature,
     DiffReviewDecision,
     DiffReviewDecisionResult,
     DiffReviewJob,
     DiffSchemaWriteResult,
+    ReviewFeature,
 )
-
 from teksi_hooks.models.validation import (
     ClassifiedChanges,
 )
@@ -146,10 +144,13 @@ class TwwDiffReviewService:
         canonical_metadata: CanonicalModelMetadata,
         import_schema: str,
         live_schema: str,
-        metadata: Mapping[
-            str,
-            Any,
-        ] | None = None,
+        metadata: (
+            Mapping[
+                str,
+                Any,
+            ]
+            | None
+        ) = None,
         validation_success: bool = True,
     ) -> DiffReviewResult:
         """
@@ -160,12 +161,10 @@ class TwwDiffReviewService:
             job_mode,
         )
 
-        object_provider = (
-            self.object_provider_factory.change_object_provider(
-                live_schema=live_schema,
-                import_schema=import_schema,
-                canonical_metadata=canonical_metadata,
-            )
+        object_provider = self.object_provider_factory.change_object_provider(
+            live_schema=live_schema,
+            import_schema=import_schema,
+            canonical_metadata=canonical_metadata,
         )
 
         review_export_service = ChangeReviewExportService(
@@ -181,10 +180,8 @@ class TwwDiffReviewService:
             classified_changes,
         )
 
-        features_by_class = (
-            self._normalize_features_by_class(
-                exported_features,
-            )
+        features_by_class = self._normalize_features_by_class(
+            exported_features,
         )
 
         diff_schema_result = self.diff_schema_service.write(
@@ -232,9 +229,7 @@ class TwwDiffReviewService:
                 job,
             )
 
-        raise ValueError(
-            f"Unsupported review decision: {decision!r}."
-        )
+        raise ValueError(f"Unsupported review decision: {decision!r}.")
 
     def reject(
         self,
@@ -300,10 +295,8 @@ class TwwDiffReviewService:
         snapshot identifier.
         """
 
-        rejected_count = (
-            self.diff_schema_service.rejected_row_count(
-                job_id=job.job_id,
-            )
+        rejected_count = self.diff_schema_service.rejected_row_count(
+            job_id=job.job_id,
         )
 
         if rejected_count:
@@ -363,8 +356,7 @@ class TwwDiffReviewService:
 
         if snapshot is None:
             raise RuntimeError(
-                f"Diff review job {job.job_id!r} has no "
-                "persisted diff snapshot."
+                f"Diff review job {job.job_id!r} has no " "persisted diff snapshot."
             )
 
         return snapshot
@@ -377,16 +369,13 @@ class TwwDiffReviewService:
         Load persistence decisions associated with a review job.
         """
 
-        document = (
-            self.diff_schema_service.persistence_document(
-                job_id=job.job_id,
-            )
+        document = self.diff_schema_service.persistence_document(
+            job_id=job.job_id,
         )
 
         if document is None:
             raise RuntimeError(
-                f"Diff review job {job.job_id!r} has no "
-                "persistence-decision document."
+                f"Diff review job {job.job_id!r} has no " "persistence-decision document."
             )
 
         return document
@@ -421,9 +410,7 @@ class TwwDiffReviewService:
         )
 
         if job is None:
-            raise ValueError(
-                f"Diff review job {job_id!r} does not exist."
-            )
+            raise ValueError(f"Diff review job {job_id!r} does not exist.")
 
         if job.job_status != "pending":
             raise RuntimeError(
@@ -448,10 +435,7 @@ class TwwDiffReviewService:
                 "findings_logger",
             )
 
-        if (
-            decision == DiffReviewDecision.ACCEPT
-            and self.persistence is None
-        ):
+        if decision == DiffReviewDecision.ACCEPT and self.persistence is None:
             missing.append(
                 "persistence",
             )
@@ -504,8 +488,7 @@ class TwwDiffReviewService:
             class_id: list(
                 features,
             )
-            for class_id, features
-            in features_by_class.items()
+            for class_id, features in features_by_class.items()
         }
 
     def _assert_supported_job_mode(
@@ -518,6 +501,5 @@ class TwwDiffReviewService:
 
         if job_mode == DiffJobMode.REFRESH:
             raise NotImplementedError(
-                "Diff-job refresh is not implemented yet. "
-                "Use 'create' or 'replace'."
+                "Diff-job refresh is not implemented yet. " "Use 'create' or 'replace'."
             )

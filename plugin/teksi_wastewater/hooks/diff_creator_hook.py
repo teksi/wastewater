@@ -2,62 +2,41 @@ from __future__ import annotations
 
 import os
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any
+from collections.abc import Mapping
 from uuid import uuid4
+
 import yaml
-
-
+from teksi_hooks.capabilities.conditions import ConditionsCapability
+from teksi_hooks.capabilities.connection import DatabaseConnectionFactory
+from teksi_hooks.capabilities.mapping import (
+    EffectiveModelMappingCapability,
+    ModelMappingCapability,
+)
+from teksi_hooks.capabilities.privilege import ResolvedProviderCapability
+from teksi_hooks.capabilities.rights import (
+    DerivedRightsCapability,
+    RightsCapability,
+    SubclassRightsCapability,
+)
+from teksi_hooks.evaluators.rights import RightsEvaluationContext, RightsEvaluator
+from teksi_hooks.exceptions import RightsEvaluationError
 from teksi_hooks.hook import (
     HookBase,
     HookContext,
     HookMetadata,
 )
-
-
-
+from teksi_hooks.models.oid import Oid, Standardoid
 from teksi_hooks.models.privilege import ALL_PRIVILEGES
 from teksi_hooks.models.provider import ResolvedProvider
-from teksi_hooks.models.oid import Oid,Standardoid
-
-from teksi_hooks.evaluators.rights import RightsEvaluator,RightsEvaluationContext
-
-from teksi_hooks.parsers.rights_parser import RightsParser
-from teksi_hooks.parsers.provider_rights_parser import ProviderRightsParser
-from teksi_hooks.parsers.validation import ValidationParser
 from teksi_hooks.parsers.model_mapping_parser import ModelMappingParser
-
+from teksi_hooks.parsers.provider_rights_parser import ProviderRightsParser
+from teksi_hooks.parsers.rights_parser import RightsParser
+from teksi_hooks.parsers.validation import ValidationParser
 from teksi_hooks.resolver.provider_resolver import ProviderResolver
 from teksi_hooks.resolver.rights_resolver import RightsResolver
-
-from teksi_hooks.exceptions import RightsEvaluationError
-
-from teksi_hooks.capabilities.connection import DatabaseConnectionFactory
-from teksi_hooks.capabilities.rights import (
-    RightsCapability,
-    DerivedRightsCapability,
-    SubclassRightsCapability,
-)
-from teksi_hooks.capabilities.privilege import ResolvedProviderCapability
-from teksi_hooks.capabilities.conditions import ConditionsCapability
-from teksi_hooks.capabilities.mapping import (
-    EffectiveModelMappingCapability,
-    ModelMappingCapability,
-)
-
-from teksi_wastewater.interlis import (
-    config,
-)
-from teksi_wastewater.hooks.capabilities.tww_implicit_model_mapper_capability import (
-    TwwImplicitModelMappingCapability,
-)
-from teksi_wastewater.hooks.adapters.tww_relation_context_provider import (
-    TwwRelationContextProvider,
-)
 from teksi_wastewater.hooks.adapters.tww_canonical_model_adapter import (
     TwwCanonicalModelAdapter,
-)
-from teksi_wastewater.hooks.adapters.tww_quarantine_runner import (
-    TwwQuarantineRunner,
 )
 from teksi_wastewater.hooks.adapters.tww_database_connection_factory import (
     TwwDatabaseConnectionFactory,
@@ -65,21 +44,31 @@ from teksi_wastewater.hooks.adapters.tww_database_connection_factory import (
 from teksi_wastewater.hooks.adapters.tww_interlis_service_adapter import (
     TwwInterlisServiceAdapter,
 )
+from teksi_wastewater.hooks.adapters.tww_quarantine_runner import (
+    TwwQuarantineRunner,
+)
+from teksi_wastewater.hooks.adapters.tww_relation_context_provider import (
+    TwwRelationContextProvider,
+)
 from teksi_wastewater.hooks.adapters.tww_relation_lookup_adapter import (
     TwwRelationLookupAdapter,
 )
-from teksi_wastewater.hooks.services.tww_quarantine_effect_projector import (
-    TwwQuarantineEffectProjector
+from teksi_wastewater.hooks.capabilities.tww_implicit_model_mapper_capability import (
+    TwwImplicitModelMappingCapability,
 )
-
-
 from teksi_wastewater.hooks.services.tww_change_creation_service import (
     ChangeObjectProviderFactory,
     TwwChangeCreationService,
 )
 from teksi_wastewater.hooks.services.tww_diff_schema_service import (
-    TwwDiffSchemaService,
     DiffJobMode,
+    TwwDiffSchemaService,
+)
+from teksi_wastewater.hooks.services.tww_quarantine_effect_projector import (
+    TwwQuarantineEffectProjector,
+)
+from teksi_wastewater.interlis import (
+    config,
 )
 
 
@@ -115,7 +104,6 @@ class Hook(
     ) -> None:
         parameters = context.parameters
 
-
         self.connection_factory = context.capability(
             DatabaseConnectionFactory,
         )
@@ -124,15 +112,13 @@ class Hook(
             self.connection_factory,
             TwwDatabaseConnectionFactory,
         ):
-            raise TypeError(
-                "The TWW diff hook requires TwwDatabaseConnectionFactory."
-            )
+            raise TypeError("The TWW diff hook requires TwwDatabaseConnectionFactory.")
 
         self.interlis_service = TwwInterlisServiceAdapter(
             connection_factory=self.connection_factory,
         )
 
-        self.job_id = parameters.get("job_id",str(uuid4()))
+        self.job_id = parameters.get("job_id", str(uuid4()))
         self.job_mode = DiffJobMode(
             parameters.get(
                 "job_mode",
@@ -164,49 +150,38 @@ class Hook(
             "skip_rights_evaluation",
         )
         incremental_import_schema = parameters.get(
-                "incremental_import_schema",
-                config.IMPORT_SCHEMA_INCR
+            "incremental_import_schema", config.IMPORT_SCHEMA_INCR
+        )
+        hook_config_dir = self._optional_path(
+            parameters.get(
+                "hook_config_dir",
             )
-        hook_config_dir = (
-            self._optional_path(
-                parameters.get(
-                    "hook_config_dir",
-                )
+        ) or (
+            Path(
+                os.environ["TWW_DIFF_CONF_DIR"],
             )
-            or (
-                Path(
-                    os.environ["TWW_DIFF_CONF_DIR"],
-                )
-                if "TWW_DIFF_CONF_DIR" in os.environ
-                else None
-            )
+            if "TWW_DIFF_CONF_DIR" in os.environ
+            else None
         )
 
         self.provider_oid = Standardoid(parameters["provider_oid"])
         self.dataowner_oid = Standardoid(parameters["dataowner_oid"])
-        
+
         self.model_config_dir = self._model_config_dir()
 
         self.validation_definition = ValidationParser().parse_file(
-            self.model_config_dir
-            / "validations.yaml",
+            self.model_config_dir / "validations.yaml",
         )
 
-
-
-        provider_rights_path,rights_definition_path = self._eval_rights_profile(
+        provider_rights_path, rights_definition_path = self._eval_rights_profile(
             hook_config_dir,
             parameters.get(
                 "rights_profile",
-                'default',
-            )
+                "default",
+            ),
         )
-        self.rights_definition=RightsParser().parse_file(
-            rights_definition_path
-        )
-        raw_provider_rights=ProviderRightsParser().parse_file(
-            provider_rights_path
-        )
+        self.rights_definition = RightsParser().parse_file(rights_definition_path)
+        raw_provider_rights = ProviderRightsParser().parse_file(provider_rights_path)
         resolved_providers = ProviderResolver.resolve_all(raw_provider_rights)
         if skip_rights_evaluation:
             resolved_providers = self._grant_all(resolved_providers)
@@ -214,8 +189,7 @@ class Hook(
             self.resolved_provider = resolved_providers[self.provider_oid]
         except KeyError as exception:
             raise RightsEvaluationError.from_message(
-                "No provider-rights definition exists for "
-                f"provider {self.provider_oid!s}."
+                "No provider-rights definition exists for " f"provider {self.provider_oid!s}."
             ) from exception
 
         self.rights_context = RightsEvaluationContext(
@@ -226,7 +200,6 @@ class Hook(
                 "dataowner_oid": self.dataowner_oid,
             },
         )
-
 
         # create adapters and services
         quarantine_runner = TwwQuarantineRunner(
@@ -245,14 +218,13 @@ class Hook(
             connection_factory=self.connection_factory,
         )
 
-        canonical_metadata=canonical_model.canonical_model()
+        canonical_metadata = canonical_model.canonical_model()
 
         resolved_rights = RightsResolver().resolve(
             definition=self.rights_definition,
             validation_definition=self.validation_definition,
             canonical_metadata=canonical_metadata,
         )
-
 
         rights_capability = RightsCapability(
             resolved_rights,
@@ -319,23 +291,21 @@ class Hook(
             )
 
     def run_sub_verification(
-            self,
-            xtf_file,
-            schema,
-            quarantine_runner,
-            canonical_metadata,
-            diff_schema_service,
-            rights_evaluator,
-            context,
-            is_incremental: bool = False,
-            final_diff_run: bool = True,
-        ):
-
+        self,
+        xtf_file,
+        schema,
+        quarantine_runner,
+        canonical_metadata,
+        diff_schema_service,
+        rights_evaluator,
+        context,
+        is_incremental: bool = False,
+        final_diff_run: bool = True,
+    ):
 
         model_selection = self.interlis_service.identify_model(xtf_file)
         explicit_mapping = ModelMappingParser().parse_file(
-            self.model_config_dir
-            / "explicit_mapping.yaml",
+            self.model_config_dir / "explicit_mapping.yaml",
             model_id=model_selection.mapping_model_id,
         )
 
@@ -343,14 +313,14 @@ class Hook(
             mapping=explicit_mapping,
         )
 
-        quarantine_classes = self._get_quarantine_classes(model_selection=model_selection,schema=schema)
+        quarantine_classes = self._get_quarantine_classes(
+            model_selection=model_selection, schema=schema
+        )
 
-        implicit_mapping_capability = (
-            TwwImplicitModelMappingCapability(
-                quarantine_classes=quarantine_classes,
-                connection_factory=self.connection_factory,
-                import_schema=schema,
-            )
+        implicit_mapping_capability = TwwImplicitModelMappingCapability(
+            quarantine_classes=quarantine_classes,
+            connection_factory=self.connection_factory,
+            import_schema=schema,
         )
 
         effective_mapping = EffectiveModelMappingCapability(
@@ -369,7 +339,6 @@ class Hook(
             relation_context_provider=relation_context_provider,
             model_mapping=effective_mapping,
         )
-
 
         service = TwwChangeCreationService(
             connection_factory=self.connection_factory,
@@ -392,26 +361,16 @@ class Hook(
             import_schema=schema,
             live_schema=self.live_schema,
             metadata={
-                "source_role": (
-                    "incremental"
-                    if is_incremental
-                    else "base"
-                ),
+                "source_role": ("incremental" if is_incremental else "base"),
                 "source_xtf": str(
                     xtf_file,
                 ),
                 "source_schema": schema,
-                "model_group": (
-                    model_selection.group
-                ),
-                "model_language": (
-                    model_selection.language
-                ),
-                "mapping_model_id": (
-                    model_selection.mapping_model_id
-                ),
+                "model_group": (model_selection.group),
+                "model_language": (model_selection.language),
+                "mapping_model_id": (model_selection.mapping_model_id),
                 "persist_job": final_diff_run,
-            }
+            },
         )
 
         context.logger.info(
@@ -429,8 +388,6 @@ class Hook(
                     else "unknown"
                 ),
             )
-
-
 
     def _optional_path(
         self,
@@ -463,19 +420,13 @@ class Hook(
         """
 
         if config_dir is None:
-            raise RightsEvaluationError.from_message(
-                "Config directory is not set."
-            )
+            raise RightsEvaluationError.from_message("Config directory is not set.")
 
-        profiles_path = (
-            config_dir
-            / "rights_profiles.yaml"
-        )
+        profiles_path = config_dir / "rights_profiles.yaml"
 
         if not profiles_path.is_file():
             raise RightsEvaluationError.from_message(
-                "Rights-profile configuration does not exist: "
-                f"{profiles_path}"
+                "Rights-profile configuration does not exist: " f"{profiles_path}"
             )
 
         with profiles_path.open(
@@ -521,22 +472,18 @@ class Hook(
                 f"Rights profile {rights_profile!r} must be a mapping."
             )
 
-        provider_rights_path = (
-            self._profile_template_path(
-                config_dir=config_dir,
-                profile_name=rights_profile,
-                profile=raw_profile,
-                key="provider_rights",
-            )
+        provider_rights_path = self._profile_template_path(
+            config_dir=config_dir,
+            profile_name=rights_profile,
+            profile=raw_profile,
+            key="provider_rights",
         )
 
-        rights_definition_path = (
-            self._profile_template_path(
-                config_dir=config_dir,
-                profile_name=rights_profile,
-                profile=raw_profile,
-                key="rights_definition",
-            )
+        rights_definition_path = self._profile_template_path(
+            config_dir=config_dir,
+            profile_name=rights_profile,
+            profile=raw_profile,
+            key="rights_definition",
         )
 
         missing_paths = [
@@ -586,13 +533,15 @@ class Hook(
             key,
         )
 
-        if not isinstance(
-            raw_path,
-            str,
-        ) or not raw_path.strip():
+        if (
+            not isinstance(
+                raw_path,
+                str,
+            )
+            or not raw_path.strip()
+        ):
             raise RightsEvaluationError.from_message(
-                f"Rights profile {profile_name!r} must define a non-empty "
-                f"{key!r} path."
+                f"Rights profile {profile_name!r} must define a non-empty " f"{key!r} path."
             )
 
         path = Path(
@@ -600,10 +549,7 @@ class Hook(
         ).expanduser()
 
         if not path.is_absolute():
-            path = (
-                config_dir
-                / path
-            )
+            path = config_dir / path
 
         return path.resolve()
 
@@ -618,16 +564,15 @@ class Hook(
         path = (
             Path(
                 __file__,
-            ).resolve().parent
+            )
+            .resolve()
+            .parent
             / "config"
             / "model"
         )
 
         if not path.is_dir():
-            raise RuntimeError(
-                "Model configuration directory does not exist: "
-                f"{path}"
-            )
+            raise RuntimeError("Model configuration directory does not exist: " f"{path}")
 
         return path
 
@@ -655,35 +600,23 @@ class Hook(
         return {
             provider_oid: ResolvedProvider(
                 name=provider.name,
-                organisation_oid=(
-                    provider.organisation_oid
-                ),
+                organisation_oid=(provider.organisation_oid),
                 permissions={
                     dataowner_oid: frozenset(
                         {
                             ALL_PRIVILEGES,
                         }
                     )
-                    for dataowner_oid
-                    in provider.permissions
+                    for dataowner_oid in provider.permissions
                 },
             )
-            for provider_oid, provider
-            in providers.items()
-    }
+            for provider_oid, provider in providers.items()
+        }
 
     def _get_quarantine_classes(self, model_selection, schema):
 
-    
-        quarantine_model = (
-            model_selection
-            .primary_component
-            .quarantine_model(
-                schema=schema,
-            )
+        quarantine_model = model_selection.primary_component.quarantine_model(
+            schema=schema,
         )
 
-        return (
-            quarantine_model.classes()
-        )
-
+        return quarantine_model.classes()

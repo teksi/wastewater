@@ -1,10 +1,13 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import Any
 import json
 import re
+from dataclasses import dataclass
+from typing import Any
 
+from teksi_hooks.capabilities.connection import (
+    DatabaseConnectionFactory,
+)
 from teksi_hooks.capabilities.mapping import (
     EffectiveModelMappingCapability,
 )
@@ -26,10 +29,6 @@ from teksi_hooks.models.mapping import (
     FunctionMapping,
     RelationContext,
 )
-
-from teksi_hooks.capabilities.connection import (
-    DatabaseConnectionFactory,
-)
 from teksi_hooks.services.relation_context_provider import (
     RelationContextProvider,
 )
@@ -38,7 +37,6 @@ try:
     from psycopg import sql
 except ImportError:
     from psycopg2 import sql
-    
 
 
 @dataclass(slots=True)
@@ -75,28 +73,19 @@ class TwwQuarantineEffectProjector:
         Project the current quarantine schema into a canonical effect document.
         """
 
-        effects: list[
-            Effect
-        ] = []
+        effects: list[Effect] = []
 
         with self.connection_factory.connection(
             autocommit=False,
         ) as connection:
             with connection.cursor() as cursor:
-                for relation_context in (
-                    self.relation_context_provider
-                    .relation_contexts()
-                ):
+                for relation_context in self.relation_context_provider.relation_contexts():
                     effects.extend(
                         self._effects_for_relation_context(
                             cursor=cursor,
-                            relation_context=(
-                                relation_context
-                            ),
+                            relation_context=(relation_context),
                             schema=schema,
-                            canonical_metadata=(
-                                canonical_metadata
-                            ),
+                            canonical_metadata=(canonical_metadata),
                         )
                     )
 
@@ -110,8 +99,6 @@ class TwwQuarantineEffectProjector:
                 effects,
             ),
         )
-
-
 
     def _effects_for_relation_context(
         self,
@@ -149,9 +136,7 @@ class TwwQuarantineEffectProjector:
             effects.extend(
                 self._attribute_effects(
                     row=row,
-                    source_class_id=(
-                        relation_context.relation.__name__
-                    ),
+                    source_class_id=(relation_context.relation.__name__),
                     class_mapping=class_mapping,
                     canonical_metadata=canonical_metadata,
                 )
@@ -168,9 +153,7 @@ class TwwQuarantineEffectProjector:
         relation_context: RelationContext,
         schema: str,
     ) -> tuple[Effect, ...]:
-        function_mapping = (
-            relation_context.class_mapping.function
-        )
+        function_mapping = relation_context.class_mapping.function
 
         if function_mapping is None:
             return ()
@@ -214,12 +197,10 @@ class TwwQuarantineEffectProjector:
         )
 
         cursor.execute(
-            sql.SQL(
-                """
+            sql.SQL("""
                 SELECT *
                 FROM {}.{}
-                """
-            ).format(
+                """).format(
                 sql.Identifier(
                     schema,
                 ),
@@ -234,10 +215,7 @@ class TwwQuarantineEffectProjector:
         if cursor.description is None:
             return ()
 
-        column_names = tuple(
-            column[0]
-            for column in cursor.description
-        )
+        column_names = tuple(column[0] for column in cursor.description)
 
         return tuple(
             dict(
@@ -248,6 +226,7 @@ class TwwQuarantineEffectProjector:
             )
             for row in rows
         )
+
     def _table_name(
         self,
         relation,
@@ -263,7 +242,6 @@ class TwwQuarantineEffectProjector:
 
         return relation.__name__
 
-
     def _identity(
         self,
         *,
@@ -278,33 +256,22 @@ class TwwQuarantineEffectProjector:
         Build the identity for one canonical target class.
         """
 
-        target_class_id = (
-            canonical_class_id
-            or class_mapping.canonical_class_id
-        )
+        target_class_id = canonical_class_id or class_mapping.canonical_class_id
 
         if target_class_id is None:
-            raise ValueError(
-                "Cannot build an identity without a canonical "
-                "target class."
-            )
+            raise ValueError("Cannot build an identity without a canonical " "target class.")
 
-        identity_mapping = (
-            class_mapping.identities.get(
-                target_class_id,
-            )
+        identity_mapping = class_mapping.identities.get(
+            target_class_id,
         )
 
         if identity_mapping is None:
             raise ValueError(
-                "No identity mapping exists for canonical target "
-                f"class {target_class_id!r}."
+                "No identity mapping exists for canonical target " f"class {target_class_id!r}."
             )
 
         try:
-            source_value = row[
-                identity_mapping.source_attribute
-            ]
+            source_value = row[identity_mapping.source_attribute]
         except KeyError as exception:
             raise ValueError(
                 "Source identity attribute "
@@ -315,9 +282,7 @@ class TwwQuarantineEffectProjector:
         return CanonicalObjectIdentity(
             class_id=target_class_id,
             attributes={
-                identity_mapping.canonical_attribute: (
-                    source_value
-                ),
+                identity_mapping.canonical_attribute: (source_value),
             },
         )
 
@@ -337,24 +302,19 @@ class TwwQuarantineEffectProjector:
         identity.
         """
 
-        effects: list[
-            UpdateAttributeEffect
-        ] = []
+        effects: list[UpdateAttributeEffect] = []
 
         for (
             source_attribute,
             attribute_mapping,
         ) in class_mapping.attributes.items():
-            canonical_attribute_id = (
-                attribute_mapping.canonical_attr_id
-            )
+            canonical_attribute_id = attribute_mapping.canonical_attr_id
 
             if canonical_attribute_id is None:
                 continue
 
             target_class_id = (
-                attribute_mapping.canonical_class_id
-                or class_mapping.canonical_class_id
+                attribute_mapping.canonical_class_id or class_mapping.canonical_class_id
             )
 
             if target_class_id is None:
@@ -445,17 +405,13 @@ class TwwQuarantineEffectProjector:
 
         arguments = []
 
-        for parameter_name, source_name in (
-            function_mapping.parameters.items()
-        ):
+        for parameter_name, source_name in function_mapping.parameters.items():
             self._assert_safe_identifier(
                 parameter_name,
             )
 
             if source_name == "$row":
-                value_expression = sql.SQL(
-                    "{}::jsonb"
-                ).format(
+                value_expression = sql.SQL("{}::jsonb").format(
                     sql.Literal(
                         self._json_dumps(
                             row,
@@ -470,9 +426,7 @@ class TwwQuarantineEffectProjector:
                 )
 
             arguments.append(
-                sql.SQL(
-                    "{} => {}"
-                ).format(
+                sql.SQL("{} => {}").format(
                     sql.Identifier(
                         parameter_name,
                     ),
@@ -480,11 +434,9 @@ class TwwQuarantineEffectProjector:
                 )
             )
 
-        query = sql.SQL(
-            """
+        query = sql.SQL("""
             SELECT {}.{}({}) AS effect_document
-            """
-        ).format(
+            """).format(
             sql.Identifier(
                 function_mapping.schema,
             ),
@@ -530,10 +482,7 @@ class TwwQuarantineEffectProjector:
                 parsed_payload,
                 dict,
             ):
-                raise ValueError(
-                    "Function mapping returned JSON that is "
-                    "not an object."
-                )
+                raise ValueError("Function mapping returned JSON that is " "not an object.")
 
             return parsed_payload
 
@@ -546,8 +495,7 @@ class TwwQuarantineEffectProjector:
             ValueError,
         ) as exception:
             raise TypeError(
-                "Function mapping returned an unsupported "
-                f"payload type: {type(payload)!r}."
+                "Function mapping returned an unsupported " f"payload type: {type(payload)!r}."
             ) from exception
 
     def _effects_from_payload(
@@ -600,9 +548,7 @@ class TwwQuarantineEffectProjector:
                 identity=identity,
             )
 
-        raise ValueError(
-            f"Unsupported effect kind: {kind!r}"
-        )
+        raise ValueError(f"Unsupported effect kind: {kind!r}")
 
     def _identity_from_payload(
         self,
@@ -622,9 +568,7 @@ class TwwQuarantineEffectProjector:
         class_id: str,
     ) -> None:
         if class_id not in canonical_metadata.classes:
-            raise KeyError(
-                f"Unknown canonical class: {class_id!r}"
-            )
+            raise KeyError(f"Unknown canonical class: {class_id!r}")
 
     def _assert_known_attribute(
         self,
@@ -637,10 +581,7 @@ class TwwQuarantineEffectProjector:
             class_id,
             attribute_id,
         ) not in canonical_metadata.attributes:
-            raise KeyError(
-                "Unknown canonical attribute: "
-                f"{class_id!r}.{attribute_id!r}"
-            )
+            raise KeyError("Unknown canonical attribute: " f"{class_id!r}.{attribute_id!r}")
 
     def _assert_safe_identifier(
         self,
@@ -650,9 +591,7 @@ class TwwQuarantineEffectProjector:
             r"[A-Za-z_][A-Za-z0-9_]*",
             value,
         ):
-            raise ValueError(
-                f"Unsafe SQL identifier: {value!r}"
-            )
+            raise ValueError(f"Unsafe SQL identifier: {value!r}")
 
     def _json_dumps(
         self,

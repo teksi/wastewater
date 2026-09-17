@@ -2,13 +2,12 @@
 
 from __future__ import annotations
 
+import logging
 from collections.abc import Mapping
 from dataclasses import dataclass
-import logging
 from typing import Any
 
 from sqlalchemy.orm import Session
-
 from teksi_hooks.capabilities.mapping import (
     ModelMappingLookupCapability,
 )
@@ -21,14 +20,12 @@ from teksi_hooks.models.review import (
 from teksi_hooks.models.validation import (
     ValidationDefinition,
 )
-
 from teksi_wastewater.hooks.exceptions import (
     DiffSchemaContractError,
 )
 from teksi_wastewater.hooks.services.tww_diff_schema_service import (
     TwwDiffSchemaService,
 )
-
 
 logger = logging.getLogger(
     __name__,
@@ -121,10 +118,8 @@ class TwwQuarantinePersistencePreparer:
         this method.
         """
 
-        features_by_class = (
-            self.diff_schema_service.review_features(
-                job_id=job_id,
-            )
+        features_by_class = self.diff_schema_service.review_features(
+            job_id=job_id,
         )
 
         nulled_attribute_count = 0
@@ -154,12 +149,10 @@ class TwwQuarantinePersistencePreparer:
                 ):
                     continue
 
-                nulled_attribute_count += (
-                    self._null_unpermitted_attributes(
-                        job_id=job_id,
-                        canonical_class_id=canonical_class_id,
-                        feature=feature,
-                    )
+                nulled_attribute_count += self._null_unpermitted_attributes(
+                    job_id=job_id,
+                    canonical_class_id=canonical_class_id,
+                    feature=feature,
                 )
 
         self.quarantine_session.flush()
@@ -191,11 +184,9 @@ class TwwQuarantinePersistencePreparer:
         ):
             return False
 
-        permission_findings = (
-            feature.attributes.get(
-                "permission_findings",
-                (),
-            )
+        permission_findings = feature.attributes.get(
+            "permission_findings",
+            (),
         )
 
         if not isinstance(
@@ -207,10 +198,7 @@ class TwwQuarantinePersistencePreparer:
         ):
             raise DiffSchemaContractError(
                 column_name="permission_findings",
-                message=(
-                    "The review feature permission findings must "
-                    "contain a JSON array."
-                ),
+                message=("The review feature permission findings must " "contain a JSON array."),
             )
 
         return any(
@@ -236,10 +224,7 @@ class TwwQuarantinePersistencePreparer:
         ):
             raise DiffSchemaContractError(
                 column_name="permission_findings",
-                message=(
-                    "Each persisted permission finding must "
-                    "contain a JSON object."
-                ),
+                message=("Each persisted permission finding must " "contain a JSON object."),
             )
 
         attribute_name = finding.get(
@@ -273,19 +258,14 @@ class TwwQuarantinePersistencePreparer:
         ):
             raise DiffSchemaContractError(
                 column_name="unpermitted_values",
-                message=(
-                    "The review feature unpermitted values must "
-                    "contain a JSON object."
-                ),
+                message=("The review feature unpermitted values must " "contain a JSON object."),
             )
 
         if not unpermitted_values:
             return 0
 
-        mandatory_attributes = (
-            self.validation_definition.mandatory_for_class(
-                canonical_class_id,
-            )
+        mandatory_attributes = self.validation_definition.mandatory_for_class(
+            canonical_class_id,
         )
 
         nulled_attribute_count = 0
@@ -293,8 +273,7 @@ class TwwQuarantinePersistencePreparer:
         for canonical_attribute_id in unpermitted_values:
             if canonical_attribute_id in mandatory_attributes:
                 logger.debug(
-                    "Preserving mandatory unpermitted attribute "
-                    "%r.%r for diff job %r.",
+                    "Preserving mandatory unpermitted attribute " "%r.%r for diff job %r.",
                     canonical_class_id,
                     canonical_attribute_id,
                     job_id,
@@ -344,15 +323,11 @@ class TwwQuarantinePersistencePreparer:
         backed mappings must be handled by the AGXX-specific persistence path.
         """
 
-        targets: list[
-            QuarantineAttributeTarget,
-        ] = []
+        targets: list[QuarantineAttributeTarget,] = []
 
         for source_class_id in self._source_class_ids():
-            class_mapping = (
-                self.model_mapping.try_class_definition(
-                    source_class_id,
-                )
+            class_mapping = self.model_mapping.try_class_definition(
+                source_class_id,
             )
 
             if class_mapping is None:
@@ -365,16 +340,10 @@ class TwwQuarantinePersistencePreparer:
                 source_attribute_id,
                 attribute_mapping,
             ) in class_mapping.attributes.items():
-                if (
-                    attribute_mapping.canonical_class_id
-                    != canonical_class_id
-                ):
+                if attribute_mapping.canonical_class_id != canonical_class_id:
                     continue
 
-                if (
-                    attribute_mapping.canonical_attr_id
-                    != canonical_attribute_id
-                ):
+                if attribute_mapping.canonical_attr_id != canonical_attribute_id:
                     continue
 
                 targets.append(
@@ -382,9 +351,7 @@ class TwwQuarantinePersistencePreparer:
                         source_class_id=source_class_id,
                         source_attribute_id=source_attribute_id,
                         canonical_class_id=canonical_class_id,
-                        canonical_attribute_id=(
-                            canonical_attribute_id
-                        ),
+                        canonical_attribute_id=(canonical_attribute_id),
                     )
                 )
 
@@ -504,19 +471,14 @@ class TwwQuarantinePersistencePreparer:
         source_classes = []
 
         for source_class_id in self._source_class_ids():
-            class_mapping = (
-                self.model_mapping.try_class_definition(
-                    source_class_id,
-                )
+            class_mapping = self.model_mapping.try_class_definition(
+                source_class_id,
             )
 
             if class_mapping is None:
                 continue
 
-            if (
-                class_mapping.canonical_class_id
-                != canonical_class_id
-            ):
+            if class_mapping.canonical_class_id != canonical_class_id:
                 continue
 
             if class_mapping.function is not None:
@@ -594,10 +556,7 @@ class TwwQuarantinePersistencePreparer:
 
         if source_class is None:
             raise DiffSchemaContractError(
-                message=(
-                    "Unknown quarantine class "
-                    f"{source_class_id!r}."
-                ),
+                message=("Unknown quarantine class " f"{source_class_id!r}."),
             )
 
         return source_class
@@ -662,10 +621,7 @@ class TwwQuarantinePersistencePreparer:
             self.quarantine_session.query(
                 source_class,
             )
-            .filter(
-                identity_attribute
-                == source_object_id
-            )
+            .filter(identity_attribute == source_object_id)
             .limit(
                 2,
             )
@@ -675,9 +631,12 @@ class TwwQuarantinePersistencePreparer:
         if not rows:
             return None
 
-        if len(
-            rows,
-        ) > 1:
+        if (
+            len(
+                rows,
+            )
+            > 1
+        ):
             raise DiffSchemaContractError(
                 message=(
                     "Multiple quarantine objects exist for "
@@ -686,6 +645,4 @@ class TwwQuarantinePersistencePreparer:
                 ),
             )
 
-        return rows[
-            0
-        ]
+        return rows[0]

@@ -1,11 +1,11 @@
 from __future__ import annotations
 
+import json
+import logging
 from collections.abc import Mapping, Sequence
 from dataclasses import asdict, dataclass, field, is_dataclass
 from datetime import date, datetime
 from enum import Enum
-import json
-import logging
 from typing import Any
 
 from teksi_hooks.capabilities.connection import (
@@ -23,7 +23,9 @@ from teksi_hooks.models.review import (
     PreparedSource,
     ReviewFeature,
 )
-
+from teksi_wastewater.hooks.capabilities.tww_interlis_persistence_capability import (
+    TwwInterlisPersistenceResult,
+)
 from teksi_wastewater.hooks.exceptions import (
     DiffJobEligibilityError,
     DiffJobNotFoundError,
@@ -32,13 +34,10 @@ from teksi_wastewater.hooks.exceptions import (
     DiffSchemaContractError,
 )
 
-from teksi_wastewater.hooks.capabilities.tww_interlis_persistence_capability import (
-    TwwInterlisPersistenceResult,
-)
-
 logger = logging.getLogger(
     __name__,
 )
+
 
 @dataclass(
     slots=True,
@@ -65,6 +64,7 @@ class DiffJobCounts:
         """
 
         return self.total_count - self.rejected_count
+
 
 @dataclass(
     slots=True,
@@ -182,10 +182,13 @@ class TwwDiffSchemaService(
             str,
             Sequence[ReviewFeature],
         ],
-        metadata: Mapping[
-            str,
-            Any,
-        ] | None = None,
+        metadata: (
+            Mapping[
+                str,
+                Any,
+            ]
+            | None
+        ) = None,
         validation_success: bool = False,
         job_status: str = "pending",
     ) -> DiffSchemaWriteResult:
@@ -211,9 +214,7 @@ class TwwDiffSchemaService(
                     job_id=job_id,
                 )
             else:
-                raise NotImplementedError(
-                    "Diff-job refresh is not implemented."
-                )
+                raise NotImplementedError("Diff-job refresh is not implemented.")
 
             job_db_id = self._insert_metadata(
                 cursor=cursor,
@@ -339,10 +340,7 @@ class TwwDiffSchemaService(
             include_features=True,
         )
 
-        return {
-            class_id: list(features)
-            for class_id, features in job.features_by_class.items()
-        }
+        return {class_id: list(features) for class_id, features in job.features_by_class.items()}
 
     def job_counts(
         self,
@@ -403,21 +401,15 @@ class TwwDiffSchemaService(
                     FROM {self._table(table_name)}
                     WHERE job_id = %s;
                     """,
-                    (
-                        job_db_id,
-                    ),
+                    (job_db_id,),
                 )
 
                 row = cursor.fetchone()
 
                 if row is None:
                     raise DiffSchemaContractError(
-                        table_name=(
-                            f"{self.schema}.{table_name}"
-                        ),
-                        message=(
-                            "Could not determine review-row counts."
-                        ),
+                        table_name=(f"{self.schema}.{table_name}"),
+                        message=("Could not determine review-row counts."),
                     )
 
                 total_count += int(
@@ -516,9 +508,7 @@ class TwwDiffSchemaService(
         if not job.validation_success:
             raise DiffJobEligibilityError(
                 job_id=job_id,
-                reason=(
-                    "source validation was not successful."
-                ),
+                reason=("source validation was not successful."),
             )
 
         rejected_count = self.rejected_row_count(
@@ -528,10 +518,7 @@ class TwwDiffSchemaService(
         if rejected_count:
             raise DiffJobEligibilityError(
                 job_id=job_id,
-                reason=(
-                    f"{rejected_count} review rows contain "
-                    "blocking findings."
-                ),
+                reason=(f"{rejected_count} review rows contain " "blocking findings."),
             )
 
         return job
@@ -542,10 +529,13 @@ class TwwDiffSchemaService(
         job_id: str,
         expected_status: str,
         new_status: str,
-        failure: Mapping[
-            str,
-            Any,
-        ] | None = None,
+        failure: (
+            Mapping[
+                str,
+                Any,
+            ]
+            | None
+        ) = None,
     ) -> None:
         """
         Atomically transition one review job to a new lifecycle state.
@@ -560,15 +550,11 @@ class TwwDiffSchemaService(
             failure or {},
         )
 
-        if (
-            new_status == "failed"
-            and not failure_payload
-        ):
+        if new_status == "failed" and not failure_payload:
             failure_payload = {
                 "phase": expected_status,
                 "message": (
-                    "The diff review workflow failed without "
-                    "additional diagnostic information."
+                    "The diff review workflow failed without " "additional diagnostic information."
                 ),
             }
 
@@ -834,9 +820,7 @@ class TwwDiffSchemaService(
             FROM {self._table("metadata")}
             WHERE job_id = %s;
             """,
-            (
-                job_id,
-            ),
+            (job_id,),
         )
 
         row = cursor.fetchone()
@@ -866,9 +850,7 @@ class TwwDiffSchemaService(
             FROM {self._table("metadata")}
             WHERE job_id = %s;
             """,
-            (
-                job_id,
-            ),
+            (job_id,),
         )
 
         row = cursor.fetchone()
@@ -896,9 +878,7 @@ class TwwDiffSchemaService(
         )
 
         if allowed_targets is None:
-            raise ValueError(
-                f"Unknown diff-job status: {expected_status!r}."
-            )
+            raise ValueError(f"Unknown diff-job status: {expected_status!r}.")
 
         if new_status not in allowed_targets:
             raise ValueError(
@@ -911,10 +891,13 @@ class TwwDiffSchemaService(
         *,
         cursor,
         job_id: str,
-    ) -> dict[
-        str,
-        Any,
-    ] | None:
+    ) -> (
+        dict[
+            str,
+            Any,
+        ]
+        | None
+    ):
         cursor.execute(
             f"""
             SELECT
@@ -938,9 +921,7 @@ class TwwDiffSchemaService(
             FROM {self._table("metadata")}
             WHERE job_id = %s;
             """,
-            (
-                job_id,
-            ),
+            (job_id,),
         )
 
         return self._fetchone_mapping(
@@ -1063,9 +1044,7 @@ class TwwDiffSchemaService(
             WHERE job_id = %s
             ORDER BY diff_id;
             """,
-            (
-                job_db_id,
-            ),
+            (job_db_id,),
         )
 
         rows = self._fetchall_mappings(
@@ -1153,9 +1132,12 @@ class TwwDiffSchemaService(
             if column_name in reserved_columns:
                 continue
 
-            if column_types.get(
-                column_name,
-            ) == "geometry":
+            if (
+                column_types.get(
+                    column_name,
+                )
+                == "geometry"
+            ):
                 geometries[column_name] = value
                 continue
 
@@ -1195,15 +1177,10 @@ class TwwDiffSchemaService(
             )
             ORDER BY table_name;
             """,
-            (
-                self.schema,
-            ),
+            (self.schema,),
         )
 
-        return tuple(
-            str(row[0])
-            for row in cursor.fetchall()
-        )
+        return tuple(str(row[0]) for row in cursor.fetchall())
 
     def _job_db_id(
         self,
@@ -1217,9 +1194,7 @@ class TwwDiffSchemaService(
             FROM {self._table("metadata")}
             WHERE job_id = %s;
             """,
-            (
-                job_id,
-            ),
+            (job_id,),
         )
 
         row = cursor.fetchone()
@@ -1234,10 +1209,13 @@ class TwwDiffSchemaService(
     def _fetchone_mapping(
         self,
         cursor,
-    ) -> dict[
-        str,
-        Any,
-    ] | None:
+    ) -> (
+        dict[
+            str,
+            Any,
+        ]
+        | None
+    ):
         row = cursor.fetchone()
 
         if row is None:
@@ -1287,9 +1265,7 @@ class TwwDiffSchemaService(
         ...,
     ]:
         if cursor.description is None:
-            raise RuntimeError(
-                "The database cursor has no result description."
-            )
+            raise RuntimeError("The database cursor has no result description.")
 
         return tuple(
             str(
@@ -1322,9 +1298,7 @@ class TwwDiffSchemaService(
         ):
             raise DiffSchemaContractError(
                 column_name=field_name,
-                message=(
-                    "The diff field must contain a JSON object."
-                ),
+                message=("The diff field must contain a JSON object."),
             )
 
         return decoded
@@ -1345,9 +1319,7 @@ class TwwDiffSchemaService(
         ):
             raise DiffSchemaContractError(
                 column_name=field_name,
-                message=(
-                    "The diff field must contain a JSON array."
-                ),
+                message=("The diff field must contain a JSON array."),
             )
 
         return decoded
@@ -1377,9 +1349,7 @@ class TwwDiffSchemaService(
             DELETE FROM {self._table("metadata")}
             WHERE job_id = %s;
             """,
-            (
-                job_id,
-            ),
+            (job_id,),
         )
 
     def _assert_job_does_not_exist(
@@ -1396,24 +1366,18 @@ class TwwDiffSchemaService(
                 WHERE job_id = %s
             );
             """,
-            (
-                job_id,
-            ),
+            (job_id,),
         )
 
         row = cursor.fetchone()
 
         if row is None:
-            raise RuntimeError(
-                "Could not determine whether the diff job exists."
-            )
+            raise RuntimeError("Could not determine whether the diff job exists.")
 
         if bool(
             row[0],
         ):
-            raise RuntimeError(
-                f"Diff job {job_id!r} already exists."
-            )
+            raise RuntimeError(f"Diff job {job_id!r} already exists.")
 
     def _insert_metadata(
         self,
@@ -1481,9 +1445,7 @@ class TwwDiffSchemaService(
         row = cursor.fetchone()
 
         if row is None:
-            raise RuntimeError(
-                f"Could not create diff review job {job_id!r}."
-            )
+            raise RuntimeError(f"Could not create diff review job {job_id!r}.")
 
         return int(row[0])
 
@@ -1522,11 +1484,9 @@ class TwwDiffSchemaService(
                 )
             )
 
-            expression, expression_parameters = (
-                self._value_expression(
-                    column_name=column_name,
-                    value=value,
-                )
+            expression, expression_parameters = self._value_expression(
+                column_name=column_name,
+                value=value,
             )
 
             expressions.append(
@@ -1546,10 +1506,8 @@ class TwwDiffSchemaService(
                 )
             )
 
-            expression, expression_parameters = (
-                self._geometry_expression(
-                    geometry_value,
-                )
+            expression, expression_parameters = self._geometry_expression(
+                geometry_value,
             )
 
             expressions.append(
@@ -1561,12 +1519,8 @@ class TwwDiffSchemaService(
 
         if not columns:
             raise DiffSchemaContractError(
-                table_name=(
-                    f"{self.schema}.{table_name}"
-                ),
-                message=(
-                    "The review feature contains no persistable columns."
-                ),
+                table_name=(f"{self.schema}.{table_name}"),
+                message=("The review feature contains no persistable columns."),
             )
 
         cursor.execute(
@@ -1647,10 +1601,7 @@ class TwwDiffSchemaService(
         return {
             key: value
             for key, value in feature.attributes.items()
-            if (
-                key in table_columns
-                and key not in reserved_columns
-            )
+            if (key in table_columns and key not in reserved_columns)
         }
 
     def _reserved_feature_columns(
@@ -1744,9 +1695,7 @@ class TwwDiffSchemaService(
         if wkt is None:
             raise DiffSchemaContractError(
                 column_name="geometry",
-                message=(
-                    "Unsupported non-null geometry representation."
-                ),
+                message=("Unsupported non-null geometry representation."),
             )
 
         return (
@@ -1862,10 +1811,7 @@ class TwwDiffSchemaService(
             ),
         )
 
-        return {
-            str(row[0]): str(row[1])
-            for row in cursor.fetchall()
-        }
+        return {str(row[0]): str(row[1]) for row in cursor.fetchall()}
 
     def _assert_required_columns(
         self,
@@ -1894,12 +1840,8 @@ class TwwDiffSchemaService(
 
         if missing_columns:
             raise DiffSchemaContractError(
-                table_name=(
-                    f"{self.schema}.{table_name}"
-                ),
-                message=(
-                    f"Missing columns: {sorted(missing_columns)}"
-                ),
+                table_name=(f"{self.schema}.{table_name}"),
+                message=(f"Missing columns: {sorted(missing_columns)}"),
             )
 
     def _json_dumps(
@@ -1945,10 +1887,7 @@ class TwwDiffSchemaService(
         self,
         table_name: str,
     ) -> str:
-        return (
-            f"{self._quote_identifier(self.schema)}."
-            f"{self._quote_identifier(table_name)}"
-        )
+        return f"{self._quote_identifier(self.schema)}." f"{self._quote_identifier(table_name)}"
 
     def _quote_identifier(
         self,
@@ -1988,8 +1927,7 @@ class TwwDiffSchemaService(
             return self._prepared_sources[job_id]
         except KeyError as exception:
             raise KeyError(
-                "No prepared source exists for diff workflow "
-                f"{job_id!r}."
+                "No prepared source exists for diff workflow " f"{job_id!r}."
             ) from exception
 
     def clear_prepared_source(

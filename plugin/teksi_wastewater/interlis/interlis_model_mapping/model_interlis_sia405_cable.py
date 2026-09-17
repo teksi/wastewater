@@ -1,11 +1,9 @@
-from .. import config
 from .model_interlis_sia405_base import ModelInterlisSia405Base
 
 
 class ModelInterlisSia405Fernwirkkabel(ModelInterlisSia405Base):
     def __init__(self, schema):
         super().__init__(schema)
-
 
         class kabel(ModelInterlisSia405Base.sia405_baseclass):
             __tablename__ = "kabel"

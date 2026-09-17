@@ -1,9 +1,8 @@
 import subprocess
 import time
 from pathlib import Path
+
 import pytest
-
-
 from teksi_wastewater.hooks.adapters.tww_interlis_service_adapter import (
     TwwInterlisContext,
 )
@@ -12,7 +11,6 @@ from teksi_wastewater.hooks.adapters.tww_quarantine_runner import (
 )
 from teksi_wastewater.interlis import config
 from teksi_wastewater.utils.database_utils import DatabaseUtils
-
 
 DB_HOST = "db"
 DB_NAME = "tww"
@@ -24,11 +22,7 @@ TWW_TEST_LOG_DIR = Path(
 )
 
 
-DATA_DIR = (
-    Path(__file__).parents[1]
-    / "qgis"
-    / "data"
-)
+DATA_DIR = Path(__file__).parents[1] / "qgis" / "data"
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -56,9 +50,7 @@ def run(
         result.stderr,
     )
 
-    assert result.returncode == 0, (
-        f"Command failed: {cmd}"
-    )
+    assert result.returncode == 0, f"Command failed: {cmd}"
 
     return result
 
@@ -96,9 +88,7 @@ def wait_for_db() -> None:
             2,
         )
 
-    raise RuntimeError(
-        "Database not ready"
-    )
+    raise RuntimeError("Database not ready")
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -152,13 +142,9 @@ def _drop_and_recreate_schema(
         '""',
     )
 
-    DatabaseUtils.execute(
-        f'DROP SCHEMA IF EXISTS "{quoted_schema}" CASCADE;'
-    )
+    DatabaseUtils.execute(f'DROP SCHEMA IF EXISTS "{quoted_schema}" CASCADE;')
 
-    DatabaseUtils.execute(
-        f'CREATE SCHEMA "{quoted_schema}";'
-    )
+    DatabaseUtils.execute(f'CREATE SCHEMA "{quoted_schema}";')
 
 
 @pytest.fixture(scope="module")

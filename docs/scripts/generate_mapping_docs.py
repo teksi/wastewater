@@ -1,4 +1,5 @@
 from pathlib import Path
+
 import yaml
 
 HEADER = """.. Generated file.
@@ -6,9 +7,11 @@ HEADER = """.. Generated file.
 
 """
 
+
 def load_yaml(path: Path) -> dict:
     with open(path, encoding="utf-8") as file:
         return yaml.safe_load(file) or {}
+
 
 def render_class(name: str, definition: dict) -> str:
     lines = [
@@ -59,16 +62,12 @@ def render_class(name: str, definition: dict) -> str:
 
         if "targets" in attribute_definition:
             for target in attribute_definition["targets"]:
-                lines.append(
-                    f"* ``{target['class']}.{target['attribute']}``"
-                )
+                lines.append(f"* ``{target['class']}.{target['attribute']}``")
 
         if "function" in attribute_definition:
             function = attribute_definition["function"]
 
-            lines.append(
-                f"* Function: ``{function['schema']}.{function['name']}``"
-            )
+            lines.append(f"* Function: ``{function['schema']}.{function['name']}``")
 
         lines.append("")
 

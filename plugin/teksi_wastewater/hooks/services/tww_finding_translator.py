@@ -1,33 +1,26 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-from collections.abc import Callable, Mapping, Sequence
-from typing import Any, ClassVar
 import logging
+from collections.abc import Callable, Mapping, Sequence
+from dataclasses import dataclass
+from typing import Any, ClassVar
 
-
+from teksi_hooks.exceptions import Finding
+from teksi_hooks.models.review import (
+    DiffReviewJob,
+)
+from teksi_hooks.services.finding_translator import FINDING_MESSAGE_TEMPLATES
 
 from .tww_diff_review_service import (
     DiffReviewDecision,
 )
 
-from teksi_hooks.models.review import (
-    DiffReviewJob,
-)
-from teksi_hooks.exceptions import Finding
-from teksi_hooks.services.finding_translator import FINDING_MESSAGE_TEMPLATES
-
-
 TWW_FINDING_MESSAGE_TEMPLATES: Mapping[
     str,
     str,
 ] = {
-    "invalid_geometry": (
-        "The geometry is invalid."
-    ),
-    "quarantine_validation_failed": (
-        "Quarantine validation failed: {reason}"
-    ),
+    "invalid_geometry": ("The geometry is invalid."),
+    "quarantine_validation_failed": ("Quarantine validation failed: {reason}"),
 }
 
 
@@ -95,8 +88,7 @@ class TwwDiffFindingsLogger:
     ) -> None:
         for finding_dict in finding_dicts:
             self.logger.info(
-                "Diff finding: job=%s class=%s object=%s "
-                "kind=%s code=%s details=%s",
+                "Diff finding: job=%s class=%s object=%s " "kind=%s code=%s details=%s",
                 job_id,
                 class_id,
                 object_id,
@@ -109,6 +101,7 @@ class TwwDiffFindingsLogger:
                     {},
                 ),
             )
+
 
 @dataclass(slots=True)
 class TwwFindingTranslator:
@@ -127,9 +120,7 @@ class TwwFindingTranslator:
         str,
     ]
 
-    templates:ClassVar[
-        Mapping[str,str]
-    ] = {
+    templates: ClassVar[Mapping[str, str]] = {
         **FINDING_MESSAGE_TEMPLATES,
         **TWW_FINDING_MESSAGE_TEMPLATES,
     }

@@ -3,7 +3,6 @@ from __future__ import annotations
 import argparse
 
 import pgserviceparser
-
 from teksi_wastewater.hooks.adapters.tww_database_connection_factory import (
     TwwDatabaseConnectionFactory,
 )
@@ -53,9 +52,9 @@ def _database_connection_config(
     parameters.update(
         {
             key: value
-            for key, value
-            in explicit_parameters.items()
-            if value not in (
+            for key, value in explicit_parameters.items()
+            if value
+            not in (
                 None,
                 "",
             )

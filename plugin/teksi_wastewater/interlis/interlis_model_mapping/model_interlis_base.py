@@ -1,4 +1,3 @@
-from .. import config
 from .model_base import ModelBase
 
 

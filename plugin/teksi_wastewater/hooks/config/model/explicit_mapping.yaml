@@ -33,7 +33,7 @@ models:
       GepMassnahme:
         identities:
           measure:
-        attributes: 
+        attributes:
           kategorie:
             target:
               class: measure
@@ -50,7 +50,7 @@ models:
       Einzugsgebiet:
         identities:
           catchment_area:
-        attributes: 
+        attributes:
           entwaesserungssystemag_geplant:
             target:
               class: catchment_area
@@ -78,7 +78,7 @@ models:
           agxx_building_group:
             target_attribute: fk_building_group
           building_group:
-        attributes: 
+        attributes:
           anzstaendigeeinwohner:
             target:
               class: agxx_building_group
@@ -121,12 +121,12 @@ models:
               attribute: ag96_disposal_roof_water
               value_list: tww_vl.building_group_ag96_disposal_type
               mapping_attribute: value_de
-    
+
       SBWEinzugsgebiet:
         identities:
           agxx_catchment_area_totals:
             target_attribute: fk_catchment_area_totals
-        attributes: 
+        attributes:
           fremdwasseranfall_geplant:
             target:
               class: agxx_catchment_area_totals
@@ -146,7 +146,7 @@ models:
           agxx_infiltration_zone:
             target_attribute: fk_infiltration_zone
           infiltration_zone:
-        attributes: 
+        attributes:
           durchlaessigkeit:
             target:
               class: agxx_infiltration_zone
@@ -212,4 +212,3 @@ models:
   vsa_kek:
     defaults:
       inherit_from: sia405_abwasser
-

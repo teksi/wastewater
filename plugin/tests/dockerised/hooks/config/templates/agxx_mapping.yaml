@@ -16,7 +16,7 @@ classes:
         row: $row
 
   GepMassnahme:
-    attributes: 
+    attributes:
       kategorie:
         targets:
           - class: measure
@@ -29,7 +29,7 @@ classes:
             vl_extension: true
 
   Einzugsgebiet:
-    attributes: 
+    attributes:
       entwaesserungssystemag_geplant:
         targets:
           - class: catchment_area
@@ -51,7 +51,7 @@ classes:
 
 
   BautenAusserhalbBaugebiet:
-    attributes: 
+    attributes:
       anzstaendigeeinwohner:
         targets:
           - class: agxx_building_group
@@ -85,9 +85,9 @@ classes:
         targets:
           - class: agxx_building_group
             attribute: ag96_disposal_roof_water
- 
+
   SBWEinzugsgebiet:
-    attributes: 
+    attributes:
       fremdwasseranfall_geplant:
         targets:
           - class: agxx_catchment_area_totals
@@ -110,7 +110,7 @@ classes:
 
 
   VersickerungsbereichAG:
-    attributes: 
+    attributes:
       durchlaessigkeit:
         targets:
           - class: agxx_infiltration_zone

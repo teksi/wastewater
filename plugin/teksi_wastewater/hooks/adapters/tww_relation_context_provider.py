@@ -6,9 +6,6 @@ from typing import Any
 
 from sqlalchemy import inspect
 from sqlalchemy.exc import NoInspectionAvailable
-
-from ...interlis import config
-
 from teksi_hooks.capabilities.mapping import (
     EffectiveModelMappingCapability,
 )
@@ -26,7 +23,6 @@ from teksi_hooks.models.mapping import (
 from teksi_hooks.services.relation_context_provider import (
     RelationContextProvider,
 )
-
 
 
 class TwwRelationContextProvider(
@@ -67,7 +63,6 @@ class TwwRelationContextProvider(
         self.quarantine_classes = quarantine_classes
         self.model_mapping = model_mapping
 
-
     def relation_contexts(
         self,
     ) -> tuple[
@@ -78,9 +73,7 @@ class TwwRelationContextProvider(
         Return resolved relation contexts for the configured quarantine classes.
         """
 
-        contexts: list[
-            RelationContext
-        ] = []
+        contexts: list[RelationContext] = []
 
         for relation in self.quarantine_classes.values():
             contexts.append(
@@ -108,31 +101,20 @@ class TwwRelationContextProvider(
 
         source_class_id = relation.__name__
 
-        explicit_class = (
-            self._try_explicit_class_definition(
-                source_class_id,
-            )
+        explicit_class = self._try_explicit_class_definition(
+            source_class_id,
         )
 
-        if (
-            explicit_class is not None
-            and explicit_class.function is not None
-        ):
+        if explicit_class is not None and explicit_class.function is not None:
             return explicit_class
 
-        implicit_class = (
-            self._try_implicit_class_definition(
-                source_class_id,
-            )
+        implicit_class = self._try_implicit_class_definition(
+            source_class_id,
         )
 
-        if (
-            explicit_class is None
-            and implicit_class is None
-        ):
+        if explicit_class is None and implicit_class is None:
             raise KeyError(
-                "No explicit or implicit mapping exists for "
-                f"source class {source_class_id!r}."
+                "No explicit or implicit mapping exists for " f"source class {source_class_id!r}."
             )
 
         resolved = self._resolve_attribute_backed_class(
@@ -178,11 +160,9 @@ class TwwRelationContextProvider(
             implicit_class=implicit_class,
         )
 
-        applicable_default_attributes = (
-            self._applicable_default_attributes(
-                source_attributes=source_attributes,
-                defaults=defaults,
-            )
+        applicable_default_attributes = self._applicable_default_attributes(
+            source_attributes=source_attributes,
+            defaults=defaults,
         )
 
         relations = self._resolved_relations(
@@ -190,12 +170,10 @@ class TwwRelationContextProvider(
             explicit_class=explicit_class,
         )
 
-        relation_attributes = (
-            self._localized_relation_attribute_mappings(
-                canonical_class_id=canonical_class_id,
-                source_attributes=source_attributes,
-                relations=relations,
-            )
+        relation_attributes = self._localized_relation_attribute_mappings(
+            canonical_class_id=canonical_class_id,
+            source_attributes=source_attributes,
+            relations=relations,
         )
 
         attributes: dict[
@@ -320,10 +298,7 @@ class TwwRelationContextProvider(
         supplies the primary canonical class.
         """
 
-        if (
-            explicit_class is not None
-            and explicit_class.canonical_class_id is not None
-        ):
+        if explicit_class is not None and explicit_class.canonical_class_id is not None:
             return explicit_class.canonical_class_id
 
         if implicit_class is not None:
@@ -334,9 +309,7 @@ class TwwRelationContextProvider(
     def _source_attribute_names(
         self,
         relation,
-    ) -> frozenset[
-        str
-    ]:
+    ) -> frozenset[str]:
         """
         Return effective SQLAlchemy source attribute identifiers.
 
@@ -344,9 +317,7 @@ class TwwRelationContextProvider(
         and inherited SQLAlchemy attributes remain visible.
         """
 
-        attribute_names: set[
-            str
-        ] = set()
+        attribute_names: set[str] = set()
 
         try:
             mapper = inspect(
@@ -417,8 +388,7 @@ class TwwRelationContextProvider(
 
         return {
             source_attribute: mapping
-            for source_attribute, mapping
-            in defaults.attributes.items()
+            for source_attribute, mapping in defaults.attributes.items()
             if source_attribute in source_attributes
         }
 
@@ -488,9 +458,12 @@ class TwwRelationContextProvider(
             if not matches:
                 continue
 
-            if len(
-                matches,
-            ) != 1:
+            if (
+                len(
+                    matches,
+                )
+                != 1
+            ):
                 raise ValueError(
                     "Several source attributes match canonical "
                     f"relation {canonical_class_id!r}."
@@ -508,12 +481,8 @@ class TwwRelationContextProvider(
                 canonical_class_id=canonical_class_id,
                 canonical_attr_id=canonical_attribute_id,
                 foreign_key=ForeignKeyMapping(
-                    referenced_class_id=(
-                        relation_mapping.referenced_class_id
-                    ),
-                    referenced_attribute_id=(
-                        relation_mapping.referenced_attribute_id
-                    ),
+                    referenced_class_id=(relation_mapping.referenced_class_id),
+                    referenced_attribute_id=(relation_mapping.referenced_attribute_id),
                 ),
                 value_list=None,
             )
@@ -568,27 +537,19 @@ class TwwRelationContextProvider(
             identity,
         ) in defaults.identities.items():
             if target_class_id in target_class_ids:
-                identities[
-                    target_class_id
-                ] = identity
+                identities[target_class_id] = identity
 
         if explicit_class is not None:
             identities.update(
                 explicit_class.identities,
             )
 
-        if (
-            canonical_class_id is not None
-            and canonical_class_id not in identities
-        ):
-            identities[
-                canonical_class_id
-            ] = defaults.identity
+        if canonical_class_id is not None and canonical_class_id not in identities:
+            identities[canonical_class_id] = defaults.identity
 
         return {
             target_class_id: identity
-            for target_class_id, identity
-            in identities.items()
+            for target_class_id, identity in identities.items()
             if target_class_id in target_class_ids
         }
 
@@ -605,11 +566,9 @@ class TwwRelationContextProvider(
         added for source attributes not already present.
         """
 
-        foreign_key_mappings = (
-            self._automap_foreign_key_mappings(
-                relation=relation,
-                class_mapping=class_mapping,
-            )
+        foreign_key_mappings = self._automap_foreign_key_mappings(
+            relation=relation,
+            class_mapping=class_mapping,
         )
 
         if not foreign_key_mappings:
@@ -662,74 +621,45 @@ class TwwRelationContextProvider(
         ] = {}
 
         for relationship in mapper.relationships:
-            referenced_relation = (
-                relationship.mapper.class_
-            )
+            referenced_relation = relationship.mapper.class_
 
-            referenced_source_class_id = (
-                referenced_relation.__name__
-            )
+            referenced_source_class_id = referenced_relation.__name__
 
-            referenced_class_mapping = (
-                self._resolved_referenced_class_mapping(
-                    source_class_id=(
-                        referenced_source_class_id
-                    ),
-                )
+            referenced_class_mapping = self._resolved_referenced_class_mapping(
+                source_class_id=(referenced_source_class_id),
             )
 
             if referenced_class_mapping is None:
                 continue
 
-            referenced_class_id = (
-                referenced_class_mapping
-                .canonical_class_id
-            )
+            referenced_class_id = referenced_class_mapping.canonical_class_id
 
             if referenced_class_id is None:
                 continue
 
-            referenced_identity = (
-                self._primary_identity(
-                    referenced_class_mapping,
-                )
+            referenced_identity = self._primary_identity(
+                referenced_class_mapping,
             )
 
             if referenced_identity is None:
                 continue
 
-            for local_column in (
-                relationship.local_columns
-            ):
+            for local_column in relationship.local_columns:
                 if not local_column.foreign_keys:
                     continue
 
-                source_attribute = (
-                    self._column_attribute_name(
-                        local_column,
-                    )
+                source_attribute = self._column_attribute_name(
+                    local_column,
                 )
 
-                mappings[source_attribute] = (
-                    AttributeMapping(
-                        canonical_class_id=(
-                            class_mapping
-                            .canonical_class_id
-                        ),
-                        canonical_attr_id=(
-                            source_attribute
-                        ),
-                        foreign_key=ForeignKeyMapping(
-                            referenced_class_id=(
-                                referenced_class_id
-                            ),
-                            referenced_attribute_id=(
-                                referenced_identity
-                                .canonical_attribute
-                            ),
-                        ),
-                        value_list=None,
-                    )
+                mappings[source_attribute] = AttributeMapping(
+                    canonical_class_id=(class_mapping.canonical_class_id),
+                    canonical_attr_id=(source_attribute),
+                    foreign_key=ForeignKeyMapping(
+                        referenced_class_id=(referenced_class_id),
+                        referenced_attribute_id=(referenced_identity.canonical_attribute),
+                    ),
+                    value_list=None,
                 )
 
         return mappings
@@ -745,35 +675,23 @@ class TwwRelationContextProvider(
         This deliberately avoids recursively applying automap enrichment.
         """
 
-        explicit_class = (
-            self._try_explicit_class_definition(
-                source_class_id,
-            )
+        explicit_class = self._try_explicit_class_definition(
+            source_class_id,
         )
 
-        if (
-            explicit_class is not None
-            and explicit_class.function is not None
-        ):
+        if explicit_class is not None and explicit_class.function is not None:
             return explicit_class
 
-        implicit_class = (
-            self._try_implicit_class_definition(
-                source_class_id,
-            )
+        implicit_class = self._try_implicit_class_definition(
+            source_class_id,
         )
 
-        if (
-            explicit_class is None
-            and implicit_class is None
-        ):
+        if explicit_class is None and implicit_class is None:
             return None
 
-        canonical_class_id = (
-            self._canonical_class_id(
-                explicit_class=explicit_class,
-                implicit_class=implicit_class,
-            )
+        canonical_class_id = self._canonical_class_id(
+            explicit_class=explicit_class,
+            implicit_class=implicit_class,
         )
 
         identities: dict[
@@ -791,24 +709,15 @@ class TwwRelationContextProvider(
                 explicit_class.identities,
             )
 
-        if (
-            canonical_class_id is not None
-            and canonical_class_id not in identities
-        ):
-            identities[
-                canonical_class_id
-            ] = self._explicit_defaults().identity
+        if canonical_class_id is not None and canonical_class_id not in identities:
+            identities[canonical_class_id] = self._explicit_defaults().identity
 
         return ClassMapping(
             canonical_class_id=canonical_class_id,
             identities=identities,
             attributes={},
             relations={},
-            function=(
-                explicit_class.function
-                if explicit_class is not None
-                else None
-            ),
+            function=(explicit_class.function if explicit_class is not None else None),
         )
 
     def _primary_identity(
@@ -819,9 +728,7 @@ class TwwRelationContextProvider(
         Return the identity of the primary canonical class.
         """
 
-        canonical_class_id = (
-            class_mapping.canonical_class_id
-        )
+        canonical_class_id = class_mapping.canonical_class_id
 
         if canonical_class_id is None:
             return None
@@ -844,10 +751,8 @@ class TwwRelationContextProvider(
         if class_mapping.function is not None:
             return
 
-        source_attributes = (
-            self._source_attribute_names(
-                relation,
-            )
+        source_attributes = self._source_attribute_names(
+            relation,
         )
 
         missing_source_attributes = (
@@ -871,8 +776,7 @@ class TwwRelationContextProvider(
             attribute_mapping,
         ) in class_mapping.attributes.items():
             target_class_id = (
-                attribute_mapping.canonical_class_id
-                or class_mapping.canonical_class_id
+                attribute_mapping.canonical_class_id or class_mapping.canonical_class_id
             )
 
             if target_class_id is None:
@@ -882,10 +786,7 @@ class TwwRelationContextProvider(
                     f"{source_attribute!r}."
                 )
 
-            if (
-                target_class_id
-                not in class_mapping.identities
-            ):
+            if target_class_id not in class_mapping.identities:
                 raise ValueError(
                     "Resolved mapping has no canonical identity "
                     f"for target class {target_class_id!r}, "

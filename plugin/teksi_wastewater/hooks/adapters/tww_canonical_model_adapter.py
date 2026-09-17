@@ -7,7 +7,6 @@ from typing import Any
 from zlib import crc32
 
 from psycopg import sql
-
 from teksi_hooks.capabilities.connection import (
     DatabaseConnectionFactory,
 )
@@ -22,7 +21,6 @@ from teksi_hooks.models.canonical_object import (
 from ...interlis.interlis_model_mapping.model_tww_od import (
     ModelTwwOd,
 )
-
 
 AGXX_EXTENSION_CLASSES = frozenset(
     {
@@ -70,10 +68,13 @@ class TwwCanonicalModelAdapter:
         init=False,
         repr=False,
     )
-    automap_classes: Mapping[
-        str,
-        Any,
-    ] | None = None
+    automap_classes: (
+        Mapping[
+            str,
+            Any,
+        ]
+        | None
+    ) = None
 
     def canonical_model(
         self,
@@ -149,11 +150,7 @@ class TwwCanonicalModelAdapter:
                 attributes,
             )
 
-        return {
-            key: metadata
-            for key, metadata in attributes.items()
-            if key[0] == class_id
-        }
+        return {key: metadata for key, metadata in attributes.items() if key[0] == class_id}
 
     def values(
         self,
@@ -168,14 +165,8 @@ class TwwCanonicalModelAdapter:
         return {
             key: metadata
             for key, metadata in values.items()
-            if (
-                class_id is None
-                or key[0] == class_id
-            )
-            and (
-                attribute_id is None
-                or key[1] == attribute_id
-            )
+            if (class_id is None or key[0] == class_id)
+            and (attribute_id is None or key[1] == attribute_id)
         }
 
     def class_metadata(
@@ -283,11 +274,7 @@ class TwwCanonicalModelAdapter:
             )
         )
 
-        return -(
-            checksum
-            or 1
-        )
-
+        return -(checksum or 1)
 
     def _reflected_classes(
         self,
@@ -316,9 +303,7 @@ class TwwCanonicalModelAdapter:
                 table.name,
             )
 
-            classes[
-                class_id
-            ] = CanonicalClassMetadata(
+            classes[class_id] = CanonicalClassMetadata(
                 source_id=self._reflected_source_id(
                     f"class:{class_id}",
                 ),
@@ -367,9 +352,7 @@ class TwwCanonicalModelAdapter:
                     )
                 ] = CanonicalAttributeMetadata(
                     source_id=self._reflected_source_id(
-                        "attribute:"
-                        f"{class_id}."
-                        f"{attribute_id}",
+                        "attribute:" f"{class_id}." f"{attribute_id}",
                     ),
                     identifier=attribute_id,
                     field_datatype=self._sqlalchemy_datatype(
@@ -406,14 +389,16 @@ class TwwCanonicalModelAdapter:
                 f"from ModelTwwOd: {class_id!r}."
             )
 
-        if getattr(
-            mapped_class,
-            "__table__",
-            None,
-        ) is None:
+        if (
+            getattr(
+                mapped_class,
+                "__table__",
+                None,
+            )
+            is None
+        ):
             raise RuntimeError(
-                "Automapped canonical extension class has no table "
-                f"metadata: {class_id!r}."
+                "Automapped canonical extension class has no table " f"metadata: {class_id!r}."
             )
 
         return mapped_class
@@ -422,15 +407,16 @@ class TwwCanonicalModelAdapter:
         self,
         column: Any,
     ) -> str:
-        type_name = type(
-            column.type,
-        ).__name__.strip().lower()
-
-        if (
-            type_name == "geometry"
-            or type_name.startswith(
-                "geometry",
+        type_name = (
+            type(
+                column.type,
             )
+            .__name__.strip()
+            .lower()
+        )
+
+        if type_name == "geometry" or type_name.startswith(
+            "geometry",
         ):
             return "geometry"
 
@@ -454,9 +440,13 @@ class TwwCanonicalModelAdapter:
         if python_type is float:
             return "numeric"
 
-        return str(
-            column.type,
-        ).strip().lower()
+        return (
+            str(
+                column.type,
+            )
+            .strip()
+            .lower()
+        )
 
     def _merge_classes(
         self,
@@ -512,8 +502,7 @@ class TwwCanonicalModelAdapter:
     def _dictionary_classes(
         self,
     ) -> dict[str, CanonicalClassMetadata]:
-        query = sql.SQL(
-            """
+        query = sql.SQL("""
             SELECT
                 t.id AS source_id,
                 t.tablename AS class_id,
@@ -524,8 +513,7 @@ class TwwCanonicalModelAdapter:
             FROM {}.dictionary_od_table AS t
             ORDER BY
                 t.tablename;
-            """
-        ).format(
+            """).format(
             sql.Identifier(
                 self.schema,
             )
@@ -550,8 +538,7 @@ class TwwCanonicalModelAdapter:
         tuple[str, str],
         CanonicalAttributeMetadata,
     ]:
-        query = sql.SQL(
-            """
+        query = sql.SQL("""
             SELECT
                 f.attribute_id AS source_id,
                 t.tablename AS class_id,
@@ -567,8 +554,7 @@ class TwwCanonicalModelAdapter:
             ORDER BY
                 t.tablename,
                 f.field_name;
-            """
-        ).format(
+            """).format(
             sql.Identifier(
                 self.schema,
             ),
@@ -601,8 +587,7 @@ class TwwCanonicalModelAdapter:
         tuple[str, str, str],
         CanonicalValueMetadata,
     ]:
-        query = sql.SQL(
-            """
+        query = sql.SQL("""
             SELECT
                 v.value_id AS source_id,
                 t.tablename AS class_id,
@@ -622,8 +607,7 @@ class TwwCanonicalModelAdapter:
                 t.tablename,
                 f.field_name,
                 v.value_name;
-            """
-        ).format(
+            """).format(
             sql.Identifier(
                 self.schema,
             ),
@@ -736,9 +720,7 @@ class TwwCanonicalModelAdapter:
             ).strip()
 
             if normalized_value:
-                names[
-                    language.value
-                ] = normalized_value
+                names[language.value] = normalized_value
 
         return LocalizedMetadata(
             names=names,
@@ -753,11 +735,8 @@ class TwwCanonicalModelAdapter:
 
         normalized = field_datatype.strip().lower()
 
-        return (
-            normalized == "geometry"
-            or normalized.startswith(
-                "geometry(",
-            )
+        return normalized == "geometry" or normalized.startswith(
+            "geometry(",
         )
 
     def _fetchall_dict(

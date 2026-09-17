@@ -6,11 +6,9 @@ from types import SimpleNamespace
 from unittest.mock import Mock
 
 import pytest
-
 from teksi_hooks.models.review import (
     ReviewFeature,
 )
-
 from teksi_wastewater.hooks.exceptions import (
     DiffSchemaContractError,
 )
@@ -121,16 +119,8 @@ def _feature(
             "is_created": is_created,
             "is_altered": is_altered,
             "is_deleted": is_deleted,
-            "unpermitted_values": (
-                {}
-                if unpermitted_values is None
-                else unpermitted_values
-            ),
-            "permission_findings": (
-                []
-                if permission_findings is None
-                else permission_findings
-            ),
+            "unpermitted_values": ({} if unpermitted_values is None else unpermitted_values),
+            "permission_findings": ([] if permission_findings is None else permission_findings),
         },
         geometries={},
     )
@@ -144,11 +134,7 @@ def _class_mapping(
 ):
     return SimpleNamespace(
         canonical_class_id=canonical_class_id,
-        attributes=(
-            {}
-            if attributes is None
-            else attributes
-        ),
+        attributes=({} if attributes is None else attributes),
         function=function,
     )
 
@@ -202,48 +188,28 @@ def _service(
     validation_definition = Mock()
 
     diff_schema_service.review_features.return_value = (
-        {}
-        if features_by_class is None
-        else features_by_class
+        {} if features_by_class is None else features_by_class
     )
 
-    configured_class_mappings = (
-        {}
-        if class_mappings is None
-        else class_mappings
-    )
+    configured_class_mappings = {} if class_mappings is None else class_mappings
 
-    model_mapping.try_class_definition.side_effect = (
-        lambda source_class_id: (
-            configured_class_mappings.get(
-                source_class_id,
-            )
+    model_mapping.try_class_definition.side_effect = lambda source_class_id: (
+        configured_class_mappings.get(
+            source_class_id,
         )
     )
 
-    validation_definition.mandatory_for_class.side_effect = (
-        lambda canonical_class_id: (
-            (
-                {}
-                if mandatory_attributes is None
-                else mandatory_attributes
-            ).get(
-                canonical_class_id,
-                frozenset(),
-            )
+    validation_definition.mandatory_for_class.side_effect = lambda canonical_class_id: (
+        ({} if mandatory_attributes is None else mandatory_attributes).get(
+            canonical_class_id,
+            frozenset(),
         )
     )
 
-    rows = (
-        []
-        if query_rows is None
-        else query_rows
-    )
+    rows = [] if query_rows is None else query_rows
 
-    quarantine_session.query.side_effect = (
-        lambda _source_class: _query(
-            rows=rows,
-        )
+    quarantine_session.query.side_effect = lambda _source_class: _query(
+        rows=rows,
     )
 
     service = TwwQuarantinePersistencePreparer(
@@ -270,8 +236,7 @@ def _service(
     )
 
 
-def test_prepare_commits_flushes_and_closes_session(
-) -> None:
+def test_prepare_commits_flushes_and_closes_session() -> None:
     (
         service,
         diff_schema_service,
@@ -295,8 +260,7 @@ def test_prepare_commits_flushes_and_closes_session(
     quarantine_session.close.assert_called_once_with()
 
 
-def test_prepare_rolls_back_and_closes_session_on_failure(
-) -> None:
+def test_prepare_rolls_back_and_closes_session_on_failure() -> None:
     (
         service,
         diff_schema_service,
@@ -305,10 +269,8 @@ def test_prepare_rolls_back_and_closes_session_on_failure(
         validation_definition,
     ) = _service()
 
-    diff_schema_service.review_features.side_effect = (
-        RuntimeError(
-            "Could not load review features.",
-        )
+    diff_schema_service.review_features.side_effect = RuntimeError(
+        "Could not load review features.",
     )
 
     with pytest.raises(
@@ -326,8 +288,7 @@ def test_prepare_rolls_back_and_closes_session_on_failure(
     quarantine_session.close.assert_called_once_with()
 
 
-def test_prepare_nulls_unpermitted_non_mandatory_attribute(
-) -> None:
+def test_prepare_nulls_unpermitted_non_mandatory_attribute() -> None:
     source_row = SimpleNamespace(
         obj_id="object-1",
         usage_current="mixed",
@@ -391,8 +352,7 @@ def test_prepare_nulls_unpermitted_non_mandatory_attribute(
     quarantine_session.close.assert_called_once_with()
 
 
-def test_prepare_preserves_permitted_attribute(
-) -> None:
+def test_prepare_preserves_permitted_attribute() -> None:
     source_row = SimpleNamespace(
         obj_id="object-1",
         usage_current="mixed",
@@ -433,8 +393,7 @@ def test_prepare_preserves_permitted_attribute(
     quarantine_session.commit.assert_called_once_with()
 
 
-def test_prepare_preserves_mandatory_unpermitted_attribute(
-) -> None:
+def test_prepare_preserves_mandatory_unpermitted_attribute() -> None:
     source_row = SimpleNamespace(
         obj_id="object-1",
         identifier="required-value",
@@ -497,8 +456,7 @@ def test_prepare_preserves_mandatory_unpermitted_attribute(
     quarantine_session.rollback.assert_not_called()
 
 
-def test_prepare_nulls_multiple_unpermitted_attributes(
-) -> None:
+def test_prepare_nulls_multiple_unpermitted_attributes() -> None:
     source_row = SimpleNamespace(
         obj_id="object-1",
         usage_current="mixed",
@@ -563,8 +521,7 @@ def test_prepare_nulls_multiple_unpermitted_attributes(
     quarantine_session.commit.assert_called_once_with()
 
 
-def test_prepare_ignores_non_altered_feature_for_attribute_nulling(
-) -> None:
+def test_prepare_ignores_non_altered_feature_for_attribute_nulling() -> None:
     source_row = SimpleNamespace(
         obj_id="object-1",
         usage_current="mixed",
@@ -610,8 +567,7 @@ def test_prepare_ignores_non_altered_feature_for_attribute_nulling(
     quarantine_session.commit.assert_called_once_with()
 
 
-def test_prepare_removes_forbidden_created_object(
-) -> None:
+def test_prepare_removes_forbidden_created_object() -> None:
     source_row = SimpleNamespace(
         obj_id="object-1",
     )
@@ -667,8 +623,7 @@ def test_prepare_removes_forbidden_created_object(
     quarantine_session.rollback.assert_not_called()
 
 
-def test_prepare_treats_empty_attribute_name_as_object_level_finding(
-) -> None:
+def test_prepare_treats_empty_attribute_name_as_object_level_finding() -> None:
     source_row = SimpleNamespace(
         obj_id="object-1",
     )
@@ -719,8 +674,7 @@ def test_prepare_treats_empty_attribute_name_as_object_level_finding(
     )
 
 
-def test_prepare_does_not_remove_created_object_for_attribute_finding(
-) -> None:
+def test_prepare_does_not_remove_created_object_for_attribute_finding() -> None:
     source_row = SimpleNamespace(
         obj_id="object-1",
         usage_current="mixed",
@@ -764,8 +718,7 @@ def test_prepare_does_not_remove_created_object_for_attribute_finding(
     quarantine_session.commit.assert_called_once_with()
 
 
-def test_prepare_rejects_non_array_permission_findings(
-) -> None:
+def test_prepare_rejects_non_array_permission_findings() -> None:
     feature = _feature(
         class_id="channel",
         object_id="object-1",
@@ -792,10 +745,7 @@ def test_prepare_rejects_non_array_permission_findings(
 
     with pytest.raises(
         DiffSchemaContractError,
-        match=(
-            "permission findings must contain "
-            "a JSON array"
-        ),
+        match=("permission findings must contain " "a JSON array"),
     ):
         service.prepare(
             job_id="job-1",
@@ -807,8 +757,7 @@ def test_prepare_rejects_non_array_permission_findings(
     quarantine_session.close.assert_called_once_with()
 
 
-def test_prepare_rejects_non_object_permission_finding(
-) -> None:
+def test_prepare_rejects_non_object_permission_finding() -> None:
     feature = _feature(
         class_id="channel",
         object_id="object-1",
@@ -835,10 +784,7 @@ def test_prepare_rejects_non_object_permission_finding(
 
     with pytest.raises(
         DiffSchemaContractError,
-        match=(
-            "Each persisted permission finding must "
-            "contain a JSON object"
-        ),
+        match=("Each persisted permission finding must " "contain a JSON object"),
     ):
         service.prepare(
             job_id="job-1",
@@ -850,8 +796,7 @@ def test_prepare_rejects_non_object_permission_finding(
     quarantine_session.close.assert_called_once_with()
 
 
-def test_prepare_rejects_non_object_unpermitted_values(
-) -> None:
+def test_prepare_rejects_non_object_unpermitted_values() -> None:
     feature = _feature(
         class_id="channel",
         object_id="object-1",
@@ -877,10 +822,7 @@ def test_prepare_rejects_non_object_unpermitted_values(
 
     with pytest.raises(
         DiffSchemaContractError,
-        match=(
-            "unpermitted values must contain "
-            "a JSON object"
-        ),
+        match=("unpermitted values must contain " "a JSON object"),
     ):
         service.prepare(
             job_id="job-1",
@@ -892,8 +834,7 @@ def test_prepare_rejects_non_object_unpermitted_values(
     quarantine_session.close.assert_called_once_with()
 
 
-def test_prepare_rejects_missing_attribute_mapping(
-) -> None:
+def test_prepare_rejects_missing_attribute_mapping() -> None:
     feature = _feature(
         class_id="channel",
         object_id="object-1",
@@ -929,9 +870,7 @@ def test_prepare_rejects_missing_attribute_mapping(
 
     with pytest.raises(
         DiffSchemaContractError,
-        match=(
-            "No quarantine attribute mapping exists"
-        ),
+        match=("No quarantine attribute mapping exists"),
     ):
         service.prepare(
             job_id="job-1",
@@ -943,8 +882,7 @@ def test_prepare_rejects_missing_attribute_mapping(
     quarantine_session.close.assert_called_once_with()
 
 
-def test_source_attribute_targets_ignores_unrelated_mapping(
-) -> None:
+def test_source_attribute_targets_ignores_unrelated_mapping() -> None:
     class_mapping = _class_mapping(
         canonical_class_id="channel",
         attributes={
@@ -986,8 +924,7 @@ def test_source_attribute_targets_ignores_unrelated_mapping(
     )
 
 
-def test_source_attribute_targets_ignores_function_mapping(
-) -> None:
+def test_source_attribute_targets_ignores_function_mapping() -> None:
     function_mapping = Mock()
 
     class_mapping = _class_mapping(
@@ -1021,8 +958,7 @@ def test_source_attribute_targets_ignores_function_mapping(
     assert targets == ()
 
 
-def test_source_attribute_targets_ignores_unknown_source_class(
-) -> None:
+def test_source_attribute_targets_ignores_unknown_source_class() -> None:
     (
         service,
         diff_schema_service,
@@ -1041,8 +977,7 @@ def test_source_attribute_targets_ignores_unknown_source_class(
     assert targets == ()
 
 
-def test_source_class_ids_returns_mapping_keys(
-) -> None:
+def test_source_class_ids_returns_mapping_keys() -> None:
     (
         service,
         diff_schema_service,
@@ -1064,8 +999,7 @@ def test_source_class_ids_returns_mapping_keys(
     )
 
 
-def test_source_class_ids_returns_mapped_container_attributes(
-) -> None:
+def test_source_class_ids_returns_mapped_container_attributes() -> None:
     (
         service,
         diff_schema_service,
@@ -1086,8 +1020,7 @@ def test_source_class_ids_returns_mapped_container_attributes(
     }
 
 
-def test_source_class_returns_class_from_mapping(
-) -> None:
+def test_source_class_returns_class_from_mapping() -> None:
     (
         service,
         diff_schema_service,
@@ -1107,8 +1040,7 @@ def test_source_class_returns_class_from_mapping(
     assert result is QuarantineChannel
 
 
-def test_source_class_returns_class_from_attribute_container(
-) -> None:
+def test_source_class_returns_class_from_attribute_container() -> None:
     (
         service,
         diff_schema_service,
@@ -1126,8 +1058,7 @@ def test_source_class_returns_class_from_attribute_container(
     assert result is QuarantineChannel
 
 
-def test_source_class_rejects_unknown_class(
-) -> None:
+def test_source_class_rejects_unknown_class() -> None:
     (
         service,
         diff_schema_service,
@@ -1147,8 +1078,7 @@ def test_source_class_rejects_unknown_class(
         )
 
 
-def test_set_source_attribute_null_rejects_unknown_attribute(
-) -> None:
+def test_set_source_attribute_null_rejects_unknown_attribute() -> None:
     feature = _feature(
         class_id="channel",
         object_id="object-1",
@@ -1184,8 +1114,7 @@ def test_set_source_attribute_null_rejects_unknown_attribute(
         )
 
 
-def test_source_row_rejects_missing_row(
-) -> None:
+def test_source_row_rejects_missing_row() -> None:
     (
         service,
         diff_schema_service,
@@ -1208,8 +1137,7 @@ def test_source_row_rejects_missing_row(
         )
 
 
-def test_try_source_row_returns_none_for_missing_row(
-) -> None:
+def test_try_source_row_returns_none_for_missing_row() -> None:
     (
         service,
         diff_schema_service,
@@ -1228,8 +1156,7 @@ def test_try_source_row_returns_none_for_missing_row(
     assert result is None
 
 
-def test_try_source_row_returns_matching_row(
-) -> None:
+def test_try_source_row_returns_matching_row() -> None:
     source_row = SimpleNamespace(
         obj_id="object-1",
     )
@@ -1254,8 +1181,7 @@ def test_try_source_row_returns_matching_row(
     assert result is source_row
 
 
-def test_try_source_row_rejects_ambiguous_rows(
-) -> None:
+def test_try_source_row_rejects_ambiguous_rows() -> None:
     (
         service,
         diff_schema_service,
@@ -1283,8 +1209,7 @@ def test_try_source_row_rejects_ambiguous_rows(
         )
 
 
-def test_try_source_row_rejects_class_without_obj_id(
-) -> None:
+def test_try_source_row_rejects_class_without_obj_id() -> None:
     (
         service,
         diff_schema_service,
@@ -1303,8 +1228,7 @@ def test_try_source_row_rejects_class_without_obj_id(
         )
 
 
-def test_delete_created_source_object_rejects_missing_direct_mapping(
-) -> None:
+def test_delete_created_source_object_rejects_missing_direct_mapping() -> None:
     feature = _feature(
         class_id="channel",
         object_id="object-1",
@@ -1333,8 +1257,7 @@ def test_delete_created_source_object_rejects_missing_direct_mapping(
         )
 
 
-def test_delete_created_source_object_rejects_missing_source_row(
-) -> None:
+def test_delete_created_source_object_rejects_missing_source_row() -> None:
     feature = _feature(
         class_id="channel",
         object_id="object-1",
@@ -1370,8 +1293,7 @@ def test_delete_created_source_object_rejects_missing_source_row(
         )
 
 
-def test_delete_created_source_object_ignores_function_mapping(
-) -> None:
+def test_delete_created_source_object_ignores_function_mapping() -> None:
     feature = _feature(
         class_id="channel",
         object_id="object-1",
@@ -1409,8 +1331,7 @@ def test_delete_created_source_object_ignores_function_mapping(
     quarantine_session.delete.assert_not_called()
 
 
-def test_prepare_processes_multiple_feature_classes(
-) -> None:
+def test_prepare_processes_multiple_feature_classes() -> None:
     channel_row = SimpleNamespace(
         obj_id="channel-1",
         usage_current="mixed",
@@ -1503,13 +1424,9 @@ def test_prepare_processes_multiple_feature_classes(
                 ],
             )
 
-        raise AssertionError(
-            f"Unexpected source class {source_class!r}."
-        )
+        raise AssertionError(f"Unexpected source class {source_class!r}.")
 
-    quarantine_session.query.side_effect = (
-        query_for_class
-    )
+    quarantine_session.query.side_effect = query_for_class
 
     service.prepare(
         job_id="job-1",

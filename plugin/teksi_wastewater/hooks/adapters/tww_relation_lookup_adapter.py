@@ -5,7 +5,6 @@ from dataclasses import dataclass
 from typing import Any
 
 from psycopg import sql
-
 from teksi_hooks.capabilities.connection import (
     DatabaseConnectionFactory,
 )
@@ -43,9 +42,7 @@ class TwwRelationLookupAdapter(
         local_attribute: str,
         related_attribute: str,
         value: Any,
-    ) -> Sequence[
-        CanonicalObjectIdentity,
-    ]:
+    ) -> Sequence[CanonicalObjectIdentity,]:
         """
         Return related canonical object identities.
 
@@ -57,13 +54,11 @@ class TwwRelationLookupAdapter(
         but are not needed by this direct database lookup.
         """
 
-        query = sql.SQL(
-            """
+        query = sql.SQL("""
             SELECT {identity_attribute}
             FROM {schema}.{table_name}
             WHERE {related_attribute} = %s
-            """
-        ).format(
+            """).format(
             identity_attribute=sql.Identifier(
                 "obj_id",
             ),
@@ -80,9 +75,7 @@ class TwwRelationLookupAdapter(
 
         rows = self._fetchall(
             query=query,
-            parameters=(
-                value,
-            ),
+            parameters=(value,),
         )
 
         return tuple(
@@ -117,8 +110,7 @@ class TwwRelationLookupAdapter(
         values = {
             key: value
             for key, value in row.items()
-            if key not in identity.attributes
-            and key != "last_modification"
+            if key not in identity.attributes and key != "last_modification"
         }
 
         return CanonicalObject(
@@ -132,49 +124,42 @@ class TwwRelationLookupAdapter(
     def _fetch_current_row(
         self,
         identity: CanonicalObjectIdentity,
-    ) -> dict[
-        str,
-        Any,
-    ] | None:
+    ) -> (
+        dict[
+            str,
+            Any,
+        ]
+        | None
+    ):
         """
         Return the current database row matching a canonical identity.
         """
 
         if not identity.attributes:
-            raise ValueError(
-                "Canonical object identity must contain at least "
-                "one attribute."
-            )
+            raise ValueError("Canonical object identity must contain at least " "one attribute.")
 
         where_parts = [
-            sql.SQL(
-                "{} = %s"
-            ).format(
+            sql.SQL("{} = %s").format(
                 sql.Identifier(
                     attribute_name,
                 )
             )
-            for attribute_name
-            in identity.attributes
+            for attribute_name in identity.attributes
         ]
 
-        query = sql.SQL(
-            """
+        query = sql.SQL("""
             SELECT *
             FROM {schema}.{table_name}
             WHERE {where_clause}
             LIMIT 1
-            """
-        ).format(
+            """).format(
             schema=sql.Identifier(
                 self.schema,
             ),
             table_name=sql.Identifier(
                 identity.class_id,
             ),
-            where_clause=sql.SQL(
-                " AND "
-            ).join(
+            where_clause=sql.SQL(" AND ").join(
                 where_parts,
             ),
         )
@@ -192,12 +177,8 @@ class TwwRelationLookupAdapter(
         self,
         *,
         query,
-        parameters: Sequence[
-            Any,
-        ] = (),
-    ) -> list[
-        tuple,
-    ]:
+        parameters: Sequence[Any,] = (),
+    ) -> list[tuple,]:
         """
         Execute a read-only query and return all result rows.
         """
@@ -219,13 +200,14 @@ class TwwRelationLookupAdapter(
         self,
         *,
         query,
-        parameters: Sequence[
+        parameters: Sequence[Any,] = (),
+    ) -> (
+        dict[
+            str,
             Any,
-        ] = (),
-    ) -> dict[
-        str,
-        Any,
-    ] | None:
+        ]
+        | None
+    ):
         """
         Execute a read-only query and return its first row as a dictionary.
         """
@@ -248,14 +230,10 @@ class TwwRelationLookupAdapter(
 
                 if cursor.description is None:
                     raise RuntimeError(
-                        "Canonical object query returned a row "
-                        "without column metadata."
+                        "Canonical object query returned a row " "without column metadata."
                     )
 
-                column_names = tuple(
-                    column.name
-                    for column in cursor.description
-                )
+                column_names = tuple(column.name for column in cursor.description)
 
         return dict(
             zip(

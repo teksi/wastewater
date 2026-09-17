@@ -1,13 +1,9 @@
-
 import logging
-
 from typing import Any
 
-from ..interlis import config
-from ..interlis import model_config
-from .issues import CheckResult, Issue, IssueLevel
-
+from ..interlis import config, model_config
 from .database_utils import DatabaseUtils
+from .issues import CheckResult, Issue, IssueLevel
 
 
 class TWWIntegrityChecker:
@@ -151,7 +147,7 @@ class TWWIntegrityChecker:
                     ),
                 ]
             )
-        if  model_config.interlis_models["dss"].names.intersection(self.models):
+        if model_config.interlis_models["dss"].names.intersection(self.models):
             checks.extend(
                 [
                     ("overflow", ["pump", "leapingweir", "prank_weir"]),
@@ -395,7 +391,7 @@ class TWWIntegrityChecker:
         check_classes = [
             ("organisation"),
         ]
-        if  model_config.interlis_models["vsa_kek"].names.intersection(self.models):
+        if model_config.interlis_models["vsa_kek"].names.intersection(self.models):
             check_classes.extend(
                 [
                     # VSA-KEK
@@ -404,7 +400,7 @@ class TWWIntegrityChecker:
                     ("maintenance_event"),
                 ]
             )
-        if  model_config.interlis_models["sia405_abwasser"].names.intersection(self.models):
+        if model_config.interlis_models["sia405_abwasser"].names.intersection(self.models):
             check_classes.extend(
                 [
                     ("wastewater_structure"),
@@ -414,7 +410,7 @@ class TWWIntegrityChecker:
                     ("pipe_profile"),
                 ]
             )
-        if  model_config.interlis_models["dss"].names.intersection(self.models):
+        if model_config.interlis_models["dss"].names.intersection(self.models):
             check_classes.extend(
                 [
                     # VSA-DSS
@@ -457,16 +453,18 @@ class TWWIntegrityChecker:
                     ("zone"),
                 ]
             )
-        if (model_config.interlis_models["ag64"].names.intersection(self.models) and
-        not model_config.interlis_models["sia405_abwasser"].names.intersection(self.models)):
+        if model_config.interlis_models["ag64"].names.intersection(
+            self.models
+        ) and not model_config.interlis_models["sia405_abwasser"].names.intersection(self.models):
             check_classes.extend(
                 [
                     ("wastewater_networkelement"),
                     ("overflow"),
                 ]
             )
-        if (model_config.interlis_models["ag96"].names.intersection(self.models) and
-        not model_config.interlis_models["dss"].names.intersection(self.models)):
+        if model_config.interlis_models["ag96"].names.intersection(
+            self.models
+        ) and not model_config.interlis_models["dss"].names.intersection(self.models):
             check_classes.extend(
                 [
                     ("wastewater_networkelement"),
@@ -485,10 +483,10 @@ class TWWIntegrityChecker:
         Check if MANDATORY fk_owner is Null
         """
         check_classes = []
-        check_models = model_config.interlis_models["sia405_abwasser"].names.union(
-             model_config.interlis_models["ag64"].names
-        ).union(
-             model_config.interlis_models["ag96"].names
+        check_models = (
+            model_config.interlis_models["sia405_abwasser"]
+            .names.union(model_config.interlis_models["ag64"].names)
+            .union(model_config.interlis_models["ag96"].names)
         )
         if any(m in check_models for m in self.models):
             check_classes = [
@@ -502,10 +500,10 @@ class TWWIntegrityChecker:
         Check if MANDATORY fk_operator is Null
         """
         check_classes = []
-        check_models = model_config.interlis_models["sia405_abwasser"].names.union(
-             model_config.interlis_models["ag64"].names
-        ).union(
-             model_config.interlis_models["ag96"].names
+        check_models = (
+            model_config.interlis_models["sia405_abwasser"]
+            .names.union(model_config.interlis_models["ag64"].names)
+            .union(model_config.interlis_models["ag96"].names)
         )
         if any(m in check_models for m in self.models):
             check_classes = [
@@ -531,7 +529,7 @@ class TWWIntegrityChecker:
             )
 
         check_models = model_config.interlis_models["sia405_abwasser"].names.union(
-             model_config.interlis_models["dss"].names
+            model_config.interlis_models["dss"].names
         )
         if any(m in check_models for m in self.models):
             check_classes.extend(
@@ -869,10 +867,10 @@ class TWWIntegrityChecker:
         Check if MANDATORY fk_reach_point_from is Null
         """
         check_classes = []
-        check_models = model_config.interlis_models["sia405_abwasser"].names.union(
-            model_config.interlis_models["ag64"].names
-        ).union(
-            model_config.interlis_models["ag96"].names
+        check_models = (
+            model_config.interlis_models["sia405_abwasser"]
+            .names.union(model_config.interlis_models["ag64"].names)
+            .union(model_config.interlis_models["ag96"].names)
         )
         if any(m in check_models for m in self.models):
             check_classes = [
@@ -885,10 +883,10 @@ class TWWIntegrityChecker:
         Check if MANDATORY fk_reach_point_to is Null
         """
         check_classes = []
-        check_models = model_config.interlis_models["sia405_abwasser"].names.union(
-            model_config.interlis_models["ag64"].names
-        ).union(
-            model_config.interlis_models["ag96"].names
+        check_models = (
+            model_config.interlis_models["sia405_abwasser"]
+            .names.union(model_config.interlis_models["ag64"].names)
+            .union(model_config.interlis_models["ag96"].names)
         )
         if any(m in check_models for m in self.models):
             check_classes = [

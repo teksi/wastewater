@@ -139,7 +139,9 @@ class InterlisExporterToIntermediateSchema:
         self.basket_topic_sia405_administration = self.model_classes_interlis.t_ili2db_basket(
             t_id=2,
             dataset=dataset.t_id,
-            topic=next(iter(model_config.topics_for_group(group="sia405_base_abwasser",lang="de"))),
+            topic=next(
+                iter(model_config.topics_for_group(group="sia405_base_abwasser", lang="de"))
+            ),
             t_ili_tid=None,
             attachmentkey=dataset.datasetname,
             domains="",
@@ -149,7 +151,7 @@ class InterlisExporterToIntermediateSchema:
         self.basket_topic_sia405_abwasser = self.model_classes_interlis.t_ili2db_basket(
             t_id=3,
             dataset=dataset.t_id,
-            topic=next(iter(model_config.topics_for_group(group="sia405_abwasser",lang="de"))),
+            topic=next(iter(model_config.topics_for_group(group="sia405_abwasser", lang="de"))),
             t_ili_tid=None,
             attachmentkey=dataset.datasetname,
             domains="",
@@ -159,7 +161,7 @@ class InterlisExporterToIntermediateSchema:
         self.basket_topic_dss = self.model_classes_interlis.t_ili2db_basket(
             t_id=4,
             dataset=dataset.t_id,
-            topic=next(iter(model_config.topics_for_group(group="dss",lang="de"))),
+            topic=next(iter(model_config.topics_for_group(group="dss", lang="de"))),
             t_ili_tid=None,
             attachmentkey=dataset.datasetname,
             domains="",
@@ -169,7 +171,7 @@ class InterlisExporterToIntermediateSchema:
         self.basket_topic_kek = self.model_classes_interlis.t_ili2db_basket(
             t_id=5,
             dataset=dataset.t_id,
-            topic=next(iter(model_config.topics_for_group(group="vsa_kek",lang="de"))),
+            topic=next(iter(model_config.topics_for_group(group="vsa_kek", lang="de"))),
             t_ili_tid=None,
             attachmentkey=dataset.datasetname,
             domains="",
@@ -179,7 +181,7 @@ class InterlisExporterToIntermediateSchema:
         self.basket_topic_ag64 = self.model_classes_interlis.t_ili2db_basket(
             t_id=6,
             dataset=dataset.t_id,
-            topic=next(iter(model_config.topics_for_group(group="ag64",lang="de"))),
+            topic=next(iter(model_config.topics_for_group(group="ag64", lang="de"))),
             t_ili_tid=None,
             attachmentkey=dataset.datasetname,
             domains="",
@@ -189,7 +191,7 @@ class InterlisExporterToIntermediateSchema:
         self.basket_topic_ag96 = self.model_classes_interlis.t_ili2db_basket(
             t_id=7,
             dataset=dataset.t_id,
-            topic=next(iter(model_config.topics_for_group(group="ag96",lang="de"))),
+            topic=next(iter(model_config.topics_for_group(group="ag96", lang="de"))),
             t_ili_tid=None,
             attachmentkey=dataset.datasetname,
             domains="",

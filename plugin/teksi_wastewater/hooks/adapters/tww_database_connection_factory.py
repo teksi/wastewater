@@ -4,15 +4,13 @@ from __future__ import annotations
 
 from contextlib import AbstractContextManager
 from dataclasses import dataclass, field
-from typing import Any
 
 import psycopg
-
-from ...utils.database_utils import DatabaseUtils
-
 from teksi_hooks.capabilities.connection import (
     DatabaseConnectionFactory,
 )
+
+from ...utils.database_utils import DatabaseUtils
 
 
 @dataclass(
@@ -50,44 +48,30 @@ class TwwDatabaseConnectionFactory(
         Apply this factory's parameters to the legacy database configuration.
         """
 
-        database_config = (
-            DatabaseUtils.databaseConfig
+        database_config = DatabaseUtils.databaseConfig
+
+        database_config.PGSERVICE = self.parameters.get(
+            "service",
         )
 
-        database_config.PGSERVICE = (
-            self.parameters.get(
-                "service",
-            )
+        database_config.PGHOST = self.parameters.get(
+            "host",
         )
 
-        database_config.PGHOST = (
-            self.parameters.get(
-                "host",
-            )
+        database_config.PGPORT = self.parameters.get(
+            "port",
         )
 
-        database_config.PGPORT = (
-            self.parameters.get(
-                "port",
-            )
+        database_config.PGDATABASE = self.parameters.get(
+            "dbname",
         )
 
-        database_config.PGDATABASE = (
-            self.parameters.get(
-                "dbname",
-            )
+        database_config.PGUSER = self.parameters.get(
+            "user",
         )
 
-        database_config.PGUSER = (
-            self.parameters.get(
-                "user",
-            )
-        )
-
-        database_config.PGPASS = (
-            self.parameters.get(
-                "password",
-            )
+        database_config.PGPASS = self.parameters.get(
+            "password",
         )
 
     @classmethod
@@ -106,16 +90,15 @@ class TwwDatabaseConnectionFactory(
                 "user": database_config.PGUSER,
                 "password": database_config.PGPASS,
             }.items()
-            if value not in (
+            if value
+            not in (
                 None,
                 "",
             )
         }
 
         if not parameters:
-            raise RuntimeError(
-                "No PostgreSQL connection configuration is available."
-            )
+            raise RuntimeError("No PostgreSQL connection configuration is available.")
 
         return cls(
             parameters=parameters,

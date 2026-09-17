@@ -4,14 +4,12 @@ from datetime import datetime
 from unittest.mock import Mock
 
 import pytest
-
 from teksi_hooks.models.effects import (
     EffectDocument,
 )
 from teksi_hooks.models.review import (
     PreparedSource,
 )
-
 from teksi_wastewater.hooks.services.tww_diff_schema_service import (
     TwwDiffSchemaService,
 )
@@ -45,9 +43,7 @@ def _prepared_source(
 ) -> PreparedSource:
     return PreparedSource(
         source_model=source_model,
-        created_models=(
-            source_model,
-        ),
+        created_models=(source_model,),
         effect_document=_effect_document(
             source=schema,
             version=version,
@@ -66,8 +62,7 @@ def _service() -> TwwDiffSchemaService:
     )
 
 
-def test_diff_schema_service_prepares_and_returns_source(
-) -> None:
+def test_diff_schema_service_prepares_and_returns_source() -> None:
     service = _service()
 
     source = _prepared_source()
@@ -84,8 +79,7 @@ def test_diff_schema_service_prepares_and_returns_source(
     assert result is source
 
 
-def test_diff_schema_service_preserves_prepared_source_data(
-) -> None:
+def test_diff_schema_service_preserves_prepared_source_data() -> None:
     service = _service()
 
     effect_document = _effect_document(
@@ -138,8 +132,7 @@ def test_diff_schema_service_preserves_prepared_source_data(
     }
 
 
-def test_diff_schema_service_replaces_source_for_same_job(
-) -> None:
+def test_diff_schema_service_replaces_source_for_same_job() -> None:
     service = _service()
 
     first_source = _prepared_source(
@@ -172,8 +165,7 @@ def test_diff_schema_service_replaces_source_for_same_job(
     assert result is not first_source
 
 
-def test_diff_schema_service_keeps_sources_separate_by_job_id(
-) -> None:
+def test_diff_schema_service_keeps_sources_separate_by_job_id() -> None:
     service = _service()
 
     first_source = _prepared_source(
@@ -211,24 +203,19 @@ def test_diff_schema_service_keeps_sources_separate_by_job_id(
     )
 
 
-def test_diff_schema_service_raises_for_missing_prepared_source(
-) -> None:
+def test_diff_schema_service_raises_for_missing_prepared_source() -> None:
     service = _service()
 
     with pytest.raises(
         KeyError,
-        match=(
-            "No prepared source exists for diff "
-            "workflow 'missing-job'"
-        ),
+        match=("No prepared source exists for diff " "workflow 'missing-job'"),
     ):
         service.prepared_source(
             job_id="missing-job",
         )
 
 
-def test_diff_schema_service_clears_prepared_source(
-) -> None:
+def test_diff_schema_service_clears_prepared_source() -> None:
     service = _service()
 
     source = _prepared_source()
@@ -251,8 +238,7 @@ def test_diff_schema_service_clears_prepared_source(
         )
 
 
-def test_diff_schema_service_clear_is_idempotent(
-) -> None:
+def test_diff_schema_service_clear_is_idempotent() -> None:
     service = _service()
 
     service.clear_prepared_source(
@@ -264,8 +250,7 @@ def test_diff_schema_service_clear_is_idempotent(
     )
 
 
-def test_diff_schema_service_clears_only_selected_job(
-) -> None:
+def test_diff_schema_service_clears_only_selected_job() -> None:
     service = _service()
 
     first_source = _prepared_source(
@@ -307,8 +292,7 @@ def test_diff_schema_service_clears_only_selected_job(
     )
 
 
-def test_diff_schema_service_staging_does_not_use_database(
-) -> None:
+def test_diff_schema_service_staging_does_not_use_database() -> None:
     connection_factory = Mock()
 
     service = TwwDiffSchemaService(

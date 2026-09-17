@@ -4,7 +4,6 @@ from dataclasses import dataclass, field
 from enum import StrEnum
 
 from psycopg import sql
-
 from teksi_hooks.capabilities.connection import (
     DatabaseConnectionFactory,
 )
@@ -17,7 +16,6 @@ from teksi_hooks.models.mapping import (
     ModelMapping,
     ValueMapping,
 )
-
 
 SOURCE_ATTRIBUTE_OVERRIDES = {
     "Status": "astatus",
@@ -103,14 +101,10 @@ class TwwImplicitModelMappingAdapter(
                 self.language,
             )
         except ValueError as exception:
-            raise ValueError(
-                f"Unsupported language: {self.language!r}."
-            ) from exception
+            raise ValueError(f"Unsupported language: {self.language!r}.") from exception
 
         if not self.import_schema.strip():
-            raise ValueError(
-                "The import schema must not be empty."
-            )
+            raise ValueError("The import schema must not be empty.")
 
         self._model_mapping = self._load_model_mapping()
 
@@ -122,9 +116,7 @@ class TwwImplicitModelMappingAdapter(
         """
 
         if self._model_mapping is None:
-            raise RuntimeError(
-                "Implicit model mapping has not been loaded."
-            )
+            raise RuntimeError("Implicit model mapping has not been loaded.")
 
         return self._model_mapping
 
@@ -154,8 +146,7 @@ class TwwImplicitModelMappingAdapter(
 
         if class_mapping is None:
             raise KeyError(
-                f"Unknown source class {class_id!r} "
-                f"in schema {self.import_schema!r}."
+                f"Unknown source class {class_id!r} " f"in schema {self.import_schema!r}."
             )
 
         return class_mapping
@@ -233,8 +224,7 @@ class TwwImplicitModelMappingAdapter(
 
         if value_mapping is None:
             raise KeyError(
-                f"Unknown source value {value!r} for "
-                f"{class_id!r}.{attribute_name!r}."
+                f"Unknown source value {value!r} for " f"{class_id!r}.{attribute_name!r}."
             )
 
         return value_mapping
@@ -300,16 +290,11 @@ class TwwImplicitModelMappingAdapter(
                 ili_class_name,
                 {},
             ).items():
-                source_attribute_name = (
-                    self._source_attribute_name(
-                        ili_attribute_name,
-                    )
+                source_attribute_name = self._source_attribute_name(
+                    ili_attribute_name,
                 )
 
-                if (
-                    source_attribute_name
-                    not in source_relation.columns
-                ):
+                if source_attribute_name not in source_relation.columns:
                     continue
 
                 values = dictionary_values.get(
@@ -320,24 +305,13 @@ class TwwImplicitModelMappingAdapter(
                     {},
                 )
 
-                attributes[source_attribute_name] = (
-                    AttributeMapping(
-                        canonical_class_id=(
-                            attribute_mapping
-                            .canonical_class_id
-                        ),
-                        canonical_attr_id=(
-                            attribute_mapping
-                            .canonical_attr_id
-                        ),
-                        foreign_key=(
-                            attribute_mapping
-                            .foreign_key
-                        ),
-                        values=dict(
-                            values,
-                        ),
-                    )
+                attributes[source_attribute_name] = AttributeMapping(
+                    canonical_class_id=(attribute_mapping.canonical_class_id),
+                    canonical_attr_id=(attribute_mapping.canonical_attr_id),
+                    foreign_key=(attribute_mapping.foreign_key),
+                    values=dict(
+                        values,
+                    ),
                 )
 
             classes[source_relation.table_name] = ClassMapping(
@@ -360,8 +334,7 @@ class TwwImplicitModelMappingAdapter(
         Return physical relations and columns in the import schema.
         """
 
-        query = sql.SQL(
-            """
+        query = sql.SQL("""
             SELECT
                 table_name,
                 column_name
@@ -372,8 +345,7 @@ class TwwImplicitModelMappingAdapter(
             ORDER BY
                 table_name,
                 ordinal_position;
-            """
-        )
+            """)
 
         columns_by_table: dict[
             str,
@@ -382,9 +354,7 @@ class TwwImplicitModelMappingAdapter(
 
         for table_name, column_name in self._fetchall(
             query,
-            (
-                self.import_schema,
-            ),
+            (self.import_schema,),
         ):
             columns_by_table.setdefault(
                 str(
@@ -399,8 +369,7 @@ class TwwImplicitModelMappingAdapter(
 
         if not columns_by_table:
             raise RuntimeError(
-                "The import schema contains no readable relations: "
-                f"{self.import_schema!r}."
+                "The import schema contains no readable relations: " f"{self.import_schema!r}."
             )
 
         return {
@@ -428,8 +397,7 @@ class TwwImplicitModelMappingAdapter(
 
         ili_name_column = self._ili_name_column()
 
-        query = sql.SQL(
-            """
+        query = sql.SQL("""
             SELECT
                 tablename,
                 {ili_name_column} AS ili_class_name
@@ -437,8 +405,7 @@ class TwwImplicitModelMappingAdapter(
                 {schema}.{table_dictionary}
             ORDER BY
                 tablename;
-            """
-        ).format(
+            """).format(
             ili_name_column=sql.Identifier(
                 ili_name_column,
             ),
@@ -496,8 +463,7 @@ class TwwImplicitModelMappingAdapter(
 
         ili_name_column = self._ili_name_column()
 
-        query = sql.SQL(
-            """
+        query = sql.SQL("""
             SELECT
                 t.tablename AS canonical_class_id,
                 a.field_name AS canonical_attr_id,
@@ -511,8 +477,7 @@ class TwwImplicitModelMappingAdapter(
             ORDER BY
                 t.tablename,
                 a.field_name;
-            """
-        ).format(
+            """).format(
             ili_name_column=sql.Identifier(
                 ili_name_column,
             ),
@@ -543,10 +508,7 @@ class TwwImplicitModelMappingAdapter(
         ) in self._fetchall(
             query,
         ):
-            if (
-                not ili_class_name
-                or not ili_attribute_name
-            ):
+            if not ili_class_name or not ili_attribute_name:
                 continue
 
             source_attribute_name = str(
@@ -591,8 +553,7 @@ class TwwImplicitModelMappingAdapter(
 
         ili_name_column = self._ili_name_column()
 
-        query = sql.SQL(
-            """
+        query = sql.SQL("""
             SELECT
                 t.{ili_name_column} AS ili_class_name,
                 f.{ili_name_column} AS ili_attribute_name,
@@ -612,8 +573,7 @@ class TwwImplicitModelMappingAdapter(
                 ili_class_name,
                 ili_attribute_name,
                 ili_value_name;
-            """
-        ).format(
+            """).format(
             ili_name_column=sql.Identifier(
                 ili_name_column,
             ),
@@ -651,11 +611,7 @@ class TwwImplicitModelMappingAdapter(
         ) in self._fetchall(
             query,
         ):
-            if (
-                not ili_class_name
-                or not ili_attribute_name
-                or not ili_value_name
-            ):
+            if not ili_class_name or not ili_attribute_name or not ili_value_name:
                 continue
 
             mappings.setdefault(
@@ -720,9 +676,7 @@ class TwwImplicitModelMappingAdapter(
         self,
         query: sql.Composed | sql.SQL,
         parameters: tuple = (),
-    ) -> list[
-        tuple,
-    ]:
+    ) -> list[tuple,]:
         """
         Execute a read-only query and return all rows.
         """
@@ -736,9 +690,7 @@ class TwwImplicitModelMappingAdapter(
                     parameters,
                 )
 
-                return list(
-                    cursor.fetchall()
-                )
+                return list(cursor.fetchall())
 
     def _ili_name_column(
         self,

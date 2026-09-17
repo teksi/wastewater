@@ -1,8 +1,6 @@
 import re
-import os
 import shlex
 import time
-
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from subprocess import run as sp_run
@@ -10,6 +8,7 @@ from subprocess import run as sp_run
 OUTPUT_DIR = Path(__file__).parent / "output"
 OUTPUT_DIR.mkdir(exist_ok=True)
 DEFAULT_CLI_PATH = Path("/usr/src/plugin/tww_cmd.py")
+
 
 def get_output_filename(name: str) -> str:
     return str(OUTPUT_DIR / name)
@@ -80,11 +79,7 @@ def run_cli(
 
     start = time.time()
 
-    effective_cli_path = Path(
-        cli_path
-        if cli_path is not None
-        else DEFAULT_CLI_PATH
-    )
+    effective_cli_path = Path(cli_path if cli_path is not None else DEFAULT_CLI_PATH)
 
     cli_arguments = shlex.split(
         command,
@@ -138,21 +133,13 @@ def run_cli(
         cmd,
     )
 
-    print(
-        f"CLI duration: {duration:.1f}s"
-    )
+    print(f"CLI duration: {duration:.1f}s")
     print("COMMAND")
-    print(
-        rendered_command
-    )
+    print(rendered_command)
     print("STDOUT")
-    print(
-        result.stdout
-    )
+    print(result.stdout)
     print("STDERR")
-    print(
-        result.stderr
-    )
+    print(result.stderr)
 
     assert result.returncode == 0, (
         f"CLI command failed with exit code "

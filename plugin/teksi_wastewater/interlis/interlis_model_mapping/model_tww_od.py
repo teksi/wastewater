@@ -343,7 +343,6 @@ class ModelTwwOd(ModelBase):
 
         ModelTwwOd.agxx_last_modification = agxx_last_modification
 
-
         class agxx_wastewater_networkelement(self.Base):
             __tablename__ = "agxx_wastewater_networkelement"
             __table_args__ = {"schema": config.TWW_OD_SCHEMA}
@@ -373,7 +372,7 @@ class ModelTwwOd(ModelBase):
             __table_args__ = {"schema": config.TWW_OD_SCHEMA}
 
         ModelTwwOd.agxx_building_group = agxx_building_group
-        
+
         class agxx_catchment_area_totals(self.Base):
             __tablename__ = "agxx_catchment_area_totals"
             __table_args__ = {"schema": config.TWW_OD_SCHEMA}

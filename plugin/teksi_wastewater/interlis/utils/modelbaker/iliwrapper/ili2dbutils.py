@@ -91,7 +91,7 @@ def get_ili2db_bin(tool, db_ili_version, stdout, stderr):
                     "Could not download {tool_name}\n\n"
                     "Error: {error}\n\n"
                     'File "{file}" not found. Please download and extract '
-                    '{ili2db_url}{tool_name}</a>'
+                    "{ili2db_url}{tool_name}</a>"
                 ).format(
                     tool_name=tool_name,
                     ili2db_url=ili_tool_url,
@@ -244,9 +244,6 @@ class NetworkError(RuntimeError):
         self.error_code = error_code
 
 
-
-
-
 def download_file(
     url: str,
     filename: str,
@@ -264,13 +261,9 @@ def download_file(
     """
 
     if attempts < 1:
-        raise ValueError(
-            "Download attempts must be at least one."
-        )
+        raise ValueError("Download attempts must be at least one.")
 
-    temporary_filename = (
-        f"{filename}.part"
-    )
+    temporary_filename = f"{filename}.part"
 
     last_exception: Exception | None = None
 
@@ -320,11 +313,8 @@ def download_file(
                         file.fileno(),
                     )
 
-                if (
-                    expected_size is not None
-                    and received_size != expected_size
-                ):
-                    raise IOError(
+                if expected_size is not None and received_size != expected_size:
+                    raise OSError(
                         "Incomplete download from "
                         f"{url!r}: received "
                         f"{received_size} bytes, expected "
@@ -364,10 +354,7 @@ def download_file(
 
     raise NetworkError(
         error_code,
-        (
-            f"Could not download {url!r} after "
-            f"{attempts} attempts: {last_exception}"
-        ),
+        (f"Could not download {url!r} after " f"{attempts} attempts: {last_exception}"),
     ) from last_exception
 
 

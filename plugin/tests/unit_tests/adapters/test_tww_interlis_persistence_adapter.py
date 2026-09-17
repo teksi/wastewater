@@ -5,13 +5,12 @@ from __future__ import annotations
 from unittest.mock import Mock, patch
 
 import pytest
-
+from teksi_wastewater.hooks.adapters.tww_interlis_persistence_adapter import (
+    TwwInterlisPersistenceAdapter,
+    TwwInterlisPersistenceResult,
+)
 from teksi_wastewater.hooks.exceptions import (
     DiffJobPersistenceError,
-)
-from teksi_wastewater.hooks.adapters.tww_interlis_persistence_adapter import (
-    TwwInterlisPersistenceResult,
-    TwwInterlisPersistenceAdapter,
 )
 
 
@@ -58,9 +57,7 @@ def test_persist_quarantine_imports_non_agxx_model(
 ) -> None:
     model_selection = _selection()
 
-    model_selection_for_imported_models.return_value = (
-        model_selection
-    )
+    model_selection_for_imported_models.return_value = model_selection
 
     (
         adapter,
@@ -102,9 +99,7 @@ def test_persist_quarantine_imports_non_agxx_model(
 def test_persist_quarantine_uses_import_schema_during_import(
     model_selection_for_imported_models,
 ) -> None:
-    model_selection_for_imported_models.return_value = (
-        _selection()
-    )
+    model_selection_for_imported_models.return_value = _selection()
 
     (
         adapter,
@@ -120,9 +115,7 @@ def test_persist_quarantine_uses_import_schema_during_import(
             importer_exporter.schema,
         )
 
-    importer_exporter.interlis_import_from_quarantine_to_live.side_effect = (
-        import_from_quarantine
-    )
+    importer_exporter.interlis_import_from_quarantine_to_live.side_effect = import_from_quarantine
 
     adapter.persist_quarantine(
         import_schema="xtf_import",
@@ -143,9 +136,7 @@ def test_persist_quarantine_uses_import_schema_during_import(
 def test_persist_quarantine_restores_previous_schema_after_success(
     model_selection_for_imported_models,
 ) -> None:
-    model_selection_for_imported_models.return_value = (
-        _selection()
-    )
+    model_selection_for_imported_models.return_value = _selection()
 
     (
         adapter,
@@ -169,19 +160,15 @@ def test_persist_quarantine_restores_previous_schema_after_success(
 def test_persist_quarantine_restores_previous_schema_after_failure(
     model_selection_for_imported_models,
 ) -> None:
-    model_selection_for_imported_models.return_value = (
-        _selection()
-    )
+    model_selection_for_imported_models.return_value = _selection()
 
     (
         adapter,
         importer_exporter,
     ) = _adapter()
 
-    importer_exporter.interlis_import_from_quarantine_to_live.side_effect = (
-        RuntimeError(
-            "Importer failed.",
-        )
+    importer_exporter.interlis_import_from_quarantine_to_live.side_effect = RuntimeError(
+        "Importer failed.",
     )
 
     with pytest.raises(
@@ -207,9 +194,7 @@ def test_persist_quarantine_forces_filter_nulls(
 ) -> None:
     model_selection = _selection()
 
-    model_selection_for_imported_models.return_value = (
-        model_selection
-    )
+    model_selection_for_imported_models.return_value = model_selection
 
     (
         adapter,
@@ -290,8 +275,7 @@ def test_persist_quarantine_rejects_empty_parameters(
     importer_exporter.interlis_import_from_quarantine_to_live.assert_not_called()
 
 
-def test_persist_quarantine_rejects_unsupported_live_schema(
-) -> None:
+def test_persist_quarantine_rejects_unsupported_live_schema() -> None:
     (
         adapter,
         importer_exporter,
@@ -318,10 +302,8 @@ def test_persist_quarantine_rejects_unsupported_live_schema(
 def test_persist_quarantine_wraps_model_selection_failure(
     model_selection_for_imported_models,
 ) -> None:
-    model_selection_for_imported_models.side_effect = (
-        LookupError(
-            "Unknown model.",
-        )
+    model_selection_for_imported_models.side_effect = LookupError(
+        "Unknown model.",
     )
 
     (
@@ -345,12 +327,8 @@ def test_persist_quarantine_wraps_model_selection_failure(
 @pytest.mark.parametrize(
     "groups",
     [
-        (
-            "ag64",
-        ),
-        (
-            "ag96",
-        ),
+        ("ag64",),
+        ("ag96",),
     ],
 )
 @patch(
@@ -365,10 +343,8 @@ def test_persist_quarantine_rejects_agxx_until_incremental_import_exists(
         ...,
     ],
 ) -> None:
-    model_selection_for_imported_models.return_value = (
-        _selection(
-            groups=groups,
-        )
+    model_selection_for_imported_models.return_value = _selection(
+        groups=groups,
     )
 
     (
@@ -397,19 +373,15 @@ def test_persist_quarantine_rejects_agxx_until_incremental_import_exists(
 def test_persist_quarantine_wraps_importer_failure(
     model_selection_for_imported_models,
 ) -> None:
-    model_selection_for_imported_models.return_value = (
-        _selection()
-    )
+    model_selection_for_imported_models.return_value = _selection()
 
     (
         adapter,
         importer_exporter,
     ) = _adapter()
 
-    importer_exporter.interlis_import_from_quarantine_to_live.side_effect = (
-        RuntimeError(
-            "SQLAlchemy commit failed.",
-        )
+    importer_exporter.interlis_import_from_quarantine_to_live.side_effect = RuntimeError(
+        "SQLAlchemy commit failed.",
     )
 
     with pytest.raises(

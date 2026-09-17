@@ -1,6 +1,5 @@
 from collections import defaultdict
-from pathlib import Path
-import yaml
+
 
 def build_target_index(
     mapping: dict,
@@ -18,16 +17,12 @@ def build_target_index(
                 "targets",
                 [],
             ):
-                key = (
-                    f"{target['class']}."
-                    f"{target['attribute']}"
-                )
+                key = f"{target['class']}." f"{target['attribute']}"
 
-                result[key].append(
-                    f"{source_class}.{source_attribute}"
-                )
+                result[key].append(f"{source_class}.{source_attribute}")
 
     return dict(result)
+
 
 def render_target_index(
     mapping: dict,
@@ -56,9 +51,7 @@ def render_target_index(
         for source in sorted(
             sources,
         ):
-            lines.append(
-                f"* {source}"
-            )
+            lines.append(f"* {source}")
 
         lines.append("")
 

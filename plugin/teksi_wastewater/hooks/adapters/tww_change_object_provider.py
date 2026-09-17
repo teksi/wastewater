@@ -2,21 +2,20 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from teksi_hooks.capabilities.review import (
-    ChangeObjectProvider,
-)
 from teksi_hooks.capabilities.relation_lookup import (
     RelationLookupCapability,
 )
+from teksi_hooks.capabilities.review import (
+    ChangeObjectProvider,
+)
 from teksi_hooks.models.canonical_object import (
+    CanonicalModelMetadata,
     CanonicalObject,
 )
 from teksi_hooks.models.validation import (
     Change,
 )
-from teksi_hooks.models.canonical_object import (
-    CanonicalModelMetadata,
-)
+
 from .tww_relation_lookup_adapter import (
     TwwRelationLookupAdapter,
 )
@@ -72,6 +71,7 @@ class TwwChangeObjectProvider(
                 change.new_values,
             ),
         )
+
 
 @dataclass(slots=True)
 class TwwChangeObjectProviderFactory:

@@ -1,23 +1,20 @@
-
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
-from collections.abc import Sequence
 
-from ...interlis.interlis_importer_exporter import InterlisImporterExporter
-from ...interlis.model_config import TwwInterlisModelSelection
-
+from teksi_hooks.capabilities.connection import (
+    DatabaseConnectionFactory,
+)
 from teksi_hooks.services.interlis import (
     InterlisContext,
     InterlisService,
 )
-from teksi_hooks.capabilities.connection import (
-    DatabaseConnectionFactory,
-)
+
+from ...interlis.interlis_importer_exporter import InterlisImporterExporter
+from ...interlis.model_config import TwwInterlisModelSelection
 from .tww_database_connection_factory import TwwDatabaseConnectionFactory
-
-
 
 
 @dataclass(slots=True, frozen=True)
@@ -42,25 +39,19 @@ class TwwInterlisContext(InterlisContext):
 
     labels_file: Path | None = None
 
-    selected_label_scale_indices: tuple[
-        str,
-        ...
-    ] = field(
+    selected_label_scale_indices: tuple[str, ...] = field(
         default_factory=tuple,
     )
 
-    selected_ids: tuple[
-        str,
-        ...
-    ] = field(
+    selected_ids: tuple[str, ...] = field(
         default_factory=tuple,
     )
-    import_orgs:  bool = False
+    import_orgs: bool = False
 
     orgs_path: Path | None = None
 
     limit_to_selection: bool = False
-    export_orientation: int  = 90
+    export_orientation: int = 90
     include_unplaced: bool = False
     disable_validation: bool = False
     incremental_only: bool = False
@@ -78,6 +69,7 @@ class TwwInterlisContext(InterlisContext):
         """
 
         importer_exporter.schema = self.schema
+
 
 class TwwInterlisServiceAdapter(InterlisService):
     """
@@ -98,6 +90,7 @@ class TwwInterlisServiceAdapter(InterlisService):
     InterlisImporterExporter behind a framework-facing service interface.
     It will be superseded by TIT.
     """
+
     def __init__(
         self,
         importer_exporter: InterlisImporterExporter | None = None,
@@ -110,9 +103,7 @@ class TwwInterlisServiceAdapter(InterlisService):
         )
 
         self._importer_exporter = (
-            importer_exporter
-            if importer_exporter is not None
-            else InterlisImporterExporter()
+            importer_exporter if importer_exporter is not None else InterlisImporterExporter()
         )
 
     def _prepare_operation(
@@ -154,18 +145,10 @@ class TwwInterlisServiceAdapter(InterlisService):
         ):
             self._importer_exporter.interlis_import(
                 xtf_file_input=xtf_file,
-                show_selection_dialog=(
-                    context.show_selection_dialog
-                ),
-                logs_next_to_file=(
-                    context.logs_next_to_file
-                ),
-                filter_nulls=(
-                    context.filter_nulls
-                ),
-                import_orgs=(
-                    context.import_orgs
-                ),
+                show_selection_dialog=(context.show_selection_dialog),
+                logs_next_to_file=(context.logs_next_to_file),
+                filter_nulls=(context.filter_nulls),
+                import_orgs=(context.import_orgs),
                 srid=context.srid,
                 incremental_only=context.incremental_only,
             )
@@ -194,9 +177,7 @@ class TwwInterlisServiceAdapter(InterlisService):
                 export_models=list(
                     export_models,
                 ),
-                logs_next_to_file=(
-                    context.logs_next_to_file
-                ),
+                logs_next_to_file=(context.logs_next_to_file),
                 limit_to_selection=context.limit_to_selection,
                 labels_file=context.labels_file,
                 selected_labels_scales_indices=list(

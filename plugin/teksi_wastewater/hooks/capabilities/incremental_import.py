@@ -67,9 +67,7 @@ class IncrementalEffectPersister(
         self,
         *,
         document: EffectDocument,
-        evaluations: Sequence[
-            EffectEvaluationResult,
-        ],
+        evaluations: Sequence[EffectEvaluationResult,],
     ) -> None:
         """
         Stage satisfied and remediable effects.

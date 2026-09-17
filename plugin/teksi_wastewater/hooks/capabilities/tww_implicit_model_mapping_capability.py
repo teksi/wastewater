@@ -5,12 +5,6 @@ from typing import Any
 
 from sqlalchemy import inspect
 from sqlalchemy.exc import NoInspectionAvailable
-
-from ...interlis import config
-from ...interlis.model_config import (
-    TwwInterlisModelSelection,
-)
-
 from teksi_hooks.capabilities.mapping import (
     ImplicitModelMappingCapability,
     ModelMappingCapability,
@@ -28,6 +22,11 @@ from teksi_hooks.models.mapping import (
 )
 from teksi_hooks.resolver.model_mapping_resolver import (
     ImplicitModelMappingResolver,
+)
+
+from ...interlis import config
+from ...interlis.model_config import (
+    TwwInterlisModelSelection,
 )
 
 
@@ -84,18 +83,12 @@ class TwwImplicitModelMappingCapability(
             schema=self.import_schema,
         )
 
-        self._automap_classes = (
-            self._import_model.classes()
-        )
+        self._automap_classes = self._import_model.classes()
 
         base_mapping = ImplicitModelMappingResolver(
             dictionary=self.dictionary,
-            source_identity_attribute=(
-                self.source_identity_attribute
-            ),
-            canonical_identity_attribute=(
-                self.canonical_identity_attribute
-            ),
+            source_identity_attribute=(self.source_identity_attribute),
+            canonical_identity_attribute=(self.canonical_identity_attribute),
         ).resolve()
 
         resolved_mapping = self._with_orm_metadata(
@@ -258,13 +251,11 @@ class TwwImplicitModelMappingCapability(
             if relation is None:
                 continue
 
-            classes[source_class_id] = (
-                self._with_orm_foreign_keys(
-                    source_class_id=source_class_id,
-                    relation=relation,
-                    class_mapping=class_mapping,
-                    mapping=mapping,
-                )
+            classes[source_class_id] = self._with_orm_foreign_keys(
+                source_class_id=source_class_id,
+                relation=relation,
+                class_mapping=class_mapping,
+                mapping=mapping,
             )
 
         return replace(
@@ -287,9 +278,7 @@ class TwwImplicitModelMappingCapability(
         fill missing source attributes and canonical relations.
         """
 
-        canonical_class_id = (
-            class_mapping.canonical_class_id
-        )
+        canonical_class_id = class_mapping.canonical_class_id
 
         if canonical_class_id is None:
             return class_mapping
@@ -309,61 +298,43 @@ class TwwImplicitModelMappingCapability(
         )
 
         for relationship in mapper.relationships:
-            referenced_relation = (
-                relationship.mapper.class_
-            )
-            referenced_source_class_id = (
-                referenced_relation.__name__
-            )
+            referenced_relation = relationship.mapper.class_
+            referenced_source_class_id = referenced_relation.__name__
 
-            referenced_mapping = (
-                mapping.classes.get(
-                    referenced_source_class_id,
-                )
+            referenced_mapping = mapping.classes.get(
+                referenced_source_class_id,
             )
 
             if referenced_mapping is None:
                 continue
 
-            referenced_class_id = (
-                referenced_mapping
-                .canonical_class_id
-            )
+            referenced_class_id = referenced_mapping.canonical_class_id
 
             if referenced_class_id is None:
                 continue
 
-            referenced_identity = (
-                referenced_mapping.identities.get(
-                    referenced_class_id,
-                )
+            referenced_identity = referenced_mapping.identities.get(
+                referenced_class_id,
             )
 
             if referenced_identity is None:
                 continue
 
             local_columns = tuple(
-                column
-                for column
-                in relationship.local_columns
-                if column.foreign_keys
+                column for column in relationship.local_columns if column.foreign_keys
             )
 
             if len(local_columns) != 1:
                 continue
 
             local_column = local_columns[0]
-            source_attribute = (
-                self._column_attribute_name(
-                    local_column,
-                )
+            source_attribute = self._column_attribute_name(
+                local_column,
             )
 
-            canonical_attribute_id = (
-                self._canonical_fk_attribute_id(
-                    source_attribute=source_attribute,
-                    class_mapping=class_mapping,
-                )
+            canonical_attribute_id = self._canonical_fk_attribute_id(
+                source_attribute=source_attribute,
+                class_mapping=class_mapping,
             )
 
             if canonical_attribute_id is None:
@@ -372,20 +343,11 @@ class TwwImplicitModelMappingCapability(
             attributes.setdefault(
                 source_attribute,
                 AttributeMapping(
-                    canonical_class_id=(
-                        canonical_class_id
-                    ),
-                    canonical_attr_id=(
-                        canonical_attribute_id
-                    ),
+                    canonical_class_id=(canonical_class_id),
+                    canonical_attr_id=(canonical_attribute_id),
                     foreign_key=ForeignKeyMapping(
-                        referenced_class_id=(
-                            referenced_class_id
-                        ),
-                        referenced_attribute_id=(
-                            referenced_identity
-                            .canonical_attribute
-                        ),
+                        referenced_class_id=(referenced_class_id),
+                        referenced_attribute_id=(referenced_identity.canonical_attribute),
                     ),
                     value_list=None,
                 ),
@@ -394,13 +356,8 @@ class TwwImplicitModelMappingCapability(
             relations.setdefault(
                 canonical_attribute_id,
                 RelationMapping(
-                    referenced_class_id=(
-                        referenced_class_id
-                    ),
-                    referenced_attribute_id=(
-                        referenced_identity
-                        .canonical_attribute
-                    ),
+                    referenced_class_id=(referenced_class_id),
+                    referenced_attribute_id=(referenced_identity.canonical_attribute),
                     localisations={},
                 ),
             )
@@ -429,10 +386,7 @@ class TwwImplicitModelMappingCapability(
             source_attribute,
         )
 
-        if (
-            existing is not None
-            and existing.canonical_attr_id is not None
-        ):
+        if existing is not None and existing.canonical_attr_id is not None:
             return existing.canonical_attr_id
 
         if source_attribute.startswith(

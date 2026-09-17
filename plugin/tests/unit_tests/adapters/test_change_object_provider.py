@@ -13,7 +13,6 @@ from teksi_hooks.models.validation import (
     Change,
     ChangeOperation,
 )
-
 from teksi_wastewater.hooks.adapters.tww_change_object_provider import (
     TwwChangeObjectProvider,
 )
@@ -87,9 +86,7 @@ def test_tww_change_object_provider_returns_old_object_from_live_lookup() -> Non
 
     provider = TwwChangeObjectProvider(
         live_lookup=InMemoryRelationLookupCapability(
-            objects=(
-                canonical_object,
-            ),
+            objects=(canonical_object,),
         ),
     )
 
@@ -125,9 +122,12 @@ def test_tww_change_object_provider_returns_none_when_old_object_is_missing() ->
         },
     )
 
-    assert provider.old_object(
-        change,
-    ) is None
+    assert (
+        provider.old_object(
+            change,
+        )
+        is None
+    )
 
 
 def test_tww_change_object_provider_builds_new_object_from_change_values() -> None:
@@ -173,9 +173,7 @@ def test_tww_change_object_provider_prefers_new_lookup_when_available() -> None:
             objects=(),
         ),
         new_lookup=InMemoryRelationLookupCapability(
-            objects=(
-                projected_object,
-            ),
+            objects=(projected_object,),
         ),
     )
 

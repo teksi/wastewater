@@ -1,35 +1,22 @@
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass
-
-
-from teksi_wastewater.hooks.exceptions import (
-    DiffJobEligibilityError,
-    DiffJobNotFoundError,
-    DiffJobPersistenceError,
-    DiffJobStateError,
-    DiffJobTransitionError,
-    DiffSchemaContractError,
-)
-
-
-from teksi_wastewater.interlis import config
-
-from teksi_wastewater.interlis.model_selection import (
-    model_selection_for_imported_models,
-)
-
-from teksi_wastewater.interlis.interlis_importer_exporter import (
-    InterlisImporterExporter
-)
 
 from teksi_wastewater.hooks.capabilities.tww_interlis_persistence_capability import (
     TwwInterlisPersistenceCapability,
     TwwInterlisPersistenceResult,
 )
-
-
-import logging
+from teksi_wastewater.hooks.exceptions import (
+    DiffJobPersistenceError,
+)
+from teksi_wastewater.interlis import config
+from teksi_wastewater.interlis.interlis_importer_exporter import (
+    InterlisImporterExporter,
+)
+from teksi_wastewater.interlis.model_selection import (
+    model_selection_for_imported_models,
+)
 
 logger = logging.getLogger(
     __name__,
@@ -105,10 +92,8 @@ class TwwInterlisPersistenceAdapter(TwwInterlisPersistenceCapability):
         )
 
         try:
-            selection_models = (
-                model_selection_for_imported_models(
-                    source_model,
-                )
+            selection_models = model_selection_for_imported_models(
+                source_model,
             )
         except Exception as exception:
             raise DiffJobPersistenceError(
@@ -140,9 +125,7 @@ class TwwInterlisPersistenceAdapter(TwwInterlisPersistenceCapability):
         previous_schema = self.importer_exporter.schema
 
         try:
-            self.importer_exporter.schema = (
-                import_schema
-            )
+            self.importer_exporter.schema = import_schema
 
             logger.info(
                 "Importing prepared quarantine schema %r into "
@@ -174,13 +157,10 @@ class TwwInterlisPersistenceAdapter(TwwInterlisPersistenceCapability):
             ) from exception
 
         finally:
-            self.importer_exporter.schema = (
-                previous_schema
-            )
+            self.importer_exporter.schema = previous_schema
 
         logger.info(
-            "Committed prepared quarantine schema %r into "
-            "live schema %r for source model %r.",
+            "Committed prepared quarantine schema %r into " "live schema %r for source model %r.",
             import_schema,
             live_schema,
             source_model,
@@ -203,10 +183,13 @@ class TwwInterlisPersistenceAdapter(TwwInterlisPersistenceCapability):
         Require one non-empty string parameter.
         """
 
-        if not isinstance(
-            value,
-            str,
-        ) or not value.strip():
+        if (
+            not isinstance(
+                value,
+                str,
+            )
+            or not value.strip()
+        ):
             raise DiffJobPersistenceError(
                 job_id="unknown",
                 phase="applying",
@@ -263,4 +246,3 @@ class TwwInterlisPersistenceAdapter(TwwInterlisPersistenceCapability):
                 groups,
             )
         )
-

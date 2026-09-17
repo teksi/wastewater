@@ -1,5 +1,6 @@
 from collections import defaultdict
 
+
 def build_function_inventory(
     mapping: dict,
 ) -> dict[str, list[str]]:
@@ -9,21 +10,16 @@ def build_function_inventory(
         if "function" in definition:
             function = definition["function"]
 
-            key = (
-                f"{function['schema']}."
-                f"{function['name']}"
-            )
+            key = f"{function['schema']}." f"{function['name']}"
 
             result[key].append(
                 class_name,
             )
 
-        for attribute_name, attr_definition in (
-            definition.get(
-                "attributes",
-                {},
-            ).items()
-        ):
+        for attribute_name, attr_definition in definition.get(
+            "attributes",
+            {},
+        ).items():
             function = attr_definition.get(
                 "function",
             )
@@ -31,13 +27,8 @@ def build_function_inventory(
             if not function:
                 continue
 
-            key = (
-                f"{function['schema']}."
-                f"{function['name']}"
-            )
+            key = f"{function['schema']}." f"{function['name']}"
 
-            result[key].append(
-                f"{class_name}.{attribute_name}"
-            )
+            result[key].append(f"{class_name}.{attribute_name}")
 
     return dict(result)
