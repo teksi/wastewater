@@ -325,12 +325,42 @@ def test_implicit_model_mapping_class_definition_raises_for_unknown_class(
 
     with pytest.raises(
         KeyError,
-        match="Unknown class",
+        match="Unknown source class",
     ):
         adapter.class_definition(
             "does_not_exist",
         )
 
+
+def test_implicit_model_mapping_attribute_definition_raises_for_unknown_attribute(
+    implicit_mapping_adapter,
+) -> None:
+    adapter, _, _ = implicit_mapping_adapter
+
+    with pytest.raises(
+        KeyError,
+        match="Unknown source attribute",
+    ):
+        adapter.attribute_definition(
+            "abwasserbauwerk",
+            "missing",
+        )
+
+
+def test_implicit_model_mapping_value_mapping_raises_for_unknown_value(
+    implicit_mapping_adapter,
+) -> None:
+    adapter, _, _ = implicit_mapping_adapter
+
+    with pytest.raises(
+        KeyError,
+        match="Unknown source value",
+    ):
+        adapter.value_mapping(
+            "abwasserbauwerk",
+            "astatus",
+            "missing_value",
+        )
 
 def test_implicit_model_mapping_try_class_definition_returns_none(
     implicit_mapping_adapter,
@@ -364,22 +394,6 @@ def test_implicit_model_mapping_attribute_definition(
         attribute_mapping.canonical_attr_id
         == "status"
     )
-
-
-def test_implicit_model_mapping_attribute_definition_raises_for_unknown_attribute(
-    implicit_mapping_adapter,
-) -> None:
-    adapter, _, _ = implicit_mapping_adapter
-
-    with pytest.raises(
-        KeyError,
-        match="Unknown attribute",
-    ):
-        adapter.attribute_definition(
-            "abwasserbauwerk",
-            "missing",
-        )
-
 
 def test_implicit_model_mapping_try_attribute_definition_returns_none(
     implicit_mapping_adapter,
@@ -418,22 +432,6 @@ def test_implicit_model_mapping_value_mapping(
         canonical_value_id=1234,
         value="operational",
     )
-
-
-def test_implicit_model_mapping_value_mapping_raises_for_unknown_value(
-    implicit_mapping_adapter,
-) -> None:
-    adapter, _, _ = implicit_mapping_adapter
-
-    with pytest.raises(
-        KeyError,
-        match="Unknown value",
-    ):
-        adapter.value_mapping(
-            "abwasserbauwerk",
-            "astatus",
-            "missing_value",
-        )
 
 
 def test_implicit_model_mapping_try_value_mapping_returns_none(

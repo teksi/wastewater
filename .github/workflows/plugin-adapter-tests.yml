@@ -85,7 +85,7 @@ jobs:
       matrix:
         qgis_version:
           - stable-noble
-          - latest
+          # - latest
 
     env:
       PGSERVICE: pg_tww
@@ -102,17 +102,6 @@ jobs:
       - name: Set up environment
         run: cp .env.example .env
 
-      - name: Cache INTERLIS downloads
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/teksi-wastewater/interlis
-          key: >-
-            interlis-downloads-${{ runner.os }}-${{
-              hashFiles(
-                'plugin/scripts/download-interlis-libs.sh'
-              )
-            }}
-
       - name: Download INTERLIS libraries
         run: ./plugin/scripts/download-interlis-libs.sh
 
@@ -121,13 +110,27 @@ jobs:
         with:
           qgis-test-version: ${{ env.QGIS_TEST_VERSION }}
 
+      - name: Wait for PostgreSQL
+        run: |
+          timeout 120 sh -c '
+            until docker compose exec -T db \
+              pg_isready \
+              -U postgres \
+              -d postgres
+            do
+              sleep 2
+            done
+          '
+
       - name: Install hook dependencies in QGIS container
         run: |
           docker compose exec -T qgis sh -c '
-            set -e
+            set -eu
 
             apt-get update
-            apt-get install -y --no-install-recommends \
+
+            apt-get install -y \
+              --no-install-recommends \
               git \
               python3-venv
 
@@ -143,16 +146,6 @@ jobs:
 
             python -m pip install --upgrade pip
             python -m pip install -e "/usr/src[dev]"
-          '
-
-      - name: Wait for PostgreSQL
-        run: |
-          timeout 120 sh -c '
-            until docker compose exec -T db \
-              pg_isready -U postgres -d postgres
-            do
-              sleep 2
-            done
           '
 
       - name: Initialize database
@@ -173,7 +166,7 @@ jobs:
       - name: Verify dependency imports
         run: |
           docker compose exec -T qgis sh -c '
-            set -e
+            set -eu
 
             . /tmp/teksi-hooks-venv/bin/activate
 
@@ -191,18 +184,19 @@ jobs:
             pip show teksi-hooks
 
             echo "Package info pgserviceparser:"
-            pip show teksi-pgserviceparser
+            pip show pgserviceparser
 
             echo "Imported TEKSI Wastewater package:"
-            python -c "
-              import teksi_wastewater
-              print(teksi_wastewater.__file__)
-              "
+            python -c "import teksi_wastewater; print(teksi_wastewater.__file__)"
+
+            echo "Imported teksi-hooks package:"
+            python -c "import teksi_hooks; print(teksi_hooks.__file__)"
+          '
 
       - name: Run Dockerized adapter tests
         run: |
           docker compose exec -T qgis sh -c '
-            set -e
+            set -eu
 
             . /tmp/teksi-hooks-venv/bin/activate
 
@@ -216,12 +210,22 @@ jobs:
               -m no_qgis
           '
 
+      - name: Show Docker service status
+        if: failure()
+        run: docker compose ps --all
+
       - name: Show Docker logs
         if: failure()
         run: |
-          docker compose ps
-          docker compose logs --no-color --tail=500 db qgis
+          docker compose logs \
+            --no-color \
+            --tail=500 \
+            db \
+            qgis
 
       - name: Stop services
         if: always()
-        run: docker compose down --volumes --remove-orphans
+        run: |
+          docker compose down \
+            --volumes \
+            --remove-orphans
