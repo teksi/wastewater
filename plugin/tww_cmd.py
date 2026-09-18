@@ -3,7 +3,7 @@
 import argparse
 import sys
 
-from teksi_wastewater.interlis import config
+from teksi_wastewater.interlis import config, model_config
 from teksi_wastewater.interlis.interlis_importer_exporter import (
     InterlisImporterExporter,
     InterlisImporterExporterError,
@@ -37,6 +37,12 @@ class TeksiWastewaterCmd:
         )
 
         subparser.add_argument(
+            "--schema",
+            default=config.IMPORT_SCHEMA,
+            help="intermediate import schema",
+        )
+
+        subparser.add_argument(
             "--xtf_file",
             help="XTF input file",
             required=True,
@@ -64,19 +70,16 @@ class TeksiWastewaterCmd:
             self.SUBPARSER_NAME_INTERLIS_EXPORT,
             help=f"{self.SUBPARSER_NAME_INTERLIS_EXPORT} --help",
         )
-
+        subparser.add_argument(
+            "--schema",
+            default=config.EXPORT_SCHEMA,
+            help="intermediate export schema",
+        )
         subparser.add_argument("--xtf_file", help="XTF output file", required=True)
         subparser.add_argument(
             "--export_model",
-            default=config.MODEL_NAME_DSS,
-            choices=[
-                config.MODEL_NAME_SIA405_ABWASSER,
-                config.MODEL_NAME_SIA405_BASE_ABWASSER,
-                config.MODEL_NAME_DSS,
-                config.MODEL_NAME_VSA_KEK,
-                config.MODEL_NAME_AG96,
-                config.MODEL_NAME_AG64,
-            ],
+            default=model_config.interlis_models["dss"].lang_name("de"),
+            choices=config.ALL_SUPPORTED_MODELS,
             help="Model to export (default:  %(default)s)",
         )
         subparser.add_argument(

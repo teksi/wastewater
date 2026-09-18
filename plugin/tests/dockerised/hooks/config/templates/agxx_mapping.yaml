@@ -1,0 +1,133 @@
+classes:
+
+
+  GepKnoten:
+    function:
+      schema: tww_app
+      name: fct_agxx_gepknoten_mapping_jsonb
+      parameters:
+        row: $row
+
+  GepHaltung:
+    function:
+      schema: tww_app
+      name: fct_agxx_gephaltung_mapping_jsonb
+      parameters:
+        row: $row
+
+  GepMassnahme:
+    attributes:
+      kategorie:
+        targets:
+          - class: measure
+            attribute: category
+            vl_extension: true
+      prioritaetag:
+        targets:
+          - class: measure
+            attribute: priority
+            vl_extension: true
+
+  Einzugsgebiet:
+    attributes:
+      entwaesserungssystemag_geplant:
+        targets:
+          - class: catchment_area
+            attribute: drainage_system_planned
+            vl_extension: true
+      entwaesserungssystemag_ist:
+        targets:
+          - class: catchment_area
+            attribute: drainage_system_current
+            vl_extension: true
+
+
+  Ueberlauf_Foerderaggregat:
+    function:
+      schema: tww_app
+      name: fct_agxx_ueberlauf_foerderaggregat_mapping_jsonb
+      parameters:
+        row: $row
+
+
+  BautenAusserhalbBaugebiet:
+    attributes:
+      anzstaendigeeinwohner:
+        targets:
+          - class: agxx_building_group
+            attribute: ag96_population
+      eigentuemername:
+        targets:
+          - class: agxx_building_group
+            attribute: ag96_owner_name
+      eigentuemeradresse:
+        targets:
+          - class: agxx_building_group
+            attribute: ag96_owner_address
+      arealnutzung:
+        targets:
+          - class: building_group
+            attribute: function
+            vl_extension: true
+      beseitigung_haeusliches_abwasser:
+        targets:
+          - class: agxx_building_group
+            attribute: ag96_disposal_wastewater
+      beseitigung_gewerbliches_abwasser:
+        targets:
+          - class: agxx_building_group
+            attribute: ag96_disposal_industrial_wastewater
+      beseitigung_platzentwaesserung:
+        targets:
+          - class: agxx_building_group
+            attribute: ag96_disposal_square_water
+      beseitigung_dachentwaesserung:
+        targets:
+          - class: agxx_building_group
+            attribute: ag96_disposal_roof_water
+
+  SBWEinzugsgebiet:
+    attributes:
+      fremdwasseranfall_geplant:
+        targets:
+          - class: agxx_catchment_area_totals
+            attribute: ag96_sewer_infiltration_water_dim
+      schmutzabwasseranfall_geplant:
+        targets:
+          - class: agxx_catchment_area
+            attribute: ag96_waste_water_production_dim
+      perimeter_ist:
+        targets:
+          - class: agxx_catchment_area
+            attribute: ag96_perimeter_geometry
+      sonderbauwerkref:
+        function:
+          schema: tww_app
+          name: fct_agxx_sbw_einzugsgebiet_sonderbauwerk_ref
+          parameters:
+            sonderbauwerk_ref: sonderbauwerk_ref
+            bemerkung_gep: bemerkung_gep
+
+
+  VersickerungsbereichAG:
+    attributes:
+      durchlaessigkeit:
+        targets:
+          - class: agxx_infiltration_zone
+            attribute: ag96_permeability
+      einschraenkung:
+        targets:
+          - class: agxx_infiltration_zone
+            attribute: ag96_limitation
+      maechtigkeit:
+        targets:
+          - class: agxx_infiltration_zone
+            attribute: ag96_thickness
+      q_check:
+        targets:
+          - class: agxx_infiltration_zone
+            attribute: ag96_q_check
+      versickerungsmoeglichkeitag:
+        targets:
+          - class: infiltration_zone
+            attribute: infiltration_capacity

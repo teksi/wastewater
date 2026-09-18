@@ -3,6 +3,8 @@ from .model_base import ModelBase
 
 
 class ModelTwwOd(ModelBase):
+    inheritance_key = None
+
     def __init__(self):
         super().__init__(config.TWW_OD_SCHEMA)
 
@@ -328,3 +330,59 @@ class ModelTwwOd(ModelBase):
             __table_args__ = {"schema": config.TWW_OD_SCHEMA}
 
         ModelTwwOd.re_building_group_disposal = re_building_group_disposal
+
+        # used for AGXX model mapping on hooks
+
+        class agxx_wastewater_node(self.Base):
+            __tablename__ = "agxx_wastewater_node"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.agxx_wastewater_node = agxx_wastewater_node
+
+        class agxx_last_modification(self.Base):
+            __tablename__ = "agxx_last_modification"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.agxx_last_modification = agxx_last_modification
+
+        class agxx_wastewater_networkelement(self.Base):
+            __tablename__ = "agxx_wastewater_networkelement"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.agxx_wastewater_networkelement = agxx_wastewater_networkelement
+
+        class agxx_wastewater_structure(self.Base):
+            __tablename__ = "agxx_wastewater_structure"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.agxx_wastewater_structure = agxx_wastewater_structure
+
+        class agxx_reach(self.Base):
+            __tablename__ = "agxx_reach"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.agxx_reach = agxx_reach
+
+        class agxx_overflow(self.Base):
+            __tablename__ = "agxx_overflow"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.agxx_overflow = agxx_overflow
+
+        class agxx_building_group(self.Base):
+            __tablename__ = "agxx_building_group"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.agxx_building_group = agxx_building_group
+
+        class agxx_catchment_area_totals(self.Base):
+            __tablename__ = "agxx_catchment_area_totals"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.agxx_catchment_area_totals = agxx_catchment_area_totals
+
+        class agxx_infiltration_zone(self.Base):
+            __tablename__ = "agxx_infiltration_zone"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.agxx_infiltration_zone = agxx_infiltration_zone

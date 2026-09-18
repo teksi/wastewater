@@ -1,0 +1,599 @@
+privileges:
+  DBW_WI:
+    labels:
+      de: Datenbewirtschafter Werkinformation
+      fr: Gestionnaire cadastral
+
+  DBW_GEP:
+    labels:
+      de: Datenbewirtschafter GEP-Themen
+      fr: Gestionnaire PGEE
+
+  FI_BU:
+    labels:
+      de: Fachingenieur Betrieb und Unterhalt
+      fr: Ingénieur de maintenance
+
+settings:
+  allow_transitive_transitions: true
+
+defaults:
+  read_rules:
+      - privileges: all
+
+  attribute_defaults:
+    ag64_*:
+      update: [DBW_WI]
+    ag96_*:
+      update: [DBW_GEP]
+
+classes:
+  - id: wastewater_networkelement
+    rights_from_subclass: false
+    create_rules:
+      - privileges: [DBW_WI,DBW_GEP]
+        when:
+            local:
+              attribute: fk_wastewater_structure
+              is_null: true
+
+    derive_rights_from:
+      - class: wastewater_structure
+        local_attribute: fk_wastewater_structure
+
+    update_rules:
+      - inherit: create_rules
+    delete_rules:
+      - inherit: create_rules
+
+
+  - id: wastewater_node
+    extends: wastewater_networkelement
+    attributes:
+      hydr_geometryref:
+        update: [DBW_GEP]
+      backflow_level_current:
+        update: [DBW_GEP]
+
+  - id: reach
+    extends: wastewater_networkelement
+    attributes:
+      flow_time_dry_weather:
+        update: [DBW_GEP]
+      hydr_load_current:
+        update: [DBW_GEP]
+      relining_kind:
+        update: [FI_BU]
+      reliner_nominal_size:
+        update: [FI_BU]
+      relining_construction:
+        update: [FI_BU]
+      reliner_material:
+        update: [FI_BU]
+      wall_roughness:
+        update: [DBW_GEP]
+
+  - id: reach_alternative
+    crud_rules:
+      - privileges: [DBW_WI]
+
+  - id: reach_text
+    crud_rules:
+      - privileges: [DBW_WI]
+
+  - id: reach_point
+    derive_rights_from:
+      - class: reach
+        remote_attribute: fk_reach_point_from
+      - class: reach
+        remote_attribute: fk_reach_point_to
+
+  - id: hydr_geometry
+    crud_rules:
+      - privileges: [DBW_WI]
+
+  - id: hydr_geom_relation
+    crud_rules:
+      - privileges: [DBW_WI]
+
+  - id: pipe_profile
+    crud_rules:
+      - privileges: [DBW_WI, DBW_GEP]
+
+  - id: profile_geometry
+    crud_rules:
+      - privileges: [DBW_WI, DBW_GEP]
+
+  # ---------------------------------------------------------
+  # Abwasserbauwerke
+  # ---------------------------------------------------------
+
+  - id: wastewater_structure
+    rights_from_subclass: false
+    create_rules:
+      - privileges: [DBW_GEP]
+        when:
+          local:
+            attribute: status
+            in:
+              - other.planned
+              - other.calculation_alternative
+
+      - privileges: [DBW_WI]
+    update_rules:
+      - inherit: create_rules
+    delete_rules:
+      - inherit: create_rules
+    attributes:
+      structure_condition:
+        update: [FI_BU]
+      gross_costs:
+        update: [DBW_GEP]
+      urgency_figure:
+        update: [FI_BU]
+      financing:
+        update: [DBW_GEP]
+      inspection_interval:
+        update: [FI_BU]
+      renovation_necessity:
+        update: [FI_BU]
+      subsidies:
+        update: [DBW_GEP]
+      status:
+        update: [DBW_GEP, DBW_WI]
+        transitions:
+          - privileges: [DBW_WI]
+            from: operational.tentative
+            to: operational
+          - privileges: [DBW_WI]
+            from: inoperative
+            to: operational
+            bilateral: true
+          - privileges: [DBW_WI]
+            from: other.planned
+            to: operational
+          - privileges: [DBW_WI]
+            from: other.planned
+            to: other.project
+          - privileges: [DBW_WI]
+            from: other.project
+            to: operational
+          - privileges: [DBW_WI]
+            from: unknown
+            to: operational
+          - privileges: [DBW_WI]
+            from: operational.*
+            to: abandoned.*
+          - privileges: [DBW_GEP]
+            from: operational.*
+            to: operational.will_be_suspended
+          - privileges: [DBW_GEP]
+            from: other.calculation_alternative
+            to: other.planned
+            bilateral: true
+      rv_base_year:
+        update: [DBW_GEP]
+      rv_construction_type:
+        update: [DBW_GEP]
+      replacement_value:
+        update: [DBW_GEP]
+      year_of_replacement:
+        update: [DBW_GEP]
+      status_survey_year:
+        update: [FI_BU]
+        rules:
+        - id: cannot_decrease
+          level: warning
+      condition_score:
+        update: [FI_BU]
+
+  - id: drainless_toilet
+    extends: wastewater_structure
+
+  - id: discharge_point
+    extends: wastewater_structure
+    attributes:
+      highwater_level:
+        update: [DBW_GEP]
+      waterlevel_hydraulic:
+        update: [DBW_GEP]
+
+  - id: channel
+    extends: wastewater_structure
+    attributes:
+      usage_planned:
+        update: [DBW_GEP]
+      jetting_interval:
+        update: [FI_BU]
+
+  - id: small_treatment_plant
+    extends: wastewater_structure
+
+  - id: manhole
+    extends: wastewater_structure
+
+  - id: special_structure
+    extends: wastewater_structure
+    attributes:
+      bypass:
+        update: [DBW_GEP]
+      stormwater_tank_arrangement:
+        update: [DBW_GEP]
+
+  - id: infiltration_instalation
+    extends: wastewater_structure
+    attributes:
+      distance_to_aquifer:
+        update: [DBW_GEP]
+      defects:
+        update: [FI_BU]
+      adsorption_capacity:
+        update: [DBW_GEP]
+      effective_area:
+        update: [DBW_GEP]
+
+  - id: mechanical_pretreatment
+    crud_rules:
+      - privileges: [DBW_GEP, DBW_WI]
+
+  - id: retention_body
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  - id: wastewater_structure_symbol
+    crud_rules:
+      - privileges: [DBW_WI]
+
+  - id: wastewater_structure_text
+    crud_rules:
+      - privileges: [DBW_WI]
+
+
+  # ---------------------------------------------------------
+  # Bauwerksteile
+  # ---------------------------------------------------------
+
+  - id: structure_part
+    rights_from_subclass: true
+    attributes:
+      renovation:demand:
+        update: [FI_BU]
+    # weitere Attribute gemäss Subklassen → keine Default-Rechte
+
+  - id: cover
+    extends: structure_part
+    derive_rights_from:
+      - class: wastewater_structure
+        local_attribute: fk_wastewater_structure
+    # Fabrikat hat keine speziellen Rechte → Default gilt
+
+  - id: flushing_nozzle
+    extends: structure_part
+    crud_rules:
+      - privileges: [DBW_WI]
+
+  # Weitere Subklassen SIA 405
+  # alle Attribute: DBW-WK = CRU
+
+  - id: benching
+    extends: structure_part
+    crud_rules:
+      - privileges: [DBW_WI]
+
+  - id: access_aid
+    extends: structure_part
+    crud_rules:
+      - privileges: [DBW_WI]
+
+  - id: dryweather_flume
+    extends: structure_part
+    crud_rules:
+      - privileges: [DBW_WI]
+
+  - id: dryweather_downspout
+    extends: structure_part
+    crud_rules:
+      - privileges: [DBW_WI]
+
+  # Weitere Subklassen VSA-DSS
+  # alle Attribute: DBW-GT = CRU → DBW_GEP
+
+  - id: tank_emptying
+    extends: structure_part
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  - id: tank_cleaning
+    extends: structure_part
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  - id: electric_equipment
+    extends: structure_part
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  - id: electromechanical_equipment
+    extends: structure_part
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  - id: solids_retention
+    extends: structure_part
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  - id: backflow_prevention
+    extends: structure_part
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  # ---------------------------------------------------------
+  # Überlauf / Förderaggregat
+  # ---------------------------------------------------------
+
+  - id: overflow
+    rights_from_subclass: false
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  - id: leapingweir
+    extends: overflow
+
+  - id: prank_weir
+    extends: overflow
+
+  - id: pump
+    extends: overflow
+
+  - id: throttle_shut_off_unit
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  - id: hq_relation
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  - id: hydraulic_char_data
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  - id: overflow_char
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+
+
+  # ---------------------------------------------------------
+  # Einzugsgebiete
+  # ---------------------------------------------------------
+
+  - id: catchment_area
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  - id: surface_runoff_parameters
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  - id: connection_object
+    rights_from_subclass: false
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  - id: fountain
+    extends: connection_object
+
+  - id: building
+    extends: connection_object
+
+  - id: reservoir
+    extends: connection_object
+
+  - id: individual_surface
+    extends: connection_object
+
+  - id: catchment_area_text
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  # ---------------------------------------------------------
+  # Massnahmen
+  # ---------------------------------------------------------
+
+  - id: measure
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  - id: maintenance_event
+    rights_from_subclass: true
+
+  - id: maintenance
+    extends: maintenance_event
+    create_rules:
+      - privileges: [DBW_GEP, FI_BU]
+    update_rules:
+      - ownership:
+          attribute: fk_provider
+    delete_rules:
+      - inherit: update_rules
+
+  # ---------------------------------------------------------
+  # Abwasser im ländlichen Raum
+  # ---------------------------------------------------------
+
+  - id: building_group
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  - id: farm
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  - id: building_group_baugwr
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  - id: disposal
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  # ---------------------------------------------------------
+  # Abwasserreinigung
+  # ---------------------------------------------------------
+
+  - id: waste_water_treatment_plant
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  - id: wwtp_energy_use
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  - id: waste_water_treatment
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  - id: sludge_treatment
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  - id: wwtp_structure
+    extends: wastewater_structure
+
+  - id: control_center
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  # ---------------------------------------------------------
+  # Administration
+  # ---------------------------------------------------------
+
+  - id: zone
+    rights_from_subclass: false
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  - id: infiltration_zone
+    extends: zone
+
+  - id: drainage_system
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  # ---------------------------------------------------------
+  # Stammkarte
+  # ---------------------------------------------------------
+
+  - id: log_card
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  - id: catchment_area_totals
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  - id: biol_ecol_assessment
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  # ---------------------------------------------------------
+  # Messung
+  # ---------------------------------------------------------
+
+  - id: measuring_point
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  - id: measurement_series
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  - id: measurement_result
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  - id: measuring_device
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  # ---------------------
+  # VSA-KEK und Unterhalt
+  # ---------------------
+
+  - id: examination
+    extends: maintenance_event
+    crud_rules:
+      - privileges: [FI_BU]
+
+  - id: damage
+    rights_from_subclass: false
+    crud_rules:
+      - privileges: [FI_BU]
+
+  - id: damage_channel
+    extends: damage
+
+  - id: damage_manhole
+    extends: damage
+
+  - id: file
+    update_rules:
+      - ownership:
+          attribute: fk_provider
+    delete_rules:
+      - inherit: update_rules
+
+  - id: data_media
+    update_rules:
+      - ownership:
+          attribute: fk_provider
+    delete_rules:
+      - inherit: update_rules
+
+  - id: agxx_wastewater_networkelement
+    derive_rights_from:
+      - class: wastewater_networkelement
+        local_attribute: fk_wastewater_networkelement
+
+  - id: agxx_last_modification
+    derive_rights_from:
+      - class: overflow
+        local_attribute: fk_element
+      - class: wastewater_networkelement
+        local_attribute: fk_element
+
+  - id: agxx_wastewater_node
+    derive_rights_from:
+      - class: wastewater_node
+        local_attribute: fk_wastewater_node
+
+  - id: agxx_wastewater_structure
+    derive_rights_from:
+      - class: wastewater_structure
+        local_attribute: fk_wastewater_structure
+
+  - id: agxx_reach
+    derive_rights_from:
+      - class: reach
+        local_attribute: fk_reach
+
+  - id: agxx_overflow
+    derive_rights_from:
+      - class: overflow
+        local_attribute: fk_overflow
+
+  - id: agxx_building_group
+    derive_rights_from:
+      - class: building_group
+        local_attribute: fk_building_group
+
+  - id: agxx_catchment_area_totals
+    derive_rights_from:
+      - class: catchment_area_totals
+        local_attribute: fk_catchment_area_totals
+
+  - id: agxx_infiltration_zone
+    derive_rights_from:
+      - class: infiltration_zone
+        local_attribute: fk_infiltration_zone

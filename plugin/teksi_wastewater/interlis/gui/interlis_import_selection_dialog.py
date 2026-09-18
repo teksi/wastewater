@@ -283,7 +283,6 @@ class InterlisImportSelectionDialog(QDialog):
         try:
             with OverrideCursor(Qt.CursorShape.WaitCursor):
                 self.session.commit()
-                self.session.close()
         except Exception as exception:
             QMessageBox.critical(self, "Import error", f"Details: {exception}")
             return
@@ -296,7 +295,6 @@ class InterlisImportSelectionDialog(QDialog):
     def rollback_session(self):
         with OverrideCursor(Qt.CursorShape.WaitCursor):
             self.session.rollback()
-            self.session.close()
 
         if iface:
             iface.messageBar().pushMessage("Error", "Import was canceled", level=Qgis.Warning)

@@ -1,0 +1,286 @@
+defaults:
+  mandatory:
+      - obj_id
+      - identifier
+      - fk_provider
+      - fk_dataowner
+  validation_rules:
+    last_modification:
+      rules:
+        - id: newer_than_existing
+          level: info
+    fk_provider:
+      rules:
+        - id: equals_context_value
+          context_value: provider_oid
+          level: error
+          operations:
+            - insert
+    fk_dataowner:
+      rules:
+        - id: equals_context_value
+          context_value: dataowner_oid
+          level: error
+          operations:
+            - insert
+  object_validation_rules:
+    unique_identifier_combo:
+      rules:
+        - id: is_unique
+          parameters:
+            attributes:
+              - identifier
+              - fk_dataowner
+          level: error
+
+
+
+classes:
+  - id: wastewater_networkelement
+
+  - id: wastewater_node
+
+  - id: reach
+
+  - id: reach_alternative
+
+  - id: reach_text
+
+  - id: reach_point
+
+  - id: hydr_geometry
+
+  - id: hydr_geom_relation
+
+  - id: pipe_profile
+
+  - id: profile_geometry
+
+  # ---------------------------------------------------------
+  # Abwasserbauwerke
+  # ---------------------------------------------------------
+
+  - id: wastewater_structure
+
+  - id: drainless_toilet
+
+  - id: discharge_point
+
+  - id: channel
+
+  - id: small_treatment_plant
+
+  - id: manhole
+
+  - id: special_structure
+
+  - id: infiltration_instalation
+
+  - id: mechanical_pretreatment
+
+  - id: retention_body
+
+  - id: wastewater_structure_symbol
+
+  - id: wastewater_structure_text
+
+
+  # ---------------------------------------------------------
+  # Bauwerksteile
+  # ---------------------------------------------------------
+
+  - id: structure_part
+
+  - id: cover
+
+  - id: flushing_nozzle
+
+  - id: benching
+
+  - id: access_aid
+
+  - id: dryweather_flume
+
+  - id: dryweather_downspout
+
+  - id: tank_emptying
+
+  - id: tank_cleaning
+
+  - id: electric_equipment
+
+  - id: electromechanical_equipment
+
+  - id: solids_retention
+
+  - id: backflow_prevention
+
+
+  # ---------------------------------------------------------
+  # Überlauf / Förderaggregat
+  # ---------------------------------------------------------
+
+  - id: overflow
+
+
+  - id: leapingweir
+
+  - id: prank_weir
+
+  - id: pump
+
+  - id: throttle_shut_off_unit
+
+  - id: hq_relation
+
+  - id: hydraulic_char_data
+
+  - id: overflow_char
+
+
+
+  # ---------------------------------------------------------
+  # Einzugsgebiete
+  # ---------------------------------------------------------
+
+  - id: catchment_area
+
+  - id: surface_runoff_parameters
+
+  - id: connection_object
+
+  - id: fountain
+
+  - id: building
+
+  - id: reservoir
+
+  - id: individual_surface
+
+  - id: catchment_area_text
+
+
+  # ---------------------------------------------------------
+  # Massnahmen
+  # ---------------------------------------------------------
+
+  - id: measure
+
+
+  - id: maintenance_event
+    object_validation_rules:
+      unique_identifier_combo:
+        rules:
+          - id: is_unique
+            parameters:
+              attributes:
+                - identifier
+                - fk_dataowner
+                - time_point
+            level: error
+
+  - id: maintenance
+
+  # ---------------------------------------------------------
+  # Abwasser im ländlichen Raum
+  # ---------------------------------------------------------
+
+  - id: building_group
+
+  - id: farm
+
+  - id: building_group_baugwr
+
+  - id: disposal
+
+
+  # ---------------------------------------------------------
+  # Abwasserreinigung
+  # ---------------------------------------------------------
+
+  - id: waste_water_treatment_plant
+
+  - id: wwtp_energy_use
+
+  - id: waste_water_treatment
+
+  - id: sludge_treatment
+
+  - id: wwtp_structure
+
+  - id: control_center
+
+
+  # ---------------------------------------------------------
+  # Administration
+  # ---------------------------------------------------------
+
+  - id: zone
+
+  - id: infiltration_zone
+
+  - id: drainage_system
+
+
+  # ---------------------------------------------------------
+  # Stammkarte
+  # ---------------------------------------------------------
+
+  - id: log_card
+
+
+  - id: catchment_area_totals
+
+
+  - id: biol_ecol_assessment
+
+
+  # ---------------------------------------------------------
+  # Messung
+  # ---------------------------------------------------------
+
+  - id: measuring_point
+
+
+  - id: measurement_series
+
+
+  - id: measurement_result
+
+
+  - id: measuring_device
+
+
+  # ---------------------
+  # VSA-KEK und Unterhalt
+  # ---------------------
+
+  - id: examination
+
+  - id: damage
+
+  - id: damage_channel
+
+  - id: damage_manhole
+
+  - id: file
+
+  - id: data_media
+
+  - id: agxx_wastewater_networkelement
+
+  - id: agxx_last_modification
+
+  - id: agxx_wastewater_node
+
+  - id: agxx_wastewater_structure
+
+  - id: agxx_reach
+
+  - id: agxx_overflow
+
+  - id: agxx_building_group
+
+  - id: agxx_catchment_area_totals
+
+  - id: agxx_infiltration_zone

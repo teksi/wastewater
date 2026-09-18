@@ -48,6 +48,7 @@ from .tools.twwmaptools import TwwMapToolConnectNetworkElements, TwwTreeMapTool
 from .tools.twwnetwork import TwwGraphManager
 from .tools.twwselectionextender import TwwSelectionExtender
 from .utils.database_utils import DatabaseUtils
+from .utils.integrity_checker import TWWIntegrityChecker
 from .utils.issues import Issue, IssueLevel
 from .utils.plugin_utils import plugin_root_path
 from .utils.qt_utils import OverrideCursor
@@ -372,7 +373,7 @@ class TeksiWastewaterPlugin:
 
     def _get_validity_issues(self, include_ili: bool = False) -> list[Issue]:
         try:
-            return DatabaseUtils.get_validity_check_issues(
+            return TWWIntegrityChecker.get_validity_check_issues(
                 include_ili=include_ili, logger=self.logger
             )
         except Exception as exception:
