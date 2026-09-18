@@ -6,6 +6,7 @@ from .model_base import ModelBase
 
 
 class ModelTwwAG6496(ModelBase):
+    inheritance_key=None
     def __init__(self):
         super().__init__(config.TWW_APP_SCHEMA)
 

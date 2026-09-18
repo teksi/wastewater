@@ -582,6 +582,8 @@ class InterlisImporterExporter:
                 progress_scope, 100, "Converted from TEKSI Wastewater to intermediate schema"
             )
 
+            return selection_models
+
     def interlis_export_from_quarantine_to_xtf(
         self,
         xtf_file_output,
@@ -1341,9 +1343,15 @@ class InterlisImporterExporter:
 
         required_dependencies = {
             "model_mapping": self.model_mapping,
-            "function_effect_resolver": (self.function_effect_resolver),
-            "effect_evaluator": (self.effect_evaluator),
-            "effect_persister": (self.effect_persister),
+            "function_effect_resolver": (
+                self.function_effect_resolver
+            ),
+            "effect_evaluator": (
+                self.effect_evaluator
+            ),
+            "effect_persister": (
+                self.effect_persister
+            ),
         }
 
         missing_dependencies = [

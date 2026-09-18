@@ -247,7 +247,9 @@ class TwwInterlisModelSelection:
         Return the component representing the primary model group.
         """
 
-        return self.components[-1]
+        return self.components[
+            -1
+        ]
 
     @property
     def import_model(
@@ -270,7 +272,10 @@ class TwwInterlisModelSelection:
         Return all selected semantic model groups.
         """
 
-        return tuple(component.group for component in self.components)
+        return tuple(
+            component.group
+            for component in self.components
+        )
 
     @property
     def mapping_model_id(
@@ -303,7 +308,9 @@ class TwwInterlisModelSelection:
         ili2pg from the selected primary model definitions.
         """
 
-        model_names: list[str,] = []
+        model_names: list[
+            str,
+        ] = []
 
         highest_levels = set(
             self._highest_inheritance_levels,
@@ -313,7 +320,9 @@ class TwwInterlisModelSelection:
             if component.group not in highest_levels:
                 continue
 
-            selected_model_name = component.model_name
+            selected_model_name = (
+                component.model_name
+            )
 
             if selected_model_name not in model_names:
                 model_names.append(
@@ -322,8 +331,10 @@ class TwwInterlisModelSelection:
 
             remaining_model_names = sorted(
                 model_name
-                for model_name in component.configuration.names
-                if model_name != selected_model_name
+                for model_name
+                in component.configuration.names
+                if model_name
+                != selected_model_name
             )
 
             for model_name in remaining_model_names:
@@ -354,11 +365,15 @@ class TwwInterlisModelSelection:
         is handled by ``InterlisModel.lang_name``.
         """
 
-        model_names: list[str,] = []
+        model_names: list[
+            str,
+        ] = []
 
         for component in self._components_for_highest_levels:
-            model_name = component.configuration.lang_name(
-                self.language,
+            model_name = (
+                component.configuration.lang_name(
+                    self.language,
+                )
             )
 
             if model_name not in model_names:
@@ -387,6 +402,28 @@ class TwwInterlisModelSelection:
         return self.import_schema_models
 
     @property
+    def validation_models(
+        self,
+    ) -> tuple[
+        str,
+        ...,
+    ]:
+        """
+        Return the model names actually declared by the imported transfer.
+
+        Import schema creation may include additional language variants, but
+        quarantine validation must be restricted to models for which baskets
+        were imported.
+        """
+
+        if self.imported_models:
+            return self.imported_models
+
+        return (
+            self.import_model,
+        )
+
+    @property
     def _highest_inheritance_levels(
         self,
     ) -> tuple[
@@ -403,10 +440,15 @@ class TwwInterlisModelSelection:
         available_levels = {
             component.group
             for component in self.components
-            if (component.group in INTERLIS_INHERITANCE_TREE)
+            if (
+                component.group
+                in INTERLIS_INHERITANCE_TREE
+            )
         }
 
-        inherited_levels: set[str,] = set()
+        inherited_levels: set[
+            str,
+        ] = set()
 
         for level in available_levels:
             inherited_levels.update(
@@ -418,8 +460,13 @@ class TwwInterlisModelSelection:
 
         return tuple(
             level
-            for level in INTERLIS_INHERITANCE_TREE
-            if (level in available_levels and level not in inherited_levels)
+            for level
+            in INTERLIS_INHERITANCE_TREE
+            if (
+                level in available_levels
+                and level
+                not in inherited_levels
+            )
         )
 
     @property
@@ -427,7 +474,9 @@ class TwwInterlisModelSelection:
         self,
     ) -> dict[
         str,
-        frozenset[str,],
+        frozenset[
+            str,
+        ],
     ]:
         """
         Return all direct and indirect parents keyed by model level.
@@ -435,11 +484,15 @@ class TwwInterlisModelSelection:
 
         parents_by_level: dict[
             str,
-            frozenset[str,],
+            frozenset[
+                str,
+            ],
         ] = {}
 
         for level in INTERLIS_INHERITANCE_TREE:
-            parent_levels: set[str,] = set()
+            parent_levels: set[
+                str,
+            ] = set()
 
             pending_levels = list(
                 INTERLIS_INHERITANCE_TREE.get(
@@ -449,7 +502,9 @@ class TwwInterlisModelSelection:
             )
 
             while pending_levels:
-                parent_level = pending_levels.pop()
+                parent_level = (
+                    pending_levels.pop()
+                )
 
                 if parent_level in parent_levels:
                     continue
@@ -465,7 +520,9 @@ class TwwInterlisModelSelection:
                     )
                 )
 
-            parents_by_level[level] = frozenset(
+            parents_by_level[
+                level
+            ] = frozenset(
                 parent_levels,
             )
 
@@ -485,7 +542,9 @@ class TwwInterlisModelSelection:
         and indirect dependencies. Existing component order is preserved.
         """
 
-        selected_levels: set[str,] = set()
+        selected_levels: set[
+            str,
+        ] = set()
 
         for level in self._highest_inheritance_levels:
             selected_levels.add(
@@ -500,9 +559,11 @@ class TwwInterlisModelSelection:
             )
 
         return tuple(
-            component for component in self.components if component.group in selected_levels
+            component
+            for component in self.components
+            if component.group
+            in selected_levels
         )
-
 
 interlis_models: dict[
     str,
@@ -706,3 +767,5 @@ INTERLIS_INHERITANCE_TREE: dict[
     "ag96": (),
     "ag64": (),
 }
+
+

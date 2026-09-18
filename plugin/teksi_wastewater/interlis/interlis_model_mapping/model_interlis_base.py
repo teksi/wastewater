@@ -2,6 +2,9 @@ from .model_base import ModelBase
 
 
 class ModelInterlisBase(ModelBase):
+
+    inheritance_key = "t_id"
+    
     def __init__(self, schema):
         super().__init__(schema)
 

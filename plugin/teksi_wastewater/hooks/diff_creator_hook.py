@@ -41,15 +41,8 @@ from teksi_wastewater.hooks.adapters.tww_canonical_model_adapter import (
 from teksi_wastewater.hooks.adapters.tww_database_connection_factory import (
     TwwDatabaseConnectionFactory,
 )
-from teksi_wastewater.hooks.adapters.tww_interlis_persistence_adapter import (
-    TwwInterlisPersistenceAdapter,
-)
 from teksi_wastewater.hooks.adapters.tww_interlis_service_adapter import (
-    TwwInterlisContext,
     TwwInterlisServiceAdapter,
-)
-from teksi_wastewater.hooks.adapters.tww_quarantine_effect_projector import (
-    TwwQuarantineEffectProjector,
 )
 from teksi_wastewater.hooks.adapters.tww_quarantine_runner import (
     TwwQuarantineRunner,
@@ -60,12 +53,19 @@ from teksi_wastewater.hooks.adapters.tww_relation_context_provider import (
 from teksi_wastewater.hooks.adapters.tww_relation_lookup_adapter import (
     TwwRelationLookupAdapter,
 )
-from teksi_wastewater.hooks.capabilities.tww_implicit_model_mapping_capability import (
-    TwwImplicitModelMappingCapability,
+from teksi_wastewater.hooks.adapters.tww_implicit_model_mapping_adapter import (
+    TwwImplicitModelMappingAdapter,
 )
 from teksi_wastewater.hooks.services.tww_change_creation_service import (
     ChangeObjectProviderFactory,
     TwwChangeCreationService,
+)
+from teksi_wastewater.hooks.services.tww_diff_schema_service import (
+    DiffJobMode,
+    TwwDiffSchemaService,
+)
+from teksi_wastewater.hooks.adapters.tww_interlis_persistence_adapter import (
+    TwwInterlisPersistenceAdapter,
 )
 from teksi_wastewater.hooks.services.tww_database_backup_service import (
     TwwDatabaseBackupService,
@@ -73,15 +73,18 @@ from teksi_wastewater.hooks.services.tww_database_backup_service import (
 from teksi_wastewater.hooks.services.tww_diff_review_service import (
     TwwDiffReviewService,
 )
-from teksi_wastewater.hooks.services.tww_diff_schema_service import (
-    DiffJobMode,
-    TwwDiffSchemaService,
-)
 from teksi_wastewater.hooks.services.tww_quarantine_persistence_preparer import (
     TwwQuarantinePersistencePreparer,
 )
 from teksi_wastewater.hooks.services.tww_review_persistence_service import (
     TwwReviewPersistenceService,
+)
+from teksi_wastewater.hooks.adapters.tww_quarantine_effect_projector import (
+    TwwQuarantineEffectProjector,
+)
+from teksi_wastewater.hooks.adapters.tww_interlis_service_adapter import (
+    TwwInterlisContext,
+    TwwInterlisServiceAdapter,
 )
 from teksi_wastewater.interlis import (
     config,
@@ -119,7 +122,7 @@ class Hook(
         context: HookContext,
     ) -> None:
         parameters = context.parameters
-
+        context.logger.info("Starting diff creator hook")
         self.connection_factory = context.capability(
             DatabaseConnectionFactory,
         )
@@ -180,7 +183,9 @@ class Hook(
             else None
         )
 
-        auto_apply = parameters.get("auto_apply", False)
+        auto_apply = parameters.get(
+            "auto_apply", False
+        )
 
         self.provider_oid = Standardoid(parameters["provider_oid"])
         self.dataowner_oid = Standardoid(parameters["dataowner_oid"])
@@ -199,9 +204,7 @@ class Hook(
             ),
         )
         self.rights_definition = RightsParser().parse_file(rights_definition_path)
-        raw_provider_rights = ProviderRightsParser(oid_type=Standardoid).parse_file(
-            provider_rights_path
-        )
+        raw_provider_rights = ProviderRightsParser(oid_type=Standardoid).parse_file(provider_rights_path)
         resolved_providers = ProviderResolver().resolve_all(providers=raw_provider_rights)
         if skip_rights_evaluation:
             resolved_providers = self._grant_all(resolved_providers)
@@ -222,7 +225,9 @@ class Hook(
         )
 
         # create adapters and services
-        quarantine_runner = TwwQuarantineRunner()
+        quarantine_runner = TwwQuarantineRunner(
+            logger=context.logger,
+        )
 
         canonical_model = TwwCanonicalModelAdapter(
             connection_factory=self.connection_factory,
@@ -311,37 +316,62 @@ class Hook(
         if auto_apply:
             if result.diff_schema_result is None:
                 raise RuntimeError(
-                    "The reviewed import did not create a persisted " "tww_diff review job."
+                    "The reviewed import did not create a persisted "
+                    "tww_diff review job."
                 )
             diff_review_service = TwwDiffReviewService(
                 diff_schema_service=diff_schema_service,
             )
 
-            quarantine_preparer = TwwQuarantinePersistencePreparer(
-                connection_factory=(self.connection_factory),
-                diff_schema_service=(diff_schema_service),
+            quarantine_preparer = (
+                TwwQuarantinePersistencePreparer(
+                    connection_factory=(
+                        self.connection_factory
+                    ),
+                    diff_schema_service=(
+                        diff_schema_service
+                    ),
+                )
             )
             backup_service = TwwDatabaseBackupService(
                 connection_factory=self.connection_factory,
             )
-            persistence_adapter = TwwInterlisPersistenceAdapter(
-                connection_factory=(self.connection_factory),
-                interlis_service=(self.interlis_service),
-                model_config_dir=(self.model_config_dir),
+            persistence_adapter = (
+                TwwInterlisPersistenceAdapter(
+                    connection_factory=(
+                        self.connection_factory
+                    ),
+                    interlis_service=(
+                        self.interlis_service
+                    ),
+                    model_config_dir=(
+                        self.model_config_dir
+                    ),
+                )
             )
-            review_persistence_service = TwwReviewPersistenceService(
-                diff_schema_service=(diff_schema_service),
-                quarantine_preparer=(quarantine_preparer),
-                backup_service=backup_service,
-                persistence_adapter=(persistence_adapter),
+            review_persistence_service = (
+                TwwReviewPersistenceService(
+                    diff_schema_service=(
+                        diff_schema_service
+                    ),
+                    quarantine_preparer=(
+                        quarantine_preparer
+                    ),
+                    backup_service=backup_service,
+                    persistence_adapter=(
+                        persistence_adapter
+                    ),
+                )
             )
             diff_review_service.accept_job(
                 job_id=result.job_id,
             )
 
-            persistence_result = review_persistence_service.persist_job(
-                job_id=result.job_id,
-                live_schema=self.live_schema,
+            persistence_result = (
+                review_persistence_service.persist_job(
+                    job_id=result.job_id,
+                    live_schema=self.live_schema,
+                )
             )
 
             if persistence_result.job_status != "applied":
@@ -380,7 +410,7 @@ class Hook(
     ):
 
         model_selection = self.interlis_service.identify_model(xtf_file)
-        if model_selection.group in {"ag64", "ag96"}:
+        if model_selection.group in {'ag64', 'ag96'}:
             import_context = TwwInterlisContext(
                 schema=schema,
                 import_orgs=False,
@@ -393,19 +423,22 @@ class Hook(
                 orgs_path=self.orgs_path,
             )
 
-        (
-            import_model,
-            created_models,
-        ) = quarantine_runner.import_xtf_to_quarantine(
+        context.logger.info(f"importing {xtf_file} to quarantine.")
+        selection_models = quarantine_runner.import_xtf_to_quarantine(
             xtf_file=xtf_file,
             context=import_context,
             schema=schema,
         )
-        created_models = tuple(created_models)
+
+        context.logger.info(f"Import schema models: {selection_models.import_schema_models}")
+        context.logger.info(f"Import model: {selection_models.import_model}")
+        context.logger.info(f"Validation models: {selection_models.validation_models}")
 
         quarantine_runner.validate_quarantine_or_raise(
-            model_names=(import_model,),
-            log_path=xtf_file.with_name(f"{xtf_file.stem}_validate_import_quarantine.log"),
+            model_names=selection_models.validation_models,
+            log_path=xtf_file.with_name(
+                f"{xtf_file.stem}_validate_import_quarantine.log"
+            ),
             schema=schema,
         )
 
@@ -422,10 +455,10 @@ class Hook(
             model_selection=model_selection, schema=schema
         )
 
-        implicit_mapping_capability = TwwImplicitModelMappingCapability(
-            quarantine_classes=quarantine_classes,
+        implicit_mapping_capability = TwwImplicitModelMappingAdapter(
             connection_factory=self.connection_factory,
             import_schema=schema,
+            language=model_selection.language,
         )
 
         effective_mapping = EffectiveModelMappingCapability(

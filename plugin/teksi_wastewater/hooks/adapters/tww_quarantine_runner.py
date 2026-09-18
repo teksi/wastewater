@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from dataclasses import dataclass, field, replace
+import logging
 from pathlib import Path
 
 from teksi_hooks.exceptions import (
@@ -12,6 +13,7 @@ from teksi_hooks.models.validation import (
 )
 
 from ...interlis import config
+from ...interlis.model_config import TwwInterlisModelSelection
 from ...interlis.interlis_importer_exporter import (
     InterlisImporterExporter,
 )
@@ -50,6 +52,13 @@ class TwwQuarantineRunner:
         default_factory=InterlisTools,
     )
 
+    logger: logging.Logger = field(
+        default_factory=lambda: logging.getLogger(
+        __name__,
+        ),
+        repr=False,
+    )
+
     def import_xtf_to_quarantine(
         self,
         xtf_file: Path,
@@ -79,7 +88,7 @@ class TwwQuarantineRunner:
             self.importer_exporter,
         )
 
-        import_model, created_models = self.importer_exporter.interlis_import_to_quarantine(
+        return self.importer_exporter.interlis_import_to_quarantine(
             xtf_file_input=str(
                 xtf_file,
             ),
@@ -90,19 +99,14 @@ class TwwQuarantineRunner:
             orgs_path=context.orgs_path,
         )
 
-        return (
-            import_model,
-            tuple(
-                created_models,
-            ),
-        )
 
     def import_quarantine_to_live(
         self,
-        xtf_file: Path,
+        xtf_file: Path | None = None,
         context: TwwInterlisContext | None = None,
         validation_log_path: Path | None = None,
         schema: str = config.IMPORT_SCHEMA,
+        selection_models: TwwInterlisModelSelection | None=None,
     ) -> None:
         """
         Validate import-side quarantine and then import it into live data.
@@ -120,11 +124,12 @@ class TwwQuarantineRunner:
             self.importer_exporter,
         )
 
-        import_model, created_models = self.importer_exporter.find_import_ilimodels(
-            str(
-                xtf_file,
+        if selection_models is None and xtf_file is not None:
+            selection_models = self.importer_exporter.find_import_ilimodels(
+                str(
+                    xtf_file,
+                )
             )
-        )
 
         validation_log_path = self._validation_log_path(
             validation_log_path=validation_log_path,
@@ -133,15 +138,14 @@ class TwwQuarantineRunner:
         )
 
         self.validate_quarantine_or_raise(
-            model_names=(import_model,),
+            model_names=selection_models.validation_models,
             log_path=validation_log_path,
             srid=context.srid,
             schema=schema,
         )
 
         self.importer_exporter.interlis_import_from_quarantine_to_live(
-            import_model=import_model,
-            created_models=created_models,
+            selection_models=selection_models,
             logs_next_to_file=context.logs_next_to_file,
             filter_nulls=context.filter_nulls,
             srid=context.srid,
@@ -154,7 +158,7 @@ class TwwQuarantineRunner:
         export_models: Sequence[str],
         context: TwwInterlisContext | None = None,
         schema: str = config.EXPORT_SCHEMA,
-    ) -> None:
+    ) -> TwwInterlisModelSelection:
         """
         Export live data into the export-side quarantine schema.
 
@@ -171,7 +175,7 @@ class TwwQuarantineRunner:
             self.importer_exporter,
         )
 
-        self.importer_exporter.interlis_export_live_to_quarantine(
+        return self.importer_exporter.interlis_export_live_to_quarantine(
             xtf_file_output=(
                 str(
                     xtf_file,
@@ -230,9 +234,7 @@ class TwwQuarantineRunner:
         )
 
         self.validate_quarantine_or_raise(
-            model_names=tuple(
-                export_models,
-            ),
+            model_names=export_models,
             log_path=validation_log_path,
             srid=context.srid,
             schema=schema,
@@ -265,6 +267,11 @@ class TwwQuarantineRunner:
         findings: list[ValidationFinding] = []
 
         for model_name in model_names:
+            self.logger.info(
+                "Validating quarantine schema %r with models %r.",
+                schema,
+                model_name,
+            )
             model_log_path = self._log_path_for_model(
                 log_path=log_path,
                 model_name=model_name,

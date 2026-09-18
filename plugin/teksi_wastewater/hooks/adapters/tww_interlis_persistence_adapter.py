@@ -23,6 +23,9 @@ logger = logging.getLogger(
 )
 
 
+from dataclasses import dataclass
+
+
 @dataclass(
     slots=True,
 )

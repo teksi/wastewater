@@ -3,6 +3,7 @@ from .model_base import ModelBase
 
 
 class ModelTwwOd(ModelBase):
+    inheritance_key = None
     def __init__(self):
         super().__init__(config.TWW_OD_SCHEMA)
 

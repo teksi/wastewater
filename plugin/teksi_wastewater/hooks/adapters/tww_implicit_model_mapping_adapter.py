@@ -676,21 +676,44 @@ class TwwImplicitModelMappingAdapter(
         self,
         query: sql.Composed | sql.SQL,
         parameters: tuple = (),
-    ) -> list[tuple,]:
+    ) -> list[
+        tuple,
+    ]:
         """
         Execute a read-only query and return all rows.
+
+        If execution fails, append the fully rendered SQL query and its parameters
+        to the raised exception.
         """
 
         with self.connection_factory.connection(
             autocommit=True,
         ) as connection:
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    query,
-                    parameters,
-                )
+            rendered_query = query.as_string(
+                connection,
+            )
 
-                return list(cursor.fetchall())
+            try:
+                with connection.cursor() as cursor:
+                    cursor.execute(
+                        query,
+                        parameters,
+                    )
+
+                    return list(
+                        cursor.fetchall()
+                    )
+
+            except Exception as exception:
+                raise RuntimeError(
+                    "Implicit model-mapping query failed.\n"
+                    f"Import schema: {self.import_schema!r}\n"
+                    f"Dictionary schema: {self.dictionary_schema!r}\n"
+                    f"Language: {self.language.value!r}\n"
+                    f"Parameters: {parameters!r}\n"
+                    "SQL query:\n"
+                    f"{rendered_query}"
+                ) from exception
 
     def _ili_name_column(
         self,
