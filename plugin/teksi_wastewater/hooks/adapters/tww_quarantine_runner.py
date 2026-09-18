@@ -1,8 +1,8 @@
 from __future__ import annotations
 
+import logging
 from collections.abc import Sequence
 from dataclasses import dataclass, field, replace
-import logging
 from pathlib import Path
 
 from teksi_hooks.exceptions import (
@@ -13,10 +13,10 @@ from teksi_hooks.models.validation import (
 )
 
 from ...interlis import config
-from ...interlis.model_config import TwwInterlisModelSelection
 from ...interlis.interlis_importer_exporter import (
     InterlisImporterExporter,
 )
+from ...interlis.model_config import TwwInterlisModelSelection
 from ...interlis.utils.ili2db import (
     InterlisTools,
 )
@@ -54,7 +54,7 @@ class TwwQuarantineRunner:
 
     logger: logging.Logger = field(
         default_factory=lambda: logging.getLogger(
-        __name__,
+            __name__,
         ),
         repr=False,
     )
@@ -99,14 +99,13 @@ class TwwQuarantineRunner:
             orgs_path=context.orgs_path,
         )
 
-
     def import_quarantine_to_live(
         self,
         xtf_file: Path | None = None,
         context: TwwInterlisContext | None = None,
         validation_log_path: Path | None = None,
         schema: str = config.IMPORT_SCHEMA,
-        selection_models: TwwInterlisModelSelection | None=None,
+        selection_models: TwwInterlisModelSelection | None = None,
     ) -> None:
         """
         Validate import-side quarantine and then import it into live data.

@@ -1343,15 +1343,9 @@ class InterlisImporterExporter:
 
         required_dependencies = {
             "model_mapping": self.model_mapping,
-            "function_effect_resolver": (
-                self.function_effect_resolver
-            ),
-            "effect_evaluator": (
-                self.effect_evaluator
-            ),
-            "effect_persister": (
-                self.effect_persister
-            ),
+            "function_effect_resolver": (self.function_effect_resolver),
+            "effect_evaluator": (self.effect_evaluator),
+            "effect_persister": (self.effect_persister),
         }
 
         missing_dependencies = [

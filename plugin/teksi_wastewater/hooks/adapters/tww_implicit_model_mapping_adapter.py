@@ -676,9 +676,7 @@ class TwwImplicitModelMappingAdapter(
         self,
         query: sql.Composed | sql.SQL,
         parameters: tuple = (),
-    ) -> list[
-        tuple,
-    ]:
+    ) -> list[tuple,]:
         """
         Execute a read-only query and return all rows.
 
@@ -700,9 +698,7 @@ class TwwImplicitModelMappingAdapter(
                         parameters,
                     )
 
-                    return list(
-                        cursor.fetchall()
-                    )
+                    return list(cursor.fetchall())
 
             except Exception as exception:
                 raise RuntimeError(

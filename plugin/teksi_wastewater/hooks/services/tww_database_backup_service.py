@@ -2,20 +2,19 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 import logging
 import os
-from pathlib import Path
 import re
 import shutil
 import subprocess
 import tempfile
-from typing import Mapping
+from dataclasses import dataclass
+from pathlib import Path
+from collections.abc import Mapping
 
 from teksi_wastewater.hooks.adapters.tww_database_connection_factory import (
     TwwDatabaseConnectionFactory,
 )
-
 
 logger = logging.getLogger(
     __name__,
@@ -74,20 +73,15 @@ class TwwDatabaseBackupService:
             label="import_schema",
         )
 
-        backup_directory = (
-            self._resolved_backup_directory()
-        )
+        backup_directory = self._resolved_backup_directory()
 
         backup_directory.mkdir(
             parents=True,
             exist_ok=True,
         )
 
-        backup_path = (
-            backup_directory
-            / self._backup_filename(
-                job_id=normalized_job_id,
-            )
+        backup_path = backup_directory / self._backup_filename(
+            job_id=normalized_job_id,
         )
 
         temporary_path = backup_path.with_suffix(
@@ -98,9 +92,7 @@ class TwwDatabaseBackupService:
             temporary_path,
         )
 
-        connection_arguments = (
-            self._connection_arguments()
-        )
+        connection_arguments = self._connection_arguments()
 
         command = [
             self._resolve_executable(
@@ -123,10 +115,7 @@ class TwwDatabaseBackupService:
                 command,
             )
 
-            if (
-                not temporary_path.is_file()
-                or temporary_path.stat().st_size == 0
-            ):
+            if not temporary_path.is_file() or temporary_path.stat().st_size == 0:
                 raise RuntimeError(
                     "PostgreSQL backup completed without creating "
                     f"a valid archive at {temporary_path!s}."
@@ -179,16 +168,10 @@ class TwwDatabaseBackupService:
         )
 
         if not resolved_backup_path.is_file():
-            raise FileNotFoundError(
-                "Database backup does not exist: "
-                f"{resolved_backup_path!s}"
-            )
+            raise FileNotFoundError("Database backup does not exist: " f"{resolved_backup_path!s}")
 
         if resolved_backup_path.stat().st_size == 0:
-            raise RuntimeError(
-                "Database backup is empty: "
-                f"{resolved_backup_path!s}"
-            )
+            raise RuntimeError("Database backup is empty: " f"{resolved_backup_path!s}")
 
         self._verify_archive(
             resolved_backup_path,
@@ -244,8 +227,7 @@ class TwwDatabaseBackupService:
 
         except OSError as exception:
             raise RuntimeError(
-                "Could not delete database backup "
-                f"{resolved_backup_path!s}: {exception}"
+                "Could not delete database backup " f"{resolved_backup_path!s}: {exception}"
             ) from exception
 
         logger.info(
@@ -312,17 +294,13 @@ class TwwDatabaseBackupService:
         )
 
         if not safe_job_id:
-            raise ValueError(
-                "job_id does not contain any usable filename characters."
-            )
+            raise ValueError("job_id does not contain any usable filename characters.")
 
         return f"tww-diff-{safe_job_id}.dump"
 
     def _connection_arguments(
         self,
-    ) -> list[
-        str,
-    ]:
+    ) -> list[str,]:
         """
         Return PostgreSQL client connection arguments.
 
@@ -332,9 +310,7 @@ class TwwDatabaseBackupService:
 
         parameters = self.connection_factory.parameters
 
-        arguments: list[
-            str,
-        ] = []
+        arguments: list[str,] = []
 
         service = self._optional_parameter(
             parameters,
@@ -431,17 +407,13 @@ class TwwDatabaseBackupService:
         )
 
         if password is not None:
-            environment[
-                "PGPASSWORD"
-            ] = password
+            environment["PGPASSWORD"] = password
 
         return environment
 
     def _run(
         self,
-        command: list[
-            str,
-        ],
+        command: list[str,],
     ) -> None:
         """
         Execute one PostgreSQL client command.
@@ -462,38 +434,25 @@ class TwwDatabaseBackupService:
                 text=True,
                 encoding="utf-8",
                 errors="replace",
-                env=(
-                    self._subprocess_environment()
-                ),
+                env=(self._subprocess_environment()),
             )
 
         except subprocess.CalledProcessError as exception:
-            stderr = (
-                exception.stderr or ""
-            ).strip()
+            stderr = (exception.stderr or "").strip()
 
-            stdout = (
-                exception.stdout or ""
-            ).strip()
+            stdout = (exception.stdout or "").strip()
 
             detail = (
                 stderr
                 or stdout
-                or (
-                    "The PostgreSQL client returned "
-                    f"exit code {exception.returncode}."
-                )
+                or ("The PostgreSQL client returned " f"exit code {exception.returncode}.")
             )
 
-            raise RuntimeError(
-                "PostgreSQL backup command failed: "
-                f"{detail}"
-            ) from exception
+            raise RuntimeError("PostgreSQL backup command failed: " f"{detail}") from exception
 
         except OSError as exception:
             raise RuntimeError(
-                "Could not start PostgreSQL backup command "
-                f"{command[0]!r}: {exception}"
+                "Could not start PostgreSQL backup command " f"{command[0]!r}: {exception}"
             ) from exception
 
     def _resolve_executable(
@@ -508,15 +467,10 @@ class TwwDatabaseBackupService:
             executable,
         )
 
-        if (
-            configured_path.is_absolute()
-            or configured_path.parent
-            != Path(".")
-        ):
+        if configured_path.is_absolute() or configured_path.parent != Path("."):
             if not configured_path.is_file():
                 raise RuntimeError(
-                    "PostgreSQL client executable does not exist: "
-                    f"{configured_path!s}"
+                    "PostgreSQL client executable does not exist: " f"{configured_path!s}"
                 )
 
             return str(
@@ -529,8 +483,7 @@ class TwwDatabaseBackupService:
 
         if resolved is None:
             raise RuntimeError(
-                "PostgreSQL client executable "
-                f"{executable!r} was not found in PATH."
+                "PostgreSQL client executable " f"{executable!r} was not found in PATH."
             )
 
         return resolved
@@ -571,13 +524,14 @@ class TwwDatabaseBackupService:
         Return one required non-empty string.
         """
 
-        if not isinstance(
-            value,
-            str,
-        ) or not value.strip():
-            raise ValueError(
-                f"{label} must be a non-empty string."
+        if (
+            not isinstance(
+                value,
+                str,
             )
+            or not value.strip()
+        ):
+            raise ValueError(f"{label} must be a non-empty string.")
 
         return value.strip()
 
@@ -595,15 +549,11 @@ class TwwDatabaseBackupService:
             )
 
         except OSError as exception:
-            raise RuntimeError(
-                f"Could not remove file {path!s}: {exception}"
-            ) from exception
+            raise RuntimeError(f"Could not remove file {path!s}: {exception}") from exception
 
     def _redacted_command(
         self,
-        command: list[
-            str,
-        ],
+        command: list[str,],
     ) -> str:
         """
         Return a log-safe representation of a command.
