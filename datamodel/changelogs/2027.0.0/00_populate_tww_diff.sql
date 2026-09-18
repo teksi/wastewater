@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS tww_diff.metadata (
     id bigserial PRIMARY KEY,
     job_id text NOT NULL,
     job_status text NOT NULL DEFAULT 'pending',
+    job_type text NOT NULL DEFAULT 'review',
 
     import_tstamp timestamptz NOT NULL DEFAULT now(),
     diff_tstamp timestamptz NOT NULL DEFAULT now(),
@@ -37,10 +38,18 @@ CREATE TABLE IF NOT EXISTS tww_diff.metadata (
                 'applying',
                 'applied',
                 'failed',
-                'archived'
+                'archived',
+                'superseded'
             )
         ),
-
+    CONSTRAINT tww_diff_metadata_job_type_list
+        CHECK (
+            job_type IN (
+                'review',
+                'schema_backup',
+                'trusted_import'
+            )
+        ),
     CONSTRAINT tww_diff_metadata_metadata_object
         CHECK (
             jsonb_typeof(metadata) = 'object'
