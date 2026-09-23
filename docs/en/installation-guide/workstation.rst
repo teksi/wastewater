@@ -129,13 +129,11 @@ Plugin installation with TMMT Plugin:
 
 .. versionadded:: 2025.0
 
-See the current `TMMT Documentation for a step by step help <https://github.com/teksi/TMMT/discussions/34>`_
-
 
 Plugin installation from QGIS Plugins Menu:
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. versionchanged:: 2025.0
+.. versionchanged:: 2026.1
 
 Use this approach only to install the TMMT plugin, with which you then can install the TWW plugin that corresponds to your database release version.
 
@@ -158,9 +156,13 @@ Use this approach only to install the TMMT plugin, with which you then can insta
 
     * Click the checkbox next to it
 
-  .. figure:: images/001_searchplugin.jpeg
+  .. figure:: images/001_searchplugin_tmmt.png
 
    **Add the TMMT plugin**
+
+
+See the current `TMMT Documentation for a step by step help <https://github.com/teksi/TMMT/discussions/34>`_
+
 
 
 Check TWW plugin installation
