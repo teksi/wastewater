@@ -1,0 +1,31 @@
+.. _2027:
+
+Here you can find information about the future 2026.x release of TEKSI wastewater
+
+
+2027.0.1 Tech preview comming soon
+=========
+
+Main features
+----------------
+- First Version of TEKSI wastewater module for QGIS 4.2 LTR and initialized and upgrade via the PostgreSQL Update Manager (PUM) and the TEKSI Module Management Tool (TMMT).
+
+- Check the `installation guide <../installation-guide/index.html>`__ for more information on how to install TEKSI wastewater module (TWW) via TMMT.
+
+- Added xtf error log of ilivalidator also (not only the --log version), so that you can directly use the updated QGIS XTFlogChecker plugin to visualize the errors and easily correct them.
+
+Documentation
+--------------
+
+Bug fixes and performance improvements
+-----------------------------------------
+
+Extension improvements
+----------------------
+
+Adaptions to project file
+----------------------------------------
+
+For more details see https://github.com/teksi/wastewater/releases/tag/2027.0.1
+
+
