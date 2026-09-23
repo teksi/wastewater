@@ -184,6 +184,25 @@ You can check the protocol window and the text logs for further details.
      - Validation of the created xtf file(s) with ilivalidator
      - ``*.ilivalidator-MODELNAME.log``
 
+.. versionadded:: 2027.0
+   * - INTERLIS validation IliVErrors xtflog
+     - Validation of the created xtf file(s) with ilivalidator
+     - ``*.ilivalidator-MODELNAME.log.xtf``
+
+Visualize IliVErrors xtflog with QGIS XTFLog-Checker Plugin
+----------------------------------------------------------------
+
+.. figure:: images/ilivalidation_failed_xtferrorlog.png
+
+Displaying with `QGIS XTFLog-Checker Plugin <https://github.com/GeoWerkstatt/qgis-xtf-log-checker/>`_ (Release 1.4.0 or later)
+
+.. figure:: images/displaying_xtflogchecker_errors_with_plugin.png
+
+Comparison of error log formats (left *.log / right *.xtf ilivalidator error log model)
+
+.. figure:: images/comparison_errorlogs_format_log_xtflog.png
+
+For more information about xtf error log see the `Ilivalidator documentation <https://github.com/claeis/ilivalidator/blob/master/docs/ilivalidator.rst>`_
 
 Export extra organisations
 --------------------------
