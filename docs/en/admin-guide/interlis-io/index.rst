@@ -198,6 +198,11 @@ Displaying with `QGIS XTFLog-Checker Plugin <https://github.com/GeoWerkstatt/qgi
 
 .. figure:: images/displaying_xtflogchecker_errors_with_plugin.png
 
+Opening the object on vw_tww_wastewater_structure or vw_tww_reach allows easy correction of the cover diameter:
+
+.. figure:: images/view_and_correct_with_qgisxtflogchecker_plugin.png
+
+
 Comparison of error log formats (left *.log / right *.xtf ilivalidator error log model)
 
 .. figure:: images/comparison_errorlogs_format_log_xtflog.png
