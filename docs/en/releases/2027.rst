@@ -27,5 +27,3 @@ Adaptions to project file
 ----------------------------------------
 
 For more details see https://github.com/teksi/wastewater/releases/tag/2027.0.1
-
-
