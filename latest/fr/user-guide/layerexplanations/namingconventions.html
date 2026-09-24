@@ -110,7 +110,7 @@
 <h2>Schémas de la base de données TWW<a class="headerlink" href="#schemas-in-the-tww-database" title="Lien vers cette rubrique"></a></h2>
 <p>Le schéma des bases de données TEKSI suit toutes les mêmes règles. Pour les distinguer, chaque infrastructure possède son propre préfixe (3 lettres). TWW (TEKSI wastewater) est le préfixe du module de gestion du réseau d’assainissement. La base de données TWW comporte quatre schémas tww :</p>
 <ul class="simple">
-<li><p>tww_od : dans ce schéma se trouvent les tables stockées de manière persistante. Elles correspondent principalement au modèle de données VSA-DSS (cover, wastewater_node, channel, etc.), mais incluent aussi certaines couches nécessaires à la symbologie et à l’étiquetage, ainsi que les séquences de ces tables. En raison de la nouvelle gestion des mises à jour, les vues ne se trouvent plus dans le schéma <a href="#id1"><span class="problematic" id="id2">*</span></a>_od, mais dans le schéma <a href="#id3"><span class="problematic" id="id4">*</span></a>_app.</p></li>
+<li><p>tww_od : dans ce schéma se trouvent les tables stockées de manière persistante. Elles correspondent principalement au modèle de données VSA-DSS (couvercle, nœud de réseau, canalisation, etc.), mais incluent aussi certaines couches nécessaires à la symbologie et à l’étiquetage, ainsi que les séquences de ces tables. En raison de la nouvelle gestion des mises à jour, les vues ne se trouvent plus dans le schéma <a href="#id1"><span class="problematic" id="id2">*</span></a>_od, mais dans le schéma <a href="#id3"><span class="problematic" id="id4">*</span></a>_app.</p></li>
 <li><p>tww_vl : c’est le schéma des listes de valeurs. Il existe une table pour chaque liste de valeurs du VSA-DSS. En tant qu’utilisateur TWW, vous ne pouvez pas modifier ces tables.</p></li>
 <li><p>tww_app : schéma pour toutes les vues, vues matérialisées, fonctions, triggers, etc. spécifiques au module, ainsi que pour les vues et fonctions des extensions complémentaires (SWMM, QField). En cas de mise à jour de la base de données, ce schéma sera écrasé.</p></li>
 <li><p>tww_sys : tables spéciales pour l’administration de la base de données. En tant qu’utilisateur TWW, vous ne pouvez pas modifier ces tables.</p></li>
@@ -141,7 +141,7 @@
 <ul class="simple">
 <li><p>Champs commençant par _</p></li>
 </ul>
-<p>Les attributs commençant par _ (tiret bas) sont des champs calculés. Vous ne les trouverez pas dans les schémas. Exemples : _slope_per_mill dans vw_tww_reach. _channel_usage_current dans vw_tww_wastewater_structure est calculé à partir du champ usage_current du channel, connecté via la clé étrangère du wastewater_networkelement en tant qu’exutoire (outlet) vers un regard ou un ouvrage spécial.</p>
+<p>Les attributs commençant par _ (tiret bas) sont des champs calculés. Vous ne les trouverez pas dans les schémas. Exemples : _slope_per_mill dans vw_tww_reach. _channel_usage_current dans vw_tww_wastewater_structure est calculé à partir du champ usage_current de la canalisation, connecté via la clé étrangère du wastewater_networkelement en tant qu’exutoire (outlet) vers un regard ou un ouvrage spécial.</p>
 </section>
 </section>
 

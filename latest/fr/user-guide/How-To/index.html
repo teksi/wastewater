@@ -58,7 +58,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#setting-default-values">Définir les valeurs par défaut</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#increase-speed-of-calculations-and-update-symbology-and-labels">Améliorer la vitesse des calculs et mettre à jour la symbologie et les étiquettes.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#editing-multiple-entries-at-once">Modification de plusieurs entrées à la fois</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#working-with-labels">Working with labels</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#working-with-labels">Travailler avec les étiquettes</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#how-vw-tww-wastewater-structure-labels-work">Comment fonctionnent les labels de la couche <cite>vw_tww_wastewater_structure</cite></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#how-to-translate-a-label-prefix-c-b-i-o">Traduction des préfixes d’étiquettes (C, B, I, O)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#manual-label-positioning-for-different-scales">Positionnement manuel des étiquettes selon l’échelle</a></li>
@@ -180,7 +180,7 @@
 <p>Il existe un outil natif de QGIS pour modifier plusieurs entrées à la fois. Voir <a class="reference external" href="https://docs.qgis.org/latest">https://docs.qgis.org/latest</a>/{language}/docs/user_manual/working_with_vector/attribute_table.html#editing-multiple-fields</p>
 </section>
 <section id="working-with-labels">
-<h2>Working with labels<a class="headerlink" href="#working-with-labels" title="Lien vers cette rubrique"></a></h2>
+<h2>Travailler avec les étiquettes<a class="headerlink" href="#working-with-labels" title="Lien vers cette rubrique"></a></h2>
 <section id="how-vw-tww-wastewater-structure-labels-work">
 <h3>Comment fonctionnent les labels de la couche <cite>vw_tww_wastewater_structure</cite><a class="headerlink" href="#how-vw-tww-wastewater-structure-labels-work" title="Lien vers cette rubrique"></a></h3>
 <p>L’étiquetage d’un regard avec ses niveaux est un processus assez complexe. Les niveaux ne sont pas stockés directement dans la classe wastewater_structure, mais dans la table cover, ainsi que sous forme de niveaux de points de tronçon « reachpoint levels » associés aux tronçons connectés. C’est pourquoi TWW dispose de 4 champs calculés permettant d’étiqueter ces niveaux :</p>
@@ -197,7 +197,7 @@
 <p>Réponse :
 Dans la fonction qui calcule le champ _input_label, il est possible de définir un filtre afin que seuls les tronçons ayant une valeur spécifique de function_hierarchic (par exemple uniquement les tronçons pwwf) soient étiquetés.
 Ce filtrage s’appuie sur un champ spécifique de la table vl_channel_function_hierarchic (la documentation suit).</p>
-<p>Which reach is I1, which is I2?</p>
+<p>Quel tronçon est I1, lequel est I2 ?</p>
 <p>Réponse :
 TWW utilise l’azimut du dernier segment du tronçon (pour les entrées) ou du premier segment du tronçon (pour les sorties) afin de définir l’ordre des étiquettes.</p>
 <div class="admonition hint">

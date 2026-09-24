@@ -61,7 +61,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#topology">Topologie</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#value-lists-tww-vl">Listes de valeurs <code class="docutils literal notranslate"><span class="pre">tww_vl.*</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#rural">Rural</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#log-card">Log card</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#log-card">Fiche d’ouvrage</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="namingconventions.html">Conventions de nommage</a></li>
@@ -151,7 +151,7 @@
 </div>
 <ul class="simple">
 <li><p>Un champ calculé <cite>tww_is_primary</cite> est disponible pour permettre à l’utilisateur de définir lui-même les ouvrages d’assainissement primaires. Il facilite la définition des requêtes, symbologies et étiquettes.</p></li>
-<li><p>Créer flushing_nozzle sur les tronçons en tant que partie d’ouvrage du channel.</p></li>
+<li><p>Créer flushing_nozzle sur les tronçons en tant que partie d’ouvrage de la canalisation.</p></li>
 </ul>
 </section>
 </section>
@@ -187,11 +187,11 @@
 <p>Utilisez cette couche pour modifier la situation d’un couvercle spécifique (et non l’ensemble de l’ouvrage d’assainissement), ou pour ajouter un nouveau couvercle à un ouvrage d’assainissement existant. Vous pouvez également ajouter des couvercles supplémentaires dans l’onglet Couvercles de <cite>vw_tww_wastewater_structure</cite>. Utilisez également cette couche pour afficher la position détaillée des couvercles (par exemple dans network_plan ou pipeline_registry) ou pour exporter les positions des couvercles <cite>situation_geometry</cite>.</p>
 </section>
 <section id="channels-tww-app-mvw-tww-channel">
-<h3>Channels <cite>tww_app.mvw_tww_channel</cite><a class="headerlink" href="#channels-tww-app-mvw-tww-channel" title="Lien vers cette rubrique"></a></h3>
+<h3>canalisations <cite>tww_app.mvw_tww_channel</cite><a class="headerlink" href="#channels-tww-app-mvw-tww-channel" title="Lien vers cette rubrique"></a></h3>
 <div class="versionadded">
 <p><span class="versionmodified added">Ajouté dans la version 2025.0.</span></p>
 </div>
-<p>La classe channel n’a pas de géométrie. C’est pourquoi mvw_tww_channel est une vue matérialisée qui utilise les géométries linéaires des tronçons pour travailler, par exemple, avec les maintenance_events qui ne sont pas connectés aux tronçons mais aux channels.</p>
+<p>La classe canalisation n’a pas de géométrie. C’est pourquoi mvw_tww_channel est une vue matérialisée qui utilise les géométries linéaires des tronçons pour travailler, par exemple, avec les maintenance_events qui ne sont pas connectés aux tronçons mais aux channels.</p>
 <p>L”« ancienne » couche <cite>vw_channel</cite>, sans géométrie, existe toujours en parallèle.</p>
 </section>
 <section id="measuring-point-tww-od-measuring-point">
@@ -199,14 +199,14 @@
 <div class="versionadded">
 <p><span class="versionmodified added">Ajouté dans la version 2025.0.</span></p>
 </div>
-<p>Seule la couche measuring_point (dans le cadre du sous-système de mesure) est ajoutée afin de pouvoir attribuer les fiches synthétiques (log-cards) de measuring_point. D’autres tables du sous-système de mesure sont disponibles dans la base de données, mais ne sont pas configurées.</p>
+<p>Seule la couche measuring_point (dans le cadre du sous-système de mesure) est ajoutée afin de pouvoir attribuer les fiches d’ouvrage (log-cards) de measuring_point. D’autres tables du sous-système de mesure sont disponibles dans la base de données, mais ne sont pas configurées.</p>
 </section>
 <section id="change-points-tww-app-vw-change-points">
 <h3>Change Points <code class="docutils literal notranslate"><span class="pre">tww_app.vw_change_points</span></code><a class="headerlink" href="#change-points-tww-app-vw-change-points" title="Lien vers cette rubrique"></a></h3>
 <div class="versionadded">
 <p><span class="versionmodified added">Ajouté dans la version 2025.0.</span></p>
 </div>
-<p>Une vue permettant de visualiser les points (regards situés entre deux tronçons du même channel) où le matériau, la hauteur libre (clear_height) ou la pente change.</p>
+<p>Une vue permettant de visualiser les points (regards situés entre deux tronçons de la même canalisation) où le matériau, la hauteur libre (clear_height) ou la pente change.</p>
 </section>
 </section>
 <section id="layergroup-configuration">
@@ -289,7 +289,7 @@
 <div class="versionchanged">
 <p><span class="versionmodified changed">Modifié dans la version 2025.0.</span></p>
 </div>
-<p>Les champs fk permettant de se connecter aux fiches synthétiques (log cards) sont désormais configurés.</p>
+<p>Les champs fk permettant de se connecter aux fiches d’ouvrage (log cards) sont désormais configurés.</p>
 </section>
 <section id="topology">
 <h2>Topologie<a class="headerlink" href="#topology" title="Lien vers cette rubrique"></a></h2>
@@ -338,7 +338,7 @@
 </section>
 </section>
 <section id="log-card">
-<h2>Log card<a class="headerlink" href="#log-card" title="Lien vers cette rubrique"></a></h2>
+<h2>Fiche d’ouvrage<a class="headerlink" href="#log-card" title="Lien vers cette rubrique"></a></h2>
 <div class="versionadded">
 <p><span class="versionmodified added">Ajouté dans la version 2025.0.</span></p>
 </div>
@@ -347,23 +347,23 @@
 <p>Fiche synthétique pour ouvrages spéciaux : ouvrages d’assainissement à vocation hydraulique spécifique, par exemple bassins de rétention, déversoirs d’orage ou stations de pompage. La plupart des ouvrages spéciaux sont également des ouvrages spécialisés. Cependant, certains ouvrages spéciaux, comme les ouvrages de séparation ou les petites stations de pompage, sont souvent conçus comme des regards.</p>
 </section>
 <section id="catchment-area-totals-tww-app-catchment-area-totals">
-<h3>Catchment area totals <code class="docutils literal notranslate"><span class="pre">tww_app.catchment_area_totals</span></code><a class="headerlink" href="#catchment-area-totals-tww-app-catchment-area-totals" title="Lien vers cette rubrique"></a></h3>
+<h3>Totaux des bassins versants <code class="docutils literal notranslate"><span class="pre">tww_app.catchment_area_totals</span></code><a class="headerlink" href="#catchment-area-totals-tww-app-catchment-area-totals" title="Lien vers cette rubrique"></a></h3>
 <p>Informations sur le bassin versant raccordé (total), les volumes d’eau et le point de rejet du déversoir d’orage ou du bassin de rétention. Le bassin versant direct ne doit être renseigné que si le rejet est activé lors de l’événement de dimensionnement, ou si l’on ne sait pas s’il sera activé. Toutes les informations doivent être fournies pour l’état actuel et pour l’état planifié. Toutes les informations doivent être saisies manuellement (version 2025.02).</p>
 <p><code class="docutils literal notranslate"><span class="pre">tww_app.vw_catchment_area_totals</span></code> repose sur la vue matérialisée <code class="docutils literal notranslate"><span class="pre">tww_app.mvw_catchment_area_totals</span></code>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">tww_app.mvw_catchment_area_totals</span></code> agrège la géométrie des bassins versants par fiche synthétique.</p>
 <p><code class="docutils literal notranslate"><span class="pre">tww_app.vw_catchment_area_totals</span></code> ajoute les valeurs de <code class="docutils literal notranslate"><span class="pre">tww_od.catchment_area_totals</span></code> et <code class="docutils literal notranslate"><span class="pre">tww_app.hydr_char_data</span></code> aux géométries agrégées.</p>
 </section>
 <section id="catchment-area-totals-aggregated-tww-app-vw-catchment-area-totals-aggregated">
-<h3>Catchment area totals aggregated <code class="docutils literal notranslate"><span class="pre">tww_app.vw_catchment_area_totals_aggregated</span></code><a class="headerlink" href="#catchment-area-totals-aggregated-tww-app-vw-catchment-area-totals-aggregated" title="Lien vers cette rubrique"></a></h3>
+<h3>Totaux agrégés des bassins versants <code class="docutils literal notranslate"><span class="pre">tww_app.vw_catchment_area_totals_aggregated</span></code><a class="headerlink" href="#catchment-area-totals-aggregated-tww-app-vw-catchment-area-totals-aggregated" title="Lien vers cette rubrique"></a></h3>
 <p>À ne pas confondre avec <code class="docutils literal notranslate"><span class="pre">tww_app.vw_catchment_area_totals</span></code>.</p>
-<p>Cette vue agrège un ensemble de valeurs issues des bassins versants, incluant parfois des bassins versants provenant de fiches synthétiques précédentes.</p>
+<p>Cette vue agrège un ensemble de valeurs issues des bassins versants, incluant parfois des bassins versants provenant de fiches d’ouvrage précédentes.</p>
 <ol class="loweralpha simple">
-<li><p>population inclut les fiches synthétiques amont</p></li>
+<li><p>population inclut les fiches d’ouvrage amont</p></li>
 <li><p>surface_area n’inclut que le direct</p></li>
 <li><p>surface_imp n’inclut que le direct</p></li>
 <li><p>surface_red n’inclut que le direct</p></li>
-<li><p>sewer_infiltration_water inclut les fiches synthétiques amont</p></li>
-<li><p>waste_water_production inclut les fiches synthétiques amont</p></li>
+<li><p>sewer_infiltration_water inclut les fiches d’ouvrage amont</p></li>
+<li><p>waste_water_production inclut les fiches d’ouvrage amont</p></li>
 <li><p>valeurs _dim respectivement</p></li>
 </ol>
 <p>Les deux vues relient <code class="docutils literal notranslate"><span class="pre">catchment_area</span></code> et <code class="docutils literal notranslate"><span class="pre">log_card</span></code> via la procédure suivante :</p>
@@ -374,7 +374,7 @@
 <p><code class="docutils literal notranslate"><span class="pre">(hydr_char_data.obj_id)</span> <span class="pre">&lt;-</span> <span class="pre">[catchment_area_totals.fk_hydr_char_data]</span></code></p>
 </section>
 <section id="hydraulic-char-data-tww-od-hydraulic-char-data">
-<h3>Hydraulic char data <code class="docutils literal notranslate"><span class="pre">tww_od.hydraulic_char_data</span></code><a class="headerlink" href="#hydraulic-char-data-tww-od-hydraulic-char-data" title="Lien vers cette rubrique"></a></h3>
+<h3>Données caractéristiques hydrauliques <code class="docutils literal notranslate"><span class="pre">tww_od.hydraulic_char_data</span></code><a class="headerlink" href="#hydraulic-char-data-tww-od-hydraulic-char-data" title="Lien vers cette rubrique"></a></h3>
 <p>Caractéristiques hydrauliques agrégées</p>
 </section>
 </section>
