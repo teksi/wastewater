@@ -258,8 +258,14 @@ class InterlisImporterExporter:
 
         self._progress_done(15, "Creating ili schema...")
         create_basket_col = False
+        
+        
         if config.MODEL_NAME_VSA_KEK in export_models:
             create_basket_col = True
+        
+        
+        
+        
         self._create_ili_schema(export_models, create_basket_col=create_basket_col)
 
         # Export the labels file
@@ -323,7 +329,10 @@ class InterlisImporterExporter:
         export_models_de_fr == export_models_de_fr.extend(export_models)
         export_models_de_fr == export_models_de_fr.extend(export_models_fr)
         
-        self._create_ili_schema(export_models_de_fr, create_basket_col=true)
+        self._clear_ili_translation_schema(recreate_tables=True)
+        
+        # to do - change in separate fonction
+        self._create_ili_translation_schema(export_models_de_fr, create_basket_col=true)
 
 
         self._progress_done(100)
@@ -450,6 +459,20 @@ class InterlisImporterExporter:
                     "\n".join(issue.message for issue in results.failed_checks),
                     None,
                 )
+    # getting equivalent German model
+    def get_export_models_de (export_models)
+    
+        # get export_models_de
+        export_models_de=None 
+        if config.MODEL_NAME_SIA405_BASE_ABWASSER_FR in export_models:
+            export_models_de.append(config.MODEL_NAME_SIA405_BASE_ABWASSER)
+        elif config.MODEL_NAME_SIA405_ABWASSER_FR in export_models:
+            export_models_de.append(config.MODEL_NAME_SIA405_ABWASSER)
+        elif config.MODEL_NAME_VSA_KEK_FR in export_models:
+            export_models_de.append(config.MODEL_NAME_VSA_KEK)
+        elif config.MODEL_NAME_DSS_FR in export_models:
+            export_models_de.append(config.MODEL_NAME_DSS)
+
 
     def _import_validate_xtf_file(self, xtf_file_input):
         log_path = make_log_path(self.base_log_path, "ilivalidator")
@@ -481,22 +504,6 @@ class InterlisImporterExporter:
         except CmdException:
             raise InterlisImporterExporterError(
                 "Could not import data",
-                "Open the logs for more details on the error.",
-                log_path,
-            )
-    # Import to TRANSLATION_SCHEMA
-    def _import_xtf_file_translation(self, xtf_file_input):
-        log_path = make_log_path(self.base_log_path, "ili2ili-import")
-        try:
-            self.interlisTools.import_xtf_data(
-                config.TRANSLATION_SCHEMA,
-                xtf_file_input,
-                log_path,
-                self.srid,
-            )
-        except CmdException:
-            raise InterlisImporterExporterError(
-                "Could not import data to translation schema",
                 "Open the logs for more details on the error.",
                 log_path,
             )
