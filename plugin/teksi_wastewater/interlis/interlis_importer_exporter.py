@@ -484,6 +484,22 @@ class InterlisImporterExporter:
                 "Open the logs for more details on the error.",
                 log_path,
             )
+    # Import to TRANSLATION_SCHEMA
+    def _import_xtf_file_translation(self, xtf_file_input):
+        log_path = make_log_path(self.base_log_path, "ili2ili-import")
+        try:
+            self.interlisTools.import_xtf_data(
+                config.TRANSLATION_SCHEMA,
+                xtf_file_input,
+                log_path,
+                self.srid,
+            )
+        except CmdException:
+            raise InterlisImporterExporterError(
+                "Could not import data to translation schema",
+                "Open the logs for more details on the error.",
+                log_path,
+            )
 
     def _import_from_intermediate_schema(self, import_model):
         log_handler = logging.FileHandler(
@@ -777,6 +793,53 @@ class InterlisImporterExporter:
         try:
             self.interlisTools.import_ili_schema(
                 config.ABWASSER_SCHEMA,
+                models,
+                log_path,
+                ext_columns_no_constraints=ext_columns_no_constraints,
+                create_basket_col=create_basket_col,
+                srid=self.srid,
+            )
+        except CmdException:
+            raise InterlisImporterExporterError(
+                "Could not create the ili2pg schema",
+                "Open the logs for more details on the error.",
+                log_path,
+            )
+
+    def _clear_ili_translation_schema(self, recreate_tables=False):
+        logger.info("CONNECTING TO DATABASE...")
+
+        with DatabaseUtils.PsycopgConnection() as connection:
+            cursor = connection.cursor()
+
+            cursor.execute(
+                f"SELECT schema_name FROM information_schema.schemata WHERE schema_name = '{config.TRANSLATION_SCHEMA}';"
+            )
+            if cursor.rowcount == 0:
+                cursor.execute(f"CREATE SCHEMA {config.TRANSLATION_SCHEMA};")
+            else:
+                cursor.execute(
+                    f"SELECT table_name FROM information_schema.tables WHERE table_schema = '{config.TRANSLATION_SCHEMA}';"
+                )
+                logger.info(f"Truncating all tables in schema {config.TRANSLATION_SCHEMA}")
+                rows = cursor.fetchall()
+                if recreate_tables:
+                    logger.info(f"Deleting all tables in schema {config.TRANSLATION_SCHEMA} ")
+                    for row in rows:
+                        cursor.execute(f"DROP TABLE {config.TRANSLATION_SCHEMA}.{row[0]} CASCADE;")
+                else:
+                    for row in rows:
+                        cursor.execute(
+                            f"TRUNCATE TABLE {config.TRANSLATION_SCHEMA}.{row[0]} CASCADE;"
+                        )
+
+    def _create_ili_translation_schema(
+        self, models, ext_columns_no_constraints=False, create_basket_col=False
+    ):
+        log_path = make_log_path(self.base_log_path, "ili2pg-schemaimport")
+        try:
+            self.interlisTools.import_ili_schema(
+                config.TRANSLATION_SCHEMA,
                 models,
                 log_path,
                 ext_columns_no_constraints=ext_columns_no_constraints,
