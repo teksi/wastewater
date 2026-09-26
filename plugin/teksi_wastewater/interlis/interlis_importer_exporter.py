@@ -259,14 +259,20 @@ class InterlisImporterExporter:
         self._progress_done(15, "Creating ili schema...")
         create_basket_col = False
         
-        
+        # Check if export_models contains non German models
+        self._get_export_models_de (export_models, export_models_language = "de")
+              
         if config.MODEL_NAME_VSA_KEK in export_models:
             create_basket_col = True
-        
-        
-        
-        
-        self._create_ili_schema(export_models, create_basket_col=create_basket_col)
+
+        if export_models_language != "de":
+            # Set create_basket_col for multilangue schema
+            create_basket_col = True
+            # Pass models in two languages e.g. –models DSS_2015_LV95; SDEE_2015_LV95; 
+            # https://www.sjib.ch/wie-uebersetze-ich-eine-interlis-transferdatei-in-eine-andere-sprache/
+            self._create_ili_schema(export_models, export_models_de, create_basket_col=create_basket_col, )
+        else:      
+            self._create_ili_schema(export_models, create_basket_col=create_basket_col)
 
         # Export the labels file
         tempdir = tempfile.TemporaryDirectory()
@@ -309,31 +315,8 @@ class InterlisImporterExporter:
         tempdir.cleanup()  # Cleanup
 
         self._progress_done(75)
+        
         self._export_xtf_files(file_name_base, export_models)
-
-        # add step to translate to French
-        # only do if ilivalidatior check of German xtf is ok
-        
-        # get export_models_fr
-        export_models_fr=None 
-        if config.MODEL_NAME_SIA405_BASE_ABWASSER in export_models:
-            export_models_fr.append(config.MODEL_NAME_SIA405_BASE_ABWASSER_FR)
-        elif config.MODEL_NAME_SIA405_ABWASSER in export_models:
-            export_models_fr.append(config.MODEL_NAME_SIA405_ABWASSER_FR)
-        elif config.MODEL_NAME_VSA_KEK in export_models:
-            export_models_fr.append(config.MODEL_NAME_VSA_KEK_FR)
-        elif config.MODEL_NAME_DSS in export_models:
-            export_models_fr.append(config.MODEL_NAME_DSS_FR)
-        
-        export_models_de_fr=None
-        export_models_de_fr == export_models_de_fr.extend(export_models)
-        export_models_de_fr == export_models_de_fr.extend(export_models_fr)
-        
-        self._clear_ili_translation_schema(recreate_tables=True)
-        
-        # to do - change in separate fonction
-        self._create_ili_translation_schema(export_models_de_fr, create_basket_col=true)
-
 
         self._progress_done(100)
         logger.info("INTERLIS export finished.")
@@ -460,18 +443,27 @@ class InterlisImporterExporter:
                     None,
                 )
     # getting equivalent German model
-    def get_export_models_de (export_models)
+    def _get_export_models_de (export_models, export_models_language)
     
         # get export_models_de
         export_models_de=None 
+        
+        # check if French Models
         if config.MODEL_NAME_SIA405_BASE_ABWASSER_FR in export_models:
             export_models_de.append(config.MODEL_NAME_SIA405_BASE_ABWASSER)
+            export_models_language = "fr"
         elif config.MODEL_NAME_SIA405_ABWASSER_FR in export_models:
             export_models_de.append(config.MODEL_NAME_SIA405_ABWASSER)
+            export_models_language = "fr"
         elif config.MODEL_NAME_VSA_KEK_FR in export_models:
             export_models_de.append(config.MODEL_NAME_VSA_KEK)
+            export_models_language = "fr"
         elif config.MODEL_NAME_DSS_FR in export_models:
             export_models_de.append(config.MODEL_NAME_DSS)
+            export_models_language = "fr"
+        
+        # check if Italian Models
+        # to do in Future
 
 
     def _import_validate_xtf_file(self, xtf_file_input):
@@ -793,14 +785,19 @@ class InterlisImporterExporter:
                             f"TRUNCATE TABLE {config.ABWASSER_SCHEMA}.{row[0]} CASCADE;"
                         )
 
+    # def _create_ili_schema(
+        # self, models, ext_columns_no_constraints=False, create_basket_col=False
+    # ):
     def _create_ili_schema(
-        self, models, ext_columns_no_constraints=False, create_basket_col=False
+        self, models, models_de, ext_columns_no_constraints=False, create_basket_col=False
     ):
         log_path = make_log_path(self.base_log_path, "ili2pg-schemaimport")
         try:
             self.interlisTools.import_ili_schema(
                 config.ABWASSER_SCHEMA,
                 models,
+                # new multilanguage
+                models_de,
                 log_path,
                 ext_columns_no_constraints=ext_columns_no_constraints,
                 create_basket_col=create_basket_col,

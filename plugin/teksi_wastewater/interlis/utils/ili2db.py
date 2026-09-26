@@ -34,6 +34,8 @@ class InterlisTools:
         self,
         schema,
         models,
+        # new multilanguage
+        models_de,
         log_path,
         ext_columns_no_constraints=False,
         create_basket_col=False,
@@ -74,6 +76,8 @@ class InterlisTools:
                     "de",
                     "--models",
                     f'"{";".join(models)}"',
+                    # new multilanguage
+                    f'"{";".join(models_de)}"',
                 ]
             )
         )
