@@ -260,7 +260,7 @@ class InterlisImporterExporter:
         create_basket_col = False
         
         # Check if export_models contains non German models
-        self._get_export_models_de (export_models, export_models_language = "de")
+        self._get_export_models_de (export_models)
               
         if config.MODEL_NAME_VSA_KEK in export_models:
             create_basket_col = True
@@ -442,8 +442,10 @@ class InterlisImporterExporter:
                     "\n".join(issue.message for issue in results.failed_checks),
                     None,
                 )
+
+
     # getting equivalent German model
-    def _get_export_models_de (export_models, export_models_language)
+    def _get_export_models_de(export_models):
     
         # get export_models_de
         export_models_de=None 
