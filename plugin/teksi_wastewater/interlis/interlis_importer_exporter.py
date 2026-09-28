@@ -259,12 +259,19 @@ class InterlisImporterExporter:
         self._progress_done(15, "Creating ili schema...")
         create_basket_col = False
         
+        export_models_language = None
+        export_models_de = []
         # Check if export_models contains non German models
-        self._get_export_models_de (export_models)
-              
+        self._get_export_models_de (export_models, export_models_de)
+        
+        msg = 
+        logger.info(f"Export models: {export_models[0]} / Export_models_de: {export_models_de[0]}")
+        
         if config.MODEL_NAME_VSA_KEK in export_models:
             create_basket_col = True
 
+        logger.info(f"export_models_language: {export_models_language}")
+        
         if export_models_language != "de":
             # Set create_basket_col for multilangue schema
             create_basket_col = True
@@ -274,6 +281,9 @@ class InterlisImporterExporter:
         else:      
             self._create_ili_schema(export_models, create_basket_col=create_basket_col)
 
+
+
+        
         # Export the labels file
         tempdir = tempfile.TemporaryDirectory()
         if len(selected_labels_scales_indices):
@@ -445,10 +455,10 @@ class InterlisImporterExporter:
 
 
     # getting equivalent German model
-    def _get_export_models_de(self, export_models):
+    def _get_export_models_de(self, export_models, export_models_de):
     
         # get export_models_de
-        export_models_de=None 
+        #export_models_de=None 
         
         # check if French Models
         if config.MODEL_NAME_SIA405_BASE_ABWASSER_FR in export_models:
