@@ -264,7 +264,7 @@ class InterlisImporterExporter:
         # Check if export_models contains non German models
         self._get_export_models_de (export_models, export_models_de)
         
-        msg = 
+        # msg = 
         logger.info(f"Export models: {export_models[0]} / Export_models_de: {export_models_de[0]}")
         
         if config.MODEL_NAME_VSA_KEK in export_models:
