@@ -445,7 +445,7 @@ class InterlisImporterExporter:
 
 
     # getting equivalent German model
-    def _get_export_models_de(export_models):
+    def _get_export_models_de(self, export_models):
     
         # get export_models_de
         export_models_de=None 
