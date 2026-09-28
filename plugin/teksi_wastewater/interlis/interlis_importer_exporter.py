@@ -264,8 +264,10 @@ class InterlisImporterExporter:
         # Check if export_models contains non German models
         self._get_export_models_de (export_models, export_models_de)
         
-        # msg = 
-        logger.info(f"Export models: {export_models[0]} / Export_models_de: {export_models_de[0]}")
+        msg = (f"Export models: {export_models[0]} / Export_models_de: {export_models_de[0]}")
+        logger.info(f"{msg}")
+        
+        self._progress_done(f"{msg}")
         
         if config.MODEL_NAME_VSA_KEK in export_models:
             create_basket_col = True
@@ -275,6 +277,9 @@ class InterlisImporterExporter:
         if export_models_language != "de":
             # Set create_basket_col for multilangue schema
             create_basket_col = True
+            # for debug
+            self._progress_done(7, "Create Basket col true, de...")
+            
             # Pass models in two languages e.g. –models DSS_2015_LV95; SDEE_2015_LV95; 
             # https://www.sjib.ch/wie-uebersetze-ich-eine-interlis-transferdatei-in-eine-andere-sprache/
             self._create_ili_schema(export_models, export_models_de, create_basket_col=create_basket_col, )
