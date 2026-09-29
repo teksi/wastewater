@@ -267,7 +267,7 @@ class InterlisImporterExporter:
         msg = (f"Export models: {export_models[0]} / Export_models_de: {export_models_de[0]}")
         logger.info(f"{msg}")
         
-        self._progress_done(f"{msg}")
+        self._progress_done(16, f"{msg}")
         
         if config.MODEL_NAME_VSA_KEK in export_models:
             create_basket_col = True
@@ -278,7 +278,7 @@ class InterlisImporterExporter:
             # Set create_basket_col for multilangue schema
             create_basket_col = True
             # for debug
-            self._progress_done(7, "Create Basket col true, de...")
+            self._progress_done(17, "Create Basket col true, de...")
             
             # Pass models in two languages e.g. –models DSS_2015_LV95; SDEE_2015_LV95; 
             # https://www.sjib.ch/wie-uebersetze-ich-eine-interlis-transferdatei-in-eine-andere-sprache/
@@ -319,8 +319,11 @@ class InterlisImporterExporter:
 
         # Export to the temporary ili2pg model
         self._progress_done(35, "Converting from TEKSI Wastewater...")
+        self._progress_done(36, "Debug: _export_to_intermediate_schema export_model: {export_models_de[0]}")
         self._export_to_intermediate_schema(
-            export_model=export_models[0],
+            # with multilingual export option added this has to be the export_models_de
+            #export_model=export_models[0],
+            export_model=export_models_de[0],
             file_name=xtf_file_output,
             selected_ids=selected_ids,
             export_orientation=export_orientation,
@@ -331,7 +334,11 @@ class InterlisImporterExporter:
 
         self._progress_done(75)
         
-        self._export_xtf_files(file_name_base, export_models)
+        self._progress_done(76, "Debug: _export_xtf_files export_models: {export_models[0]}")
+        
+        # export_model=export_models - set back to originally selected models to get correct language
+        # self._export_xtf_files(file_name_base, export_models)
+        self._export_xtf_files(file_name_base, export_models=export_models)
 
         self._progress_done(100)
         logger.info("INTERLIS export finished.")
