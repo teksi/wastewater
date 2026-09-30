@@ -258,37 +258,38 @@ class InterlisImporterExporter:
 
         self._progress_done(15, "Creating ili schema...")
         create_basket_col = False
-        
+
         export_models_language = None
         export_models_de = []
         # Check if export_models contains non German models
-        self._get_export_models_de (export_models, export_models_de)
-        
-        msg = (f"Export models: {export_models[0]} / Export_models_de: {export_models_de[0]}")
+        self._get_export_models_de(export_models, export_models_de)
+
+        msg = f"Export models: {export_models[0]} / Export_models_de: {export_models_de[0]}"
         logger.info(f"{msg}")
-        
+
         self._progress_done(16, f"{msg}")
-        
+
         if config.MODEL_NAME_VSA_KEK in export_models:
             create_basket_col = True
 
         logger.info(f"export_models_language: {export_models_language}")
-        
+
         if export_models_language != "de":
             # Set create_basket_col for multilangue schema
             create_basket_col = True
             # for debug
             self._progress_done(17, "Create Basket col true, de...")
-            
-            # Pass models in two languages e.g. –models DSS_2015_LV95; SDEE_2015_LV95; 
+
+            # Pass models in two languages e.g. –models DSS_2015_LV95; SDEE_2015_LV95;
             # https://www.sjib.ch/wie-uebersetze-ich-eine-interlis-transferdatei-in-eine-andere-sprache/
-            self._create_ili_schema(export_models, export_models_de, create_basket_col=create_basket_col, )
-        else:      
+            self._create_ili_schema(
+                export_models,
+                export_models_de,
+                create_basket_col=create_basket_col,
+            )
+        else:
             self._create_ili_schema(export_models, create_basket_col=create_basket_col)
 
-
-
-        
         # Export the labels file
         tempdir = tempfile.TemporaryDirectory()
         if len(selected_labels_scales_indices):
@@ -319,10 +320,12 @@ class InterlisImporterExporter:
 
         # Export to the temporary ili2pg model
         self._progress_done(35, "Converting from TEKSI Wastewater...")
-        self._progress_done(36, "Debug: _export_to_intermediate_schema export_model: {export_models_de[0]}")
+        self._progress_done(
+            36, "Debug: _export_to_intermediate_schema export_model: {export_models_de[0]}"
+        )
         self._export_to_intermediate_schema(
             # with multilingual export option added this has to be the export_models_de
-            #export_model=export_models[0],
+            # export_model=export_models[0],
             export_model=export_models_de[0],
             file_name=xtf_file_output,
             selected_ids=selected_ids,
@@ -333,9 +336,9 @@ class InterlisImporterExporter:
         tempdir.cleanup()  # Cleanup
 
         self._progress_done(75)
-        
+
         self._progress_done(76, "Debug: _export_xtf_files export_models: {export_models[0]}")
-        
+
         # export_model=export_models - set back to originally selected models to get correct language
         # self._export_xtf_files(file_name_base, export_models)
         self._export_xtf_files(file_name_base, export_models=export_models)
@@ -465,30 +468,24 @@ class InterlisImporterExporter:
                     None,
                 )
 
-
     # getting equivalent German model
     def _get_export_models_de(self, export_models, export_models_de):
-    
+
         # get export_models_de
-        #export_models_de=None 
-        
+        # export_models_de=None
+
         # check if French Models
         if config.MODEL_NAME_SIA405_BASE_ABWASSER_FR in export_models:
             export_models_de.append(config.MODEL_NAME_SIA405_BASE_ABWASSER)
-            export_models_language = "fr"
         elif config.MODEL_NAME_SIA405_ABWASSER_FR in export_models:
             export_models_de.append(config.MODEL_NAME_SIA405_ABWASSER)
-            export_models_language = "fr"
         elif config.MODEL_NAME_VSA_KEK_FR in export_models:
             export_models_de.append(config.MODEL_NAME_VSA_KEK)
-            export_models_language = "fr"
         elif config.MODEL_NAME_DSS_FR in export_models:
             export_models_de.append(config.MODEL_NAME_DSS)
-            export_models_language = "fr"
-        
+
         # check if Italian Models
         # to do in Future
-
 
     def _import_validate_xtf_file(self, xtf_file_input):
         log_path = make_log_path(self.base_log_path, "ilivalidator")
@@ -810,7 +807,7 @@ class InterlisImporterExporter:
                         )
 
     # def _create_ili_schema(
-        # self, models, ext_columns_no_constraints=False, create_basket_col=False
+    # self, models, ext_columns_no_constraints=False, create_basket_col=False
     # ):
     def _create_ili_schema(
         self, models, models_de, ext_columns_no_constraints=False, create_basket_col=False

@@ -124,7 +124,7 @@ class InterlisTools:
                     "-jar",
                     f'"{self.ili2pg_executable_path}"',
                     "--import",
-                    "--importBid", # extra
+                    "--importBid",  # extra
                     "--deleteData",
                     *get_pgconf_as_ili_args(),
                     "--dbschema",
@@ -134,9 +134,9 @@ class InterlisTools:
                     "--createTidCol",
                     "--noSmartMapping",
                     "--defaultSrsCode",
-                    "–-createBasketCol" # extra
-                    "--createEnumTabs", # extra
-                    "--createFk", # extra
+                    "–-createBasketCol"  # extra
+                    "--createEnumTabs",  # extra
+                    "--createFk",  # extra
                     f"{srid}",
                     "--log",
                     f'"{log_path}"',
@@ -161,18 +161,17 @@ class InterlisTools:
                     "--exportmodels",
                     f"{model_name_fr}",
                     *export_model_name_args,
-                    "--baskets BASKET1"
-                    *get_pgconf_as_ili_args(),
+                    "--baskets BASKET1" * get_pgconf_as_ili_args(),
                     "--dbschema",
                     f'"{schema}"',
                     # "--disableValidation",
                     "--skipReferenceErrors",
-                    #"--createTidCol",
+                    # "--createTidCol",
                     "--noSmartMapping",
                     "--defaultSrsCode",
-                    "--sqlEnableNull", # extra
-                    "--createEnumTabs", # extra
-                    "--createFk", # extra
+                    "--sqlEnableNull",  # extra
+                    "--createEnumTabs",  # extra
+                    "--createFk",  # extra
                     f"{srid}",
                     "--log",
                     f'"{log_path_fr}"',
