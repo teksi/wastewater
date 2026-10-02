@@ -8,7 +8,7 @@ DB_CONTAINER = "db"
 
 
 def run(cmd):
-    result = subprocess.run(cmd, shell=True, capture_output=True, text=True) # nosec B602
+    result = subprocess.run(cmd, shell=True, capture_output=True, text=True)  # nosec B602
     print(result.stdout)
     print(result.stderr)
     assert result.returncode == 0, f"Command failed: {cmd}"

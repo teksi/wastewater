@@ -19,8 +19,8 @@
 """
 
 import codecs
-import subprocess
 import shlex
+import subprocess
 from datetime import datetime, timedelta
 
 try:
