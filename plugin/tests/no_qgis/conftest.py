@@ -9,7 +9,7 @@ DB_CONTAINER = "db"
 
 
 def run(cmd):
-    result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+    result = subprocess.run(cmd, shell=True, capture_output=True, text=True) # nosec B602
     print(result.stdout)
     print(result.stderr)
     assert result.returncode == 0, f"Command failed: {cmd}"
@@ -19,10 +19,8 @@ def run(cmd):
 @pytest.fixture(scope="session", autouse=True)
 def wait_for_db():
     for _ in range(30):
-        res = subprocess.run(
-            f"docker compose exec {DB_CONTAINER} pg_isready -U postgres",
-            shell=True,
-        )
+        cmd = f"docker compose exec {DB_CONTAINER} pg_isready -U postgres"
+        res = subprocess.run(cmd, shell=True) # nosec B602
         if res.returncode == 0:
             return
         time.sleep(2)
