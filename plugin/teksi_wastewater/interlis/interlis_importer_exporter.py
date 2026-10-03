@@ -264,7 +264,11 @@ class InterlisImporterExporter:
         # Check if export_models contains non German models
         self._get_export_models_de(export_models, export_models_de)
 
-        msg = f"Export models: {export_models[0]} / Export_models_de: {export_models_de[0]}"
+        if export_models_language == "de":
+            msg = f"Export models: {export_models[0]} / Export_models_de: {export_models_de[0]}"
+        else:
+            msg = f"Export models: {export_models[0]} / Export_models_de: none"
+        
         logger.info(f"{msg}")
 
         self._progress_done(16, f"{msg}")
@@ -873,7 +877,7 @@ class InterlisImporterExporter:
             )
         except CmdException:
             raise InterlisImporterExporterError(
-                "Could not create the ili2pg schema",
+                "Could not create the ili2pg translation schema",
                 "Open the logs for more details on the error.",
                 log_path,
             )
