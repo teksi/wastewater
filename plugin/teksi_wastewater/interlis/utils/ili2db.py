@@ -202,7 +202,8 @@ class InterlisTools:
                     # "--exportmodels",
                     f"{model_name_fr}",
                     *export_model_name_args_fr,
-                    "--baskets BASKET1" * get_pgconf_as_ili_args(),
+                    "--baskets BASKET1"
+                    * get_pgconf_as_ili_args(),
                     "--dbschema",
                     f'"{schema}"',
                     # "--disableValidation",
