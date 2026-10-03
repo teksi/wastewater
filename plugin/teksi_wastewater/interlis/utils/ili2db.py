@@ -49,70 +49,70 @@ class InterlisTools:
             create_basket_col_args = "--createBasketCol"
 
         # distinguish if multimodel schema is created or not: see https://www.sjib.ch/wie-uebersetze-ich-eine-interlis-transferdatei-in-eine-andere-sprache/
-        # if models_de is None:
-        logger.info(f"ILIDB SCHEMAIMPORT INTO {schema}...")
-        execute_subprocess(
-            " ".join(
-                [
-                    f'"{self.java_executable_path}"',
-                    "-jar",
-                    f'"{self.ili2pg_executable_path}"',
-                    "--schemaimport",
-                    *get_pgconf_as_ili_args(),
-                    "--dbschema",
-                    f"{schema}",
-                    "--createGeomIdx",
-                    f"{sql_ext_refs_cols}",
-                    "--createFk",
-                    "--createFkIdx",
-                    "--createTidCol",
-                    "--importTid",
-                    f"{create_basket_col_args}",
-                    "--noSmartMapping",
-                    "--defaultSrsCode",
-                    f"{srid}",
-                    "--log",
-                    f'"{log_path}"',
-                    "--nameLang",
-                    "de",
-                    "--models",
-                    f'"{";".join(models)}"',
+        if models_de = []:
+            logger.info(f"ILIDB SCHEMAIMPORT INTO {schema}...")
+            execute_subprocess(
+                " ".join(
+                    [
+                        f'"{self.java_executable_path}"',
+                        "-jar",
+                        f'"{self.ili2pg_executable_path}"',
+                        "--schemaimport",
+                        *get_pgconf_as_ili_args(),
+                        "--dbschema",
+                        f"{schema}",
+                        "--createGeomIdx",
+                        f"{sql_ext_refs_cols}",
+                        "--createFk",
+                        "--createFkIdx",
+                        "--createTidCol",
+                        "--importTid",
+                        f"{create_basket_col_args}",
+                        "--noSmartMapping",
+                        "--defaultSrsCode",
+                        f"{srid}",
+                        "--log",
+                        f'"{log_path}"',
+                        "--nameLang",
+                        "de",
+                        "--models",
+                        f'"{";".join(models)}"',
+                    ]
+                )
+            )
+        else:
+            logger.info(f"ILIDB Multilingual SCHEMAIMPORT INTO {schema}...")
+            execute_subprocess(
+                " ".join(
+                    [
+                f'"{self.java_executable_path}"',
+                "-jar",
+                f'"{self.ili2pg_executable_path}"',
+                "--schemaimport",
+                *get_pgconf_as_ili_args(),
+                "--dbschema",
+                f"{schema}",
+                "--createGeomIdx",
+                f"{sql_ext_refs_cols}",
+                "--createFk",
+                "--createFkIdx",
+                "--createTidCol",
+                "--importTid",
+                f"{create_basket_col_args}",
+                "--noSmartMapping",
+                "--defaultSrsCode",
+                f"{srid}",
+                "--log",
+                f'"{log_path}"',
+                "--nameLang",
+                "de",
+                "--models",
+                f'"{";".join(models_de)}"',
+                # new multilanguage
+                f'"{";".join(models)}"',
                 ]
             )
         )
-        # else:
-        # logger.info(f"ILIDB Multilingual SCHEMAIMPORT INTO {schema}...")
-        # execute_subprocess(
-        # " ".join(
-        # [
-        # f'"{self.java_executable_path}"',
-        # "-jar",
-        # f'"{self.ili2pg_executable_path}"',
-        # "--schemaimport",
-        # *get_pgconf_as_ili_args(),
-        # "--dbschema",
-        # f"{schema}",
-        # "--createGeomIdx",
-        # f"{sql_ext_refs_cols}",
-        # "--createFk",
-        # "--createFkIdx",
-        # "--createTidCol",
-        # "--importTid",
-        # f"{create_basket_col_args}",
-        # "--noSmartMapping",
-        # "--defaultSrsCode",
-        # f"{srid}",
-        # "--log",
-        # f'"{log_path}"',
-        # "--nameLang",
-        # "de",
-        # "--models",
-        # f'"{";".join(models_de)}"',
-        # # new multilanguage
-        # f'"{";".join(models)}"',
-        # ]
-        # )
-        # )
 
     def validate_xtf_data(self, xtf_file, log_path, xtflog_path):
         logger.info("VALIDATING XTF DATA...")
