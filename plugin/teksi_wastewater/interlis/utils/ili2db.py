@@ -49,7 +49,7 @@ class InterlisTools:
             create_basket_col_args = "--createBasketCol"
 
         # distinguish if multimodel schema is created or not: see https://www.sjib.ch/wie-uebersetze-ich-eine-interlis-transferdatei-in-eine-andere-sprache/
-        if models_de = []:
+        if models_de == []:
             logger.info(f"ILIDB SCHEMAIMPORT INTO {schema}...")
             execute_subprocess(
                 " ".join(
