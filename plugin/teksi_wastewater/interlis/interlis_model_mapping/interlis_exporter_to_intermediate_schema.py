@@ -196,6 +196,37 @@ class InterlisExporterToIntermediateSchema:
             domains="",
         )
         self.abwasser_session.add(self.basket_topic_ag96)
+        
+        # French model TOPICS
+        self.basket_topic_sia405_eaux_usees = self.model_classes_interlis.t_ili2db_basket(
+            t_id=8,
+            dataset=dataset.t_id,
+            topic=config.TOPIC_NAME_SIA405_ABWASSER_FR,
+            t_ili_tid=None,
+            attachmentkey=dataset.datasetname,
+            domains="",
+        )
+        self.abwasser_session.add(self.basket_topic_sia405_eaux_usees)
+
+        self.basket_topic_sdee = self.model_classes_interlis.t_ili2db_basket(
+            t_id=9,
+            dataset=dataset.t_id,
+            topic=config.TOPIC_NAME_DSS_FR,
+            t_ili_tid=None,
+            attachmentkey=dataset.datasetname,
+            domains="",
+        )
+        self.abwasser_session.add(self.basket_topic_sdee)
+
+        self.basket_topic_ivi = self.model_classes_interlis.t_ili2db_basket(
+            t_id=10,
+            dataset=dataset.t_id,
+            topic=config.TOPIC_NAME_KEK_FR,
+            t_ili_tid=None,
+            attachmentkey=dataset.datasetname,
+            domains="",
+        )
+        self.abwasser_session.add(self.basket_topic_ivi)
 
         self.abwasser_session.flush()
 
@@ -205,6 +236,8 @@ class InterlisExporterToIntermediateSchema:
         self._check_for_stop()
 
     def _export_sia405_abwasser(self):
+
+        # 3.10.2026 to do distinguish German or English model export
         self.current_basket = self.basket_topic_sia405_abwasser
 
         logger.info("Exporting TWW.channel -> ABWASSER.kanal")

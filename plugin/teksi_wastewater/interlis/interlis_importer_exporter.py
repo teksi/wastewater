@@ -334,15 +334,13 @@ class InterlisImporterExporter:
         # Export to the temporary ili2pg model
         self._progress_done(35, "Converting from TEKSI Wastewater...")
         self._progress_done(
-            36, "Debug: _export_to_intermediate_schema export_model: {export_models_de[0]}"
+            36, f"Debug: _export_to_intermediate_schema export_model: {export_models_de[0]} / create_basket_col {create_basket_col}"
         )
-
+        time.sleep(10)
         # 3.10.2026
         if self.export_models_language == "de":
             self._export_to_intermediate_schema(
-                # with multilingual export option added this has to be the export_models_de
                 export_model=export_models[0],
-                # export_model=export_models_de[0],
                 file_name=xtf_file_output,
                 selected_ids=selected_ids,
                 export_orientation=export_orientation,
@@ -365,7 +363,7 @@ class InterlisImporterExporter:
 
         self._progress_done(75)
 
-        self._progress_done(76, "Debug: _export_xtf_files export_models: {export_models[0]}")
+        self._progress_done(76, f"Debug: _export_xtf_files export_models: {export_models[0]}")
 
         # export_model=export_models - set back to originally selected models to get correct language
         # self._export_xtf_files(file_name_base, export_models)
@@ -721,6 +719,12 @@ class InterlisImporterExporter:
         labels_file_path=None,
         basket_enabled=False,
     ):
+        
+        self._progress_done(
+            37, f"Debug2: _export_to_intermediate_schema export_model: {export_model} / basket_enabled {basket_enabled} "
+        )
+        time.sleep(10)
+        
         log_handler = logging.FileHandler(
             make_log_path(file_name, "tww2ili-export"), mode="w", encoding="utf-8"
         )
