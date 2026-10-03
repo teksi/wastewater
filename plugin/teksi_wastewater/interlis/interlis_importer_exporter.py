@@ -2,6 +2,7 @@ import logging
 import os
 import socket
 import tempfile
+import time
 from pathlib import Path
 
 import requests
@@ -36,6 +37,7 @@ from .utils.various import (
     LoggingHandlerContext,
     logger,
     make_log_path,
+    make_xtflog_path,
 )
 
 
@@ -55,6 +57,7 @@ class InterlisImporterExporter:
         self.filter_nulls = None
         self.srid = 2056
         self.current_progress = 0
+        self.export_models_language = "de"
 
     def _init_model_classes(self, model):
         ModelInterlis = None
@@ -257,9 +260,48 @@ class InterlisImporterExporter:
 
         self._progress_done(15, "Creating ili schema...")
         create_basket_col = False
+
+        # replaced with self.export_models_language
+        # export_models_language = None
+
+        export_models_de = []
+        # Check if export_models contains non German models
+        self._get_export_models_de(export_models, export_models_de)
+
+        if self.export_models_language == "de":
+            msg = f"Export_models_language {self.export_models_language}: Export models: {export_models[0]} / Export_models_de: none"
+        else:
+            msg = f"Export_models_language {self.export_models_language}: Export models: {export_models[0]} / Export_models_de: {export_models_de[0]} "
+
+        logger.info(f"{msg}")
+
+        self._progress_done(16, f"{msg}")
+
+        time.sleep(5)
+
         if config.MODEL_NAME_VSA_KEK in export_models:
             create_basket_col = True
-        self._create_ili_schema(export_models, create_basket_col=create_basket_col)
+
+        logger.info(f"export_models_language: {self.export_models_language}")
+
+        if self.export_models_language != "de":
+            # Set create_basket_col for multilangue schema
+            create_basket_col = True
+            # for debug
+            # self._progress_done(17, "Create Basket col true, de...")
+
+            # Pass models in two languages e.g. –models DSS_2015_LV95; SDEE_2015_LV95;
+            # https://www.sjib.ch/wie-uebersetze-ich-eine-interlis-transferdatei-in-eine-andere-sprache/
+            self._create_ili_schema(
+                export_models,
+                export_models_de,
+                create_basket_col=create_basket_col,
+            )
+        else:
+            # without models_de
+            self._create_ili_schema(
+                export_models, export_models_de, create_basket_col=create_basket_col
+            )
 
         # Export the labels file
         tempdir = tempfile.TemporaryDirectory()
@@ -291,18 +333,42 @@ class InterlisImporterExporter:
 
         # Export to the temporary ili2pg model
         self._progress_done(35, "Converting from TEKSI Wastewater...")
-        self._export_to_intermediate_schema(
-            export_model=export_models[0],
-            file_name=xtf_file_output,
-            selected_ids=selected_ids,
-            export_orientation=export_orientation,
-            labels_file_path=labels_file,
-            basket_enabled=create_basket_col,
+        self._progress_done(
+            36,
+            f"Debug: _export_to_intermediate_schema export_model: {export_models_de[0]} / create_basket_col {create_basket_col}",
         )
+        time.sleep(10)
+        # 3.10.2026
+        if self.export_models_language == "de":
+            self._export_to_intermediate_schema(
+                export_model=export_models[0],
+                file_name=xtf_file_output,
+                selected_ids=selected_ids,
+                export_orientation=export_orientation,
+                labels_file_path=labels_file,
+                basket_enabled=create_basket_col,
+            )
+        else:
+            self._export_to_intermediate_schema(
+                # with multilingual export option added this has to be the export_models_de
+                # export_model=export_models[0],
+                export_model=export_models_de[0],
+                file_name=xtf_file_output,
+                selected_ids=selected_ids,
+                export_orientation=export_orientation,
+                labels_file_path=labels_file,
+                basket_enabled=create_basket_col,
+            )
+
         tempdir.cleanup()  # Cleanup
 
         self._progress_done(75)
-        self._export_xtf_files(file_name_base, export_models)
+
+        self._progress_done(76, f"Debug: _export_xtf_files export_models: {export_models[0]}")
+
+        # export_model=export_models - set back to originally selected models to get correct language
+        # self._export_xtf_files(file_name_base, export_models)
+        self._export_xtf_files(file_name_base, export_models=export_models)
 
         self._progress_done(100)
         logger.info("INTERLIS export finished.")
@@ -429,12 +495,43 @@ class InterlisImporterExporter:
                     None,
                 )
 
+    # getting equivalent German model
+    def _get_export_models_de(self, export_models, export_models_de):
+
+        # get export_models_de
+        # export_models_de=None
+
+        # check if French Models
+        if config.MODEL_NAME_SIA405_BASE_ABWASSER_FR in export_models:
+            export_models_de.append(config.MODEL_NAME_SIA405_BASE_ABWASSER)
+            self.export_models_language = "fr"
+        elif config.MODEL_NAME_SIA405_ABWASSER_FR in export_models:
+            export_models_de.append(config.MODEL_NAME_SIA405_ABWASSER)
+            self.export_models_language = "fr"
+        elif config.MODEL_NAME_VSA_KEK_FR in export_models:
+            export_models_de.append(config.MODEL_NAME_VSA_KEK)
+            self.export_models_language = "fr"
+        elif config.MODEL_NAME_DSS_FR in export_models:
+            export_models_de.append(config.MODEL_NAME_DSS)
+            self.export_models_language = "fr"
+
+        # check if Italian Models
+        # to do in Future
+
+        # not really needed as default is "de"
+        else:
+            self.export_models_language = "de"
+
     def _import_validate_xtf_file(self, xtf_file_input):
         log_path = make_log_path(self.base_log_path, "ilivalidator")
+
+        xtflog_path = make_xtflog_path(self.base_log_path, "ilivalidator")
+
         try:
             self.interlisTools.validate_xtf_data(
                 xtf_file_input,
                 log_path,
+                xtflog_path,
             )
         except CmdException:
             raise InterlisImporterExporterError(
@@ -623,6 +720,13 @@ class InterlisImporterExporter:
         labels_file_path=None,
         basket_enabled=False,
     ):
+
+        self._progress_done(
+            37,
+            f"Debug2: _export_to_intermediate_schema export_model: {export_model} / basket_enabled {basket_enabled} ",
+        )
+        time.sleep(10)
+
         log_handler = logging.FileHandler(
             make_log_path(file_name, "tww2ili-export"), mode="w", encoding="utf-8"
         )
@@ -692,10 +796,14 @@ class InterlisImporterExporter:
                 f"Validating XTF for '{export_model_name}'...",
             )
             log_path = make_log_path(self.base_log_path, f"ilivalidator-{export_model_name}")
+
+            xtflog_path = make_xtflog_path(self.base_log_path, f"ilivalidator-{export_model_name}")
+
             try:
                 self.interlisTools.validate_xtf_data(
                     export_file_name,
                     log_path,
+                    xtflog_path,
                 )
             except CmdException:
                 xtf_export_errors.append(
@@ -740,14 +848,31 @@ class InterlisImporterExporter:
                             f"TRUNCATE TABLE {config.ABWASSER_SCHEMA}.{row[0]} CASCADE;"
                         )
 
+    # def _create_ili_schema(
+    # self, models, ext_columns_no_constraints=False, create_basket_col=False
+    # ):
     def _create_ili_schema(
-        self, models, ext_columns_no_constraints=False, create_basket_col=False
+        self,
+        models,
+        models_de,
+        ext_columns_no_constraints=False,
+        create_basket_col=False,
     ):
         log_path = make_log_path(self.base_log_path, "ili2pg-schemaimport")
+
+        msg = f"_create_ili_schema : models: {models[0]} / models_de: {models_de} / ext_columns_no_constraints: {ext_columns_no_constraints} / create_basket_col {create_basket_col}"
+
+        logger.info(f"{msg}")
+
+        self._progress_done(17, f"{msg}")
+        time.sleep(10)
+
         try:
+            # new multilanguage
             self.interlisTools.import_ili_schema(
                 config.ABWASSER_SCHEMA,
                 models,
+                models_de,
                 log_path,
                 ext_columns_no_constraints=ext_columns_no_constraints,
                 create_basket_col=create_basket_col,
@@ -756,6 +881,53 @@ class InterlisImporterExporter:
         except CmdException:
             raise InterlisImporterExporterError(
                 "Could not create the ili2pg schema",
+                "Open the logs for more details on the error.",
+                log_path,
+            )
+
+    def _clear_ili_translation_schema(self, recreate_tables=False):
+        logger.info("CONNECTING TO DATABASE...")
+
+        with DatabaseUtils.PsycopgConnection() as connection:
+            cursor = connection.cursor()
+
+            cursor.execute(
+                f"SELECT schema_name FROM information_schema.schemata WHERE schema_name = '{config.TRANSLATION_SCHEMA}';"
+            )
+            if cursor.rowcount == 0:
+                cursor.execute(f"CREATE SCHEMA {config.TRANSLATION_SCHEMA};")
+            else:
+                cursor.execute(
+                    f"SELECT table_name FROM information_schema.tables WHERE table_schema = '{config.TRANSLATION_SCHEMA}';"
+                )
+                logger.info(f"Truncating all tables in schema {config.TRANSLATION_SCHEMA}")
+                rows = cursor.fetchall()
+                if recreate_tables:
+                    logger.info(f"Deleting all tables in schema {config.TRANSLATION_SCHEMA} ")
+                    for row in rows:
+                        cursor.execute(f"DROP TABLE {config.TRANSLATION_SCHEMA}.{row[0]} CASCADE;")
+                else:
+                    for row in rows:
+                        cursor.execute(
+                            f"TRUNCATE TABLE {config.TRANSLATION_SCHEMA}.{row[0]} CASCADE;"
+                        )
+
+    def _create_ili_translation_schema(
+        self, models, ext_columns_no_constraints=False, create_basket_col=False
+    ):
+        log_path = make_log_path(self.base_log_path, "ili2pg-schemaimport")
+        try:
+            self.interlisTools.import_ili_schema(
+                config.TRANSLATION_SCHEMA,
+                models,
+                log_path,
+                ext_columns_no_constraints=ext_columns_no_constraints,
+                create_basket_col=create_basket_col,
+                srid=self.srid,
+            )
+        except CmdException:
+            raise InterlisImporterExporterError(
+                "Could not create the ili2pg translation schema",
                 "Open the logs for more details on the error.",
                 log_path,
             )
