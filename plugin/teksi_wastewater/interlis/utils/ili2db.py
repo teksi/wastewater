@@ -178,7 +178,14 @@ class InterlisTools:
         )
 
     # Datenexport (inkl. Übersetzung nach Französisch)
-    def translate_export_xtf_data(self, schema, xtf_file_fr, log_path_fr, srid=2056):
+    def translate_export_xtf_data(self, schema, xtf_file_fr, log_path_fr, model_name, export_model_name, srid=2056):
+        
+        # if optional export_model_name is set, add it to the args
+        if export_model_name:
+            export_model_name_args = ["--exportModels", export_model_name]
+        else:
+            export_model_name_args = []
+            
         logger.info("EXPORT FRENCH ILIDB ...")
         execute_subprocess(
             " ".join(

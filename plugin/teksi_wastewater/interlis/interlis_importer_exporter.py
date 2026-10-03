@@ -271,7 +271,7 @@ class InterlisImporterExporter:
         if self.export_models_language == "de":
             msg = f"Export_models_language {self.export_models_language}: Export models: {export_models[0]} / Export_models_de: none"
         else:
-            msg = f"Export_models_language {export_models_language}: Export models: {export_models[0]} / Export_models_de: {export_models_de[0]} "
+            msg = f"Export_models_language {self.export_models_language}: Export models: {export_models[0]} / Export_models_de: {export_models_de[0]} "
 
         logger.info(f"{msg}")
 
