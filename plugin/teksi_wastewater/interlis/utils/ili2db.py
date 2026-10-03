@@ -85,34 +85,34 @@ class InterlisTools:
             execute_subprocess(
                 " ".join(
                     [
-                f'"{self.java_executable_path}"',
-                "-jar",
-                f'"{self.ili2pg_executable_path}"',
-                "--schemaimport",
-                *get_pgconf_as_ili_args(),
-                "--dbschema",
-                f"{schema}",
-                "--createGeomIdx",
-                f"{sql_ext_refs_cols}",
-                "--createFk",
-                "--createFkIdx",
-                "--createTidCol",
-                "--importTid",
-                f"{create_basket_col_args}",
-                "--noSmartMapping",
-                "--defaultSrsCode",
-                f"{srid}",
-                "--log",
-                f'"{log_path}"',
-                "--nameLang",
-                "de",
-                "--models",
-                f'"{";".join(models_de)}"',
-                # new multilanguage
-                f'"{";".join(models)}"',
-                ]
+                        f'"{self.java_executable_path}"',
+                        "-jar",
+                        f'"{self.ili2pg_executable_path}"',
+                        "--schemaimport",
+                        *get_pgconf_as_ili_args(),
+                        "--dbschema",
+                        f"{schema}",
+                        "--createGeomIdx",
+                        f"{sql_ext_refs_cols}",
+                        "--createFk",
+                        "--createFkIdx",
+                        "--createTidCol",
+                        "--importTid",
+                        f"{create_basket_col_args}",
+                        "--noSmartMapping",
+                        "--defaultSrsCode",
+                        f"{srid}",
+                        "--log",
+                        f'"{log_path}"',
+                        "--nameLang",
+                        "de",
+                        "--models",
+                        f'"{";".join(models_de)}"',
+                        # new multilanguage
+                        f'"{";".join(models)}"',
+                    ]
+                )
             )
-        )
 
     def validate_xtf_data(self, xtf_file, log_path, xtflog_path):
         logger.info("VALIDATING XTF DATA...")
