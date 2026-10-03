@@ -2,10 +2,10 @@ import logging
 import os
 import socket
 import tempfile
+import time
 from pathlib import Path
 
 import requests
-import time
 
 from ..utils.database_utils import DatabaseUtils, TWWIntegrityChecker
 from . import config
@@ -263,8 +263,7 @@ class InterlisImporterExporter:
 
         # replaced with self.export_models_language
         # export_models_language = None
-        
-        
+
         export_models_de = []
         # Check if export_models contains non German models
         self._get_export_models_de(export_models, export_models_de)
@@ -273,8 +272,7 @@ class InterlisImporterExporter:
             msg = f"Export_models_language {self.export_models_language}: Export models: {export_models[0]} / Export_models_de: none"
         else:
             msg = f"Export_models_language {export_models_language}: Export models: {export_models[0]} / Export_models_de: {export_models_de[0]} "
-            
-        
+
         logger.info(f"{msg}")
 
         self._progress_done(16, f"{msg}")
@@ -302,9 +300,7 @@ class InterlisImporterExporter:
         else:
             # without models_de
             self._create_ili_schema(
-                export_models,
-                export_models_de,
-                create_basket_col=create_basket_col
+                export_models, export_models_de, create_basket_col=create_basket_col
             )
 
         # Export the labels file
@@ -340,14 +336,13 @@ class InterlisImporterExporter:
         self._progress_done(
             36, "Debug: _export_to_intermediate_schema export_model: {export_models_de[0]}"
         )
-        
-        
+
         # 3.10.2026
         if self.export_models_language == "de":
             self._export_to_intermediate_schema(
                 # with multilingual export option added this has to be the export_models_de
                 export_model=export_models[0],
-                #export_model=export_models_de[0],
+                # export_model=export_models_de[0],
                 file_name=xtf_file_output,
                 selected_ids=selected_ids,
                 export_orientation=export_orientation,
@@ -365,7 +360,7 @@ class InterlisImporterExporter:
                 labels_file_path=labels_file,
                 basket_enabled=create_basket_col,
             )
-        
+
         tempdir.cleanup()  # Cleanup
 
         self._progress_done(75)
@@ -523,7 +518,7 @@ class InterlisImporterExporter:
 
         # check if Italian Models
         # to do in Future
-        
+
         # not really needed as default is "de"
         else:
             self.export_models_language = "de"
@@ -858,16 +853,14 @@ class InterlisImporterExporter:
         create_basket_col=False,
     ):
         log_path = make_log_path(self.base_log_path, "ili2pg-schemaimport")
-        
-        
+
         msg = f"_create_ili_schema : models: {models[0]} / models_de: {models_de} / ext_columns_no_constraints: {ext_columns_no_constraints} / create_basket_col {create_basket_col}"
-            
-        
+
         logger.info(f"{msg}")
 
         self._progress_done(17, f"{msg}")
         time.sleep(10)
-        
+
         try:
             # new multilanguage
             self.interlisTools.import_ili_schema(
@@ -878,7 +871,6 @@ class InterlisImporterExporter:
                 ext_columns_no_constraints=ext_columns_no_constraints,
                 create_basket_col=create_basket_col,
                 srid=self.srid,
-
             )
         except CmdException:
             raise InterlisImporterExporterError(
