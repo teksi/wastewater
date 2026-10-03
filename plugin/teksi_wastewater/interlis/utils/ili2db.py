@@ -179,14 +179,16 @@ class InterlisTools:
 
     # Datenexport (inkl. Übersetzung nach Französisch)
     def translate_export_xtf_data(
-        self, schema, xtf_file_fr, log_path_fr, model_name, export_model_name, srid=2056
+        self, schema, xtf_file_fr, log_path_fr, model_name_fr, export_model_name_fr, srid=2056
     ):
 
         # if optional export_model_name is set, add it to the args
-        if export_model_name:
-            export_model_name_args = ["--exportModels", export_model_name]
+        if export_model_name_fr:
+            export_model_name_args_fr = ["--exportModels", export_model_name_fr]
         else:
-            export_model_name_args = []
+            export_model_name_args_fr = []
+        
+        
 
         logger.info("EXPORT FRENCH ILIDB ...")
         execute_subprocess(
@@ -196,12 +198,12 @@ class InterlisTools:
                     "-jar",
                     f'"{self.ili2pg_executable_path}"',
                     "--export",
-                    "--models",
-                    f"{model_name}",
-                    *export_model_name_args,
-                    "--exportmodels",
+                    # "--models",
+                    # f"{model_name}",
+                    # *export_model_name_args,
+                    # "--exportmodels",
                     f"{model_name_fr}",
-                    *export_model_name_args,
+                    *export_model_name_args_fr,
                     "--baskets BASKET1" * get_pgconf_as_ili_args(),
                     "--dbschema",
                     f'"{schema}"',
