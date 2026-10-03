@@ -196,7 +196,7 @@ class InterlisExporterToIntermediateSchema:
             domains="",
         )
         self.abwasser_session.add(self.basket_topic_ag96)
-        
+
         # French model TOPICS
         self.basket_topic_sia405_eaux_usees = self.model_classes_interlis.t_ili2db_basket(
             t_id=8,

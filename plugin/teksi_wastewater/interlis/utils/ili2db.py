@@ -187,8 +187,6 @@ class InterlisTools:
             export_model_name_args_fr = ["--exportModels", export_model_name_fr]
         else:
             export_model_name_args_fr = []
-        
-        
 
         logger.info("EXPORT FRENCH ILIDB ...")
         execute_subprocess(

@@ -334,7 +334,8 @@ class InterlisImporterExporter:
         # Export to the temporary ili2pg model
         self._progress_done(35, "Converting from TEKSI Wastewater...")
         self._progress_done(
-            36, f"Debug: _export_to_intermediate_schema export_model: {export_models_de[0]} / create_basket_col {create_basket_col}"
+            36,
+            f"Debug: _export_to_intermediate_schema export_model: {export_models_de[0]} / create_basket_col {create_basket_col}",
         )
         time.sleep(10)
         # 3.10.2026
@@ -719,12 +720,13 @@ class InterlisImporterExporter:
         labels_file_path=None,
         basket_enabled=False,
     ):
-        
+
         self._progress_done(
-            37, f"Debug2: _export_to_intermediate_schema export_model: {export_model} / basket_enabled {basket_enabled} "
+            37,
+            f"Debug2: _export_to_intermediate_schema export_model: {export_model} / basket_enabled {basket_enabled} ",
         )
         time.sleep(10)
-        
+
         log_handler = logging.FileHandler(
             make_log_path(file_name, "tww2ili-export"), mode="w", encoding="utf-8"
         )
