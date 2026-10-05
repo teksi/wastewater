@@ -423,7 +423,7 @@ This example uses ``SDEE_2020_1_LV95`` and its corresponding French model, ``DSS
 
 .. code-block:: batch
 
-   java -jar %ili2pg_path% –schemaimport –importTid –sqlEnableNull –createEnumTabs –createBasketCol  –createFk –noSmartMapping –defaultSrsAuth EPSG –defaultSrsCode 2056 –dbhost %host% –dbport %port% –dbdatabase %db% –dbschema %dbschema% –dbusr %user% –dbpwd %pwd% –log %xtf_path%%dbschema%_schemaimport.log –trace –models SDEE_2020_1_LV95; DSS_2020_1_LV95;
+   java -jar %ili2pg_path% ––schemaimport ––importTid ––sqlEnableNull ––createEnumTabs ––createBasketCol  ––createFk ––noSmartMapping ––defaultSrsAuth EPSG ––defaultSrsCode 2056 ––dbhost %host% ––dbport %port% ––dbdatabase %db% ––dbschema %dbschema% ––dbusr %user% ––dbpwd %pwd% ––log %xtf_path%%dbschema%_schemaimport.log ––trace ––models SDEE_2020_1_LV95; DSS_2020_1_LV95;
 
 Normally, only one model version is passed to the ``–models`` parameter. For a translation, both language versions are required: ``–models SDEE_2020_1_LV95; DSS_2020_1_LV95;``
 
@@ -433,20 +433,20 @@ Normally, only one model version is passed to the ``–models`` parameter. For a
 
 .. code-block:: batch
 
-   java -jar %ili2pg_path% –disableValidation –import –deleteData –modeldir %ilimodelpath% –trace –sqlEnableNull –createEnumTabs –createBasketCol –createFk –defaultSrsCode 2056 –noSmartMapping –dbhost %host% –dbport %port% –dbdatabase %db% –dbschema %dbschema% –dbusr %user% –dbpwd %pwd% –log %xtf_path%%dbschema%_import.log %xtf_path%%xtf_filename%
+   java -jar %ili2pg_path% ––disableValidation ––import ––deleteData ––modeldir %ilimodelpath% ––trace ––sqlEnableNull ––createEnumTabs ––createBasketCol ––createFk ––defaultSrsCode 2056 ––noSmartMapping ––dbhost %host% ––dbport %port% ––dbdatabase %db% ––dbschema %dbschema% ––dbusr %user% ––dbpwd %pwd% ––log %xtf_path%%dbschema%_import.log %xtf_path%%xtf_filename%
 
 The data is now stored in French in the PostgreSQL schema.
 
 3. Export the data and translate it into German
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The target language is selected with the following parameters: ``–export –models DSS_2020_1_LV95 –exportModels DSS_2020_1_LV95``.
+The target language is selected with the following parameters: ``--export ––models DSS_2020_1_LV95 ––exportModels DSS_2020_1_LV95``.
 The basket name can be found in the original transfer dataset.
 
 .. code-block:: batch
 
    set xtf_filename=DSS_2020_1_LV95.xtf
    set baskets=BASKET_1
-   java -jar %ili2pg_path% –export –models DSS_2020_1_LV95 –exportModels DSS_2020_1_LV95 –baskets %baskets% –skipReferenceErrors –sqlEnableNull –createEnumTabs –createFk –noSmartMapping –defaultSrsAuth EPSG –defaultSrsCode 2056 –dbhost %host% –dbport %port% –dbdatabase %db% –dbschema %dbschema% –dbusr %user% –dbpwd %pwd% –log %xtf_path%%dbschema%_export.log –trace %xtf_path%%xtf_filename%.xtf
+   java -jar %ili2pg_path% ––export ––models DSS_2020_1_LV95 ––exportModels DSS_2020_1_LV95 ––baskets %baskets% ––skipReferenceErrors ––sqlEnableNull ––createEnumTabs ––createFk ––noSmartMapping ––defaultSrsAuth EPSG ––defaultSrsCode 2056 ––dbhost %host% ––dbport %port% ––dbdatabase %db% ––dbschema %dbschema% ––dbusr %user% ––dbpwd %pwd% ––log %xtf_path%%dbschema%_export.log ––trace %xtf_path%%xtf_filename%.xtf
 
 The generated transfer dataset now contains the data in German, except for free-text attributes such as names, labels, or comments.
