@@ -195,7 +195,7 @@ fields:
    The file kind.
 
    Damage pictures must use ``picture`` with code ``3772``. Examination
-   videos must use one of the video kinds supported by the damage view, 
+   videos must use one of the video kinds supported by the damage view,
    ``video`` with code ``3775`` or ``digital_video`` with code ``9146``.
 
 ``classname``
