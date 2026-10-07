@@ -220,7 +220,7 @@ classes:
       stormwater_tank_arrangement:
         update: [DBW_GEP]
 
-  - id: infiltration_instalation
+  - id: infiltration_installation
     extends: wastewater_structure
     attributes:
       distance_to_aquifer:
