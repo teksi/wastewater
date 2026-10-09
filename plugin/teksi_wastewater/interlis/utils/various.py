@@ -1,6 +1,7 @@
 import datetime
 import os
 import re
+import shlex
 import subprocess
 import tempfile
 import uuid
@@ -29,9 +30,9 @@ def execute_subprocess(command, check=True, output_content=False):
     logger.info(f"EXECUTING: {command_masked_pwd}")
     try:
         proc = subprocess.run(
-            command,
+            shlex.split(command),
             check=True,
-            shell=True,
+            shell=False,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
         )
