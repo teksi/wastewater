@@ -1,0 +1,364 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="de" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Digitising channel damages &mdash; TWW latest Dokumentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=bb97b4dd"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/translations.js?v=9bf55d28"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Stichwortverzeichnis" href="../../genindex.html" />
+    <link rel="search" title="Suche" href="../../search.html" />
+    <link rel="next" title="Datenimport" href="importingdata.html" />
+    <link rel="prev" title="Digitalisierung der Einzugsgebiete" href="digitizingcatchments.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            TWW
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Dokumentation durchsuchen" aria-label="Dokumentation durchsuchen" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">TEKSI Abwasser (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">Installationsanleitung</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Benutzerhandbuch</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">Übersicht über TWW</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Digitalisieren in TWW</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="dataentry.html">Datenerfassung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingwastewaterstructures.html">Abwasserbauwerke digitalisieren</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingdetailedgeometry.html">Digitalisieren detaillierter Geometrie</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingdrainagechannel.html">Digitalisieren detaillierter Geometrie für Entwässerungsrinnen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingchannels.html">Kanäle Digitalisieren</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deletingobjects.html">Objekte löschen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingcatchments.html">Digitalisierung der Einzugsgebiete</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Digitising channel damages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-the-damage-position-is-calculated">How the damage position is calculated</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#creating-a-channel-damage">Creating a channel damage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-pictures-or-videos">Adding pictures or videos</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="importingdata.html">Datenimport</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../editing/index.html">Bearbeiten in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">Längsschnitte</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">Werkzeuge zur Netzwerkverfolgung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">Plandruck</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/index.html">History in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../How-To/index.html">How To</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">Administratorhandbuch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extensions-guide/index.html">Offizielle TWW-Erweiterungen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">Übersetzungen</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">TWW</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Benutzerhandbuch</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Digitalisieren in TWW</a></li>
+      <li class="breadcrumb-item active">Digitising channel damages</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/user-guide/digitizing/digitisingdamages.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <blockquote>
+<div></div></blockquote>
+<section id="digitising-channel-damages">
+<h1>Digitising channel damages<a class="headerlink" href="#digitising-channel-damages" title="Link to this heading"></a></h1>
+<p>Channel damages are managed through the view
+<code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_damage_channel</span></code>.</p>
+<p>This view calculates the damage geometry from:</p>
+<ul class="simple">
+<li><p>the geometry of the channel referenced by the examination;</p></li>
+<li><p>the recorded channel distance; and</p></li>
+<li><p>the direction travelled by the examination camera.</p></li>
+</ul>
+<p>When a damage is digitised manually, the point geometry selected in QGIS is
+discarded when the feature is saved. The geometry is then recalculated from
+the examination and the recorded channel distance.</p>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h2>
+<p>To create a georeferenced channel damage, a corresponding examination must
+exist. Examinations can be created using
+<code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_maintenance_event</span></code>.</p>
+<p>The examination must have:</p>
+<ul class="simple">
+<li><p>a valid link to a channel; and</p></li>
+<li><p>a valid link to a reach point that is either the start or the end of that
+channel.</p></li>
+</ul>
+<p>The wastewater network geometry used to position a damage is obtained from
+the materialized view <code class="docutils literal notranslate"><span class="pre">tww_app.mvw_tww_channel</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warnung</p>
+<p><code class="docutils literal notranslate"><span class="pre">tww_app.mvw_tww_channel</span></code> is a materialized view and may be out of date.</p>
+<p>If a channel was recently created, modified, reconnected or assigned to
+different reach points, refresh the materialized view before digitising
+damages. Otherwise, the channel may be missing or its geometry and topology
+may no longer correspond to the current network data.</p>
+</div>
+</section>
+<section id="how-the-damage-position-is-calculated">
+<h2>How the damage position is calculated<a class="headerlink" href="#how-the-damage-position-is-calculated" title="Link to this heading"></a></h2>
+<p>A channel damage is stored as an attribute-based location along a channel.
+The point geometry shown in QGIS is generated by
+<code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_damage_channel</span></code>.</p>
+<p>The view determines:</p>
+<ul class="simple">
+<li><p>the examination associated with the damage;</p></li>
+<li><p>the reach point from which the examination was carried out;</p></li>
+<li><p>the wastewater structure associated with the examination;</p></li>
+<li><p>the corresponding channel in <code class="docutils literal notranslate"><span class="pre">tww_app.mvw_tww_channel</span></code>;</p></li>
+<li><p>the inspection direction, based on the examination reach point; and</p></li>
+<li><p>the relative position along the channel.</p></li>
+</ul>
+<p>The inspection direction is derived as follows:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">downstream</span></code></dt><dd><p>The examination reach point corresponds to the channel’s
+<code class="docutils literal notranslate"><span class="pre">fk_reach_point_from</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">upstream</span></code></dt><dd><p>The examination reach point corresponds to the channel’s
+<code class="docutils literal notranslate"><span class="pre">fk_reach_point_to</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">unknown</span></code></dt><dd><p>The examination reach point matches neither endpoint of the channel.</p>
+</dd>
+</dl>
+<p>The relative position is calculated by dividing <code class="docutils literal notranslate"><span class="pre">channel_distance</span></code> by the
+length of the channel geometry. Values greater than the channel length are
+limited to the end of the channel.</p>
+<p>For downstream inspections, the distance is measured from the beginning of
+the channel geometry. For upstream inspections, it is measured from the end
+of the channel geometry.</p>
+<div class="admonition note">
+<p class="admonition-title">Bemerkung</p>
+<p>Only examinations with recording type <code class="docutils literal notranslate"><span class="pre">channel_TV</span></code> are included in
+<code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_damage_channel</span></code>. The corresponding code is <code class="docutils literal notranslate"><span class="pre">3686</span></code>.</p>
+</div>
+</section>
+<section id="creating-a-channel-damage">
+<h2>Creating a channel damage<a class="headerlink" href="#creating-a-channel-damage" title="Link to this heading"></a></h2>
+<p>Select <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_damage_channel</span></code> in the QGIS Layers panel and enable
+editing.</p>
+<p>Use the QGIS feature creation tool configured for the channel damage layer.</p>
+<p>The position clicked on the map is not the authoritative location of the
+damage. The final <code class="docutils literal notranslate"><span class="pre">situation2d_geometry</span></code> is calculated by the database from
+the damage attributes.</p>
+<p>Place a temporary point and enter the required attributes. After saving and
+refreshing the layer, the calculated position replaces the temporary point.</p>
+<p>New values are written to both:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">tww_od.damage</span></code>; and</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tww_od.damage_channel</span></code>.</p></li>
+</ul>
+<p>Values entered in fields that are not stored in these tables are not
+persisted. Such fields are calculated by the view, primarily from the
+examination referenced by <code class="docutils literal notranslate"><span class="pre">fk_examination</span></code>.</p>
+<section id="selecting-the-examination">
+<h3>Selecting the examination<a class="headerlink" href="#selecting-the-examination" title="Link to this heading"></a></h3>
+<p>The examination assigned through <code class="docutils literal notranslate"><span class="pre">fk_examination</span></code> must:</p>
+<ul class="simple">
+<li><p>represent the relevant inspected channel;</p></li>
+<li><p>have recording type <code class="docutils literal notranslate"><span class="pre">channel_TV</span></code> with code <code class="docutils literal notranslate"><span class="pre">3686</span></code>;</p></li>
+<li><p>be connected to the correct wastewater structure; and</p></li>
+<li><p>have a valid examination reach point.</p></li>
+</ul>
+<p>The examination reach point must correspond to either
+<code class="docutils literal notranslate"><span class="pre">fk_reach_point_from</span></code> or <code class="docutils literal notranslate"><span class="pre">fk_reach_point_to</span></code> of the channel.</p>
+</section>
+<section id="entering-the-channel-distance">
+<h3>Entering the channel distance<a class="headerlink" href="#entering-the-channel-distance" title="Link to this heading"></a></h3>
+<p>The value for <code class="docutils literal notranslate"><span class="pre">channel_distance</span></code> is usually obtained from the TV inspection
+recording or inspection report and must be entered manually.</p>
+<p>The value represents the distance travelled by the inspection camera in meters,
+starting at the examination reach point.</p>
+</section>
+<section id="saving-and-checking-the-damage">
+<h3>Saving and checking the damage<a class="headerlink" href="#saving-and-checking-the-damage" title="Link to this heading"></a></h3>
+<p>Save the new feature and refresh
+<code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_damage_channel</span></code>.</p>
+<p>Verify that:</p>
+<ul class="simple">
+<li><p>the damage point lies on the expected channel;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">direction</span></code> is either <code class="docutils literal notranslate"><span class="pre">upstream</span></code> or <code class="docutils literal notranslate"><span class="pre">downstream</span></code>;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ws_identifier</span></code> identifies the inspected wastewater structure; and</p></li>
+<li><p>the point is located at the expected distance from the inspection start.</p></li>
+</ul>
+<p>If <code class="docutils literal notranslate"><span class="pre">direction</span></code> is <code class="docutils literal notranslate"><span class="pre">unknown</span></code>, correct the examination or network
+relationships before continuing.</p>
+<div class="admonition note">
+<p class="admonition-title">Bemerkung</p>
+<p>The fields <code class="docutils literal notranslate"><span class="pre">situation2d_geometry</span></code>, <code class="docutils literal notranslate"><span class="pre">direction</span></code>, <code class="docutils literal notranslate"><span class="pre">ws_identifier</span></code> and
+<code class="docutils literal notranslate"><span class="pre">tww_is_primary</span></code> are calculated by the view and should not be edited
+manually.</p>
+</div>
+</section>
+</section>
+<section id="adding-pictures-or-videos">
+<h2>Adding pictures or videos<a class="headerlink" href="#adding-pictures-or-videos" title="Link to this heading"></a></h2>
+<p>Damage pictures and examination videos can be managed through
+<code class="docutils literal notranslate"><span class="pre">tww_app.vw_file</span></code>.</p>
+<p>The channel damage view displays up to two associated pictures in:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">picture_1</span></code>; and</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">picture_2</span></code>.</p></li>
+</ul>
+<p>It also displays the associated examination video in <code class="docutils literal notranslate"><span class="pre">video</span></code>.</p>
+<p>Pictures are linked directly to the channel damage. Videos are linked to the
+examination associated with the damage.</p>
+<p>The picture and video fields are calculated from active file records. They
+are display fields and should not be edited directly in the channel damage
+view.</p>
+<p>The channel damage view ignores outdated files when displaying pictures and
+videos. It also ignores outdated examinations when selecting videos.</p>
+<div class="admonition note">
+<p class="admonition-title">Bemerkung</p>
+<p>The current database query does not define an explicit ordering for the
+picture aggregation. If more than two pictures are attached, it is not
+guaranteed which files appear as <code class="docutils literal notranslate"><span class="pre">picture_1</span></code> and <code class="docutils literal notranslate"><span class="pre">picture_2</span></code>.</p>
+</div>
+<section id="creating-a-new-file-record">
+<h3>Creating a new file record<a class="headerlink" href="#creating-a-new-file-record" title="Link to this heading"></a></h3>
+<p>Create a new record in <code class="docutils literal notranslate"><span class="pre">tww_app.vw_file</span></code> and set at least the following
+fields:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">object</span></code></dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">obj_id</span></code> of the object to which the file is linked.</p>
+<p>For a damage picture, this is the <code class="docutils literal notranslate"><span class="pre">obj_id</span></code> of the channel damage. For an
+examination video, this is the <code class="docutils literal notranslate"><span class="pre">obj_id</span></code> of the examination.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">kind</span></code></dt><dd><p>The file kind.</p>
+<p>Damage pictures must use <code class="docutils literal notranslate"><span class="pre">picture</span></code> with code <code class="docutils literal notranslate"><span class="pre">3772</span></code>. Examination
+videos must use one of the video kinds supported by the damage view,
+<code class="docutils literal notranslate"><span class="pre">video</span></code> with code <code class="docutils literal notranslate"><span class="pre">3775</span></code> or <code class="docutils literal notranslate"><span class="pre">digital_video</span></code> with code <code class="docutils literal notranslate"><span class="pre">9146</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">classname</span></code></dt><dd><p>The class name of the object referenced by <code class="docutils literal notranslate"><span class="pre">object</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">_url</span></code></dt><dd><p>The complete path to the picture or video file.</p>
+</dd>
+</dl>
+<p>Complete <code class="docutils literal notranslate"><span class="pre">identifier</span></code>, <code class="docutils literal notranslate"><span class="pre">dataowner</span></code>, <code class="docutils literal notranslate"><span class="pre">provider</span></code> and <code class="docutils literal notranslate"><span class="pre">remark</span></code> where
+required.</p>
+<div class="admonition important">
+<p class="admonition-title">Wichtig</p>
+<p>The file path entered in <code class="docutils literal notranslate"><span class="pre">_url</span></code> must start with a repository path
+configured in <code class="docutils literal notranslate"><span class="pre">tww_od.data_media</span></code>.</p>
+<p>When the file record is saved, the database selects the longest matching
+repository path. It stores the corresponding data-media object in
+<code class="docutils literal notranslate"><span class="pre">fk_data_media</span></code> and the remaining part of the URL in <code class="docutils literal notranslate"><span class="pre">path_relative</span></code>.</p>
+<p>If no matching repository is found, the file record is not inserted and
+the database raises a warning.</p>
+</div>
+</section>
+<section id="outdated-files">
+<h3>Outdated files<a class="headerlink" href="#outdated-files" title="Link to this heading"></a></h3>
+<p>The file selection used by the channel damage view excludes records for which
+<code class="docutils literal notranslate"><span class="pre">tww_outdated</span></code> is <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>.</p>
+<p>However, <code class="docutils literal notranslate"><span class="pre">tww_outdated</span></code> is not exposed by the supplied definition of
+<code class="docutils literal notranslate"><span class="pre">tww_app.vw_file</span></code>. A file therefore can only be marked as outdated through
+<code class="docutils literal notranslate"><span class="pre">tww_od.file</span></code>.</p>
+</section>
+<section id="refreshing-the-displayed-media">
+<h3>Refreshing the displayed media<a class="headerlink" href="#refreshing-the-displayed-media" title="Link to this heading"></a></h3>
+<p>After adding or modifying a picture or video:</p>
+<ol class="arabic simple">
+<li><p>Save the file record.</p></li>
+<li><p>Refresh <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_damage_channel</span></code>.</p></li>
+<li><p>Verify that the file appears in <code class="docutils literal notranslate"><span class="pre">picture_1</span></code>, <code class="docutils literal notranslate"><span class="pre">picture_2</span></code> or <code class="docutils literal notranslate"><span class="pre">video</span></code>.</p></li>
+<li><p>Verify that the generated path can be opened from QGIS.</p></li>
+</ol>
+<p>If a picture does not appear, check that:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">object</span></code> contains the channel damage’s <code class="docutils literal notranslate"><span class="pre">obj_id</span></code>;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">kind</span></code> is <code class="docutils literal notranslate"><span class="pre">picture</span></code> with code <code class="docutils literal notranslate"><span class="pre">3772</span></code>;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tww_outdated</span></code> is not <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>;</p></li>
+<li><p>the URL uses a path configured in <code class="docutils literal notranslate"><span class="pre">tww_od.data_media</span></code>; and</p></li>
+<li><p>the channel damage layer has been refreshed.</p></li>
+</ul>
+<p>If a video does not appear, check that:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">object</span></code> contains the examination’s <code class="docutils literal notranslate"><span class="pre">obj_id</span></code>;</p></li>
+<li><p>the video kind has code <code class="docutils literal notranslate"><span class="pre">3775</span></code> or <code class="docutils literal notranslate"><span class="pre">9146</span></code>;</p></li>
+<li><p>neither the file nor the examination is marked as outdated; and</p></li>
+<li><p>the examination is linked to the channel damage.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="digitizingcatchments.html" class="btn btn-neutral float-left" title="Digitalisierung der Einzugsgebiete" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
+        <a href="importingdata.html" class="btn btn-neutral float-right" title="Datenimport" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, The TWW Project www.teksi.ch.</p>
+  </div>
+
+  Erstellt mit <a href="https://www.sphinx-doc.org/">Sphinx</a> mit einem
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    bereitgestellt von <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
