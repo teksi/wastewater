@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.sql import text
 
 from ...utils.plugin_utils import logger
-from .. import config, utils
+from .. import config, model_config, utils
 
 
 class InterlisExporterToIntermediateSchemaError(Exception):
@@ -16,7 +16,7 @@ class InterlisExporterToIntermediateSchemaError(Exception):
 class InterlisExporterToIntermediateSchema:
     def __init__(
         self,
-        model,
+        export_model_groups,
         model_classes_interlis,
         model_classes_tww_od,
         model_classes_tww_vl,
@@ -35,8 +35,7 @@ class InterlisExporterToIntermediateSchema:
         Args:
             selection:      if provided, limits the export to networkelements that are provided in the selection
         """
-        self.model = model
-        self.is_ag_xx_model = model in [config.MODEL_NAME_AG64, config.MODEL_NAME_AG96]
+        self.export_model_groups = export_model_groups
         self.callback_progress_done = callback_progress_done
 
         # Filtering
@@ -101,26 +100,26 @@ class InterlisExporterToIntermediateSchema:
 
         self._set_tid_iterator()
 
-        if not self.is_ag_xx_model:
+        if not {"ag64", "ag96"} & self.export_model_groups:
             self.current_basket = self.basket_topic_sia405_administration
             self._export_sia405_abwasser_base()
 
-            if self.model != config.MODEL_NAME_SIA405_BASE_ABWASSER:
+            if self.export_model_groups != {"sia405_base_abwasser"}:
                 self._export_sia405_abwasser()
 
-                if self.model == config.MODEL_NAME_DSS:
+                if "dss" in self.export_model_groups:
                     self.current_basket = self.basket_topic_dss
                     self._export_dss()
 
-                if self.model == config.MODEL_NAME_VSA_KEK:
+                if "kek" in self.export_model_groups:
                     self.current_basket = self.basket_topic_kek
                     self._export_vsa_kek()
 
-        elif self.model == config.MODEL_NAME_AG64:
+        elif "ag64" in self.export_model_groups:
             self.current_basket = self.basket_topic_ag64
             self._export_ag64()
 
-        elif self.model == config.MODEL_NAME_AG96:
+        elif "ag96" in self.export_model_groups:
             self.current_basket = self.basket_topic_ag96
             self._export_ag96()
 
@@ -140,7 +139,9 @@ class InterlisExporterToIntermediateSchema:
         self.basket_topic_sia405_administration = self.model_classes_interlis.t_ili2db_basket(
             t_id=2,
             dataset=dataset.t_id,
-            topic=config.TOPIC_NAME_SIA405_ADMINISTRATION,
+            topic=next(
+                iter(model_config.topics_for_group(group="sia405_base_abwasser", lang="de"))
+            ),
             t_ili_tid=None,
             attachmentkey=dataset.datasetname,
             domains="",
@@ -150,7 +151,7 @@ class InterlisExporterToIntermediateSchema:
         self.basket_topic_sia405_abwasser = self.model_classes_interlis.t_ili2db_basket(
             t_id=3,
             dataset=dataset.t_id,
-            topic=config.TOPIC_NAME_SIA405_ABWASSER,
+            topic=next(iter(model_config.topics_for_group(group="sia405_abwasser", lang="de"))),
             t_ili_tid=None,
             attachmentkey=dataset.datasetname,
             domains="",
@@ -160,7 +161,7 @@ class InterlisExporterToIntermediateSchema:
         self.basket_topic_dss = self.model_classes_interlis.t_ili2db_basket(
             t_id=4,
             dataset=dataset.t_id,
-            topic=config.TOPIC_NAME_DSS,
+            topic=next(iter(model_config.topics_for_group(group="dss", lang="de"))),
             t_ili_tid=None,
             attachmentkey=dataset.datasetname,
             domains="",
@@ -170,7 +171,7 @@ class InterlisExporterToIntermediateSchema:
         self.basket_topic_kek = self.model_classes_interlis.t_ili2db_basket(
             t_id=5,
             dataset=dataset.t_id,
-            topic=config.TOPIC_NAME_KEK,
+            topic=next(iter(model_config.topics_for_group(group="vsa_kek", lang="de"))),
             t_ili_tid=None,
             attachmentkey=dataset.datasetname,
             domains="",
@@ -180,7 +181,7 @@ class InterlisExporterToIntermediateSchema:
         self.basket_topic_ag64 = self.model_classes_interlis.t_ili2db_basket(
             t_id=6,
             dataset=dataset.t_id,
-            topic=config.TOPIC_NAME_AG64,
+            topic=next(iter(model_config.topics_for_group(group="ag64", lang="de"))),
             t_ili_tid=None,
             attachmentkey=dataset.datasetname,
             domains="",
@@ -190,7 +191,7 @@ class InterlisExporterToIntermediateSchema:
         self.basket_topic_ag96 = self.model_classes_interlis.t_ili2db_basket(
             t_id=7,
             dataset=dataset.t_id,
-            topic=config.TOPIC_NAME_AG96,
+            topic=next(iter(model_config.topics_for_group(group="ag96", lang="de"))),
             t_ili_tid=None,
             attachmentkey=dataset.datasetname,
             domains="",
@@ -235,7 +236,7 @@ class InterlisExporterToIntermediateSchema:
         self._export_reach_point()
         self._check_for_stop()
 
-        if self.model == config.MODEL_NAME_DSS:
+        if "dss" in self.export_model_groups:
             logger.info(
                 "Exporting TWW.wastewater_node for VSA-DSS 2020 -> ABWASSER.abwasserknoten"
             )
@@ -520,7 +521,7 @@ class InterlisExporterToIntermediateSchema:
     def _set_tid_iterator(self):
         # set tidMaker
         max_tid = self.abwasser_session.execute(
-            text(f"SELECT last_value from {config.ABWASSER_SCHEMA}.t_ili2db_seq;")
+            text(f"SELECT last_value from {config.EXPORT_SCHEMA}.t_ili2db_seq;")
         ).fetchone()
         for _ in range(max_tid.last_value + 1):
             self.tid_maker.next_tid()
@@ -528,7 +529,7 @@ class InterlisExporterToIntermediateSchema:
     def _export_organisation(self):
         query = self.tww_session.query(self.model_classes_tww_od.organisation)
         # only export my local extension organisations if called by SIA405 Base
-        if self.model == config.MODEL_NAME_SIA405_BASE_ABWASSER:
+        if "sia405_base_abwasser" in self.export_model_groups:
             query = query.filter(
                 self.model_classes_tww_od.organisation.tww_local_extension.is_(True)
             ).all()
@@ -3184,7 +3185,7 @@ class InterlisExporterToIntermediateSchema:
             "massnahmeref": self.get_tid(row.fk_measure__REL),
         }
 
-        if self.model == config.MODEL_NAME_VSA_KEK:
+        if "kek" in self.export_model_groups:
             query = self.tww_session.query(
                 self.model_classes_tww_od.re_maintenance_event_wastewater_structure
             ).where(
@@ -3320,11 +3321,11 @@ class InterlisExporterToIntermediateSchema:
         for row in self.abwasser_session.query(self.model_classes_interlis.abwasserbauwerk):
             tid_for_obj_id["vw_tww_wastewater_structure"][row.t_ili_tid] = row.t_id
 
-        if self.model in [config.MODEL_NAME_DSS, config.MODEL_NAME_AG96]:
+        if {"dss", "ag96"} & self.export_model_groups:
             for row in self.abwasser_session.query(self.model_classes_interlis.einzugsgebiet):
                 tid_for_obj_id["vw_tww_catchment_area"][row.t_ili_tid] = row.t_id
 
-        if self.model == config.MODEL_NAME_AG96:
+        if "ag96" in self.export_model_groups:
             tid_for_obj_id.update(
                 {
                     "building_group": {},
@@ -3346,8 +3347,6 @@ class InterlisExporterToIntermediateSchema:
         with open(self.labels_file) as labels_file_handle:
             labels = json.load(labels_file_handle)
 
-        labels["name"]
-
         # Check that labels were generated
         labels_count = len(labels["features"])
         logger.debug(f"{labels_count} labels generated")
@@ -3360,18 +3359,6 @@ class InterlisExporterToIntermediateSchema:
                 obj_id = label["properties"]["tww_obj_id"]
 
                 print(f"label[properties]: {label['properties']}")
-
-                if self.subset_ids and obj_id not in self.subset_ids:
-                    logger.warning(
-                        f"Label for {layer_name} `{obj_id}` exists, but that object is not part of the subset export"
-                    )
-                    continue
-
-                if not label["properties"]["LabelText"]:
-                    logger.warning(
-                        f"Label of object '{obj_id}' from layer '{layer_name}' is empty and will not be exported"
-                    )
-                    continue
 
                 t_id = tid_for_obj_id.get(layer_name, {}).get(obj_id, None)
                 if not t_id:
@@ -3392,7 +3379,32 @@ class InterlisExporterToIntermediateSchema:
                 else:
                     logger.debug(f"Debug Plantyp not adapted '{plantyp}'")
 
-                if not self.is_ag_xx_model:
+                    if not label["properties"]["LabelText"]:
+                        logger.warning(
+                            f"Label of object '{obj_id}' from layer '{layer_name}' is empty and will not be exported"
+                        )
+                        continue
+
+                    t_id = tid_for_obj_id.get(layer_name, {}).get(obj_id, None)
+                    if not t_id:
+                        logger.warning(
+                            f"Label for '{layer_name}' '{obj_id}' exists, but that object is not part of the export"
+                        )
+                        continue
+
+                    # Adapt plantype if subtype of Werkplan as VSA-DSS does not yet supports subvalues.
+                    plantyp = (label["properties"]["scale"],)
+                    # ('Werkplan.500',)
+                    plantyp_short = str(plantyp)
+                    plantyp_short = plantyp_short[2:10]
+                    logger.debug(f"Debug Plantyp_short: '{plantyp_short}'")
+                    if plantyp_short == "Werkplan":
+                        plantyp = "Werkplan"
+                        logger.debug(f"Debug Plantyp adapted '{plantyp}'")
+                    else:
+                        logger.debug(f"Debug Plantyp not adapted '{plantyp}'")
+
+                if not {"ag64", "ag96"} & self.export_model_groups:
                     if layer_name == "vw_tww_reach":
                         ili_label = self.model_classes_interlis.haltung_text(
                             **self._textpos_common(
@@ -3436,138 +3448,140 @@ class InterlisExporterToIntermediateSchema:
                         )
                     else:
                         logger.warning(
+                            f"Label for {layer_name} `{obj_id}` exists, but that object is not part of the subset export"
+                        )
+                        continue
+                elif "ag64" in self.export_model_groups:
+                    if layer_name == "vw_tww_reach":
+                        ili_label = self.model_classes_interlis.haltung_text(
+                            **self._textpos_common(
+                                # label, "haltung_text", geojson_crs_def, "RX", self.oid_prefix
+                                label,
+                                "haltung_text",
+                                geojson_crs_def,
+                                "RX",
+                                self.oid_prefix,
+                                plantyp,
+                            ),
+                            haltungref=t_id,
+                        )
+
+                    elif layer_name == "vw_tww_wastewater_structure":
+                        ili_label = self.model_classes_interlis.abwasserbauwerk_text(
+                            **self._textpos_common(
+                                # label, "abwasserbauwerk_text", geojson_crs_def, "WX", self.oid_prefix
+                                label,
+                                "abwasserbauwerk_text",
+                                geojson_crs_def,
+                                "WX",
+                                self.oid_prefix,
+                                plantyp,
+                            ),
+                            abwasserbauwerkref=t_id,
+                        )
+
+                    else:
+                        logger.warning(
                             f"Unknown layer `{layer_name}` for label with id '{obj_id}'. Label will be ignored",
                         )
                         continue
-                else:
-                    if self.model == config.MODEL_NAME_AG64:
-                        if layer_name == "vw_tww_reach":
-                            ili_label = self.model_classes_interlis.haltung_text(
-                                **self._textpos_common(
-                                    label,
-                                    "infrastrukturhaltung_text",
-                                    geojson_crs_def,
-                                    "RX",
-                                    self.oid_prefix,
-                                    plantyp,
-                                ),
-                                infrastrukturhaltungref=t_id,
-                            )
+                else:  # AG-96
+                    if layer_name == "vw_tww_reach":
+                        ili_label = self.model_classes_interlis.haltung_text(
+                            **self._textpos_common(
+                                label,
+                                "gephaltung_text",
+                                geojson_crs_def,
+                                "RX",
+                                self.oid_prefix,
+                                plantyp,
+                            ),
+                            gephaltungref=t_id,
+                        )
 
-                        elif layer_name == "vw_tww_wastewater_structure":
-                            ili_label = self.model_classes_interlis.abwasserbauwerk_text(
-                                **self._textpos_common(
-                                    label,
-                                    "infrastrukturknoten_text",
-                                    geojson_crs_def,
-                                    "WX",
-                                    self.oid_prefix,
-                                    plantyp,
-                                ),
-                                infrastrukturknotenref=t_id,
-                            )
-                        else:
-                            logger.warning(
-                                f"Unknown layer `{layer_name}` for label with id '{obj_id}'. Label will be ignored",
-                            )
-                            continue
-                    else:  # AG-96
-                        if layer_name == "vw_tww_reach":
-                            ili_label = self.model_classes_interlis.haltung_text(
-                                **self._textpos_common(
-                                    label,
-                                    "gephaltung_text",
-                                    geojson_crs_def,
-                                    "RX",
-                                    self.oid_prefix,
-                                    plantyp,
-                                ),
-                                gephaltungref=t_id,
-                            )
+                    elif layer_name == "vw_tww_wastewater_structure":
+                        ili_label = self.model_classes_interlis.abwasserbauwerk_text(
+                            **self._textpos_common(
+                                label,
+                                "gepknoten_text",
+                                geojson_crs_def,
+                                "WX",
+                                self.oid_prefix,
+                                plantyp,
+                            ),
+                            gepknotenref=t_id,
+                        )
 
-                        elif layer_name == "vw_tww_wastewater_structure":
-                            ili_label = self.model_classes_interlis.abwasserbauwerk_text(
-                                **self._textpos_common(
-                                    label,
-                                    "gepknoten_text",
-                                    geojson_crs_def,
-                                    "WX",
-                                    self.oid_prefix,
-                                    plantyp,
-                                ),
-                                gepknotenref=t_id,
-                            )
+                    elif layer_name == "vw_tww_catchment_area":
+                        ili_label = self.model_classes_interlis.einzugsgebiet_text(
+                            **self._textpos_common(
+                                label,
+                                "einzugsgebiet_text",
+                                geojson_crs_def,
+                                "CX",
+                                self.oid_prefix,
+                                plantyp,
+                            ),
+                            einzugsgebietref=t_id,
+                        )
 
-                        elif layer_name == "vw_tww_catchment_area":
-                            ili_label = self.model_classes_interlis.einzugsgebiet_text(
-                                **self._textpos_common(
-                                    label,
-                                    "einzugsgebiet_text",
-                                    geojson_crs_def,
-                                    "CX",
-                                    self.oid_prefix,
-                                    plantyp,
-                                ),
-                                einzugsgebietref=t_id,
-                            )
+                    elif layer_name == "building_group":
+                        ili_label = self.model_classes_interlis.bautenausserhalbbaugebiet_text(
+                            **self._textpos_common(
+                                label,
+                                "bautenausserhalbbaugebiet_text",
+                                geojson_crs_def,
+                                "BX",
+                                self.oid_prefix,
+                                plantyp,
+                            ),
+                            bautenausserhalbbaugebietref=t_id,
+                        )
 
-                        elif layer_name == "building_group":
-                            ili_label = self.model_classes_interlis.bautenausserhalbbaugebiet_text(
-                                **self._textpos_common(
-                                    label,
-                                    "bautenausserhalbbaugebiet_text",
-                                    geojson_crs_def,
-                                    "BX",
-                                    self.oid_prefix,
-                                    plantyp,
-                                ),
-                                bautenausserhalbbaugebietref=t_id,
-                            )
+                    elif layer_name == "measure_line":
+                        ili_label = self.model_classes_interlis.gepmassnahme_text(
+                            **self._textpos_common(
+                                label,
+                                "gepmassnahme_text",
+                                geojson_crs_def,
+                                "MX",
+                                self.oid_prefix,
+                                plantyp,
+                            ),
+                            gepmassnahmeref=t_id,
+                        )
 
-                        elif layer_name == "measure_line":
-                            ili_label = self.model_classes_interlis.gepmassnahme_text(
-                                **self._textpos_common(
-                                    label,
-                                    "gepmassnahme_text",
-                                    geojson_crs_def,
-                                    "MX",
-                                    self.oid_prefix,
-                                    plantyp,
-                                ),
-                                gepmassnahmeref=t_id,
-                            )
+                    elif layer_name == "measure_point":
+                        ili_label = self.model_classes_interlis.gepmassnahme_text(
+                            **self._textpos_common(
+                                label,
+                                "gepmassnahme_text",
+                                geojson_crs_def,
+                                "MX",
+                                self.oid_prefix,
+                                plantyp,
+                            ),
+                            gepmassnahmeref=t_id,
+                        )
 
-                        elif layer_name == "measure_point":
-                            ili_label = self.model_classes_interlis.gepmassnahme_text(
-                                **self._textpos_common(
-                                    label,
-                                    "gepmassnahme_text",
-                                    geojson_crs_def,
-                                    "MX",
-                                    self.oid_prefix,
-                                    plantyp,
-                                ),
-                                gepmassnahmeref=t_id,
-                            )
+                    elif layer_name == "measure_polygon":
+                        ili_label = self.model_classes_interlis.gepmassnahme_text(
+                            **self._textpos_common(
+                                label,
+                                "gepmassnahme_text",
+                                geojson_crs_def,
+                                "MX",
+                                self.oid_prefix,
+                                plantyp,
+                            ),
+                            gepmassnahmeref=t_id,
+                        )
 
-                        elif layer_name == "measure_polygon":
-                            ili_label = self.model_classes_interlis.gepmassnahme_text(
-                                **self._textpos_common(
-                                    label,
-                                    "gepmassnahme_text",
-                                    geojson_crs_def,
-                                    "MX",
-                                    self.oid_prefix,
-                                    plantyp,
-                                ),
-                                gepmassnahmeref=t_id,
-                            )
-
-                        else:
-                            logger.warning(
-                                f"Unknown layer {layer_name} for label with id '{obj_id}'. Label will be ignored",
-                            )
-                            continue
+                    else:
+                        logger.warning(
+                            f"Unknown layer {layer_name} for label with id '{obj_id}'. Label will be ignored",
+                        )
+                        continue
 
                     self.abwasser_session.add(ili_label)
                     print(".", end="")

@@ -31,8 +31,11 @@ class InterlisImporterExporterGui(QObject):
         self.import_dialog = None
         self.progress_dialog = None
 
+        settings = QSettings()
+        locale = settings.value("locale/userLocale")
+        self.lang = locale[:2]
         self.interlis_importer_exporter = InterlisImporterExporter(
-            progress_done_callback=self._progress_done_callback
+            progress_done_callback=self._progress_done_callback, lang=self.lang
         )
 
     def check_dependencies(self):
