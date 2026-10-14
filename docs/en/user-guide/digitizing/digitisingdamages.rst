@@ -24,8 +24,8 @@ exist. Examinations can be created using
 The examination must have:
 
 * a valid link to a channel; and
-* a valid link to a reach point that is either at the start or the end of 
-  that channel and is referenced by the uppermost/lowermost reach of the 
+* a valid link to a reach point that is either at the start or the end of
+  that channel and is referenced by the uppermost/lowermost reach of the
   channel.
 
 The wastewater network geometry used to position a damage is obtained from
@@ -61,12 +61,12 @@ The inspection direction is derived as follows:
 
 ``downstream``
    The examination reach point corresponds to the
-   ``fk_reach_point_from`` of the uppermost reach linked 
+   ``fk_reach_point_from`` of the uppermost reach linked
    to the channel.
 
 ``upstream``
-   The examination reach point corresponds to the 
-   ``fk_reach_point_to`` of the lowermost reach linked 
+   The examination reach point corresponds to the
+   ``fk_reach_point_to`` of the lowermost reach linked
    to the channel.
 
 ``unknown``
@@ -120,7 +120,7 @@ The examination assigned through ``fk_examination`` must:
 * have a valid examination reach point.
 
 The examination reach point must correspond to either
-``fk_reach_point_from`` or ``fk_reach_point_to`` of the most upstream/downstream 
+``fk_reach_point_from`` or ``fk_reach_point_to`` of the most upstream/downstream
 reach of the channel.
 
 Entering the channel distance
