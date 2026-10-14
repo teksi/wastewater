@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Digitising channel damages &mdash; TWW latest Dokumentation</title>
+  <title>Kanalschäden digitalisieren &mdash; TWW latest Dokumentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
 
@@ -56,9 +56,9 @@
 <li class="toctree-l3"><a class="reference internal" href="digitizingchannels.html">Kanäle Digitalisieren</a></li>
 <li class="toctree-l3"><a class="reference internal" href="deletingobjects.html">Objekte löschen</a></li>
 <li class="toctree-l3"><a class="reference internal" href="digitizingcatchments.html">Digitalisierung der Einzugsgebiete</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Digitising channel damages</a><ul>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Kanalschäden digitalisieren</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#prerequisites">Voraussetzungen</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#how-the-damage-position-is-calculated">How the damage position is calculated</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-the-damage-position-is-calculated">Wie die Schadensposition berechnet wird</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#creating-a-channel-damage">Creating a channel damage</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#adding-pictures-or-videos">Adding pictures or videos</a></li>
 </ul>
@@ -97,7 +97,7 @@
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Benutzerhandbuch</a></li>
           <li class="breadcrumb-item"><a href="index.html">Digitalisieren in TWW</a></li>
-      <li class="breadcrumb-item active">Digitising channel damages</li>
+      <li class="breadcrumb-item active">Kanalschäden digitalisieren</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/user-guide/digitizing/digitisingdamages.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
       </li>
@@ -110,55 +110,43 @@
   <blockquote>
 <div></div></blockquote>
 <section id="digitising-channel-damages">
-<h1>Digitising channel damages<a class="headerlink" href="#digitising-channel-damages" title="Link to this heading"></a></h1>
-<p>Channel damages are managed through the view
-<code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_damage_channel</span></code>.</p>
-<p>This view calculates the damage geometry from:</p>
+<h1>Kanalschäden digitalisieren<a class="headerlink" href="#digitising-channel-damages" title="Link to this heading"></a></h1>
+<p>Kanalschäden werden in der Sicht <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_damage_channel</span></code> verwaltet.</p>
+<p>Diese Sicht berechnet die Lage des Schadens aus:</p>
 <ul class="simple">
-<li><p>the geometry of the channel referenced by the examination;</p></li>
-<li><p>the recorded channel distance; and</p></li>
-<li><p>the direction travelled by the examination camera.</p></li>
+<li><p>Der Geometrie des Kanals, welchen die Untersuchung referenziert;</p></li>
+<li><p>Der erfassten Kanal-Distanz; und</p></li>
+<li><p>Der Richtung der Kamerabefahrung.</p></li>
 </ul>
-<p>When a damage is digitised manually, the point geometry selected in QGIS is
-discarded when the feature is saved. The geometry is then recalculated from
-the examination and the recorded channel distance.</p>
+<p>Wenn ein Schaden manuell digitalisiert wird,  wird die Punktgeometrie in QGIS beim Speichern ignoriert. Die Geometrie wird aus der Untersuchung und der Kanal-Distanz des Schadens berechnet.</p>
 <section id="prerequisites">
 <h2>Voraussetzungen<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h2>
-<p>To create a georeferenced channel damage, a corresponding examination must
-exist. Examinations can be created using
-<code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_maintenance_event</span></code>.</p>
-<p>The examination must have:</p>
+<p>Um einen georeferenzierten Kanalschaden zu erstellen muss die zugehörige Untersuchung bereits existieren. Untersuchungen können mit <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_maintenance_event</span></code> erstellt werden</p>
+<p>Die Untersuchung benötigt:</p>
 <ul class="simple">
-<li><p>a valid link to a channel; and</p></li>
-<li><p>a valid link to a reach point that is either the start or the end of that
-channel.</p></li>
+<li><p>eine gültige Verknüpfung auf einen Kanal und</p></li>
+<li><p>eine gültige Verküpung auf einen Haltungspunkt, der entweder am Beginn oder am Ende des Kanals liegt.</p></li>
 </ul>
-<p>The wastewater network geometry used to position a damage is obtained from
-the materialized view <code class="docutils literal notranslate"><span class="pre">tww_app.mvw_tww_channel</span></code>.</p>
+<p>Die Geometrie des Abwassernetzes, die für die Positionierung des Schadens genutzt wird, wird aus der materialisierten Sicht <code class="docutils literal notranslate"><span class="pre">tww_app.mvw_tww_channel</span></code> entnommen.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warnung</p>
-<p><code class="docutils literal notranslate"><span class="pre">tww_app.mvw_tww_channel</span></code> is a materialized view and may be out of date.</p>
-<p>If a channel was recently created, modified, reconnected or assigned to
-different reach points, refresh the materialized view before digitising
-damages. Otherwise, the channel may be missing or its geometry and topology
-may no longer correspond to the current network data.</p>
+<p><code class="docutils literal notranslate"><span class="pre">tww_app.mvw_tww_channel</span></code> ist eine materialisierte Sicht und kann deshalb Daten enthalten, die nicht aktuell sind</p>
+<p>Wenn ein Kanal vor Kurzem erstellt, verändert, neu verknüpft oder neuen Haltungen zugewiesen wurde, aktualisieren sie die materialisierte Sicht, bevor Sie Schäden digitalisieren. Ansonsten kann es sein, dass der Kanal noch fehlt oder seine Geometrie oder Topologie nicht den aktuellen Netzwerkdaten entspricht.</p>
 </div>
 </section>
 <section id="how-the-damage-position-is-calculated">
-<h2>How the damage position is calculated<a class="headerlink" href="#how-the-damage-position-is-calculated" title="Link to this heading"></a></h2>
-<p>A channel damage is stored as an attribute-based location along a channel.
-The point geometry shown in QGIS is generated by
-<code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_damage_channel</span></code>.</p>
-<p>The view determines:</p>
+<h2>Wie die Schadensposition berechnet wird<a class="headerlink" href="#how-the-damage-position-is-calculated" title="Link to this heading"></a></h2>
+<p>Ein Kanalschaden wird als attributbasierte Position entlang eines Kanals gespeichert. Die in QGIS dargestellte Punktgeometrie wird durch <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_damage_channel</span></code> generiert.</p>
+<p>Die Sicht bestimmt:</p>
 <ul class="simple">
-<li><p>the examination associated with the damage;</p></li>
-<li><p>the reach point from which the examination was carried out;</p></li>
+<li><p>die dem Schaden zugeordnete Inspektion;</p></li>
+<li><p>der Haltungspunkt, von dem aus die Untersuchung durchgeführt wurde;</p></li>
 <li><p>the wastewater structure associated with the examination;</p></li>
-<li><p>the corresponding channel in <code class="docutils literal notranslate"><span class="pre">tww_app.mvw_tww_channel</span></code>;</p></li>
-<li><p>the inspection direction, based on the examination reach point; and</p></li>
-<li><p>the relative position along the channel.</p></li>
+<li><p>  der entsprechende Kanal in  <code class="docutils literal notranslate"><span class="pre">tww_app.mvw_tww_channel</span></code>;</p></li>
+<li><p>die Inspektionsrichtung, basierend auf dem Haltungspunkt der Untersuchung; und</p></li>
+<li><p>die relative Position entlang des Kanals.</p></li>
 </ul>
-<p>The inspection direction is derived as follows:</p>
+<p>Die Inspektionsrichtung wird wie folgt bestimmt:</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">downstream</span></code></dt><dd><p>The examination reach point corresponds to the channel’s
 <code class="docutils literal notranslate"><span class="pre">fk_reach_point_from</span></code>.</p>
