@@ -24,7 +24,8 @@ exist. Examinations can be created using
 The examination must have:
 
 * a valid link to a channel; and
-* a valid link to a reach point that is either the start or the end of that
+* a valid link to a reach point that is either at the start or the end of 
+  that channel and is referenced by the uppermost/lowermost reach of the 
   channel.
 
 The wastewater network geometry used to position a damage is obtained from
@@ -35,7 +36,7 @@ the materialized view ``tww_app.mvw_tww_channel``.
    ``tww_app.mvw_tww_channel`` is a materialized view and may be out of date.
 
    If a channel was recently created, modified, reconnected or assigned to
-   different reach points, refresh the materialized view before digitising
+   different reaches, refresh the materialized view before digitising
    damages. Otherwise, the channel may be missing or its geometry and topology
    may no longer correspond to the current network data.
 
@@ -59,15 +60,17 @@ The view determines:
 The inspection direction is derived as follows:
 
 ``downstream``
-   The examination reach point corresponds to the channel's
-   ``fk_reach_point_from``.
+   The examination reach point corresponds to the
+   ``fk_reach_point_from`` of the uppermost reach linked 
+   to the channel.
 
 ``upstream``
-   The examination reach point corresponds to the channel's
-   ``fk_reach_point_to``.
+   The examination reach point corresponds to the 
+   ``fk_reach_point_to`` of the lowermost reach linked 
+   to the channel.
 
 ``unknown``
-   The examination reach point matches neither endpoint of the channel.
+   The examination reach point matches neither of the above.
 
 The relative position is calculated by dividing ``channel_distance`` by the
 length of the channel geometry. Values greater than the channel length are
@@ -117,7 +120,8 @@ The examination assigned through ``fk_examination`` must:
 * have a valid examination reach point.
 
 The examination reach point must correspond to either
-``fk_reach_point_from`` or ``fk_reach_point_to`` of the channel.
+``fk_reach_point_from`` or ``fk_reach_point_to`` of the most upstream/downstream 
+reach of the channel.
 
 Entering the channel distance
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
