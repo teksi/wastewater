@@ -476,7 +476,9 @@ class TWWIntegrityChecker:
             cursor.execute(f"SELECT obj_id FROM {schema_name}.{parent_name};")
             parent_rows = cursor.fetchall()
             parent_ids = {row[0] for row in parent_rows}
-            self.add_issue(f"Number of {parent_name} datasets: {len(parent_ids)}", level=IssueLevel.INFO)
+            self.add_issue(
+                f"Number of {parent_name} datasets: {len(parent_ids)}", level=IssueLevel.INFO
+            )
 
             missing_in_subclass = set(parent_ids)
             missing_in_superclass = {}  # Maps subclass name to orphaned IDs
@@ -485,7 +487,9 @@ class TWWIntegrityChecker:
                 cursor.execute(f"SELECT obj_id FROM {schema_name}.{child_name};")
                 child_rows = cursor.fetchall()
                 child_ids = {row[0] for row in child_rows}
-                self.add_issue(f"Number of {child_name} datasets: {len(child_rows)}", level=IssueLevel.INFO)
+                self.add_issue(
+                    f"Number of {child_name} datasets: {len(child_rows)}", level=IssueLevel.INFO
+                )
 
                 missing_in_subclass -= child_ids
 
@@ -663,7 +667,9 @@ class TWWIntegrityChecker:
                     f"Overall Subclass Count: {errormsg}. The problem might lie outside the selection"
                 )
             else:
-                self.add_issue(f"INTEGRITY CHECK missing {value_name}: {errormsg}", level=IssueLevel.ERROR)
+                self.add_issue(
+                    f"INTEGRITY CHECK missing {value_name}: {errormsg}", level=IssueLevel.ERROR
+                )
             return (True, error_message, missing_count)
         else:
             self.add_issue(f"OK: all {value_name} set!", level=IssueLevel.INFO)
