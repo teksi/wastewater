@@ -448,8 +448,9 @@ class TeksiWastewaterPlugin:
 
     def tww_validity_check_action(self):
         issues = self._get_validity_issues(include_ili=True)
-
-        if not issues:
+        errors = [i for i in issues if i.level == IssueLevel.ERROR]
+        
+        if not errors:
             QMessageBox.information(
                 self.iface.mainWindow(),
                 self.validityCheckAction.text(),
