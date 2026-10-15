@@ -468,15 +468,15 @@ class TWWIntegrityChecker:
         Returns: (failed, error message, parent_count)
         """
         errormsg = ""
-        self.add_issue(f"INTEGRITY CHECK {parent_name} subclass data...", level="info")
-        self.add_issue("CONNECTING TO DATABASE...", level="info")
+        self.add_issue(f"INTEGRITY CHECK {parent_name} subclass data...", level=IssueLevel.INFO)
+        self.add_issue("CONNECTING TO DATABASE...", level=IssueLevel.INFO)
 
         with DatabaseUtils.PsycopgConnection() as connection:
             cursor = connection.cursor()
             cursor.execute(f"SELECT obj_id FROM {schema_name}.{parent_name};")
             parent_rows = cursor.fetchall()
             parent_ids = {row[0] for row in parent_rows}
-            self.add_issue(f"Number of {parent_name} datasets: {len(parent_ids)}", level="info")
+            self.add_issue(f"Number of {parent_name} datasets: {len(parent_ids)}", level=IssueLevel.INFO)
 
             missing_in_subclass = set(parent_ids)
             missing_in_superclass = {}  # Maps subclass name to orphaned IDs
@@ -485,7 +485,7 @@ class TWWIntegrityChecker:
                 cursor.execute(f"SELECT obj_id FROM {schema_name}.{child_name};")
                 child_rows = cursor.fetchall()
                 child_ids = {row[0] for row in child_rows}
-                self.add_issue(f"Number of {child_name} datasets: {len(child_rows)}", level="info")
+                self.add_issue(f"Number of {child_name} datasets: {len(child_rows)}", level=IssueLevel.INFO)
 
                 missing_in_subclass -= child_ids
 
@@ -511,13 +511,13 @@ class TWWIntegrityChecker:
                         f"Overall Subclass Count: {errormsg}. The problem might lie outside the selection"
                     )
                 else:
-                    self.add_issue(f"Subclass Count error: {errormsg}", level="error")
+                    self.add_issue(f"Subclass Count error: {errormsg}", level=IssueLevel.ERROR)
                 # Return statement added
                 return (True, errormsg, len(missing_in_subclass) + len(missing_in_superclass))
             else:
                 self.add_issue(
                     f"OK: number of subclass elements of class {parent_name} OK in schema {schema_name}!",
-                    level="info",
+                    level=IssueLevel.INFO,
                 )
                 # Return statement added
                 return (False, errormsg, len(missing_in_subclass) + len(missing_in_superclass))
@@ -610,7 +610,7 @@ class TWWIntegrityChecker:
         for _class, (class_count, _) in results.items():
             self.add_issue(
                 f"table name: {_class}, value name: {value_name}, class count: {class_count}",
-                level="info",
+                level=IssueLevel.INFO,
             )
             if class_count == 0:
                 error_message += (
@@ -620,7 +620,7 @@ class TWWIntegrityChecker:
         if empty_class_count > 0:
             return (True, error_message, empty_class_count)
         else:
-            self.add_issue(f"OK: all {value_name} set!", level="info")
+            self.add_issue(f"OK: all {value_name} set!", level=IssueLevel.INFO)
             return (False, "", 0)
 
     def _check_value_condition(
@@ -648,7 +648,7 @@ class TWWIntegrityChecker:
         for _class, (class_count, obj_ids_without_val) in results.items():
             self.add_issue(
                 f"table name: {_class}, value name: {value_name}, class count: {class_count}",
-                level="info",
+                level=IssueLevel.INFO,
             )
             if class_count > 0:
                 error_message += (
@@ -663,10 +663,10 @@ class TWWIntegrityChecker:
                     f"Overall Subclass Count: {errormsg}. The problem might lie outside the selection"
                 )
             else:
-                self.add_issue(f"INTEGRITY CHECK missing {value_name}: {errormsg}", level="error")
+                self.add_issue(f"INTEGRITY CHECK missing {value_name}: {errormsg}", level=IssueLevel.ERROR)
             return (True, error_message, missing_count)
         else:
-            self.add_issue(f"OK: all {value_name} set!", level="info")
+            self.add_issue(f"OK: all {value_name} set!", level=IssueLevel.INFO)
             return (False, "", 0)
 
     def _check_identifier_null(self):
