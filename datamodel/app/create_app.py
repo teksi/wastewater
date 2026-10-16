@@ -3,8 +3,8 @@ import logging
 import os
 import re
 from argparse import ArgumentParser, BooleanOptionalAction
-from typing import Any
 from pathlib import Path
+from typing import Any
 
 import psycopg
 import yaml
@@ -291,7 +291,8 @@ Running modification {modification.get('id')}
         # TODO: Are these export views necessary? cymed 13.03.25
         for _, yaml_path in self.simple_joins_yaml.items():
             SimpleJoins(
-                definition=self.load_yaml(self.resolve_path(yaml_path)), connection=self._connection
+                definition=self.load_yaml(self.resolve_path(yaml_path)),
+                connection=self._connection,
             ).create(commit=False)
 
         sql_directories = [
@@ -338,7 +339,6 @@ Running modification {modification.get('id')}
             template_path = self.resolve_path(template_path)
             curr_dir = template_path.parent
             modification_config = self.load_yaml(template_path)
-        
 
         ext_variables = modification_config.get("variables", {})
         sql_vars = self.parse_variables({**self.variables_sql, **ext_variables})
@@ -460,7 +460,6 @@ Running modification {modification.get('id')}
                 raise ValueError(f"Invalid variable format for '{key}'")
         return formatted_vars
 
-
     def resolve_path(self, path: str | Path) -> Path:
         path = Path(path)
 
@@ -468,6 +467,7 @@ Running modification {modification.get('id')}
             path = self.base_dir / path
 
         return path.resolve()
+
 
 if __name__ == "__main__":
     parser = ArgumentParser()

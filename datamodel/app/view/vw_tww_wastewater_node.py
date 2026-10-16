@@ -6,8 +6,9 @@ import argparse
 import os
 
 import psycopg
-from pirogue.utils import insert_command, select_columns, table_parts, update_command
+from pirogue.utils import insert_command, select_columns, update_command
 from yaml import safe_load
+
 from .utils.extra_definition_utils import (
     extra_cols,
     extra_joins,
@@ -168,7 +169,7 @@ def vw_tww_wastewater_node(
         );
       END IF;
 
-      
+
       {update_extra}
 
       RETURN NEW;
