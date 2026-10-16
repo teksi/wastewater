@@ -8,6 +8,12 @@ import os
 import psycopg
 from pirogue.utils import insert_command, select_columns, table_parts, update_command
 from yaml import safe_load
+from .utils.extra_definition_utils import (
+    extra_cols,
+    extra_joins,
+    insert_extra,
+    update_extra,
+)
 
 
 def vw_tww_wastewater_node(
@@ -42,20 +48,10 @@ def vw_tww_wastewater_node(
         {extra_joins};
 
     """.format(
-        extra_cols="\n    ".join(
-            [
-                select_columns(
-                    connection=connection,
-                    table_schema=table_parts(table_def["table"])[0],
-                    table_name=table_parts(table_def["table"])[1],
-                    skip_columns=table_def.get("skip_columns", []),
-                    remap_columns=table_def.get("remap_columns", {}),
-                    prefix=table_def.get("prefix", None),
-                    table_alias=table_def.get("alias", None),
-                )
-                + ","
-                for table_def in extra_definition.get("joins", {}).values()
-            ]
+        extra_cols=(
+            ""
+            if not extra_definition
+            else extra_cols(connection=connection, extra_definition=extra_definition)
         ),
         wn_cols=select_columns(
             connection=connection,
@@ -72,16 +68,7 @@ def vw_tww_wastewater_node(
             table_alias="ne",
             remove_pkey=True,
         ),
-        extra_joins="\n    ".join(
-            [
-                "LEFT JOIN {tbl} {alias} ON {jon}".format(
-                    tbl=table_def["table"],
-                    alias=table_def.get("alias", ""),
-                    jon=table_def["join_on"],
-                )
-                for table_def in extra_definition.get("joins", {}).values()
-            ]
-        ),
+        extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
     )
 
     cursor.execute(view_sql)
@@ -96,6 +83,8 @@ def vw_tww_wastewater_node(
 
 
     {insert_wn}
+
+    {insert_extra}
 
 
       RETURN NEW;
@@ -114,6 +103,7 @@ def vw_tww_wastewater_node(
             table_alias="wn",
             pkey="obj_id",
         ),
+        insert_extra=insert_extra(connection=connection, extra_definition=extra_definition),
     )
 
     cursor.execute(trigger_insert_sql)
@@ -178,6 +168,9 @@ def vw_tww_wastewater_node(
         );
       END IF;
 
+      
+      {update_extra}
+
       RETURN NEW;
     END;
     $BODY$
@@ -203,6 +196,7 @@ def vw_tww_wastewater_node(
             table_name="wastewater_networkelement",
             table_alias="ne",
         ),
+        update_extra=update_extra(connection=connection, extra_definition=extra_definition),
     )
 
     cursor.execute(update_trigger_sql)
