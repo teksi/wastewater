@@ -2,6 +2,23 @@
 
 Here you can find information about the future 2026.x release of TEKSI wastewater
 
+2026.1.1
+=========
+
+Bug fixes and performance improvements
+-----------------------------------------
+ - Fix plugin not loading on customized projects
+
+Adaptions to project file
+----------------------------------------
+ - Reactivate labels on the .qgs project
+
+CI improvements
+---------------
+ - Upgrade CI to ubuntu 26.04
+ - Add testbook template
+
+For more details see https://github.com/teksi/wastewater/releases/tag/2026.1.1
 
 2026.1.0
 =========
@@ -43,7 +60,6 @@ Extension improvements
 
 Adaptions to project file
 ----------------------------------------
-
  - fix Elecromechanical in project
  - fix Generell in project
 
@@ -86,7 +102,6 @@ Documentation
 
 Bug fixes and performance improvements
 -----------------------------------------
-
  - Snapping fails on freshly created wastewater nodes
  - Improve identifier synchronization for wastewater structures (https://github.com/teksi/wastewater/pull/904#issuecomment-3723192972)
  - Handle pg2ili as an app schema and fix roles granting
@@ -119,7 +134,6 @@ Extension improvements
 
 CI improvements
 ---------------
-
  - Separate pum from db images in compose
  - Use pum docker image
  - Generalize workflows
