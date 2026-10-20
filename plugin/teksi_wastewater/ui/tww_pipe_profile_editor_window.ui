@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PipeProfileEditorWindow</class>
+
+ <widget class="QMainWindow" name="PipeProfileEditorWindow">
+
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1200</width>
+    <height>800</height>
+   </rect>
+  </property>
+
+  <property name="windowTitle">
+   <string>Pipe Profile Editor</string>
+  </property>
+
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+
+    <item>
+     <widget class="QGraphicsView" name="graphicsView"/>
+    </item>
+
+   </layout>
+  </widget>
+
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>Tools</string>
+   </property>
+
+   <addaction name="actionAddVertex"/>
+   <addaction name="actionDeleteVertex"/>
+   <addaction name="separator"/>
+
+   <addaction name="actionZoomIn"/>
+   <addaction name="actionZoomOut"/>
+   <addaction name="actionFit"/>
+   <addaction name="actionZoom100"/>
+
+   <addaction name="separator"/>
+
+   <addaction name="actionShowGrid"/>
+   <addaction name="actionSnapToGrid"/>
+  </widget>
+
+  <widget class="QDockWidget" name="dockVertices">
+   <property name="windowTitle">
+    <string>Vertices</string>
+   </property>
+
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+
+   <widget class="QWidget" name="dockWidgetContents">
+    <layout class="QVBoxLayout" name="dockLayout">
+
+     <item>
+      <widget class="QTableWidget" name="tblVertices"/>
+     </item>
+
+    </layout>
+   </widget>
+  </widget>
+
+  <widget class="QDockWidget" name="dockProperties">
+   <property name="windowTitle">
+    <string>Selected Vertex</string>
+   </property>
+
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+
+   <widget class="QWidget" name="dockPropertiesContents">
+    <layout class="QFormLayout" name="formLayout">
+
+     <item row="0" column="0">
+      <widget class="QLabel" name="labelX">
+       <property name="text">
+        <string>X</string>
+       </property>
+      </widget>
+     </item>
+
+     <item row="0" column="1">
+      <widget class="QDoubleSpinBox" name="spnX"/>
+     </item>
+
+     <item row="1" column="0">
+      <widget class="QLabel" name="labelY">
+       <property name="text">
+        <string>Y</string>
+       </property>
+      </widget>
+     </item>
+
+     <item row="1" column="1">
+      <widget class="QDoubleSpinBox" name="spnY"/>
+     </item>
+
+    </layout>
+   </widget>
+  </widget>
+
+  <widget class="QStatusBar" name="statusbar"/>
+
+  <action name="actionAddVertex">
+   <property name="text">
+    <string>Add Vertex</string>
+   </property>
+  </action>
+
+  <action name="actionDeleteVertex">
+   <property name="text">
+    <string>Delete Vertex</string>
+   </property>
+  </action>
+
+  <action name="actionZoomIn">
+   <property name="text">
+    <string>Zoom In</string>
+   </property>
+  </action>
+
+  <action name="actionZoomOut">
+   <property name="text">
+    <string>Zoom Out</string>
+   </property>
+  </action>
+
+  <action name="actionFit">
+   <property name="text">
+    <string>Fit</string>
+   </property>
+  </action>
+
+  <action name="actionZoom100">
+   <property name="text">
+    <string>1:1</string>
+   </property>
+  </action>
+
+  <action name="actionShowGrid">
+   <property name="text">
+    <string>Show Grid</string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+  </action>
+
+  <action name="actionSnapToGrid">
+   <property name="text">
+    <string>Snap To Grid</string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+  </action>
+
+ </widget>
+
+ <resources/>
+ <connections/>
+</ui>
