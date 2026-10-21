@@ -92,7 +92,7 @@ def exported_sia405_base_abwasser(
     run_cli(
         "interlis_export "
         f'--xtf_file "{_container_output_file(base_name)}" '
-        f"--export_model {model_config.model_names_for_language(groups=("sia405_base_abwasser"),lang="de").items["sia405_base_abwasser"]} "
+        f"--export_model {model_config.model_names_for_language(groups=("sia405_base_abwasser"), lang="de").items["sia405_base_abwasser"]} "
         "--logs_next_to_file "
         f"{DB_ARGS}"
     )
