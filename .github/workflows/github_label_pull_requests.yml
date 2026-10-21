@@ -25,7 +25,8 @@ jobs:
             const rules = [
               { path: "plugin/", label: "plugin" },
               { path: "project/", label: "QGIS project" },
-              { path: "datamodel/", label: "datamodel" }
+              { path: "datamodel/", label: "datamodel" },
+              { path: ".github/", label: "CI/CD" }
             ];
 
             const prNumber = context.payload.pull_request.number;
