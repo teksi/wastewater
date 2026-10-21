@@ -26,6 +26,7 @@ jobs:
               { path: "plugin/", label: "plugin" },
               { path: "project/", label: "QGIS project" },
               { path: "datamodel/", label: "datamodel" },
+              { path: "docs/", label: "documentation" },
               { path: ".github/", label: "CI/CD" }
             ];
 
