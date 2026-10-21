@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 import logging
+from collections.abc import Sequence
 from dataclasses import dataclass, field, replace
 from pathlib import Path
 from typing import Any
-from collections.abc import Sequence
 
 from sqlalchemy import text
 from sqlalchemy.orm import Session
