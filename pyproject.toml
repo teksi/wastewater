@@ -1,0 +1,29 @@
+[project]
+name = "teksi-wastewater-plugin-hooks"
+version = "0.1.0"
+description = "TWW-specific hook, rights, mapping and validation logic for TEKSI wastewater workflows"
+requires-python = ">=3.11"
+dependencies = [
+    "pyyaml",
+    "teksi-hooks @ git+https://github.com/teksi/teksi_hooks.git",
+    "sqlalchemy",
+    "geoalchemy2",
+    "requests",
+    "pgserviceparser",
+]
+authors = [
+    {name = "TEKSI"}
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+]
+
+[tool.setuptools.packages.find]
+where = ["plugin"]
+include = ["teksi_wastewater*"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"

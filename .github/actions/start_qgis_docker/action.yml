@@ -1,0 +1,62 @@
+name: Start QGIS Docker Compose stack
+description: Build/load the QGIS Docker image with cache, start compose, and wait for PostgreSQL.
+
+inputs:
+  qgis-test-version:
+    description: QGIS test version/tag, for example stable-noble or latest.
+    required: true
+  image-name:
+    description: Local Docker image name used by docker-compose.
+    required: false
+    default: teksi-wastewater-qgis
+  compose-args:
+    description: Additional docker compose up arguments.
+    required: false
+    default: ""
+
+runs:
+  using: composite
+  steps:
+    - name: Restore INTERLIS model cache
+      uses: actions/cache@v4
+      with:
+        path: .ilicache
+        key: interlis-ilicache-${{ runner.os }}
+        restore-keys: |
+          interlis-ilicache-${{ runner.os }}-
+
+    - name: Ensure INTERLIS cache directory exists
+      shell: bash
+      run: mkdir -p .ilicache
+
+    - name: Download Interlis libs
+      shell: bash
+      run: sudo ./plugin/scripts/download-interlis-libs.sh
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v4
+
+    - name: Build qgis image with cache
+      uses: docker/build-push-action@v7
+      with:
+        context: .
+        file: ./plugin/.docker/Dockerfile
+        load: true
+        platforms: linux/amd64
+        tags: ${{ inputs.image-name }}:${{ inputs.qgis-test-version }}
+        build-args: |
+          QGIS_TEST_VERSION=${{ inputs.qgis-test-version }}
+        cache-from: type=gha,scope=${{ inputs.image-name }}-${{ inputs.qgis-test-version }}
+        cache-to: type=gha,scope=${{ inputs.image-name }}-${{ inputs.qgis-test-version }},mode=max
+
+    - name: Docker start
+      shell: bash
+      run: docker compose up --no-build -d ${{ inputs.compose-args }}
+
+    - name: Wait for DB
+      shell: bash
+      run: |
+        until docker compose exec db pg_isready -U postgres; do
+          echo "Waiting for PostgreSQL..."
+          sleep 2
+        done
