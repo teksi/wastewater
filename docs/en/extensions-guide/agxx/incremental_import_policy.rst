@@ -363,5 +363,3 @@ following:
 #. Repeating an import is idempotent.
 #. A future export reproduces the round-trip values.
 #. No legacy ``vw_agxx_gepknoten`` persistence trigger is invoked.
-
-

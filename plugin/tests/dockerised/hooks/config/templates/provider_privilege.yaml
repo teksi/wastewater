@@ -82,7 +82,7 @@ classes:
     derive_rights_from:
       - class: reach
         remote_attribute: fk_reach
-        
+
   - id: reach_point
     derive_rights_from:
       - class: reach
@@ -566,8 +566,8 @@ classes:
   # ---------------------
   # weitere
   # ---------------------
-  
-  
+
+
   - id: mutation
     crud_rules:
       - privileges: [DBW_WI,DBW_GEP,FI_BU]

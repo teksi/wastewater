@@ -99,7 +99,7 @@ For example:
    Canonical attribute:
        fk_provider
 
-Rights configuration must use the canonical identifiers and not the 
+Rights configuration must use the canonical identifiers and not the
 localized source identifier. Correct:
 
 .. code-block:: yaml
@@ -143,4 +143,3 @@ Contents
    model-mapping
    rights
    providers
-   

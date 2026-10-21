@@ -6,7 +6,6 @@ from collections.abc import Sequence
 from typing import Any, Protocol
 
 from sqlalchemy.orm import Session
-
 from teksi_hooks.models.effects import (
     EffectDocument,
     EffectEvaluationResult,
@@ -71,9 +70,7 @@ class IncrementalEffectPersister(
         *,
         session: Session,
         document: EffectDocument,
-        evaluations: Sequence[
-            EffectEvaluationResult,
-        ],
+        evaluations: Sequence[EffectEvaluationResult,],
     ) -> None:
         """
         Stage satisfied and remediable effects.

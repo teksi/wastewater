@@ -4,13 +4,11 @@ from dataclasses import dataclass
 from typing import Any
 
 from sqlalchemy.orm import Session
-
-from teksi_wastewater.interlis.utils import (
-    tww_sqlalchemy,
-)
-
 from teksi_wastewater.interlis.model_config import (
     interlis_models,
+)
+from teksi_wastewater.interlis.utils import (
+    tww_sqlalchemy,
 )
 
 
@@ -38,9 +36,7 @@ class TwwQuarantineClassesFactory:
         """
 
         try:
-            model_configuration = interlis_models[
-                model_group
-            ]
+            model_configuration = interlis_models[model_group]
 
         except KeyError as exception:
             raise ValueError(
@@ -49,10 +45,8 @@ class TwwQuarantineClassesFactory:
                 f"{tuple(sorted(interlis_models))!r}."
             ) from exception
 
-        configured_model_name = (
-            model_configuration.lang_name(
-                model_language,
-            )
+        configured_model_name = model_configuration.lang_name(
+            model_language,
         )
 
         if configured_model_name != source_model:
@@ -65,14 +59,11 @@ class TwwQuarantineClassesFactory:
                 f"{configured_model_name!r}."
             )
 
-        quarantine_model = (
-            model_configuration.quarantine_model(
-                schema=import_schema,
-            )
+        quarantine_model = model_configuration.quarantine_model(
+            schema=import_schema,
         )
 
         return quarantine_model.classes()
-
 
 
 class TwwQuarantineSessionFactory:
@@ -104,9 +95,7 @@ class TwwQuarantineSessionFactory:
             )
             or not import_schema.strip()
         ):
-            raise ValueError(
-                "import_schema must be a non-empty string."
-            )
+            raise ValueError("import_schema must be a non-empty string.")
 
         return Session(
             tww_sqlalchemy.create_engine(),

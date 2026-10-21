@@ -1,66 +1,33 @@
 from __future__ import annotations
 
-import logging
-from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any
+from collections.abc import Mapping
 
 from sqlalchemy.orm import Session
-
 from teksi_hooks.capabilities.connection import (
     DatabaseConnectionFactory,
-)
-from teksi_hooks.capabilities.mapping import (
-    EffectiveModelMappingCapability,
-    ModelMappingCapability,
 )
 from teksi_hooks.hook import (
     HookBase,
     HookContext,
     HookMetadata,
 )
-from teksi_hooks.models.canonical_object import (
-    CanonicalModelMetadata,
-)
 from teksi_hooks.models.review import (
     DiffReviewJob,
-)
-from teksi_hooks.parser.model_mapping_parser import (
-    ModelMappingParser,
 )
 from teksi_hooks.parser.validation_parser import (
     ValidationParser,
 )
-
-from teksi_wastewater.hooks.adapters.tww_canonical_model_adapter import (
-    TwwCanonicalModelAdapter,
-)
 from teksi_wastewater.hooks.adapters.tww_database_connection_factory import (
     TwwDatabaseConnectionFactory,
-)
-from teksi_wastewater.hooks.adapters.tww_implicit_model_mapping_adapter import (
-    TwwImplicitModelMappingAdapter,
-)
-from teksi_wastewater.hooks.adapters.tww_interlis_persistence_adapter import (
-    TwwInterlisPersistenceAdapter,
-)
-from teksi_wastewater.hooks.adapters.tww_interlis_service_adapter import (
-    TwwInterlisContext,
-    TwwInterlisServiceAdapter,
 )
 from teksi_wastewater.hooks.exceptions import (
     DiffJobEligibilityError,
     DiffJobStateError,
 )
-from teksi_wastewater.hooks.services.tww_database_backup_service import (
-    TwwDatabaseBackupService,
-)
 from teksi_wastewater.hooks.services.tww_diff_schema_service import (
     TwwDiffSchemaService,
-)
-from teksi_wastewater.hooks.services.tww_review_persistence_service import (
-    TwwReviewPersistenceService,
-    TwwPersistenceSourceContext,
 )
 from teksi_wastewater.hooks.services.tww_review_application_factory import (
     create_review_application_service,
@@ -109,9 +76,7 @@ class Hook(
         Persist one accepted review job.
         """
 
-        context.logger.info(
-            "Starting TWW diff persistor hook."
-        )
+        context.logger.info("Starting TWW diff persistor hook.")
 
         connection_factory = context.capability(
             DatabaseConnectionFactory,
@@ -122,8 +87,7 @@ class Hook(
             TwwDatabaseConnectionFactory,
         ):
             raise TypeError(
-                "The TWW diff persistor hook requires a "
-                "TwwDatabaseConnectionFactory."
+                "The TWW diff persistor hook requires a " "TwwDatabaseConnectionFactory."
             )
 
         job_id = self._required_string(
@@ -133,11 +97,8 @@ class Hook(
 
         model_config_dir = self._model_config_dir()
 
-        validation_definition = (
-            ValidationParser().parse_file(
-                model_config_dir
-                / "validations.yaml",
-            )
+        validation_definition = ValidationParser().parse_file(
+            model_config_dir / "validations.yaml",
         )
 
         diff_schema_service = TwwDiffSchemaService(
@@ -152,7 +113,6 @@ class Hook(
         self._assert_job_can_be_persisted(
             job=job,
         )
-
 
         application_service = create_review_application_service(
             connection_factory=connection_factory,
@@ -205,18 +165,13 @@ class Hook(
         if job_type != "review":
             raise DiffJobEligibilityError(
                 job_id=job.job_id,
-                reason=(
-                    "only review jobs can be persisted by this "
-                    "hook."
-                ),
+                reason=("only review jobs can be persisted by this " "hook."),
             )
 
         if not job.validation_success:
             raise DiffJobEligibilityError(
                 job_id=job.job_id,
-                reason=(
-                    "source validation was not successful."
-                ),
+                reason=("source validation was not successful."),
             )
 
     def _quarantine_classes(
@@ -236,8 +191,7 @@ class Hook(
         """
 
         raise NotImplementedError(
-            "Connect _quarantine_classes() to the existing "
-            "quarantine-model factory."
+            "Connect _quarantine_classes() to the existing " "quarantine-model factory."
         )
 
     def _quarantine_session(
@@ -282,10 +236,7 @@ class Hook(
         ):
             raise DiffJobEligibilityError(
                 job_id=job.job_id,
-                reason=(
-                    f"the review job has no valid {key!r} "
-                    "metadata value."
-                ),
+                reason=(f"the review job has no valid {key!r} " "metadata value."),
             )
 
         return value.strip()
@@ -314,9 +265,7 @@ class Hook(
             )
             or not value.strip()
         ):
-            raise ValueError(
-                f"Parameter {key!r} must be a non-empty string."
-            )
+            raise ValueError(f"Parameter {key!r} must be a non-empty string.")
 
         return value.strip()
 
@@ -338,9 +287,6 @@ class Hook(
         )
 
         if not path.is_dir():
-            raise RuntimeError(
-                "Model configuration directory does not exist: "
-                f"{path}"
-            )
+            raise RuntimeError("Model configuration directory does not exist: " f"{path}")
 
         return path

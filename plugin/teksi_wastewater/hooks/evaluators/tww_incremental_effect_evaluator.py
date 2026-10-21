@@ -5,7 +5,6 @@ from typing import Any
 
 from sqlalchemy import inspect
 from sqlalchemy.orm import Session
-
 from teksi_hooks.models.canonical_object import (
     CanonicalObject,
     CanonicalObjectIdentity,
@@ -20,17 +19,17 @@ from teksi_hooks.models.effects import (
     UpdateAttributeEffect,
 )
 
-from ..capabilities.incremental_import import (
-    IncrementalEffectEvaluator,
-)
-from ..evaluators.tww_effect_evaluation_policy import (
-    TwwEffectEvaluationPolicy,
-)
 from ...interlis import (
     config,
 )
 from ...interlis.interlis_model_mapping.model_tww_od import (
     ModelTwwOd,
+)
+from ..capabilities.incremental_import import (
+    IncrementalEffectEvaluator,
+)
+from ..evaluators.tww_effect_evaluation_policy import (
+    TwwEffectEvaluationPolicy,
 )
 
 
@@ -86,9 +85,7 @@ class TwwIncrementalEffectEvaluator(
             CanonicalObject | None,
         ] = {}
 
-        results: list[
-            EffectEvaluationResult,
-        ] = []
+        results: list[EffectEvaluationResult,] = []
 
         for (
             effect_index,
@@ -99,19 +96,13 @@ class TwwIncrementalEffectEvaluator(
             identity_key = effect.identity.key()
 
             if identity_key not in current_objects:
-                current_objects[
-                    identity_key
-                ] = self._current_object(
+                current_objects[identity_key] = self._current_object(
                     session=session,
-                    canonical_classes=(
-                        canonical_classes
-                    ),
+                    canonical_classes=(canonical_classes),
                     identity=effect.identity,
                 )
 
-            current_object = current_objects[
-                identity_key
-            ]
+            current_object = current_objects[identity_key]
 
             if self._is_satisfied(
                 effect=effect,
@@ -123,11 +114,9 @@ class TwwIncrementalEffectEvaluator(
                 )
 
             else:
-                policy_result = (
-                    self.policy.unsatisfied_status(
-                        effect=effect,
-                        current_object=current_object,
-                    )
+                policy_result = self.policy.unsatisfied_status(
+                    effect=effect,
+                    current_object=current_object,
                 )
 
                 result = replace(
@@ -139,9 +128,7 @@ class TwwIncrementalEffectEvaluator(
                 result,
             )
 
-            current_objects[
-                identity_key
-            ] = self._project_effect_state(
+            current_objects[identity_key] = self._project_effect_state(
                 effect=effect,
                 current_object=current_object,
                 evaluation=result,
@@ -205,18 +192,14 @@ class TwwIncrementalEffectEvaluator(
             str,
             Any,
         ] = {
-            "target_class_id": (
-                effect.identity.class_id
-            ),
+            "target_class_id": (effect.identity.class_id),
         }
 
         if isinstance(
             effect,
             UpdateAttributeEffect,
         ):
-            metadata[
-                "target_attribute_id"
-            ] = effect.attribute_id
+            metadata["target_attribute_id"] = effect.attribute_id
 
         return EffectEvaluationResult(
             effect_index=effect_index,
@@ -247,10 +230,7 @@ class TwwIncrementalEffectEvaluator(
         plans to create.
         """
 
-        if (
-            evaluation.status
-            == EffectEvaluationStatus.BLOCKED
-        ):
+        if evaluation.status == EffectEvaluationStatus.BLOCKED:
             return current_object
 
         if isinstance(
@@ -284,9 +264,7 @@ class TwwIncrementalEffectEvaluator(
                 current_object.values,
             )
 
-            updated_values[
-                effect.attribute_id
-            ] = effect.value
+            updated_values[effect.attribute_id] = effect.value
 
             return CanonicalObject(
                 identity=current_object.identity,
@@ -344,20 +322,18 @@ class TwwIncrementalEffectEvaluator(
         if not rows:
             return None
 
-        if len(
-            rows,
-        ) > 1:
-            raise ValueError(
-                "Canonical identity is ambiguous: "
-                f"{identity!r}."
+        if (
+            len(
+                rows,
             )
+            > 1
+        ):
+            raise ValueError("Canonical identity is ambiguous: " f"{identity!r}.")
 
         return CanonicalObject(
             identity=identity,
             values=self._row_values(
-                rows[
-                    0
-                ],
+                rows[0],
             ),
         )
 
@@ -402,9 +378,7 @@ class TwwIncrementalEffectEvaluator(
             )
             or not self.live_schema.strip()
         ):
-            raise ValueError(
-                "live_schema must be a non-empty string."
-            )
+            raise ValueError("live_schema must be a non-empty string.")
 
         return ModelTwwOd().classes()
 
@@ -448,10 +422,7 @@ class TwwIncrementalEffectEvaluator(
                     )
 
         if target_class is None:
-            raise ValueError(
-                "Unknown canonical ORM class "
-                f"{class_id!r}."
-            )
+            raise ValueError("Unknown canonical ORM class " f"{class_id!r}.")
 
         return target_class
 
@@ -472,10 +443,7 @@ class TwwIncrementalEffectEvaluator(
         if current_value == desired_value:
             return True
 
-        if (
-            current_value is None
-            or desired_value is None
-        ):
+        if current_value is None or desired_value is None:
             return False
 
         return str(

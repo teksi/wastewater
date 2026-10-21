@@ -10,9 +10,6 @@ from typing import Any
 
 from sqlalchemy import inspect, text
 from sqlalchemy.orm import Session
-from teksi_wastewater.hooks.capabilities.incremental_import import (
-    FunctionEffectResolver,
-)
 from teksi_hooks.models.effects import (
     EffectDocument,
 )
@@ -21,6 +18,9 @@ from teksi_hooks.models.mapping import (
 )
 from teksi_hooks.parser.effects_parser import (
     EffectParser,
+)
+from teksi_wastewater.hooks.capabilities.incremental_import import (
+    FunctionEffectResolver,
 )
 
 _SAFE_IDENTIFIER = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")

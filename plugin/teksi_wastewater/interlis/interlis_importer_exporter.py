@@ -10,7 +10,6 @@ from pathlib import Path
 
 import requests
 
-
 from ..utils.database_utils import DatabaseUtils
 from ..utils.integrity_checker import TWWIntegrityChecker
 from . import config, model_selection
@@ -85,7 +84,6 @@ class InterlisImporterExporter:
         self.srid = 2056
         self.current_progress = 0
         self.schema = None
-
 
     def _init_model_classes(self, selection_models):
         model_interlis = selection_models.primary_component.quarantine_model(self.schema)
@@ -315,9 +313,7 @@ class InterlisImporterExporter:
         tww_session = None
         try:
             # Import from the temporary ili2pg model
-            self._progress_done_in_scope(
-                progress_scope, 20, "Converting to TEKSI Wastewater..."
-            )
+            self._progress_done_in_scope(progress_scope, 20, "Converting to TEKSI Wastewater...")
             tww_session = self._import_from_intermediate_schema(selection_models)
 
             if show_selection_dialog:

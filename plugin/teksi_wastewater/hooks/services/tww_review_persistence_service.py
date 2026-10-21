@@ -7,13 +7,8 @@ import logging
 from collections.abc import Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Protocol
+from typing import Any
 
-from sqlalchemy.orm import Session
-
-from teksi_hooks.capabilities.mapping import (
-    EffectiveModelMappingCapability,
-)
 from teksi_hooks.models.canonical_object import (
     CanonicalModelMetadata,
 )
@@ -32,19 +27,19 @@ from ..exceptions import (
     DiffJobPersistenceError,
     DiffJobStateError,
 )
+from .tww_database_backup_service import (
+    TwwDatabaseBackupService,
+)
 from .tww_diff_schema_service import (
     DiffJobCounts,
     TwwDiffSchemaService,
     TwwJobPersistenceResult,
 )
+from .tww_persistence_context_factory import (
+    TwwPersistenceSourceContext,
+)
 from .tww_quarantine_persistence_preparer import (
     TwwQuarantinePersistencePreparer,
-)
-from .tww_database_backup_service import (
-    TwwDatabaseBackupService,
-)
-from .tww_persistence_context_factory import(
-    TwwPersistenceSourceContext,
 )
 
 logger = logging.getLogger(
@@ -134,9 +129,7 @@ class TwwReviewPersistenceService:
         *,
         job: DiffReviewJob,
         live_schema: str,
-        source_contexts: Sequence[
-            TwwPersistenceSourceContext,
-        ],
+        source_contexts: Sequence[TwwPersistenceSourceContext,],
         canonical_metadata: CanonicalModelMetadata,
         validation_definition: Any,
     ) -> TwwJobPersistenceResult:
@@ -160,29 +153,23 @@ class TwwReviewPersistenceService:
             job_id=job_id,
         )
 
-        validation_finding_row_count = (
-            self.diff_schema_service
-            .validation_finding_row_count(
-                job_id=job_id,
-            )
+        validation_finding_row_count = self.diff_schema_service.validation_finding_row_count(
+            job_id=job_id,
         )
 
         self._assert_review_counts(
             job_id=job_id,
             counts=counts,
-            validation_finding_row_count=(
-                validation_finding_row_count
-            ),
+            validation_finding_row_count=(validation_finding_row_count),
         )
 
         ordered_source_contexts = self._ordered_source_contexts(
             job_id=job_id,
             source_contexts=source_contexts,
         )
-        
+
         if any(
-            source_context.source_role
-            == "incremental"
+            source_context.source_role == "incremental"
             for source_context in ordered_source_contexts
         ):
             self.persistence_adapter.assert_incremental_ready()
@@ -191,23 +178,14 @@ class TwwReviewPersistenceService:
             job_id=job_id,
         )
 
-        backups: list[
-            TwwQuarantineBackup,
-        ] = []
+        backups: list[TwwQuarantineBackup,] = []
 
-        prepared_source_roles: list[
-            str,
-        ] = []
+        prepared_source_roles: list[str,] = []
 
-        phase_results: list[
-            TwwPersistencePhaseResult,
-        ] = []
+        phase_results: list[TwwPersistencePhaseResult,] = []
 
         active_phase = "backup"
-        active_source_context: (
-            TwwPersistenceSourceContext
-            | None
-        ) = None
+        active_source_context: TwwPersistenceSourceContext | None = None
 
         try:
             backups = self._create_backups(
@@ -226,9 +204,7 @@ class TwwReviewPersistenceService:
             for source_context in ordered_source_contexts:
                 active_source_context = source_context
 
-                active_phase = (
-                    f"prepare_{source_context.source_role}"
-                )
+                active_phase = f"prepare_{source_context.source_role}"
 
                 self._prepare_source_context(
                     job_id=job_id,
@@ -241,27 +217,16 @@ class TwwReviewPersistenceService:
                     source_context.source_role,
                 )
 
-                active_phase = (
-                    f"persist_{source_context.source_role}"
-                )
+                active_phase = f"persist_{source_context.source_role}"
 
-                interlis_persistence = (
-                    self.persistence_adapter
-                    .persist_quarantine(
-                        job_id=job_id,
-                        source_role=source_context.source_role,
-                        import_schema=(
-                            source_context.import_schema
-                        ),
-                        live_schema=live_schema,
-                        source_model=(
-                            source_context.source_model
-                        ),
-                        model_mapping=source_context.model_mapping,
-                        quarantine_classes=(
-                            source_context.quarantine_classes
-                        ),
-                    )
+                interlis_persistence = self.persistence_adapter.persist_quarantine(
+                    job_id=job_id,
+                    source_role=source_context.source_role,
+                    import_schema=(source_context.import_schema),
+                    live_schema=live_schema,
+                    source_model=(source_context.source_model),
+                    model_mapping=source_context.model_mapping,
+                    quarantine_classes=(source_context.quarantine_classes),
                 )
 
                 if not interlis_persistence.committed:
@@ -280,25 +245,16 @@ class TwwReviewPersistenceService:
 
                 phase_results.append(
                     TwwPersistencePhaseResult(
-                        source_role=(
-                            source_context.source_role
-                        ),
-                        import_schema=(
-                            source_context.import_schema
-                        ),
-                        source_model=(
-                            source_context.source_model
-                        ),
+                        source_role=(source_context.source_role),
+                        import_schema=(source_context.import_schema),
+                        source_model=(source_context.source_model),
                         committed=True,
-                        interlis_persistence=(
-                            interlis_persistence
-                        ),
+                        interlis_persistence=(interlis_persistence),
                     )
                 )
 
                 self.logger.info(
-                    "Persisted source phase %r for diff job %r "
-                    "from quarantine schema %r.",
+                    "Persisted source phase %r for diff job %r " "from quarantine schema %r.",
                     source_context.source_role,
                     job_id,
                     source_context.import_schema,
@@ -327,10 +283,7 @@ class TwwReviewPersistenceService:
                 job_id=job_id,
                 phase=active_phase,
                 source_context=active_source_context,
-                completed_phases=tuple(
-                    phase_result.source_role
-                    for phase_result in phase_results
-                ),
+                completed_phases=tuple(phase_result.source_role for phase_result in phase_results),
                 exception=exception,
             )
 
@@ -342,39 +295,24 @@ class TwwReviewPersistenceService:
         )
 
         self.logger.info(
-            "Applied diff review job %r through source phases %r "
-            "with %s review features.",
+            "Applied diff review job %r through source phases %r " "with %s review features.",
             job_id,
-            tuple(
-                phase_result.source_role
-                for phase_result in phase_results
-            ),
+            tuple(phase_result.source_role for phase_result in phase_results),
             counts.total_count,
         )
 
-        final_phase_result = phase_results[
-            -1
-        ]
+        final_phase_result = phase_results[-1]
 
         return TwwJobPersistenceResult(
             job_id=job_id,
             previous_status="accepted",
             job_status="applied",
             review_feature_count=counts.total_count,
-            restricted_feature_count=(
-                counts.restricted_count
-            ),
-            import_schema=(
-                final_phase_result.import_schema
-            ),
+            restricted_feature_count=(counts.restricted_count),
+            import_schema=(final_phase_result.import_schema),
             live_schema=live_schema,
-            source_model=(
-                final_phase_result.source_model
-            ),
-            interlis_persistence=(
-                final_phase_result
-                .interlis_persistence
-            ),
+            source_model=(final_phase_result.source_model),
+            interlis_persistence=(final_phase_result.interlis_persistence),
         )
 
     def _prepare_source_context(
@@ -418,9 +356,7 @@ class TwwReviewPersistenceService:
         self,
         *,
         job_id: str,
-        source_contexts: Sequence[
-            TwwPersistenceSourceContext,
-        ],
+        source_contexts: Sequence[TwwPersistenceSourceContext,],
     ) -> tuple[
         TwwPersistenceSourceContext,
         ...,
@@ -446,43 +382,31 @@ class TwwReviewPersistenceService:
             }:
                 raise DiffJobEligibilityError(
                     job_id=job_id,
-                    reason=(
-                        "unsupported persistence source role "
-                        f"{source_role!r}."
-                    ),
+                    reason=("unsupported persistence source role " f"{source_role!r}."),
                 )
 
             if source_role in source_context_by_role:
                 raise DiffJobEligibilityError(
                     job_id=job_id,
                     reason=(
-                        "several persistence contexts exist for "
-                        f"source role {source_role!r}."
+                        "several persistence contexts exist for " f"source role {source_role!r}."
                     ),
                 )
 
-            source_context_by_role[
-                source_role
-            ] = source_context
+            source_context_by_role[source_role] = source_context
 
         if "base" not in source_context_by_role:
             raise DiffJobEligibilityError(
                 job_id=job_id,
-                reason=(
-                    "the review job has no retained base source."
-                ),
+                reason=("the review job has no retained base source."),
             )
 
         ordered = [
-            source_context_by_role[
-                "base"
-            ],
+            source_context_by_role["base"],
         ]
 
-        incremental_context = (
-            source_context_by_role.get(
-                "incremental",
-            )
+        incremental_context = source_context_by_role.get(
+            "incremental",
         )
 
         if incremental_context is not None:
@@ -499,9 +423,7 @@ class TwwReviewPersistenceService:
         *,
         job: DiffReviewJob,
         live_schema: str,
-        source_contexts: Sequence[
-            TwwPersistenceSourceContext,
-        ],
+        source_contexts: Sequence[TwwPersistenceSourceContext,],
     ) -> None:
         """
         Validate lifecycle and source-level persistence eligibility.
@@ -517,9 +439,7 @@ class TwwReviewPersistenceService:
         if not job.validation_success:
             raise DiffJobEligibilityError(
                 job_id=job.job_id,
-                reason=(
-                    "source validation was not successful."
-                ),
+                reason=("source validation was not successful."),
             )
 
         if (
@@ -531,18 +451,13 @@ class TwwReviewPersistenceService:
         ):
             raise DiffJobEligibilityError(
                 job_id=job.job_id,
-                reason=(
-                    "the live schema is missing or invalid."
-                ),
+                reason=("the live schema is missing or invalid."),
             )
 
         if not source_contexts:
             raise DiffJobEligibilityError(
                 job_id=job.job_id,
-                reason=(
-                    "the review job has no retained source "
-                    "contexts."
-                ),
+                reason=("the review job has no retained source " "contexts."),
             )
 
         for source_context in source_contexts:
@@ -553,10 +468,7 @@ class TwwReviewPersistenceService:
             ):
                 raise DiffJobEligibilityError(
                     job_id=job.job_id,
-                    reason=(
-                        "a retained source context contains "
-                        "incomplete source metadata."
-                    ),
+                    reason=("a retained source context contains " "incomplete source metadata."),
                 )
 
     def _assert_review_counts(
@@ -584,11 +496,7 @@ class TwwReviewPersistenceService:
                 ),
             )
 
-        operation_count = (
-            counts.created_count
-            + counts.altered_count
-            + counts.deleted_count
-        )
+        operation_count = counts.created_count + counts.altered_count + counts.deleted_count
 
         if operation_count != counts.total_count:
             raise DiffJobEligibilityError(
@@ -604,51 +512,32 @@ class TwwReviewPersistenceService:
         self,
         *,
         job_id: str,
-        source_contexts: Sequence[
-            TwwPersistenceSourceContext,
-        ],
-    ) -> list[
-        TwwQuarantineBackup,
-    ]:
+        source_contexts: Sequence[TwwPersistenceSourceContext,],
+    ) -> list[TwwQuarantineBackup,]:
         """
         Back up every retained quarantine schema before preparation.
 
         Duplicate schema names are backed up only once.
         """
 
-        backups: list[
-            TwwQuarantineBackup,
-        ] = []
+        backups: list[TwwQuarantineBackup,] = []
 
-        backed_up_schemas: set[
-            str,
-        ] = set()
+        backed_up_schemas: set[str,] = set()
 
         try:
             for source_context in source_contexts:
-                if (
-                    source_context.import_schema
-                    in backed_up_schemas
-                ):
+                if source_context.import_schema in backed_up_schemas:
                     continue
 
-                backup_path = (
-                    self.backup_service.create_backup(
-                        job_id=job_id,
-                        import_schema=(
-                            source_context.import_schema
-                        ),
-                    )
+                backup_path = self.backup_service.create_backup(
+                    job_id=job_id,
+                    import_schema=(source_context.import_schema),
                 )
 
                 backups.append(
                     TwwQuarantineBackup(
-                        source_role=(
-                            source_context.source_role
-                        ),
-                        import_schema=(
-                            source_context.import_schema
-                        ),
+                        source_role=(source_context.source_role),
+                        import_schema=(source_context.import_schema),
                         backup_path=backup_path,
                     )
                 )
@@ -669,9 +558,7 @@ class TwwReviewPersistenceService:
 
     def _backup_manifest(
         self,
-        backups: Sequence[
-            TwwQuarantineBackup,
-        ],
+        backups: Sequence[TwwQuarantineBackup,],
     ) -> str:
         """
         Serialize all retained quarantine backups into the existing text field.
@@ -699,9 +586,7 @@ class TwwReviewPersistenceService:
         self,
         *,
         job_id: str,
-        backups: Sequence[
-            TwwQuarantineBackup,
-        ],
+        backups: Sequence[TwwQuarantineBackup,],
         prepared_source_roles: tuple[
             str,
             ...,
@@ -721,10 +606,7 @@ class TwwReviewPersistenceService:
         for backup in reversed(
             backups,
         ):
-            if (
-                backup.source_role
-                not in prepared_role_set
-            ):
+            if backup.source_role not in prepared_role_set:
                 self._delete_backup_after_failure(
                     job_id=job_id,
                     backup=backup,
@@ -734,12 +616,8 @@ class TwwReviewPersistenceService:
 
             try:
                 self.backup_service.restore_backup(
-                    backup_path=(
-                        backup.backup_path
-                    ),
-                    import_schema=(
-                        backup.import_schema
-                    ),
+                    backup_path=(backup.backup_path),
+                    import_schema=(backup.import_schema),
                 )
 
             except Exception:
@@ -755,15 +633,12 @@ class TwwReviewPersistenceService:
 
             try:
                 self.backup_service.delete_backup(
-                    backup_path=(
-                        backup.backup_path
-                    ),
+                    backup_path=(backup.backup_path),
                 )
 
             except Exception:
                 self.logger.exception(
-                    "Could not delete restored quarantine "
-                    "backup %s for diff job %r.",
+                    "Could not delete restored quarantine " "backup %s for diff job %r.",
                     backup.backup_path,
                     job_id,
                 )
@@ -776,8 +651,7 @@ class TwwReviewPersistenceService:
 
         except Exception:
             self.logger.exception(
-                "Could not clear quarantine backup metadata "
-                "for failed diff review job %r.",
+                "Could not clear quarantine backup metadata " "for failed diff review job %r.",
                 job_id,
             )
 
@@ -809,9 +683,7 @@ class TwwReviewPersistenceService:
         self,
         *,
         job_id: str,
-        backups: Sequence[
-            TwwQuarantineBackup,
-        ],
+        backups: Sequence[TwwQuarantineBackup,],
     ) -> None:
         """
         Delete backups created before the complete backup set failed.
@@ -822,15 +694,12 @@ class TwwReviewPersistenceService:
         ):
             try:
                 self.backup_service.delete_backup(
-                    backup_path=(
-                        backup.backup_path
-                    ),
+                    backup_path=(backup.backup_path),
                 )
 
             except Exception:
                 self.logger.exception(
-                    "Could not delete unused quarantine backup "
-                    "%s for diff review job %r.",
+                    "Could not delete unused quarantine backup " "%s for diff review job %r.",
                     backup.backup_path,
                     job_id,
                 )
@@ -839,9 +708,7 @@ class TwwReviewPersistenceService:
         self,
         *,
         job_id: str,
-        backups: Sequence[
-            TwwQuarantineBackup,
-        ],
+        backups: Sequence[TwwQuarantineBackup,],
     ) -> None:
         """
         Delete all quarantine backups after successful application.
@@ -857,17 +724,14 @@ class TwwReviewPersistenceService:
         ):
             try:
                 self.backup_service.delete_backup(
-                    backup_path=(
-                        backup.backup_path
-                    ),
+                    backup_path=(backup.backup_path),
                 )
 
             except Exception:
                 cleanup_succeeded = False
 
                 self.logger.exception(
-                    "Could not delete quarantine backup %s for "
-                    "applied diff review job %r.",
+                    "Could not delete quarantine backup %s for " "applied diff review job %r.",
                     backup.backup_path,
                     job_id,
                 )
@@ -891,9 +755,7 @@ class TwwReviewPersistenceService:
     def _rollback_active_sessions(
         self,
         *,
-        source_contexts: Sequence[
-            TwwPersistenceSourceContext,
-        ],
+        source_contexts: Sequence[TwwPersistenceSourceContext,],
     ) -> None:
         """
         Roll back active quarantine transactions without closing sessions.
@@ -902,9 +764,7 @@ class TwwReviewPersistenceService:
         for source_context in reversed(
             source_contexts,
         ):
-            session = (
-                source_context.quarantine_session
-            )
+            session = source_context.quarantine_session
 
             try:
                 if session.in_transaction():
@@ -912,8 +772,7 @@ class TwwReviewPersistenceService:
 
             except Exception:
                 self.logger.exception(
-                    "Could not roll back quarantine session for "
-                    "source role %r and schema %r.",
+                    "Could not roll back quarantine session for " "source role %r and schema %r.",
                     source_context.source_role,
                     source_context.import_schema,
                 )
@@ -923,10 +782,7 @@ class TwwReviewPersistenceService:
         *,
         job_id: str,
         phase: str,
-        source_context: (
-            TwwPersistenceSourceContext
-            | None
-        ),
+        source_context: TwwPersistenceSourceContext | None,
         completed_phases: tuple[
             str,
             ...,
@@ -937,17 +793,9 @@ class TwwReviewPersistenceService:
         Record an application failure without hiding the original exception.
         """
 
-        source_role = (
-            source_context.source_role
-            if source_context is not None
-            else None
-        )
+        source_role = source_context.source_role if source_context is not None else None
 
-        import_schema = (
-            source_context.import_schema
-            if source_context is not None
-            else None
-        )
+        import_schema = source_context.import_schema if source_context is not None else None
 
         message = str(
             exception,

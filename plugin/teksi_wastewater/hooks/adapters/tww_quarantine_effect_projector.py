@@ -1,13 +1,14 @@
 from __future__ import annotations
 
 import json
+import logging
 import re
 from dataclasses import dataclass, field
-import logging
+from typing import Any
+from collections.abc import Mapping
+
 from sqlalchemy import inspect
 from sqlalchemy.exc import NoInspectionAvailable
-from typing import Any, Mapping
-
 from teksi_hooks.capabilities.connection import (
     DatabaseConnectionFactory,
 )
@@ -51,6 +52,7 @@ class SourceForeignKeyTarget:
     relation: Any
     referenced_column: Any
 
+
 @dataclass(slots=True)
 class TwwQuarantineEffectProjector:
     """
@@ -73,7 +75,6 @@ class TwwQuarantineEffectProjector:
     connection_factory: DatabaseConnectionFactory
 
     relation_context_provider: RelationContextProvider
-
 
     logger: logging.Logger = field(
         default_factory=lambda: logging.getLogger(
@@ -110,19 +111,18 @@ class TwwQuarantineEffectProjector:
         repr=False,
     )
 
-
     _source_identity_owner_cache: dict[
         Any,
         tuple[
             Any,
             str,
-        ] | None,
+        ]
+        | None,
     ] = field(
         default_factory=dict,
         init=False,
         repr=False,
     )
-
 
     def clear_cache(
         self,
@@ -176,8 +176,6 @@ class TwwQuarantineEffectProjector:
             ),
         )
 
-
-
     def _effects_for_relation_context(
         self,
         *,
@@ -226,6 +224,7 @@ class TwwQuarantineEffectProjector:
         return tuple(
             effects,
         )
+
     def _function_effects_for_relation_context(
         self,
         *,
@@ -248,11 +247,7 @@ class TwwQuarantineEffectProjector:
         before they are enabled.
         """
 
-        function_mapping = (
-            relation_context
-            .class_mapping
-            .function
-        )
+        function_mapping = relation_context.class_mapping.function
 
         if function_mapping is None:
             return ()
@@ -295,9 +290,7 @@ class TwwQuarantineEffectProjector:
             query,
         )
 
-        effects: list[
-            Effect,
-        ] = []
+        effects: list[Effect,] = []
 
         projected_row_count = 0
         effect_count = 0
@@ -305,17 +298,13 @@ class TwwQuarantineEffectProjector:
         for row_result in cursor:
             projected_row_count += 1
 
-            payload = row_result[
-                0
-            ]
+            payload = row_result[0]
 
             if payload is None:
                 continue
 
-            normalized_payload = (
-                self._normalized_function_payload(
-                    payload,
-                )
+            normalized_payload = self._normalized_function_payload(
+                payload,
             )
 
             row_effects = self._effects_from_payload(
@@ -382,17 +371,14 @@ class TwwQuarantineEffectProjector:
                 )
 
             arguments.append(
-                sql.SQL(
-                    "{} => to_jsonb(source_row)"
-                ).format(
+                sql.SQL("{} => to_jsonb(source_row)").format(
                     sql.Identifier(
                         parameter_name,
                     )
                 )
             )
 
-        return sql.SQL(
-            """
+        return sql.SQL("""
             SELECT
                 {function_schema}.{function_name}(
                     {arguments}
@@ -400,8 +386,7 @@ class TwwQuarantineEffectProjector:
             FROM (
                 {source_query}
             ) AS source_row
-            """
-        ).format(
+            """).format(
             function_schema=sql.Identifier(
                 function_mapping.schema,
             ),
@@ -445,10 +430,7 @@ class TwwQuarantineEffectProjector:
                 parsed_payload,
                 dict,
             ):
-                raise ValueError(
-                    "Function mapping returned JSON that is not "
-                    "an object."
-                )
+                raise ValueError("Function mapping returned JSON that is not " "an object.")
 
             return parsed_payload
 
@@ -462,8 +444,7 @@ class TwwQuarantineEffectProjector:
             ValueError,
         ) as exception:
             raise TypeError(
-                "Function mapping returned an unsupported payload "
-                f"type: {type(payload)!r}."
+                "Function mapping returned an unsupported payload " f"type: {type(payload)!r}."
             ) from exception
 
         return normalized_payload
@@ -536,33 +517,22 @@ class TwwQuarantineEffectProjector:
         Build the identity for one canonical target class.
         """
 
-        target_class_id = (
-            canonical_class_id
-            or class_mapping.canonical_class_id
-        )
+        target_class_id = canonical_class_id or class_mapping.canonical_class_id
 
         if target_class_id is None:
-            raise ValueError(
-                "Cannot build an identity without a canonical "
-                "target class."
-            )
+            raise ValueError("Cannot build an identity without a canonical " "target class.")
 
-        identity_mapping = (
-            class_mapping.identities.get(
-                target_class_id,
-            )
+        identity_mapping = class_mapping.identities.get(
+            target_class_id,
         )
 
         if identity_mapping is None:
             raise ValueError(
-                "No identity mapping exists for canonical target "
-                f"class {target_class_id!r}."
+                "No identity mapping exists for canonical target " f"class {target_class_id!r}."
             )
 
         try:
-            source_value = row[
-                identity_mapping.source_attribute
-            ]
+            source_value = row[identity_mapping.source_attribute]
 
         except KeyError as exception:
             raise ValueError(
@@ -584,9 +554,7 @@ class TwwQuarantineEffectProjector:
         return CanonicalObjectIdentity(
             class_id=target_class_id,
             attributes={
-                identity_mapping.canonical_attribute: (
-                    source_value
-                ),
+                identity_mapping.canonical_attribute: (source_value),
             },
         )
 
@@ -607,9 +575,7 @@ class TwwQuarantineEffectProjector:
         UpdateAttributeEffect,
         ...,
     ]:
-        effects: list[
-            UpdateAttributeEffect,
-        ] = []
+        effects: list[UpdateAttributeEffect,] = []
 
         identities_by_target_class: dict[
             str,
@@ -620,16 +586,13 @@ class TwwQuarantineEffectProjector:
             source_attribute,
             attribute_mapping,
         ) in class_mapping.attributes.items():
-            canonical_attribute_id = (
-                attribute_mapping.canonical_attr_id
-            )
+            canonical_attribute_id = attribute_mapping.canonical_attr_id
 
             if canonical_attribute_id is None:
                 continue
 
             target_class_id = (
-                attribute_mapping.canonical_class_id
-                or class_mapping.canonical_class_id
+                attribute_mapping.canonical_class_id or class_mapping.canonical_class_id
             )
 
             if target_class_id is None:
@@ -649,9 +612,7 @@ class TwwQuarantineEffectProjector:
                     canonical_class_id=target_class_id,
                 )
 
-                identities_by_target_class[
-                    target_class_id
-                ] = identity
+                identities_by_target_class[target_class_id] = identity
 
             self._assert_known_attribute(
                 canonical_metadata=canonical_metadata,
@@ -660,9 +621,7 @@ class TwwQuarantineEffectProjector:
             )
 
             try:
-                value = row[
-                    source_attribute
-                ]
+                value = row[source_attribute]
 
             except KeyError as exception:
                 raise ValueError(
@@ -689,9 +648,7 @@ class TwwQuarantineEffectProjector:
                     source_class_id=source_class_id,
                     source_attribute=source_attribute,
                     source_value=value,
-                    foreign_key_mapping=(
-                        attribute_mapping.foreign_key
-                    ),
+                    foreign_key_mapping=(attribute_mapping.foreign_key),
                 )
 
             effects.append(
@@ -705,7 +662,7 @@ class TwwQuarantineEffectProjector:
         return tuple(
             effects,
         )
-    
+
     def _mapped_value(
         self,
         *,
@@ -855,8 +812,7 @@ class TwwQuarantineEffectProjector:
             )
         except NoInspectionAvailable as exception:
             raise TypeError(
-                "Cannot build a quarantine query for an unmapped "
-                f"relation: {relation!r}."
+                "Cannot build a quarantine query for an unmapped " f"relation: {relation!r}."
             ) from exception
 
         hierarchy = self._mapper_hierarchy(
@@ -864,9 +820,7 @@ class TwwQuarantineEffectProjector:
         )
 
         aliases = {
-            hierarchy_mapper: (
-                f"t{index}"
-            )
+            hierarchy_mapper: (f"t{index}")
             for (
                 index,
                 hierarchy_mapper,
@@ -875,11 +829,9 @@ class TwwQuarantineEffectProjector:
             )
         }
 
-        selected_columns = (
-            self._selected_inheritance_columns(
-                mapper=mapper,
-                aliases=aliases,
-            )
+        selected_columns = self._selected_inheritance_columns(
+            mapper=mapper,
+            aliases=aliases,
         )
 
         if not selected_columns:
@@ -889,24 +841,13 @@ class TwwQuarantineEffectProjector:
                 "selectable mapped columns."
             )
 
-        leaf_mapper = hierarchy[
-            0
-        ]
+        leaf_mapper = hierarchy[0]
 
-        leaf_alias = aliases[
-            leaf_mapper
-        ]
+        leaf_alias = aliases[leaf_mapper]
 
-        query = sql.SQL(
-            "SELECT {columns} "
-            "FROM {schema}.{table} AS {alias}"
-        ).format(
-            columns=sql.SQL(
-                ", "
-            ).join(
-                sql.SQL(
-                    "{alias}.{column} AS {attribute}"
-                ).format(
+        query = sql.SQL("SELECT {columns} " "FROM {schema}.{table} AS {alias}").format(
+            columns=sql.SQL(", ").join(
+                sql.SQL("{alias}.{column} AS {attribute}").format(
                     alias=sql.Identifier(
                         table_alias,
                     ),
@@ -944,12 +885,8 @@ class TwwQuarantineEffectProjector:
                 schema=schema,
                 child_mapper=child_mapper,
                 parent_mapper=parent_mapper,
-                child_alias=aliases[
-                    child_mapper
-                ],
-                parent_alias=aliases[
-                    parent_mapper
-                ],
+                child_alias=aliases[child_mapper],
+                parent_alias=aliases[parent_mapper],
             )
 
         return query
@@ -970,9 +907,7 @@ class TwwQuarantineEffectProjector:
         )
 
         if cache_key in self._source_foreign_key_target_cache:
-            return self._source_foreign_key_target_cache[
-                cache_key
-            ]
+            return self._source_foreign_key_target_cache[cache_key]
 
         try:
             mapper = inspect(
@@ -980,9 +915,7 @@ class TwwQuarantineEffectProjector:
             )
 
         except NoInspectionAvailable:
-            self._source_foreign_key_target_cache[
-                cache_key
-            ] = None
+            self._source_foreign_key_target_cache[cache_key] = None
 
             return None
 
@@ -1003,21 +936,12 @@ class TwwQuarantineEffectProjector:
                     continue
 
                 for foreign_key in local_column.foreign_keys:
-                    referenced_column = (
-                        foreign_key.column
-                    )
+                    referenced_column = foreign_key.column
 
-                    if (
-                        referenced_column.table
-                        is relationship.mapper.local_table
-                    ):
+                    if referenced_column.table is relationship.mapper.local_table:
                         target = SourceForeignKeyTarget(
-                            relation=(
-                                relationship.mapper.class_
-                            ),
-                            referenced_column=(
-                                referenced_column
-                            ),
+                            relation=(relationship.mapper.class_),
+                            referenced_column=(referenced_column),
                         )
 
                         break
@@ -1028,19 +952,20 @@ class TwwQuarantineEffectProjector:
             if target is not None:
                 break
 
-        self._source_foreign_key_target_cache[
-            cache_key
-        ] = target
+        self._source_foreign_key_target_cache[cache_key] = target
 
         return target
 
     def _source_identity_owner(
         self,
         relation,
-    ) -> tuple[
-        Any,
-        str,
-    ] | None:
+    ) -> (
+        tuple[
+            Any,
+            str,
+        ]
+        | None
+    ):
         """
         Return the cached mapper and attribute owning source identity.
 
@@ -1048,9 +973,7 @@ class TwwQuarantineEffectProjector:
         """
 
         if relation in self._source_identity_owner_cache:
-            return self._source_identity_owner_cache[
-                relation
-            ]
+            return self._source_identity_owner_cache[relation]
 
         try:
             mapper = inspect(
@@ -1058,9 +981,7 @@ class TwwQuarantineEffectProjector:
             )
 
         except NoInspectionAvailable:
-            self._source_identity_owner_cache[
-                relation
-            ] = None
+            self._source_identity_owner_cache[relation] = None
 
             return None
 
@@ -1075,15 +996,11 @@ class TwwQuarantineEffectProjector:
                     "t_ili_tid",
                 )
 
-                self._source_identity_owner_cache[
-                    relation
-                ] = result
+                self._source_identity_owner_cache[relation] = result
 
                 return result
 
-            current_mapper = (
-                current_mapper.inherits
-            )
+            current_mapper = current_mapper.inherits
 
         current_mapper = mapper
 
@@ -1096,19 +1013,13 @@ class TwwQuarantineEffectProjector:
                     "obj_id",
                 )
 
-                self._source_identity_owner_cache[
-                    relation
-                ] = result
+                self._source_identity_owner_cache[relation] = result
 
                 return result
 
-            current_mapper = (
-                current_mapper.inherits
-            )
+            current_mapper = current_mapper.inherits
 
-        self._source_identity_owner_cache[
-            relation
-        ] = None
+        self._source_identity_owner_cache[relation] = None
 
         return None
 
@@ -1143,11 +1054,9 @@ class TwwQuarantineEffectProjector:
         ):
             return source_value
 
-        foreign_key_target = (
-            self._source_foreign_key_target(
-                relation=relation,
-                source_attribute=source_attribute,
-            )
+        foreign_key_target = self._source_foreign_key_target(
+            relation=relation,
+            source_attribute=source_attribute,
         )
 
         if foreign_key_target is None:
@@ -1185,9 +1094,7 @@ class TwwQuarantineEffectProjector:
         )
 
         try:
-            canonical_value = identity_by_t_id[
-                source_value
-            ]
+            canonical_value = identity_by_t_id[source_value]
 
         except KeyError as exception:
             raise ValueError(
@@ -1220,8 +1127,8 @@ class TwwQuarantineEffectProjector:
         *,
         cursor,
         schema: str,
-        identity_table: str = 'baseclass',
-        identity_attribute: str = 't_ili_tid',
+        identity_table: str = "baseclass",
+        identity_attribute: str = "t_ili_tid",
     ) -> dict[
         int,
         str,
@@ -1251,16 +1158,16 @@ class TwwQuarantineEffectProjector:
                 FROM {schema}.{identity_table}
                 WHERE {identity_attribute} IS NOT NULL
                 """).format(
-                    identity_attribute=sql.Identifier(
-                        identity_attribute,
-                    ),
-                    schema=sql.Identifier(
-                        schema,
-                    ),
-                    identity_table=sql.Identifier(
-                        identity_table,
-                    ),
-                )
+                identity_attribute=sql.Identifier(
+                    identity_attribute,
+                ),
+                schema=sql.Identifier(
+                    schema,
+                ),
+                identity_table=sql.Identifier(
+                    identity_table,
+                ),
+            )
         )
 
         identity_by_t_id = {
@@ -1275,9 +1182,7 @@ class TwwQuarantineEffectProjector:
             ) in cursor.fetchall()
         }
 
-        self._source_identity_cache[
-            cache_key
-        ] = identity_by_t_id
+        self._source_identity_cache[cache_key] = identity_by_t_id
 
         self.logger.debug(
             "Cached %s source identities from %r.%r using %r.",
@@ -1307,9 +1212,7 @@ class TwwQuarantineEffectProjector:
                 current_mapper,
             )
 
-            current_mapper = (
-                current_mapper.inherits
-            )
+            current_mapper = current_mapper.inherits
 
         return tuple(
             hierarchy,
@@ -1353,9 +1256,7 @@ class TwwQuarantineEffectProjector:
             ],
         ] = []
 
-        selected_attributes: set[
-            str,
-        ] = set()
+        selected_attributes: set[str,] = set()
 
         for column_property in mapper.column_attrs:
             attribute_name = getattr(
@@ -1364,10 +1265,13 @@ class TwwQuarantineEffectProjector:
                 None,
             )
 
-            if not isinstance(
-                attribute_name,
-                str,
-            ) or not attribute_name:
+            if (
+                not isinstance(
+                    attribute_name,
+                    str,
+                )
+                or not attribute_name
+            ):
                 continue
 
             if attribute_name in selected_attributes:
@@ -1391,31 +1295,21 @@ class TwwQuarantineEffectProjector:
                     continue
 
                 for hierarchy_mapper in aliases:
-                    if (
-                        hierarchy_mapper.local_table
-                        is column_table
-                    ):
+                    if hierarchy_mapper.local_table is column_table:
                         selected_column = column
-                        selected_mapper = (
-                            hierarchy_mapper
-                        )
+                        selected_mapper = hierarchy_mapper
 
                         break
 
                 if selected_column is not None:
                     break
 
-            if (
-                selected_column is None
-                or selected_mapper is None
-            ):
+            if selected_column is None or selected_mapper is None:
                 continue
 
             selected_columns.append(
                 (
-                    aliases[
-                        selected_mapper
-                    ],
+                    aliases[selected_mapper],
                     selected_column.name,
                     attribute_name,
                 )
@@ -1493,10 +1387,13 @@ class TwwQuarantineEffectProjector:
         *,
         child_mapper,
         parent_mapper,
-    ) -> tuple[
-        str,
-        str,
-    ] | None:
+    ) -> (
+        tuple[
+            str,
+            str,
+        ]
+        | None
+    ):
         """
         Return child and parent columns used for joined inheritance.
         """
@@ -1504,9 +1401,7 @@ class TwwQuarantineEffectProjector:
         child_table = child_mapper.local_table
         parent_table = parent_mapper.local_table
 
-        inherit_condition = (
-            child_mapper.inherit_condition
-        )
+        inherit_condition = child_mapper.inherit_condition
 
         left = getattr(
             inherit_condition,
@@ -1558,10 +1453,7 @@ class TwwQuarantineEffectProjector:
                 left.name,
             )
 
-        if (
-            "t_id" in child_table.c
-            and "t_id" in parent_table.c
-        ):
+        if "t_id" in child_table.c and "t_id" in parent_table.c:
             return (
                 "t_id",
                 "t_id",
@@ -1588,11 +1480,7 @@ class TwwQuarantineEffectProjector:
                 name,
             )
 
-        return str(
-            column_description[
-                0
-            ]
-        )
+        return str(column_description[0])
 
     def _json_dumps(
         self,
@@ -1604,4 +1492,3 @@ class TwwQuarantineEffectProjector:
             ensure_ascii=False,
             sort_keys=True,
         )
-

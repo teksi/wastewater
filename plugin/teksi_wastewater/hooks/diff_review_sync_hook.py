@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any
+from collections.abc import Mapping
 
 import yaml
 from teksi_hooks.capabilities.conditions import (
@@ -48,7 +49,6 @@ from teksi_hooks.resolver.provider_resolver import (
 from teksi_hooks.resolver.rights_resolver import (
     RightsResolver,
 )
-
 from teksi_wastewater.hooks.adapters.tww_change_object_provider import (
     TwwChangeObjectProviderFactory,
 )
@@ -106,9 +106,7 @@ class Hook(
     ) -> None:
         parameters = context.parameters
 
-        context.logger.info(
-            "Starting pending diff review refresh hook."
-        )
+        context.logger.info("Starting pending diff review refresh hook.")
 
         connection_factory = context.capability(
             DatabaseConnectionFactory,
@@ -118,10 +116,7 @@ class Hook(
             connection_factory,
             TwwDatabaseConnectionFactory,
         ):
-            raise TypeError(
-                "The TWW diff refresh hook requires "
-                "TwwDatabaseConnectionFactory."
-            )
+            raise TypeError("The TWW diff refresh hook requires " "TwwDatabaseConnectionFactory.")
 
         job_id = self._required_string(
             parameters=parameters,
@@ -188,11 +183,8 @@ class Hook(
             )
         )
 
-        validation_definition = (
-            ValidationParser().parse_file(
-                self._model_config_dir()
-                / "validations.yaml",
-            )
+        validation_definition = ValidationParser().parse_file(
+            self._model_config_dir() / "validations.yaml",
         )
 
         (
@@ -207,29 +199,22 @@ class Hook(
             rights_definition_path,
         )
 
-        raw_provider_rights = (
-            ProviderRightsParser(
-                oid_type=Standardoid,
-            ).parse_file(
-                provider_rights_path,
-            )
+        raw_provider_rights = ProviderRightsParser(
+            oid_type=Standardoid,
+        ).parse_file(
+            provider_rights_path,
         )
 
-        resolved_providers = (
-            ProviderResolver().resolve_all(
-                providers=raw_provider_rights,
-            )
+        resolved_providers = ProviderResolver().resolve_all(
+            providers=raw_provider_rights,
         )
 
         try:
-            resolved_provider = resolved_providers[
-                provider_oid
-            ]
+            resolved_provider = resolved_providers[provider_oid]
 
         except KeyError as exception:
             raise RightsEvaluationError.from_message(
-                "No provider-rights definition exists for "
-                f"provider {provider_oid!s}."
+                "No provider-rights definition exists for " f"provider {provider_oid!s}."
             ) from exception
 
         resolved_rights = RightsResolver().resolve(
@@ -269,19 +254,15 @@ class Hook(
             },
         )
 
-        change_object_provider_factory = (
-            TwwChangeObjectProviderFactory(
-                connection_factory=connection_factory,
-            )
+        change_object_provider_factory = TwwChangeObjectProviderFactory(
+            connection_factory=connection_factory,
         )
 
         refresh_service = TwwDiffJobRefreshService(
             connection_factory=connection_factory,
             diff_schema_service=diff_schema_service,
             rights_evaluator=rights_evaluator,
-            object_provider_factory=(
-                change_object_provider_factory
-            ),
+            object_provider_factory=(change_object_provider_factory),
             live_relation_lookup=live_relation_lookup,
             logger=context.logger,
         )
@@ -329,9 +310,7 @@ class Hook(
             )
             or not value.strip()
         ):
-            raise ValueError(
-                f"Parameter {key!r} must be a non-empty string."
-            )
+            raise ValueError(f"Parameter {key!r} must be a non-empty string.")
 
         return value.strip()
 
@@ -357,9 +336,7 @@ class Hook(
             )
             or not value.strip()
         ):
-            raise ValueError(
-                f"Parameter {key!r} must be a non-empty string."
-            )
+            raise ValueError(f"Parameter {key!r} must be a non-empty string.")
 
         return value.strip()
 
@@ -382,9 +359,7 @@ class Hook(
             value,
             bool,
         ):
-            raise TypeError(
-                f"Parameter {key!r} must be a boolean."
-            )
+            raise TypeError(f"Parameter {key!r} must be a boolean.")
 
         return value
 
@@ -402,14 +377,16 @@ class Hook(
             key=key,
         )
 
-        path = Path(
-            value,
-        ).expanduser().resolve()
+        path = (
+            Path(
+                value,
+            )
+            .expanduser()
+            .resolve()
+        )
 
         if not path.is_dir():
-            raise ValueError(
-                f"Configured directory does not exist: {path}"
-            )
+            raise ValueError(f"Configured directory does not exist: {path}")
 
         return path
 
@@ -439,8 +416,7 @@ class Hook(
             or not value.strip()
         ):
             raise ValueError(
-                f"Pending job {job.get('job_id')!r} does not "
-                f"contain valid metadata {key!r}."
+                f"Pending job {job.get('job_id')!r} does not " f"contain valid metadata {key!r}."
             )
 
         return value.strip()
@@ -459,10 +435,7 @@ class Hook(
         )
 
         if not path.is_dir():
-            raise RuntimeError(
-                "Model configuration directory does not exist: "
-                f"{path}"
-            )
+            raise RuntimeError("Model configuration directory does not exist: " f"{path}")
 
         return path
 
@@ -475,15 +448,11 @@ class Hook(
         Path,
         Path,
     ]:
-        profiles_path = (
-            config_dir
-            / "rights_profiles.yaml"
-        )
+        profiles_path = config_dir / "rights_profiles.yaml"
 
         if not profiles_path.is_file():
             raise RightsEvaluationError.from_message(
-                "Rights-profile configuration does not exist: "
-                f"{profiles_path}"
+                "Rights-profile configuration does not exist: " f"{profiles_path}"
             )
 
         with profiles_path.open(
@@ -512,8 +481,7 @@ class Hook(
             Mapping,
         ):
             raise RightsEvaluationError.from_message(
-                f"Unknown or invalid rights profile "
-                f"{rights_profile!r}."
+                f"Unknown or invalid rights profile " f"{rights_profile!r}."
             )
 
         provider_rights_path = self._profile_path(
@@ -558,8 +526,7 @@ class Hook(
             or not raw_path.strip()
         ):
             raise RightsEvaluationError.from_message(
-                f"Rights profile {profile_name!r} must define "
-                f"a non-empty {key!r} path."
+                f"Rights profile {profile_name!r} must define " f"a non-empty {key!r} path."
             )
 
         path = Path(
@@ -567,16 +534,11 @@ class Hook(
         ).expanduser()
 
         if not path.is_absolute():
-            path = (
-                config_dir
-                / path
-            )
+            path = config_dir / path
 
         path = path.resolve()
 
         if not path.is_file():
-            raise RightsEvaluationError.from_message(
-                f"Rights-profile file does not exist: {path}"
-            )
+            raise RightsEvaluationError.from_message(f"Rights-profile file does not exist: {path}")
 
         return path

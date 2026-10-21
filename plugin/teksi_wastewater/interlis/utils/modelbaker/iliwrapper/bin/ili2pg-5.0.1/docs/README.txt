@@ -1,9 +1,9 @@
 ili2ora - INTERLIS 2-loader for oracle
 
 Features
-Translates INTERLIS 2 data model definitions to an oracle schema. 
-Loads INTERLIS 2 data into an oracle database. 
-Unloads INTERLIS 2 data from an oracle database. 
+Translates INTERLIS 2 data model definitions to an oracle schema.
+Loads INTERLIS 2 data into an oracle database.
+Unloads INTERLIS 2 data from an oracle database.
 
 License
 ili2ora is licensed under the LGPL (Lesser GNU Public License).
@@ -17,7 +17,7 @@ The JRE (Java Runtime Environment) can be downloaded for free from the Website h
 ili2ora was tested with Oracle 9.
 
 Installing ili2ora
-To install ili2ora, choose a directory and extract the distribution file there. 
+To install ili2ora, choose a directory and extract the distribution file there.
 
 Running ili2ora
 ili2ora can be started with

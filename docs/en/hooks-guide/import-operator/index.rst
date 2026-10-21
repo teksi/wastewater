@@ -28,13 +28,13 @@ Workflow types
 Two main workflows are supported.
 
 Baseline-only workflow
-   Imports one baseline source compatible to the VSA models and immediately 
+   Imports one baseline source compatible to the VSA models and immediately
    creates a pending review job.
 
 Baseline and incremental workflow
    Imports and prepares a baseline source without creating the final review
    job. A later incremental source (i.e. a delivery of cantonal models)
-   is projected and overlaid onto the prepared baseline. 
+   is projected and overlaid onto the prepared baseline.
    The combined result becomes one pending review job.
 
 Source roles
@@ -43,7 +43,7 @@ Source roles
 Every imported source has one of two roles.
 
 ``base``
-   Represents the baseline state used to construct canonical changes. 
+   Represents the baseline state used to construct canonical changes.
 
 ``incremental``
    Only explicitly selected updates are applied on top of the prepared baseline source.
@@ -56,7 +56,7 @@ explicit mappings. This is generally used for VSA-defined models.
 An incremental source uses explicit-only projection. Only mappings
 intended for incremental updates contribute effects. This is mainly
 useful to only import the data necessary for a TWW database to conform to
-an extension model. 
+an extension model.
 
 Review lifecycle
 ----------------

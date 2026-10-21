@@ -5,9 +5,7 @@ from collections.abc import Callable
 from dataclasses import dataclass, field
 from typing import Any
 
-from sqlalchemy import text
 from sqlalchemy.orm import Session
-
 from teksi_hooks.capabilities.mapping import (
     ModelMappingLookupCapability,
 )
@@ -31,7 +29,6 @@ from teksi_hooks.models.mapping import (
 from teksi_hooks.models.validation import (
     ValidationFinding,
 )
-
 from teksi_wastewater.hooks.capabilities.incremental_import import (
     FunctionEffectResolver,
     IncrementalEffectEvaluator,
@@ -39,12 +36,10 @@ from teksi_wastewater.hooks.capabilities.incremental_import import (
 )
 from teksi_wastewater.interlis import (
     model_selection,
-    utils,
 )
 from teksi_wastewater.interlis.utils.various import (
     InterlisImporterExporterError,
 )
-
 
 logger = logging.getLogger(
     __name__,
@@ -100,7 +95,7 @@ class InterlisIncrementalImporter:
 
     effect_persister: IncrementalEffectPersister
 
-    session_interlis: Session= field(
+    session_interlis: Session = field(
         repr=False,
     )
 
@@ -118,24 +113,18 @@ class InterlisIncrementalImporter:
 
     filter_nulls: bool = True
 
-    model_groups: frozenset[
-        str,
-    ] = field(
+    model_groups: frozenset[str,] = field(
         default_factory=frozenset,
         init=False,
     )
 
-    effect_documents: list[
-        EffectDocument,
-    ] = field(
+    effect_documents: list[EffectDocument,] = field(
         default_factory=list,
         init=False,
         repr=False,
     )
 
-    evaluation_results: list[
-        EffectEvaluationResult,
-    ] = field(
+    evaluation_results: list[EffectEvaluationResult,] = field(
         default_factory=list,
         init=False,
         repr=False,
@@ -168,27 +157,24 @@ class InterlisIncrementalImporter:
             )
         )
 
-        incremental_groups = (
-            self.model_groups
-            & {
-                "ag64",
-                "ag96",
-            }
-        )
+        incremental_groups = self.model_groups & {
+            "ag64",
+            "ag96",
+        }
 
         if not incremental_groups:
             raise InterlisImporterExporterError(
                 "INTERLIS import aborted",
-                (
-                    "No incremental import exists for selected "
-                    f"model {self.model!r}."
-                ),
+                ("No incremental import exists for selected " f"model {self.model!r}."),
                 None,
             )
 
-        if len(
-            incremental_groups,
-        ) != 1:
+        if (
+            len(
+                incremental_groups,
+            )
+            != 1
+        ):
             raise InterlisImporterExporterError(
                 "INTERLIS import aborted",
                 (
@@ -278,21 +264,13 @@ class InterlisIncrementalImporter:
         )
 
         self._import_source_class(
-            source_class_id=(
-                "BautenAusserhalbBaugebiet"
-            ),
-            orm_class_name=(
-                "bautenausserhalbbaugebiet"
-            ),
+            source_class_id=("BautenAusserhalbBaugebiet"),
+            orm_class_name=("bautenausserhalbbaugebiet"),
         )
 
         self._import_source_class(
-            source_class_id=(
-                "Ueberlauf_Foerderaggregat"
-            ),
-            orm_class_name=(
-                "ueberlauf_foerderaggregat"
-            ),
+            source_class_id=("Ueberlauf_Foerderaggregat"),
+            orm_class_name=("ueberlauf_foerderaggregat"),
         )
 
         self._import_source_class(
@@ -301,12 +279,8 @@ class InterlisIncrementalImporter:
         )
 
         self._import_source_class(
-            source_class_id=(
-                "VersickerungsbereichAG"
-            ),
-            orm_class_name=(
-                "versickerungsbereichag"
-            ),
+            source_class_id=("VersickerungsbereichAG"),
+            orm_class_name=("versickerungsbereichag"),
         )
 
     def _import_ag64(
@@ -327,12 +301,8 @@ class InterlisIncrementalImporter:
         )
 
         self._import_source_class(
-            source_class_id=(
-                "Ueberlauf_Foerderaggregat"
-            ),
-            orm_class_name=(
-                "ueberlauf_foerderaggregat"
-            ),
+            source_class_id=("Ueberlauf_Foerderaggregat"),
+            orm_class_name=("ueberlauf_foerderaggregat"),
         )
 
     def _import_source_class(
@@ -349,10 +319,8 @@ class InterlisIncrementalImporter:
             orm_class_name,
         )
 
-        class_mapping = (
-            self.model_mapping.class_definition(
-                source_class_id,
-            )
+        class_mapping = self.model_mapping.class_definition(
+            source_class_id,
         )
 
         logger.info(
@@ -360,12 +328,8 @@ class InterlisIncrementalImporter:
             source_class_id,
             {
                 canonical_class_id: {
-                    "source_attribute": (
-                        identity.source_attribute
-                    ),
-                    "canonical_attribute": (
-                        identity.canonical_attribute
-                    ),
+                    "source_attribute": (identity.source_attribute),
+                    "canonical_attribute": (identity.canonical_attribute),
                 }
                 for (
                     canonical_class_id,
@@ -422,16 +386,11 @@ class InterlisIncrementalImporter:
         Resolve and stage one function-backed source row.
         """
 
-        document = (
-            self.function_effect_resolver
-            .resolve_effects(
-                source_class_id=source_class_id,
-                source_row=source_row,
-                session=(
-                    self._require_interlis_session()
-                ),
-                class_mapping=class_mapping,
-            )
+        document = self.function_effect_resolver.resolve_effects(
+            source_class_id=source_class_id,
+            source_row=source_row,
+            session=(self._require_interlis_session()),
+            class_mapping=class_mapping,
         )
 
         self._assert_effect_source(
@@ -462,9 +421,7 @@ class InterlisIncrementalImporter:
         mappings.
         """
 
-        effects: list[
-            UpdateAttributeEffect,
-        ] = []
+        effects: list[UpdateAttributeEffect,] = []
 
         identities_by_target_class: dict[
             str,
@@ -475,16 +432,13 @@ class InterlisIncrementalImporter:
             source_attribute_id,
             attribute_mapping,
         ) in class_mapping.attributes.items():
-            canonical_attribute_id = (
-                attribute_mapping.canonical_attr_id
-            )
+            canonical_attribute_id = attribute_mapping.canonical_attr_id
 
             if canonical_attribute_id is None:
                 continue
 
             target_class_id = (
-                attribute_mapping.canonical_class_id
-                or class_mapping.canonical_class_id
+                attribute_mapping.canonical_class_id or class_mapping.canonical_class_id
             )
 
             if target_class_id is None:
@@ -498,10 +452,8 @@ class InterlisIncrementalImporter:
                     None,
                 )
 
-            identity = (
-                identities_by_target_class.get(
-                    target_class_id,
-                )
+            identity = identities_by_target_class.get(
+                target_class_id,
             )
 
             if identity is None:
@@ -512,43 +464,28 @@ class InterlisIncrementalImporter:
                     target_class_id=target_class_id,
                 )
 
-                identities_by_target_class[
-                    target_class_id
-                ] = identity
+                identities_by_target_class[target_class_id] = identity
 
             source_value = self._source_attribute_value(
                 source_class_id=source_class_id,
                 source_row=source_row,
-                source_attribute_id=(
-                    source_attribute_id
-                ),
+                source_attribute_id=(source_attribute_id),
             )
 
-            if (
-                source_value is None
-                and self.filter_nulls
-            ):
+            if source_value is None and self.filter_nulls:
                 continue
 
-            canonical_value = (
-                self._canonical_attribute_value(
-                    source_class_id=source_class_id,
-                    source_attribute_id=(
-                        source_attribute_id
-                    ),
-                    source_value=source_value,
-                    attribute_mapping=(
-                        attribute_mapping
-                    ),
-                )
+            canonical_value = self._canonical_attribute_value(
+                source_class_id=source_class_id,
+                source_attribute_id=(source_attribute_id),
+                source_value=source_value,
+                attribute_mapping=(attribute_mapping),
             )
 
             effects.append(
                 UpdateAttributeEffect(
                     identity=identity,
-                    attribute_id=(
-                        canonical_attribute_id
-                    ),
+                    attribute_id=(canonical_attribute_id),
                     value=canonical_value,
                 )
             )
@@ -649,10 +586,8 @@ class InterlisIncrementalImporter:
         Build the canonical identity for one declarative target class.
         """
 
-        identity_mapping = (
-            class_mapping.identities.get(
-                target_class_id,
-            )
+        identity_mapping = class_mapping.identities.get(
+            target_class_id,
         )
 
         if identity_mapping is None:
@@ -666,14 +601,10 @@ class InterlisIncrementalImporter:
                 None,
             )
 
-        source_identity_value = (
-            self._source_attribute_value(
-                source_class_id=source_class_id,
-                source_row=source_row,
-                source_attribute_id=(
-                    identity_mapping.source_attribute
-                ),
-            )
+        source_identity_value = self._source_attribute_value(
+            source_class_id=source_class_id,
+            source_row=source_row,
+            source_attribute_id=(identity_mapping.source_attribute),
         )
 
         if source_identity_value is None:
@@ -692,9 +623,7 @@ class InterlisIncrementalImporter:
         return CanonicalObjectIdentity(
             class_id=target_class_id,
             attributes={
-                identity_mapping.canonical_attribute: (
-                    source_identity_value
-                ),
+                identity_mapping.canonical_attribute: (source_identity_value),
             },
         )
 
@@ -716,16 +645,13 @@ class InterlisIncrementalImporter:
             from sqlalchemy import inspect
 
             mapper = inspect(
-                    type(
-                        source_row,
-                    )
+                type(
+                    source_row,
                 )
+            )
 
             available_attributes = tuple(
-                sorted(
-                    attribute.key
-                    for attribute in mapper.column_attrs
-                )
+                sorted(attribute.key for attribute in mapper.column_attrs)
             )
 
             raise InterlisImporterExporterError(
@@ -768,28 +694,22 @@ class InterlisIncrementalImporter:
         if attribute_mapping.foreign_key is not None:
             return self._canonical_foreign_key_value(
                 source_class_id=source_class_id,
-                source_attribute_id=(
-                    source_attribute_id
-                ),
+                source_attribute_id=(source_attribute_id),
                 source_value=source_value,
             )
 
-        value_mapping = (
-            self.model_mapping.try_value_mapping(
-                source_class_id,
-                source_attribute_id,
-                str(
-                    source_value,
-                ),
-            )
+        value_mapping = self.model_mapping.try_value_mapping(
+            source_class_id,
+            source_attribute_id,
+            str(
+                source_value,
+            ),
         )
 
         if value_mapping is None:
-            value_mapping = (
-                attribute_mapping.values.get(
-                    str(
-                        source_value,
-                    )
+            value_mapping = attribute_mapping.values.get(
+                str(
+                    source_value,
                 )
             )
 
@@ -853,10 +773,7 @@ class InterlisIncrementalImporter:
             source_row,
         )
 
-        if (
-            document.source.class_id
-            != source_class_id
-        ):
+        if document.source.class_id != source_class_id:
             raise InterlisImporterExporterError(
                 "Incremental import aborted",
                 (
@@ -868,10 +785,7 @@ class InterlisIncrementalImporter:
                 None,
             )
 
-        if (
-            document.source.object_id
-            != expected_object_id
-        ):
+        if document.source.object_id != expected_object_id:
             raise InterlisImporterExporterError(
                 "Incremental import aborted",
                 (
@@ -919,10 +833,7 @@ class InterlisIncrementalImporter:
             )
         )
 
-        actual_indices = tuple(
-            evaluation.effect_index
-            for evaluation in evaluations
-        )
+        actual_indices = tuple(evaluation.effect_index for evaluation in evaluations)
 
         if actual_indices != expected_indices:
             raise InterlisImporterExporterError(
@@ -945,20 +856,14 @@ class InterlisIncrementalImporter:
 
         blocked_results = tuple(
             evaluation
-            for evaluation
-            in self.evaluation_results
-            if (
-                evaluation.status
-                == EffectEvaluationStatus.BLOCKED
-            )
+            for evaluation in self.evaluation_results
+            if (evaluation.status == EffectEvaluationStatus.BLOCKED)
         )
 
         if not blocked_results:
             return
 
-        findings: list[
-            ValidationFinding,
-        ] = []
+        findings: list[ValidationFinding,] = []
 
         for evaluation in blocked_results:
             findings.extend(
@@ -1002,10 +907,7 @@ class InterlisIncrementalImporter:
             None,
         )
 
-        resolved = (
-            t_ili_tid
-            or obj_id
-        )
+        resolved = t_ili_tid or obj_id
 
         if (
             not isinstance(
@@ -1016,10 +918,7 @@ class InterlisIncrementalImporter:
         ):
             raise InterlisImporterExporterError(
                 "Incremental import aborted",
-                (
-                    "AGXX source row does not contain a valid "
-                    "t_ili_tid or obj_id."
-                ),
+                ("AGXX source row does not contain a valid " "t_ili_tid or obj_id."),
                 None,
             )
 
@@ -1037,10 +936,8 @@ class InterlisIncrementalImporter:
             self.model_classes_interlis,
             dict,
         ):
-            source_class = (
-                self.model_classes_interlis.get(
-                    orm_class_name,
-                )
+            source_class = self.model_classes_interlis.get(
+                orm_class_name,
             )
 
         else:
@@ -1053,10 +950,7 @@ class InterlisIncrementalImporter:
         if source_class is None:
             raise InterlisImporterExporterError(
                 "Incremental import aborted",
-                (
-                    "The quarantine ORM model does not expose "
-                    f"class {orm_class_name!r}."
-                ),
+                ("The quarantine ORM model does not expose " f"class {orm_class_name!r}."),
                 None,
             )
 
@@ -1082,10 +976,7 @@ class InterlisIncrementalImporter:
         """
 
         if self.session_interlis is None:
-            raise RuntimeError(
-                "The incremental quarantine session is not "
-                "initialized."
-            )
+            raise RuntimeError("The incremental quarantine session is not " "initialized.")
 
         return self.session_interlis
 
@@ -1097,10 +988,7 @@ class InterlisIncrementalImporter:
         """
 
         if self.session_tww is None:
-            raise RuntimeError(
-                "The incremental live session is not "
-                "initialized."
-            )
+            raise RuntimeError("The incremental live session is not " "initialized.")
 
         return self.session_tww
 

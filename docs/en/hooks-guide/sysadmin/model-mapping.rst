@@ -2,7 +2,7 @@ Model Mapping
 =============
 
 Model mappings define how source-model classes and attributes correspond to
-the canonical TWW model. 
+the canonical TWW model.
 
 The canonical model is the internal TEKSI wastewater model represented by
 ``tww_od`` and supported extension tables.
@@ -32,7 +32,7 @@ Example attributes:
    Canonical:
        fk_provider
 
-For INTERLIS models that are no translations (i.e. VSA DSS 2020.1), the source 
+For INTERLIS models that are no translations (i.e. VSA DSS 2020.1), the source
 attribute names always correspond to the lowercase equivalent of the INTERLIS model.
 For translated models, they correspond to the model language they are a TRANSLATION OF.
 Canonical identifiers do not change with source language.

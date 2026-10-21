@@ -24,7 +24,6 @@ from ...interlis.interlis_model_mapping.model_tww_od import (
     ModelTwwOd,
 )
 
-
 AGXX_EXTENSION_CLASSES = frozenset(
     {
         "agxx_wastewater_node",
@@ -99,9 +98,7 @@ class TwwCanonicalModelAdapter:
 
     schema: str = "tww_sys"
 
-    reflected_class_ids: frozenset[
-        str,
-    ] | None = None
+    reflected_class_ids: frozenset[str,] | None = None
 
     languages: tuple[
         TwwLanguage,
@@ -127,34 +124,43 @@ class TwwCanonicalModelAdapter:
         repr=False,
     )
 
-    _canonical_foreign_keys_cache: tuple[
-        CanonicalForeignKeyMetadata,
-        ...,
-    ] | None = field(
-        default=None,
-        init=False,
-        repr=False,
-    )
-
-    _resolved_automap_classes_cache: dict[
-        str,
-        Any,
-    ] | None = field(
-        default=None,
-        init=False,
-        repr=False,
-    )
-
-    _canonical_foreign_key_index_cache: dict[
+    _canonical_foreign_keys_cache: (
         tuple[
-            str,
-            str,
-        ],
-        tuple[
-            str,
+            CanonicalForeignKeyMetadata,
             ...,
-        ],
-    ] | None = field(
+        ]
+        | None
+    ) = field(
+        default=None,
+        init=False,
+        repr=False,
+    )
+
+    _resolved_automap_classes_cache: (
+        dict[
+            str,
+            Any,
+        ]
+        | None
+    ) = field(
+        default=None,
+        init=False,
+        repr=False,
+    )
+
+    _canonical_foreign_key_index_cache: (
+        dict[
+            tuple[
+                str,
+                str,
+            ],
+            tuple[
+                str,
+                ...,
+            ],
+        ]
+        | None
+    ) = field(
         default=None,
         init=False,
         repr=False,
@@ -191,10 +197,8 @@ class TwwCanonicalModelAdapter:
             automap_classes=automap_classes,
         )
 
-        self._canonical_foreign_keys_cache = (
-            self._reflected_foreign_keys(
-                automap_classes=automap_classes,
-            )
+        self._canonical_foreign_keys_cache = self._reflected_foreign_keys(
+            automap_classes=automap_classes,
         )
 
         self._canonical_model_cache = CanonicalModelMetadata(
@@ -260,10 +264,7 @@ class TwwCanonicalModelAdapter:
                 key,
                 metadata,
             ) in attributes.items()
-            if key[
-                0
-            ]
-            == class_id
+            if key[0] == class_id
         }
 
     def values(
@@ -290,20 +291,8 @@ class TwwCanonicalModelAdapter:
                 key,
                 metadata,
             ) in values.items()
-            if (
-                class_id is None
-                or key[
-                    0
-                ]
-                == class_id
-            )
-            and (
-                attribute_id is None
-                or key[
-                    1
-                ]
-                == attribute_id
-            )
+            if (class_id is None or key[0] == class_id)
+            and (attribute_id is None or key[1] == attribute_id)
         }
 
     def foreign_keys(
@@ -323,23 +312,15 @@ class TwwCanonicalModelAdapter:
 
         self.canonical_model()
 
-        foreign_keys = (
-            self._canonical_foreign_keys_cache
-            or ()
-        )
+        foreign_keys = self._canonical_foreign_keys_cache or ()
 
         return tuple(
             foreign_key
             for foreign_key in foreign_keys
-            if (
-                class_id is None
-                or foreign_key.class_id
-                == class_id
-            )
+            if (class_id is None or foreign_key.class_id == class_id)
             and (
                 referenced_class_id is None
-                or foreign_key.referenced_class_id
-                == referenced_class_id
+                or foreign_key.referenced_class_id == referenced_class_id
             )
         )
 
@@ -357,24 +338,24 @@ class TwwCanonicalModelAdapter:
             for foreign_key in self.foreign_keys(
                 class_id=class_id,
             )
-            if foreign_key.attribute_id
-            == attribute_id
+            if foreign_key.attribute_id == attribute_id
         )
 
         if not matches:
             return None
 
-        if len(
-            matches,
-        ) != 1:
+        if (
+            len(
+                matches,
+            )
+            != 1
+        ):
             raise RuntimeError(
                 "Several canonical foreign-key definitions exist for "
                 f"{class_id!r}.{attribute_id!r}: {matches!r}."
             )
 
-        return matches[
-            0
-        ]
+        return matches[0]
 
     def foreign_key_attributes_to_class(
         self,
@@ -484,8 +465,7 @@ class TwwCanonicalModelAdapter:
                 class_id=class_id,
             ).items()
             if (
-                attribute_class_id
-                == class_id
+                attribute_class_id == class_id
                 and self._is_geometry_datatype(
                     metadata.field_datatype,
                 )
@@ -523,16 +503,12 @@ class TwwCanonicalModelAdapter:
             raw_classes,
             Mapping,
         ):
-            candidates = tuple(
-                raw_classes.values()
-            )
+            candidates = tuple(raw_classes.values())
 
         else:
             candidates = tuple(
                 candidate
-                for attribute_name in dir(
-                    raw_classes
-                )
+                for attribute_name in dir(raw_classes)
                 if not attribute_name.startswith(
                     "_",
                 )
@@ -568,27 +544,19 @@ class TwwCanonicalModelAdapter:
                 class_id,
             )
 
-            if (
-                existing is not None
-                and existing is not mapped_class
-            ):
+            if existing is not None and existing is not mapped_class:
                 raise RuntimeError(
                     "Several canonical ORM classes resolve to "
                     f"physical class identifier {class_id!r}."
                 )
 
-            resolved[
-                class_id
-            ] = mapped_class
+            resolved[class_id] = mapped_class
 
         if self.reflected_class_ids is not None:
-            missing_class_ids = (
-                set(
-                    self.reflected_class_ids,
-                )
-                - set(
-                    resolved,
-                )
+            missing_class_ids = set(
+                self.reflected_class_ids,
+            ) - set(
+                resolved,
             )
 
             if missing_class_ids:
@@ -599,9 +567,7 @@ class TwwCanonicalModelAdapter:
                 )
 
             resolved = {
-                class_id: resolved[
-                    class_id
-                ]
+                class_id: resolved[class_id]
                 for class_id in sorted(
                     self.reflected_class_ids,
                 )
@@ -649,9 +615,7 @@ class TwwCanonicalModelAdapter:
         for (
             class_id,
             mapped_class,
-        ) in sorted(
-            automap_classes.items()
-        ):
+        ) in sorted(automap_classes.items()):
             table = getattr(
                 mapped_class,
                 "__table__",
@@ -665,9 +629,7 @@ class TwwCanonicalModelAdapter:
                 table.name,
             )
 
-            classes[
-                class_id
-            ] = CanonicalClassMetadata(
+            classes[class_id] = CanonicalClassMetadata(
                 source_id=self._reflected_source_id(
                     f"class:{class_id}",
                 ),
@@ -713,9 +675,7 @@ class TwwCanonicalModelAdapter:
         for (
             class_id,
             mapped_class,
-        ) in sorted(
-            automap_classes.items()
-        ):
+        ) in sorted(automap_classes.items()):
             for (
                 attribute_id,
                 column,
@@ -731,9 +691,7 @@ class TwwCanonicalModelAdapter:
                     key,
                     CanonicalAttributeMetadata(
                         source_id=self._reflected_source_id(
-                            "attribute:"
-                            f"{class_id}."
-                            f"{attribute_id}",
+                            "attribute:" f"{class_id}." f"{attribute_id}",
                         ),
                         identifier=attribute_id,
                         field_datatype=(
@@ -792,9 +750,7 @@ class TwwCanonicalModelAdapter:
         for (
             class_id,
             mapped_class,
-        ) in sorted(
-            automap_classes.items()
-        ):
+        ) in sorted(automap_classes.items()):
             try:
                 mapper = inspect(
                     mapped_class,
@@ -802,30 +758,22 @@ class TwwCanonicalModelAdapter:
             except NoInspectionAvailable:
                 continue
 
-            inheritance_columns = (
-                self._inheritance_local_columns(
-                    mapper,
-                )
+            inheritance_columns = self._inheritance_local_columns(
+                mapper,
             )
 
             for relationship in mapper.relationships:
                 if self._is_inheritance_relationship(
                     mapper=mapper,
                     relationship=relationship,
-                    inheritance_columns=(
-                        inheritance_columns
-                    ),
+                    inheritance_columns=(inheritance_columns),
                 ):
                     continue
 
-                referenced_class = (
-                    relationship.mapper.class_
-                )
+                referenced_class = relationship.mapper.class_
 
-                referenced_class_id = (
-                    class_id_by_mapped_class.get(
-                        referenced_class,
-                    )
+                referenced_class_id = class_id_by_mapped_class.get(
+                    referenced_class,
                 )
 
                 if referenced_class_id is None:
@@ -854,9 +802,7 @@ class TwwCanonicalModelAdapter:
                     )
 
                     for foreign_key in local_column.foreign_keys:
-                        referenced_column = (
-                            foreign_key.column
-                        )
+                        referenced_column = foreign_key.column
 
                         referenced_table = getattr(
                             referenced_column,
@@ -869,18 +815,14 @@ class TwwCanonicalModelAdapter:
 
                         target_class_id = (
                             self._class_id_for_table(
-                                automap_classes=(
-                                    automap_classes
-                                ),
+                                automap_classes=(automap_classes),
                                 table=referenced_table,
                             )
                             or referenced_class_id
                         )
 
-                        referenced_attribute_id = (
-                            self._column_attribute_name(
-                                referenced_column,
-                            )
+                        referenced_attribute_id = self._column_attribute_name(
+                            referenced_column,
                         )
 
                         key = (
@@ -895,19 +837,13 @@ class TwwCanonicalModelAdapter:
                             CanonicalForeignKeyMetadata(
                                 class_id=class_id,
                                 attribute_id=attribute_id,
-                                referenced_class_id=(
-                                    target_class_id
-                                ),
-                                referenced_attribute_id=(
-                                    referenced_attribute_id
-                                ),
+                                referenced_class_id=(target_class_id),
+                                referenced_attribute_id=(referenced_attribute_id),
                             ),
                         )
 
         return tuple(
-            foreign_keys[
-                key
-            ]
+            foreign_keys[key]
             for key in sorted(
                 foreign_keys,
             )
@@ -951,10 +887,13 @@ class TwwCanonicalModelAdapter:
                     None,
                 )
 
-                if not isinstance(
-                    attribute_id,
-                    str,
-                ) or not attribute_id:
+                if (
+                    not isinstance(
+                        attribute_id,
+                        str,
+                    )
+                    or not attribute_id
+                ):
                     continue
 
                 columns = tuple(
@@ -970,9 +909,7 @@ class TwwCanonicalModelAdapter:
 
                 attributes.setdefault(
                     attribute_id,
-                    columns[
-                        0
-                    ],
+                    columns[0],
                 )
 
         table = getattr(
@@ -995,9 +932,7 @@ class TwwCanonicalModelAdapter:
         return tuple(
             sorted(
                 attributes.items(),
-                key=lambda item: item[
-                    0
-                ],
+                key=lambda item: item[0],
             )
         )
 
@@ -1029,10 +964,8 @@ class TwwCanonicalModelAdapter:
 
             if (
                 candidate_table is not None
-                and candidate_table.name
-                == table.name
-                and candidate_table.schema
-                == table.schema
+                and candidate_table.name == table.name
+                and candidate_table.schema == table.schema
             ):
                 return class_id
 
@@ -1041,17 +974,12 @@ class TwwCanonicalModelAdapter:
     def _inheritance_local_columns(
         self,
         mapper: Any,
-    ) -> frozenset[
-        Any,
-    ]:
+    ) -> frozenset[Any,]:
         """
         Return child-side columns participating in joined inheritance.
         """
 
-        if (
-            mapper.inherits is None
-            or mapper.inherit_condition is None
-        ):
+        if mapper.inherits is None or mapper.inherit_condition is None:
             return frozenset()
 
         local_table = mapper.local_table
@@ -1074,9 +1002,7 @@ class TwwCanonicalModelAdapter:
         *,
         mapper: Any,
         relationship: Any,
-        inheritance_columns: frozenset[
-            Any,
-        ],
+        inheritance_columns: frozenset[Any,],
     ) -> bool:
         """
         Return whether one ORM relationship represents joined inheritance.
@@ -1163,10 +1089,7 @@ class TwwCanonicalModelAdapter:
             )
         )
 
-        return -(
-            checksum
-            or 1
-        )
+        return -(checksum or 1)
 
     def _sqlalchemy_datatype(
         self,
@@ -1184,11 +1107,8 @@ class TwwCanonicalModelAdapter:
             .lower()
         )
 
-        if (
-            type_name == "geometry"
-            or type_name.startswith(
-                "geometry",
-            )
+        if type_name == "geometry" or type_name.startswith(
+            "geometry",
         ):
             return "geometry"
 
@@ -1338,9 +1258,7 @@ class TwwCanonicalModelAdapter:
 
         return {
             str(
-                row[
-                    "class_id"
-                ],
+                row["class_id"],
             ): self._class_metadata_from_row(
                 row,
             )
@@ -1392,14 +1310,10 @@ class TwwCanonicalModelAdapter:
         return {
             (
                 str(
-                    row[
-                        "class_id"
-                    ],
+                    row["class_id"],
                 ),
                 str(
-                    row[
-                        "attribute_id"
-                    ],
+                    row["attribute_id"],
                 ),
             ): self._attribute_metadata_from_row(
                 row,
@@ -1460,19 +1374,13 @@ class TwwCanonicalModelAdapter:
         return {
             (
                 str(
-                    row[
-                        "class_id"
-                    ],
+                    row["class_id"],
                 ),
                 str(
-                    row[
-                        "attribute_id"
-                    ],
+                    row["attribute_id"],
                 ),
                 str(
-                    row[
-                        "value_id"
-                    ],
+                    row["value_id"],
                 ),
             ): self._value_metadata_from_row(
                 row,
@@ -1496,13 +1404,9 @@ class TwwCanonicalModelAdapter:
         """
 
         return CanonicalClassMetadata(
-            source_id=row[
-                "source_id"
-            ],
+            source_id=row["source_id"],
             identifier=str(
-                row[
-                    "class_id"
-                ],
+                row["class_id"],
             ),
             localized=self._localized_metadata(
                 row=row,
@@ -1526,13 +1430,9 @@ class TwwCanonicalModelAdapter:
         )
 
         return CanonicalAttributeMetadata(
-            source_id=row[
-                "source_id"
-            ],
+            source_id=row["source_id"],
             identifier=str(
-                row[
-                    "attribute_id"
-                ],
+                row["attribute_id"],
             ),
             field_datatype=(
                 str(
@@ -1559,13 +1459,9 @@ class TwwCanonicalModelAdapter:
         """
 
         return CanonicalValueMetadata(
-            source_id=row[
-                "source_id"
-            ],
+            source_id=row["source_id"],
             identifier=str(
-                row[
-                    "value_id"
-                ],
+                row["value_id"],
             ),
             localized=self._localized_metadata(
                 row=row,
@@ -1604,9 +1500,7 @@ class TwwCanonicalModelAdapter:
             ).strip()
 
             if normalized_value:
-                names[
-                    language.value
-                ] = normalized_value
+                names[language.value] = normalized_value
 
         return LocalizedMetadata(
             names=names,
@@ -1623,18 +1517,10 @@ class TwwCanonicalModelAdapter:
         if field_datatype is None:
             return False
 
-        normalized = (
-            field_datatype
-            .strip()
-            .lower()
-        )
+        normalized = field_datatype.strip().lower()
 
-        return (
-            normalized
-            == "geometry"
-            or normalized.startswith(
-                "geometry(",
-            )
+        return normalized == "geometry" or normalized.startswith(
+            "geometry(",
         )
 
     # ------------------------------------------------------------------
@@ -1645,9 +1531,7 @@ class TwwCanonicalModelAdapter:
         self,
         *,
         query: sql.Composable,
-        parameters: Sequence[
-            Any,
-        ] = (),
+        parameters: Sequence[Any,] = (),
     ) -> list[
         dict[
             str,
@@ -1712,9 +1596,7 @@ class TwwCanonicalModelAdapter:
             )
 
         return str(
-            column[
-                0
-            ],
+            column[0],
         )
 
     def _canonical_foreign_key_index(
@@ -1741,9 +1623,7 @@ class TwwCanonicalModelAdapter:
                 str,
                 str,
             ],
-            set[
-                str,
-            ],
+            set[str,],
         ] = {}
 
         for foreign_key in self.foreign_keys():

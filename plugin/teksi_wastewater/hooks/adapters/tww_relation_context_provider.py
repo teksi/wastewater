@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from enum import StrEnum
 import logging
 from collections.abc import Mapping
 from dataclasses import dataclass, field, replace
+from enum import StrEnum
 from typing import Any
 
 from sqlalchemy import inspect
@@ -35,6 +35,7 @@ from .tww_canonical_model_adapter import (
 class MappingProjectionMode(StrEnum):
     FULL = "full"
     EXPLICIT_ONLY = "explicit_only"
+
 
 @dataclass(
     slots=True,
@@ -85,9 +86,7 @@ class TwwRelationContextProvider(
 
     canonical_model_adapter: TwwCanonicalModelAdapter
 
-    projection_mode: MappingProjectionMode= (
-        MappingProjectionMode.FULL
-    )
+    projection_mode: MappingProjectionMode = MappingProjectionMode.FULL
 
     logger: logging.Logger = field(
         default_factory=lambda: logging.getLogger(
@@ -100,10 +99,13 @@ class TwwRelationContextProvider(
     # Runtime caches
     # ------------------------------------------------------------------
 
-    _relation_contexts_cache: tuple[
-        RelationContext,
-        ...,
-    ] | None = field(
+    _relation_contexts_cache: (
+        tuple[
+            RelationContext,
+            ...,
+        ]
+        | None
+    ) = field(
         default=None,
         init=False,
         repr=False,
@@ -147,9 +149,7 @@ class TwwRelationContextProvider(
 
     _source_attribute_names_cache: dict[
         Any,
-        frozenset[
-            str,
-        ],
+        frozenset[str,],
     ] = field(
         default_factory=dict,
         init=False,
@@ -189,9 +189,7 @@ class TwwRelationContextProvider(
         """
 
         if self._relation_contexts_cache is None:
-            self._relation_contexts_cache = (
-                self._build_relation_contexts()
-            )
+            self._relation_contexts_cache = self._build_relation_contexts()
 
         return self._relation_contexts_cache
 
@@ -240,9 +238,7 @@ class TwwRelationContextProvider(
         but do not produce independent canonical objects.
         """
 
-        contexts: list[
-            RelationContext,
-        ] = []
+        contexts: list[RelationContext,] = []
 
         reflected_count = 0
 
@@ -271,8 +267,7 @@ class TwwRelationContextProvider(
                 relation_class,
             ):
                 self.logger.debug(
-                    "Ignoring association relation %r during "
-                    "canonical object projection.",
+                    "Ignoring association relation %r during " "canonical object projection.",
                     relation_name,
                 )
 
@@ -300,8 +295,7 @@ class TwwRelationContextProvider(
             )
 
         self.logger.info(
-            "Prepared %s relation contexts from %s reflected "
-            "quarantine relations.",
+            "Prepared %s relation contexts from %s reflected " "quarantine relations.",
             len(
                 contexts,
             ),
@@ -332,28 +326,18 @@ class TwwRelationContextProvider(
             relation,
         )
 
-        implicit_class = (
-            self._first_implicit_class_definition(
-                source_class_ids,
-            )
+        implicit_class = self._first_implicit_class_definition(
+            source_class_ids,
         )
 
-        explicit_class = (
-            self._inherited_explicit_class_definition(
-                relation=relation,
-            )
+        explicit_class = self._inherited_explicit_class_definition(
+            relation=relation,
         )
 
-        if (
-            explicit_class is not None
-            and explicit_class.function is not None
-        ):
+        if explicit_class is not None and explicit_class.function is not None:
             return explicit_class
 
-        if (
-            explicit_class is None
-            and implicit_class is None
-        ):
+        if explicit_class is None and implicit_class is None:
             raise KeyError(
                 "No explicit or implicit class mapping exists for "
                 "source relation identifiers "
@@ -361,10 +345,8 @@ class TwwRelationContextProvider(
                 "not create an independent canonical class mapping "
                 "for ORM inheritance or helper relations."
             )
-        
-        source_class_id = source_class_ids[
-            0
-        ]
+
+        source_class_id = source_class_ids[0]
 
         self.logger.debug(
             "Resolving source relation %r. Source identifiers: %r; "
@@ -372,11 +354,7 @@ class TwwRelationContextProvider(
             "mapping found: %s.",
             source_class_id,
             source_class_ids,
-            (
-                implicit_class.canonical_class_id
-                if implicit_class is not None
-                else None
-            ),
+            (implicit_class.canonical_class_id if implicit_class is not None else None),
             explicit_class is not None,
         )
 
@@ -402,10 +380,7 @@ class TwwRelationContextProvider(
             ),
         )
 
-        if (
-            self.projection_mode
-            == MappingProjectionMode.FULL
-        ):
+        if self.projection_mode == MappingProjectionMode.FULL:
             resolved = self._with_automap_foreign_keys(
                 relation=relation,
                 class_mapping=resolved,
@@ -442,40 +417,23 @@ class TwwRelationContextProvider(
             relation,
         )
 
-        implicit_class = (
-            self._first_implicit_class_definition(
-                source_class_ids,
-            )
+        implicit_class = self._first_implicit_class_definition(
+            source_class_ids,
         )
 
-        explicit_class = (
-            self._inherited_explicit_class_definition(
-                relation=relation,
-            )
+        explicit_class = self._inherited_explicit_class_definition(
+            relation=relation,
         )
 
         if self.projection_mode == MappingProjectionMode.FULL:
-            return (
-                implicit_class is not None
-                or explicit_class is not None
-            )
+            return implicit_class is not None or explicit_class is not None
 
-        if (
-            explicit_class is not None
-            and explicit_class.function is not None
-        ):
+        if explicit_class is not None and explicit_class.function is not None:
             return True
 
         has_resolvable_target_class = (
-            (
-                implicit_class is not None
-                and implicit_class.canonical_class_id is not None
-            )
-            or (
-                explicit_class is not None
-                and explicit_class.canonical_class_id is not None
-            )
-        )
+            implicit_class is not None and implicit_class.canonical_class_id is not None
+        ) or (explicit_class is not None and explicit_class.canonical_class_id is not None)
 
         if not has_resolvable_target_class:
             self.logger.debug(
@@ -526,10 +484,8 @@ class TwwRelationContextProvider(
         defaults = self._explicit_defaults()
 
         return any(
-            source_attribute in source_attributes
-            for source_attribute in defaults.attributes
+            source_attribute in source_attributes for source_attribute in defaults.attributes
         )
-
 
     def _resolve_attribute_backed_class(
         self,
@@ -558,11 +514,9 @@ class TwwRelationContextProvider(
             implicit_class=implicit_class,
         )
 
-        applicable_default_attributes = (
-            self._applicable_default_attributes(
-                source_attributes=source_attributes,
-                defaults=defaults,
-            )
+        applicable_default_attributes = self._applicable_default_attributes(
+            source_attributes=source_attributes,
+            defaults=defaults,
         )
 
         relations = self._resolved_relations(
@@ -583,25 +537,19 @@ class TwwRelationContextProvider(
             ),
         )
 
-        if (
-            self.projection_mode
-            == MappingProjectionMode.FULL
-        ):
-            relation_attributes = (
-                self._localized_relation_attribute_mappings(
-                    source_class_id=source_class_id,
-                    canonical_class_id=canonical_class_id,
-                    source_attributes=source_attributes,
-                    relations=relations,
-                )
+        if self.projection_mode == MappingProjectionMode.FULL:
+            relation_attributes = self._localized_relation_attribute_mappings(
+                source_class_id=source_class_id,
+                canonical_class_id=canonical_class_id,
+                source_attributes=source_attributes,
+                relations=relations,
             )
 
         else:
             relation_attributes = {}
 
         self.logger.debug(
-            "Resolved localized relation attributes for source "
-            "class %r: %r.",
+            "Resolved localized relation attributes for source " "class %r: %r.",
             source_class_id,
             {
                 source_attribute: (
@@ -620,11 +568,7 @@ class TwwRelationContextProvider(
             AttributeMapping,
         ] = {}
 
-        if (
-            self.projection_mode
-            == MappingProjectionMode.FULL
-            and implicit_class is not None
-        ):
+        if self.projection_mode == MappingProjectionMode.FULL and implicit_class is not None:
             attributes.update(
                 implicit_class.attributes,
             )
@@ -674,10 +618,8 @@ class TwwRelationContextProvider(
         """
 
         for class_id in class_ids:
-            class_mapping = (
-                self._try_explicit_class_definition(
-                    class_id,
-                )
+            class_mapping = self._try_explicit_class_definition(
+                class_id,
             )
 
             if class_mapping is not None:
@@ -697,10 +639,8 @@ class TwwRelationContextProvider(
         """
 
         for class_id in class_ids:
-            class_mapping = (
-                self._try_implicit_class_definition(
-                    class_id,
-                )
+            class_mapping = self._try_implicit_class_definition(
+                class_id,
             )
 
             if class_mapping is not None:
@@ -719,9 +659,7 @@ class TwwRelationContextProvider(
         """
 
         if class_id in self._explicit_mapping_cache:
-            return self._explicit_mapping_cache[
-                class_id
-            ]
+            return self._explicit_mapping_cache[class_id]
 
         capability = getattr(
             self.model_mapping,
@@ -737,9 +675,7 @@ class TwwRelationContextProvider(
             else None
         )
 
-        self._explicit_mapping_cache[
-            class_id
-        ] = class_mapping
+        self._explicit_mapping_cache[class_id] = class_mapping
 
         return class_mapping
 
@@ -754,9 +690,7 @@ class TwwRelationContextProvider(
         """
 
         if class_id in self._implicit_mapping_cache:
-            return self._implicit_mapping_cache[
-                class_id
-            ]
+            return self._implicit_mapping_cache[class_id]
 
         capability = getattr(
             self.model_mapping,
@@ -772,9 +706,7 @@ class TwwRelationContextProvider(
             else None
         )
 
-        self._implicit_mapping_cache[
-            class_id
-        ] = class_mapping
+        self._implicit_mapping_cache[class_id] = class_mapping
 
         return class_mapping
 
@@ -818,10 +750,7 @@ class TwwRelationContextProvider(
         explicit parent mappings.
         """
 
-        if (
-            implicit_class is not None
-            and implicit_class.canonical_class_id is not None
-        ):
+        if implicit_class is not None and implicit_class.canonical_class_id is not None:
             return implicit_class.canonical_class_id
 
         if explicit_class is not None:
@@ -848,9 +777,7 @@ class TwwRelationContextProvider(
         """
 
         if relation in self._inherited_explicit_mapping_cache:
-            return self._inherited_explicit_mapping_cache[
-                relation
-            ]
+            return self._inherited_explicit_mapping_cache[relation]
 
         hierarchy = self._relation_inheritance_hierarchy(
             relation,
@@ -863,10 +790,8 @@ class TwwRelationContextProvider(
                 hierarchy_relation,
             )
 
-            implicit_class = (
-                self._first_implicit_class_definition(
-                    source_class_ids,
-                )
+            implicit_class = self._first_implicit_class_definition(
+                source_class_ids,
             )
 
             explicit_class_ids = list(
@@ -876,18 +801,15 @@ class TwwRelationContextProvider(
             if (
                 implicit_class is not None
                 and implicit_class.canonical_class_id is not None
-                and implicit_class.canonical_class_id
-                not in explicit_class_ids
+                and implicit_class.canonical_class_id not in explicit_class_ids
             ):
                 explicit_class_ids.append(
                     implicit_class.canonical_class_id,
                 )
 
-            explicit_class = (
-                self._first_explicit_class_definition(
-                    tuple(
-                        explicit_class_ids,
-                    )
+            explicit_class = self._first_explicit_class_definition(
+                tuple(
+                    explicit_class_ids,
                 )
             )
 
@@ -899,11 +821,7 @@ class TwwRelationContextProvider(
                     hierarchy_relation,
                 ),
                 source_class_ids,
-                (
-                    implicit_class.canonical_class_id
-                    if implicit_class is not None
-                    else None
-                ),
+                (implicit_class.canonical_class_id if implicit_class is not None else None),
                 tuple(
                     explicit_class_ids,
                 ),
@@ -922,9 +840,7 @@ class TwwRelationContextProvider(
                     child=explicit_class,
                 )
 
-        self._inherited_explicit_mapping_cache[
-            relation
-        ] = merged
+        self._inherited_explicit_mapping_cache[relation] = merged
 
         return merged
 
@@ -955,14 +871,10 @@ class TwwRelationContextProvider(
             )
 
         except NoInspectionAvailable:
-            hierarchy = (
-                relation,
-            )
+            hierarchy = (relation,)
 
         else:
-            hierarchy_items: list[
-                Any,
-            ] = []
+            hierarchy_items: list[Any,] = []
 
             current_mapper = mapper
 
@@ -971,9 +883,7 @@ class TwwRelationContextProvider(
                     current_mapper.class_,
                 )
 
-                current_mapper = (
-                    current_mapper.inherits
-                )
+                current_mapper = current_mapper.inherits
 
             hierarchy_items.reverse()
 
@@ -981,9 +891,7 @@ class TwwRelationContextProvider(
                 hierarchy_items,
             )
 
-        self._relation_inheritance_hierarchy_cache[
-            relation
-        ] = hierarchy
+        self._relation_inheritance_hierarchy_cache[relation] = hierarchy
 
         return hierarchy
 
@@ -1046,9 +954,7 @@ class TwwRelationContextProvider(
     def _source_attribute_names(
         self,
         relation,
-    ) -> frozenset[
-        str,
-    ]:
+    ) -> frozenset[str,]:
         """
         Return cached effective SQLAlchemy source attribute identifiers.
 
@@ -1066,9 +972,7 @@ class TwwRelationContextProvider(
         if cached is not None:
             return cached
 
-        attribute_names: set[
-            str,
-        ] = set()
+        attribute_names: set[str,] = set()
 
         try:
             mapper = inspect(
@@ -1122,18 +1026,14 @@ class TwwRelationContextProvider(
             attribute_names,
         )
 
-        self._source_attribute_names_cache[
-            relation
-        ] = result
+        self._source_attribute_names_cache[relation] = result
 
         return result
 
     def _applicable_default_attributes(
         self,
         *,
-        source_attributes: frozenset[
-            str,
-        ],
+        source_attributes: frozenset[str,],
         defaults: MappingDefaults,
     ) -> dict[
         str,
@@ -1181,9 +1081,7 @@ class TwwRelationContextProvider(
         *,
         source_class_id: str,
         canonical_class_id: str | None,
-        source_attributes: frozenset[
-            str,
-        ],
+        source_attributes: frozenset[str,],
         relations: Mapping[
             str,
             RelationMapping,
@@ -1208,8 +1106,7 @@ class TwwRelationContextProvider(
             return {}
 
         source_attribute_by_normalized_name = {
-            source_attribute.casefold(): source_attribute
-            for source_attribute in source_attributes
+            source_attribute.casefold(): source_attribute for source_attribute in source_attributes
         }
 
         attributes: dict[
@@ -1227,20 +1124,20 @@ class TwwRelationContextProvider(
             }
 
             matches = {
-                source_attribute_by_normalized_name[
-                    candidate.casefold()
-                ]
+                source_attribute_by_normalized_name[candidate.casefold()]
                 for candidate in candidates
-                if candidate.casefold()
-                in source_attribute_by_normalized_name
+                if candidate.casefold() in source_attribute_by_normalized_name
             }
 
             if not matches:
                 continue
 
-            if len(
-                matches,
-            ) != 1:
+            if (
+                len(
+                    matches,
+                )
+                != 1
+            ):
                 raise ValueError(
                     "Several source attributes match canonical "
                     f"relation {canonical_class_id!r}."
@@ -1254,25 +1151,18 @@ class TwwRelationContextProvider(
                 )
             )
 
-            attributes[
-                source_attribute
-            ] = AttributeMapping(
+            attributes[source_attribute] = AttributeMapping(
                 canonical_class_id=canonical_class_id,
                 canonical_attr_id=canonical_attribute_id,
                 foreign_key=ForeignKeyMapping(
-                    referenced_class_id=(
-                        relation_mapping.referenced_class_id
-                    ),
-                    referenced_attribute_id=(
-                        relation_mapping.referenced_attribute_id
-                    ),
+                    referenced_class_id=(relation_mapping.referenced_class_id),
+                    referenced_attribute_id=(relation_mapping.referenced_attribute_id),
                 ),
                 value_list=None,
             )
 
             self.logger.info(
-                "Resolved localized relation mapping "
-                "%r.%r -> %r.%r, referencing %r.%r.",
+                "Resolved localized relation mapping " "%r.%r -> %r.%r, referencing %r.%r.",
                 source_class_id,
                 source_attribute,
                 canonical_class_id,
@@ -1332,22 +1222,15 @@ class TwwRelationContextProvider(
             identity,
         ) in defaults.identities.items():
             if target_class_id in target_class_ids:
-                identities[
-                    target_class_id
-                ] = identity
+                identities[target_class_id] = identity
 
         if explicit_class is not None:
             identities.update(
                 explicit_class.identities,
             )
 
-        if (
-            canonical_class_id is not None
-            and canonical_class_id not in identities
-        ):
-            identities[
-                canonical_class_id
-            ] = defaults.identity
+        if canonical_class_id is not None and canonical_class_id not in identities:
+            identities[canonical_class_id] = defaults.identity
 
         return {
             target_class_id: identity
@@ -1389,9 +1272,7 @@ class TwwRelationContextProvider(
             CanonicalIdentityMapping,
         ] = {}
 
-        primary_canonical_class_id = (
-            class_mapping.canonical_class_id
-        )
+        primary_canonical_class_id = class_mapping.canonical_class_id
 
         for (
             canonical_class_id,
@@ -1399,21 +1280,14 @@ class TwwRelationContextProvider(
         ) in class_mapping.identities.items():
             localized_identity = self._localized_identity(
                 canonical_class_id=canonical_class_id,
-                primary_canonical_class_id=(
-                    primary_canonical_class_id
-                ),
+                primary_canonical_class_id=(primary_canonical_class_id),
                 identity=identity,
                 source_attributes=source_attributes,
             )
 
-            identities[
-                canonical_class_id
-            ] = localized_identity
+            identities[canonical_class_id] = localized_identity
 
-            if (
-                localized_identity.source_attribute
-                != identity.source_attribute
-            ):
+            if localized_identity.source_attribute != identity.source_attribute:
                 self.logger.debug(
                     "Localized identity for source relation %r and "
                     "canonical class %r: source attribute %r -> %r, "
@@ -1436,9 +1310,7 @@ class TwwRelationContextProvider(
         canonical_class_id: str,
         primary_canonical_class_id: str | None,
         identity: CanonicalIdentityMapping,
-        source_attributes: frozenset[
-            str,
-        ],
+        source_attributes: frozenset[str,],
     ) -> CanonicalIdentityMapping:
         """
         Localize one canonical identity to an available source attribute.
@@ -1448,10 +1320,8 @@ class TwwRelationContextProvider(
             return identity
 
         if (
-            canonical_class_id
-            == primary_canonical_class_id
-            and identity.canonical_attribute
-            == "obj_id"
+            canonical_class_id == primary_canonical_class_id
+            and identity.canonical_attribute == "obj_id"
             and "t_ili_tid" in source_attributes
         ):
             return replace(
@@ -1478,9 +1348,7 @@ class TwwRelationContextProvider(
         Return the identity of the primary canonical class.
         """
 
-        canonical_class_id = (
-            class_mapping.canonical_class_id
-        )
+        canonical_class_id = class_mapping.canonical_class_id
 
         if canonical_class_id is None:
             return None
@@ -1512,14 +1380,12 @@ class TwwRelationContextProvider(
             class_mapping.attributes,
         )
 
-        foreign_key_mappings = (
-            self._automap_foreign_key_mappings(
-                relation=relation,
-                class_mapping=class_mapping,
-                mapped_source_attributes=frozenset(
-                    attributes,
-                ),
-            )
+        foreign_key_mappings = self._automap_foreign_key_mappings(
+            relation=relation,
+            class_mapping=class_mapping,
+            mapped_source_attributes=frozenset(
+                attributes,
+            ),
         )
 
         if not foreign_key_mappings:
@@ -1544,9 +1410,7 @@ class TwwRelationContextProvider(
         *,
         relation,
         class_mapping: ClassMapping,
-        mapped_source_attributes: frozenset[
-            str,
-        ],
+        mapped_source_attributes: frozenset[str,],
     ) -> dict[
         str,
         AttributeMapping,
@@ -1565,9 +1429,7 @@ class TwwRelationContextProvider(
         referenced class, the source role must be mapped explicitly.
         """
 
-        target_class_id = (
-            class_mapping.canonical_class_id
-        )
+        target_class_id = class_mapping.canonical_class_id
 
         if target_class_id is None:
             return {}
@@ -1584,10 +1446,8 @@ class TwwRelationContextProvider(
             relation,
         )
 
-        inheritance_columns = (
-            self._inheritance_local_columns(
-                mapper,
-            )
+        inheritance_columns = self._inheritance_local_columns(
+            mapper,
         )
 
         candidates: list[
@@ -1605,14 +1465,10 @@ class TwwRelationContextProvider(
             ):
                 continue
 
-            referenced_relation = (
-                relationship.mapper.class_
-            )
+            referenced_relation = relationship.mapper.class_
 
-            referenced_source_class_id = (
-                self._relation_name(
-                    referenced_relation,
-                )
+            referenced_source_class_id = self._relation_name(
+                referenced_relation,
             )
 
             if self._is_ili2db_metadata_relation(
@@ -1625,18 +1481,14 @@ class TwwRelationContextProvider(
             ):
                 continue
 
-            referenced_class_mapping = (
-                self._resolved_referenced_class_mapping(
-                    relation=referenced_relation,
-                )
+            referenced_class_mapping = self._resolved_referenced_class_mapping(
+                relation=referenced_relation,
             )
 
             if referenced_class_mapping is None:
                 continue
 
-            referenced_class_id = (
-                referenced_class_mapping.canonical_class_id
-            )
+            referenced_class_id = referenced_class_mapping.canonical_class_id
 
             if referenced_class_id is None:
                 continue
@@ -1648,24 +1500,17 @@ class TwwRelationContextProvider(
             if referenced_identity is None:
                 continue
 
-            canonical_attribute_ids = (
-                self.canonical_model_adapter
-                .foreign_key_attributes_to_class(
-                    class_id=target_class_id,
-                    referenced_class_id=(
-                        referenced_class_id
-                    ),
-                )
+            canonical_attribute_ids = self.canonical_model_adapter.foreign_key_attributes_to_class(
+                class_id=target_class_id,
+                referenced_class_id=(referenced_class_id),
             )
 
             for local_column in relationship.local_columns:
                 if local_column in inheritance_columns:
                     continue
 
-                source_attribute = (
-                    self._column_attribute_name(
-                        local_column,
-                    )
+                source_attribute = self._column_attribute_name(
+                    local_column,
                 )
 
                 if source_attribute in mapped_source_attributes:
@@ -1679,18 +1524,12 @@ class TwwRelationContextProvider(
                 if not local_column.foreign_keys:
                     continue
 
-                canonical_attribute_id = (
-                    self._resolve_canonical_foreign_key_attribute(
-                        source_class_id=source_class_id,
-                        source_attribute=source_attribute,
-                        target_class_id=target_class_id,
-                        referenced_class_id=(
-                            referenced_class_id
-                        ),
-                        canonical_attribute_ids=(
-                            canonical_attribute_ids
-                        ),
-                    )
+                canonical_attribute_id = self._resolve_canonical_foreign_key_attribute(
+                    source_class_id=source_class_id,
+                    source_attribute=source_attribute,
+                    target_class_id=target_class_id,
+                    referenced_class_id=(referenced_class_id),
+                    canonical_attribute_ids=(canonical_attribute_ids),
                 )
 
                 if canonical_attribute_id is None:
@@ -1700,13 +1539,8 @@ class TwwRelationContextProvider(
                     canonical_class_id=target_class_id,
                     canonical_attr_id=canonical_attribute_id,
                     foreign_key=ForeignKeyMapping(
-                        referenced_class_id=(
-                            referenced_class_id
-                        ),
-                        referenced_attribute_id=(
-                            referenced_identity
-                            .canonical_attribute
-                        ),
+                        referenced_class_id=(referenced_class_id),
+                        referenced_attribute_id=(referenced_identity.canonical_attribute),
                     ),
                     value_list=None,
                 )
@@ -1719,8 +1553,7 @@ class TwwRelationContextProvider(
                 )
 
                 self.logger.debug(
-                    "Inferred canonical foreign-key mapping "
-                    "%r.%r -> %r.%r, referencing %r.%r.",
+                    "Inferred canonical foreign-key mapping " "%r.%r -> %r.%r, referencing %r.%r.",
                     source_class_id,
                     source_attribute,
                     target_class_id,
@@ -1764,8 +1597,7 @@ class TwwRelationContextProvider(
 
         if not canonical_attribute_ids:
             self.logger.debug(
-                "Ignoring source foreign key %r.%r because "
-                "canonical class %r has no FK to %r.",
+                "Ignoring source foreign key %r.%r because " "canonical class %r has no FK to %r.",
                 source_class_id,
                 source_attribute,
                 target_class_id,
@@ -1774,12 +1606,13 @@ class TwwRelationContextProvider(
 
             return None
 
-        if len(
-            canonical_attribute_ids,
-        ) == 1:
-            return canonical_attribute_ids[
-                0
-            ]
+        if (
+            len(
+                canonical_attribute_ids,
+            )
+            == 1
+        ):
+            return canonical_attribute_ids[0]
 
         raise ValueError(
             "Cannot infer the canonical role of source foreign "
@@ -1802,43 +1635,27 @@ class TwwRelationContextProvider(
         """
 
         if relation in self._referenced_mapping_cache:
-            return self._referenced_mapping_cache[
-                relation
-            ]
+            return self._referenced_mapping_cache[relation]
 
         source_class_ids = self._source_class_ids(
             relation,
         )
 
-        implicit_class = (
-            self._first_implicit_class_definition(
-                source_class_ids,
-            )
+        implicit_class = self._first_implicit_class_definition(
+            source_class_ids,
         )
 
-        explicit_class = (
-            self._inherited_explicit_class_definition(
-                relation=relation,
-            )
+        explicit_class = self._inherited_explicit_class_definition(
+            relation=relation,
         )
 
-        if (
-            explicit_class is not None
-            and explicit_class.function is not None
-        ):
-            self._referenced_mapping_cache[
-                relation
-            ] = explicit_class
+        if explicit_class is not None and explicit_class.function is not None:
+            self._referenced_mapping_cache[relation] = explicit_class
 
             return explicit_class
 
-        if (
-            explicit_class is None
-            and implicit_class is None
-        ):
-            self._referenced_mapping_cache[
-                relation
-            ] = None
+        if explicit_class is None and implicit_class is None:
+            self._referenced_mapping_cache[relation] = None
 
             return None
 
@@ -1862,13 +1679,8 @@ class TwwRelationContextProvider(
                 explicit_class.identities,
             )
 
-        if (
-            canonical_class_id is not None
-            and canonical_class_id not in identities
-        ):
-            identities[
-                canonical_class_id
-            ] = self._explicit_defaults().identity
+        if canonical_class_id is not None and canonical_class_id not in identities:
+            identities[canonical_class_id] = self._explicit_defaults().identity
 
         referenced_mapping = ClassMapping(
             canonical_class_id=canonical_class_id,
@@ -1881,11 +1693,7 @@ class TwwRelationContextProvider(
                 if explicit_class is not None
                 else {}
             ),
-            function=(
-                explicit_class.function
-                if explicit_class is not None
-                else None
-            ),
+            function=(explicit_class.function if explicit_class is not None else None),
         )
 
         result = self._with_localized_identities(
@@ -1893,9 +1701,7 @@ class TwwRelationContextProvider(
             class_mapping=referenced_mapping,
         )
 
-        self._referenced_mapping_cache[
-            relation
-        ] = result
+        self._referenced_mapping_cache[relation] = result
 
         return result
 
@@ -1922,27 +1728,18 @@ class TwwRelationContextProvider(
                 str,
                 str,
             ],
-            list[
-                str,
-            ],
+            list[str,],
         ] = {}
 
         for (
             source_attribute,
             attribute_mapping,
         ) in candidates:
-            target_class_id = (
-                attribute_mapping.canonical_class_id
-            )
+            target_class_id = attribute_mapping.canonical_class_id
 
-            canonical_attribute_id = (
-                attribute_mapping.canonical_attr_id
-            )
+            canonical_attribute_id = attribute_mapping.canonical_attr_id
 
-            if (
-                target_class_id is None
-                or canonical_attribute_id is None
-            ):
+            if target_class_id is None or canonical_attribute_id is None:
                 continue
 
             target = (
@@ -1969,9 +1766,12 @@ class TwwRelationContextProvider(
                 )
             )
 
-            if len(
-                unique_source_attributes,
-            ) <= 1:
+            if (
+                len(
+                    unique_source_attributes,
+                )
+                <= 1
+            ):
                 continue
 
             (
@@ -2001,10 +1801,7 @@ class TwwRelationContextProvider(
         Return child-side columns participating in joined inheritance.
         """
 
-        if (
-            mapper.inherits is None
-            or mapper.inherit_condition is None
-        ):
+        if mapper.inherits is None or mapper.inherit_condition is None:
             return frozenset()
 
         local_table = mapper.local_table
@@ -2087,19 +1884,11 @@ class TwwRelationContextProvider(
                 f"{tuple(sorted(missing_source_attributes))!r}."
             )
 
-        canonical_metadata = (
-            self.canonical_model_adapter.canonical_model()
-        )
+        canonical_metadata = self.canonical_model_adapter.canonical_model()
 
-        canonical_class_id = (
-            class_mapping.canonical_class_id
-        )
+        canonical_class_id = class_mapping.canonical_class_id
 
-        if (
-            canonical_class_id is not None
-            and canonical_class_id
-            not in canonical_metadata.classes
-        ):
+        if canonical_class_id is not None and canonical_class_id not in canonical_metadata.classes:
             raise ValueError(
                 "Resolved mapping targets unknown canonical "
                 f"class {canonical_class_id!r} for source "
@@ -2110,10 +1899,7 @@ class TwwRelationContextProvider(
             source_attribute,
             attribute_mapping,
         ) in class_mapping.attributes.items():
-            target_class_id = (
-                attribute_mapping.canonical_class_id
-                or canonical_class_id
-            )
+            target_class_id = attribute_mapping.canonical_class_id or canonical_class_id
 
             if target_class_id is None:
                 raise ValueError(
@@ -2122,10 +1908,7 @@ class TwwRelationContextProvider(
                     f"{source_attribute!r}."
                 )
 
-            if (
-                target_class_id
-                not in canonical_metadata.classes
-            ):
+            if target_class_id not in canonical_metadata.classes:
                 raise ValueError(
                     "Resolved mapping targets unknown canonical "
                     f"class {target_class_id!r}, required by "
@@ -2133,9 +1916,7 @@ class TwwRelationContextProvider(
                     f"{source_attribute!r}."
                 )
 
-            canonical_attribute_id = (
-                attribute_mapping.canonical_attr_id
-            )
+            canonical_attribute_id = attribute_mapping.canonical_attr_id
 
             if (
                 canonical_attribute_id is not None
@@ -2153,10 +1934,7 @@ class TwwRelationContextProvider(
                     f"{source_attribute!r}."
                 )
 
-            if (
-                target_class_id
-                not in class_mapping.identities
-            ):
+            if target_class_id not in class_mapping.identities:
                 raise ValueError(
                     "Resolved mapping has no canonical identity "
                     f"for target class {target_class_id!r}, "
@@ -2190,29 +1968,28 @@ class TwwRelationContextProvider(
 
             except AttributeError:
                 try:
-                    return self.quarantine_classes[
-                        relation_entry
-                    ]
+                    return self.quarantine_classes[relation_entry]
 
                 except (
                     KeyError,
                     TypeError,
                 ) as exception:
                     raise KeyError(
-                        "No quarantine ORM class exists for "
-                        f"relation {relation_entry!r}."
+                        "No quarantine ORM class exists for " f"relation {relation_entry!r}."
                     ) from exception
 
-        if getattr(
-            relation_entry,
-            "__table__",
-            None,
-        ) is not None:
+        if (
+            getattr(
+                relation_entry,
+                "__table__",
+                None,
+            )
+            is not None
+        ):
             return relation_entry
 
         raise TypeError(
-            "Expected a quarantine relation name or mapped ORM "
-            f"class, got {relation_entry!r}."
+            "Expected a quarantine relation name or mapped ORM " f"class, got {relation_entry!r}."
         )
 
     def _relation_name(
@@ -2260,10 +2037,7 @@ class TwwRelationContextProvider(
         ):
             return class_name
 
-        raise TypeError(
-            "Could not determine a relation name for "
-            f"{relation_class!r}."
-        )
+        raise TypeError("Could not determine a relation name for " f"{relation_class!r}.")
 
     def _declared_class_name(
         self,
@@ -2311,13 +2085,9 @@ class TwwRelationContextProvider(
             relation,
             str,
         ):
-            return (
-                relation,
-            )
+            return (relation,)
 
-        candidates: list[
-            str,
-        ] = [
+        candidates: list[str,] = [
             self._relation_name(
                 relation,
             )
@@ -2327,10 +2097,7 @@ class TwwRelationContextProvider(
             relation,
         )
 
-        if (
-            declared_name is not None
-            and declared_name not in candidates
-        ):
+        if declared_name is not None and declared_name not in candidates:
             candidates.append(
                 declared_name,
             )
@@ -2368,9 +2135,7 @@ class TwwRelationContextProvider(
         Return whether a relation contains internal ili2db metadata.
         """
 
-        return relation_name.casefold().startswith(
-            "t_ili2db_"
-        )
+        return relation_name.casefold().startswith("t_ili2db_")
 
     def _is_association_class(
         self,
@@ -2389,10 +2154,12 @@ class TwwRelationContextProvider(
         if table is None:
             return False
 
-        return str(
-            table.name,
-        ).casefold().endswith(
-            "assoc"
+        return (
+            str(
+                table.name,
+            )
+            .casefold()
+            .endswith("assoc")
         )
 
     def _is_ili2pg_technical_column(
