@@ -1,38 +1,145 @@
-CREATE OR REPLACE FUNCTION tww_app.fct_agxx_gepknoten_representation(
-    _node_id text
+CREATE OR REPLACE FUNCTION tww_app.fct_agxx_gepknoten_reference_oid(
+    _import_schema text,
+    _source_reference jsonb
 )
 RETURNS text
-LANGUAGE sql
+LANGUAGE plpgsql
 STABLE
-STRICT
 AS
 $function$
-    SELECT
-        CASE
-            WHEN EXISTS (
-                SELECT 1
-                FROM tww_od.agxx_unconnected_node_bwrel AS un
-                WHERE un.obj_id = _node_id
-            )
-            THEN 'synthetic'
-
-            WHEN EXISTS (
-                SELECT 1
-                FROM tww_od.wastewater_node AS wn
-                WHERE wn.obj_id = _node_id
-            )
-            THEN 'dss'
-
-            /*
-             * A new node has not passed through persistence yet. Default it
-             * to the AGXX synthetic representation rather than creating a
-             * protected DSS wastewater node.
-             */
-            ELSE 'synthetic'
-        END;
+BEGIN
+    RETURN tww_app.fct_quarantine_reference_oid(
+        _import_schema,
+        'abwasserknoten',
+        _source_reference
+    );
+END;
 $function$;
 
-CREATE OR REPLACE FUNCTION tww_app.fct_agxx_gepknoten_dss_effects(
+
+CREATE OR REPLACE FUNCTION tww_app.fct_agxx_gephaltung_endpoint_effects(
+    _reach_point_id text,
+    _agxx_node_id text
+)
+RETURNS jsonb
+LANGUAGE plpgsql
+STABLE
+AS
+$function$
+DECLARE
+    _effects jsonb := '[]'::jsonb;
+
+    _default_node_id text;
+    _existing_agxx_node_id text;
+
+    _reach_point_identity jsonb;
+    _agxx_reach_point_identity jsonb;
+    _synthetic_node_identity jsonb;
+BEGIN
+    IF _reach_point_id IS NULL
+       OR _agxx_node_id IS NULL
+    THEN
+        RETURN _effects;
+    END IF;
+
+    /*
+     * Normal DSS endpoint representation used by the export view when no
+     * AGXX extension overrides it.
+     */
+    SELECT COALESCE(
+        rp.fk_wastewater_networkelement,
+        rp.obj_id
+    )
+    INTO _default_node_id
+    FROM tww_od.reach_point AS rp
+    WHERE rp.obj_id = _reach_point_id;
+
+    /*
+     * Verify the canonical reach point through Python rather than raising an
+     * SQL exception.
+     */
+    _reach_point_identity := tww_app.fct_effect_identity(
+        'reach_point',
+        'obj_id',
+        _reach_point_id
+    );
+
+    _effects := tww_app.fct_effect_append(
+        _effects,
+        tww_app.fct_effect_enforce_exists(
+            _reach_point_identity
+        )
+    );
+
+    SELECT arp.ag64_fk_wastewater_node
+    INTO _existing_agxx_node_id
+    FROM tww_od.agxx_reach_point AS arp
+    WHERE arp.fk_reach_point = _reach_point_id;
+
+    /*
+     * If the incoming endpoint is already represented by the normal DSS
+     * relation and no AGXX extension exists, no AGXX row is required.
+     */
+    IF _agxx_node_id = _default_node_id
+       AND _existing_agxx_node_id IS NULL
+    THEN
+        RETURN _effects;
+    END IF;
+
+    /*
+     * Otherwise the AGXX topology differs from the DSS topology. The target
+     * node must exist in the synthetic-node bucket.
+     *
+     * This also supports the case where a wastewater_node with the same
+     * identifier exists. The synthetic representation takes precedence for
+     * the AGXX topology.
+     */
+    _synthetic_node_identity := tww_app.fct_effect_identity(
+        'agxx_unconnected_node_bwrel',
+        'obj_id',
+        _agxx_node_id
+    );
+
+    _effects := tww_app.fct_effect_append(
+        _effects,
+        tww_app.fct_effect_enforce_exists(
+            _synthetic_node_identity
+        )
+    );
+
+    /*
+     * Assumption:
+     * agxx_reach_point uses fk_reach_point as its canonical identity.
+     */
+    _agxx_reach_point_identity := tww_app.fct_effect_identity(
+        'agxx_reach_point',
+        'fk_reach_point',
+        _reach_point_id
+    );
+
+    _effects := tww_app.fct_effect_append(
+        _effects,
+        tww_app.fct_effect_enforce_exists(
+            _agxx_reach_point_identity
+        )
+    );
+
+    _effects := tww_app.fct_effect_append(
+        _effects,
+        tww_app.fct_effect_update(
+            _agxx_reach_point_identity,
+            'ag64_fk_wastewater_node',
+            to_jsonb(
+                _agxx_node_id
+            )
+        )
+    );
+
+    RETURN _effects;
+END;
+$function$;
+
+CREATE OR REPLACE FUNCTION tww_app.fct_agxx_gephaltung_effects(
     _row jsonb,
     _import_schema text
 )
@@ -44,131 +151,227 @@ $function$
 DECLARE
     _effects jsonb := '[]'::jsonb;
 
-    _node_id text;
+    _reach_id text;
 
-    _networkelement_id text;
+    _reach_point_from_id text;
+    _reach_point_to_id text;
+
+    _start_node_id text;
+    _end_node_id text;
+
     _structure_id text;
 
     _provider_wi text;
     _provider_gep text;
     _measure_id text;
 
-    _gateway_code bigint;
-
-    _node_identity jsonb;
-    _networkelement_identity jsonb;
-    _agxx_node_identity jsonb;
+    _reach_identity jsonb;
+    _agxx_reach_identity jsonb;
     _agxx_networkelement_identity jsonb;
     _last_modification_identity jsonb;
     _agxx_structure_identity jsonb;
+    _channel_identity jsonb;
+
+    _function_hierarchic_code bigint;
+    _usage_current_code bigint;
+    _usage_planned_code bigint;
 
     _organisation_identity jsonb;
+    _measure_identity jsonb;
 BEGIN
-    _node_id := NULLIF(
-        _row ->> 't_ili_tid',
+    _reach_id := NULLIF(
+        btrim(
+            _row ->> 't_ili_tid'
+        ),
         ''
     );
 
-    _node_identity := tww_app.fct_effect_identity(
-        'wastewater_node',
-        'obj_id',
-        _node_id
+    /*
+     * ------------------------------------------------------------------
+     * 1. Value-list mapping checks
+     * ------------------------------------------------------------------
+     *
+     * Successful values produce no effects because the DSS import already
+     * populated the canonical attributes. Missing mappings produce an
+     * unsatisfied existence requirement for Python to classify.
+     */
+
+    _effects := _effects || tww_app.fct_agxx_check_value_mapping(
+        'tww_vl',
+        'wastewater_structure_structure_condition',
+        'value_de',
+        _row ->> 'baulicherzustand'
     );
 
-    _networkelement_identity := tww_app.fct_effect_identity(
-        'wastewater_networkelement',
-        'obj_id',
-        _node_id
+    _effects := _effects || tww_app.fct_agxx_check_value_mapping(
+        'tww_vl',
+        'wastewater_structure_status',
+        'value_de',
+        NULLIF(
+            replace(
+                _row ->> 'bauwerkstatus',
+                '.in_Betrieb',
+                ''
+            ),
+            ''
+        )
     );
 
-    _agxx_node_identity := tww_app.fct_effect_identity(
-        'agxx_wastewater_node',
-        'fk_wastewater_node',
-        _node_id
+    _effects := _effects || tww_app.fct_agxx_check_value_mapping(
+        'tww_vl',
+        'wastewater_structure_financing',
+        'value_de',
+        _row ->> 'finanzierung'
     );
+
+    _effects := _effects || tww_app.fct_agxx_check_value_mapping(
+        'tww_vl',
+        'channel_function_hydraulic',
+        'value_de',
+        _row ->> 'funktionhydraulisch'
+    );
+
+    _effects := _effects || tww_app.fct_agxx_check_value_mapping(
+        'tww_vl',
+        'reach_point_elevation_accuracy',
+        'value_de',
+        _row ->> 'hoehengenauigkeit_von'
+    );
+
+    _effects := _effects || tww_app.fct_agxx_check_value_mapping(
+        'tww_vl',
+        'reach_point_elevation_accuracy',
+        'value_de',
+        _row ->> 'hoehengenauigkeit_nach'
+    );
+
+    _effects := _effects || tww_app.fct_agxx_check_value_mapping(
+        'tww_vl',
+        'reach_material',
+        'value_de',
+        _row ->> 'material'
+    );
+
+    _effects := _effects || tww_app.fct_agxx_check_value_mapping(
+        'tww_vl',
+        'pipe_profile_profile_type',
+        'value_de',
+        _row ->> 'profiltyp'
+    );
+
+    _effects := _effects || tww_app.fct_agxx_check_value_mapping(
+        'tww_vl',
+        'reach_relining_kind',
+        'value_de',
+        _row ->> 'reliner_art'
+    );
+
+    _effects := _effects || tww_app.fct_agxx_check_value_mapping(
+        'tww_vl',
+        'reach_relining_construction',
+        'value_de',
+        _row ->> 'reliner_bautechnik'
+    );
+
+    _effects := _effects || tww_app.fct_agxx_check_value_mapping(
+        'tww_vl',
+        'reach_reliner_material',
+        'value_de',
+        _row ->> 'reliner_material'
+    );
+
+    _effects := _effects || tww_app.fct_agxx_check_value_mapping(
+        'tww_vl',
+        'wastewater_structure_renovation_necessity',
+        'value_de',
+        _row ->> 'sanierungsbedarf'
+    );
+
+    /*
+     * ------------------------------------------------------------------
+     * 2. Resolve the existing DSS reach context
+     * ------------------------------------------------------------------
+     *
+     * The DSS import is responsible for creating reach, endpoint reach
+     * points, structure, channel, and pipe profile.
+     *
+     * Missing core objects are expressed through enforce_exists. The
+     * evaluator then produces a meaningful blocked result.
+     */
+
+    _reach_identity := tww_app.fct_effect_identity(
+        'reach',
+        'obj_id',
+        _reach_id
+    );
+
+    _effects := tww_app.fct_effect_append(
+        _effects,
+        tww_app.fct_effect_enforce_exists(
+            _reach_identity
+        )
+    );
+
+    SELECT
+        re.fk_reach_point_from,
+        re.fk_reach_point_to,
+        ne.fk_wastewater_structure
+    INTO
+        _reach_point_from_id,
+        _reach_point_to_id,
+        _structure_id
+    FROM tww_od.reach AS re
+    LEFT JOIN tww_od.wastewater_networkelement AS ne
+      ON ne.obj_id = re.obj_id
+    WHERE re.obj_id = _reach_id;
+
+    /*
+     * ------------------------------------------------------------------
+     * 3. AGXX reach extension
+     * ------------------------------------------------------------------
+     */
+
+    _agxx_reach_identity := tww_app.fct_effect_identity(
+        'agxx_reach',
+        'fk_reach',
+        _reach_id
+    );
+
+    _effects := tww_app.fct_effect_append(
+        _effects,
+        tww_app.fct_effect_enforce_exists(
+            _agxx_reach_identity
+        )
+    );
+
+    _effects := tww_app.fct_effect_append_update_if_present(
+        _effects,
+        _row,
+        'lichte_hoehe_geplant',
+        _agxx_reach_identity,
+        'ag96_clear_height_planned'
+    );
+
+    _effects := tww_app.fct_effect_append_update_if_present(
+        _effects,
+        _row,
+        'lichte_breite_geplant',
+        _agxx_reach_identity,
+        'ag96_clear_width_planned'
+    );
+
+    /*
+     * ------------------------------------------------------------------
+     * 4. AGXX network-element extension
+     * ------------------------------------------------------------------
+     */
 
     _agxx_networkelement_identity := tww_app.fct_effect_identity(
         'agxx_wastewater_networkelement',
         'fk_wastewater_networkelement',
-        _node_id
+        _reach_id
     );
 
-    _last_modification_identity := tww_app.fct_effect_identity(
-        'agxx_last_modification',
-        'fk_element',
-        _node_id
-    );
-
-    /*
-     * Verify core DSS objects. Missing objects are blocked by the Python
-     * evaluation policy.
-     */
-    _effects := tww_app.fct_effect_append(
-        _effects,
-        tww_app.fct_effect_enforce_exists(
-            _node_identity
-        )
-    );
-
-    _effects := tww_app.fct_effect_append(
-        _effects,
-        tww_app.fct_effect_enforce_exists(
-            _networkelement_identity
-        )
-    );
-
-    /*
-     * AGXX node extension.
-     */
-    _effects := tww_app.fct_effect_append(
-        _effects,
-        tww_app.fct_effect_enforce_exists(
-            _agxx_node_identity
-        )
-    );
-
-    _gateway_code := tww_app.fct_value_list_code(
-        'tww_vl',
-        'wastewater_node_ag96_is_gateway',
-        'value_de',
-        _row ->> 'istschnittstelle'
-    );
-
-    IF (
-        _row ->> 'istschnittstelle'
-    ) IS NOT NULL THEN
-        IF _gateway_code IS NULL THEN
-            /*
-             * TODO:
-             * Replace the virtual missing-mapping identity once value-list
-             * extension effects have a concrete canonical representation.
-             */
-            _effects := tww_app.fct_effect_append(
-                _effects,
-                tww_app.fct_effect_enforce_exists(
-                    tww_app.fct_missing_mapping_identity(
-                        'wastewater_node_ag96_is_gateway',
-                        _row ->> 'istschnittstelle'
-                    )
-                )
-            );
-        ELSE
-            _effects := tww_app.fct_effect_append(
-                _effects,
-                tww_app.fct_effect_update(
-                    _agxx_node_identity,
-                    'ag96_is_gateway',
-                    to_jsonb(
-                        _gateway_code
-                    )
-                )
-            );
-        END IF;
-    END IF;
-
-    /*
-     * AGXX network-element extension.
-     */
     _effects := tww_app.fct_effect_append(
         _effects,
         tww_app.fct_effect_enforce_exists(
@@ -255,8 +458,17 @@ BEGIN
     );
 
     /*
-     * Modification timestamps.
+     * ------------------------------------------------------------------
+     * 5. AGXX last-modification extension
+     * ------------------------------------------------------------------
      */
+
+    _last_modification_identity := tww_app.fct_effect_identity(
+        'agxx_last_modification',
+        'fk_element',
+        _reach_id
+    );
+
     _effects := tww_app.fct_effect_append(
         _effects,
         tww_app.fct_effect_enforce_exists(
@@ -281,55 +493,235 @@ BEGIN
     );
 
     /*
-     * Structure extension.
+     * ------------------------------------------------------------------
+     * 6. AGXX wastewater-structure extension
+     * ------------------------------------------------------------------
      *
-     * No DSS structure values are modified here.
+     * The DSS import owns the wastewater_structure. The AGXX mapping only
+     * persists the measure reference.
      */
-    SELECT COALESCE(
-        ne.fk_wastewater_structure,
-        ws.obj_id
-    )
-    INTO _structure_id
-    FROM tww_od.wastewater_networkelement AS ne
-    LEFT JOIN tww_od.wastewater_structure AS ws
-      ON ws.fk_main_wastewater_node = ne.obj_id
-    WHERE ne.obj_id = _node_id
-    LIMIT 1;
 
-    IF (
-        _row ->> 'gepmassnahmeref'
-    ) IS NOT NULL THEN
-        IF _structure_id IS NULL THEN
-            /*
-             * A protected core structure is required but absent. Let Python
-             * decide that this is blocked.
-             *
-             * TODO:
-             * Replace the placeholder identity if deterministic structure
-             * creation is introduced.
-             */
-            _structure_id := concat(
-                _node_id,
-                ':missing-structure'
+/*
+ * ------------------------------------------------------------------
+ * Channel attributes with AGXX-specific value-list semantics
+ * ------------------------------------------------------------------
+ *
+ * These values must not be skipped merely because channel is DSS-owned.
+ *
+ * AGXX introduces or renames values that may not be reproduced by the
+ * baseline import:
+ *
+ * - funktionhierarchisch uses channel_function_hierarchic directly;
+ * - nutzungsartag_ist uses channel_usage_current_import_rel_agxx;
+ * - nutzungsartag_geplant uses
+ *   channel_usage_planned_import_rel_agxx.
+ *
+ * The effect evaluator detects values that are already correct, so emitting
+ * the desired values unconditionally is safe.
+ */
+
+    IF _structure_id IS NULL THEN
+        /*
+        * A channel is a wastewater-structure subtype. Without a related
+        * wastewater structure there is no valid channel target.
+        *
+        * Do not raise an SQL exception. Emit an unsatisfied protected-object
+        * requirement and let Python create the blocked finding.
+        */
+        _effects := tww_app.fct_effect_append(
+            _effects,
+            tww_app.fct_effect_enforce_exists(
+                tww_app.fct_effect_identity(
+                    'wastewater_structure',
+                    'obj_id',
+                    concat(
+                        _reach_id,
+                        ':missing-structure'
+                    )
+                )
+            )
+        );
+
+    ELSE
+        _channel_identity := tww_app.fct_effect_identity(
+            'channel',
+            'obj_id',
+            _structure_id
+        );
+
+        _effects := tww_app.fct_effect_append(
+            _effects,
+            tww_app.fct_effect_enforce_exists(
+                _channel_identity
+            )
+        );
+
+        /*
+        * FunktionHierarchisch
+        *
+        * There is no separate AGXX import relation. The canonical value list
+        * itself contains the AGXX extension values, including inactive values.
+        */
+        IF NULLIF(
+            _row ->> 'funktionhierarchisch',
+            ''
+        ) IS NOT NULL THEN
+            _function_hierarchic_code := (
+                tww_app.fct_value_list_code(
+                    'tww_vl',
+                    'channel_function_hierarchic',
+                    'value_de',
+                    _row ->> 'funktionhierarchisch'
+                )
             );
 
+            IF _function_hierarchic_code IS NULL THEN
+                /*
+                * Placeholder until missing value mappings have a real canonical
+                * value-list effect representation.
+                */
+                _effects := tww_app.fct_effect_append(
+                    _effects,
+                    tww_app.fct_effect_enforce_exists(
+                        tww_app.fct_missing_mapping_identity(
+                            'channel_function_hierarchic',
+                            _row ->> 'funktionhierarchisch'
+                        )
+                    )
+                );
+
+            ELSE
+                _effects := tww_app.fct_effect_append(
+                    _effects,
+                    tww_app.fct_effect_update(
+                        _channel_identity,
+                        'function_hierarchic',
+                        to_jsonb(
+                            _function_hierarchic_code
+                        )
+                    )
+                );
+            END IF;
+        END IF;
+
+        /*
+        * NutzungsartAG_ist
+        *
+        * The dedicated import relation is authoritative. This includes the
+        * AGXX extension values:
+        *
+        * - Platzwasser;
+        * - Strassenwasser;
+        *
+        * and the AGXX-specific remapping of the ordinary values.
+        */
+        IF NULLIF(
+            _row ->> 'nutzungsartag_ist',
+            ''
+        ) IS NOT NULL THEN
+            _usage_current_code := (
+                tww_app.fct_value_list_code(
+                    'tww_vl',
+                    'channel_usage_current_import_rel_agxx',
+                    'value_de',
+                    _row ->> 'nutzungsartag_ist'
+                )
+            );
+
+            IF _usage_current_code IS NULL THEN
+                _effects := tww_app.fct_effect_append(
+                    _effects,
+                    tww_app.fct_effect_enforce_exists(
+                        tww_app.fct_missing_mapping_identity(
+                            'channel_usage_current_import_rel_agxx',
+                            _row ->> 'nutzungsartag_ist'
+                        )
+                    )
+                );
+
+            ELSE
+                _effects := tww_app.fct_effect_append(
+                    _effects,
+                    tww_app.fct_effect_update(
+                        _channel_identity,
+                        'usage_current',
+                        to_jsonb(
+                            _usage_current_code
+                        )
+                    )
+                );
+            END IF;
+        END IF;
+
+        /*
+        * NutzungsartAG_geplant
+        *
+        * The dedicated import relation is authoritative. It deliberately maps
+        * AGXX text values to the planned-usage canonical codes.
+        */
+        IF NULLIF(
+            _row ->> 'nutzungsartag_geplant',
+            ''
+        ) IS NOT NULL THEN
+            _usage_planned_code := (
+                tww_app.fct_value_list_code(
+                    'tww_vl',
+                    'channel_usage_planned_import_rel_agxx',
+                    'value_de',
+                    _row ->> 'nutzungsartag_geplant'
+                )
+            );
+
+            IF _usage_planned_code IS NULL THEN
+                _effects := tww_app.fct_effect_append(
+                    _effects,
+                    tww_app.fct_effect_enforce_exists(
+                        tww_app.fct_missing_mapping_identity(
+                            'channel_usage_planned_import_rel_agxx',
+                            _row ->> 'nutzungsartag_geplant'
+                        )
+                    )
+                );
+
+            ELSE
+                _effects := tww_app.fct_effect_append(
+                    _effects,
+                    tww_app.fct_effect_update(
+                        _channel_identity,
+                        'usage_planned',
+                        to_jsonb(
+                            _usage_planned_code
+                        )
+                    )
+                );
+            END IF;
+        END IF;
+    END IF;
+
+    IF _row ? 'gepmassnahmeref' THEN
+        IF _structure_id IS NULL THEN
+            /*
+             * Do not throw from SQL. Let Python report that the required
+             * protected structure is absent.
+             */
             _effects := tww_app.fct_effect_append(
                 _effects,
                 tww_app.fct_effect_enforce_exists(
                     tww_app.fct_effect_identity(
                         'wastewater_structure',
                         'obj_id',
-                        _structure_id
+                        concat(
+                            _reach_id,
+                            ':missing-structure'
+                        )
                     )
                 )
             );
         ELSE
-            _agxx_structure_identity := (
-                tww_app.fct_effect_identity(
-                    'agxx_wastewater_structure',
-                    'fk_wastewater_structure',
-                    _structure_id
-                )
+            _agxx_structure_identity := tww_app.fct_effect_identity(
+                'agxx_wastewater_structure',
+                'fk_wastewater_structure',
+                _structure_id
             );
 
             _effects := tww_app.fct_effect_append(
@@ -339,23 +731,23 @@ BEGIN
                 )
             );
 
-            _measure_id := (
-                tww_app.fct_quarantine_reference_oid(
-                    _import_schema,
-                    'gepmassnahme',
-                    _row -> 'gepmassnahmeref'
-                )
+            _measure_id := tww_app.fct_quarantine_reference_oid(
+                _import_schema,
+                'gepmassnahme',
+                _row -> 'gepmassnahmeref'
             );
 
             IF _measure_id IS NOT NULL THEN
+                _measure_identity := tww_app.fct_effect_identity(
+                    'measure',
+                    'obj_id',
+                    _measure_id
+                );
+
                 _effects := tww_app.fct_effect_append(
                     _effects,
                     tww_app.fct_effect_enforce_exists(
-                        tww_app.fct_effect_identity(
-                            'measure',
-                            'obj_id',
-                            _measure_id
-                        )
+                        _measure_identity
                     )
                 );
             END IF;
@@ -374,477 +766,35 @@ BEGIN
     END IF;
 
     /*
-     * FunktionAG:
+     * ------------------------------------------------------------------
+     * 7. AGXX endpoint topology
+     * ------------------------------------------------------------------
      *
-     * Existing related canonical rows determine the exported value. The DSS
-     * path must not rewrite DSS subtype tables.
-     *
-     * TODO:
-     * Add only structural enforce_exists checks for values such as Messstelle
-     * once the canonical identity of measuring_point has been confirmed.
+     * Endpoint references map to synthetic AGXX nodes only when the AGXX
+     * topology differs from the existing DSS endpoint relationship.
      */
 
-    RETURN _effects;
-END;
-$function$;
-
-CREATE OR REPLACE FUNCTION tww_app.fct_agxx_gepknoten_synthetic_effects(
-    _row jsonb,
-    _import_schema text
-)
-RETURNS jsonb
-LANGUAGE plpgsql
-STABLE
-AS
-$function$
-DECLARE
-    _effects jsonb := '[]'::jsonb;
-
-    _node_id text;
-
-    _identity jsonb;
-    _organisation_identity jsonb;
-    _measure_identity jsonb;
-
-    _operator_id text;
-    _owner_id text;
-    _measure_id text;
-
-    _structure_condition_code bigint;
-    _status_code bigint;
-    _financing_code bigint;
-    _renovation_code bigint;
-    _accessibility_code bigint;
-    _cover_accuracy_code bigint;
-    _function_hierarchic_code bigint;
-BEGIN
-    _node_id := NULLIF(
-        _row ->> 't_ili_tid',
-        ''
-    );
-
-    _identity := tww_app.fct_effect_identity(
-        'agxx_unconnected_node_bwrel',
-        'obj_id',
-        _node_id
-    );
-
-    _effects := tww_app.fct_effect_append(
-        _effects,
-        tww_app.fct_effect_enforce_exists(
-            _identity
-        )
-    );
-
-    /*
-     * Direct scalar storage required for synthetic AGXX topology nodes.
-     */
-    _effects := tww_app.fct_effect_append_update_if_present(
-        _effects,
-        _row,
-        'ara_nr',
-        _identity,
-        'wwtp_number'
-    );
-
-    _effects := tww_app.fct_effect_append_update_if_present(
-        _effects,
-        _row,
-        'baujahr',
-        _identity,
-        'year_of_construction'
-    );
-
-    _effects := tww_app.fct_effect_append_update_if_present(
-        _effects,
-        _row,
-        'jahr_zustandserhebung',
-        _identity,
-        'status_survey_year'
-    );
-
-    _effects := tww_app.fct_effect_append_update_if_present(
-        _effects,
-        _row,
-        'maxrueckstauhoehe',
-        _identity,
-        'backflow_level_current'
-    );
-
-    _effects := tww_app.fct_effect_append_update_if_present(
-        _effects,
-        _row,
-        'sohlenkote',
-        _identity,
-        'bottom_level'
-    );
-
-    _effects := tww_app.fct_effect_append_update_if_present(
-        _effects,
-        _row,
-        'lage',
-        _identity,
-        'situation3d_geometry'
-    );
-
-    _effects := tww_app.fct_effect_append_update_if_present(
-        _effects,
-        _row,
-        'deckelkote',
-        _identity,
-        'co_level'
-    );
-
-    _effects := tww_app.fct_effect_append_update_if_present(
-        _effects,
-        _row,
-        'detailgeometrie',
-        _identity,
-        'detail_geometry3d_geometry'
-    );
-
-    /*
-     * VSA value lists are always resolved to canonical codes.
-     */
-    IF (
-        _row ->> 'baulicherzustand'
-    ) IS NOT NULL THEN
-        _structure_condition_code := (
-            tww_app.fct_value_list_code(
-                'tww_vl',
-                'wastewater_structure_structure_condition',
-                'value_de',
-                _row ->> 'baulicherzustand'
-            )
-        );
-
-        IF _structure_condition_code IS NULL THEN
-            _effects := tww_app.fct_effect_append(
-                _effects,
-                tww_app.fct_effect_enforce_exists(
-                    tww_app.fct_missing_mapping_identity(
-                        'wastewater_structure_structure_condition',
-                        _row ->> 'baulicherzustand'
-                    )
-                )
-            );
-        ELSE
-            _effects := tww_app.fct_effect_append(
-                _effects,
-                tww_app.fct_effect_update(
-                    _identity,
-                    'structure_condition',
-                    to_jsonb(
-                        _structure_condition_code
-                    )
-                )
-            );
-        END IF;
-    END IF;
-
-    IF (
-        _row ->> 'bauwerkstatus'
-    ) IS NOT NULL THEN
-        _status_code := tww_app.fct_value_list_code(
-            'tww_vl',
-            'wastewater_structure_status',
-            'value_de',
-            replace(
-                _row ->> 'bauwerkstatus',
-                '.in_Betrieb',
-                ''
-            )
-        );
-
-        IF _status_code IS NULL THEN
-            _effects := tww_app.fct_effect_append(
-                _effects,
-                tww_app.fct_effect_enforce_exists(
-                    tww_app.fct_missing_mapping_identity(
-                        'wastewater_structure_status',
-                        _row ->> 'bauwerkstatus'
-                    )
-                )
-            );
-        ELSE
-            _effects := tww_app.fct_effect_append(
-                _effects,
-                tww_app.fct_effect_update(
-                    _identity,
-                    'status',
-                    to_jsonb(
-                        _status_code
-                    )
-                )
-            );
-        END IF;
-    END IF;
-
-    IF (
-        _row ->> 'finanzierung'
-    ) IS NOT NULL THEN
-        _financing_code := tww_app.fct_value_list_code(
-            'tww_vl',
-            'wastewater_structure_financing',
-            'value_de',
-            _row ->> 'finanzierung'
-        );
-
-        IF _financing_code IS NULL THEN
-            _effects := tww_app.fct_effect_append(
-                _effects,
-                tww_app.fct_effect_enforce_exists(
-                    tww_app.fct_missing_mapping_identity(
-                        'wastewater_structure_financing',
-                        _row ->> 'finanzierung'
-                    )
-                )
-            );
-        ELSE
-            _effects := tww_app.fct_effect_append(
-                _effects,
-                tww_app.fct_effect_update(
-                    _identity,
-                    'financing',
-                    to_jsonb(
-                        _financing_code
-                    )
-                )
-            );
-        END IF;
-    END IF;
-
-    IF (
-        _row ->> 'sanierungsbedarf'
-    ) IS NOT NULL THEN
-        _renovation_code := tww_app.fct_value_list_code(
-            'tww_vl',
-            'wastewater_structure_renovation_necessity',
-            'value_de',
-            _row ->> 'sanierungsbedarf'
-        );
-
-        IF _renovation_code IS NULL THEN
-            _effects := tww_app.fct_effect_append(
-                _effects,
-                tww_app.fct_effect_enforce_exists(
-                    tww_app.fct_missing_mapping_identity(
-                        'wastewater_structure_renovation_necessity',
-                        _row ->> 'sanierungsbedarf'
-                    )
-                )
-            );
-        ELSE
-            _effects := tww_app.fct_effect_append(
-                _effects,
-                tww_app.fct_effect_update(
-                    _identity,
-                    'renovation_necessity',
-                    to_jsonb(
-                        _renovation_code
-                    )
-                )
-            );
-        END IF;
-    END IF;
-
-    IF (
-        _row ->> 'zugaenglichkeit'
-    ) IS NOT NULL THEN
-        _accessibility_code := tww_app.fct_value_list_code(
-            'tww_vl',
-            'wastewater_structure_accessibility',
-            'value_de',
-            _row ->> 'zugaenglichkeit'
-        );
-
-        IF _accessibility_code IS NULL THEN
-            _effects := tww_app.fct_effect_append(
-                _effects,
-                tww_app.fct_effect_enforce_exists(
-                    tww_app.fct_missing_mapping_identity(
-                        'wastewater_structure_accessibility',
-                        _row ->> 'zugaenglichkeit'
-                    )
-                )
-            );
-        ELSE
-            _effects := tww_app.fct_effect_append(
-                _effects,
-                tww_app.fct_effect_update(
-                    _identity,
-                    'accessibility',
-                    to_jsonb(
-                        _accessibility_code
-                    )
-                )
-            );
-        END IF;
-    END IF;
-
-    IF (
-        _row ->> 'lagegenauigkeit'
-    ) IS NOT NULL THEN
-        _cover_accuracy_code := (
-            tww_app.fct_value_list_code(
-                'tww_vl',
-                'cover_positional_accuracy',
-                'value_de',
-                _row ->> 'lagegenauigkeit'
-            )
-        );
-
-        IF _cover_accuracy_code IS NULL THEN
-            _effects := tww_app.fct_effect_append(
-                _effects,
-                tww_app.fct_effect_enforce_exists(
-                    tww_app.fct_missing_mapping_identity(
-                        'cover_positional_accuracy',
-                        _row ->> 'lagegenauigkeit'
-                    )
-                )
-            );
-        ELSE
-            _effects := tww_app.fct_effect_append(
-                _effects,
-                tww_app.fct_effect_update(
-                    _identity,
-                    'co_positional_accuracy',
-                    to_jsonb(
-                        _cover_accuracy_code
-                    )
-                )
-            );
-        END IF;
-    END IF;
-
-    IF (
-        _row ->> 'funktionhierarchisch'
-    ) IS NOT NULL THEN
-        /*
-         * PLACEHOLDER:
-         *
-         * The export uses left(value_de, 3), which may not be unique.
-         * Add a dedicated channel_function_hierarchic_import_rel_agxx
-         * relation before implementing this lookup.
-         */
-        _effects := tww_app.fct_effect_append(
-            _effects,
-            tww_app.fct_effect_enforce_exists(
-                tww_app.fct_missing_mapping_identity(
-                    'channel_function_hierarchic_import_rel_agxx',
-                    _row ->> 'funktionhierarchisch'
-                )
-            )
-        );
-    END IF;
-
-    /*
-     * Organisation references.
-     */
-    _operator_id := tww_app.fct_agxx_live_organisation_oid(
+    _start_node_id := tww_app.fct_agxx_gepknoten_reference_oid(
         _import_schema,
-        _row -> 'betreiber'
+        _row -> 'startknoten'
     );
 
-    _owner_id := tww_app.fct_agxx_live_organisation_oid(
+    _end_node_id := tww_app.fct_agxx_gepknoten_reference_oid(
         _import_schema,
-        _row -> 'eigentuemer'
+        _row -> 'endknoten'
     );
 
-    IF _operator_id IS NOT NULL THEN
-        _organisation_identity := tww_app.fct_effect_identity(
-            'organisation',
-            'obj_id',
-            _operator_id
+    _effects := _effects
+        || tww_app.fct_agxx_gephaltung_endpoint_effects(
+            _reach_point_from_id,
+            _start_node_id
         );
 
-        _effects := tww_app.fct_effect_append(
-            _effects,
-            tww_app.fct_effect_enforce_exists(
-                _organisation_identity
-            )
+    _effects := _effects
+        || tww_app.fct_agxx_gephaltung_endpoint_effects(
+            _reach_point_to_id,
+            _end_node_id
         );
-
-        _effects := tww_app.fct_effect_append(
-            _effects,
-            tww_app.fct_effect_update(
-                _identity,
-                'fk_operator',
-                to_jsonb(
-                    _operator_id
-                )
-            )
-        );
-    END IF;
-
-    IF _owner_id IS NOT NULL THEN
-        _organisation_identity := tww_app.fct_effect_identity(
-            'organisation',
-            'obj_id',
-            _owner_id
-        );
-
-        _effects := tww_app.fct_effect_append(
-            _effects,
-            tww_app.fct_effect_enforce_exists(
-                _organisation_identity
-            )
-        );
-
-        _effects := tww_app.fct_effect_append(
-            _effects,
-            tww_app.fct_effect_update(
-                _identity,
-                'fk_owner',
-                to_jsonb(
-                    _owner_id
-                )
-            )
-        );
-    END IF;
-
-    /*
-     * Measure reference.
-     */
-    IF _row ? 'gepmassnahmeref' THEN
-        _measure_id := tww_app.fct_quarantine_reference_oid(
-            _import_schema,
-            'gepmassnahme',
-            _row -> 'gepmassnahmeref'
-        );
-
-        IF _measure_id IS NOT NULL THEN
-            _measure_identity := tww_app.fct_effect_identity(
-                'measure',
-                'obj_id',
-                _measure_id
-            );
-
-            _effects := tww_app.fct_effect_append(
-                _effects,
-                tww_app.fct_effect_enforce_exists(
-                    _measure_identity
-                )
-            );
-        END IF;
-
-        _effects := tww_app.fct_effect_append(
-            _effects,
-            tww_app.fct_effect_update(
-                _identity,
-                'ag96_fk_measure',
-                to_jsonb(
-                    _measure_id
-                )
-            )
-        );
-    END IF;
-
-    /*
-     * agxx_reach_point is deliberately handled by GepHaltung because that
-     * mapping has endpoint and canonical reach-point context.
-     */
 
     RETURN _effects;
 END;

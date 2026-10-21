@@ -193,3 +193,50 @@ BEGIN
     RETURN _code;
 END;
 $function$;
+
+CREATE OR REPLACE FUNCTION tww_app.fct_agxx_check_value_mapping(
+    _schema_name text,
+    _relation_name text,
+    _value_column text,
+    _source_value text
+)
+RETURNS jsonb
+LANGUAGE plpgsql
+STABLE
+AS
+$function$
+DECLARE
+    _code bigint;
+BEGIN
+    IF _source_value IS NULL THEN
+        RETURN '[]'::jsonb;
+    END IF;
+
+    _code := tww_app.fct_value_list_code(
+        _schema_name,
+        _relation_name,
+        _value_column,
+        _source_value
+    );
+
+    IF _code IS NOT NULL THEN
+        RETURN '[]'::jsonb;
+    END IF;
+
+    /*
+     * Placeholder representation for an unavailable mapping.
+     *
+     * Python should classify this virtual target as blocked. Once value-list
+     * extension persistence has a concrete canonical effect model, replace
+     * this identity with the corresponding value-list identity.
+     */
+    RETURN jsonb_build_array(
+        tww_app.fct_effect_enforce_exists(
+            tww_app.fct_missing_mapping_identity(
+                _relation_name,
+                _source_value
+            )
+        )
+    );
+END;
+$function$;
