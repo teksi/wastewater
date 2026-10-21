@@ -1,0 +1,153 @@
+name: 🔩 GitHub - Label pull requests
+on:
+  schedule:
+    - cron: "0 4 * * *"
+
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+  workflow_dispatch:
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  label-plugin-prs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Label PRs touching plugin/
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const labelName = "plugin";
+
+            const prs = await github.paginate(
+              github.rest.pulls.list,
+              {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: "open",
+                per_page: 100
+              }
+            );
+
+            for (const pr of prs) {
+              const files = await github.paginate(
+                github.rest.pulls.listFiles,
+                {
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: pr.number,
+                  per_page: 100
+                }
+              );
+
+              const touchesPlugin = files.some(
+                file => file.filename.startsWith("plugin/")
+              );
+
+              const labels = pr.labels.map(l => l.name);
+
+              if (touchesPlugin && !labels.includes(labelName)) {
+                console.log(`Adding label to PR #${pr.number}`);
+
+                await github.rest.issues.addLabels({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: pr.number,
+                  labels: [labelName]
+                });
+              }
+
+      - name: Label PRs touching project/
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const labelName = "QGIS project";
+
+            const prs = await github.paginate(
+              github.rest.pulls.list,
+              {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: "open",
+                per_page: 100
+              }
+            );
+
+            for (const pr of prs) {
+              const files = await github.paginate(
+                github.rest.pulls.listFiles,
+                {
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: pr.number,
+                  per_page: 100
+                }
+              );
+
+              const touchesProject = files.some(
+                file => file.filename.startsWith("project/")
+              );
+
+              const labels = pr.labels.map(l => l.name);
+
+              if (touchesProject && !labels.includes(labelName)) {
+                console.log(`Adding label to PR #${pr.number}`);
+
+                await github.rest.issues.addLabels({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: pr.number,
+                  labels: [labelName]
+                });
+              }
+
+      - name: Label PRs touching datamodel/
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const labelName = "datamodel";
+
+            const prs = await github.paginate(
+              github.rest.pulls.list,
+              {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: "open",
+                per_page: 100
+              }
+            );
+
+            for (const pr of prs) {
+              const files = await github.paginate(
+                github.rest.pulls.listFiles,
+                {
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: pr.number,
+                  per_page: 100
+                }
+              );
+
+              const touchesDatamodel = files.some(
+                file => file.filename.startsWith("datamodel/")
+              );
+
+              const labels = pr.labels.map(l => l.name);
+
+              if (touchesDatamodel && !labels.includes(labelName)) {
+                console.log(`Adding label to PR #${pr.number}`);
+
+                await github.rest.issues.addLabels({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: pr.number,
+                  labels: [labelName]
+                });
+              }
