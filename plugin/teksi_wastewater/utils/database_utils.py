@@ -6,8 +6,8 @@ import re
 from collections.abc import Sequence
 from typing import Any
 
+from ..interlis import config, model_selection
 from .issues import CheckResult, Issue, IssueLevel
-from ..interlis import model_selection, config
 from .plugin_utils import logger
 
 try:
