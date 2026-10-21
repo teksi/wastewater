@@ -20,25 +20,6 @@ settings:
 defaults:
   read_rules:
       - privileges: all
-  validation_rules:
-    last_modification:
-      rules:
-        - id: newer_than_existing
-          level: info
-    fk_provider:
-      rules:
-        - id: equals_context_value
-          context_value: provider_oid
-          level: error
-          operations:
-            - insert
-    fk_dataowner:
-      rules:
-        - id: equals_context_value
-          context_value: dataowner_oid
-          level: error
-          operations:
-            - insert
 
   attribute_defaults:
     ag64_*:
@@ -92,14 +73,16 @@ classes:
       wall_roughness:
         update: [DBW_GEP]
 
-  - id: reach_alternative
-    crud_rules:
-      - privileges: [DBW_WI]
+  - id: reach_progression_alternative
+    derive_rights_from:
+      - class: reach
+        remote_attribute: fk_reach
 
   - id: reach_text
-    crud_rules:
-      - privileges: [DBW_WI]
-
+    derive_rights_from:
+      - class: reach
+        remote_attribute: fk_reach
+        
   - id: reach_point
     derive_rights_from:
       - class: reach
@@ -239,7 +222,7 @@ classes:
       stormwater_tank_arrangement:
         update: [DBW_GEP]
 
-  - id: infiltration_instalation
+  - id: infiltration_installation
     extends: wastewater_structure
     attributes:
       distance_to_aquifer:
@@ -264,8 +247,9 @@ classes:
       - privileges: [DBW_WI]
 
   - id: wastewater_structure_text
-    crud_rules:
-      - privileges: [DBW_WI]
+    derive_rights_from:
+      - class: wastewater_structure
+        remote_attribute: fk_wastewater_structure
 
 
   # ---------------------------------------------------------
@@ -392,8 +376,15 @@ classes:
       - privileges: [DBW_GEP]
 
   - id: surface_runoff_parameters
+    rights_from_subclass: false
     crud_rules:
       - privileges: [DBW_GEP]
+
+  - id: param_ca_general
+    extends: surface_runoff_parameters
+
+  - id: param_ca_mouse1
+    extends: surface_runoff_parameters
 
   - id: connection_object
     rights_from_subclass: false
@@ -512,7 +503,7 @@ classes:
     crud_rules:
       - privileges: [DBW_GEP]
 
-  - id: biol_ecol_assessment
+  - id: bio_ecol_assessment
     crud_rules:
       - privileges: [DBW_GEP]
 
@@ -570,6 +561,22 @@ classes:
     delete_rules:
       - inherit: update_rules
 
+
+
+  # ---------------------
+  # weitere
+  # ---------------------
+  
+  
+  - id: mutation
+    crud_rules:
+      - privileges: [DBW_WI,DBW_GEP,FI_BU]
+
+
+  # -------------
+  # AG-64 / AG-96
+  # -------------
+
   - id: agxx_wastewater_networkelement
     derive_rights_from:
       - class: wastewater_networkelement
@@ -616,3 +623,7 @@ classes:
     derive_rights_from:
       - class: infiltration_zone
         local_attribute: fk_infiltration_zone
+
+  - id: agxx_unconnected_node_bwrel
+    crud_rules:
+      - privileges: [DBW_WI,DBW_GEP]

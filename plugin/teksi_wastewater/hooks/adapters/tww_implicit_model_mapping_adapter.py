@@ -17,11 +17,15 @@ from teksi_hooks.models.mapping import (
     ValueMapping,
 )
 
+SOURCE_CLASS_OVERRIDES = {
+    "Zone": "azone",
+    "zone": "azone",
+}
+
 SOURCE_ATTRIBUTE_OVERRIDES = {
     "Status": "astatus",
     "status": "astatus",
 }
-
 
 TARGET_ATTRIBUTE_OVERRIDES = {
     "OBJ_ID": "obj_id",
@@ -395,19 +399,18 @@ class TwwImplicitModelMappingAdapter(
         Load dictionary classes keyed by physical source table name.
         """
 
-        ili_name_column = self._ili_name_column()
 
         query = sql.SQL("""
             SELECT
                 tablename,
-                {ili_name_column} AS ili_class_name
+                {cls_name_column} AS ili_class_name
             FROM
                 {schema}.{table_dictionary}
             ORDER BY
                 tablename;
             """).format(
-            ili_name_column=sql.Identifier(
-                ili_name_column,
+            cls_name_column=sql.Identifier(
+                self._ili_name_column('name'),
             ),
             schema=sql.Identifier(
                 self.dictionary_schema,
@@ -461,14 +464,12 @@ class TwwImplicitModelMappingAdapter(
         Load dictionary mappings for canonical attributes.
         """
 
-        ili_name_column = self._ili_name_column()
-
         query = sql.SQL("""
             SELECT
                 t.tablename AS canonical_class_id,
                 a.field_name AS canonical_attr_id,
-                t.{ili_name_column} AS ili_class_name,
-                a.{ili_name_column} AS ili_attribute_name
+                t.{cls_name_column} AS ili_class_name,
+                a.{attr_name_column} AS ili_attribute_name
             FROM
                 {schema}.{attribute_dictionary} AS a
             JOIN
@@ -478,8 +479,11 @@ class TwwImplicitModelMappingAdapter(
                 t.tablename,
                 a.field_name;
             """).format(
-            ili_name_column=sql.Identifier(
-                ili_name_column,
+            cls_name_column=sql.Identifier(
+                self._ili_name_column('name'),
+            ),
+            attr_name_column=sql.Identifier(
+                self._ili_name_column('field_name'),
             ),
             schema=sql.Identifier(
                 self.dictionary_schema,
@@ -551,13 +555,12 @@ class TwwImplicitModelMappingAdapter(
         Load dictionary mappings for canonical value-list values.
         """
 
-        ili_name_column = self._ili_name_column()
 
         query = sql.SQL("""
             SELECT
-                t.{ili_name_column} AS ili_class_name,
-                f.{ili_name_column} AS ili_attribute_name,
-                v.{ili_name_column} AS ili_value_name,
+                t.{cls_name_column} AS ili_class_name,
+                f.{attr_name_column} AS ili_attribute_name,
+                v.{val_name_column} AS ili_value_name,
                 v.value_id AS canonical_value_id,
                 v.value_name AS canonical_value_name
             FROM
@@ -574,8 +577,14 @@ class TwwImplicitModelMappingAdapter(
                 ili_attribute_name,
                 ili_value_name;
             """).format(
-            ili_name_column=sql.Identifier(
-                ili_name_column,
+            cls_name_column=sql.Identifier(
+                self._ili_name_column('name'),
+            ),
+            attr_name_column=sql.Identifier(
+                self._ili_name_column('field_name'),
+            ),
+            val_name_column=sql.Identifier(
+                self._ili_name_column('value_name'),
             ),
             schema=sql.Identifier(
                 self.dictionary_schema,
@@ -639,10 +648,17 @@ class TwwImplicitModelMappingAdapter(
         Return the physical quarantine relation for an INTERLIS class.
         """
 
-        return ili_class_name.rsplit(
-            ".",
-            maxsplit=1,
-        )[-1].lower()
+        unqualified_class_name = (
+            ili_class_name.rsplit(
+                ".",
+                maxsplit=1,
+            )[-1]
+        )
+
+        return SOURCE_CLASS_OVERRIDES.get(
+            unqualified_class_name,
+            unqualified_class_name.lower(),
+        )
 
     def _source_attribute_name(
         self,
@@ -676,7 +692,9 @@ class TwwImplicitModelMappingAdapter(
         self,
         query: sql.Composed | sql.SQL,
         parameters: tuple = (),
-    ) -> list[tuple,]:
+    ) -> list[
+        tuple,
+    ]:
         """
         Execute a read-only query and return all rows.
 
@@ -698,7 +716,9 @@ class TwwImplicitModelMappingAdapter(
                         parameters,
                     )
 
-                    return list(cursor.fetchall())
+                    return list(
+                        cursor.fetchall()
+                    )
 
             except Exception as exception:
                 raise RuntimeError(
@@ -713,9 +733,11 @@ class TwwImplicitModelMappingAdapter(
 
     def _ili_name_column(
         self,
+        prefix: str
     ) -> str:
         """
         Return the localized INTERLIS-name dictionary column.
         """
-
-        return f"ili_name_{self.language.value}"
+        if prefix not in ['field_name','value_name','name']:
+            raise ValueError(f'level type {prefix} not accepted')
+        return f"{prefix}_{self.language.value}"

@@ -73,7 +73,7 @@ classes:
       wall_roughness:
         update: [DBW_GEP]
 
-  - id: reach_alternative
+  - id: reach_progression_alternative
     crud_rules:
       - privileges: [DBW_WI]
 
@@ -493,7 +493,7 @@ classes:
     crud_rules:
       - privileges: [DBW_GEP]
 
-  - id: biol_ecol_assessment
+  - id: bio_ecol_assessment
     crud_rules:
       - privileges: [DBW_GEP]
 
@@ -550,6 +550,29 @@ classes:
           attribute: fk_provider
     delete_rules:
       - inherit: update_rules
+
+
+
+  # ---------------------
+  # weitere
+  # ---------------------
+  
+  
+  - id: mutation
+    crud_rules:
+      - privileges: [DBW_WI,DBW_GEP,FI_BU]
+
+  - id: param_ca_general
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  - id: param_ca_mouse1
+    crud_rules:
+      - privileges: [DBW_GEP]
+
+  # -------------
+  # AG-64 / AG-96
+  # -------------
 
   - id: agxx_wastewater_networkelement
     derive_rights_from:

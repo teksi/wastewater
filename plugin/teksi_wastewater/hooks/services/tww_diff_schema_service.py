@@ -256,6 +256,30 @@ class TwwDiffSchemaService(
             row_count=row_count,
         )
 
+    def write_result_for_job(
+        self,
+        *,
+        job_id: str,
+    ) -> DiffSchemaWriteResult:
+        """
+        Reconstruct the diff-schema write result for one persisted review job.
+
+        This method does not write or modify the job.
+        """
+
+        job = self.require_review_job(
+            job_id=job_id,
+            include_features=False,
+        )
+
+        return DiffSchemaWriteResult(
+            job_db_id=job.job_db_id,
+            job_id=job.job_id,
+            row_count=self.review_feature_count(
+                job_id=job_id,
+            ),
+        )
+
     def review_job(
         self,
         *,
@@ -377,13 +401,14 @@ class TwwDiffSchemaService(
                         count(*) AS total_count,
 
                         count(*) FILTER (
-                            WHERE unpermitted_values <> '{{}}'::jsonb
+                            WHERE unper*itted_values <> '{{}}'::jsonb
+                               OR jsonb_array_length(
+                                   permission_findings
+                            ) > 0
                         ) AS restricted_count,
 
                         count(*) FILTER (
-                            WHERE jsonb_array_length(
-                                validation_findings
-                            ) > 0
+                            WHERE is_rejected
                         ) AS rejected_count,
 
                         count(*) FILTER (
@@ -395,13 +420,15 @@ class TwwDiffSchemaService(
                         ) AS altered_count,
 
                         count(*) FILTER (
-                            WHERE is_deleted
+                            WHERE is_de*eted
                         ) AS deleted_count
 
-                    FROM {self._table(table_name)}
-                    WHERE job_id = %s;
+                   FROM {self._table(table_name)}
+                   WHERE job_id = %s;
                     """,
-                    (job_db_id,),
+                    (
+                        job_db_id,
+                    ),
                 )
 
                 row = cursor.fetchone()
@@ -618,7 +645,7 @@ class TwwDiffSchemaService(
 
             cursor.execute(
                 f"""
-                UPDATE {self._table("metadata")}
+                UPDATE {self._table("tww_metadata")}
                 SET
                     {", ".join(assignments)}
                 WHERE job_id = %s
@@ -765,7 +792,7 @@ class TwwDiffSchemaService(
 
             cursor.execute(
                 f"""
-                UPDATE {self._table("metadata")}
+                UPDATE {self._table("tww_metadata")}
                 SET
                     backup_path = %s,
                     updated_at = now()
@@ -807,6 +834,333 @@ class TwwDiffSchemaService(
             backup_path=None,
         )
 
+    def active_jobs_for_import_schema(
+        self,
+        *,
+        import_schema: str,
+        exclude_job_id: str | None = None,
+    ) -> tuple[
+        dict,
+        ...,
+    ]:
+        """
+        Return nonterminal review jobs using one quarantine schema.
+
+        Both base and incremental source schemas are checked. Legacy metadata
+        using only ``import_schema`` remains supported.
+        """
+
+        if not isinstance(
+            import_schema,
+            str,
+        ) or not import_schema.strip():
+            raise ValueError(
+                "import_schema must be a non-empty string."
+            )
+        
+        normalized_exclude_job_id = (
+            exclude_job_id.strip()
+            if exclude_job_id is not None
+            else None
+        )
+
+        query = """
+            SELECT
+                job_id,
+                job_type,
+                job_status,
+                metadata ->> 'base_import_schema'
+                    AS base_import_schema,
+                metadata ->> 'incremental_import_schema'
+                    AS incremental_import_schema,
+                metadata ->> 'import_schema'
+                    AS legacy_import_schema
+            FROM
+                tww_diff.tww_metadata
+            WHERE
+                job_status NOT IN (
+                    'applied',
+                    'rejected'
+                )
+                AND (
+                    metadata ->> 'base_import_schema' = %s
+                    OR metadata ->> 'incremental_import_schema' = %s
+                    OR metadata ->> 'import_schema' = %s
+                )
+
+        """
+        if normalized_exclude_job_id is not None:
+            query = query + """
+                        AND job_id <> %s
+                """
+            parse_args =(
+                import_schema,
+                import_schema,
+                import_schema,
+                normalized_exclude_job_id,
+            )
+        else:
+            parse_args =(
+                import_schema,
+                import_schema,
+                import_schema,
+            )
+        query = query + """
+                ORDER BY
+                    id;
+            """
+
+        with self.connection_factory.connection(
+            autocommit=True,
+        ) as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    query,
+                    parse_args,
+                )
+
+                rows = self._fetchall_mappings(
+                    cursor,
+                )
+
+        return tuple(
+            rows,
+        )
+
+    def assert_import_schema_available(
+        self,
+        *,
+        import_schema: str,
+    ) -> None:
+        """
+        Reject reuse of a quarantine schema required by an active review job.
+        """
+
+        active_jobs = self.active_jobs_for_import_schema(
+            import_schema=import_schema,
+        )
+
+        if not active_jobs:
+            return
+
+        job_descriptions = ", ".join(
+            (
+                f"{row['job_id']!r} "
+                f"({row['job_status']})"
+            )
+            for row in active_jobs
+        )
+
+        raise RuntimeError(
+            f"Quarantine schema {import_schema!r} cannot be "
+            "recreated because it is required by active review "
+            f"jobs: {job_descriptions}."
+        )
+
+    def assert_job_can_be_refreshed(
+        self,
+        *,
+        job_id: str,
+        include_features: bool = True,
+    ) -> DiffReviewJob:
+        """
+        Return one pending review job that is eligible for refresh.
+
+        Refresh retains the job identifier and review lifecycle state. It updates
+        generated review values and findings without rerunning the ili2pg import.
+        """
+
+        job = self.require_review_job(
+            job_id=job_id,
+            include_features=include_features,
+        )
+
+        if job.job_status != "pending":
+            raise DiffJobStateError(
+                job_id=job_id,
+                expected_status="pending",
+                actual_status=job.job_status,
+            )
+
+        if job.metadata.get(
+            "job_type",
+        ) != "review":
+            raise DiffJobEligibilityError(
+                job_id=job_id,
+                reason=(
+                    "only review jobs can be refreshed."
+                ),
+            )
+
+        diff_tstamp = job.metadata.get(
+            "diff_tstamp",
+        )
+
+        if not isinstance(
+            diff_tstamp,
+            datetime,
+        ):
+            raise DiffJobEligibilityError(
+                job_id=job_id,
+                reason=(
+                    "the job has no valid diff refresh timestamp."
+                ),
+            )
+
+        live_schema = job.metadata.get(
+            "live_schema",
+        )
+
+        if (
+            not isinstance(
+                live_schema,
+                str,
+            )
+            or not live_schema.strip()
+        ):
+            raise DiffJobEligibilityError(
+                job_id=job_id,
+                reason=(
+                    "the job has no valid live schema."
+                ),
+            )
+
+        import_schemas = self._job_import_schemas(
+            job,
+        )
+
+        if not import_schemas:
+            raise DiffJobEligibilityError(
+                job_id=job_id,
+                reason=(
+                    "the job has no retained quarantine schema."
+                ),
+            )
+
+        return job
+
+    def validation_finding_row_count(
+        self,
+        *,
+        job_id: str,
+    ) -> int:
+        """
+        Return the number of review rows containing validation findings.
+
+
+
+        Permission findings are excluded because they are handled by destructive
+        quarantine preparation before the quarantine-to-live import.
+        """
+
+
+
+        with self.connection_factory.connection(
+            autocommit=True,
+        ) as connection:
+            cursor = connection.cursor()
+
+
+
+            job_db_id = self._job_db_id(
+                cursor=cursor,
+                job_id=job_id,
+            )
+
+
+
+            rejected_count = 0
+
+
+
+            for table_name in self._review_table_names(
+                cursor=cursor,
+            ):
+                cursor.execute(
+                    f"""
+                    SELECT count(*)
+                    FROM {self._table(table_name)}
+                    WHERE job_id = %s
+                    AND jsonb_array_length(
+                        validation_findings
+                    ) > 0;
+                    """,
+                    (job_db_id,),
+                )
+
+
+
+                row = cursor.fetchone()
+
+
+
+                if row is None:
+                    raise RuntimeError(
+                        "Could not determine validation-finding row "
+                        f"count for {self.schema}.{table_name}."
+                    )
+
+
+
+                rejected_count += int(
+                    row[0],
+                )
+
+
+
+        return rejected_count
+
+    def _job_import_schemas(
+        self,
+        job: DiffReviewJob,
+    ) -> tuple[
+        str,
+        ...,
+    ]:
+        """
+        Return the distinct quarantine schemas used by one review job.
+
+        Source-specific metadata is preferred. The legacy top-level import schema
+        remains supported.
+        """
+
+        candidates = (
+            job.metadata.get(
+                "base_import_schema",
+            ),
+            job.metadata.get(
+                "incremental_import_schema",
+            ),
+            job.metadata.get(
+                "import_schema",
+            ),
+        )
+
+        import_schemas: list[
+            str,
+        ] = []
+
+        for candidate in candidates:
+            if (
+                not isinstance(
+                    candidate,
+                    str,
+                )
+                or not candidate.strip()
+            ):
+                continue
+
+            normalized = candidate.strip()
+
+            if normalized not in import_schemas:
+                import_schemas.append(
+                    normalized,
+                )
+
+        return tuple(
+            import_schemas,
+        )
+
     def _raise_expected_status_error(
         self,
         *,
@@ -817,7 +1171,7 @@ class TwwDiffSchemaService(
         cursor.execute(
             f"""
             SELECT job_status
-            FROM {self._table("metadata")}
+            FROM {self._table("tww_metadata")}
             WHERE job_id = %s;
             """,
             (job_id,),
@@ -847,7 +1201,7 @@ class TwwDiffSchemaService(
         cursor.execute(
             f"""
             SELECT job_status
-            FROM {self._table("metadata")}
+            FROM {self._table("tww_metadata")}
             WHERE job_id = %s;
             """,
             (job_id,),
@@ -904,6 +1258,7 @@ class TwwDiffSchemaService(
                 id,
                 job_id,
                 job_status,
+                job_type,
                 import_tstamp,
                 diff_tstamp,
                 updated_at,
@@ -918,7 +1273,7 @@ class TwwDiffSchemaService(
                 backup_path,
                 metadata,
                 failure
-            FROM {self._table("metadata")}
+            FROM {self._table("tww_metadata")}
             WHERE job_id = %s;
             """,
             (job_id,),
@@ -948,6 +1303,9 @@ class TwwDiffSchemaService(
 
         metadata.update(
             {
+                "job_type": row.get(
+                    "job_type",
+                ),
                 "import_tstamp": row.get(
                     "import_tstamp",
                 ),
@@ -1089,6 +1447,10 @@ class TwwDiffSchemaService(
             "is_rejected": bool(
                 row["is_rejected"],
             ),
+            "identity": self._json_object(
+                row["identity"],
+                field_name="identity",
+            ),
             "import_values": self._json_object(
                 row["import_values"],
                 field_name="import_values",
@@ -1191,7 +1553,7 @@ class TwwDiffSchemaService(
         cursor.execute(
             f"""
             SELECT id
-            FROM {self._table("metadata")}
+            FROM {self._table("tww_metadata")}
             WHERE job_id = %s;
             """,
             (job_id,),
@@ -1346,7 +1708,7 @@ class TwwDiffSchemaService(
     ) -> None:
         cursor.execute(
             f"""
-            DELETE FROM {self._table("metadata")}
+            DELETE FROM {self._table("tww_metadata")}
             WHERE job_id = %s;
             """,
             (job_id,),
@@ -1362,7 +1724,7 @@ class TwwDiffSchemaService(
             f"""
             SELECT EXISTS (
                 SELECT 1
-                FROM {self._table("metadata")}
+                FROM {self._table("tww_metadata")}
                 WHERE job_id = %s
             );
             """,
@@ -1393,7 +1755,7 @@ class TwwDiffSchemaService(
     ) -> int:
         cursor.execute(
             f"""
-            INSERT INTO {self._table("metadata")} (
+            INSERT INTO {self._table("tww_metadata")} (
                 job_id,
                 job_status,
                 validation_success,
@@ -1548,7 +1910,10 @@ class TwwDiffSchemaService(
 
         return {
             "job_id": job_db_id,
-            "obj_id": feature.object_id,
+            "identity": attributes.get(
+                "identity",
+                {},
+            ),
             "is_created": attributes.get(
                 "is_created",
                 False,
@@ -1611,7 +1976,7 @@ class TwwDiffSchemaService(
             {
                 "diff_id",
                 "job_id",
-                "obj_id",
+                "identity",
                 "is_created",
                 "is_altered",
                 "is_deleted",
@@ -1636,6 +2001,7 @@ class TwwDiffSchemaService(
         list[Any],
     ]:
         if column_name in {
+            "identity",
             "import_values",
             "canonical_values",
             "changed_attributes",
@@ -1821,7 +2187,7 @@ class TwwDiffSchemaService(
     ) -> None:
         required_columns = {
             "job_id",
-            "obj_id",
+            "identity",
             "is_created",
             "is_altered",
             "is_deleted",

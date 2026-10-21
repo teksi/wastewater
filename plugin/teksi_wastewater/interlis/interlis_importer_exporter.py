@@ -9,14 +9,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 import requests
-from teksi_hooks.capabilities.mapping import (
-    ModelMappingLookupCapability,
-)
-from teksi_wastewater.hooks.capabilities.incremental_import import (
-    FunctionEffectResolver,
-    IncrementalEffectEvaluator,
-    IncrementalEffectPersister,
-)
+
 
 from ..utils.database_utils import DatabaseUtils
 from ..utils.integrity_checker import TWWIntegrityChecker
@@ -27,9 +20,6 @@ from .interlis_model_mapping.interlis_exporter_to_intermediate_schema import (
 )
 from .interlis_model_mapping.interlis_importer_from_intermediate_schema import (
     InterlisImporterFromIntermediateSchema,
-)
-from .interlis_model_mapping.interlis_incremental_importer import (
-    InterlisIncrementalImporter,
 )
 from .interlis_model_mapping.model_tww import ModelTwwSys, ModelTwwVl
 from .interlis_model_mapping.model_tww_ag6496 import ModelTwwAG6496
@@ -76,10 +66,6 @@ class InterlisImporterExporter:
         self,
         progress_done_callback=None,
         lang="de",
-        model_mapping: ModelMappingLookupCapability | None = None,
-        function_effect_resolver: FunctionEffectResolver | None = None,
-        effect_evaluator: IncrementalEffectEvaluator | None = None,
-        effect_persister: IncrementalEffectPersister | None = None,
     ):
         self.progress_done_callback = progress_done_callback
 
@@ -100,10 +86,6 @@ class InterlisImporterExporter:
         self.current_progress = 0
         self.schema = None
 
-        self.model_mapping = model_mapping
-        self.function_effect_resolver = function_effect_resolver
-        self.effect_evaluator = effect_evaluator
-        self.effect_persister = effect_persister
 
     def _init_model_classes(self, selection_models):
         model_interlis = selection_models.primary_component.quarantine_model(self.schema)
@@ -155,18 +137,17 @@ class InterlisImporterExporter:
     def interlis_import(
         self,
         xtf_file_input,
-        show_selection_dialog=False,
-        logs_next_to_file=True,
-        filter_nulls=True,
+        show_selection_dialog: bool = False,
+        logs_next_to_file: bool = True,
+        filter_nulls: bool = True,
         srid: int = None,
-        import_orgs=False,
-        user_interaction=False,
-        incremental_only=False,
+        import_orgs: bool = False,
+        user_interaction: bool = False,
+        allow_schema_recreation: bool = False,
     ):
         if not self.schema:
             self.schema = config.IMPORT_SCHEMA
 
-        self._clear_ili_schema(recreate_tables=True)
         selection_models = self.interlis_import_to_quarantine(
             xtf_file_input=xtf_file_input,
             logs_next_to_file=logs_next_to_file,
@@ -178,7 +159,7 @@ class InterlisImporterExporter:
                 start=self.current_progress,
                 end=35,
             ),
-            incremental_only=incremental_only,
+            allow_schema_recreation=allow_schema_recreation,
         )
         self.interlis_import_from_quarantine_to_live(
             selection_models=selection_models,
@@ -190,7 +171,6 @@ class InterlisImporterExporter:
                 start=35,
                 end=100,
             ),
-            incremental_only=incremental_only,
         )
 
     def _prepare_interlis_import(
@@ -201,7 +181,6 @@ class InterlisImporterExporter:
         srid: int = 2056,
         selection_models: TwwInterlisModelSelection | None = None,
         progress_scope: ProgressScope = ProgressScope(),
-        incremental_only=False,
     ) -> TwwInterlisModelSelection:
         if logs_next_to_file and xtf_file_input:
             self.base_log_path = xtf_file_input
@@ -217,21 +196,6 @@ class InterlisImporterExporter:
             self.srid = srid
 
         if selection_models is not None:
-            if (
-                selection_models.import_model
-                not in {
-                    "Genereller_Entwaesserungsplan_AG",
-                    "Abwasserkataster_AG_V2_LV95",
-                }
-                and incremental_only
-            ):
-                raise InterlisImporterExporterError(
-                    error=(
-                        "incremental_only flag is not applicable "
-                        f"to {selection_models.import_model}."
-                    )
-                )
-
             return selection_models
 
         if not xtf_file_input:
@@ -262,15 +226,27 @@ class InterlisImporterExporter:
         import_orgs=False,
         disable_validation=False,
         progress_scope: ProgressScope = ProgressScope(),
-        incremental_only=False,
+        allow_schema_recreation: bool = False,
     ):
+
+        if not allow_schema_recreation:
+            raise InterlisImporterExporterError(
+                "Schema recreation not authorized",
+                (
+                    f"Recreation of quarantine schema "
+                    f"{self.schema!r} must be authorized by the "
+                    "calling workflow."
+                ),
+                None,
+            )
+
+        self._clear_ili_schema(recreate_tables=True)
         selection_models = self._prepare_interlis_import(
             xtf_file_input=xtf_file_input,
             logs_next_to_file=logs_next_to_file,
             filter_nulls=filter_nulls,
             srid=srid,
             progress_scope=progress_scope,
-            incremental_only=incremental_only,
         )
 
         import_schema_models = tuple(selection_models.import_schema_models)
@@ -321,7 +297,6 @@ class InterlisImporterExporter:
         filter_nulls=True,
         srid: int = None,
         progress_scope: ProgressScope = ProgressScope(),
-        incremental_only=False,
     ):
 
         selection_models = self._prepare_interlis_import(
@@ -330,7 +305,6 @@ class InterlisImporterExporter:
             srid=srid,
             selection_models=selection_models,
             progress_scope=progress_scope,
-            incremental_only=incremental_only,
         )
 
         # Disable symbology triggers
@@ -340,39 +314,30 @@ class InterlisImporterExporter:
         self._import_disable_symbology_and_modification_triggers()
         tww_session = None
         try:
-            if incremental_only:
-                # Import from the temporary ili2pg model
-                self._progress_done_in_scope(
-                    progress_scope, 20, "Converting incremental values to TEKSI Wastewater..."
+            # Import from the temporary ili2pg model
+            self._progress_done_in_scope(
+                progress_scope, 20, "Converting to TEKSI Wastewater..."
+            )
+            tww_session = self._import_from_intermediate_schema(selection_models)
+
+            if show_selection_dialog:
+                from qgis.PyQt.QtCore import Qt
+                from qgis.PyQt.QtWidgets import QApplication, QDialog
+
+                from .gui.interlis_import_selection_dialog import (
+                    InterlisImportSelectionDialog,
                 )
-                tww_session = self._import_incremental(selection_models)
+
+                self._progress_done_in_scope(progress_scope, 80, "Import objects selection...")
+                import_dialog = InterlisImportSelectionDialog()
+                import_dialog.init_with_session(tww_session)
+                QApplication.restoreOverrideCursor()
+                if import_dialog.exec() == QDialog.DialogCode.Rejected:
+                    raise InterlisImporterExporterStopped()
+                QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
+            else:
                 self._progress_done_in_scope(progress_scope, 80, "Commit session...")
                 tww_session.commit()
-            else:
-                # Import from the temporary ili2pg model
-                self._progress_done_in_scope(
-                    progress_scope, 20, "Converting to TEKSI Wastewater..."
-                )
-                tww_session = self._import_from_intermediate_schema(selection_models)
-
-                if show_selection_dialog:
-                    from qgis.PyQt.QtCore import Qt
-                    from qgis.PyQt.QtWidgets import QApplication, QDialog
-
-                    from .gui.interlis_import_selection_dialog import (
-                        InterlisImportSelectionDialog,
-                    )
-
-                    self._progress_done_in_scope(progress_scope, 80, "Import objects selection...")
-                    import_dialog = InterlisImportSelectionDialog()
-                    import_dialog.init_with_session(tww_session)
-                    QApplication.restoreOverrideCursor()
-                    if import_dialog.exec() == QDialog.DialogCode.Rejected:
-                        raise InterlisImporterExporterStopped()
-                    QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
-                else:
-                    self._progress_done_in_scope(progress_scope, 80, "Commit session...")
-                    tww_session.commit()
 
             # Update the sequence values
             self._progress_done_in_scope(progress_scope, 85, "Update sequence values...")
@@ -449,6 +414,7 @@ class InterlisImporterExporter:
         selected_ids=None,
         include_unplaced: bool = False,
         import_orgs: bool = False,
+        allow_schema_recreation: bool = False,
     ):
 
         self.interlis_export_live_to_quarantine(
@@ -466,6 +432,7 @@ class InterlisImporterExporter:
                 start=self.current_progress,
                 end=65,
             ),
+            allow_schema_recreation=allow_schema_recreation,
         )
 
         self.interlis_export_from_quarantine_to_xtf(
@@ -510,7 +477,19 @@ class InterlisImporterExporter:
         include_unplaced: bool = False,
         import_orgs: bool = False,
         progress_scope: ProgressScope = ProgressScope(),
+        allow_schema_recreation: bool = False,
     ):
+
+        if not allow_schema_recreation:
+            raise InterlisImporterExporterError(
+                "Schema recreation not authorized",
+                (
+                    f"Recreation of quarantine schema "
+                    f"{self.schema!r} must be authorized by the "
+                    "calling workflow."
+                ),
+                None,
+            )
 
         _ = self._prepare_interlis_export(
             xtf_file_output=xtf_file_output,
@@ -1265,108 +1244,3 @@ class InterlisImporterExporter:
             )
 
         return exact_matches[0]
-
-    def _import_incremental(
-        self,
-        selection_models: TwwInterlisModelSelection,
-    ):
-        """
-        Stage one AGXX incremental import.
-
-        The returned SQLAlchemy session remains open and uncommitted. The caller
-        owns the final commit, rollback and close.
-        """
-
-        self._assert_incremental_dependencies()
-
-        log_handler = logging.FileHandler(
-            make_log_path(
-                self.base_log_path,
-                "tww2ili-incremental-import",
-            ),
-            mode="w",
-            encoding="utf-8",
-        )
-
-        log_handler.setLevel(
-            logging.INFO,
-        )
-
-        log_handler.setFormatter(logging.Formatter("%(levelname)-8s %(message)s"))
-
-        self._init_model_classes(
-            selection_models,
-        )
-
-        incremental_importer = InterlisIncrementalImporter(
-            model=selection_models.import_model,
-            model_classes_interlis=(self.model_classes_interlis),
-            model_classes_tww_od=(self.model_classes_tww_od),
-            model_classes_tww_vl=(self.model_classes_tww_vl),
-            model_mapping=self.model_mapping,
-            function_effect_resolver=(self.function_effect_resolver),
-            effect_evaluator=(self.effect_evaluator),
-            effect_persister=(self.effect_persister),
-            callback_progress_done=(self._progress_done_intermediate_schema),
-            filter_nulls=bool(self.filter_nulls),
-        )
-
-        with LoggingHandlerContext(
-            log_handler,
-        ):
-            incremental_importer.tww_import(
-                skip_closing_tww_session=True,
-            )
-
-        session_tww = incremental_importer.session_tww
-
-        if session_tww is None:
-            raise InterlisImporterExporterError(
-                "INTERLIS import aborted",
-                ("The incremental importer completed without " "returning an open live session."),
-                None,
-            )
-
-        return session_tww
-
-    def _assert_incremental_dependencies(
-        self,
-    ) -> None:
-        """
-        Ensure all collaborators required by the incremental importer exist.
-
-        Incremental persistence uses the model mapping to project imported AG-XX
-        values into canonical effects. Function-based effects are resolved,
-        evaluated against live data and persisted through the configured effect
-        persistence adapter.
-        """
-
-        required_dependencies = {
-            "model_mapping": self.model_mapping,
-            "function_effect_resolver": (self.function_effect_resolver),
-            "effect_evaluator": (self.effect_evaluator),
-            "effect_persister": (self.effect_persister),
-        }
-
-        missing_dependencies = [
-            dependency_name
-            for (
-                dependency_name,
-                dependency,
-            ) in required_dependencies.items()
-            if dependency is None
-        ]
-
-        if missing_dependencies:
-            raise InterlisImporterExporterError(
-                "Incremental INTERLIS import is not configured",
-                (
-                    "The incremental importer requires the "
-                    "following dependencies: "
-                    + ", ".join(
-                        missing_dependencies,
-                    )
-                    + "."
-                ),
-                None,
-            )

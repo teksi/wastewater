@@ -74,13 +74,7 @@ def get_ili2db_bin(tool, db_ili_version, stdout, stderr):
         except FileExistsError:
             pass
 
-        file_descriptor, temporary_zip_path = tempfile.mkstemp(
-            suffix=".zip",
-        )
-
-        os.close(
-            file_descriptor,
-        )
+        tmpfile = tempfile.NamedTemporaryFile(suffix=".zip", delete=False)
 
         stdout.emit(
             f"Downloading {tool_name} version {ili_tool_version}…",
@@ -89,7 +83,7 @@ def get_ili2db_bin(tool, db_ili_version, stdout, stderr):
         try:
             download_file(
                 ili_tool_url,
-                temporary_zip_path,
+                tmpfile.name,
             )
         except NetworkError as exception:
             stderr.emit(
@@ -97,7 +91,7 @@ def get_ili2db_bin(tool, db_ili_version, stdout, stderr):
                     "Could not download {tool_name}\n\n"
                     "Error: {error}\n\n"
                     'File "{file}" not found. Please download and extract '
-                    '<a href="{ili2db_url}">{tool_name}</a>'
+                    "{ili2db_url}{tool_name}</a>"
                 ).format(
                     tool_name=tool_name,
                     ili2db_url=ili_tool_url,
@@ -109,7 +103,7 @@ def get_ili2db_bin(tool, db_ili_version, stdout, stderr):
             return None
 
         try:
-            with zipfile.ZipFile(temporary_zip_path, "r") as z:
+            with zipfile.ZipFile(tmpfile.name, "r") as z:
                 z.extractall(os.path.join(dir_path, "bin", ili2db_dir))
         except zipfile.BadZipFile:
             # We will realize soon enough that the files were not extracted

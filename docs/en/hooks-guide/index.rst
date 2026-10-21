@@ -11,20 +11,8 @@ mechanism used for incremental update handling.
 
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 4
 
-    architecture
-    rights
-    providers
-    model-mapping
-    jsonb-mapping
-    testing
-
-
-API Reference
-=============
-
-.. toctree::
-   :maxdepth: 2
-
-   generated/index
+   sysadmin/index
+   import-operator/index
+   developer-notes/index

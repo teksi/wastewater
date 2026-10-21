@@ -2,32 +2,49 @@
 
 from __future__ import annotations
 
+import json
 import logging
-from collections.abc import Mapping
-from dataclasses import dataclass
+from collections.abc import Sequence
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Protocol
 
-from teksi_wastewater.hooks.adapters.tww_interlis_persistence_adapter import (
+from sqlalchemy.orm import Session
+
+from teksi_hooks.capabilities.mapping import (
+    EffectiveModelMappingCapability,
+)
+from teksi_hooks.models.canonical_object import (
+    CanonicalModelMetadata,
+)
+from teksi_hooks.models.review import (
+    DiffReviewJob,
+)
+
+from ..adapters.tww_interlis_persistence_adapter import (
     TwwInterlisPersistenceAdapter,
 )
-from teksi_wastewater.hooks.capabilities.tww_interlis_persistence_capability import (
-    TwwInterlisPersistenceCapability,
-    TwwQuarantinePreparer,
+from ..capabilities.tww_interlis_persistence_capability import (
+    TwwInterlisPersistenceResult,
 )
-from teksi_wastewater.hooks.exceptions import (
+from ..exceptions import (
     DiffJobEligibilityError,
     DiffJobPersistenceError,
     DiffJobStateError,
-    DiffSchemaContractError,
 )
-from teksi_wastewater.hooks.services.tww_diff_schema_service import (
+from .tww_diff_schema_service import (
     DiffJobCounts,
     TwwDiffSchemaService,
     TwwJobPersistenceResult,
 )
-from teksi_wastewater.hooks.services.tww_quarantine_persistence_preparer import (
+from .tww_quarantine_persistence_preparer import (
     TwwQuarantinePersistencePreparer,
+)
+from .tww_database_backup_service import (
+    TwwDatabaseBackupService,
+)
+from .tww_persistence_context_factory import(
+    TwwPersistenceSourceContext,
 )
 
 logger = logging.getLogger(
@@ -35,47 +52,40 @@ logger = logging.getLogger(
 )
 
 
-class TwwQuarantineBackupService(
-    Protocol,
-):
+@dataclass(
+    frozen=True,
+    slots=True,
+)
+class TwwQuarantineBackup:
     """
-    Create, restore and delete quarantine backups.
+    Record of one retained quarantine-schema backup.
+
+    The database backup service creates the archive. This record keeps the
+    archive associated with the schema and source role required for restore,
+    cleanup, and diagnostics.
     """
 
-    def create_backup(
-        self,
-        *,
-        job_id: str,
-        import_schema: str,
-    ) -> Path:
-        """
-        Create a backup before destructive quarantine preparation.
-        """
+    source_role: str
 
-        ...
+    import_schema: str
 
-    def restore_backup(
-        self,
-        *,
-        backup_path: Path,
-        import_schema: str,
-    ) -> None:
-        """
-        Restore quarantine from a previously created backup.
-        """
+    backup_path: Path
 
-        ...
 
-    def delete_backup(
-        self,
-        *,
-        backup_path: Path,
-    ) -> None:
-        """
-        Delete a quarantine backup.
-        """
+@dataclass(
+    frozen=True,
+    slots=True,
+)
+class TwwPersistencePhaseResult:
+    """
+    Result of persisting one retained source phase.
+    """
 
-        ...
+    source_role: str
+    import_schema: str
+    source_model: str
+    committed: bool
+    interlis_persistence: TwwInterlisPersistenceResult
 
 
 @dataclass(
@@ -85,244 +95,469 @@ class TwwReviewPersistenceService:
     """
     Apply one accepted tww_diff review job.
 
-    Lifecycle:
+    One review job may contain an ordered baseline source and an incremental
+    source. Both remain part of one review decision and one job lifecycle.
 
-    pending -> accepted
-    accepted -> applying
-    applying -> applied or failed
+    Persistence order:
 
-    Quarantine is backed up before destructive permission filtering.
-    The backup is restored when preparation or persistence fails and is
-    deleted after successful application.
+    1. baseline;
+    2. incremental.
+
+    Quarantine preparation runs in one transaction per source context. The
+    service commits each prepared quarantine phase before invoking the existing
+    quarantine-to-live importer.
+
+    All retained quarantine schemas are backed up before the first destructive
+    preparation starts. On failure, every prepared quarantine schema is
+    restored in reverse order.
+
+    The live importer owns its own database transaction. Therefore the complete
+    multi-source workflow is recoverable through backups but is not one
+    distributed atomic transaction.
     """
 
     diff_schema_service: TwwDiffSchemaService
 
-    quarantine_preparer: TwwQuarantinePersistencePreparer
-
-    backup_service: TwwQuarantineBackupService
+    backup_service: TwwDatabaseBackupService
 
     persistence_adapter: TwwInterlisPersistenceAdapter
+
+    logger: logging.Logger = field(
+        default_factory=lambda: logging.getLogger(
+            __name__,
+        ),
+        repr=False,
+    )
 
     def persist_job(
         self,
         *,
-        job_id: str,
-        live_schema: str | None = None,
+        job: DiffReviewJob,
+        live_schema: str,
+        source_contexts: Sequence[
+            TwwPersistenceSourceContext,
+        ],
+        canonical_metadata: CanonicalModelMetadata,
+        validation_definition: Any,
     ) -> TwwJobPersistenceResult:
         """
         Apply one accepted review job to the live schema.
+
+        The job is acquired once, backed up once per retained source schema,
+        applied through all source phases, and marked applied only after every
+        phase confirms its live transaction commit.
         """
 
-        job = self.diff_schema_service.require_review_job(
-            job_id=job_id,
-            include_features=False,
-        )
+        job_id = job.job_id
 
         self._assert_application_eligibility(
-            job_id=job_id,
-            job_status=job.job_status,
-            validation_success=job.validation_success,
+            job=job,
+            live_schema=live_schema,
+            source_contexts=source_contexts,
         )
 
         counts = self.diff_schema_service.job_counts(
             job_id=job_id,
         )
 
-        validation_finding_row_count = self.diff_schema_service.validation_finding_row_count(
-            job_id=job_id,
+        validation_finding_row_count = (
+            self.diff_schema_service
+            .validation_finding_row_count(
+                job_id=job_id,
+            )
         )
 
         self._assert_review_counts(
             job_id=job_id,
             counts=counts,
-            validation_finding_row_count=(validation_finding_row_count),
+            validation_finding_row_count=(
+                validation_finding_row_count
+            ),
         )
 
-        import_schema = self._required_metadata_value(
+        ordered_source_contexts = self._ordered_source_contexts(
             job_id=job_id,
-            metadata=job.metadata,
-            key="import_schema",
+            source_contexts=source_contexts,
         )
-
-        source_model = self._required_metadata_value(
-            job_id=job_id,
-            metadata=job.metadata,
-            key="source_model",
-        )
-
-        resolved_live_schema = live_schema or self._required_metadata_value(
-            job_id=job_id,
-            metadata=job.metadata,
-            key="live_schema",
-        )
+        
+        if any(
+            source_context.source_role
+            == "incremental"
+            for source_context in ordered_source_contexts
+        ):
+            self.persistence_adapter.assert_incremental_ready()
 
         self.diff_schema_service.acquire_job_for_application(
             job_id=job_id,
         )
 
-        backup_path: Path | None = None
-        preparation_started = False
+        backups: list[
+            TwwQuarantineBackup,
+        ] = []
+
+        prepared_source_roles: list[
+            str,
+        ] = []
+
+        phase_results: list[
+            TwwPersistencePhaseResult,
+        ] = []
+
+        active_phase = "backup"
+        active_source_context: (
+            TwwPersistenceSourceContext
+            | None
+        ) = None
 
         try:
-            backup_path = self.backup_service.create_backup(
+            backups = self._create_backups(
                 job_id=job_id,
-                import_schema=import_schema,
+                source_contexts=ordered_source_contexts,
             )
 
             self.diff_schema_service.set_backup_path(
                 job_id=job_id,
                 expected_status="applying",
-                backup_path=str(
-                    backup_path,
+                backup_path=self._backup_manifest(
+                    backups,
                 ),
             )
 
-            preparation_started = True
+            for source_context in ordered_source_contexts:
+                active_source_context = source_context
 
-            self.quarantine_preparer.prepare(
-                job_id=job_id,
-                import_schema=import_schema,
-            )
-
-            persistence_result = self.persistence_adapter.persist_quarantine(
-                import_schema=import_schema,
-                live_schema=resolved_live_schema,
-                source_model=source_model,
-            )
-
-            if not persistence_result.committed:
-                raise DiffJobPersistenceError(
-                    job_id=job_id,
-                    phase="applying",
-                    message=(
-                        "The quarantine-to-live importer returned "
-                        "without confirming its live transaction commit."
-                    ),
+                active_phase = (
+                    f"prepare_{source_context.source_role}"
                 )
+
+                self._prepare_source_context(
+                    job_id=job_id,
+                    source_context=source_context,
+                    canonical_metadata=canonical_metadata,
+                    validation_definition=validation_definition,
+                )
+
+                prepared_source_roles.append(
+                    source_context.source_role,
+                )
+
+                active_phase = (
+                    f"persist_{source_context.source_role}"
+                )
+
+                interlis_persistence = (
+                    self.persistence_adapter
+                    .persist_quarantine(
+                        job_id=job_id,
+                        source_role=source_context.source_role,
+                        import_schema=(
+                            source_context.import_schema
+                        ),
+                        live_schema=live_schema,
+                        source_model=(
+                            source_context.source_model
+                        ),
+                        model_mapping=source_context.model_mapping,
+                        quarantine_classes=(
+                            source_context.quarantine_classes
+                        ),
+                    )
+                )
+
+                if not interlis_persistence.committed:
+                    raise DiffJobPersistenceError(
+                        job_id=job_id,
+                        phase=active_phase,
+                        message=(
+                            "The quarantine-to-live importer "
+                            "returned without confirming its live "
+                            "transaction commit for source role "
+                            f"{source_context.source_role!r} and "
+                            "schema "
+                            f"{source_context.import_schema!r}."
+                        ),
+                    )
+
+                phase_results.append(
+                    TwwPersistencePhaseResult(
+                        source_role=(
+                            source_context.source_role
+                        ),
+                        import_schema=(
+                            source_context.import_schema
+                        ),
+                        source_model=(
+                            source_context.source_model
+                        ),
+                        committed=True,
+                        interlis_persistence=(
+                            interlis_persistence
+                        ),
+                    )
+                )
+
+                self.logger.info(
+                    "Persisted source phase %r for diff job %r "
+                    "from quarantine schema %r.",
+                    source_context.source_role,
+                    job_id,
+                    source_context.import_schema,
+                )
+
+            active_phase = "finalize"
 
             self.diff_schema_service.mark_job_applied(
                 job_id=job_id,
             )
 
         except Exception as exception:
-            if backup_path is not None and preparation_started:
-                self._restore_backup(
-                    job_id=job_id,
-                    import_schema=import_schema,
-                    backup_path=backup_path,
-                )
-            elif backup_path is not None:
-                self._delete_unused_backup(
-                    job_id=job_id,
-                    backup_path=backup_path,
-                )
+            self._rollback_active_sessions(
+                source_contexts=ordered_source_contexts,
+            )
+
+            self._restore_backups(
+                job_id=job_id,
+                backups=backups,
+                prepared_source_roles=tuple(
+                    prepared_source_roles,
+                ),
+            )
 
             self._mark_failed(
                 job_id=job_id,
+                phase=active_phase,
+                source_context=active_source_context,
+                completed_phases=tuple(
+                    phase_result.source_role
+                    for phase_result in phase_results
+                ),
                 exception=exception,
             )
 
             raise
 
-        self._delete_applied_backup(
+        self._delete_applied_backups(
             job_id=job_id,
-            backup_path=backup_path,
+            backups=backups,
         )
 
-        logger.info(
-            "Applied diff review job %r with %s review features.",
+        self.logger.info(
+            "Applied diff review job %r through source phases %r "
+            "with %s review features.",
             job_id,
+            tuple(
+                phase_result.source_role
+                for phase_result in phase_results
+            ),
             counts.total_count,
         )
+
+        final_phase_result = phase_results[
+            -1
+        ]
 
         return TwwJobPersistenceResult(
             job_id=job_id,
             previous_status="accepted",
             job_status="applied",
             review_feature_count=counts.total_count,
-            restricted_feature_count=counts.restricted_count,
-            import_schema=import_schema,
-            live_schema=resolved_live_schema,
-            source_model=source_model,
-            interlis_persistence=persistence_result,
+            restricted_feature_count=(
+                counts.restricted_count
+            ),
+            import_schema=(
+                final_phase_result.import_schema
+            ),
+            live_schema=live_schema,
+            source_model=(
+                final_phase_result.source_model
+            ),
+            interlis_persistence=(
+                final_phase_result
+                .interlis_persistence
+            ),
         )
 
-    def validation_finding_row_count(
+    def _prepare_source_context(
         self,
         *,
         job_id: str,
-    ) -> int:
+        source_context: TwwPersistenceSourceContext,
+        canonical_metadata: CanonicalModelMetadata,
+        validation_definition: Any,
+    ) -> None:
         """
-        Return the number of review rows containing validation findings.
+        Apply review permission decisions to one quarantine source.
 
-        Permission findings are excluded because they are handled by destructive
-        quarantine preparation before the quarantine-to-live import.
+        The persistence service owns the source session transaction. The
+        preparer modifies ORM objects and flushes, but must not commit, roll
+        back, or close the session.
         """
 
-        with self.connection_factory.connection(
-            autocommit=True,
-        ) as connection:
-            cursor = connection.cursor()
+        preparer = TwwQuarantinePersistencePreparer(
+            diff_schema_service=self.diff_schema_service,
+            quarantine_session=source_context.quarantine_session,
+            quarantine_classes=source_context.quarantine_classes,
+            model_mapping=source_context.model_mapping,
+            canonical_metadata=canonical_metadata,
+            validation_definition=validation_definition,
+        )
 
-            job_db_id = self._job_db_id(
-                cursor=cursor,
+        try:
+            preparer.prepare(
                 job_id=job_id,
+                import_schema=source_context.import_schema,
             )
 
-            rejected_count = 0
+            source_context.quarantine_session.commit()
 
-            for table_name in self._review_table_names(
-                cursor=cursor,
-            ):
-                cursor.execute(
-                    f"""
-                    SELECT count(*)
-                    FROM {self._table(table_name)}
-                    WHERE job_id = %s
-                    AND jsonb_array_length(
-                        validation_findings
-                    ) > 0;
-                    """,
-                    (job_db_id,),
+        except Exception:
+            source_context.quarantine_session.rollback()
+            raise
+
+    def _ordered_source_contexts(
+        self,
+        *,
+        job_id: str,
+        source_contexts: Sequence[
+            TwwPersistenceSourceContext,
+        ],
+    ) -> tuple[
+        TwwPersistenceSourceContext,
+        ...,
+    ]:
+        """
+        Validate and order source contexts.
+
+        Exactly one context per source role is allowed. Base is always first,
+        followed by incremental.
+        """
+
+        source_context_by_role: dict[
+            str,
+            TwwPersistenceSourceContext,
+        ] = {}
+
+        for source_context in source_contexts:
+            source_role = source_context.source_role
+
+            if source_role not in {
+                "base",
+                "incremental",
+            }:
+                raise DiffJobEligibilityError(
+                    job_id=job_id,
+                    reason=(
+                        "unsupported persistence source role "
+                        f"{source_role!r}."
+                    ),
                 )
 
-                row = cursor.fetchone()
-
-                if row is None:
-                    raise RuntimeError(
-                        "Could not determine validation-finding row "
-                        f"count for {self.schema}.{table_name}."
-                    )
-
-                rejected_count += int(
-                    row[0],
+            if source_role in source_context_by_role:
+                raise DiffJobEligibilityError(
+                    job_id=job_id,
+                    reason=(
+                        "several persistence contexts exist for "
+                        f"source role {source_role!r}."
+                    ),
                 )
 
-        return rejected_count
+            source_context_by_role[
+                source_role
+            ] = source_context
+
+        if "base" not in source_context_by_role:
+            raise DiffJobEligibilityError(
+                job_id=job_id,
+                reason=(
+                    "the review job has no retained base source."
+                ),
+            )
+
+        ordered = [
+            source_context_by_role[
+                "base"
+            ],
+        ]
+
+        incremental_context = (
+            source_context_by_role.get(
+                "incremental",
+            )
+        )
+
+        if incremental_context is not None:
+            ordered.append(
+                incremental_context,
+            )
+
+        return tuple(
+            ordered,
+        )
 
     def _assert_application_eligibility(
         self,
         *,
-        job_id: str,
-        job_status: str,
-        validation_success: bool,
+        job: DiffReviewJob,
+        live_schema: str,
+        source_contexts: Sequence[
+            TwwPersistenceSourceContext,
+        ],
     ) -> None:
         """
-        Validate job-level persistence eligibility.
+        Validate lifecycle and source-level persistence eligibility.
         """
 
-        if job_status != "accepted":
-            raise DiffJobEligibilityError(
-                job_id=job_id,
-                reason=(f"the job has status {job_status!r}; " "expected 'accepted'."),
+        if job.job_status != "accepted":
+            raise DiffJobStateError(
+                job_id=job.job_id,
+                expected_status="accepted",
+                actual_status=job.job_status,
             )
 
-        if not validation_success:
+        if not job.validation_success:
             raise DiffJobEligibilityError(
-                job_id=job_id,
-                reason=("source validation was not successful."),
+                job_id=job.job_id,
+                reason=(
+                    "source validation was not successful."
+                ),
             )
+
+        if (
+            not isinstance(
+                live_schema,
+                str,
+            )
+            or not live_schema.strip()
+        ):
+            raise DiffJobEligibilityError(
+                job_id=job.job_id,
+                reason=(
+                    "the live schema is missing or invalid."
+                ),
+            )
+
+        if not source_contexts:
+            raise DiffJobEligibilityError(
+                job_id=job.job_id,
+                reason=(
+                    "the review job has no retained source "
+                    "contexts."
+                ),
+            )
+
+        for source_context in source_contexts:
+            if (
+                not source_context.import_schema
+                or not source_context.source_model
+                or not source_context.mapping_model_id
+            ):
+                raise DiffJobEligibilityError(
+                    job_id=job.job_id,
+                    reason=(
+                        "a retained source context contains "
+                        "incomplete source metadata."
+                    ),
+                )
 
     def _assert_review_counts(
         self,
@@ -332,11 +567,11 @@ class TwwReviewPersistenceService:
         validation_finding_row_count: int,
     ) -> None:
         """
-        Validate the persisted review-row set.
+        Validate persisted review rows before application.
 
-        Validation findings block persistence. Permission findings do not block
-        persistence because the quarantine preparer neutralizes unpermitted
-        operations and values before import.
+        Validation findings block persistence. Permission findings are handled
+        by destructive quarantine preparation and therefore do not block the
+        entire job.
         """
 
         if validation_finding_row_count:
@@ -349,126 +584,295 @@ class TwwReviewPersistenceService:
                 ),
             )
 
-        operation_count = counts.created_count + counts.altered_count + counts.deleted_count
+        operation_count = (
+            counts.created_count
+            + counts.altered_count
+            + counts.deleted_count
+        )
 
         if operation_count != counts.total_count:
             raise DiffJobEligibilityError(
                 job_id=job_id,
                 reason=(
-                    f"{counts.total_count - operation_count} review "
-                    "rows do not identify exactly one persistence "
-                    "operation."
+                    f"{counts.total_count - operation_count} "
+                    "review rows do not identify exactly one "
+                    "persistence operation."
                 ),
             )
 
-    def _required_metadata_value(
+    def _create_backups(
         self,
         *,
         job_id: str,
-        metadata: Mapping[
-            str,
-            Any,
+        source_contexts: Sequence[
+            TwwPersistenceSourceContext,
         ],
-        key: str,
+    ) -> list[
+        TwwQuarantineBackup,
+    ]:
+        """
+        Back up every retained quarantine schema before preparation.
+
+        Duplicate schema names are backed up only once.
+        """
+
+        backups: list[
+            TwwQuarantineBackup,
+        ] = []
+
+        backed_up_schemas: set[
+            str,
+        ] = set()
+
+        try:
+            for source_context in source_contexts:
+                if (
+                    source_context.import_schema
+                    in backed_up_schemas
+                ):
+                    continue
+
+                backup_path = (
+                    self.backup_service.create_backup(
+                        job_id=job_id,
+                        import_schema=(
+                            source_context.import_schema
+                        ),
+                    )
+                )
+
+                backups.append(
+                    TwwQuarantineBackup(
+                        source_role=(
+                            source_context.source_role
+                        ),
+                        import_schema=(
+                            source_context.import_schema
+                        ),
+                        backup_path=backup_path,
+                    )
+                )
+
+                backed_up_schemas.add(
+                    source_context.import_schema,
+                )
+
+        except Exception:
+            self._delete_unused_backups(
+                job_id=job_id,
+                backups=backups,
+            )
+
+            raise
+
+        return backups
+
+    def _backup_manifest(
+        self,
+        backups: Sequence[
+            TwwQuarantineBackup,
+        ],
     ) -> str:
         """
-        Return one required non-empty string metadata value.
+        Serialize all retained quarantine backups into the existing text field.
+
+        The metadata column remains a text field, so the multi-source backup
+        set is represented as a JSON array.
         """
 
-        value = metadata.get(
-            key,
+        return json.dumps(
+            [
+                {
+                    "source_role": backup.source_role,
+                    "import_schema": backup.import_schema,
+                    "backup_path": str(
+                        backup.backup_path,
+                    ),
+                }
+                for backup in backups
+            ],
+            ensure_ascii=False,
+            sort_keys=True,
         )
 
-        if (
-            not isinstance(
-                value,
-                str,
-            )
-            or not value.strip()
-        ):
-            raise DiffJobEligibilityError(
-                job_id=job_id,
-                reason=(f"required job metadata {key!r} is missing."),
-            )
-
-        return value
-
-    def _restore_backup(
+    def _restore_backups(
         self,
         *,
         job_id: str,
-        import_schema: str,
-        backup_path: Path,
+        backups: Sequence[
+            TwwQuarantineBackup,
+        ],
+        prepared_source_roles: tuple[
+            str,
+            ...,
+        ],
     ) -> None:
         """
-        Restore quarantine after preparation or persistence failure.
+        Restore retained quarantine schemas after application failure.
 
-        Restoration and cleanup failures are logged without hiding the
-        original persistence exception.
+        Restores run in reverse persistence order. Restoration failures are
+        logged without hiding the original application exception.
         """
 
-        try:
-            self.backup_service.restore_backup(
-                backup_path=backup_path,
-                import_schema=import_schema,
-            )
-        except Exception:
-            logger.exception(
-                "Could not restore quarantine backup %s for " "diff review job %r.",
-                backup_path,
-                job_id,
-            )
+        prepared_role_set = set(
+            prepared_source_roles,
+        )
 
-            return
+        for backup in reversed(
+            backups,
+        ):
+            if (
+                backup.source_role
+                not in prepared_role_set
+            ):
+                self._delete_backup_after_failure(
+                    job_id=job_id,
+                    backup=backup,
+                )
 
-        try:
-            self.backup_service.delete_backup(
-                backup_path=backup_path,
-            )
-        except Exception:
-            logger.exception(
-                "Could not delete restored quarantine backup %s " "for diff review job %r.",
-                backup_path,
-                job_id,
-            )
+                continue
 
-            return
+            try:
+                self.backup_service.restore_backup(
+                    backup_path=(
+                        backup.backup_path
+                    ),
+                    import_schema=(
+                        backup.import_schema
+                    ),
+                )
+
+            except Exception:
+                self.logger.exception(
+                    "Could not restore quarantine backup %s "
+                    "for source role %r and diff job %r.",
+                    backup.backup_path,
+                    backup.source_role,
+                    job_id,
+                )
+
+                continue
+
+            try:
+                self.backup_service.delete_backup(
+                    backup_path=(
+                        backup.backup_path
+                    ),
+                )
+
+            except Exception:
+                self.logger.exception(
+                    "Could not delete restored quarantine "
+                    "backup %s for diff job %r.",
+                    backup.backup_path,
+                    job_id,
+                )
 
         try:
             self.diff_schema_service.clear_backup_path(
                 job_id=job_id,
                 expected_status="applying",
             )
+
         except Exception:
-            logger.exception(
-                "Could not clear the quarantine backup path for " "diff review job %r.",
+            self.logger.exception(
+                "Could not clear quarantine backup metadata "
+                "for failed diff review job %r.",
                 job_id,
             )
 
-    def _delete_applied_backup(
+    def _delete_backup_after_failure(
         self,
         *,
         job_id: str,
-        backup_path: Path,
+        backup: TwwQuarantineBackup,
     ) -> None:
         """
-        Delete the quarantine backup after successful application.
-
-        A cleanup failure does not change an already applied job back to
-        failed. The retained backup_path allows later cleanup.
+        Delete an unused backup for a source phase never prepared.
         """
 
         try:
             self.backup_service.delete_backup(
-                backup_path=backup_path,
+                backup_path=backup.backup_path,
             )
+
         except Exception:
-            logger.exception(
-                "Could not delete quarantine backup %s for " "applied diff review job %r.",
-                backup_path,
+            self.logger.exception(
+                "Could not delete unused quarantine backup %s "
+                "for source role %r and diff job %r.",
+                backup.backup_path,
+                backup.source_role,
                 job_id,
             )
 
+    def _delete_unused_backups(
+        self,
+        *,
+        job_id: str,
+        backups: Sequence[
+            TwwQuarantineBackup,
+        ],
+    ) -> None:
+        """
+        Delete backups created before the complete backup set failed.
+        """
+
+        for backup in reversed(
+            backups,
+        ):
+            try:
+                self.backup_service.delete_backup(
+                    backup_path=(
+                        backup.backup_path
+                    ),
+                )
+
+            except Exception:
+                self.logger.exception(
+                    "Could not delete unused quarantine backup "
+                    "%s for diff review job %r.",
+                    backup.backup_path,
+                    job_id,
+                )
+
+    def _delete_applied_backups(
+        self,
+        *,
+        job_id: str,
+        backups: Sequence[
+            TwwQuarantineBackup,
+        ],
+    ) -> None:
+        """
+        Delete all quarantine backups after successful application.
+
+        Cleanup failure does not change an already applied job back to failed.
+        Backup metadata remains available if not every backup was deleted.
+        """
+
+        cleanup_succeeded = True
+
+        for backup in reversed(
+            backups,
+        ):
+            try:
+                self.backup_service.delete_backup(
+                    backup_path=(
+                        backup.backup_path
+                    ),
+                )
+
+            except Exception:
+                cleanup_succeeded = False
+
+                self.logger.exception(
+                    "Could not delete quarantine backup %s for "
+                    "applied diff review job %r.",
+                    backup.backup_path,
+                    job_id,
+                )
+
+        if not cleanup_succeeded:
             return
 
         try:
@@ -476,284 +880,110 @@ class TwwReviewPersistenceService:
                 job_id=job_id,
                 expected_status="applied",
             )
+
         except Exception:
-            logger.exception(
-                "Deleted quarantine backup %s but could not clear "
-                "the backup path for applied diff review job %r.",
-                backup_path,
+            self.logger.exception(
+                "Deleted quarantine backups but could not clear "
+                "backup metadata for applied diff review job %r.",
                 job_id,
             )
+
+    def _rollback_active_sessions(
+        self,
+        *,
+        source_contexts: Sequence[
+            TwwPersistenceSourceContext,
+        ],
+    ) -> None:
+        """
+        Roll back active quarantine transactions without closing sessions.
+        """
+
+        for source_context in reversed(
+            source_contexts,
+        ):
+            session = (
+                source_context.quarantine_session
+            )
+
+            try:
+                if session.in_transaction():
+                    session.rollback()
+
+            except Exception:
+                self.logger.exception(
+                    "Could not roll back quarantine session for "
+                    "source role %r and schema %r.",
+                    source_context.source_role,
+                    source_context.import_schema,
+                )
 
     def _mark_failed(
         self,
         *,
         job_id: str,
+        phase: str,
+        source_context: (
+            TwwPersistenceSourceContext
+            | None
+        ),
+        completed_phases: tuple[
+            str,
+            ...,
+        ],
         exception: Exception,
     ) -> None:
         """
-        Record an application failure without hiding the original error.
+        Record an application failure without hiding the original exception.
         """
+
+        source_role = (
+            source_context.source_role
+            if source_context is not None
+            else None
+        )
+
+        import_schema = (
+            source_context.import_schema
+            if source_context is not None
+            else None
+        )
+
+        message = str(
+            exception,
+        )
+
+        diagnostic_message = (
+            f"{message} "
+            f"[phase={phase!r}, "
+            f"source_role={source_role!r}, "
+            f"import_schema={import_schema!r}, "
+            f"completed_phases={completed_phases!r}]"
+        )
 
         try:
             self.diff_schema_service.mark_job_failed(
                 job_id=job_id,
                 expected_status="applying",
-                phase="applying",
+                phase=phase,
                 error_type=type(
                     exception,
                 ).__name__,
-                message=str(
-                    exception,
-                ),
+                message=diagnostic_message,
             )
-        except Exception:
-            logger.exception(
+
+        except Exception as transition_exception:
+            self.logger.exception(
                 "Could not mark diff review job %r as failed.",
                 job_id,
             )
 
-    def _delete_unused_backup(
-        self,
-        *,
-        job_id: str,
-        backup_path: Path,
-    ) -> None:
-        """
-        Delete a backup when quarantine preparation never started.
-
-        No backup-path cleanup is required because the failure occurred before
-        the backup path was successfully stored with the review job.
-        """
-
-        try:
-            self.backup_service.delete_backup(
-                backup_path=backup_path,
-            )
-        except Exception:
-            logger.exception(
-                "Could not delete unused quarantine backup %s " "for diff review job %r.",
-                backup_path,
-                job_id,
-            )
-
-
-@dataclass(
-    slots=True,
-)
-class TwwJobPersistenceService:
-    """
-    Apply one accepted tww_diff job through the existing INTERLIS importer.
-
-    The service does not create, restore or delete quarantine backups.
-    The nullable backup path remains metadata owned by TwwDiffSchemaService
-    for compatibility with workflows that manage backups externally.
-    """
-
-    diff_schema_service: TwwDiffSchemaService
-    quarantine_preparer: TwwQuarantinePreparer
-    persistence_adapter: TwwInterlisPersistenceCapability
-
-    def persist_job(
-        self,
-        *,
-        job_id: str,
-        live_schema: str | None = None,
-    ) -> TwwJobPersistenceResult:
-        """
-        Prepare quarantine data and persist one accepted job.
-        """
-
-        job = self.diff_schema_service.require_review_job(
-            job_id=job_id,
-            include_features=False,
-        )
-
-        self._assert_application_eligibility(
-            job_id=job_id,
-            job_status=job.job_status,
-            validation_success=job.validation_success,
-        )
-
-        counts = self.diff_schema_service.job_counts(
-            job_id=job_id,
-        )
-
-        self._assert_review_counts(
-            job_id=job_id,
-            counts=counts,
-        )
-
-        import_schema = self._required_metadata_value(
-            job_id=job_id,
-            metadata=job.metadata,
-            key="import_schema",
-        )
-
-        source_model = self._required_metadata_value(
-            job_id=job_id,
-            metadata=job.metadata,
-            key="source_model",
-        )
-
-        resolved_live_schema = live_schema or self._required_metadata_value(
-            job_id=job_id,
-            metadata=job.metadata,
-            key="live_schema",
-        )
-
-        self.diff_schema_service.acquire_job_for_application(
-            job_id=job_id,
-        )
-
-        try:
-            self.quarantine_preparer.prepare(
-                job_id=job_id,
-                import_schema=import_schema,
-            )
-
-            interlis_persistence = self.persistence_adapter.persist_quarantine(
-                import_schema=import_schema,
-                live_schema=resolved_live_schema,
-                source_model=source_model,
-            )
-
-            if not interlis_persistence.committed:
-                raise DiffJobPersistenceError(
-                    job_id=job_id,
-                    phase="applying",
-                    message=(
-                        "The quarantine-to-live importer returned "
-                        "without confirming its transaction commit."
-                    ),
-                )
-
-            self.diff_schema_service.mark_job_applied(
-                job_id=job_id,
-            )
-
-        except Exception as exception:
-            self._mark_failed(
-                job_id=job_id,
-                exception=exception,
-            )
-
-            raise
-
-        return TwwJobPersistenceResult(
-            job_id=job_id,
-            previous_status="accepted",
-            job_status="applied",
-            review_feature_count=counts.total_count,
-            restricted_feature_count=counts.restricted_count,
-            import_schema=import_schema,
-            live_schema=resolved_live_schema,
-            source_model=source_model,
-            interlis_persistence=interlis_persistence,
-        )
-
-    def _assert_application_eligibility(
-        self,
-        *,
-        job_id: str,
-        job_status: str,
-        validation_success: bool,
-    ) -> None:
-        """
-        Validate lifecycle and source-validation eligibility.
-        """
-
-        if job_status != "accepted":
-            raise DiffJobStateError(
-                job_id=job_id,
-                expected_status="accepted",
-                actual_status=job_status,
-            )
-
-        if not validation_success:
-            raise DiffJobEligibilityError(
-                job_id=job_id,
-                reason=("source validation was not successful."),
-            )
-
-    def _assert_review_counts(
-        self,
-        *,
-        job_id: str,
-        counts: DiffJobCounts,
-    ) -> None:
-        """
-        Validate that review rows are eligible for persistence.
-        """
-
-        if counts.rejected_count:
-            raise DiffJobEligibilityError(
-                job_id=job_id,
-                reason=(f"{counts.rejected_count} review rows contain " "blocking findings."),
-            )
-
-    def _required_metadata_value(
-        self,
-        *,
-        job_id: str,
-        metadata: Mapping[
-            str,
-            Any,
-        ],
-        key: str,
-    ) -> str:
-        """
-        Return a required non-empty string metadata value.
-        """
-
-        value = metadata.get(
-            key,
-        )
-
-        if (
-            not isinstance(
-                value,
-                str,
-            )
-            or not value.strip()
-        ):
-            raise DiffSchemaContractError(
-                column_name=key,
-                message=(
-                    f"Diff review job {job_id!r} does not contain " f"a valid {key!r} value."
-                ),
-            )
-
-        return value
-
-    def _mark_failed(
-        self,
-        *,
-        job_id: str,
-        exception: Exception,
-    ) -> None:
-        """
-        Mark an applying job as failed.
-
-        The original persistence exception remains authoritative if recording
-        the failure state also fails.
-        """
-
-        try:
-            self.diff_schema_service.mark_job_failed(
-                job_id=job_id,
-                expected_status="applying",
-                phase="applying",
-                error_type=type(exception).__name__,
-                message=str(
-                    exception,
-                ),
-            )
-        except Exception as transition_exception:
             if hasattr(
                 exception,
                 "add_note",
             ):
                 exception.add_note(
-                    "Additionally, the diff job could not be marked "
-                    f"failed: {transition_exception}"
+                    "Additionally, the diff job could not be "
+                    "marked failed: "
+                    f"{transition_exception}"
                 )

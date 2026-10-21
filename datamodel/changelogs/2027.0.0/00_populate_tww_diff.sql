@@ -1,6 +1,6 @@
 CREATE SCHEMA IF NOT EXISTS tww_diff;
 
-CREATE TABLE IF NOT EXISTS tww_diff.metadata (
+CREATE TABLE IF NOT EXISTS tww_diff.tww_metadata (
     id bigserial PRIMARY KEY,
     job_id text NOT NULL,
     job_status text NOT NULL DEFAULT 'pending',
@@ -62,10 +62,95 @@ CREATE TABLE IF NOT EXISTS tww_diff.metadata (
 );
 
 CREATE INDEX IF NOT EXISTS metadata_job_status_idx
-ON tww_diff.metadata (job_status);
+ON tww_diff.tww_metadata (job_status);
 
 CREATE INDEX IF NOT EXISTS metadata_diff_tstamp_idx
-ON tww_diff.metadata (diff_tstamp);
+ON tww_diff.tww_metadata (diff_tstamp);
+
+CREATE TABLE IF NOT EXISTS tww_diff.tww_review_feature (
+    diff_id bigserial,
+
+    job_id bigint NOT NULL,
+
+    identity jsonb NOT NULL,
+
+    is_created boolean NOT NULL DEFAULT false,
+    is_altered boolean NOT NULL DEFAULT false,
+    is_deleted boolean NOT NULL DEFAULT false,
+
+    is_rejected boolean GENERATED ALWAYS AS (
+        jsonb_array_length(permission_findings) > 0
+        OR
+        jsonb_array_length(validation_findings) > 0
+    ) STORED,
+
+    import_values jsonb NOT NULL DEFAULT '{}'::jsonb,
+    canonical_values jsonb NOT NULL DEFAULT '{}'::jsonb,
+    changed_attributes jsonb NOT NULL DEFAULT '[]'::jsonb,
+    unpermitted_values jsonb NOT NULL DEFAULT '{}'::jsonb,
+    permission_findings jsonb NOT NULL DEFAULT '[]'::jsonb,
+    validation_findings jsonb NOT NULL DEFAULT '[]'::jsonb,
+
+    created_at timestamptz NOT NULL DEFAULT now(),
+
+    CONSTRAINT review_feature_identity_object
+        CHECK (
+            jsonb_typeof(identity) = 'object'
+        ),
+
+    CONSTRAINT review_feature_identity_class
+        CHECK (
+            jsonb_typeof(
+                identity -> 'class_id'
+            ) = 'string'
+        ),
+
+    CONSTRAINT review_feature_identity_attributes
+        CHECK (
+            jsonb_typeof(
+                identity -> 'attributes'
+            ) = 'object'
+        ),
+
+    CONSTRAINT review_feature_operation
+        CHECK (
+            is_created::integer
+            + is_altered::integer
+            + is_deleted::integer
+            = 1
+        ),
+
+    CONSTRAINT review_feature_import_values_object
+        CHECK (
+            jsonb_typeof(import_values) = 'object'
+        ),
+
+    CONSTRAINT review_feature_canonical_values_object
+        CHECK (
+            jsonb_typeof(canonical_values) = 'object'
+        ),
+
+    CONSTRAINT review_feature_changed_attributes_array
+        CHECK (
+            jsonb_typeof(changed_attributes) = 'array'
+        ),
+
+    CONSTRAINT review_feature_unpermitted_values_object
+        CHECK (
+            jsonb_typeof(unpermitted_values) = 'object'
+        ),
+
+    CONSTRAINT review_feature_permission_findings_array
+        CHECK (
+            jsonb_typeof(permission_findings) = 'array'
+        ),
+
+    CONSTRAINT review_feature_validation_findings_array
+        CHECK (
+            jsonb_typeof(validation_findings) = 'array'
+        )
+);
+
 
 DO
 $DO$
@@ -73,95 +158,50 @@ DECLARE
     rec record;
 BEGIN
     FOR rec IN
-        SELECT tablename AS table_name
-        FROM tww_sys.dictionary_od_table
-        ORDER BY tablename
+        SELECT table_name
+        FROM information_schema.tables
+        WHERE table_schema = 'tww_od'
+          AND table_name NOT IN (
+              'network_segment',
+              'network_node',
+              'reach_coefficient_of_friction',
+              'tww_wastewater_node_symbology',
+              'tww_wastewater_structure_label',
+              'tww_reach_point_label',
+              'default_values',
+              'import_manhole_quarantine'
+          )
     LOOP
         EXECUTE format(
             'CREATE TABLE IF NOT EXISTS tww_diff.%I (
-                diff_id bigserial PRIMARY KEY,
+                CONSTRAINT %I
+                    PRIMARY KEY (diff_id),
 
-                job_id bigint NOT NULL
-                    REFERENCES tww_diff.metadata (id)
+                CONSTRAINT %I
+                    FOREIGN KEY (job_id)
+                    REFERENCES tww_diff.tww_metadata (id)
                     ON DELETE CASCADE,
 
-                obj_id text NOT NULL,
-
-                is_created boolean NOT NULL DEFAULT false,
-                is_altered boolean NOT NULL DEFAULT false,
-                is_deleted boolean NOT NULL DEFAULT false,
-
-                is_rejected boolean GENERATED ALWAYS AS (
-                    jsonb_array_length(permission_findings) > 0
-                    OR
-                    jsonb_array_length(validation_findings) > 0
-                ) STORED,
-
-                import_values jsonb NOT NULL DEFAULT ''{{}}''::jsonb,
-                canonical_values jsonb NOT NULL DEFAULT ''{{}}''::jsonb,
-                changed_attributes jsonb NOT NULL DEFAULT ''[]''::jsonb,
-                unpermitted_values jsonb NOT NULL DEFAULT ''{{}}''::jsonb,
-                permission_findings jsonb NOT NULL DEFAULT ''[]''::jsonb,
-                validation_findings jsonb NOT NULL DEFAULT ''[]''::jsonb,
-
-                created_at timestamptz NOT NULL DEFAULT now(),
-
                 CONSTRAINT %I
-                    UNIQUE (job_id, obj_id),
+                    UNIQUE (job_id, identity),
 
                 CONSTRAINT %I
                     CHECK (
-                        is_created::integer
-                        + is_altered::integer
-                        + is_deleted::integer
-                        = 1
-                    ),
-
-                CONSTRAINT %I
-                    CHECK (
-                        jsonb_typeof(import_values) = ''object''
-                    ),
-
-                CONSTRAINT %I
-                    CHECK (
-                        jsonb_typeof(canonical_values) = ''object''
-                    ),
-
-                CONSTRAINT %I
-                    CHECK (
-                        jsonb_typeof(changed_attributes) = ''array''
-                    ),
-
-                CONSTRAINT %I
-                    CHECK (
-                        jsonb_typeof(unpermitted_values) = ''object''
-                    ),
-
-                CONSTRAINT %I
-                    CHECK (
-                        jsonb_typeof(permission_findings) = ''array''
-                    ),
-
-                CONSTRAINT %I
-                    CHECK (
-                        jsonb_typeof(validation_findings) = ''array''
+                        identity ->> ''class_id'' = %L
                     )
-            );',
+            ) INHERITS (tww_diff.tww_review_feature);',
             rec.table_name,
-            rec.table_name || '_job_obj_id_unique',
-            rec.table_name || '_operation_check',
-            rec.table_name || '_import_values_object',
-            rec.table_name || '_canonical_values_object',
-            rec.table_name || '_changed_attributes_array',
-            rec.table_name || '_unpermitted_values_object',
-            rec.table_name || '_permission_findings_array',
-            rec.table_name || '_validation_findings_array'
+            rec.table_name || '_pkey',
+            rec.table_name || '_job_id_fkey',
+            rec.table_name || '_job_identity_unique',
+            rec.table_name || '_identity_class_check',
+            rec.table_name
         );
 
         EXECUTE format(
             'CREATE INDEX IF NOT EXISTS %I
-             ON tww_diff.%I (obj_id);',
-            rec.table_name || '_obj_id_idx',
+             ON tww_diff.%I (job_id);',
+            rec.table_name || '_job_id_idx',
             rec.table_name
         );
     END LOOP;

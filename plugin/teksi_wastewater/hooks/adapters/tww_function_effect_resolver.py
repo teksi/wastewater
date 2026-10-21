@@ -10,7 +10,7 @@ from typing import Any
 
 from sqlalchemy import inspect, text
 from sqlalchemy.orm import Session
-from teksi_hooks.capabilities.incremental_import import (
+from teksi_wastewater.hooks.capabilities.incremental_import import (
     FunctionEffectResolver,
 )
 from teksi_hooks.models.effects import (
@@ -19,7 +19,7 @@ from teksi_hooks.models.effects import (
 from teksi_hooks.models.mapping import (
     ClassMapping,
 )
-from teksi_hooks.parsers.effects import (
+from teksi_hooks.parser.effects_parser import (
     EffectParser,
 )
 

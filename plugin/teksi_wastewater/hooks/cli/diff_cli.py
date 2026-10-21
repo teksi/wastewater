@@ -11,13 +11,7 @@ from teksi_hooks.hook import (
     HookContext,
     HookHandler,
 )
-from teksi_wastewater.hooks.adapters.tww_change_object_provider import (
-    TwwChangeObjectProviderFactory,
-)
 from teksi_wastewater.hooks.cli import helpers
-from teksi_wastewater.hooks.services.tww_change_creation_service import (
-    ChangeObjectProviderFactory,
-)
 from teksi_wastewater.interlis import (
     config,
 )
@@ -34,7 +28,12 @@ def main() -> int:
 
     logging.basicConfig(
         level=logging.INFO,
-        format=("%(asctime)s " "%(levelname)-8s " "%(name)s: " "%(message)s"),
+        format=(
+            "%(asctime)s "
+            "%(levelname)-8s "
+            "%(name)s: "
+            "%(message)s"
+        ),
         datefmt="%H:%M:%S",
         force=True,
     )
@@ -136,7 +135,7 @@ def main() -> int:
             "should only be used when setting a baseline."
         ),
     )
-
+    
     parser.add_argument(
         "--auto-apply",
         action="store_true",
@@ -146,7 +145,14 @@ def main() -> int:
             "Its main use case is importing an incremental baseline dataset."
         ),
     )
-
+    
+    parser.add_argument(
+        "--supersede-existing-diff-jobs",
+        action="store_true",
+        help=(
+            "Supersede existing diff jobs with this one. "
+        ),
+    )
     helpers.add_postgres_connection_args(
         parser,
     )
@@ -167,6 +173,7 @@ def main() -> int:
         "hook_config_dir": args.hook_config_dir,
         "skip_rights_evaluation": args.skip_rights_evaluation,
         "auto_apply": args.auto_apply,
+        "supersede_existing_diff_jobs": args.supersede_existing_diff_jobs,
     }
 
     if args.job_id is not None:
@@ -182,7 +189,6 @@ def main() -> int:
         parameters=parameters,
         logger=logger,
         capabilities={
-            ChangeObjectProviderFactory: TwwChangeObjectProviderFactory(),
             DatabaseConnectionFactory: connection_factory,
         },
     )

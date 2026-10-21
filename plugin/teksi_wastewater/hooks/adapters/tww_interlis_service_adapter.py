@@ -54,7 +54,7 @@ class TwwInterlisContext(InterlisContext):
     export_orientation: int = 90
     include_unplaced: bool = False
     disable_validation: bool = False
-    incremental_only: bool = False
+    allow_schema_recreation: bool = False
 
     def apply(
         self,
@@ -150,7 +150,7 @@ class TwwInterlisServiceAdapter(InterlisService):
                 filter_nulls=(context.filter_nulls),
                 import_orgs=(context.import_orgs),
                 srid=context.srid,
-                incremental_only=context.incremental_only,
+                allow_schema_recreation=context.allow_schema_recreation,
             )
             return
 
@@ -188,6 +188,7 @@ class TwwInterlisServiceAdapter(InterlisService):
                 ),
                 srid=context.srid,
                 import_orgs=context.import_orgs,
+                allow_schema_recreation=context.allow_schema_recreation,
             )
             return
 

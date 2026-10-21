@@ -1,11 +1,11 @@
-GepKnoten Incremental Import Contract
-======================================
+Incremental Import Contract
+===========================
 
 Status
 ------
 
 This document defines the expected behaviour of the trusted AG-XX
-``GepKnoten`` incremental import.
+incremental import.
 
 The contract is intentionally written before the implementation. It is the
 basis for the mapping function, importer implementation, and integration
@@ -101,65 +101,41 @@ Every source attribute belongs to one of four categories.
     DSS owns the value or the value is outside the incremental contract. The
     importer MUST not modify any corresponding canonical or extension field.
 
-Attribute contract
-------------------
+Attribute contract for GepKnoten
+--------------------------------
 
 ``obj_id``
     Category: ``identity``.
 
-    The value MUST resolve to an existing ``wastewater_node`` or
-    ``reach_point``. It determines which storage rules apply to the row.
 
 ``ara_nr``
     Category: ``unconnected_only``.
 
-    Ignore for ``wastewater_node``. For ``reach_point``, store as
-    ``agxx_unconnected_node_bwrel.wwtp_number``.
-
 ``baujahr``
     Category: ``ignored``.
 
-    DSS owns the year of construction. The incremental import MUST NOT update
-    it.
 
 ``baulicherzustand``
     Category: ``ignored``.
 
-    DSS owns the structure condition. The incremental import MUST NOT update
-    it.
-
 ``bauwerkstatus``
     Category: ``ignored``.
-
-    DSS owns the structure status. The incremental import MUST NOT update it.
 
 ``bemerkung_wi``
     Category: ``import_1_to_1``.
 
-    Store as the AG-64/WI remark associated with the existing network
-    element.
-
 ``bezeichnung``
     Category: ``ignored``.
 
-    DSS owns the canonical identifier or designation. The incremental import
-    MUST NOT update it.
 
 ``deckelkote``
     Category: ``ignored``.
 
-    DSS owns cover elevation information. The incremental import MUST NOT
-    update it.
-
 ``detailgeometrie``
     Category: ``ignored``.
 
-    DSS owns detail geometry. The incremental import MUST NOT update it.
-
 ``finanzierung``
     Category: ``ignored``.
-
-    DSS owns financing information. The incremental import MUST NOT update it.
 
 ``funktionag``
     Category: ``import_1_to_1`` with round-trip semantics.
@@ -168,116 +144,75 @@ Attribute contract
     the AG-XX export view produces the same AG-XX value.
 
     For a regular ``wastewater_node``, store the corresponding AG-64 function
-    extension value.
-
-    For a ``reach_point``, the implementation MUST store the value in the
-    unconnected-node representation or another explicit extension location
-    used by the future export. It MUST NOT change the DSS-owned canonical
-    node or structure subtype merely to reproduce this value.
+    extension value according to the instead of insert trigger.
 
     Value-list translation is allowed only when it is lossless for the AG-XX
     export value.
 
+    For a ``reach_point``, only the value ``Leitungsknoten`` is valid.
+
+
 ``funktionhierarchisch``
     Category: ``unconnected_only``.
 
-    Ignore for ``wastewater_node``. For ``reach_point``, store as
-    ``agxx_unconnected_node_bwrel.ch_function_hierarchic`` using the canonical
-    value-list code corresponding to the submitted AG-XX value.
 
 ``istschnittstelle``
     Category: ``import_1_to_1``.
 
-    Store as the AG-96 gateway/interface extension value associated with the
-    existing wastewater node. For a reach-point representation, the importer
-    MAY store it only if the target model has an explicit round-trip-capable
-    location. Otherwise it MUST report the value as unsupported rather than
-    changing DSS-owned data.
+    For a ``reach_point``, store in ``agxx_unconnected_node_bwrel``.
 
 ``jahr_zustandserhebung``
     Category: ``ignored``.
 
-    DSS owns the condition-survey year. The incremental import MUST NOT update
-    it.
 
 ``lage``
     Category: ``unconnected_only``.
 
-    Ignore for ``wastewater_node``. For ``reach_point``, store as
-    ``agxx_unconnected_node_bwrel.situation3d_geometry``. Geometry conversion
-    MUST preserve the source position and use the configured project SRID.
 
 ``letzte_aenderung_wi``
     Category: ``import_1_to_1``.
 
-    Store as the AG-64/WI last-modification value. The importer MUST preserve
-    the submitted timestamp and MUST NOT replace it with the current time.
-
 ``lagegenauigkeit``
     Category: ``ignored``.
-
-    DSS owns positional accuracy. The incremental import MUST NOT update it.
 
 ``maxrueckstauhoehe``
     Category: ``unconnected_only``.
 
-    Ignore for ``wastewater_node``. For ``reach_point``, store as
-    ``agxx_unconnected_node_bwrel.backflow_level_current``.
-
 ``sanierungsbedarf``
     Category: ``ignored``.
 
-    DSS owns renovation necessity. The incremental import MUST NOT update it.
 
 ``sohlenkote``
     Category: ``unconnected_only``.
 
-    Ignore for ``wastewater_node``. For ``reach_point``, store as
-    ``agxx_unconnected_node_bwrel.bottom_level``.
-
 ``zugaenglichkeit``
     Category: ``ignored``.
-
-    DSS owns accessibility. The incremental import MUST NOT update it.
 
 ``betreiber``
     Category: ``ignored``.
 
-    DSS owns the operator relation. The incremental import MUST NOT update it.
 
 ``datenbewirtschafter_wi``
     Category: ``import_1_to_1``.
 
-    Store as the AG-64/WI provider associated with the existing network
-    element. The AG-XX organization identifier MUST be resolved to the
-    corresponding canonical ``tww_od.organisation.obj_id``. A missing or
-    ambiguous organization mapping MUST fail the row.
+    A missing or ambiguous organization mapping MUST fail the row.
 
 ``eigentuemer``
     Category: ``ignored``.
 
-    DSS owns the owner relation. The incremental import MUST NOT update it.
 
 ``gepmassnahmeref``
     Category: ``import_1_to_1``.
 
-    Store as the AG-96 measure reference associated with the applicable
-    wastewater structure or unconnected-node representation. The importer
-    MUST NOT create or modify the referenced measure as a side effect.
 
 ``datenbewirtschafter_gep``
     Category: ``import_1_to_1``.
 
-    Store as the AG-96/GEP provider associated with the existing network
-    element. The AG-XX organization identifier MUST be resolved to the
-    corresponding canonical ``tww_od.organisation.obj_id``. A missing or
-    ambiguous organization mapping MUST fail the row.
+    A missing or ambiguous organization mapping MUST fail the row.
 
 ``bemerkung_gep``
     Category: ``import_1_to_1``.
 
-    Store as the AG-96/GEP remark associated with the existing network
-    element.
 
 ``letzte_aenderung_gep``
     Category: ``import_1_to_1``.
@@ -285,16 +220,13 @@ Attribute contract
     Store as the AG-96/GEP last-modification value. The importer MUST preserve
     the submitted timestamp and MUST NOT replace it with the current time.
 
-Any other source attribute
-    Category: ``ignored``.
-
-    Attributes not listed above are outside the current XTF contract. If such
-    an attribute is encountered, it MUST NOT modify live data. The
-    implementation SHOULD log the ignored attribute at debug level so schema
-    changes can be detected without failing existing imports.
 
 Storage expectations
 --------------------
+
+Committing
+~~~~~~~~~~
+Committing is only allowed if there are no ``ValidationFinding`` of ``Severity`` Error.
 
 Regular wastewater node
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -303,7 +235,8 @@ For a source ``obj_id`` resolving to ``tww_od.wastewater_node``, the importer
 MAY create missing rows in extension tables required to store explicitly
 imported AG-XX values. It MUST NOT create or replace the canonical
 ``wastewater_node``, ``wastewater_networkelement``, ``wastewater_structure``,
-cover, or structure subtype.
+``cover``, or structure subtype.
+Missing canonical entries must raise a ``ValidationFinding`` of ``Severity`` Error.
 
 Expected extension targets include:
 
@@ -338,8 +271,7 @@ For trusted baseline imports, source nulls have the following semantics:
 
 * a null ``identity`` value is invalid and MUST fail the row;
 * a null ``ignored`` value remains ignored;
-* a null ``import_1_to_1`` or ``unconnected_only`` value MAY be stored as null
-  when the source attribute is explicitly present;
+* a null ``import_1_to_1`` or ``unconnected_only`` remains ignored, but raises a ``ValidationFinding`` of ``Severity`` Warning;
 * absence of a source attribute MUST NOT clear an existing target value.
 
 The implementation therefore MUST distinguish an absent attribute from an
@@ -432,18 +364,4 @@ following:
 #. A future export reproduces the round-trip values.
 #. No legacy ``vw_agxx_gepknoten`` persistence trigger is invoked.
 
-Open decisions
---------------
 
-The following details require confirmation before implementation:
-
-* the exact storage location for ``funktionag`` for a reach-point match;
-* whether ``istschnittstelle`` is supported for a reach-point match;
-* whether ``gepmassnahmeref`` for a reach-point match belongs directly in
-  ``agxx_unconnected_node_bwrel``;
-* the precise uniqueness constraint used for
-  ``agxx_unconnected_node_bwrel`` and ``agxx_reach_point`` upserts;
-* whether an explicitly supplied null clears an existing extension value or
-  is ignored in trusted baseline mode;
-* whether missing extension rows may always be created for an existing DSS
-  object.

@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import os
-from collections.abc import Mapping
+from dataclasses import fields
 from pathlib import Path
-from typing import Any
+from typing import Any, Mapping
 from uuid import uuid4
 
 import yaml
@@ -35,53 +35,51 @@ from teksi_hooks.parser.rights_parser import RightsParser
 from teksi_hooks.parser.validation_parser import ValidationParser
 from teksi_hooks.resolver.provider_resolver import ProviderResolver
 from teksi_hooks.resolver.rights_resolver import RightsResolver
+from teksi_hooks.models.review import ChangeCreationResult
+
 from teksi_wastewater.hooks.adapters.tww_canonical_model_adapter import (
     TwwCanonicalModelAdapter,
 )
 from teksi_wastewater.hooks.adapters.tww_database_connection_factory import (
     TwwDatabaseConnectionFactory,
 )
-from teksi_wastewater.hooks.adapters.tww_implicit_model_mapping_adapter import (
-    TwwImplicitModelMappingAdapter,
-)
-from teksi_wastewater.hooks.adapters.tww_interlis_persistence_adapter import (
-    TwwInterlisPersistenceAdapter,
-)
-from teksi_wastewater.hooks.adapters.tww_interlis_service_adapter import (
-    TwwInterlisContext,
-    TwwInterlisServiceAdapter,
-)
-from teksi_wastewater.hooks.adapters.tww_quarantine_effect_projector import (
-    TwwQuarantineEffectProjector,
-)
 from teksi_wastewater.hooks.adapters.tww_quarantine_runner import (
     TwwQuarantineRunner,
 )
 from teksi_wastewater.hooks.adapters.tww_relation_context_provider import (
     TwwRelationContextProvider,
+    MappingProjectionMode,
 )
 from teksi_wastewater.hooks.adapters.tww_relation_lookup_adapter import (
     TwwRelationLookupAdapter,
 )
+from teksi_wastewater.hooks.adapters.tww_implicit_model_mapping_adapter import (
+    TwwImplicitModelMappingAdapter,
+)
+from teksi_wastewater.hooks.adapters.tww_change_object_provider import (
+    TwwChangeObjectProviderFactory
+)
+
 from teksi_wastewater.hooks.services.tww_change_creation_service import (
-    ChangeObjectProviderFactory,
     TwwChangeCreationService,
-)
-from teksi_wastewater.hooks.services.tww_database_backup_service import (
-    TwwDatabaseBackupService,
-)
-from teksi_wastewater.hooks.services.tww_diff_review_service import (
-    TwwDiffReviewService,
 )
 from teksi_wastewater.hooks.services.tww_diff_schema_service import (
     DiffJobMode,
     TwwDiffSchemaService,
 )
-from teksi_wastewater.hooks.services.tww_quarantine_persistence_preparer import (
-    TwwQuarantinePersistencePreparer,
+
+from teksi_wastewater.hooks.adapters.tww_quarantine_effect_projector import (
+    TwwQuarantineEffectProjector,
 )
-from teksi_wastewater.hooks.services.tww_review_persistence_service import (
-    TwwReviewPersistenceService,
+from teksi_wastewater.hooks.adapters.tww_interlis_service_adapter import (
+    TwwInterlisContext,
+    TwwInterlisServiceAdapter,
+)
+from teksi_wastewater.hooks.services.tww_review_application_factory import (
+    create_review_application_service,
+)
+from teksi_wastewater.hooks.services.tww_review_application_service import (
+    TwwReviewApplicationService,
 )
 from teksi_wastewater.interlis import (
     config,
@@ -97,7 +95,7 @@ class Hook(
 
     required_capabilities = frozenset(
         {
-            ChangeObjectProviderFactory,
+            DatabaseConnectionFactory,
         }
     )
 
@@ -129,7 +127,8 @@ class Hook(
             TwwDatabaseConnectionFactory,
         ):
             raise TypeError("The TWW diff hook requires TwwDatabaseConnectionFactory.")
-
+        
+        self.change_object_provider_factory =TwwChangeObjectProviderFactory()
         self.interlis_service = TwwInterlisServiceAdapter(
             connection_factory=self.connection_factory,
         )
@@ -180,7 +179,13 @@ class Hook(
             else None
         )
 
-        auto_apply = parameters.get("auto_apply", False)
+        auto_apply = parameters.get(
+            "auto_apply", False
+        )
+
+        supersede_existing_diff_jobs = parameters.get(
+            "supersede_existing_diff_jobs", False
+        )
 
         self.provider_oid = Standardoid(parameters["provider_oid"])
         self.dataowner_oid = Standardoid(parameters["dataowner_oid"])
@@ -191,6 +196,7 @@ class Hook(
             self.model_config_dir / "validations.yaml",
         )
 
+
         provider_rights_path, rights_definition_path = self._eval_rights_profile(
             hook_config_dir,
             parameters.get(
@@ -199,12 +205,12 @@ class Hook(
             ),
         )
         self.rights_definition = RightsParser().parse_file(rights_definition_path)
-        raw_provider_rights = ProviderRightsParser(oid_type=Standardoid).parse_file(
-            provider_rights_path
-        )
+        raw_provider_rights = ProviderRightsParser(oid_type=Standardoid).parse_file(provider_rights_path)
         resolved_providers = ProviderResolver().resolve_all(providers=raw_provider_rights)
         if skip_rights_evaluation:
-            resolved_providers = self._grant_all(resolved_providers)
+            resolved_providers = self._grant_all(
+                resolved_providers,
+            )
         try:
             self.resolved_provider = resolved_providers[self.provider_oid]
         except KeyError as exception:
@@ -212,7 +218,7 @@ class Hook(
                 "No provider-rights definition exists for " f"provider {self.provider_oid!s}."
             ) from exception
 
-        self.rights_context = RightsEvaluationBaseContext(
+        self.rights_base_context = RightsEvaluationBaseContext(
             provider_oid=self.provider_oid,
             dataowner_oid=self.dataowner_oid,
             context_values={
@@ -226,7 +232,7 @@ class Hook(
             logger=context.logger,
         )
 
-        canonical_model = TwwCanonicalModelAdapter(
+        canonical_model_adapter = TwwCanonicalModelAdapter(
             connection_factory=self.connection_factory,
         )
 
@@ -237,8 +243,6 @@ class Hook(
             schema=self.live_schema,
             connection_factory=self.connection_factory,
         )
-
-        canonical_metadata = canonical_model.canonical_model()
 
         resolved_rights = RightsResolver().resolve(
             definition=self.rights_definition,
@@ -272,127 +276,178 @@ class Hook(
             subclass_rights=subclass_rights_capability,
         )
 
-        if incremental_xtf is None:
-            result = self.run_sub_verification(
+        existing_result = self._existing_workflow_result(
+            diff_schema_service=diff_schema_service,
+            base_schema=import_schema,
+            incremental_schema=(
+                incremental_import_schema
+                if incremental_xtf is not None
+                else None
+            ),
+            context=context,
+        )
+
+        if existing_result is not None:
+            result = existing_result
+
+        elif incremental_xtf is None:
+            result = self._run_sub_verification(
                 xtf_file=xtf_file,
                 schema=import_schema,
                 quarantine_runner=quarantine_runner,
-                canonical_metadata=canonical_metadata,
+                canonical_model_adapter=canonical_model_adapter,
                 diff_schema_service=diff_schema_service,
                 rights_evaluator=rights_evaluator,
                 context=context,
                 is_incremental=False,
                 final_diff_run=True,
+                supersede_existing_diff_jobs=supersede_existing_diff_jobs,
             )
         else:
             if xtf_file is not None:
-                _ = self.run_sub_verification(
+                _ = self._run_sub_verification(
                     xtf_file=xtf_file,
                     schema=import_schema,
                     quarantine_runner=quarantine_runner,
-                    canonical_metadata=canonical_metadata,
+                    canonical_model_adapter=canonical_model_adapter,
                     diff_schema_service=diff_schema_service,
                     rights_evaluator=rights_evaluator,
                     context=context,
                     is_incremental=False,
                     final_diff_run=False,
+                    supersede_existing_diff_jobs=supersede_existing_diff_jobs,
                 )
 
-            result = self.run_sub_verification(
+            result = self._run_sub_verification(
                 xtf_file=incremental_xtf,
                 schema=incremental_import_schema,
                 quarantine_runner=quarantine_runner,
-                canonical_model=canonical_model,
+                canonical_model_adapter=canonical_model_adapter,
                 diff_schema_service=diff_schema_service,
                 rights_evaluator=rights_evaluator,
                 context=context,
                 is_incremental=True,
                 final_diff_run=True,
+                supersede_existing_diff_jobs=supersede_existing_diff_jobs,
             )
 
-        if auto_apply:
-            if result.diff_schema_result is None:
-                raise RuntimeError(
-                    "The reviewed import did not create a persisted " "tww_diff review job."
-                )
-            diff_review_service = TwwDiffReviewService(
-                diff_schema_service=diff_schema_service,
-            )
-
-            quarantine_preparer = TwwQuarantinePersistencePreparer(
-                connection_factory=(self.connection_factory),
-                diff_schema_service=(diff_schema_service),
-            )
-            backup_service = TwwDatabaseBackupService(
-                connection_factory=self.connection_factory,
-            )
-            persistence_adapter = TwwInterlisPersistenceAdapter(
-                connection_factory=(self.connection_factory),
-                interlis_service=(self.interlis_service),
-                model_config_dir=(self.model_config_dir),
-            )
-            review_persistence_service = TwwReviewPersistenceService(
-                diff_schema_service=(diff_schema_service),
-                quarantine_preparer=(quarantine_preparer),
-                backup_service=backup_service,
-                persistence_adapter=(persistence_adapter),
-            )
-            diff_review_service.accept_job(
-                job_id=result.job_id,
-            )
-
-            persistence_result = review_persistence_service.persist_job(
-                job_id=result.job_id,
-                live_schema=self.live_schema,
-            )
-
-            if persistence_result.job_status != "applied":
-                raise RuntimeError(
-                    "The reviewed import completed without reaching "
-                    f"the 'applied' state. Job {result.job_id!r} has "
-                    f"status {persistence_result.job_status!r}."
-                )
-
-            context.logger.info(
-                "Applied reviewed tww_diff job '%s' with %s review "
-                "features, of which %s were permission-restricted.",
-                persistence_result.job_id,
-                persistence_result.review_feature_count,
-                persistence_result.restricted_feature_count,
-            )
-
-            return
-        else:
+        if not auto_apply:
             # store diffs in a sensible way
             # send out information mails if needed
             # etc.
-            pass
+            return
 
-    def run_sub_verification(
+        if result.diff_schema_result is None:
+            raise RuntimeError(
+                "The reviewed import did not create a persisted "
+                "tww_diff review job."
+            )
+
+        job=diff_schema_service.review_job(
+            job_id=result.job_id,
+            include_features=False,
+        )
+        if  job.job_status =="pending":
+            diff_schema_service.accept_job(
+                job_id=result.job_id,
+            )
+
+        application_service = self._review_application_service(
+            context=context,
+            diff_schema_service=diff_schema_service,
+        )
+
+        persistence_result = application_service.apply_job(
+            job_id=result.job_id,
+        )
+
+        if persistence_result.job_status != "applied":
+            raise RuntimeError(
+                "The reviewed import completed without reaching "
+                f"the 'applied' state. Job {result.job_id!r} has "
+                f"status {persistence_result.job_status!r}."
+            )
+
+        context.logger.info(
+            "Applied reviewed tww_diff job %r with %s review "
+            "features, of which %s were permission-restricted.",
+            persistence_result.job_id,
+            persistence_result.review_feature_count,
+            persistence_result.restricted_feature_count,
+        )
+
+    def _run_sub_verification(
         self,
         xtf_file,
         schema,
         quarantine_runner,
-        canonical_metadata,
+        canonical_model_adapter,
         diff_schema_service,
         rights_evaluator,
         context,
         is_incremental: bool = False,
         final_diff_run: bool = True,
+        supersede_existing_diff_jobs: bool = False,
     ):
 
+
+        canonical_metadata = canonical_model_adapter.canonical_model()
+
+        allow_schema_recreation = (
+            self._schema_recreation_allowed(
+                schema=schema,
+                supersede_existing_diff_jobs=(
+                    supersede_existing_diff_jobs
+                ),
+                diff_schema_service=(
+                    diff_schema_service
+                ),
+                context=context,
+            )
+        )
+
+                
+        allow_schema_recreation = (
+            self._schema_recreation_allowed(
+                schema=schema,
+                supersede_existing_diff_jobs=(
+                    supersede_existing_diff_jobs
+                ),
+                diff_schema_service=(
+                    diff_schema_service
+                ),
+                context=context,
+            )
+        )
+
+        context.logger.info(
+            "Checking whether quarantine schema %r is available.",
+            schema,
+        )
+
+        diff_schema_service.assert_import_schema_available(
+            import_schema=schema,
+        )
+
+        context.logger.info(
+            "Quarantine schema %r is available.",
+            schema,
+        )
+
         model_selection = self.interlis_service.identify_model(xtf_file)
-        if model_selection.group in {"ag64", "ag96"}:
+        if model_selection.group in {'ag64', 'ag96'}:
             import_context = TwwInterlisContext(
                 schema=schema,
                 import_orgs=False,
                 orgs_path=None,
+                allow_schema_recreation=allow_schema_recreation,
             )
         else:
             import_context = TwwInterlisContext(
                 schema=schema,
                 import_orgs=self.orgs_path is not None,
                 orgs_path=self.orgs_path,
+                allow_schema_recreation=allow_schema_recreation,
             )
 
         context.logger.info(f"importing {xtf_file} to quarantine.")
@@ -402,13 +457,15 @@ class Hook(
             schema=schema,
         )
 
-        context.logger.info(f"Import schema models: {selection_models.import_schema_models}")
-        context.logger.info(f"Import model: {selection_models.import_model}")
-        context.logger.info(f"Validation models: {selection_models.validation_models}")
+        context.logger.debug(f"Import schema models: {selection_models.import_schema_models}")
+        context.logger.debug(f"Import model: {selection_models.import_model}")
+        context.logger.debug(f"Validation models: {selection_models.validation_models}")
 
         quarantine_runner.validate_quarantine_or_raise(
             model_names=selection_models.validation_models,
-            log_path=xtf_file.with_name(f"{xtf_file.stem}_validate_import_quarantine.log"),
+            log_path=xtf_file.with_name(
+                f"{xtf_file.stem}_validate_import_quarantine.log"
+            ),
             schema=schema,
         )
 
@@ -436,10 +493,20 @@ class Hook(
             implicit_mapping=implicit_mapping_capability,
         )
 
+        projection_mode = (
+            MappingProjectionMode.EXPLICIT_ONLY
+            if is_incremental
+            else MappingProjectionMode.FULL
+        )
+
+        context.logger.debug(f"Projection mode: {projection_mode}")
+        
         relation_context_provider = TwwRelationContextProvider(
             quarantine_classes=quarantine_classes,
             model_mapping=effective_mapping,
-            import_schema=schema,
+            canonical_model_adapter=canonical_model_adapter,
+            projection_mode=projection_mode,
+            logger=context.logger,
         )
 
         effect_projector = TwwQuarantineEffectProjector(
@@ -454,18 +521,16 @@ class Hook(
             canonical_metadata=canonical_metadata,
             effect_projector=effect_projector,
             rights_evaluator=rights_evaluator,
-            object_provider_factory=context.capability(
-                ChangeObjectProviderFactory,
-            ),
+            object_provider_factory=self.change_object_provider_factory,
             diff_schema_service=diff_schema_service,
+            logger=context.logger,
         )
 
-        result = service.create_diff_job_from_xtf(
+        result = service.create_diff_job_from_quarantine(
             job_id=self.job_id,
             job_mode=self.job_mode,
-            xtf_file=xtf_file,
-            orgs_path=self.orgs_path,
-            rights_context=self.rights_context,
+            source_model=selection_models.import_model,
+            rights_base_context=self.rights_base_context,
             import_schema=schema,
             live_schema=self.live_schema,
             metadata={
@@ -728,3 +793,211 @@ class Hook(
         )
 
         return quarantine_model.classes()
+
+    def _schema_recreation_allowed(
+        self,
+        *,
+        schema: str,
+        supersede_existing_diff_jobs: bool,
+        diff_schema_service: TwwDiffSchemaService,
+        context: HookContext,
+    ) -> bool:
+        """
+        Determine whether a quarantine schema may be recreated.
+
+        Recreation is permitted when no active diff job references the schema.
+
+        When ``supersede_existing_diff_jobs`` is true, active diff jobs do not
+        block recreation. Their quarantine state will be replaced by the new
+        import.
+
+        This method calculates authorization only. It does not currently back up
+        the schema or change the status of superseded jobs.
+        """
+
+        active_jobs = (
+            diff_schema_service.active_jobs_for_import_schema(
+                import_schema=schema,
+                exclude_job_id=self.job_id,
+            )
+        )
+
+        if not active_jobs:
+            context.logger.info(
+                "Quarantine schema %r is not referenced by an "
+                "active diff job and may be recreated.",
+                schema,
+            )
+
+            return True
+
+        job_descriptions = ", ".join(
+            (
+                f"{job['job_id']!r} "
+                f"({job['job_type']}/{job['job_status']})"
+            )
+            for job in active_jobs
+        )
+
+        if supersede_existing_diff_jobs:
+            context.logger.warning(
+                "Recreation of quarantine schema %r will supersede "
+                "the following active diff jobs: %s.",
+                schema,
+                job_descriptions,
+            )
+
+            return True
+
+        context.logger.warning(
+            "Quarantine schema %r cannot be recreated because it "
+            "is referenced by active diff jobs: %s.",
+            schema,
+            job_descriptions,
+        )
+
+        return False
+
+    def _existing_workflow_result(
+        self,
+        *,
+        diff_schema_service: TwwDiffSchemaService,
+        base_schema: str,
+        incremental_schema: str | None,
+        context: HookContext,
+    ) -> ChangeCreationResult | None:
+        """
+        Return the persisted result for an existing compatible pending job.
+
+        Return ``None`` when the job ID does not exist.
+
+        Raise when:
+
+        - the job exists but is not pending;
+        - the persisted base schema differs;
+        - the persisted incremental schema differs;
+        - the persisted workflow type differs from the requested workflow.
+
+        No source import, quarantine recreation, or diff generation is performed.
+        """
+
+        job = diff_schema_service.review_job(
+            job_id=self.job_id,
+            include_features=False,
+        )
+
+        if job is None:
+            return None
+
+        if job.job_status not in {
+            "pending",
+            "accepted",
+        }:
+            raise RuntimeError(
+                f"Diff job {self.job_id!r} already exists with "
+                f"status {job.job_status!r}; expected 'pending' "
+                "or 'accepted' for idempotent reuse."
+            )
+
+        persisted_base_schema = (
+            job.metadata.get(
+                "base_import_schema",
+            )
+            or job.metadata.get(
+                "import_schema",
+            )
+        )
+
+        persisted_incremental_schema = (
+            job.metadata.get(
+                "incremental_import_schema",
+            )
+        )
+        import_model = (
+            job.metadata.get(
+                "incremental_source_model",
+            )
+            or job.metadata.get(
+                "base_source_model",
+            )
+        )
+        if persisted_base_schema != base_schema:
+            raise RuntimeError(
+                f"Pending diff job {self.job_id!r} refers to base "
+                f"schema {persisted_base_schema!r}, but this run "
+                f"requested {base_schema!r}."
+            )
+
+        requested_has_incremental = (
+            incremental_schema is not None
+        )
+
+        persisted_has_incremental = (
+            isinstance(
+                persisted_incremental_schema,
+                str,
+            )
+            and bool(
+                persisted_incremental_schema.strip()
+            )
+        )
+
+        if (
+            requested_has_incremental
+            != persisted_has_incremental
+        ):
+            raise RuntimeError(
+                f"Pending diff job {self.job_id!r} has an "
+                "incompatible workflow shape. Requested incremental "
+                f"schema: {incremental_schema!r}; persisted "
+                "incremental schema: "
+                f"{persisted_incremental_schema!r}."
+            )
+
+        if (
+            incremental_schema is not None
+            and persisted_incremental_schema
+            != incremental_schema
+        ):
+            raise RuntimeError(
+                f"Pending diff job {self.job_id!r} refers to "
+                "incremental schema "
+                f"{persisted_incremental_schema!r}, but this run "
+                f"requested {incremental_schema!r}."
+            )
+
+        diff_schema_result = (
+            diff_schema_service.write_result_for_job(
+                job_id=self.job_id,
+            )
+        )
+
+        context.logger.info(
+            "Reusing existing pending diff review job %r with %s "
+            "persisted review rows. Source import and diff "
+            "generation are skipped.",
+            self.job_id,
+            diff_schema_result.row_count,
+        )
+
+        return ChangeCreationResult(
+            job_id=self.job_id,
+            diff_schema_result=diff_schema_result,
+            import_model=import_model,
+        )
+
+    def _review_application_service(
+        self,
+        *,
+        context: HookContext,
+        diff_schema_service: TwwDiffSchemaService,
+    ) -> TwwReviewApplicationService:
+        return create_review_application_service(
+            connection_factory=self.connection_factory,
+            diff_schema_service=diff_schema_service,
+            model_config_dir=self.model_config_dir,
+            validation_definition=(
+                self.validation_definition
+            ),
+            logger=context.logger,
+        )

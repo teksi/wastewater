@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import sys
 from pathlib import Path
+from uuid import uuid4
 
 from teksi_wastewater.hooks.adapters.tww_interlis_service_adapter import (
     TwwInterlisContext,
@@ -15,11 +16,17 @@ from teksi_wastewater.interlis import config, model_config, model_selection
 from teksi_wastewater.interlis.interlis_importer_exporter import (
     InterlisImporterExporterError,
 )
-
+from teksi_wastewater.hooks.services.tww_diff_schema_service import (
+    TwwDiffSchemaService,
+)
+from teksi_wastewater.hooks.services.tww_trusted_import_service import (
+    TwwTrustedImportService,
+)
 
 class TeksiWastewaterCmd:
     SUBPARSER_NAME_INTERLIS_IMPORT = "interlis_import"
     SUBPARSER_NAME_INTERLIS_EXPORT = "interlis_export"
+    job_id:str =  str(uuid4())
 
     def __init__(
         self,
@@ -85,6 +92,17 @@ class TeksiWastewaterCmd:
             action=argparse.BooleanOptionalAction,
             default=True,
             help=("Filter NULL values during import. " "Enabled by default."),
+        )
+
+        subparser.add_argument(
+            "--allow-schema-recreation",
+            action="store_true",
+            default=False,
+            help=(
+                "Allow recreation of the quarantine schema even when "
+                "an existing review job references it. The existing "
+                "schema must be backed up and restored by the workflow."
+            ),
         )
 
         # subparser.add_argument(
@@ -182,6 +200,17 @@ class TeksiWastewaterCmd:
             help=("Limit export to comma-separated network-element " "identifiers"),
         )
 
+        subparser.add_argument(
+            "--allow-schema-recreation",
+            action="store_true",
+            default=False,
+            help=(
+                "Allow recreation of the quarantine schema even when "
+                "an existing review job references it. The existing "
+                "schema must be backed up and restored by the workflow."
+            ),
+        )
+
         # subparser.add_argument(
         #     "--schema",
         #     default=config.EXPORT_SCHEMA,
@@ -233,6 +262,10 @@ class TeksiWastewaterCmd:
 
         service = TwwInterlisServiceAdapter(connection_factory=connection_factory)
 
+        trusted_import_service = TwwTrustedImportService(
+            connection_factory=connection_factory,
+            job_id=self.job_id,
+        )
         context = TwwInterlisContext(
             schema=self.schema,
             srid=self.args.srid,
@@ -240,6 +273,7 @@ class TeksiWastewaterCmd:
             logs_next_to_file=(self.args.logs_next_to_file),
             filter_nulls=self.args.filter_nulls,
             incremental_only=self.args.incremental_only,
+            allow_schema_recreation = self.args.allow_schema_recreation,
         )
 
         xtf_file = Path(
@@ -247,14 +281,39 @@ class TeksiWastewaterCmd:
         )
 
         try:
+            trusted_import_service.begin(
+                metadata={
+                    "workflow_type": "trusted_import",
+                    "import_schema": self.schema,
+                    "incremental_import_schema": None,
+                    "live_schema": config.TWW_OD_SCHEMA,
+                    "allow_schema_recreation":  self.args.allow_schema_recreation,
+                },
+            )
             service.import_xtf(
                 xtf_file=xtf_file,
                 context=context,
             )
+
+            trusted_import_service.mark_applied()
+
         except InterlisImporterExporterError as exception:
+            trusted_import_service.mark_failed(
+                reason=str(
+                    exception,
+                ),
+            )
             self._print_interlis_error(
                 operation="Import",
                 exception=exception,
+            )
+
+            raise
+        except Exception as exception:
+            trusted_import_service.mark_failed(
+                reason=str(
+                    exception,
+                ),
             )
 
             raise
@@ -307,6 +366,7 @@ class TeksiWastewaterCmd:
             limit_to_selection=bool(
                 selected_ids,
             ),
+            allow_schema_recreation = self.args.allow_schema_recreation,
         )
 
         xtf_file = Path(

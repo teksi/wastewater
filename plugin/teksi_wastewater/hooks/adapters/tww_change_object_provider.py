@@ -8,73 +8,74 @@ from teksi_hooks.capabilities.relation_lookup import (
 from teksi_hooks.capabilities.review import (
     ChangeObjectProvider,
 )
+from teksi_hooks.capabilities.connection import (
+    DatabaseConnectionFactory,
+)
 from teksi_hooks.models.canonical_object import (
     CanonicalModelMetadata,
     CanonicalObject,
 )
 from teksi_hooks.models.validation import (
     Change,
+    ChangeOperation,
 )
-
+from teksi_hooks.services.change_creation_protocols import (
+    ChangeObjectProviderFactory,
+)
 from .tww_relation_lookup_adapter import (
     TwwRelationLookupAdapter,
 )
 
 
-@dataclass(slots=True)
-class TwwChangeObjectProvider(
-    ChangeObjectProvider,
-):
+@dataclass(
+    slots=True,
+)
+class TwwChangeObjectProvider:
     """
-    Plugin-side provider for canonical object state used during review export.
-
-    The provider supplies old and new canonical objects. Transformation into
-    ReviewFeature instances is handled by the hook-side
-    ChangeReviewExportService.
+    Provide review objects directly from the canonical Change state.
     """
-
-    live_lookup: RelationLookupCapability
-
-    new_lookup: RelationLookupCapability | None = None
 
     def old_object(
         self,
         change: Change,
     ) -> CanonicalObject | None:
-        """
-        Return the current persisted canonical object.
-        """
+        if change.operation == ChangeOperation.INSERT:
+            return None
 
-        return self.live_lookup.current_object(
-            change.identity,
+        return CanonicalObject(
+            identity=change.identity,
+            values=dict(
+                change.old_values,
+            ),
+            last_modification=(
+                change.old_values.get(
+                    "last_modification",
+                )
+            ),
         )
 
     def new_object(
         self,
         change: Change,
     ) -> CanonicalObject | None:
-        """
-        Return the proposed canonical object represented by the change.
-        """
-
-        if self.new_lookup is not None:
-            current = self.new_lookup.current_object(
-                change.identity,
-            )
-
-            if current is not None:
-                return current
+        if change.operation == ChangeOperation.DELETE:
+            return None
 
         return CanonicalObject(
             identity=change.identity,
             values=dict(
                 change.new_values,
             ),
+            last_modification=(
+                change.new_values.get(
+                    "last_modification",
+                )
+            ),
         )
 
 
-@dataclass(slots=True)
-class TwwChangeObjectProviderFactory:
+@dataclass(frozen=True,slots=True)
+class TwwChangeObjectProviderFactory(ChangeObjectProviderFactory):
     """
     Create canonical object providers for review-feature generation.
 
@@ -98,10 +99,7 @@ class TwwChangeObjectProviderFactory:
         factory protocol for future implementations. The current provider
         obtains proposed values directly from Change.new_values.
         """
+        del import_schema
+        del canonical_metadata
 
-        return TwwChangeObjectProvider(
-            live_lookup=TwwRelationLookupAdapter(
-                schema=live_schema,
-            ),
-            new_lookup=None,
-        )
+        return TwwChangeObjectProvider()

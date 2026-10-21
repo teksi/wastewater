@@ -42,7 +42,7 @@ classes:
 
   - id: reach
 
-  - id: reach_alternative
+  - id: reach_progression_alternative
 
   - id: reach_text
 
@@ -232,7 +232,7 @@ classes:
   - id: catchment_area_totals
 
 
-  - id: biol_ecol_assessment
+  - id: bio_ecol_assessment
 
 
   # ---------------------------------------------------------
@@ -266,6 +266,22 @@ classes:
   - id: file
 
   - id: data_media
+
+
+  # ---------------------
+  # weitere
+  # ---------------------
+  
+  
+  - id: mutation
+
+  - id: param_ca_general
+
+  - id: param_ca_mouse1
+
+  # -------------
+  # AG-64 / AG-96
+  # -------------
 
   - id: agxx_wastewater_networkelement
 

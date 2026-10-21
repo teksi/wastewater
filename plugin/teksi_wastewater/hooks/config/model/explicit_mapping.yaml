@@ -2,7 +2,7 @@ models:
   agxx:
     defaults:
       target_attribute: obj_id
-      source_attribute: obj_id
+      source_attribute: t_ili_tid
       identities:
         agxx_last_modification:
           target_attribute: fk_element
@@ -15,6 +15,7 @@ models:
           target:
             class: agxx_last_modification
             attribute: ag96_last_modification
+
     classes:
       GepKnoten:
         function:
@@ -63,7 +64,11 @@ models:
               attribute: drainage_system_current
               value_list: tww_vl.catchment_area_drainage_system_current_import_rel_agxx
               mapping_attribute: value_de
-
+        relations:
+          datenbewirtschafter_gep:
+            target:
+              class: catchment_area
+              attribute: fk_provider
 
       Ueberlauf_Foerderaggregat:
         function:
@@ -71,7 +76,6 @@ models:
           name: fct_agxx_ueberlauf_foerderaggregat_mapping_jsonb
           parameters:
             row: $row
-
 
       BautenAusserhalbBaugebiet:
         identities:
@@ -121,6 +125,11 @@ models:
               attribute: ag96_disposal_roof_water
               value_list: tww_vl.building_group_ag96_disposal_type
               mapping_attribute: value_de
+        relations:
+          datenbewirtschafter_gep:
+            target:
+              class: building_group
+              attribute: fk_provider
 
       SBWEinzugsgebiet:
         identities:
@@ -139,7 +148,11 @@ models:
             target:
               class: agxx_catchment_area_totals
               attribute: ag96_perimeter_geometry
-
+        relations:
+          datenbewirtschafter_gep:
+            target:
+              class: catchment_area_totals
+              attribute: fk_provider
 
       VersickerungsbereichAG:
         identities:
@@ -169,6 +182,12 @@ models:
               attribute: infiltration_capacity
               value_list: tww_vl.infiltration_zone_infiltration_capacity
               mapping_attribute: value_de
+        relations:
+          datenbewirtschafter_gep:
+            target:
+              class: infiltration_zone
+              attribute: fk_provider
+
   sia405_abwasser:
     defaults:
       relations:
@@ -177,21 +196,25 @@ models:
             class: organisation
           localisations:
               de: DatenbewirtschafterRef
+              fr: fournisseur_des_donneesref
         fk_dataowner:
           target:
             class: organisation
           localisations:
               de: DatenherrRef
+              fr: maitre_des_donneesref
         fk_owner:
           target:
             class: organisation
           localisations:
               de: EigentuemerRef
+              fr: proprietaireref
         fk_operator:
           target:
             class: organisation
           localisations:
               de: BetreiberRef
+              fr: exploitantref
     classes:
       reach:
         relations:
@@ -199,16 +222,138 @@ models:
             target:
               class: reach_point
             localisations:
-                de: HaltungspunktVonRef
+                de: vonhaltungspunktref
+                fr: point_troncon_deref
           fk_reach_point_to:
             target:
               class: reach_point
             localisations:
-                de: HaltungspunktNachRef
+                de: nachhaltungspunktref
+                fr: point_troncon_versref
 
   dss:
     defaults:
       inherit_from: sia405_abwasser
+    classes:
+      catchment_area:
+        relations:
+          fk_wastewater_networkelement_rw_current:
+            target:
+              class: wastewater_networkelement
+            localisations:
+                de: abwassernetzelement_rw_istref
+                fr: element_reseau_as_ep_actuelref
+          fk_wastewater_networkelement_ww_current:
+            target:
+              class: wastewater_networkelement
+            localisations:
+                de: abwassernetzelement_sw_istref
+                fr: element_reseau_as_eu_actuelref
+          fk_wastewater_networkelement_rw_planned:
+            target:
+              class: wastewater_networkelement
+            localisations:
+                de: abwassernetzelement_rw_geplantref
+                fr: element_reseau_as_ep_prevuref
+          fk_wastewater_networkelement_ww_planned:
+            target:
+              class: wastewater_networkelement
+            localisations:
+                de: abwassernetzelement_sw_geplantref
+                fr: element_reseau_as_eu_prevuref
+          fk_special_building_rw_current:
+            target:
+              class: log_card
+            localisations:
+                de: sbw_rw_istref
+                fr: ouvrage_special_ep_actuelref
+          fk_special_building_ww_current:
+            target:
+              class: log_card
+            localisations:
+                de: sbw_sw_istref
+                fr: ouvrage_special_eu_actuelref
+          fk_special_building_rw_planned:
+            target:
+              class: log_card
+            localisations:
+                de: sbw_rw_geplantref
+                fr: ouvrage_special_ep_prevuref
+          fk_special_building_ww_planned:
+            target:
+              class: log_card
+            localisations:
+                de: sbw_sw_geplantref
+                fr: ouvrage_special_eu_prevuref
+      hydraulic_char_data:
+        relations:
+          fk_wastewater_node:
+            target:
+              class: wastewater_node
+            localisations:
+                de: abwasserknotenref
+                fr: noeud_reseauref
+          fk_primary_direction:
+            target:
+              class: wastewater_node
+            localisations:
+                de: primaerrichtungref
+                fr: direction_principaleref
+      log_card:
+        relations:
+          fk_next_special_building:
+            target:
+              class: log_card
+            localisations:
+                de: naechstes_sbwref
+                fr: ouvrage_special_suivantref
+          fk_main_structure:
+            target:
+              class: wastewater_networkelement
+            localisations:
+                de: hauptbauwerkref
+                fr: ouvrage_principalref
+          fk_agency:
+            target:
+              class: organisation
+            localisations:
+                de: bueroref
+                fr: bureauref
+          fk_location_municipality:
+            target:
+              class: organisation
+            localisations:
+                de: standortgemeinderef
+                fr: commune_implantationref
+      measure:
+        relations:
+          fk_responsible_entity:
+            target:
+              class: organisation
+            localisations:
+                de: traegerschaftref
+                fr: entite_responsableref
+          fk_responsible_start:
+            target:
+              class: organisation
+            localisations:
+                de: verantwortlich_ausloesungref
+                fr: responsable_declenchementref
+      overflow:
+        relations:
+          fk_wastewater_node:
+            target:
+              class: wastewater_node
+            localisations:
+                de: abwasserknotenref
+                fr: noeud_reseauref
+          fk_overflow_to:
+            target:
+              class: wastewater_node
+            localisations:
+                de: ueberlaufnachref
+                fr: deversement_versref
+
   vsa_kek:
     defaults:
       inherit_from: sia405_abwasser
