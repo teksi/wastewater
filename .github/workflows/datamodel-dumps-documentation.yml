@@ -27,7 +27,7 @@ on:
 jobs:
   datamodel-dumps:
     name: Create dumps and schemaspy of datamodel
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     env:
       PGSERVICE: pg_tww
       DB_NAME: tww
