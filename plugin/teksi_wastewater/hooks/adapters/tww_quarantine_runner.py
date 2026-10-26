@@ -1,23 +1,38 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field, replace
 import logging
+from dataclasses import dataclass, field, replace
 from pathlib import Path
-from typing import Any, Sequence
+from typing import Any
+from collections.abc import Sequence
 
 from sqlalchemy import text
 from sqlalchemy.orm import Session
-
-
 from teksi_hooks.capabilities.mapping import (
     ModelMappingLookupCapability,
 )
-
 from teksi_hooks.exceptions import (
     Severity,
 )
 from teksi_hooks.models.validation import (
     ValidationFinding,
+)
+
+from ...interlis import config
+from ...interlis.interlis_importer_exporter import (
+    InterlisImporterExporter,
+)
+from ...interlis.interlis_model_mapping.interlis_incremental_importer import (
+    InterlisIncrementalImporter,
+)
+from ...interlis.model_config import (
+    TwwInterlisModelSelection,
+)
+from ...interlis.utils import (
+    tww_sqlalchemy,
+)
+from ...interlis.utils.ili2db import (
+    InterlisTools,
 )
 from ..capabilities.incremental_import import (
     IncrementalEffectEvaluator,
@@ -26,23 +41,6 @@ from ..capabilities.incremental_import import (
 from ..capabilities.tww_canonical_projection_capability import (
     TwwCanonicalProjectionLookupCapability,
 )
-from ...interlis import config
-from ...interlis.model_config import (
-    TwwInterlisModelSelection,
-)
-from ...interlis.utils import (
-    tww_sqlalchemy,
-)
-from ...interlis.interlis_importer_exporter import (
-    InterlisImporterExporter,
-)
-from ...interlis.interlis_model_mapping.interlis_incremental_importer import (
-    InterlisIncrementalImporter
-)
-from ...interlis.utils.ili2db import (
-    InterlisTools,
-)
-
 from ..exceptions import (
     QuarantineValidationError,
 )
@@ -85,20 +83,11 @@ class TwwQuarantineRunner:
         repr=False,
     )
 
-    canonical_projection_lookup: (
-    TwwCanonicalProjectionLookupCapability
-    | None
-) = None
+    canonical_projection_lookup: TwwCanonicalProjectionLookupCapability | None = None
 
-    incremental_effect_evaluator: (
-        IncrementalEffectEvaluator
-        | None
-    ) = None
+    incremental_effect_evaluator: IncrementalEffectEvaluator | None = None
 
-    incremental_effect_persister: (
-        IncrementalEffectPersister
-        | None
-    ) = None
+    incremental_effect_persister: IncrementalEffectPersister | None = None
 
     def import_xtf_to_quarantine(
         self,
@@ -125,16 +114,12 @@ class TwwQuarantineRunner:
             xtf_file_input=str(
                 xtf_file,
             ),
-            logs_next_to_file=(
-                context.logs_next_to_file
-            ),
+            logs_next_to_file=(context.logs_next_to_file),
             filter_nulls=context.filter_nulls,
             srid=context.srid,
             import_orgs=context.import_orgs,
             orgs_path=context.orgs_path,
-            allow_schema_recreation=(
-                context.allow_schema_recreation
-            ),
+            allow_schema_recreation=(context.allow_schema_recreation),
         )
 
     def import_quarantine_to_live(
@@ -166,14 +151,12 @@ class TwwQuarantineRunner:
         if source_role == "incremental":
             if model_mapping is None:
                 raise ValueError(
-                    "Incremental quarantine persistence requires an "
-                    "effective model mapping."
+                    "Incremental quarantine persistence requires an " "effective model mapping."
                 )
 
             if quarantine_classes is None:
                 raise ValueError(
-                    "Incremental quarantine persistence requires "
-                    "quarantine ORM classes."
+                    "Incremental quarantine persistence requires " "quarantine ORM classes."
                 )
 
             self._import_incremental_quarantine_to_live(
@@ -186,17 +169,12 @@ class TwwQuarantineRunner:
 
             return
 
-        raise ValueError(
-            "Unsupported quarantine persistence source role "
-            f"{source_role!r}."
-        )
+        raise ValueError("Unsupported quarantine persistence source role " f"{source_role!r}.")
 
     def export_live_to_quarantine(
         self,
         xtf_file: Path | None,
-        export_models: Sequence[
-            str,
-        ],
+        export_models: Sequence[str,],
         context: TwwInterlisContext | None = None,
         schema: str = config.EXPORT_SCHEMA,
     ) -> TwwInterlisModelSelection:
@@ -227,15 +205,9 @@ class TwwQuarantineRunner:
             export_models=tuple(
                 export_models,
             ),
-            logs_next_to_file=(
-                context.logs_next_to_file
-            ),
-            limit_to_selection=(
-                context.limit_to_selection
-            ),
-            export_orientation=(
-                context.export_orientation
-            ),
+            logs_next_to_file=(context.logs_next_to_file),
+            limit_to_selection=(context.limit_to_selection),
+            export_orientation=(context.export_orientation),
             labels_file=(
                 str(
                     context.labels_file,
@@ -251,17 +223,13 @@ class TwwQuarantineRunner:
             ),
             include_unplaced=context.include_unplaced,
             import_orgs=context.import_orgs,
-            allow_schema_recreation=(
-                context.allow_schema_recreation
-            ),
+            allow_schema_recreation=(context.allow_schema_recreation),
         )
 
     def export_quarantine_to_xtf(
         self,
         xtf_file: Path,
-        export_models: Sequence[
-            str,
-        ],
+        export_models: Sequence[str,],
         context: TwwInterlisContext | None = None,
         validation_log_path: Path | None = None,
         schema: str = config.EXPORT_SCHEMA,
@@ -275,14 +243,10 @@ class TwwQuarantineRunner:
             schema=schema,
         )
 
-        validation_log_path = (
-            self._validation_log_path(
-                validation_log_path=(
-                    validation_log_path
-                ),
-                xtf_file=xtf_file,
-                name="validate_export_quarantine",
-            )
+        validation_log_path = self._validation_log_path(
+            validation_log_path=(validation_log_path),
+            xtf_file=xtf_file,
+            name="validate_export_quarantine",
         )
 
         context.apply(
@@ -303,16 +267,12 @@ class TwwQuarantineRunner:
             export_models=tuple(
                 export_models,
             ),
-            logs_next_to_file=(
-                context.logs_next_to_file
-            ),
+            logs_next_to_file=(context.logs_next_to_file),
         )
 
     def validate_quarantine(
         self,
-        model_names: Sequence[
-            str,
-        ],
+        model_names: Sequence[str,],
         log_path: Path,
         srid: int = 2056,
         schema: str = config.IMPORT_SCHEMA,
@@ -326,9 +286,7 @@ class TwwQuarantineRunner:
         Returns an empty tuple when validation succeeds.
         """
 
-        findings: list[
-            ValidationFinding,
-        ] = []
+        findings: list[ValidationFinding,] = []
 
         for model_name in model_names:
             self.logger.info(
@@ -353,10 +311,8 @@ class TwwQuarantineRunner:
                 )
 
             except Exception as exception:
-                model_findings = (
-                    self._validation_findings_from_log(
-                        model_log_path,
-                    )
+                model_findings = self._validation_findings_from_log(
+                    model_log_path,
                 )
 
                 if model_findings:
@@ -367,9 +323,7 @@ class TwwQuarantineRunner:
 
                 findings.append(
                     ValidationFinding(
-                        code=(
-                            "quarantine_validation_failed"
-                        ),
+                        code=("quarantine_validation_failed"),
                         severity=Severity.ERROR,
                         message=str(
                             exception,
@@ -384,9 +338,7 @@ class TwwQuarantineRunner:
 
     def validate_quarantine_or_raise(
         self,
-        model_names: Sequence[
-            str,
-        ],
+        model_names: Sequence[str,],
         log_path: Path,
         srid: int = 2056,
         schema: str = config.IMPORT_SCHEMA,
@@ -402,11 +354,7 @@ class TwwQuarantineRunner:
             schema=schema,
         )
 
-        errors = tuple(
-            finding
-            for finding in findings
-            if finding.severity == Severity.ERROR
-        )
+        errors = tuple(finding for finding in findings if finding.severity == Severity.ERROR)
 
         if errors:
             raise QuarantineValidationError(
@@ -440,7 +388,6 @@ class TwwQuarantineRunner:
         intermediate-schema importer.
         """
 
-
         context = TwwInterlisContext(
             schema=import_schema,
             srid=2056,
@@ -462,7 +409,7 @@ class TwwQuarantineRunner:
             srid=context.srid,
             show_selection_dialog=False,
         )
-    
+
     def _import_incremental_quarantine_to_live(
         self,
         *,
@@ -500,29 +447,17 @@ class TwwQuarantineRunner:
         )
 
         try:
-            live_session.execute(
-                text(
-                    "SET CONSTRAINTS ALL DEFERRED;"
-                )
-            )
+            live_session.execute(text("SET CONSTRAINTS ALL DEFERRED;"))
 
-            incremental_importer = (
-                InterlisIncrementalImporter(
-                    model=selection_models.import_model,
-                    model_classes_interlis=(
-                        quarantine_classes
-                    ),
-                    model_mapping=model_mapping,
-                    canonical_projection_lookup=(
-                        canonical_projection_lookup
-                    ),
-                    effect_evaluator=effect_evaluator,
-                    effect_persister=effect_persister,
-                    session_interlis=(
-                        quarantine_session
-                    ),
-                    session_tww=live_session,
-                )
+            incremental_importer = InterlisIncrementalImporter(
+                model=selection_models.import_model,
+                model_classes_interlis=(quarantine_classes),
+                model_mapping=model_mapping,
+                canonical_projection_lookup=(canonical_projection_lookup),
+                effect_evaluator=effect_evaluator,
+                effect_persister=effect_persister,
+                session_interlis=(quarantine_session),
+                session_tww=live_session,
             )
 
             incremental_importer.import_data()
@@ -551,9 +486,7 @@ class TwwQuarantineRunner:
         if not log_path.exists():
             return ()
 
-        findings: list[
-            ValidationFinding,
-        ] = []
+        findings: list[ValidationFinding,] = []
 
         for line in log_path.read_text(
             encoding="utf-8",
@@ -620,10 +553,7 @@ class TwwQuarantineRunner:
             )
         )
 
-        return log_path.with_name(
-            f"{log_path.stem}_{safe_model_name}"
-            f"{log_path.suffix}"
-        )
+        return log_path.with_name(f"{log_path.stem}_{safe_model_name}" f"{log_path.suffix}")
 
     def _context(
         self,
@@ -654,13 +584,9 @@ class TwwQuarantineRunner:
             return validation_log_path
 
         if xtf_file is not None:
-            return xtf_file.with_name(
-                f"{xtf_file.stem}_{name}.log"
-            )
+            return xtf_file.with_name(f"{xtf_file.stem}_{name}.log")
 
-        return Path(
-            f"{name}.log"
-        )
+        return Path(f"{name}.log")
 
     def _assert_non_empty(
         self,
@@ -679,9 +605,7 @@ class TwwQuarantineRunner:
             )
             or not value.strip()
         ):
-            raise ValueError(
-                f"{parameter_name} must be a non-empty string."
-            )
+            raise ValueError(f"{parameter_name} must be a non-empty string.")
 
     def _quarantine_session(
         self,
@@ -747,9 +671,7 @@ class TwwQuarantineRunner:
         Return collaborators required for incremental persistence.
         """
 
-        missing: list[
-            str,
-        ] = []
+        missing: list[str,] = []
 
         if self.canonical_projection_lookup is None:
             missing.append(

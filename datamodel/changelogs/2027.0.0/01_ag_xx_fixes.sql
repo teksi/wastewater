@@ -13,7 +13,7 @@ INSERT INTO tww_vl.wastewater_node_ag64_function (code,vsacode,value_de,active) 
 (1999931,1999931,'Abwasserreinigungsanlage',true),
 (1999930,1999930,'Regenwasserrechen',true),
 (1999929,1999929,'Regenwassersieb',true),
-(1999928,1999928,'Rohrbruecke',true) 
+(1999928,1999928,'Rohrbruecke',true)
 ON CONFLICT (code) DO UPDATE SET
   vsacode = EXCLUDED.vsacode
 , value_de = EXCLUDED.value_de
@@ -41,34 +41,33 @@ INSERT INTO tww_vl.agxx_import_rel_mapping_gepknoten_funktionag (code,value_de,t
 (1999931,'Abwasserreinigungsanlage','tww_od.agxx_wastewater_node','ag64_function'),
 (1999930,'Regenwasserrechen','tww_od.agxx_wastewater_node','ag64_function'),
 (1999929,'Regenwassersieb','tww_od.agxx_wastewater_node','ag64_function'),
-(1999928,'Rohrbruecke','tww_od.agxx_wastewater_node','ag64_function') 
+(1999928,'Rohrbruecke','tww_od.agxx_wastewater_node','ag64_function')
 ON CONFLICT (code) DO NOTHING;
 
-INSERT INTO 
-tww_vl.agxx_import_rel_mapping_gepknoten_funktionag 
+INSERT INTO
+tww_vl.agxx_import_rel_mapping_gepknoten_funktionag
 (code,value_de,target_class,target_attribute)
 SELECT code, value_de, 'tww_od.manhole', 'function'
-FROM 
+FROM
 tww_vl.manhole_function_import_rel_agxx;
 
-INSERT INTO 
-tww_vl.agxx_import_rel_mapping_gepknoten_funktionag 
+INSERT INTO
+tww_vl.agxx_import_rel_mapping_gepknoten_funktionag
 (code,value_de,target_class,target_attribute)
 SELECT code, value_de, 'tww_od.special_structure', 'function'
-FROM 
+FROM
 tww_vl.special_structure_function_import_rel_agxx;
 
-INSERT INTO 
-tww_vl.agxx_import_rel_mapping_gepknoten_funktionag 
+INSERT INTO
+tww_vl.agxx_import_rel_mapping_gepknoten_funktionag
 (code,value_de,target_class,target_attribute)
 SELECT code, value_de, 'tww_od.discharge_point', 'relevance'
-FROM 
+FROM
 tww_vl.discharge_point_relevance_import_rel_agxx;
 
-INSERT INTO 
-tww_vl.agxx_import_rel_mapping_gepknoten_funktionag 
+INSERT INTO
+tww_vl.agxx_import_rel_mapping_gepknoten_funktionag
 (code,value_de,target_class,target_attribute)
 SELECT code, value_de, 'tww_od.infiltration_installation', 'kind'
-FROM 
+FROM
 tww_vl.infiltration_installation_kind_import_rel_agxx;
-

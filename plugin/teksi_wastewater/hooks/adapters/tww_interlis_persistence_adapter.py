@@ -9,7 +9,6 @@ from typing import Any
 from teksi_hooks.capabilities.mapping import (
     ModelMappingLookupCapability,
 )
-
 from teksi_wastewater.hooks.adapters.tww_quarantine_runner import (
     TwwQuarantineRunner,
 )
@@ -26,7 +25,6 @@ from teksi_wastewater.interlis import (
 from teksi_wastewater.interlis.model_selection import (
     model_selection_for_imported_models,
 )
-
 
 logger = logging.getLogger(
     __name__,
@@ -129,18 +127,14 @@ class TwwInterlisPersistenceAdapter(
         )
 
         try:
-            selection_models = (
-                model_selection_for_imported_models(
-                    source_model,
-                )
+            selection_models = model_selection_for_imported_models(
+                source_model,
             )
 
         except Exception as exception:
             raise DiffJobPersistenceError(
                 job_id=job_id,
-                phase=(
-                    f"model_selection_{source_role}"
-                ),
+                phase=(f"model_selection_{source_role}"),
                 message=(
                     "Could not resolve the INTERLIS model "
                     f"selection for source model "
@@ -148,10 +142,7 @@ class TwwInterlisPersistenceAdapter(
                 ),
             ) from exception
 
-        incremental_only = (
-            source_role
-            == "incremental"
-        )
+        incremental_only = source_role == "incremental"
 
         self._assert_selection_matches_role(
             job_id=job_id,
@@ -183,9 +174,7 @@ class TwwInterlisPersistenceAdapter(
         except Exception as exception:
             raise DiffJobPersistenceError(
                 job_id=job_id,
-                phase=(
-                    f"persist_{source_role}"
-                ),
+                phase=(f"persist_{source_role}"),
                 message=(
                     "The quarantine-to-live import failed for "
                     f"source role {source_role!r}, source model "
@@ -337,10 +326,7 @@ class TwwInterlisPersistenceAdapter(
                 ),
             )
 
-        if (
-            source_role == "base"
-            and is_agxx
-        ):
+        if source_role == "base" and is_agxx:
             raise DiffJobPersistenceError(
                 job_id=job_id,
                 phase="persistence_contract",

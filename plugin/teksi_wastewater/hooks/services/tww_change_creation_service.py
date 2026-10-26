@@ -1,9 +1,9 @@
 from __future__ import annotations
 
+import logging
 from collections import defaultdict
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field, replace
-import logging
 from pathlib import Path
 from typing import Any
 
@@ -317,25 +317,19 @@ class TwwChangeCreationService:
             base_source_model = source_model
             base_import_schema = import_schema
 
-            base_mapping_model_id = (
-                self._required_metadata_string(
-                    metadata=workflow_metadata,
-                    key="mapping_model_id",
-                )
+            base_mapping_model_id = self._required_metadata_string(
+                metadata=workflow_metadata,
+                key="mapping_model_id",
             )
 
-            base_model_language = (
-                self._required_metadata_string(
-                    metadata=workflow_metadata,
-                    key="model_language",
-                )
+            base_model_language = self._required_metadata_string(
+                metadata=workflow_metadata,
+                key="model_language",
             )
 
-            base_model_group = (
-                self._required_metadata_string(
-                    metadata=workflow_metadata,
-                    key="model_group",
-                )
+            base_model_group = self._required_metadata_string(
+                metadata=workflow_metadata,
+                key="model_group",
             )
 
             base_created_models = created_models_tuple
@@ -355,12 +349,8 @@ class TwwChangeCreationService:
                 {
                     "base_source_model": base_source_model,
                     "base_import_schema": base_import_schema,
-                    "base_mapping_model_id": (
-                        base_mapping_model_id
-                    ),
-                    "base_model_language": (
-                        base_model_language
-                    ),
+                    "base_mapping_model_id": (base_mapping_model_id),
+                    "base_model_language": (base_model_language),
                     "base_model_group": base_model_group,
                     "base_created_models": list(
                         base_created_models,
@@ -374,56 +364,42 @@ class TwwChangeCreationService:
                 }
             )
         else:
-            prepared_source = (
-                self.diff_schema_service.prepared_source(
-                    job_id=job_id,
-                )
+            prepared_source = self.diff_schema_service.prepared_source(
+                job_id=job_id,
             )
 
             base_metadata = dict(
                 prepared_source.metadata,
             )
 
-            base_import_schema = (
-                self._required_metadata_string(
-                    metadata=base_metadata,
-                    key="base_import_schema",
-                    fallback_key="import_schema",
-                )
+            base_import_schema = self._required_metadata_string(
+                metadata=base_metadata,
+                key="base_import_schema",
+                fallback_key="import_schema",
             )
 
-            base_source_model = (
-                self._required_metadata_string(
-                    metadata=base_metadata,
-                    key="base_source_model",
-                    fallback_value=(
-                        prepared_source.source_model
-                    ),
-                )
+            base_source_model = self._required_metadata_string(
+                metadata=base_metadata,
+                key="base_source_model",
+                fallback_value=(prepared_source.source_model),
             )
 
-            base_mapping_model_id = (
-                self._required_metadata_string(
-                    metadata=base_metadata,
-                    key="base_mapping_model_id",
-                    fallback_key="mapping_model_id",
-                )
+            base_mapping_model_id = self._required_metadata_string(
+                metadata=base_metadata,
+                key="base_mapping_model_id",
+                fallback_key="mapping_model_id",
             )
 
-            base_model_language = (
-                self._required_metadata_string(
-                    metadata=base_metadata,
-                    key="base_model_language",
-                    fallback_key="model_language",
-                )
+            base_model_language = self._required_metadata_string(
+                metadata=base_metadata,
+                key="base_model_language",
+                fallback_key="model_language",
             )
 
-            base_model_group = (
-                self._required_metadata_string(
-                    metadata=base_metadata,
-                    key="base_model_group",
-                    fallback_key="model_group",
-                )
+            base_model_group = self._required_metadata_string(
+                metadata=base_metadata,
+                key="base_model_group",
+                fallback_key="model_group",
             )
 
             base_created_models = tuple(
@@ -436,73 +412,43 @@ class TwwChangeCreationService:
             incremental_source_model = source_model
             incremental_import_schema = import_schema
 
-            incremental_mapping_model_id = (
-                self._required_metadata_string(
-                    metadata=workflow_metadata,
-                    key="mapping_model_id",
-                )
+            incremental_mapping_model_id = self._required_metadata_string(
+                metadata=workflow_metadata,
+                key="mapping_model_id",
             )
 
-            incremental_model_language = (
-                self._required_metadata_string(
-                    metadata=workflow_metadata,
-                    key="model_language",
-                )
+            incremental_model_language = self._required_metadata_string(
+                metadata=workflow_metadata,
+                key="model_language",
             )
 
-            incremental_model_group = (
-                self._required_metadata_string(
-                    metadata=workflow_metadata,
-                    key="model_group",
-                )
+            incremental_model_group = self._required_metadata_string(
+                metadata=workflow_metadata,
+                key="model_group",
             )
 
-            incremental_created_models = (
-                created_models_tuple
-            )
+            incremental_created_models = created_models_tuple
 
             effect_document = self._merge_effect_documents(
-                base_document=(
-                    prepared_source.effect_document
-                ),
+                base_document=(prepared_source.effect_document),
                 incremental_document=source_document,
             )
 
             workflow_metadata.update(
                 {
-                    "base_source_model": (
-                        base_source_model
-                    ),
-                    "base_import_schema": (
-                        base_import_schema
-                    ),
-                    "base_mapping_model_id": (
-                        base_mapping_model_id
-                    ),
-                    "base_model_language": (
-                        base_model_language
-                    ),
-                    "base_model_group": (
-                        base_model_group
-                    ),
+                    "base_source_model": (base_source_model),
+                    "base_import_schema": (base_import_schema),
+                    "base_mapping_model_id": (base_mapping_model_id),
+                    "base_model_language": (base_model_language),
+                    "base_model_group": (base_model_group),
                     "base_created_models": list(
                         base_created_models,
                     ),
-                    "incremental_source_model": (
-                        incremental_source_model
-                    ),
-                    "incremental_import_schema": (
-                        incremental_import_schema
-                    ),
-                    "incremental_mapping_model_id": (
-                        incremental_mapping_model_id
-                    ),
-                    "incremental_model_language": (
-                        incremental_model_language
-                    ),
-                    "incremental_model_group": (
-                        incremental_model_group
-                    ),
+                    "incremental_source_model": (incremental_source_model),
+                    "incremental_import_schema": (incremental_import_schema),
+                    "incremental_mapping_model_id": (incremental_mapping_model_id),
+                    "incremental_model_language": (incremental_model_language),
+                    "incremental_model_group": (incremental_model_group),
                     "incremental_created_models": list(
                         incremental_created_models,
                     ),
@@ -560,9 +506,7 @@ class TwwChangeCreationService:
         *,
         job_id: str,
         source_model: str,
-        created_models: Sequence[
-            str,
-        ],
+        created_models: Sequence[str,],
         effect_document: EffectDocument,
         rights_base_context: RightsEvaluationBaseContext,
         import_schema: str,
@@ -650,7 +594,7 @@ class TwwChangeCreationService:
                 )
             ),
         )
-        
+
         self._log_rights_coverage(
             changes=changes,
         )
@@ -982,9 +926,7 @@ class TwwChangeCreationService:
 
         effects_by_identity: dict[
             tuple,
-            list[
-                UpdateAttributeEffect,
-            ],
+            list[UpdateAttributeEffect,],
         ] = defaultdict(
             list,
         )
@@ -1003,27 +945,19 @@ class TwwChangeCreationService:
 
             identity_key = effect.identity.key()
 
-            identities_by_key[
-                identity_key
-            ] = effect.identity
+            identities_by_key[identity_key] = effect.identity
 
-            effects_by_identity[
-                identity_key
-            ].append(
+            effects_by_identity[identity_key].append(
                 effect,
             )
 
-        current_objects_by_key = (
-            relation_lookup.current_objects(
-                tuple(
-                    identities_by_key.values(),
-                )
+        current_objects_by_key = relation_lookup.current_objects(
+            tuple(
+                identities_by_key.values(),
             )
         )
 
-        changes: list[
-            Change,
-        ] = []
+        changes: list[Change,] = []
 
         for (
             identity_key,
@@ -1045,7 +979,7 @@ class TwwChangeCreationService:
         return tuple(
             changes,
         )
-    
+
     def _validation_findings(
         self,
         classified_changes,
@@ -1065,11 +999,7 @@ class TwwChangeCreationService:
             finding
             for group in groups
             for classified_change in group
-            for finding in (
-                classified_change
-                .metadata
-                .validation_findings
-            )
+            for finding in (classified_change.metadata.validation_findings)
         ]
 
     def _live_relation_lookup(
@@ -1263,9 +1193,7 @@ class TwwChangeCreationService:
     def _log_rights_coverage(
         self,
         *,
-        changes: Sequence[
-            Change,
-        ],
+        changes: Sequence[Change,],
     ) -> None:
         """
         Log rights coverage for canonical classes contained in changes.
@@ -1285,8 +1213,7 @@ class TwwChangeCreationService:
 
         if self.rights_evaluator is None:
             self.logger.warning(
-                "Cannot inspect rights coverage because no rights "
-                "evaluator is configured."
+                "Cannot inspect rights coverage because no rights " "evaluator is configured."
             )
 
             return
@@ -1329,25 +1256,18 @@ class TwwChangeCreationService:
 
             return
 
-        changed_class_ids = {
-            change.table_name
-            for change in changes
-        }
+        changed_class_ids = {change.table_name for change in changes}
 
         definitions_by_class: dict[
             str,
             Any,
         ] = {}
 
-        missing_class_ids: set[
-            str,
-        ] = set()
+        missing_class_ids: set[str,] = set()
 
         for class_id in changed_class_ids:
             try:
-                definitions_by_class[
-                    class_id
-                ] = class_definition(
+                definitions_by_class[class_id] = class_definition(
                     class_id,
                 )
 
@@ -1356,10 +1276,7 @@ class TwwChangeCreationService:
                     class_id,
                 )
 
-        configured_class_ids = (
-            changed_class_ids
-            - missing_class_ids
-        )
+        configured_class_ids = changed_class_ids - missing_class_ids
 
         self.logger.info(
             "Canonical classes contained in projected changes: %r.",
@@ -1381,8 +1298,7 @@ class TwwChangeCreationService:
 
         if missing_class_ids:
             self.logger.info(
-                "Canonical change classes missing from effective "
-                "rights: %r.",
+                "Canonical change classes missing from effective " "rights: %r.",
                 tuple(
                     sorted(
                         missing_class_ids,
@@ -1393,25 +1309,14 @@ class TwwChangeCreationService:
         for class_id in sorted(
             changed_class_ids,
         ):
-            class_changes = tuple(
-                change
-                for change in changes
-                if change.table_name == class_id
-            )
+            class_changes = tuple(change for change in changes if change.table_name == class_id)
 
-            operations = tuple(
-                sorted(
-                    {
-                        change.operation.value
-                        for change in class_changes
-                    }
-                )
-            )
+            operations = tuple(sorted({change.operation.value for change in class_changes}))
 
             definition = definitions_by_class.get(
                 class_id,
             )
-            
+
             self.logger.info(
                 "Rights coverage for canonical class %r: "
                 "configured=%s, change_count=%s, operations=%r, "
@@ -1451,14 +1356,10 @@ class TwwChangeCreationService:
                     rights_classes,
                 )
 
-                unused_configured_class_ids = (
-                    configured_document_class_ids
-                    - changed_class_ids
-                )
+                unused_configured_class_ids = configured_document_class_ids - changed_class_ids
 
                 self.logger.info(
-                    "All canonical classes configured in the "
-                    "effective rights document: %r.",
+                    "All canonical classes configured in the " "effective rights document: %r.",
                     tuple(
                         sorted(
                             configured_document_class_ids,
@@ -1467,8 +1368,7 @@ class TwwChangeCreationService:
                 )
 
                 self.logger.info(
-                    "Configured rights classes not present in this "
-                    "change set: %r.",
+                    "Configured rights classes not present in this " "change set: %r.",
                     tuple(
                         sorted(
                             unused_configured_class_ids,

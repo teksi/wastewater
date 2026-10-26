@@ -6,9 +6,9 @@ from collections.abc import Mapping, Sequence
 from dataclasses import asdict, dataclass, field, is_dataclass
 from datetime import date, datetime
 from enum import Enum
-from osgeo import ogr
 from typing import Any
 
+from osgeo import ogr
 from teksi_hooks.capabilities.connection import (
     DatabaseConnectionFactory,
 )
@@ -427,9 +427,7 @@ class TwwDiffSchemaService(
                    FROM {self._table(table_name)}
                    WHERE job_id = %s;
                     """,
-                    (
-                        job_db_id,
-                    ),
+                    (job_db_id,),
                 )
 
                 row = cursor.fetchone()
@@ -851,19 +849,16 @@ class TwwDiffSchemaService(
         using only ``import_schema`` remains supported.
         """
 
-        if not isinstance(
-            import_schema,
-            str,
-        ) or not import_schema.strip():
-            raise ValueError(
-                "import_schema must be a non-empty string."
+        if (
+            not isinstance(
+                import_schema,
+                str,
             )
-        
-        normalized_exclude_job_id = (
-            exclude_job_id.strip()
-            if exclude_job_id is not None
-            else None
-        )
+            or not import_schema.strip()
+        ):
+            raise ValueError("import_schema must be a non-empty string.")
+
+        normalized_exclude_job_id = exclude_job_id.strip() if exclude_job_id is not None else None
 
         query = """
             SELECT
@@ -894,14 +889,14 @@ class TwwDiffSchemaService(
             query = query + """
                         AND job_id <> %s
                 """
-            parse_args =(
+            parse_args = (
                 import_schema,
                 import_schema,
                 import_schema,
                 normalized_exclude_job_id,
             )
         else:
-            parse_args =(
+            parse_args = (
                 import_schema,
                 import_schema,
                 import_schema,
@@ -945,11 +940,7 @@ class TwwDiffSchemaService(
             return
 
         job_descriptions = ", ".join(
-            (
-                f"{row['job_id']!r} "
-                f"({row['job_status']})"
-            )
-            for row in active_jobs
+            (f"{row['job_id']!r} " f"({row['job_status']})") for row in active_jobs
         )
 
         raise RuntimeError(
@@ -983,14 +974,15 @@ class TwwDiffSchemaService(
                 actual_status=job.job_status,
             )
 
-        if job.metadata.get(
-            "job_type",
-        ) != "review":
+        if (
+            job.metadata.get(
+                "job_type",
+            )
+            != "review"
+        ):
             raise DiffJobEligibilityError(
                 job_id=job_id,
-                reason=(
-                    "only review jobs can be refreshed."
-                ),
+                reason=("only review jobs can be refreshed."),
             )
 
         diff_tstamp = job.metadata.get(
@@ -1003,9 +995,7 @@ class TwwDiffSchemaService(
         ):
             raise DiffJobEligibilityError(
                 job_id=job_id,
-                reason=(
-                    "the job has no valid diff refresh timestamp."
-                ),
+                reason=("the job has no valid diff refresh timestamp."),
             )
 
         live_schema = job.metadata.get(
@@ -1021,9 +1011,7 @@ class TwwDiffSchemaService(
         ):
             raise DiffJobEligibilityError(
                 job_id=job_id,
-                reason=(
-                    "the job has no valid live schema."
-                ),
+                reason=("the job has no valid live schema."),
             )
 
         import_schemas = self._job_import_schemas(
@@ -1033,9 +1021,7 @@ class TwwDiffSchemaService(
         if not import_schemas:
             raise DiffJobEligibilityError(
                 job_id=job_id,
-                reason=(
-                    "the job has no retained quarantine schema."
-                ),
+                reason=("the job has no retained quarantine schema."),
             )
 
         return job
@@ -1054,25 +1040,17 @@ class TwwDiffSchemaService(
         quarantine preparation before the quarantine-to-live import.
         """
 
-
-
         with self.connection_factory.connection(
             autocommit=True,
         ) as connection:
             cursor = connection.cursor()
-
-
 
             job_db_id = self._job_db_id(
                 cursor=cursor,
                 job_id=job_id,
             )
 
-
-
             rejected_count = 0
-
-
 
             for table_name in self._review_table_names(
                 cursor=cursor,
@@ -1089,11 +1067,7 @@ class TwwDiffSchemaService(
                     (job_db_id,),
                 )
 
-
-
                 row = cursor.fetchone()
-
-
 
                 if row is None:
                     raise RuntimeError(
@@ -1101,13 +1075,9 @@ class TwwDiffSchemaService(
                         f"count for {self.schema}.{table_name}."
                     )
 
-
-
                 rejected_count += int(
                     row[0],
                 )
-
-
 
         return rejected_count
 
@@ -1137,9 +1107,7 @@ class TwwDiffSchemaService(
             ),
         )
 
-        import_schemas: list[
-            str,
-        ] = []
+        import_schemas: list[str,] = []
 
         for candidate in candidates:
             if (
@@ -1491,7 +1459,7 @@ class TwwDiffSchemaService(
 
         reserved_columns = self._reserved_feature_columns()
 
-        for column_name,value in row.items():
+        for column_name, value in row.items():
             if column_name in reserved_columns:
                 continue
 
@@ -1507,7 +1475,7 @@ class TwwDiffSchemaService(
                 continue
             if column_name in reserved_columns:
                 continue
-            
+
             attributes[column_name] = value
 
         return ReviewFeature(
@@ -1823,9 +1791,7 @@ class TwwDiffSchemaService(
         job_db_id: int,
         table_name: str,
         feature: ReviewFeature,
-        table_columns: set[
-            str,
-        ],
+        table_columns: set[str,],
     ) -> None:
         """
         Insert one review feature into its class-specific diff table.
@@ -1851,17 +1817,11 @@ class TwwDiffSchemaService(
             feature=feature,
         )
 
-        columns: list[
-            str,
-        ] = []
+        columns: list[str,] = []
 
-        expressions: list[
-            str,
-        ] = []
+        expressions: list[str,] = []
 
-        parameters: list[
-            Any,
-        ] = []
+        parameters: list[Any,] = []
 
         for (
             column_name,
@@ -1925,13 +1885,8 @@ class TwwDiffSchemaService(
 
         if not columns:
             raise DiffSchemaContractError(
-                table_name=(
-                    f"{self.schema}.{table_name}"
-                ),
-                message=(
-                    "The review feature contains no persistable "
-                    "columns."
-                ),
+                table_name=(f"{self.schema}.{table_name}"),
+                message=("The review feature contains no persistable " "columns."),
             )
 
         cursor.execute(
@@ -2022,9 +1977,7 @@ class TwwDiffSchemaService(
 
     def _reserved_feature_columns(
         self,
-    ) -> frozenset[
-        str,
-    ]:
+    ) -> frozenset[str,]:
         """
         Return infrastructure columns that are not ordinary review attributes.
         """
@@ -2092,9 +2045,7 @@ class TwwDiffSchemaService(
         value: Any,
     ) -> tuple[
         str,
-        list[
-            Any,
-        ],
+        list[Any,],
     ]:
         """
         Return a PostGIS expression and bind parameters for one geometry.
@@ -2118,16 +2069,11 @@ class TwwDiffSchemaService(
         if geometry is None:
             raise DiffSchemaContractError(
                 column_name="geometry",
-                message=(
-                    "Unsupported non-null geometry "
-                    f"representation {type(value)!r}."
-                ),
+                message=("Unsupported non-null geometry " f"representation {type(value)!r}."),
             )
 
         try:
-            wkb = bytes(
-                geometry.ExportToWkb()
-            )
+            wkb = bytes(geometry.ExportToWkb())
 
         except Exception:
             wkt = geometry.ExportToWkt()
@@ -2135,10 +2081,7 @@ class TwwDiffSchemaService(
             if not wkt:
                 raise DiffSchemaContractError(
                     column_name="geometry",
-                    message=(
-                        "Could not serialize the review geometry "
-                        "as WKB or WKT."
-                    ),
+                    message=("Could not serialize the review geometry " "as WKB or WKT."),
                 )
 
             return (
@@ -2340,22 +2283,15 @@ class TwwDiffSchemaService(
                 geometry_value,
             )
 
-            column_name = (
-                f"{geometry_family}_geometry"
-            )
+            column_name = f"{geometry_family}_geometry"
 
-            previous_attribute = (
-                attribute_by_column.get(
-                    column_name,
-                )
+            previous_attribute = attribute_by_column.get(
+                column_name,
             )
 
             if previous_attribute is not None:
                 raise DiffSchemaContractError(
-                    table_name=(
-                        f"{self.schema}."
-                        f"{feature.class_id}"
-                    ),
+                    table_name=(f"{self.schema}." f"{feature.class_id}"),
                     column_name=column_name,
                     message=(
                         "The review feature contains more than one "
@@ -2367,13 +2303,9 @@ class TwwDiffSchemaService(
                     ),
                 )
 
-            result[
-                column_name
-            ] = geometry_value
+            result[column_name] = geometry_value
 
-            attribute_by_column[
-                column_name
-            ] = attribute_name
+            attribute_by_column[column_name] = attribute_name
 
         return result
 
@@ -2492,15 +2424,10 @@ class TwwDiffSchemaService(
         if geometry is None:
             raise DiffSchemaContractError(
                 column_name="geometry",
-                message=(
-                    "Unsupported non-null geometry "
-                    f"representation {type(value)!r}."
-                ),
+                message=("Unsupported non-null geometry " f"representation {type(value)!r}."),
             )
 
-        geometry_type = ogr.wkbFlatten(
-            geometry.GetGeometryType()
-        )
+        geometry_type = ogr.wkbFlatten(geometry.GetGeometryType())
 
         point_types = {
             geometry_type
@@ -2589,10 +2516,7 @@ class TwwDiffSchemaService(
 
         raise DiffSchemaContractError(
             column_name="geometry",
-            message=(
-                "Unsupported review geometry type "
-                f"{geometry.GetGeometryName()!r}."
-            ),
+            message=("Unsupported review geometry type " f"{geometry.GetGeometryName()!r}."),
         )
 
     def _json_dumps(

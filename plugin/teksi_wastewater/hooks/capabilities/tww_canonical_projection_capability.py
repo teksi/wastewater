@@ -5,10 +5,10 @@ from dataclasses import dataclass
 from typing import Any, Protocol
 
 from sqlalchemy.orm import Session
-
 from teksi_hooks.capabilities.effects import (
     CanonicalViewLookupCapability,
 )
+
 
 class SourceReferenceLookupCapability(
     Protocol,
@@ -24,9 +24,7 @@ class SourceReferenceLookupCapability(
         *,
         session: Session,
         source_class_id: str,
-        t_ids: Sequence[
-            int,
-        ],
+        t_ids: Sequence[int,],
     ) -> Mapping[
         int,
         Any,
@@ -74,10 +72,8 @@ class ProjectionValueCandidate:
         candidate is created by the lookup adapter.
         """
 
-        return (
-            self.target_class_id is not None
-            and self.target_attribute_id is not None
-        )
+        return self.target_class_id is not None and self.target_attribute_id is not None
+
 
 class TwwCanonicalProjectionLookupCapability(
     CanonicalViewLookupCapability,
@@ -94,9 +90,7 @@ class TwwCanonicalProjectionLookupCapability(
         self,
         *,
         session: Session,
-        agxx_oids: Sequence[
-            str,
-        ],
+        agxx_oids: Sequence[str,],
     ) -> Mapping[
         str,
         str,
@@ -112,9 +106,7 @@ class TwwCanonicalProjectionLookupCapability(
         *,
         session: Session,
         relation: str,
-        values: Sequence[
-            str,
-        ],
+        values: Sequence[str,],
         value_attribute: str = "value_de",
         code_attribute: str = "code",
     ) -> Mapping[
@@ -133,9 +125,7 @@ class TwwCanonicalProjectionLookupCapability(
         session: Session,
         class_id: str,
         identity_attribute: str,
-        identities: Sequence[
-            Any,
-        ],
+        identities: Sequence[Any,],
     ) -> Mapping[
         Any,
         Any,

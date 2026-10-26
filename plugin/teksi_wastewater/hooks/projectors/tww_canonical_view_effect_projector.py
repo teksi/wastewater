@@ -9,7 +9,6 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from sqlalchemy.orm import Session
-
 from teksi_hooks.capabilities.effects import (
     CanonicalViewEffectProjector,
 )
@@ -127,14 +126,11 @@ class TwwProjectionContext:
         """
 
         try:
-            return self.references_by_source_attribute[
-                source_attribute
-            ]
+            return self.references_by_source_attribute[source_attribute]
 
         except KeyError as exception:
             raise KeyError(
-                "Projection context does not contain source "
-                f"reference {source_attribute!r}."
+                "Projection context does not contain source " f"reference {source_attribute!r}."
             ) from exception
 
     def canonical_oids(
@@ -149,14 +145,11 @@ class TwwProjectionContext:
         """
 
         try:
-            return self.canonical_oids_by_mapping[
-                mapping_name
-            ]
+            return self.canonical_oids_by_mapping[mapping_name]
 
         except KeyError as exception:
             raise KeyError(
-                "Projection context does not contain canonical "
-                f"OID mapping {mapping_name!r}."
+                "Projection context does not contain canonical " f"OID mapping {mapping_name!r}."
             ) from exception
 
     def value_candidates(
@@ -179,8 +172,7 @@ class TwwProjectionContext:
 
         if value_mapping is None:
             raise KeyError(
-                "Projection does not define a value-list "
-                f"mapping for {source_attribute!r}."
+                "Projection does not define a value-list " f"mapping for {source_attribute!r}."
             )
 
         if value_mapping.ignores(
@@ -188,16 +180,12 @@ class TwwProjectionContext:
         ):
             return ()
 
-        return (
-            self.value_candidates_by_source_attribute
-            .get(
-                source_attribute,
-                {},
-            )
-            .get(
-                source_value,
-                (),
-            )
+        return self.value_candidates_by_source_attribute.get(
+            source_attribute,
+            {},
+        ).get(
+            source_value,
+            (),
         )
 
 
@@ -219,9 +207,7 @@ class TwwCanonicalViewEffectProjector(
     ORM classes, or canonical persistence.
     """
 
-    canonical_lookup: (
-        TwwCanonicalProjectionLookupCapability
-    )
+    canonical_lookup: TwwCanonicalProjectionLookupCapability
 
     source_lookup: SourceReferenceLookupCapability
 
@@ -230,9 +216,7 @@ class TwwCanonicalViewEffectProjector(
         *,
         source_model: str,
         source_class_id: str,
-        source_rows: Sequence[
-            Any,
-        ],
+        source_rows: Sequence[Any,],
         quarantine_session: Session,
         live_session: Session,
         projection: CanonicalViewProjectionMapping,
@@ -293,9 +277,7 @@ class TwwCanonicalViewEffectProjector(
     def _projection_context(
         self,
         *,
-        source_rows: Sequence[
-            Any,
-        ],
+        source_rows: Sequence[Any,],
         quarantine_session: Session,
         live_session: Session,
         projection: CanonicalViewProjectionMapping,
@@ -313,21 +295,16 @@ class TwwCanonicalViewEffectProjector(
             )
         )
 
-        canonical_rows_by_identity = (
-            self.canonical_lookup.rows_by_identity(
-                session=live_session,
-                view=projection.canonical_view,
-                identities=source_object_ids,
-            )
+        canonical_rows_by_identity = self.canonical_lookup.rows_by_identity(
+            session=live_session,
+            view=projection.canonical_view,
+            identities=source_object_ids,
         )
 
-        unexpected_identities = (
-            set(
-                canonical_rows_by_identity,
-            )
-            - set(
-                source_object_ids,
-            )
+        unexpected_identities = set(
+            canonical_rows_by_identity,
+        ) - set(
+            source_object_ids,
         )
 
         if unexpected_identities:
@@ -339,23 +316,15 @@ class TwwCanonicalViewEffectProjector(
                 f"{tuple(sorted(unexpected_identities))!r}."
             )
 
-        references_by_source_attribute = (
-            self._resolved_projection_references(
-                source_rows=source_rows,
-                quarantine_session=(
-                    quarantine_session
-                ),
-                references=projection.references,
-            )
+        references_by_source_attribute = self._resolved_projection_references(
+            source_rows=source_rows,
+            quarantine_session=(quarantine_session),
+            references=projection.references,
         )
 
-        organisation_oids = (
-            self._referenced_external_identities(
-                references=(
-                    references_by_source_attribute
-                ),
-                source_class_id="Organisation",
-            )
+        organisation_oids = self._referenced_external_identities(
+            references=(references_by_source_attribute),
+            source_class_id="Organisation",
         )
 
         canonical_oids_by_mapping: dict[
@@ -367,46 +336,31 @@ class TwwCanonicalViewEffectProjector(
         ] = {}
 
         if organisation_oids:
-            canonical_oids_by_mapping[
-                "organisation"
-            ] = (
-                self.canonical_lookup
-                .organisation_oids_by_agxx_oid(
+            canonical_oids_by_mapping["organisation"] = (
+                self.canonical_lookup.organisation_oids_by_agxx_oid(
                     session=live_session,
                     agxx_oids=organisation_oids,
                 )
             )
 
-        value_candidates_by_source_attribute = (
-            self._projection_value_candidates(
-                source_rows=source_rows,
-                live_session=live_session,
-                value_lists=projection.value_lists,
-            )
+        value_candidates_by_source_attribute = self._projection_value_candidates(
+            source_rows=source_rows,
+            live_session=live_session,
+            value_lists=projection.value_lists,
         )
 
         return TwwProjectionContext(
             projection=projection,
-            canonical_rows_by_identity=(
-                canonical_rows_by_identity
-            ),
-            references_by_source_attribute=(
-                references_by_source_attribute
-            ),
-            canonical_oids_by_mapping=(
-                canonical_oids_by_mapping
-            ),
-            value_candidates_by_source_attribute=(
-                value_candidates_by_source_attribute
-            ),
+            canonical_rows_by_identity=(canonical_rows_by_identity),
+            references_by_source_attribute=(references_by_source_attribute),
+            canonical_oids_by_mapping=(canonical_oids_by_mapping),
+            value_candidates_by_source_attribute=(value_candidates_by_source_attribute),
         )
 
     def _resolved_projection_references(
         self,
         *,
-        source_rows: Sequence[
-            Any,
-        ],
+        source_rows: Sequence[Any,],
         quarantine_session: Session,
         references: Mapping[
             str,
@@ -425,16 +379,12 @@ class TwwCanonicalViewEffectProjector(
 
         t_ids_by_mapping: dict[
             ProjectionReferenceMapping,
-            set[
-                int,
-            ],
+            set[int,],
         ] = {}
 
         attributes_by_mapping: dict[
             ProjectionReferenceMapping,
-            list[
-                str,
-            ],
+            list[str,],
         ] = {}
 
         for (
@@ -491,29 +441,19 @@ class TwwCanonicalViewEffectProjector(
             referenced_t_ids,
         ) in t_ids_by_mapping.items():
             if not referenced_t_ids:
-                resolved_rows_by_mapping[
-                    reference_mapping
-                ] = {}
+                resolved_rows_by_mapping[reference_mapping] = {}
 
                 continue
 
-            resolved_rows_by_mapping[
-                reference_mapping
-            ] = self.source_lookup.rows_by_t_id(
+            resolved_rows_by_mapping[reference_mapping] = self.source_lookup.rows_by_t_id(
                 session=quarantine_session,
-                source_class_id=(
-                    reference_mapping
-                    .source_class_id
-                ),
+                source_class_id=(reference_mapping.source_class_id),
                 t_ids=tuple(
                     sorted(
                         referenced_t_ids,
                     )
                 ),
-                discriminator=(
-                    reference_mapping
-                    .discriminator
-                ),
+                discriminator=(reference_mapping.discriminator),
             )
 
         result: dict[
@@ -525,22 +465,18 @@ class TwwCanonicalViewEffectProjector(
             reference_mapping,
             source_attributes,
         ) in attributes_by_mapping.items():
-            resolved_reference = (
-                ResolvedProjectionReference(
-                    mapping=reference_mapping,
-                    rows_by_t_id=(
-                        resolved_rows_by_mapping.get(
-                            reference_mapping,
-                            {},
-                        )
-                    ),
-                )
+            resolved_reference = ResolvedProjectionReference(
+                mapping=reference_mapping,
+                rows_by_t_id=(
+                    resolved_rows_by_mapping.get(
+                        reference_mapping,
+                        {},
+                    )
+                ),
             )
 
             for source_attribute in source_attributes:
-                result[
-                    source_attribute
-                ] = resolved_reference
+                result[source_attribute] = resolved_reference
 
         return result
 
@@ -565,9 +501,7 @@ class TwwCanonicalViewEffectProjector(
             None,
         ] = {}
 
-        processed_references: set[
-            int,
-        ] = set()
+        processed_references: set[int,] = set()
 
         for resolved_reference in references.values():
             reference_marker = id(
@@ -583,10 +517,7 @@ class TwwCanonicalViewEffectProjector(
 
             mapping = resolved_reference.mapping
 
-            if (
-                mapping.source_class_id
-                != source_class_id
-            ):
+            if mapping.source_class_id != source_class_id:
                 continue
 
             for row in resolved_reference.rows_by_t_id.values():
@@ -603,9 +534,7 @@ class TwwCanonicalViewEffectProjector(
                     )
                     and identity.strip()
                 ):
-                    identities[
-                        identity.strip()
-                    ] = None
+                    identities[identity.strip()] = None
 
         return tuple(
             identities,
@@ -614,9 +543,7 @@ class TwwCanonicalViewEffectProjector(
     def _projection_value_candidates(
         self,
         *,
-        source_rows: Sequence[
-            Any,
-        ],
+        source_rows: Sequence[Any,],
         live_session: Session,
         value_lists: Mapping[
             str,
@@ -658,21 +585,14 @@ class TwwCanonicalViewEffectProjector(
             )
 
             if not source_values:
-                result[
-                    source_attribute
-                ] = {}
+                result[source_attribute] = {}
 
                 continue
 
-            result[
-                source_attribute
-            ] = (
-                self.canonical_lookup
-                .value_candidates_by_source_value(
-                    session=live_session,
-                    mapping=value_mapping,
-                    source_values=source_values,
-                )
+            result[source_attribute] = self.canonical_lookup.value_candidates_by_source_value(
+                session=live_session,
+                mapping=value_mapping,
+                source_values=source_values,
             )
 
         return result
@@ -680,9 +600,7 @@ class TwwCanonicalViewEffectProjector(
     def _source_values(
         self,
         *,
-        source_rows: Sequence[
-            Any,
-        ],
+        source_rows: Sequence[Any,],
         source_attribute: str,
         mapping: ValueListMapping,
     ) -> tuple[
@@ -714,18 +632,13 @@ class TwwCanonicalViewEffectProjector(
                 source_attribute,
             )
 
-            if (
-                source_value is None
-                or mapping.ignores(
-                    source_value,
-                )
+            if source_value is None or mapping.ignores(
+                source_value,
             ):
                 continue
 
             try:
-                values[
-                    source_value
-                ] = None
+                values[source_value] = None
 
             except TypeError as exception:
                 raise TypeError(
@@ -770,17 +683,11 @@ class TwwCanonicalViewEffectProjector(
                 context=context,
             )
 
-        elif (
-            source_class_id
-            == "Ueberlauf_Foerderaggregat"
-        ):
-            effects = (
-                self
-                ._project_ueberlauf_foerderaggregat(
-                    source_row=source_row,
-                    current_row=current_row,
-                    context=context,
-                )
+        elif source_class_id == "Ueberlauf_Foerderaggregat":
+            effects = self._project_ueberlauf_foerderaggregat(
+                source_row=source_row,
+                current_row=current_row,
+                context=context,
             )
 
         else:
@@ -887,8 +794,7 @@ class TwwCanonicalViewEffectProjector(
             source_attribute,
         ):
             raise ValueError(
-                "Projection source row does not expose "
-                f"reference {source_attribute!r}."
+                "Projection source row does not expose " f"reference {source_attribute!r}."
             )
 
         source_reference = getattr(
@@ -941,12 +847,8 @@ class TwwCanonicalViewEffectProjector(
             source_attribute,
         )
 
-        referenced_row = (
-            resolved_reference
-            .rows_by_t_id
-            .get(
-                source_reference,
-            )
+        referenced_row = resolved_reference.rows_by_t_id.get(
+            source_reference,
         )
 
         if referenced_row is None:
@@ -957,11 +859,7 @@ class TwwCanonicalViewEffectProjector(
                 f"{self._source_object_id(source_row)!r}."
             )
 
-        identity_attribute = (
-            resolved_reference
-            .mapping
-            .identity_attribute
-        )
+        identity_attribute = resolved_reference.mapping.identity_attribute
 
         referenced_identity = getattr(
             referenced_row,
@@ -1053,23 +951,17 @@ class TwwCanonicalViewEffectProjector(
             source_attribute,
         )
 
-        value_mapping = (
-            context.projection.value_lists.get(
-                source_attribute,
-            )
+        value_mapping = context.projection.value_lists.get(
+            source_attribute,
         )
 
         if value_mapping is None:
             raise KeyError(
-                "Projection does not define a value-list "
-                f"mapping for {source_attribute!r}."
+                "Projection does not define a value-list " f"mapping for {source_attribute!r}."
             )
 
-        if (
-            source_value is None
-            or value_mapping.ignores(
-                source_value,
-            )
+        if source_value is None or value_mapping.ignores(
+            source_value,
         ):
             return None
 
@@ -1086,9 +978,12 @@ class TwwCanonicalViewEffectProjector(
                 mapping=value_mapping,
             )
 
-        if len(
-            candidates,
-        ) != 1:
+        if (
+            len(
+                candidates,
+            )
+            != 1
+        ):
             raise ValueError(
                 "Projection value mapping for source attribute "
                 f"{source_attribute!r} with value "
@@ -1097,16 +992,12 @@ class TwwCanonicalViewEffectProjector(
                 "target disambiguation is required."
             )
 
-        return candidates[
-            0
-        ]
+        return candidates[0]
 
     def _append_source_update_if_changed(
         self,
         *,
-        effects: MutableSequence[
-            Effect,
-        ],
+        effects: MutableSequence[Effect,],
         source_row: Any,
         current_row: Any | None,
         source_attribute: str,
@@ -1126,8 +1017,7 @@ class TwwCanonicalViewEffectProjector(
             source_attribute,
         ):
             raise ValueError(
-                "Projection source row does not expose "
-                f"attribute {source_attribute!r}."
+                "Projection source row does not expose " f"attribute {source_attribute!r}."
             )
 
         desired_value = getattr(
@@ -1138,10 +1028,7 @@ class TwwCanonicalViewEffectProjector(
         if desired_value is None:
             return
 
-        comparison_attribute = (
-            current_attribute
-            or source_attribute
-        )
+        comparison_attribute = current_attribute or source_attribute
 
         current_value = self._row_value(
             current_row,
@@ -1159,9 +1046,7 @@ class TwwCanonicalViewEffectProjector(
     def _append_mapped_update_if_changed(
         self,
         *,
-        effects: MutableSequence[
-            Effect,
-        ],
+        effects: MutableSequence[Effect,],
         source_row: Any,
         current_row: Any | None,
         source_attribute: str,
@@ -1177,11 +1062,7 @@ class TwwCanonicalViewEffectProjector(
         class-specific semantic logic instead.
         """
 
-        value_mapping = (
-            context.projection.value_lists[
-                source_attribute
-            ]
-        )
+        value_mapping = context.projection.value_lists[source_attribute]
         source_value = getattr(
             source_row,
             source_attribute,
@@ -1192,10 +1073,7 @@ class TwwCanonicalViewEffectProjector(
         ):
             return
 
-        comparison_attribute = (
-            current_attribute
-            or source_attribute
-        )
+        comparison_attribute = current_attribute or source_attribute
 
         current_value = self._row_value(
             current_row,
@@ -1225,10 +1103,8 @@ class TwwCanonicalViewEffectProjector(
                 desired_value = candidate.value
 
                 if (
-                    candidate.target_class_id
-                    is not None
-                    or candidate.target_attribute_id
-                    is not None
+                    candidate.target_class_id is not None
+                    or candidate.target_attribute_id is not None
                 ):
                     raise ValueError(
                         "Projection value mapping for "
@@ -1249,9 +1125,7 @@ class TwwCanonicalViewEffectProjector(
     def _append_update_if_changed(
         self,
         *,
-        effects: MutableSequence[
-            Effect,
-        ],
+        effects: MutableSequence[Effect,],
         identity: CanonicalObjectIdentity,
         target_attribute: str,
         desired_value: Any,
@@ -1329,17 +1203,14 @@ class TwwCanonicalViewEffectProjector(
                     f"{tuple(sorted(row))!r}."
                 )
 
-            return row[
-                attribute
-            ]
+            return row[attribute]
 
         if not hasattr(
             row,
             attribute,
         ):
             raise ValueError(
-                "Canonical comparison row does not expose "
-                f"attribute {attribute!r}."
+                "Canonical comparison row does not expose " f"attribute {attribute!r}."
             )
 
         return getattr(
@@ -1376,8 +1247,7 @@ class TwwCanonicalViewEffectProjector(
             or not value.strip()
         ):
             raise ValueError(
-                "Projection source row does not expose a valid "
-                "`t_ili_tid` or `obj_id`."
+                "Projection source row does not expose a valid " "`t_ili_tid` or `obj_id`."
             )
 
         return value.strip()
@@ -1395,10 +1265,7 @@ class TwwCanonicalViewEffectProjector(
         if current_value == desired_value:
             return True
 
-        if (
-            current_value is None
-            or desired_value is None
-        ):
+        if current_value is None or desired_value is None:
             return False
 
         return str(
@@ -1411,17 +1278,13 @@ class TwwCanonicalViewEffectProjector(
         self,
         *,
         source_class_id: str,
-        source_rows: Sequence[
-            Any,
-        ],
+        source_rows: Sequence[Any,],
     ) -> None:
         """
         Require unique source object identities within one projected class.
         """
 
-        seen: set[
-            str,
-        ] = set()
+        seen: set[str,] = set()
 
         for source_row in source_rows:
             object_id = self._source_object_id(
@@ -1443,12 +1306,8 @@ class TwwCanonicalViewEffectProjector(
         self,
         *,
         source_class_id: str,
-        source_rows: Sequence[
-            Any,
-        ],
-        documents: Sequence[
-            EffectDocument,
-        ],
+        source_rows: Sequence[Any,],
+        documents: Sequence[EffectDocument,],
     ) -> None:
         """
         Require exactly one source-aligned document per source row.
@@ -1474,26 +1333,18 @@ class TwwCanonicalViewEffectProjector(
             documents,
             strict=True,
         ):
-            expected_object_id = (
-                self._source_object_id(
-                    source_row,
-                )
+            expected_object_id = self._source_object_id(
+                source_row,
             )
 
-            if (
-                document.source.class_id
-                != source_class_id
-            ):
+            if document.source.class_id != source_class_id:
                 raise ValueError(
                     "Canonical-view projection returned source "
                     f"class {document.source.class_id!r}; "
                     f"expected {source_class_id!r}."
                 )
 
-            if (
-                document.source.object_id
-                != expected_object_id
-            ):
+            if document.source.object_id != expected_object_id:
                 raise ValueError(
                     "Canonical-view projection returned source "
                     f"object {document.source.object_id!r}; "

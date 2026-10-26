@@ -15,7 +15,7 @@ models:
           target:
             class: agxx_last_modification
             attribute: ag96_last_modification
-      
+
     projection_defaults:
       references:
         datenbewirtschafter_wi:
@@ -61,7 +61,7 @@ models:
 
             funktionag:
               relation: tww_vl.agxx_import_rel_mapping_gepknoten_funktionag
-              ignore: 
+              ignore:
                 - Leitungsknoten
 
             baulicherzustand:
