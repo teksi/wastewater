@@ -2906,6 +2906,34 @@ class InterlisExporterToIntermediateSchema:
         logger.info("done")
         self.abwasser_session.flush()
 
+   def _export_re_measuring_point_reference_station(self):
+        query = self.tww_session.query(self.model_classes_tww_od.re_measuring_point_reference_station)
+        if self.filtered:
+            query = (
+                query.join(self.model_classes_tww_od.reference_station)
+                .join(self.model_classes_tww_od.wastewater_structure)
+                .join(self.model_classes_tww_od.wastewater_networkelement)
+                .filter(
+                    self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+                )
+            )
+            logger.info(f"Selection query: {query.statement}")
+        for row in query:
+            messstelle_referenzstelleassoc = self.model_classes_interlis.messstelle_referenzstelleassoc(
+                # FIELDS TO MAP TO ABWASSER.messstelle_referenzstelleassoc
+                # --- baseclass ---
+                # --- sia405_baseclass ---
+                # this class does not inherit vsa_base_common
+                # **self.vsa_base_common(row, "messstelle_referenzstelleassoc"),
+                # --- messstelle_referenzstelleassoc ---
+                referenzstelleref=self.get_tid(row.fk_reference_station__REL),
+                messstelle_referenzstelleassocref=self.get_tid(row.fk_measuring_point__REL),
+            )
+            self.abwasser_session.add(messstelle_referenzstelleassoc)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
     def get_tid(self, relation):
         """
         Makes a tid for a relation
