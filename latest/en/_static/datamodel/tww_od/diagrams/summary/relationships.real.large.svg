@@ -57,9 +57,9 @@
 </g>
 </g>
 <!-- wastewater_structure -->
-<g id="node27" class="node">
+<g id="node28" class="node">
 <title>wastewater_structure</title>
-<g id="a_node27"><a xlink:href="../../tables/wastewater_structure.html" xlink:title="wastewater_structure" target="_top">
+<g id="a_node28"><a xlink:href="../../tables/wastewater_structure.html" xlink:title="wastewater_structure" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="3216.5,-14873 3216.5,-15617 3451.5,-15617 3451.5,-14873 3216.5,-14873"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="3217,-15595 3217,-15617 3452,-15617 3452,-15595 3217,-15595"/>
 <polygon fill="none" stroke="black" points="3217,-15595 3217,-15617 3452,-15617 3452,-15595 3217,-15595"/>
@@ -1997,17 +1997,10 @@
 <polygon fill="black" stroke="black" points="3705.64,-7194.11 3714.35,-7193.09 3709.07,-7192.06 3712.5,-7190 3712.5,-7190 3712.5,-7190 3709.07,-7192.06 3710.65,-7186.91 3705.64,-7194.11 3705.64,-7194.11"/>
 <ellipse fill="none" stroke="black" cx="3702.89" cy="-7195.76" rx="3.2" ry="3.2"/>
 </g>
-<!-- measuring_point&#45;&gt;wastewater_structure -->
-<g id="edge252" class="edge">
-<title>measuring_point:w&#45;&gt;wastewater_structure:e</title>
-<path fill="none" stroke="black" d="M3697.03,-7124.54C3554.62,-7135.73 3628.53,-7317.08 3605,-7472 3543.34,-7877.96 3606.46,-14453.83 3572,-14863 3558.37,-15024.82 3615.39,-15584 3453,-15584"/>
-<polygon fill="black" stroke="black" points="3703.51,-7124.3 3711.64,-7127.6 3707.5,-7124.15 3711.5,-7124 3711.5,-7124 3711.5,-7124 3707.5,-7124.15 3711.36,-7120.4 3703.51,-7124.3 3703.51,-7124.3"/>
-<ellipse fill="none" stroke="black" cx="3700.31" cy="-7124.42" rx="3.2" ry="3.2"/>
-</g>
 <!-- waste_water_treatment_plant -->
-<g id="node28" class="node">
+<g id="node27" class="node">
 <title>waste_water_treatment_plant</title>
-<g id="a_node28"><a xlink:href="../../tables/waste_water_treatment_plant.html" xlink:title="waste_water_treatment_plant" target="_top">
+<g id="a_node27"><a xlink:href="../../tables/waste_water_treatment_plant.html" xlink:title="waste_water_treatment_plant" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="2193.5,-7454 2193.5,-7956 2457.5,-7956 2457.5,-7454 2193.5,-7454"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="2193.5,-7934 2193.5,-7956 2457.5,-7956 2457.5,-7934 2193.5,-7934"/>
 <polygon fill="none" stroke="black" points="2193.5,-7934 2193.5,-7956 2457.5,-7956 2457.5,-7934 2193.5,-7934"/>
@@ -2082,6 +2075,13 @@
 <path fill="none" stroke="black" d="M3696.85,-7145.16C3587.95,-7131.91 3670.39,-6964.92 3572,-6887 3388.35,-6741.55 3295.25,-6780.71 3063,-6750 3010.46,-6743.05 2624.94,-6714.05 2586,-6750 2552.26,-6781.15 2557.66,-7116.31 2553,-7162 2535.69,-7331.53 2628.91,-7923 2458.5,-7923"/>
 <polygon fill="black" stroke="black" points="3703.51,-7145.54 3711.29,-7149.59 3707.51,-7145.77 3711.5,-7146 3711.5,-7146 3711.5,-7146 3707.51,-7145.77 3711.71,-7142.41 3703.51,-7145.54 3703.51,-7145.54"/>
 <ellipse fill="none" stroke="black" cx="3700.32" cy="-7145.36" rx="3.2" ry="3.2"/>
+</g>
+<!-- measuring_point&#45;&gt;wastewater_structure -->
+<g id="edge252" class="edge">
+<title>measuring_point:w&#45;&gt;wastewater_structure:e</title>
+<path fill="none" stroke="black" d="M3697.03,-7124.54C3554.62,-7135.73 3628.53,-7317.08 3605,-7472 3543.34,-7877.96 3606.46,-14453.83 3572,-14863 3558.37,-15024.82 3615.39,-15584 3453,-15584"/>
+<polygon fill="black" stroke="black" points="3703.51,-7124.3 3711.64,-7127.6 3707.5,-7124.15 3711.5,-7124 3711.5,-7124 3711.5,-7124 3707.5,-7124.15 3711.36,-7120.4 3703.51,-7124.3 3703.51,-7124.3"/>
+<ellipse fill="none" stroke="black" cx="3700.31" cy="-7124.42" rx="3.2" ry="3.2"/>
 </g>
 <!-- measuring_point&#45;&gt;organisation -->
 <g id="edge247" class="edge">
@@ -7031,6 +7031,95 @@
 <polygon fill="black" stroke="black" points="2725.5,-20326.08 2733.54,-20329.6 2729.5,-20326.04 2733.5,-20326 2733.5,-20326 2733.5,-20326 2729.5,-20326.04 2733.46,-20322.4 2725.5,-20326.08 2725.5,-20326.08"/>
 <ellipse fill="none" stroke="black" cx="2722.3" cy="-20326.11" rx="3.2" ry="3.2"/>
 </g>
+<!-- waste_water_treatment_plant&#45;&gt;organisation -->
+<g id="edge401" class="edge">
+<title>waste_water_treatment_plant:w&#45;&gt;organisation:e</title>
+<path fill="none" stroke="black" d="M2178.08,-7505.4C1972.16,-7517.1 2119.08,-7785.96 2098,-8007 2055.12,-8456.69 2077.3,-15686.44 2065,-16138 2060.8,-16292.36 2079.42,-18914 1925,-18914"/>
+<polygon fill="black" stroke="black" points="2184.5,-7505.22 2192.6,-7508.6 2188.5,-7505.11 2192.5,-7505 2192.5,-7505 2192.5,-7505 2188.5,-7505.11 2192.4,-7501.4 2184.5,-7505.22 2184.5,-7505.22"/>
+<ellipse fill="none" stroke="black" cx="2181.3" cy="-7505.31" rx="3.2" ry="3.2"/>
+</g>
+<!-- waste_water_treatment_plant&#45;&gt;organisation -->
+<g id="edge402" class="edge">
+<title>waste_water_treatment_plant:w&#45;&gt;organisation:e</title>
+<path fill="none" stroke="black" d="M2178.08,-7485.19C2077.07,-7517.37 2108.32,-7894.23 2098,-8007 2056.84,-8456.85 2077.3,-15686.44 2065,-16138 2060.8,-16292.36 2079.42,-18914 1925,-18914"/>
+<polygon fill="black" stroke="black" points="2184.59,-7484.2 2193.04,-7486.56 2188.55,-7483.6 2192.5,-7483 2192.5,-7483 2192.5,-7483 2188.55,-7483.6 2191.96,-7479.44 2184.59,-7484.2 2184.59,-7484.2"/>
+<ellipse fill="none" stroke="black" cx="2181.43" cy="-7484.69" rx="3.2" ry="3.2"/>
+</g>
+<!-- tww_vl.waste_water_treatment_plant_operator_type -->
+<g id="node152" class="node">
+<title>tww_vl.waste_water_treatment_plant_operator_type</title>
+<g id="a_node152"><a xlink:href="../../../tww_vl/tables/waste_water_treatment_plant_ope_5d4cf10d.html" xlink:title="tww_vl.waste_water_treatment_plant_operator_type" target="_top">
+<polygon fill="#ffffff" stroke="transparent" points="1623,-7309 1623,-7855 2051,-7855 2051,-7309 1623,-7309"/>
+<polygon fill="#f5f5f5" stroke="transparent" points="1623,-7833 1623,-7855 2051,-7855 2051,-7833 1623,-7833"/>
+<polygon fill="none" stroke="black" points="1623,-7833 1623,-7855 2051,-7855 2051,-7833 1623,-7833"/>
+<text text-anchor="start" x="1628" y="-7842.2" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00">tww_vl.waste_water_treatment_plant_operator_type</text>
+<text text-anchor="start" x="2009" y="-7841.2" font-family="Helvetica,sans-Serif" font-size="11.00">[table]</text>
+<polygon fill="none" stroke="black" points="1623,-7811 1623,-7833 2051,-7833 2051,-7811 1623,-7811"/>
+<text text-anchor="start" x="1683" y="-7819.2" font-family="Helvetica,sans-Serif" font-size="11.00">code</text>
+<polygon fill="none" stroke="black" points="1623,-7789 1623,-7811 2051,-7811 2051,-7789 1623,-7789"/>
+<text text-anchor="start" x="1683" y="-7797.2" font-family="Helvetica,sans-Serif" font-size="11.00">vsacode</text>
+<polygon fill="none" stroke="black" points="1623,-7767 1623,-7789 2051,-7789 2051,-7767 1623,-7767"/>
+<text text-anchor="start" x="1683" y="-7775.2" font-family="Helvetica,sans-Serif" font-size="11.00">value_en</text>
+<polygon fill="none" stroke="black" points="1623,-7745 1623,-7767 2051,-7767 2051,-7745 1623,-7745"/>
+<text text-anchor="start" x="1683" y="-7753.2" font-family="Helvetica,sans-Serif" font-size="11.00">value_de</text>
+<polygon fill="none" stroke="black" points="1623,-7723 1623,-7745 2051,-7745 2051,-7723 1623,-7723"/>
+<text text-anchor="start" x="1683" y="-7731.2" font-family="Helvetica,sans-Serif" font-size="11.00">value_fr</text>
+<polygon fill="none" stroke="black" points="1623,-7701 1623,-7723 2051,-7723 2051,-7701 1623,-7701"/>
+<text text-anchor="start" x="1683" y="-7709.2" font-family="Helvetica,sans-Serif" font-size="11.00">value_it</text>
+<polygon fill="none" stroke="black" points="1623,-7679 1623,-7701 2051,-7701 2051,-7679 1623,-7679"/>
+<text text-anchor="start" x="1683" y="-7687.2" font-family="Helvetica,sans-Serif" font-size="11.00">value_ro</text>
+<polygon fill="none" stroke="black" points="1623,-7657 1623,-7679 2051,-7679 2051,-7657 1623,-7657"/>
+<text text-anchor="start" x="1683" y="-7665.2" font-family="Helvetica,sans-Serif" font-size="11.00">abbr_en</text>
+<polygon fill="none" stroke="black" points="1623,-7635 1623,-7657 2051,-7657 2051,-7635 1623,-7635"/>
+<text text-anchor="start" x="1683" y="-7643.2" font-family="Helvetica,sans-Serif" font-size="11.00">abbr_de</text>
+<polygon fill="none" stroke="black" points="1623,-7613 1623,-7635 2051,-7635 2051,-7613 1623,-7613"/>
+<text text-anchor="start" x="1683" y="-7621.2" font-family="Helvetica,sans-Serif" font-size="11.00">abbr_fr</text>
+<polygon fill="none" stroke="black" points="1623,-7591 1623,-7613 2051,-7613 2051,-7591 1623,-7591"/>
+<text text-anchor="start" x="1683" y="-7599.2" font-family="Helvetica,sans-Serif" font-size="11.00">abbr_it</text>
+<polygon fill="none" stroke="black" points="1623,-7569 1623,-7591 2051,-7591 2051,-7569 1623,-7569"/>
+<text text-anchor="start" x="1683" y="-7577.2" font-family="Helvetica,sans-Serif" font-size="11.00">abbr_ro</text>
+<polygon fill="none" stroke="black" points="1623,-7547 1623,-7569 2051,-7569 2051,-7547 1623,-7547"/>
+<text text-anchor="start" x="1683" y="-7555.2" font-family="Helvetica,sans-Serif" font-size="11.00">active</text>
+<polygon fill="none" stroke="black" points="1623,-7525 1623,-7547 2051,-7547 2051,-7525 1623,-7525"/>
+<text text-anchor="start" x="1683" y="-7533.2" font-family="Helvetica,sans-Serif" font-size="11.00">description_en</text>
+<polygon fill="none" stroke="black" points="1623,-7503 1623,-7525 2051,-7525 2051,-7503 1623,-7503"/>
+<text text-anchor="start" x="1683" y="-7511.2" font-family="Helvetica,sans-Serif" font-size="11.00">description_de</text>
+<polygon fill="none" stroke="black" points="1623,-7481 1623,-7503 2051,-7503 2051,-7481 1623,-7481"/>
+<text text-anchor="start" x="1683" y="-7489.2" font-family="Helvetica,sans-Serif" font-size="11.00">description_fr</text>
+<polygon fill="none" stroke="black" points="1623,-7459 1623,-7481 2051,-7481 2051,-7459 1623,-7459"/>
+<text text-anchor="start" x="1683" y="-7467.2" font-family="Helvetica,sans-Serif" font-size="11.00">description_it</text>
+<polygon fill="none" stroke="black" points="1623,-7437 1623,-7459 2051,-7459 2051,-7437 1623,-7437"/>
+<text text-anchor="start" x="1683" y="-7445.2" font-family="Helvetica,sans-Serif" font-size="11.00">description_ro</text>
+<polygon fill="none" stroke="black" points="1623,-7415 1623,-7437 2051,-7437 2051,-7415 1623,-7415"/>
+<text text-anchor="start" x="1683" y="-7423.2" font-family="Helvetica,sans-Serif" font-size="11.00">display_en</text>
+<polygon fill="none" stroke="black" points="1623,-7393 1623,-7415 2051,-7415 2051,-7393 1623,-7393"/>
+<text text-anchor="start" x="1683" y="-7401.2" font-family="Helvetica,sans-Serif" font-size="11.00">display_de</text>
+<polygon fill="none" stroke="black" points="1623,-7371 1623,-7393 2051,-7393 2051,-7371 1623,-7371"/>
+<text text-anchor="start" x="1683" y="-7379.2" font-family="Helvetica,sans-Serif" font-size="11.00">display_fr</text>
+<polygon fill="none" stroke="black" points="1623,-7349 1623,-7371 2051,-7371 2051,-7349 1623,-7349"/>
+<text text-anchor="start" x="1683" y="-7357.2" font-family="Helvetica,sans-Serif" font-size="11.00">display_it</text>
+<polygon fill="none" stroke="black" points="1623,-7327 1623,-7349 2051,-7349 2051,-7327 1623,-7327"/>
+<text text-anchor="start" x="1683" y="-7335.2" font-family="Helvetica,sans-Serif" font-size="11.00">display_ro</text>
+<polygon fill="#ffffff" stroke="transparent" points="1623,-7309 1623,-7327 2051,-7327 2051,-7309 1623,-7309"/>
+<polygon fill="none" stroke="black" points="1623,-7309 1623,-7327 2051,-7327 2051,-7309 1623,-7309"/>
+<polygon fill="#ffffff" stroke="transparent" points="1624,-7310 1624,-7326 1753,-7326 1753,-7310 1624,-7310"/>
+<text text-anchor="start" x="1626" y="-7315.2" font-family="Helvetica,sans-Serif" font-size="11.00"> &#160;</text>
+<polygon fill="#ffffff" stroke="transparent" points="1753,-7310 1753,-7326 1910,-7326 1910,-7310 1753,-7310"/>
+<text text-anchor="start" x="1813" y="-7315.2" font-family="Helvetica,sans-Serif" font-size="11.00">0 rows</text>
+<polygon fill="#ffffff" stroke="transparent" points="1910,-7310 1910,-7326 2050,-7326 2050,-7310 1910,-7310"/>
+<text text-anchor="start" x="2028" y="-7315.2" font-family="Helvetica,sans-Serif" font-size="11.00">1 &gt;</text>
+<polygon fill="black" stroke="black" points="1753,-7310 1753,-7326 1753,-7326 1753,-7310 1753,-7310"/>
+<polygon fill="black" stroke="black" points="1910,-7310 1910,-7326 1910,-7326 1910,-7310 1910,-7310"/>
+</a>
+</g>
+</g>
+<!-- waste_water_treatment_plant&#45;&gt;tww_vl.waste_water_treatment_plant_operator_type -->
+<g id="edge403" class="edge">
+<title>waste_water_treatment_plant:w&#45;&gt;tww_vl.waste_water_treatment_plant_operator_type:e</title>
+<path fill="none" stroke="black" d="M2177.75,-7682.49C2107.99,-7697.56 2135.11,-7822 2052,-7822"/>
+<polygon fill="black" stroke="black" points="2184.54,-7681.8 2192.86,-7684.58 2188.52,-7681.4 2192.5,-7681 2192.5,-7681 2192.5,-7681 2188.52,-7681.4 2192.14,-7677.42 2184.54,-7681.8 2184.54,-7681.8"/>
+<ellipse fill="none" stroke="black" cx="2181.36" cy="-7682.12" rx="3.2" ry="3.2"/>
+</g>
 <!-- wastewater_structure&#45;&gt;wastewater_node -->
 <g id="edge416" class="edge">
 <title>wastewater_structure:w&#45;&gt;wastewater_node:e</title>
@@ -7599,95 +7688,6 @@
 <path fill="none" stroke="black" d="M3201.49,-15231.49C3048.22,-15220.36 3124.14,-15028.02 3096,-14863 3069.6,-14708.19 3106.81,-13600.81 3063,-13450 3056.63,-13428.08 3059.33,-13406 3036.5,-13406"/>
 <polygon fill="black" stroke="black" points="3208,-15231.72 3215.87,-15235.6 3212,-15231.86 3216,-15232 3216,-15232 3216,-15232 3212,-15231.86 3216.13,-15228.4 3208,-15231.72 3208,-15231.72"/>
 <ellipse fill="none" stroke="black" cx="3204.81" cy="-15231.61" rx="3.2" ry="3.2"/>
-</g>
-<!-- waste_water_treatment_plant&#45;&gt;organisation -->
-<g id="edge401" class="edge">
-<title>waste_water_treatment_plant:w&#45;&gt;organisation:e</title>
-<path fill="none" stroke="black" d="M2178.08,-7505.4C1972.16,-7517.1 2119.08,-7785.96 2098,-8007 2055.12,-8456.69 2077.3,-15686.44 2065,-16138 2060.8,-16292.36 2079.42,-18914 1925,-18914"/>
-<polygon fill="black" stroke="black" points="2184.5,-7505.22 2192.6,-7508.6 2188.5,-7505.11 2192.5,-7505 2192.5,-7505 2192.5,-7505 2188.5,-7505.11 2192.4,-7501.4 2184.5,-7505.22 2184.5,-7505.22"/>
-<ellipse fill="none" stroke="black" cx="2181.3" cy="-7505.31" rx="3.2" ry="3.2"/>
-</g>
-<!-- waste_water_treatment_plant&#45;&gt;organisation -->
-<g id="edge402" class="edge">
-<title>waste_water_treatment_plant:w&#45;&gt;organisation:e</title>
-<path fill="none" stroke="black" d="M2178.08,-7485.19C2077.07,-7517.37 2108.32,-7894.23 2098,-8007 2056.84,-8456.85 2077.3,-15686.44 2065,-16138 2060.8,-16292.36 2079.42,-18914 1925,-18914"/>
-<polygon fill="black" stroke="black" points="2184.59,-7484.2 2193.04,-7486.56 2188.55,-7483.6 2192.5,-7483 2192.5,-7483 2192.5,-7483 2188.55,-7483.6 2191.96,-7479.44 2184.59,-7484.2 2184.59,-7484.2"/>
-<ellipse fill="none" stroke="black" cx="2181.43" cy="-7484.69" rx="3.2" ry="3.2"/>
-</g>
-<!-- tww_vl.waste_water_treatment_plant_operator_type -->
-<g id="node152" class="node">
-<title>tww_vl.waste_water_treatment_plant_operator_type</title>
-<g id="a_node152"><a xlink:href="../../../tww_vl/tables/waste_water_treatment_plant_ope_5d4cf10d.html" xlink:title="tww_vl.waste_water_treatment_plant_operator_type" target="_top">
-<polygon fill="#ffffff" stroke="transparent" points="1623,-7309 1623,-7855 2051,-7855 2051,-7309 1623,-7309"/>
-<polygon fill="#f5f5f5" stroke="transparent" points="1623,-7833 1623,-7855 2051,-7855 2051,-7833 1623,-7833"/>
-<polygon fill="none" stroke="black" points="1623,-7833 1623,-7855 2051,-7855 2051,-7833 1623,-7833"/>
-<text text-anchor="start" x="1628" y="-7842.2" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00">tww_vl.waste_water_treatment_plant_operator_type</text>
-<text text-anchor="start" x="2009" y="-7841.2" font-family="Helvetica,sans-Serif" font-size="11.00">[table]</text>
-<polygon fill="none" stroke="black" points="1623,-7811 1623,-7833 2051,-7833 2051,-7811 1623,-7811"/>
-<text text-anchor="start" x="1683" y="-7819.2" font-family="Helvetica,sans-Serif" font-size="11.00">code</text>
-<polygon fill="none" stroke="black" points="1623,-7789 1623,-7811 2051,-7811 2051,-7789 1623,-7789"/>
-<text text-anchor="start" x="1683" y="-7797.2" font-family="Helvetica,sans-Serif" font-size="11.00">vsacode</text>
-<polygon fill="none" stroke="black" points="1623,-7767 1623,-7789 2051,-7789 2051,-7767 1623,-7767"/>
-<text text-anchor="start" x="1683" y="-7775.2" font-family="Helvetica,sans-Serif" font-size="11.00">value_en</text>
-<polygon fill="none" stroke="black" points="1623,-7745 1623,-7767 2051,-7767 2051,-7745 1623,-7745"/>
-<text text-anchor="start" x="1683" y="-7753.2" font-family="Helvetica,sans-Serif" font-size="11.00">value_de</text>
-<polygon fill="none" stroke="black" points="1623,-7723 1623,-7745 2051,-7745 2051,-7723 1623,-7723"/>
-<text text-anchor="start" x="1683" y="-7731.2" font-family="Helvetica,sans-Serif" font-size="11.00">value_fr</text>
-<polygon fill="none" stroke="black" points="1623,-7701 1623,-7723 2051,-7723 2051,-7701 1623,-7701"/>
-<text text-anchor="start" x="1683" y="-7709.2" font-family="Helvetica,sans-Serif" font-size="11.00">value_it</text>
-<polygon fill="none" stroke="black" points="1623,-7679 1623,-7701 2051,-7701 2051,-7679 1623,-7679"/>
-<text text-anchor="start" x="1683" y="-7687.2" font-family="Helvetica,sans-Serif" font-size="11.00">value_ro</text>
-<polygon fill="none" stroke="black" points="1623,-7657 1623,-7679 2051,-7679 2051,-7657 1623,-7657"/>
-<text text-anchor="start" x="1683" y="-7665.2" font-family="Helvetica,sans-Serif" font-size="11.00">abbr_en</text>
-<polygon fill="none" stroke="black" points="1623,-7635 1623,-7657 2051,-7657 2051,-7635 1623,-7635"/>
-<text text-anchor="start" x="1683" y="-7643.2" font-family="Helvetica,sans-Serif" font-size="11.00">abbr_de</text>
-<polygon fill="none" stroke="black" points="1623,-7613 1623,-7635 2051,-7635 2051,-7613 1623,-7613"/>
-<text text-anchor="start" x="1683" y="-7621.2" font-family="Helvetica,sans-Serif" font-size="11.00">abbr_fr</text>
-<polygon fill="none" stroke="black" points="1623,-7591 1623,-7613 2051,-7613 2051,-7591 1623,-7591"/>
-<text text-anchor="start" x="1683" y="-7599.2" font-family="Helvetica,sans-Serif" font-size="11.00">abbr_it</text>
-<polygon fill="none" stroke="black" points="1623,-7569 1623,-7591 2051,-7591 2051,-7569 1623,-7569"/>
-<text text-anchor="start" x="1683" y="-7577.2" font-family="Helvetica,sans-Serif" font-size="11.00">abbr_ro</text>
-<polygon fill="none" stroke="black" points="1623,-7547 1623,-7569 2051,-7569 2051,-7547 1623,-7547"/>
-<text text-anchor="start" x="1683" y="-7555.2" font-family="Helvetica,sans-Serif" font-size="11.00">active</text>
-<polygon fill="none" stroke="black" points="1623,-7525 1623,-7547 2051,-7547 2051,-7525 1623,-7525"/>
-<text text-anchor="start" x="1683" y="-7533.2" font-family="Helvetica,sans-Serif" font-size="11.00">description_en</text>
-<polygon fill="none" stroke="black" points="1623,-7503 1623,-7525 2051,-7525 2051,-7503 1623,-7503"/>
-<text text-anchor="start" x="1683" y="-7511.2" font-family="Helvetica,sans-Serif" font-size="11.00">description_de</text>
-<polygon fill="none" stroke="black" points="1623,-7481 1623,-7503 2051,-7503 2051,-7481 1623,-7481"/>
-<text text-anchor="start" x="1683" y="-7489.2" font-family="Helvetica,sans-Serif" font-size="11.00">description_fr</text>
-<polygon fill="none" stroke="black" points="1623,-7459 1623,-7481 2051,-7481 2051,-7459 1623,-7459"/>
-<text text-anchor="start" x="1683" y="-7467.2" font-family="Helvetica,sans-Serif" font-size="11.00">description_it</text>
-<polygon fill="none" stroke="black" points="1623,-7437 1623,-7459 2051,-7459 2051,-7437 1623,-7437"/>
-<text text-anchor="start" x="1683" y="-7445.2" font-family="Helvetica,sans-Serif" font-size="11.00">description_ro</text>
-<polygon fill="none" stroke="black" points="1623,-7415 1623,-7437 2051,-7437 2051,-7415 1623,-7415"/>
-<text text-anchor="start" x="1683" y="-7423.2" font-family="Helvetica,sans-Serif" font-size="11.00">display_en</text>
-<polygon fill="none" stroke="black" points="1623,-7393 1623,-7415 2051,-7415 2051,-7393 1623,-7393"/>
-<text text-anchor="start" x="1683" y="-7401.2" font-family="Helvetica,sans-Serif" font-size="11.00">display_de</text>
-<polygon fill="none" stroke="black" points="1623,-7371 1623,-7393 2051,-7393 2051,-7371 1623,-7371"/>
-<text text-anchor="start" x="1683" y="-7379.2" font-family="Helvetica,sans-Serif" font-size="11.00">display_fr</text>
-<polygon fill="none" stroke="black" points="1623,-7349 1623,-7371 2051,-7371 2051,-7349 1623,-7349"/>
-<text text-anchor="start" x="1683" y="-7357.2" font-family="Helvetica,sans-Serif" font-size="11.00">display_it</text>
-<polygon fill="none" stroke="black" points="1623,-7327 1623,-7349 2051,-7349 2051,-7327 1623,-7327"/>
-<text text-anchor="start" x="1683" y="-7335.2" font-family="Helvetica,sans-Serif" font-size="11.00">display_ro</text>
-<polygon fill="#ffffff" stroke="transparent" points="1623,-7309 1623,-7327 2051,-7327 2051,-7309 1623,-7309"/>
-<polygon fill="none" stroke="black" points="1623,-7309 1623,-7327 2051,-7327 2051,-7309 1623,-7309"/>
-<polygon fill="#ffffff" stroke="transparent" points="1624,-7310 1624,-7326 1753,-7326 1753,-7310 1624,-7310"/>
-<text text-anchor="start" x="1626" y="-7315.2" font-family="Helvetica,sans-Serif" font-size="11.00"> &#160;</text>
-<polygon fill="#ffffff" stroke="transparent" points="1753,-7310 1753,-7326 1910,-7326 1910,-7310 1753,-7310"/>
-<text text-anchor="start" x="1813" y="-7315.2" font-family="Helvetica,sans-Serif" font-size="11.00">0 rows</text>
-<polygon fill="#ffffff" stroke="transparent" points="1910,-7310 1910,-7326 2050,-7326 2050,-7310 1910,-7310"/>
-<text text-anchor="start" x="2028" y="-7315.2" font-family="Helvetica,sans-Serif" font-size="11.00">1 &gt;</text>
-<polygon fill="black" stroke="black" points="1753,-7310 1753,-7326 1753,-7326 1753,-7310 1753,-7310"/>
-<polygon fill="black" stroke="black" points="1910,-7310 1910,-7326 1910,-7326 1910,-7310 1910,-7310"/>
-</a>
-</g>
-</g>
-<!-- waste_water_treatment_plant&#45;&gt;tww_vl.waste_water_treatment_plant_operator_type -->
-<g id="edge403" class="edge">
-<title>waste_water_treatment_plant:w&#45;&gt;tww_vl.waste_water_treatment_plant_operator_type:e</title>
-<path fill="none" stroke="black" d="M2177.75,-7682.49C2107.99,-7697.56 2135.11,-7822 2052,-7822"/>
-<polygon fill="black" stroke="black" points="2184.54,-7681.8 2192.86,-7684.58 2188.52,-7681.4 2192.5,-7681 2192.5,-7681 2192.5,-7681 2188.52,-7681.4 2192.14,-7677.42 2184.54,-7681.8 2184.54,-7681.8"/>
-<ellipse fill="none" stroke="black" cx="2181.36" cy="-7682.12" rx="3.2" ry="3.2"/>
 </g>
 <!-- agxx_last_modification -->
 <g id="node29" class="node">
@@ -14700,6 +14700,13 @@
 </a>
 </g>
 </g>
+<!-- wwtp_structure&#45;&gt;waste_water_treatment_plant -->
+<g id="edge433" class="edge">
+<title>wwtp_structure:w&#45;&gt;waste_water_treatment_plant:e</title>
+<path fill="none" stroke="black" d="M3696.89,-14282.29C3590.78,-14285.6 3141.41,-14315.13 3096,-14269 3034.06,-14206.06 3125.6,-7973.28 3063,-7911 3025.43,-7873.62 2638.94,-7908.51 2586,-7911 2529.15,-7913.67 2515.42,-7923 2458.5,-7923"/>
+<polygon fill="black" stroke="black" points="3703.5,-14282.16 3711.57,-14285.6 3707.5,-14282.08 3711.5,-14282 3711.5,-14282 3711.5,-14282 3707.5,-14282.08 3711.43,-14278.4 3703.5,-14282.16 3703.5,-14282.16"/>
+<ellipse fill="none" stroke="black" cx="3700.3" cy="-14282.22" rx="3.2" ry="3.2"/>
+</g>
 <!-- wwtp_structure&#45;&gt;wastewater_structure -->
 <g id="edge435" class="edge">
 <title>wwtp_structure:w&#45;&gt;wastewater_structure:e</title>
@@ -14707,13 +14714,6 @@
 <polygon fill="black" stroke="black" points="3710.68,-14322 3710.72,-14330 3709.12,-14330.01 3709.08,-14322.01 3710.68,-14322"/>
 <polyline fill="none" stroke="black" points="3711.5,-14326 3707.5,-14326.02 "/>
 <ellipse fill="none" stroke="black" cx="3704.3" cy="-14326.03" rx="3.2" ry="3.2"/>
-</g>
-<!-- wwtp_structure&#45;&gt;waste_water_treatment_plant -->
-<g id="edge433" class="edge">
-<title>wwtp_structure:w&#45;&gt;waste_water_treatment_plant:e</title>
-<path fill="none" stroke="black" d="M3696.89,-14282.29C3590.78,-14285.6 3141.41,-14315.13 3096,-14269 3034.06,-14206.06 3125.6,-7973.28 3063,-7911 3025.43,-7873.62 2638.94,-7908.51 2586,-7911 2529.15,-7913.67 2515.42,-7923 2458.5,-7923"/>
-<polygon fill="black" stroke="black" points="3703.5,-14282.16 3711.57,-14285.6 3707.5,-14282.08 3711.5,-14282 3711.5,-14282 3711.5,-14282 3707.5,-14282.08 3711.43,-14278.4 3703.5,-14282.16 3703.5,-14282.16"/>
-<ellipse fill="none" stroke="black" cx="3700.3" cy="-14282.22" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.wwtp_structure_kind -->
 <g id="node147" class="node">
