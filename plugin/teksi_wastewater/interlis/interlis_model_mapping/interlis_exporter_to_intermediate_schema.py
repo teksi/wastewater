@@ -2910,7 +2910,7 @@ class InterlisExporterToIntermediateSchema:
         query = self.tww_session.query(self.model_classes_tww_od.re_measuring_point_reference_station)
         if self.filtered:
             query = (
-                query.join(self.model_classes_tww_od.reference_station)
+                query.join(self.model_classes_tww_od.measuring_point)
                 .join(self.model_classes_tww_od.wastewater_structure)
                 .join(self.model_classes_tww_od.wastewater_networkelement)
                 .filter(
