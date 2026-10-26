@@ -25,6 +25,7 @@ Contents
    admin-guide/index
    releases/index
    extensions-guide/index
+   hooks-guide/index
    tww_swmm/index
    translation/index
 

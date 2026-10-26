@@ -65,7 +65,12 @@ jobs:
           sudo apt-get install -y gettext
           curl -OL https://github.com/transifex/cli/releases/download/v1.6.10/tx-linux-amd64.tar.gz
           tar -xvzf tx-linux-amd64.tar.gz
-          make gettext
+
+      - name: Generate TWW hooks API docs and gettext
+        if: ${{ !(github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'PR-fast-doc')) }}
+        run: |
+          python docs/scripts/generate_tww_hooks_dataclass_docs.py
+          make -C docs gettext
 
       - name: Remove legacy root docs
         run: |
