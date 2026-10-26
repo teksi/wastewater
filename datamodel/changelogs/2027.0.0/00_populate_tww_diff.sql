@@ -90,6 +90,9 @@ CREATE TABLE IF NOT EXISTS tww_diff.tww_review_feature (
     unpermitted_values jsonb NOT NULL DEFAULT '{}'::jsonb,
     permission_findings jsonb NOT NULL DEFAULT '[]'::jsonb,
     validation_findings jsonb NOT NULL DEFAULT '[]'::jsonb,
+    point_geometry geometry(Geometry, {SRID}),
+    line_geometry geometry(Geometry, {SRID}),
+    polygon_geometry  geometry(Geometry, {SRID}),
 
     created_at timestamptz NOT NULL DEFAULT now(),
 
@@ -148,7 +151,59 @@ CREATE TABLE IF NOT EXISTS tww_diff.tww_review_feature (
     CONSTRAINT review_feature_validation_findings_array
         CHECK (
             jsonb_typeof(validation_findings) = 'array'
-        )
+        ),
+        CONSTRAINT chk_tww_review_feature_point_geometry
+CHECK
+(
+    point_geometry IS NULL
+    OR GeometryType(
+        point_geometry
+    ) IN (
+        'POINT',
+        'MULTIPOINT',
+        'POINTZ',
+        'MULTIPOINTZ'
+    )
+),
+
+CONSTRAINT chk_tww_review_feature_line_geometry
+CHECK
+(
+    line_geometry IS NULL
+    OR GeometryType(
+        line_geometry
+    ) IN (
+        'LINESTRING',
+        'MULTILINESTRING',
+        'CIRCULARSTRING',
+        'COMPOUNDCURVE',
+        'MULTICURVE',
+        'LINESTRINGZ',
+        'MULTILINESTRINGZ',
+        'CIRCULARSTRINGZ',
+        'COMPOUNDCURVEZ',
+        'MULTICURVEZ'
+    )
+),
+
+CONSTRAINT chk_tww_review_feature_polygon_geometry
+CHECK
+(
+    polygon_geometry IS NULL
+    OR GeometryType(
+        polygon_geometry
+    ) IN (
+        'POLYGON',
+        'MULTIPOLYGON',
+        'CURVEPOLYGON',
+        'MULTISURFACE',
+        'POLYGONZ',
+        'MULTIPOLYGONZ',
+        'CURVEPOLYGONZ',
+        'MULTISURFACEZ'
+    )
+),
+
 );
 
 

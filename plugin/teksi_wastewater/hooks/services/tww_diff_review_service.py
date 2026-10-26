@@ -5,9 +5,12 @@ from dataclasses import dataclass, field
 from enum import StrEnum
 from typing import Any, Protocol
 
+from psycopg.types.json import Jsonb
+
 from teksi_hooks.capabilities.canonical_object import (
     CanonicalGeometryCapability,
 )
+
 from teksi_hooks.capabilities.review import (
     ChangeObjectProvider,
 )
@@ -16,8 +19,8 @@ from teksi_hooks.models.canonical_object import (
 )
 from teksi_hooks.models.persistence import (
     DeletionPlan,
-    DiffJobMode,
     PersistenceResult,
+    DiffJobMode,
 )
 from teksi_hooks.models.review import (
     DiffReviewDecision,
@@ -217,7 +220,10 @@ class TwwDiffReviewService:
                 job,
             )
 
-        raise ValueError(f"Unsupported review decision: {decision!r}.")
+        raise ValueError(
+            f"Unsupported review decision: {decision!r}."
+        )
+
 
     def reject(
         self,
@@ -233,6 +239,7 @@ class TwwDiffReviewService:
             decision=DiffReviewDecision.REJECT,
         )
 
+
     def accept(
         self,
     ) -> DiffReviewDecisionResult:
@@ -246,6 +253,7 @@ class TwwDiffReviewService:
         return self.decide(
             decision=DiffReviewDecision.ACCEPT,
         )
+
 
     def _reject_job(
         self,
@@ -269,6 +277,7 @@ class TwwDiffReviewService:
             decision=DiffReviewDecision.REJECT,
             job_status="rejected",
         )
+
 
     def _accept_job(
         self,
@@ -294,7 +303,7 @@ class TwwDiffReviewService:
             decision=DiffReviewDecision.ACCEPT,
             job_status="accepted",
         )
-
+   
     def _pending_job(
         self,
         job_id: str,
@@ -317,6 +326,7 @@ class TwwDiffReviewService:
             )
 
         return job
+
 
     def _geometry_attribute_names_by_class(
         self,

@@ -7,6 +7,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from sqlalchemy.orm import Session
+
 from teksi_hooks.models.canonical_object import (
     CanonicalObjectIdentity,
 )
@@ -19,14 +20,14 @@ from teksi_hooks.models.effects import (
     UpdateAttributeEffect,
 )
 
+from ..capabilities.incremental_import import (
+    IncrementalEffectPersister,
+)
 from ...interlis import (
     config,
 )
 from ...interlis.interlis_model_mapping.model_tww_od import (
     ModelTwwOd,
-)
-from ..capabilities.incremental_import import (
-    IncrementalEffectPersister,
 )
 
 
@@ -60,7 +61,9 @@ class TwwIncrementalEffectPersister(
         *,
         session: Session,
         document: EffectDocument,
-        evaluations: Sequence[EffectEvaluationResult,],
+        evaluations: Sequence[
+            EffectEvaluationResult,
+        ],
     ) -> None:
         """
         Stage all satisfied and remediable effects.
@@ -99,21 +102,34 @@ class TwwIncrementalEffectPersister(
 
             if evaluated_effect != effect:
                 raise ValueError(
-                    "Effect evaluation order does not match the " "effect-document order."
+                    "Effect evaluation order does not match the "
+                    "effect-document order."
                 )
 
-            if evaluation.status == EffectEvaluationStatus.BLOCKED:
+            if (
+                evaluation.status
+                == EffectEvaluationStatus.BLOCKED
+            ):
                 raise RuntimeError(
                     "Blocked incremental effect cannot be "
                     "persisted: "
                     f"{getattr(evaluation, 'message', '')}"
                 )
 
-            if evaluation.status == EffectEvaluationStatus.SATISFIED:
+            if (
+                evaluation.status
+                == EffectEvaluationStatus.SATISFIED
+            ):
                 continue
 
-            if evaluation.status != EffectEvaluationStatus.REMEDIABLE:
-                raise ValueError("Unsupported effect-evaluation status " f"{evaluation.status!r}.")
+            if (
+                evaluation.status
+                != EffectEvaluationStatus.REMEDIABLE
+            ):
+                raise ValueError(
+                    "Unsupported effect-evaluation status "
+                    f"{evaluation.status!r}."
+                )
 
             if isinstance(
                 effect,
@@ -168,7 +184,10 @@ class TwwIncrementalEffectPersister(
 
                 continue
 
-            raise TypeError("Unsupported incremental effect type: " f"{type(effect)!r}.")
+            raise TypeError(
+                "Unsupported incremental effect type: "
+                f"{type(effect)!r}."
+            )
 
         session.flush()
 
@@ -224,7 +243,9 @@ class TwwIncrementalEffectPersister(
             source_row,
         )
 
-        self._row_cache[identity.key()] = source_row
+        self._row_cache[
+            identity.key()
+        ] = source_row
 
         return source_row
 
@@ -252,7 +273,9 @@ class TwwIncrementalEffectPersister(
             source_row,
         )
 
-        self._row_cache[identity.key()] = None
+        self._row_cache[
+            identity.key()
+        ] = None
 
     def _required_row(
         self,
@@ -272,7 +295,10 @@ class TwwIncrementalEffectPersister(
         )
 
         if source_row is None:
-            raise ValueError("Canonical object does not exist for " f"identity {identity!r}.")
+            raise ValueError(
+                "Canonical object does not exist for "
+                f"identity {identity!r}."
+            )
 
         return source_row
 
@@ -290,7 +316,9 @@ class TwwIncrementalEffectPersister(
         identity_key = identity.key()
 
         if identity_key in self._row_cache:
-            return self._row_cache[identity_key]
+            return self._row_cache[
+                identity_key
+            ]
 
         target_class = self._canonical_class(
             canonical_classes=canonical_classes,
@@ -328,21 +356,27 @@ class TwwIncrementalEffectPersister(
         ).all()
 
         if not rows:
-            self._row_cache[identity_key] = None
+            self._row_cache[
+                identity_key
+            ] = None
 
             return None
 
-        if (
-            len(
-                rows,
+        if len(
+            rows,
+        ) > 1:
+            raise ValueError(
+                "Canonical identity is ambiguous: "
+                f"{identity!r}."
             )
-            > 1
-        ):
-            raise ValueError("Canonical identity is ambiguous: " f"{identity!r}.")
 
-        source_row = rows[0]
+        source_row = rows[
+            0
+        ]
 
-        self._row_cache[identity_key] = source_row
+        self._row_cache[
+            identity_key
+        ] = source_row
 
         return source_row
 
@@ -382,6 +416,9 @@ class TwwIncrementalEffectPersister(
             )
 
         if target_class is None:
-            raise ValueError("Unknown canonical ORM class " f"{class_id!r}.")
+            raise ValueError(
+                "Unknown canonical ORM class "
+                f"{class_id!r}."
+            )
 
         return target_class

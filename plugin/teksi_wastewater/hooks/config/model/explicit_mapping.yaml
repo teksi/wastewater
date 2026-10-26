@@ -15,21 +15,121 @@ models:
           target:
             class: agxx_last_modification
             attribute: ag96_last_modification
+      
+    projection_defaults:
+      references:
+        datenbewirtschafter_wi:
+          source:
+            class: Organisation
+
+        datenbewirtschafter_gep:
+          source:
+            class: Organisation
+
+        betreiber:
+          source:
+            class: Organisation
+
+        eigentuemer:
+          source:
+            class: Organisation
+
+        gepmassnahmeref:
+          source:
+            class: Metainformation
+            discriminator:
+              attribute: t_type
+              value: gepmassnahme
+      value_lists:
+        defaults:
+          canonical_value_attribute: code
+          lookup_value_attribute: value_de
 
     classes:
       GepKnoten:
-        function:
-          schema: tww_app
-          name: fct_agxx_gepknoten_mapping_jsonb
-          parameters:
-            row: $row
+        projection:
+          kind: canonical_view
+
+          canonical_view:
+            schema: tww_app
+            name: vw_agxx_gepknoten
+            identity_attribute: obj_id
+
+          value_lists:
+            istschnittstelle:
+              relation: tww_vl.wastewater_node_ag96_is_gateway
+
+            funktionag:
+              relation: tww_vl.agxx_import_rel_mapping_gepknoten_funktionag
+              ignore: 
+                - Leitungsknoten
+
+            baulicherzustand:
+              relation: tww_vl.wastewater_structure_structure_condition
+
+            bauwerkstatus:
+              relation: tww_vl.wastewater_structure_status_import_rel_agxx
+
+            finanzierung:
+              relation: tww_vl.wastewater_structure_financing
+
+            sanierungsbedarf:
+              relation: tww_vl.wastewater_structure_renovation_necessity
+
+            zugaenglichkeit:
+              relation: tww_vl.wastewater_structure_accessibility
+
+            lagegenauigkeit:
+              relation: tww_vl.cover_positional_accuracy
+
+            funktionhierarchisch:
+              relation: tww_vl.channel_function_hierarchic
 
       GepHaltung:
-        function:
-          schema: tww_app
-          name: fct_agxx_gephaltung_mapping_jsonb
-          parameters:
-            row: $row
+        projection:
+          kind: canonical_view
+
+          canonical_view:
+            schema: tww_app
+            name: vw_agxx_gephaltung
+            identity_attribute: obj_id
+
+          references:
+            startknoten:
+              source:
+                class: GepKnoten
+
+            endknoten:
+              source:
+                class: GepKnoten
+
+          value_lists:
+            funktionhierarchisch:
+              relation: tww_vl.channel_function_hierarchic
+
+            nutzungsartag_ist:
+              relation: tww_vl.channel_usage_current_import_rel_agxx
+
+            nutzungsartag_geplant:
+              relation: tww_vl.channel_usage_planned_import_rel_agxx
+
+      Ueberlauf_Foerderaggregat:
+        projection:
+          kind: canonical_view
+
+          canonical_view:
+            schema: tww_app
+            name: vw_agxx_ueberlauf_foerderaggregat
+            identity_attribute: obj_id
+
+          references:
+            knotenref:
+              source:
+                class: GepKnoten
+
+            knoten_nachref:
+              source:
+                class: GepKnoten
 
       GepMassnahme:
         identities:
@@ -69,13 +169,6 @@ models:
             target:
               class: catchment_area
               attribute: fk_provider
-
-      Ueberlauf_Foerderaggregat:
-        function:
-          schema: tww_app
-          name: fct_agxx_ueberlauf_foerderaggregat_mapping_jsonb
-          parameters:
-            row: $row
 
       BautenAusserhalbBaugebiet:
         identities:

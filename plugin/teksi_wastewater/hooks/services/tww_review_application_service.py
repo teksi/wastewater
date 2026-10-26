@@ -1,3 +1,4 @@
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -5,6 +6,7 @@ from dataclasses import dataclass
 from teksi_hooks.models.validation import (
     ValidationDefinition,
 )
+
 from teksi_wastewater.hooks.adapters.tww_canonical_model_adapter import (
     TwwCanonicalModelAdapter,
 )
@@ -69,7 +71,9 @@ class TwwReviewApplicationService:
         if not job.validation_success:
             raise DiffJobEligibilityError(
                 job_id=job_id,
-                reason=("source validation was not successful."),
+                reason=(
+                    "source validation was not successful."
+                ),
             )
 
         live_schema = job.metadata.get(
@@ -85,16 +89,24 @@ class TwwReviewApplicationService:
         ):
             raise DiffJobEligibilityError(
                 job_id=job_id,
-                reason=("required job metadata 'live_schema' is " "missing or invalid."),
+                reason=(
+                    "required job metadata 'live_schema' is "
+                    "missing or invalid."
+                ),
             )
 
-        canonical_metadata = self.canonical_model_adapter.canonical_model()
+        canonical_metadata = (
+            self.canonical_model_adapter.canonical_model()
+        )
 
         source_contexts = ()
 
         try:
-            source_contexts = self.persistence_context_factory.source_contexts(
-                job=job,
+            source_contexts = (
+                self.persistence_context_factory
+                .source_contexts(
+                    job=job,
+                )
             )
 
             return self.persistence_service.persist_job(
@@ -102,7 +114,9 @@ class TwwReviewApplicationService:
                 live_schema=live_schema.strip(),
                 source_contexts=source_contexts,
                 canonical_metadata=canonical_metadata,
-                validation_definition=(self.validation_definition),
+                validation_definition=(
+                    self.validation_definition
+                ),
             )
 
         finally:

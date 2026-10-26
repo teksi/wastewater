@@ -556,8 +556,8 @@ classes:
   # ---------------------
   # weitere
   # ---------------------
-
-
+  
+  
   - id: mutation
     crud_rules:
       - privileges: [DBW_WI,DBW_GEP,FI_BU]

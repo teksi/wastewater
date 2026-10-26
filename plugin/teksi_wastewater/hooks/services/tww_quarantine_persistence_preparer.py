@@ -8,6 +8,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from sqlalchemy.orm import Session
+
 from teksi_hooks.capabilities.mapping import (
     ModelMappingLookupCapability,
 )
@@ -15,18 +16,23 @@ from teksi_hooks.models.canonical_object import (
     CanonicalModelMetadata,
     CanonicalObjectIdentity,
 )
+from teksi_hooks.models.mapping import (
+    ClassMapping,
+)
 from teksi_hooks.models.review import (
     ReviewFeature,
 )
 from teksi_hooks.models.validation import (
     ValidationDefinition,
 )
+
 from teksi_wastewater.hooks.exceptions import (
     DiffSchemaContractError,
 )
 from teksi_wastewater.hooks.services.tww_diff_schema_service import (
     TwwDiffSchemaService,
 )
+
 
 logger = logging.getLogger(
     __name__,
@@ -93,13 +99,10 @@ class TwwQuarantinePersistencePreparer:
 
     source_role: str = "base"
 
-    _source_class_ids_cache: (
-        tuple[
-            str,
-            ...,
-        ]
-        | None
-    ) = field(
+    _source_class_ids_cache: tuple[
+        str,
+        ...,
+    ] | None = field(
         default=None,
         init=False,
         repr=False,
@@ -175,8 +178,10 @@ class TwwQuarantinePersistencePreparer:
         The caller owns commit, rollback, and session closure.
         """
 
-        features_by_class = self.diff_schema_service.review_features(
-            job_id=job_id,
+        features_by_class = (
+            self.diff_schema_service.review_features(
+                job_id=job_id,
+            )
         )
 
         nulled_attribute_count = 0
@@ -191,10 +196,14 @@ class TwwQuarantinePersistencePreparer:
                 if self._must_remove_created_object(
                     feature,
                 ):
-                    removed = self._delete_created_source_object(
-                        job_id=job_id,
-                        canonical_class_id=(canonical_class_id),
-                        feature=feature,
+                    removed = (
+                        self._delete_created_source_object(
+                            job_id=job_id,
+                            canonical_class_id=(
+                                canonical_class_id
+                            ),
+                            feature=feature,
+                        )
                     )
 
                     if removed:
@@ -215,7 +224,9 @@ class TwwQuarantinePersistencePreparer:
                     handled,
                 ) = self._null_unpermitted_attributes(
                     job_id=job_id,
-                    canonical_class_id=(canonical_class_id),
+                    canonical_class_id=(
+                        canonical_class_id
+                    ),
                     feature=feature,
                 )
 
@@ -271,7 +282,10 @@ class TwwQuarantinePersistencePreparer:
         ):
             raise DiffSchemaContractError(
                 column_name="permission_findings",
-                message=("The review feature permission findings must " "contain a JSON array."),
+                message=(
+                    "The review feature permission findings must "
+                    "contain a JSON array."
+                ),
             )
 
         return any(
@@ -297,7 +311,10 @@ class TwwQuarantinePersistencePreparer:
         ):
             raise DiffSchemaContractError(
                 column_name="permission_findings",
-                message=("Each persisted permission finding must " "contain a JSON object."),
+                message=(
+                    "Each persisted permission finding must "
+                    "contain a JSON object."
+                ),
             )
 
         attribute_name = finding.get(
@@ -337,7 +354,10 @@ class TwwQuarantinePersistencePreparer:
         ):
             raise DiffSchemaContractError(
                 column_name="unpermitted_values",
-                message=("The review feature unpermitted values must " "contain a JSON object."),
+                message=(
+                    "The review feature unpermitted values must "
+                    "contain a JSON object."
+                ),
             )
 
         if not unpermitted_values:
@@ -361,8 +381,11 @@ class TwwQuarantinePersistencePreparer:
                 ),
             )
 
-        mandatory_attributes = self.validation_definition.mandatory_for_class(
-            canonical_class_id,
+        mandatory_attributes = (
+            self.validation_definition
+            .mandatory_for_class(
+                canonical_class_id,
+            )
         )
 
         nulled_attribute_count = 0
@@ -371,7 +394,8 @@ class TwwQuarantinePersistencePreparer:
         for canonical_attribute_id in unpermitted_values:
             if canonical_attribute_id in mandatory_attributes:
                 logger.debug(
-                    "Preserving mandatory unpermitted attribute " "%r.%r for diff job %r.",
+                    "Preserving mandatory unpermitted attribute "
+                    "%r.%r for diff job %r.",
                     canonical_class_id,
                     canonical_attribute_id,
                     job_id,
@@ -381,7 +405,9 @@ class TwwQuarantinePersistencePreparer:
 
             targets = self._source_attribute_targets(
                 canonical_class_id=canonical_class_id,
-                canonical_attribute_id=(canonical_attribute_id),
+                canonical_attribute_id=(
+                    canonical_attribute_id
+                ),
             )
 
             if not targets:
@@ -390,18 +416,29 @@ class TwwQuarantinePersistencePreparer:
             target_handled = False
 
             for target in targets:
-                source_identity_value = self._canonical_identity_value(
-                    identity=identity,
-                    canonical_identity_attribute_id=(target.canonical_identity_attribute_id),
+                source_identity_value = (
+                    self._canonical_identity_value(
+                        identity=identity,
+                        canonical_identity_attribute_id=(
+                            target
+                            .canonical_identity_attribute_id
+                        ),
+                    )
                 )
 
                 if source_identity_value is None:
                     continue
 
                 source_row = self._try_source_row(
-                    source_class_id=(target.source_class_id),
-                    source_identity_attribute_id=(target.source_identity_attribute_id),
-                    source_identity_value=(source_identity_value),
+                    source_class_id=(
+                        target.source_class_id
+                    ),
+                    source_identity_attribute_id=(
+                        target.source_identity_attribute_id
+                    ),
+                    source_identity_value=(
+                        source_identity_value
+                    ),
                 )
 
                 if source_row is None:
@@ -456,18 +493,25 @@ class TwwQuarantinePersistencePreparer:
             canonical_attribute_id,
         )
 
-        cached = self._source_attribute_targets_cache.get(
-            cache_key,
+        cached = (
+            self._source_attribute_targets_cache.get(
+                cache_key,
+            )
         )
 
         if cached is not None:
             return cached
 
-        targets: list[QuarantineAttributeTarget,] = []
+        targets: list[
+            QuarantineAttributeTarget,
+        ] = []
 
         for source_class_id in self._source_class_ids():
-            class_mapping = self.model_mapping.try_class_definition(
-                source_class_id,
+            class_mapping = (
+                self.model_mapping
+                .try_class_definition(
+                    source_class_id,
+                )
             )
 
             if class_mapping is None:
@@ -476,8 +520,10 @@ class TwwQuarantinePersistencePreparer:
             if class_mapping.function is not None:
                 continue
 
-            identity_mapping = class_mapping.identities.get(
-                canonical_class_id,
+            identity_mapping = (
+                class_mapping.identities.get(
+                    canonical_class_id,
+                )
             )
 
             if identity_mapping is None:
@@ -488,23 +534,44 @@ class TwwQuarantinePersistencePreparer:
                 attribute_mapping,
             ) in class_mapping.attributes.items():
                 target_class_id = (
-                    attribute_mapping.canonical_class_id or class_mapping.canonical_class_id
+                    attribute_mapping.canonical_class_id
+                    or class_mapping.canonical_class_id
                 )
 
-                if target_class_id != canonical_class_id:
+                if (
+                    target_class_id
+                    != canonical_class_id
+                ):
                     continue
 
-                if attribute_mapping.canonical_attr_id != canonical_attribute_id:
+                if (
+                    attribute_mapping.canonical_attr_id
+                    != canonical_attribute_id
+                ):
                     continue
 
                 targets.append(
                     QuarantineAttributeTarget(
-                        source_class_id=(source_class_id),
-                        source_attribute_id=(source_attribute_id),
-                        canonical_class_id=(canonical_class_id),
-                        canonical_attribute_id=(canonical_attribute_id),
-                        source_identity_attribute_id=(identity_mapping.source_attribute),
-                        canonical_identity_attribute_id=(identity_mapping.canonical_attribute),
+                        source_class_id=(
+                            source_class_id
+                        ),
+                        source_attribute_id=(
+                            source_attribute_id
+                        ),
+                        canonical_class_id=(
+                            canonical_class_id
+                        ),
+                        canonical_attribute_id=(
+                            canonical_attribute_id
+                        ),
+                        source_identity_attribute_id=(
+                            identity_mapping
+                            .source_attribute
+                        ),
+                        canonical_identity_attribute_id=(
+                            identity_mapping
+                            .canonical_attribute
+                        ),
                     )
                 )
 
@@ -512,7 +579,9 @@ class TwwQuarantinePersistencePreparer:
             targets,
         )
 
-        self._source_attribute_targets_cache[cache_key] = result
+        self._source_attribute_targets_cache[
+            cache_key
+        ] = result
 
         return result
 
@@ -567,23 +636,33 @@ class TwwQuarantinePersistencePreparer:
             source_class_id,
             source_identity_attribute_id,
         ) in identity_targets:
-            class_mapping = self.model_mapping.try_class_definition(
-                source_class_id,
+            class_mapping = (
+                self.model_mapping
+                .try_class_definition(
+                    source_class_id,
+                )
             )
 
             if class_mapping is None:
                 continue
 
-            identity_mapping = class_mapping.identities.get(
-                canonical_class_id,
+            identity_mapping = (
+                class_mapping.identities.get(
+                    canonical_class_id,
+                )
             )
 
             if identity_mapping is None:
                 continue
 
-            source_identity_value = self._canonical_identity_value(
-                identity=identity,
-                canonical_identity_attribute_id=(identity_mapping.canonical_attribute),
+            source_identity_value = (
+                self._canonical_identity_value(
+                    identity=identity,
+                    canonical_identity_attribute_id=(
+                        identity_mapping
+                        .canonical_attribute
+                    ),
+                )
             )
 
             if source_identity_value is None:
@@ -591,8 +670,12 @@ class TwwQuarantinePersistencePreparer:
 
             source_row = self._try_source_row(
                 source_class_id=source_class_id,
-                source_identity_attribute_id=(source_identity_attribute_id),
-                source_identity_value=(source_identity_value),
+                source_identity_attribute_id=(
+                    source_identity_attribute_id
+                ),
+                source_identity_value=(
+                    source_identity_value
+                ),
             )
 
             if source_row is None:
@@ -604,8 +687,12 @@ class TwwQuarantinePersistencePreparer:
 
             self._discard_cached_source_row(
                 source_class_id=source_class_id,
-                source_identity_attribute_id=(source_identity_attribute_id),
-                source_identity_value=(source_identity_value),
+                source_identity_attribute_id=(
+                    source_identity_attribute_id
+                ),
+                source_identity_value=(
+                    source_identity_value
+                ),
             )
 
             deleted_count += 1
@@ -647,12 +734,9 @@ class TwwQuarantinePersistencePreparer:
         This MVP supports canonical identities containing one attribute.
         """
 
-        if (
-            len(
-                canonical_identity_attribute_ids,
-            )
-            != 1
-        ):
+        if len(
+            canonical_identity_attribute_ids,
+        ) != 1:
             raise DiffSchemaContractError(
                 column_name="identity",
                 message=(
@@ -664,15 +748,21 @@ class TwwQuarantinePersistencePreparer:
                 ),
             )
 
-        canonical_identity_attribute_id = canonical_identity_attribute_ids[0]
+        canonical_identity_attribute_id = (
+            canonical_identity_attribute_ids[
+                0
+            ]
+        )
 
         cache_key = (
             canonical_class_id,
             canonical_identity_attribute_id,
         )
 
-        cached = self._source_identity_targets_cache.get(
-            cache_key,
+        cached = (
+            self._source_identity_targets_cache.get(
+                cache_key,
+            )
         )
 
         if cached is not None:
@@ -686,8 +776,11 @@ class TwwQuarantinePersistencePreparer:
         ] = []
 
         for source_class_id in self._source_class_ids():
-            class_mapping = self.model_mapping.try_class_definition(
-                source_class_id,
+            class_mapping = (
+                self.model_mapping
+                .try_class_definition(
+                    source_class_id,
+                )
             )
 
             if class_mapping is None:
@@ -696,14 +789,19 @@ class TwwQuarantinePersistencePreparer:
             if class_mapping.function is not None:
                 continue
 
-            identity_mapping = class_mapping.identities.get(
-                canonical_class_id,
+            identity_mapping = (
+                class_mapping.identities.get(
+                    canonical_class_id,
+                )
             )
 
             if identity_mapping is None:
                 continue
 
-            if identity_mapping.canonical_attribute != canonical_identity_attribute_id:
+            if (
+                identity_mapping.canonical_attribute
+                != canonical_identity_attribute_id
+            ):
                 continue
 
             targets.append(
@@ -717,7 +815,9 @@ class TwwQuarantinePersistencePreparer:
             targets,
         )
 
-        self._source_identity_targets_cache[cache_key] = result
+        self._source_identity_targets_cache[
+            cache_key
+        ] = result
 
         return result
 
@@ -739,7 +839,10 @@ class TwwQuarantinePersistencePreparer:
         ):
             raise DiffSchemaContractError(
                 column_name="identity",
-                message=("The review feature identity must contain " "a JSON object."),
+                message=(
+                    "The review feature identity must contain "
+                    "a JSON object."
+                ),
             )
 
         class_id = payload.get(
@@ -797,10 +900,15 @@ class TwwQuarantinePersistencePreparer:
         Return one canonical identity value when the attribute is present.
         """
 
-        if canonical_identity_attribute_id not in identity.attributes:
+        if (
+            canonical_identity_attribute_id
+            not in identity.attributes
+        ):
             return None
 
-        value = identity.attributes[canonical_identity_attribute_id]
+        value = identity.attributes[
+            canonical_identity_attribute_id
+        ]
 
         if value is None:
             raise DiffSchemaContractError(
@@ -845,7 +953,9 @@ class TwwQuarantinePersistencePreparer:
 
             return result
 
-        class_ids: list[str,] = []
+        class_ids: list[
+            str,
+        ] = []
 
         for class_id in dir(
             classes,
@@ -895,8 +1005,10 @@ class TwwQuarantinePersistencePreparer:
             self.quarantine_classes,
             Mapping,
         ):
-            source_class = self.quarantine_classes.get(
-                source_class_id,
+            source_class = (
+                self.quarantine_classes.get(
+                    source_class_id,
+                )
             )
         else:
             source_class = getattr(
@@ -907,10 +1019,15 @@ class TwwQuarantinePersistencePreparer:
 
         if source_class is None:
             raise DiffSchemaContractError(
-                message=("Unknown quarantine class " f"{source_class_id!r}."),
+                message=(
+                    "Unknown quarantine class "
+                    f"{source_class_id!r}."
+                ),
             )
 
-        self._source_class_cache[source_class_id] = source_class
+        self._source_class_cache[
+            source_class_id
+        ] = source_class
 
         return source_class
 
@@ -934,7 +1051,9 @@ class TwwQuarantinePersistencePreparer:
         )
 
         if cache_key in self._source_row_cache:
-            return self._source_row_cache[cache_key]
+            return self._source_row_cache[
+                cache_key
+            ]
 
         source_class = self._source_class(
             source_class_id,
@@ -960,7 +1079,10 @@ class TwwQuarantinePersistencePreparer:
             self.quarantine_session.query(
                 source_class,
             )
-            .filter(identity_attribute == source_identity_value)
+            .filter(
+                identity_attribute
+                == source_identity_value
+            )
             .limit(
                 2,
             )
@@ -968,16 +1090,15 @@ class TwwQuarantinePersistencePreparer:
         )
 
         if not rows:
-            self._source_row_cache[cache_key] = None
+            self._source_row_cache[
+                cache_key
+            ] = None
 
             return None
 
-        if (
-            len(
-                rows,
-            )
-            > 1
-        ):
+        if len(
+            rows,
+        ) > 1:
             raise DiffSchemaContractError(
                 message=(
                     "Multiple quarantine objects exist for "
@@ -988,9 +1109,13 @@ class TwwQuarantinePersistencePreparer:
                 ),
             )
 
-        source_row = rows[0]
+        source_row = rows[
+            0
+        ]
 
-        self._source_row_cache[cache_key] = source_row
+        self._source_row_cache[
+            cache_key
+        ] = source_row
 
         return source_row
 

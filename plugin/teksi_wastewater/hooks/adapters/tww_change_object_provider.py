@@ -2,8 +2,14 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from teksi_hooks.capabilities.relation_lookup import (
+    RelationLookupCapability,
+)
 from teksi_hooks.capabilities.review import (
     ChangeObjectProvider,
+)
+from teksi_hooks.capabilities.connection import (
+    DatabaseConnectionFactory,
 )
 from teksi_hooks.models.canonical_object import (
     CanonicalModelMetadata,
@@ -15,6 +21,9 @@ from teksi_hooks.models.validation import (
 )
 from teksi_hooks.services.change_creation_protocols import (
     ChangeObjectProviderFactory,
+)
+from .tww_relation_lookup_adapter import (
+    TwwRelationLookupAdapter,
 )
 
 
@@ -65,7 +74,7 @@ class TwwChangeObjectProvider:
         )
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True,slots=True)
 class TwwChangeObjectProviderFactory(ChangeObjectProviderFactory):
     """
     Create canonical object providers for review-feature generation.

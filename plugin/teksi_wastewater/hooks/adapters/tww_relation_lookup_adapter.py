@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-import logging
 from collections.abc import Sequence
 from dataclasses import dataclass, field
+import logging
 from typing import Any
 
 from psycopg import sql
@@ -35,6 +35,7 @@ class TwwRelationLookupAdapter(
     connection_factory: DatabaseConnectionFactory
 
     schema: str
+
 
     logger: logging.Logger = field(
         default_factory=lambda: logging.getLogger(
@@ -77,7 +78,9 @@ class TwwRelationLookupAdapter(
         local_attribute: str,
         related_attribute: str,
         value: Any,
-    ) -> Sequence[CanonicalObjectIdentity,]:
+    ) -> Sequence[
+        CanonicalObjectIdentity,
+    ]:
         """
         Return related canonical object identities.
 
@@ -104,11 +107,13 @@ class TwwRelationLookupAdapter(
         if cached is not None:
             return cached
 
-        query = sql.SQL("""
+        query = sql.SQL(
+            """
             SELECT {identity_attribute}
             FROM {schema}.{table_name}
             WHERE {related_attribute} = %s
-            """).format(
+            """
+        ).format(
             identity_attribute=sql.Identifier(
                 "obj_id",
             ),
@@ -125,20 +130,26 @@ class TwwRelationLookupAdapter(
 
         rows = self._fetchall(
             query=query,
-            parameters=(value,),
+            parameters=(
+                value,
+            ),
         )
 
         result = tuple(
             CanonicalObjectIdentity(
                 class_id=related_class_id,
                 attributes={
-                    "obj_id": row[0],
+                    "obj_id": row[
+                        0
+                    ],
                 },
             )
             for row in rows
         )
 
-        self._canonical_objects_cache[cache_key] = result
+        self._canonical_objects_cache[
+            cache_key
+        ] = result
 
         return result
 
@@ -155,7 +166,8 @@ class TwwRelationLookupAdapter(
         """
 
         self.logger.debug(
-            "Fetching current canonical object: " "class_id=%r, identity_attributes=%r.",
+            "Fetching current canonical object: "
+            "class_id=%r, identity_attributes=%r.",
             identity.class_id,
             dict(
                 identity.attributes,
@@ -184,7 +196,9 @@ class TwwRelationLookupAdapter(
 
     def current_objects(
         self,
-        identities: Sequence[CanonicalObjectIdentity,],
+        identities: Sequence[
+            CanonicalObjectIdentity,
+        ],
         *,
         batch_size: int = 2000,
     ) -> dict[
@@ -205,7 +219,9 @@ class TwwRelationLookupAdapter(
         """
 
         if batch_size <= 0:
-            raise ValueError("batch_size must be greater than zero.")
+            raise ValueError(
+                "batch_size must be greater than zero."
+            )
 
         identities_by_key: dict[
             tuple,
@@ -225,18 +241,26 @@ class TwwRelationLookupAdapter(
                 identity_key,
             )
 
-            if existing_identity is not None and existing_identity != identity:
+            if (
+                existing_identity is not None
+                and existing_identity != identity
+            ):
                 raise ValueError(
                     "Several canonical identities produced the same "
                     f"identity key {identity_key!r}."
                 )
 
-            identities_by_key[identity_key] = identity
+            identities_by_key[
+                identity_key
+            ] = identity
 
         results: dict[
             tuple,
             CanonicalObject | None,
-        ] = {identity_key: None for identity_key in identities_by_key}
+        ] = {
+            identity_key: None
+            for identity_key in identities_by_key
+        }
 
         if not identities_by_key:
             return results
@@ -249,7 +273,9 @@ class TwwRelationLookupAdapter(
                     ...,
                 ],
             ],
-            list[CanonicalObjectIdentity,],
+            list[
+                CanonicalObjectIdentity,
+            ],
         ] = {}
 
         for identity in identities_by_key.values():
@@ -278,7 +304,9 @@ class TwwRelationLookupAdapter(
                 for (
                     class_id,
                     identity_attribute_names,
-                ), grouped_identities in identities_by_lookup_shape.items():
+                ), grouped_identities in (
+                    identities_by_lookup_shape.items()
+                ):
                     for batch_start in range(
                         0,
                         len(
@@ -286,13 +314,21 @@ class TwwRelationLookupAdapter(
                         ),
                         batch_size,
                     ):
-                        identity_batch = grouped_identities[batch_start : batch_start + batch_size]
+                        identity_batch = grouped_identities[
+                            batch_start:
+                            batch_start
+                            + batch_size
+                        ]
 
-                        batch_results = self._current_objects_batch(
-                            cursor=cursor,
-                            class_id=class_id,
-                            identity_attribute_names=(identity_attribute_names),
-                            identities=identity_batch,
+                        batch_results = (
+                            self._current_objects_batch(
+                                cursor=cursor,
+                                class_id=class_id,
+                                identity_attribute_names=(
+                                    identity_attribute_names
+                                ),
+                                identities=identity_batch,
+                            )
                         )
 
                         results.update(
@@ -300,8 +336,12 @@ class TwwRelationLookupAdapter(
                         )
 
         self.logger.debug(
-            "Loaded %s canonical objects for %s requested " "identities using %s lookup groups.",
-            sum(result is not None for result in results.values()),
+            "Loaded %s canonical objects for %s requested "
+            "identities using %s lookup groups.",
+            sum(
+                result is not None
+                for result in results.values()
+            ),
             len(
                 results,
             ),
@@ -321,7 +361,9 @@ class TwwRelationLookupAdapter(
             str,
             ...,
         ],
-        identities: Sequence[CanonicalObjectIdentity,],
+        identities: Sequence[
+            CanonicalObjectIdentity,
+        ],
     ) -> dict[
         tuple,
         CanonicalObject | None,
@@ -339,22 +381,39 @@ class TwwRelationLookupAdapter(
                 f"identity attribute for class {class_id!r}."
             )
 
-        requested_index_column = "__teksi_request_index"
+        requested_index_column = (
+            "__teksi_request_index"
+        )
 
         requested_column_names = (
             requested_index_column,
             *identity_attribute_names,
         )
 
-        values_rows = sql.SQL(", ").join(
-            sql.SQL("({})").format(
-                sql.SQL(", ").join(sql.Placeholder() for _ in requested_column_names)
+        values_rows = sql.SQL(
+            ", "
+        ).join(
+            sql.SQL(
+                "({})"
+            ).format(
+                sql.SQL(
+                    ", "
+                ).join(
+                    sql.Placeholder()
+                    for _ in requested_column_names
+                )
             )
             for _ in identities
         )
 
-        join_conditions = sql.SQL(" AND ").join(
-            sql.SQL("target.{attribute} " "IS NOT DISTINCT FROM " "requested.{attribute}").format(
+        join_conditions = sql.SQL(
+            " AND "
+        ).join(
+            sql.SQL(
+                "target.{attribute} "
+                "IS NOT DISTINCT FROM "
+                "requested.{attribute}"
+            ).format(
                 attribute=sql.Identifier(
                     attribute_name,
                 )
@@ -362,7 +421,8 @@ class TwwRelationLookupAdapter(
             for attribute_name in identity_attribute_names
         )
 
-        query = sql.SQL("""
+        query = sql.SQL(
+            """
             WITH requested ({requested_columns}) AS (
                 VALUES {values_rows}
             )
@@ -374,8 +434,11 @@ class TwwRelationLookupAdapter(
             ON {join_conditions}
             ORDER BY
                 requested.{requested_index}
-            """).format(
-            requested_columns=sql.SQL(", ").join(
+            """
+        ).format(
+            requested_columns=sql.SQL(
+                ", "
+            ).join(
                 sql.Identifier(
                     column_name,
                 )
@@ -394,7 +457,9 @@ class TwwRelationLookupAdapter(
             join_conditions=join_conditions,
         )
 
-        parameters: list[Any,] = []
+        parameters: list[
+            Any,
+        ] = []
 
         identities_by_request_index: dict[
             int,
@@ -420,7 +485,10 @@ class TwwRelationLookupAdapter(
                 )
             )
 
-            if actual_attribute_names != identity_attribute_names:
+            if (
+                actual_attribute_names
+                != identity_attribute_names
+            ):
                 raise ValueError(
                     "Bulk canonical lookup received incompatible "
                     "identity attributes for class "
@@ -429,18 +497,25 @@ class TwwRelationLookupAdapter(
                     f"{actual_attribute_names!r}."
                 )
 
-            identities_by_request_index[request_index] = identity
+            identities_by_request_index[
+                request_index
+            ] = identity
 
             parameters.append(
                 request_index,
             )
 
             parameters.extend(
-                identity.attributes[attribute_name] for attribute_name in identity_attribute_names
+                identity.attributes[
+                    attribute_name
+                ]
+                for attribute_name
+                in identity_attribute_names
             )
 
         self.logger.debug(
-            "Bulk-loading %s canonical objects from %r.%r " "using identity attributes %r.",
+            "Bulk-loading %s canonical objects from %r.%r "
+            "using identity attributes %r.",
             len(
                 identities,
             ),
@@ -457,7 +532,10 @@ class TwwRelationLookupAdapter(
         )
 
         if cursor.description is None:
-            raise RuntimeError("Bulk canonical object query returned no column " "metadata.")
+            raise RuntimeError(
+                "Bulk canonical object query returned no column "
+                "metadata."
+            )
 
         column_names = tuple(
             str(
@@ -466,30 +544,52 @@ class TwwRelationLookupAdapter(
                     "name",
                     None,
                 )
-                or column_description[0]
+                or column_description[
+                    0
+                ]
             )
             for column_description in cursor.description
         )
 
-        if not column_names or column_names[0] != requested_index_column:
+        if (
+            not column_names
+            or column_names[
+                0
+            ]
+            != requested_index_column
+        ):
             raise RuntimeError(
-                "Bulk canonical object query did not return the " "expected request-index column."
+                "Bulk canonical object query did not return the "
+                "expected request-index column."
             )
 
-        table_column_names = column_names[1:]
+        table_column_names = column_names[
+            1:
+        ]
 
         results: dict[
             tuple,
             CanonicalObject | None,
-        ] = {identity.key(): None for identity in identities}
+        ] = {
+            identity.key(): None
+            for identity in identities
+        }
 
-        matched_request_indexes: set[int,] = set()
+        matched_request_indexes: set[
+            int,
+        ] = set()
 
         for result_row in cursor:
-            request_index = int(result_row[0])
+            request_index = int(
+                result_row[
+                    0
+                ]
+            )
 
             try:
-                identity = identities_by_request_index[request_index]
+                identity = identities_by_request_index[
+                    request_index
+                ]
 
             except KeyError as exception:
                 raise RuntimeError(
@@ -511,7 +611,9 @@ class TwwRelationLookupAdapter(
             row = dict(
                 zip(
                     table_column_names,
-                    result_row[1:],
+                    result_row[
+                        1:
+                    ],
                     strict=True,
                 )
             )
@@ -522,10 +624,15 @@ class TwwRelationLookupAdapter(
                     key,
                     value,
                 ) in row.items()
-                if (key not in identity.attributes and key != "last_modification")
+                if (
+                    key not in identity.attributes
+                    and key != "last_modification"
+                )
             }
 
-            results[identity.key()] = CanonicalObject(
+            results[
+                identity.key()
+            ] = CanonicalObject(
                 identity=identity,
                 values=values,
                 last_modification=row.get(
@@ -651,9 +758,11 @@ class TwwRelationLookupAdapter(
                     column_names = tuple(column.name for column in cursor.description)
 
                 except Exception:
-                    query_text = str(query)
+                    query_text=str(query)
                     self.logger.info(
-                        "Fetchone Dict; Query text:" " %r.", query_text.format(tuple(parameters))
+                        "Fetchone Dict; Query text:"\
+                        " %r.",
+                        query_text.format(tuple(parameters))
                     )
                     raise
 

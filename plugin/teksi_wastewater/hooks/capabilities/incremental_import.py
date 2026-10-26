@@ -10,32 +10,8 @@ from teksi_hooks.models.effects import (
     EffectDocument,
     EffectEvaluationResult,
 )
-from teksi_hooks.models.mapping import (
-    ClassMapping,
-)
 
-
-class FunctionEffectResolver(
-    Protocol,
-):
-    """
-    Resolve one function-backed source row into canonical effects.
-    """
-
-    def resolve_effects(
-        self,
-        *,
-        source_class_id: str,
-        source_row: Any,
-        class_mapping: ClassMapping,
-    ) -> EffectDocument:
-        """
-        Execute the configured read-only mapping function and parse its result.
-        """
-
-        ...
-
-
+        
 class IncrementalEffectEvaluator(
     Protocol,
 ):

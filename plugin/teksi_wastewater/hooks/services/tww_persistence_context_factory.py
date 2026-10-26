@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any, Protocol
 
 from sqlalchemy.orm import Session
+
 from teksi_hooks.capabilities.mapping import (
     EffectiveModelMappingCapability,
     ModelMappingCapability,
@@ -17,6 +18,7 @@ from teksi_hooks.models.review import (
 from teksi_hooks.parser.model_mapping_parser import (
     ModelMappingParser,
 )
+
 from teksi_wastewater.hooks.adapters.tww_database_connection_factory import (
     TwwDatabaseConnectionFactory,
 )
@@ -124,7 +126,9 @@ class TwwPersistenceContextFactory:
         Build base and incremental contexts in persistence order.
         """
 
-        contexts: list[TwwPersistenceSourceContext,] = []
+        contexts: list[
+            TwwPersistenceSourceContext,
+        ] = []
 
         try:
             for source_role in (
@@ -157,7 +161,10 @@ class TwwPersistenceContextFactory:
         if not contexts:
             raise DiffJobEligibilityError(
                 job_id=job.job_id,
-                reason=("the job contains no retained source " "contexts."),
+                reason=(
+                    "the job contains no retained source "
+                    "contexts."
+                ),
             )
 
         return tuple(
@@ -187,7 +194,8 @@ class TwwPersistenceContextFactory:
 
             except Exception:
                 self.logger.exception(
-                    "Could not roll back quarantine session for " "source role %r and schema %r.",
+                    "Could not roll back quarantine session for "
+                    "source role %r and schema %r.",
                     source_context.source_role,
                     source_context.import_schema,
                 )
@@ -197,7 +205,8 @@ class TwwPersistenceContextFactory:
 
             except Exception:
                 self.logger.exception(
-                    "Could not close quarantine session for " "source role %r and schema %r.",
+                    "Could not close quarantine session for "
+                    "source role %r and schema %r.",
                     source_context.source_role,
                     source_context.import_schema,
                 )
@@ -207,13 +216,10 @@ class TwwPersistenceContextFactory:
         *,
         job: DiffReviewJob,
         source_role: str,
-    ) -> (
-        dict[
-            str,
-            str,
-        ]
-        | None
-    ):
+    ) -> dict[
+        str,
+        str,
+    ] | None:
         """
         Return one persisted source descriptor.
         """
@@ -242,11 +248,14 @@ class TwwPersistenceContextFactory:
             ),
         }
 
-        source_values = tuple(value for key, value in values.items() if key != "source_role")
+        source_values = tuple(
+            value
+            for key, value in values.items()
+            if key != "source_role"
+        )
 
         if all(
-            value
-            in (
+            value in (
                 None,
                 "",
             )
@@ -276,7 +285,10 @@ class TwwPersistenceContextFactory:
                 ),
             )
 
-        return {key: value.strip() for key, value in values.items()}
+        return {
+            key: value.strip()
+            for key, value in values.items()
+        }
 
     def _source_context(
         self,
@@ -290,18 +302,30 @@ class TwwPersistenceContextFactory:
         Build one runtime source context.
         """
 
-        import_schema = descriptor["import_schema"]
+        import_schema = descriptor[
+            "import_schema"
+        ]
 
         model_mapping = self._effective_model(
-            mapping_model_id=descriptor["mapping_model_id"],
+            mapping_model_id=descriptor[
+                "mapping_model_id"
+            ],
             import_schema=import_schema,
-            language=descriptor["model_language"],
+            language=descriptor[
+                "model_language"
+            ],
         )
 
         quarantine_classes = self.quarantine_classes_factory(
-            source_model=descriptor["source_model"],
-            model_group=descriptor["model_group"],
-            model_language=descriptor["model_language"],
+            source_model=descriptor[
+                "source_model"
+            ],
+            model_group=descriptor[
+                "model_group"
+            ],
+            model_language=descriptor[
+                "model_language"
+            ],
             import_schema=import_schema,
         )
 
@@ -310,12 +334,22 @@ class TwwPersistenceContextFactory:
         )
 
         return TwwPersistenceSourceContext(
-            source_role=descriptor["source_role"],
+            source_role=descriptor[
+                "source_role"
+            ],
             import_schema=import_schema,
-            source_model=descriptor["source_model"],
-            mapping_model_id=descriptor["mapping_model_id"],
-            model_language=descriptor["model_language"],
-            model_group=descriptor["model_group"],
+            source_model=descriptor[
+                "source_model"
+            ],
+            mapping_model_id=descriptor[
+                "mapping_model_id"
+            ],
+            model_language=descriptor[
+                "model_language"
+            ],
+            model_group=descriptor[
+                "model_group"
+            ],
             quarantine_classes=quarantine_classes,
             quarantine_session=quarantine_session,
             model_mapping=model_mapping,
@@ -332,19 +366,28 @@ class TwwPersistenceContextFactory:
         Rebuild the effective mapping for one retained source.
         """
 
-        explicit_mapping = ModelMappingParser().parse_file(
-            self.model_config_dir / "explicit_mapping.yaml",
-            model_id=mapping_model_id,
+        explicit_mapping = (
+            ModelMappingParser().parse_file(
+                self.model_config_dir
+                / "explicit_mapping.yaml",
+                model_id=mapping_model_id,
+            )
         )
 
-        explicit_capability = ModelMappingCapability(
-            mapping=explicit_mapping,
+        explicit_capability = (
+            ModelMappingCapability(
+                mapping=explicit_mapping,
+            )
         )
 
-        implicit_capability = TwwImplicitModelMappingAdapter(
-            connection_factory=(self.connection_factory),
-            import_schema=import_schema,
-            language=language,
+        implicit_capability = (
+            TwwImplicitModelMappingAdapter(
+                connection_factory=(
+                    self.connection_factory
+                ),
+                import_schema=import_schema,
+                language=language,
+            )
         )
         for candidate_class_id in (
             "GepMassnahme",
@@ -358,12 +401,17 @@ class TwwPersistenceContextFactory:
                 continue
 
             self.logger.info(
-                "Explicit identity mapping for class %r: %r." "self.model_config_dir: %r",
+                "Explicit identity mapping for class %r: %r."
+                "self.model_config_dir: %r",
                 candidate_class_id,
                 {
                     target_class_id: {
-                        "source_attribute": (identity.source_attribute),
-                        "canonical_attribute": (identity.canonical_attribute),
+                        "source_attribute": (
+                            identity.source_attribute
+                        ),
+                        "canonical_attribute": (
+                            identity.canonical_attribute
+                        ),
                     }
                     for (
                         target_class_id,
@@ -373,7 +421,13 @@ class TwwPersistenceContextFactory:
                 self.model_config_dir,
             )
 
-        return EffectiveModelMappingCapability(
-            explicit_mapping=(explicit_capability),
-            implicit_mapping=(implicit_capability),
+        return (
+            EffectiveModelMappingCapability(
+                explicit_mapping=(
+                    explicit_capability
+                ),
+                implicit_mapping=(
+                    implicit_capability
+                ),
+            )
         )
