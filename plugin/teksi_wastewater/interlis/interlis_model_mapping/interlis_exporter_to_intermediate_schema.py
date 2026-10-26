@@ -2907,7 +2907,9 @@ class InterlisExporterToIntermediateSchema:
         self.abwasser_session.flush()
 
     def _export_re_measuring_point_reference_station(self):
-        query = self.tww_session.query(self.model_classes_tww_od.re_measuring_point_reference_station)
+        query = self.tww_session.query(
+            self.model_classes_tww_od.re_measuring_point_reference_station
+        )
         if self.filtered:
             query = (
                 query.join(self.model_classes_tww_od.measuring_point)
