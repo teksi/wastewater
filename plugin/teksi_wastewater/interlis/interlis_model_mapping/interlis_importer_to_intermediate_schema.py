@@ -2569,7 +2569,9 @@ class InterlisImporterToIntermediateSchema:
             self.model_classes_interlis.messstelle_referenzstelleassoc
         ):
             re_measuring_point_reference_station = (
-                self.session_tww.query(self.model_classes_tww_od.re_measuring_point_reference_station)
+                self.session_tww.query(
+                    self.model_classes_tww_od.re_measuring_point_reference_station
+                )
                 .filter_by(
                     fk_measuring_point=self.get_pk(row.messstelle_referenzstelleassocref__REL),
                     fk_reference_station=self.get_pk(row.messstelleref__REL),
@@ -2580,9 +2582,11 @@ class InterlisImporterToIntermediateSchema:
                 # Already existing -> do nothing
                 continue
 
-            re_measuring_point_reference_station = self.model_classes_tww_od.re_measuring_point_reference_station(
-                fk_measuring_point=self.get_pk(row.messstelle_referenzstelleassocref__REL),
-                fk_reference_station=self.get_pk(row.messstelleref__REL),
+            re_measuring_point_reference_station = (
+                self.model_classes_tww_od.re_measuring_point_reference_station(
+                    fk_measuring_point=self.get_pk(row.messstelle_referenzstelleassocref__REL),
+                    fk_reference_station=self.get_pk(row.messstelleref__REL),
+                )
             )
 
             self.session_tww.add(re_measuring_point_reference_station)
