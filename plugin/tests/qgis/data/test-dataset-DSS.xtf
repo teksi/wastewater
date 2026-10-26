@@ -10953,8 +10953,8 @@
 				</Lage>
 				<BetreiberRef REF="ch080qwzAM001217"/>
 			</DSS_2020_1_LV95.Siedlungsentwaesserung.Messstelle>
-			
-		<!-- neu 26.10.2026 Messstelle und Referenz(mess)stelle -->	
+
+		<!-- neu 26.10.2026 Messstelle und Referenz(mess)stelle -->
 			<DSS_2020_1_LV95.Siedlungsentwaesserung.Messstelle TID="ch080qwzMS001262">
 				<Letzte_Aenderung>20261026</Letzte_Aenderung>
 				<DatenherrRef REF="ch080qwzPR000018"/>
@@ -10971,7 +10971,7 @@
 				</Lage>
 				<BetreiberRef REF="ch080qwzAM001217"/>
 			</DSS_2020_1_LV95.Siedlungsentwaesserung.Messstelle>
-			
+
 				<DSS_2020_1_LV95.Siedlungsentwaesserung.Messstelle TID="ch080qwzMS001263">
 				<Letzte_Aenderung>20261026</Letzte_Aenderung>
 				<DatenherrRef REF="ch080qwzPR000018"/>
@@ -10987,14 +10987,14 @@
 					</COORD>
 				</Lage>
 				<BetreiberRef REF="ch080qwzAM001217"/>
-			</DSS_2020_1_LV95.Siedlungsentwaesserung.Messstelle>	
+			</DSS_2020_1_LV95.Siedlungsentwaesserung.Messstelle>
 			<DSS_2020_1_LV95.Siedlungsentwaesserung.Messstelle_ReferenzstelleAssoc>
 				<ReferenzstelleRef REF="ch080qwzMS001263"/>
 				<Messstelle_ReferenzstelleAssocRef REF="ch080qwzMS001262"/>
-			</DSS_2020_1_LV95.Siedlungsentwaesserung.Messstelle_ReferenzstelleAssoc>			
+			</DSS_2020_1_LV95.Siedlungsentwaesserung.Messstelle_ReferenzstelleAssoc>
 
 			<!-- ende neu 26.10.2026 -->
-			
+
 			<DSS_2020_1_LV95.Siedlungsentwaesserung.Messgeraet TID="ch080qwzMG002000">
 
 

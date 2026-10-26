@@ -385,7 +385,7 @@ class InterlisImporterToIntermediateSchema:
         )
         self._import_gebaeudegruppe_entsorgungassoc()
         self._check_for_stop()
-        
+
         logger.info(
             "\nImporting ABWASSER.messstelle_referenzstelleassoc -> TWW.re_measuring_point_reference_station"
         )

@@ -495,7 +495,7 @@ class InterlisExporterToIntermediateSchema:
         )
         self._export_re_building_group_disposal()
         self._check_for_stop()
-        
+
         logger.info(
             "Exporting TWW.re_measuring_point_reference_station -> ABWASSER.messstelle_referenzstelleassoc"
         )
