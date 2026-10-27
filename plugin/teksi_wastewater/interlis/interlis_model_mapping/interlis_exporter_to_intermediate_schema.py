@@ -496,6 +496,12 @@ class InterlisExporterToIntermediateSchema:
         self._export_re_building_group_disposal()
         self._check_for_stop()
 
+        logger.info(
+            "Exporting TWW.re_measuring_point_reference_station -> ABWASSER.messstelle_referenzstelleassoc"
+        )
+        self._export_re_measuring_point_reference_station()
+        self._check_for_stop()
+
     def _export_vsa_kek(self):
         logger.info("Exporting TWW.examination -> ABWASSER.untersuchung")
         self._export_examination()
@@ -2831,7 +2837,7 @@ class InterlisExporterToIntermediateSchema:
             logger.info(f"Selection query: {query.statement}")
         for row in query:
 
-            # Before exporting the relation object, check that it use one sublclass of maintenance_event
+            # Before exporting the relation object, check that it use one subclass of maintenance_event
             # supported by DSS
             maintenance_event_obj_id = row.fk_maintenance_event
             dss_supported = False
@@ -2896,6 +2902,36 @@ class InterlisExporterToIntermediateSchema:
                 gebaeudegruppe_entsorgungassocref=self.get_tid(row.fk_building_group__REL),
             )
             self.abwasser_session.add(gebaeudegruppe_entsorgungassoc)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_re_measuring_point_reference_station(self):
+        query = self.tww_session.query(
+            self.model_classes_tww_od.re_measuring_point_reference_station
+        )
+        # if self.filtered:
+        # query = (
+        # query.join(self.model_classes_tww_od.measuring_point)
+        # .join(self.model_classes_tww_od.wastewater_structure)
+        # .join(self.model_classes_tww_od.wastewater_networkelement)
+        # .filter(
+        # self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+        # )
+        # )
+        # logger.info(f"Selection query: {query.statement}")
+        for row in query:
+            messstelle_referenzstelleassoc = self.model_classes_interlis.messstelle_referenzstelleassoc(
+                # FIELDS TO MAP TO ABWASSER.messstelle_referenzstelleassoc
+                # --- baseclass ---
+                # --- sia405_baseclass ---
+                # this class does not inherit vsa_base_common
+                # **self.vsa_base_common(row, "messstelle_referenzstelleassoc"),
+                # --- messstelle_referenzstelleassoc ---
+                referenzstelleref=self.get_tid(row.fk_reference_station__REL),
+                messstelle_referenzstelleassocref=self.get_tid(row.fk_measuring_point__REL),
+            )
+            self.abwasser_session.add(messstelle_referenzstelleassoc)
             print(".", end="")
         logger.info("done")
         self.abwasser_session.flush()
