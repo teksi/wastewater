@@ -22,8 +22,18 @@ class InterlisExportSettingsDialog(QDialog):
         self.export_model_selection_comboBox.addItem(
             config.MODEL_NAME_DSS, [config.MODEL_NAME_DSS]
         )
+        # Add also French Version of DSS
+        # to do add option to only show if settings set to French
+        self.export_model_selection_comboBox.addItem(
+            config.MODEL_NAME_DSS_FR, [config.MODEL_NAME_DSS_FR]
+        )
         self.export_model_selection_comboBox.addItem(
             config.MODEL_NAME_SIA405_ABWASSER, [config.MODEL_NAME_SIA405_ABWASSER]
+        )
+        # Add also French Version of DSS
+        # to do add option to only show if settings set to French
+        self.export_model_selection_comboBox.addItem(
+            config.MODEL_NAME_SIA405_ABWASSER_FR, [config.MODEL_NAME_SIA405_ABWASSER_FR]
         )
         self.export_model_selection_comboBox.addItem(
             config.MODEL_NAME_VSA_KEK,

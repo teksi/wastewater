@@ -34,6 +34,7 @@ class InterlisTools:
         self,
         schema,
         models,
+        models_de,
         log_path,
         ext_columns_no_constraints=False,
         create_basket_col=False,
@@ -47,41 +48,76 @@ class InterlisTools:
         if create_basket_col:
             create_basket_col_args = "--createBasketCol"
 
-        logger.info(f"ILIDB SCHEMAIMPORT INTO {schema}...")
-        execute_subprocess(
-            " ".join(
-                [
-                    f'"{self.java_executable_path}"',
-                    "-jar",
-                    f'"{self.ili2pg_executable_path}"',
-                    "--schemaimport",
-                    *get_pgconf_as_ili_args(),
-                    "--dbschema",
-                    f"{schema}",
-                    "--createGeomIdx",
-                    f"{sql_ext_refs_cols}",
-                    "--createFk",
-                    "--createFkIdx",
-                    "--createTidCol",
-                    "--importTid",
-                    f"{create_basket_col_args}",
-                    "--noSmartMapping",
-                    "--defaultSrsCode",
-                    f"{srid}",
-                    "--log",
-                    f'"{log_path}"',
-                    "--nameLang",
-                    "de",
-                    "--models",
-                    f'"{";".join(models)}"',
-                ]
+        # distinguish if multimodel schema is created or not: see https://www.sjib.ch/wie-uebersetze-ich-eine-interlis-transferdatei-in-eine-andere-sprache/
+        if models_de == []:
+            logger.info(f"ILIDB SCHEMAIMPORT INTO {schema}...")
+            execute_subprocess(
+                " ".join(
+                    [
+                        f'"{self.java_executable_path}"',
+                        "-jar",
+                        f'"{self.ili2pg_executable_path}"',
+                        "--schemaimport",
+                        *get_pgconf_as_ili_args(),
+                        "--dbschema",
+                        f"{schema}",
+                        "--createGeomIdx",
+                        f"{sql_ext_refs_cols}",
+                        "--createFk",
+                        "--createFkIdx",
+                        "--createTidCol",
+                        "--importTid",
+                        f"{create_basket_col_args}",
+                        "--noSmartMapping",
+                        "--defaultSrsCode",
+                        f"{srid}",
+                        "--log",
+                        f'"{log_path}"',
+                        "--nameLang",
+                        "de",
+                        "--models",
+                        f'"{";".join(models)}"',
+                    ]
+                )
             )
-        )
+        else:
+            logger.info(f"ILIDB Multilingual SCHEMAIMPORT INTO {schema}...")
+            execute_subprocess(
+                " ".join(
+                    [
+                        f'"{self.java_executable_path}"',
+                        "-jar",
+                        f'"{self.ili2pg_executable_path}"',
+                        "--schemaimport",
+                        *get_pgconf_as_ili_args(),
+                        "--dbschema",
+                        f"{schema}",
+                        "--createGeomIdx",
+                        f"{sql_ext_refs_cols}",
+                        "--createFk",
+                        "--createFkIdx",
+                        "--createTidCol",
+                        "--importTid",
+                        f"{create_basket_col_args}",
+                        "--noSmartMapping",
+                        "--defaultSrsCode",
+                        f"{srid}",
+                        "--log",
+                        f'"{log_path}"',
+                        "--nameLang",
+                        "de",
+                        "--models",
+                        f'"{";".join(models_de)}"',
+                        # new multilanguage
+                        f'"{";".join(models)}"',
+                    ]
+                )
+            )
 
-    def validate_xtf_data(self, xtf_file, log_path):
+    def validate_xtf_data(self, xtf_file, log_path, xtflog_path):
         logger.info("VALIDATING XTF DATA...")
         execute_subprocess(
-            f'"{self.java_executable_path}" -jar "{config.ILIVALIDATOR}" --log "{log_path}" "{xtf_file}"'
+            f'"{self.java_executable_path}" -jar "{config.ILIVALIDATOR}" --verbose --log "{log_path}" --xtflog  "{xtflog_path}" "{xtf_file}"'
         )
 
     def import_xtf_data(self, schema, xtf_file, log_path, srid=2056):
@@ -106,6 +142,81 @@ class InterlisTools:
                     "--log",
                     f'"{log_path}"',
                     f'"{xtf_file}"',
+                ]
+            )
+        )
+
+    # Datenimport aus exportiertem Transferdatensatz deutsch ins Translation schema
+    def translate_import_xtf_data(self, schema, xtf_file, log_path, srid=2056):
+        logger.info("IMPORTING XTF DATA IN TRANSLATION SCHEMA ...")
+        execute_subprocess(
+            " ".join(
+                [
+                    f'"{self.java_executable_path}"',
+                    "-jar",
+                    f'"{self.ili2pg_executable_path}"',
+                    "--import",
+                    "--importBid",  # extra
+                    "--deleteData",
+                    *get_pgconf_as_ili_args(),
+                    "--dbschema",
+                    f'"{schema}"',
+                    "--disableValidation",
+                    "--skipReferenceErrors",
+                    "--createTidCol",
+                    "--noSmartMapping",
+                    "--defaultSrsCode",
+                    "–-createBasketCol"  # extra
+                    "--createEnumTabs",  # extra
+                    "--createFk",  # extra
+                    f"{srid}",
+                    "--log",
+                    f'"{log_path}"',
+                    f'"{xtf_file}"',
+                ]
+            )
+        )
+
+    # Datenexport (inkl. Übersetzung nach Französisch)
+    def translate_export_xtf_data(
+        self, schema, xtf_file_fr, log_path_fr, model_name_fr, export_model_name_fr, srid=2056
+    ):
+
+        # if optional export_model_name is set, add it to the args
+        if export_model_name_fr:
+            export_model_name_args_fr = ["--exportModels", export_model_name_fr]
+        else:
+            export_model_name_args_fr = []
+
+        logger.info("EXPORT FRENCH ILIDB ...")
+        execute_subprocess(
+            " ".join(
+                [
+                    f'"{self.java_executable_path}"',
+                    "-jar",
+                    f'"{self.ili2pg_executable_path}"',
+                    "--export",
+                    # "--models",
+                    # f"{model_name}",
+                    # *export_model_name_args,
+                    # "--exportmodels",
+                    f"{model_name_fr}",
+                    *export_model_name_args_fr,
+                    "--baskets BASKET1" * get_pgconf_as_ili_args(),
+                    "--dbschema",
+                    f'"{schema}"',
+                    # "--disableValidation",
+                    "--skipReferenceErrors",
+                    # "--createTidCol",
+                    "--noSmartMapping",
+                    "--defaultSrsCode",
+                    "--sqlEnableNull",  # extra
+                    "--createEnumTabs",  # extra
+                    "--createFk",  # extra
+                    f"{srid}",
+                    "--log",
+                    f'"{log_path_fr}"',
+                    f'"{xtf_file_fr}"',
                 ]
             )
         )
