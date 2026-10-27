@@ -2910,16 +2910,16 @@ class InterlisExporterToIntermediateSchema:
         query = self.tww_session.query(
             self.model_classes_tww_od.re_measuring_point_reference_station
         )
-        if self.filtered:
-            query = (
-                query.join(self.model_classes_tww_od.measuring_point)
-                .join(self.model_classes_tww_od.wastewater_structure)
-                .join(self.model_classes_tww_od.wastewater_networkelement)
-                .filter(
-                    self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
-                )
-            )
-            logger.info(f"Selection query: {query.statement}")
+        # if self.filtered:
+            # query = (
+                # query.join(self.model_classes_tww_od.measuring_point)
+                # .join(self.model_classes_tww_od.wastewater_structure)
+                # .join(self.model_classes_tww_od.wastewater_networkelement)
+                # .filter(
+                    # self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+                # )
+            # )
+            # logger.info(f"Selection query: {query.statement}")
         for row in query:
             messstelle_referenzstelleassoc = self.model_classes_interlis.messstelle_referenzstelleassoc(
                 # FIELDS TO MAP TO ABWASSER.messstelle_referenzstelleassoc
