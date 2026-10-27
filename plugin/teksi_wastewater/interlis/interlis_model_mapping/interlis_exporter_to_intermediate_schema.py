@@ -2837,7 +2837,7 @@ class InterlisExporterToIntermediateSchema:
             logger.info(f"Selection query: {query.statement}")
         for row in query:
 
-            # Before exporting the relation object, check that it use one sublclass of maintenance_event
+            # Before exporting the relation object, check that it use one subclass of maintenance_event
             # supported by DSS
             maintenance_event_obj_id = row.fk_maintenance_event
             dss_supported = False
