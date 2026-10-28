@@ -44,6 +44,7 @@ tww_reach_point_label
 tank_cleaning
 solids_retention
 reach_progression_alternative
+re_measuring_point_reference_station
 re_maintenance_event_wastewater_structure
 re_building_group_disposal
 maintenance
@@ -92,17 +93,17 @@ catchment_area
 disposal
 pipe_profile
 zone
+measuring_point
 overflow
 infiltration_installation
 discharge_point
 control_center
 overflow_char
 maintenance_event
+waste_water_treatment_plant
 reach_point
 dss15_aquifer
 measure
-measuring_point
-waste_water_treatment_plant
 log_card
 wastewater_structure
 cover

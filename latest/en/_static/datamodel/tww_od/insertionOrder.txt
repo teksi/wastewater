@@ -7,17 +7,17 @@ wastewater_node
 cover
 wastewater_structure
 log_card
-waste_water_treatment_plant
-measuring_point
 measure
 dss15_aquifer
 reach_point
+waste_water_treatment_plant
 maintenance_event
 overflow_char
 control_center
 discharge_point
 infiltration_installation
 overflow
+measuring_point
 zone
 pipe_profile
 disposal
@@ -66,6 +66,7 @@ leapingweir
 maintenance
 re_building_group_disposal
 re_maintenance_event_wastewater_structure
+re_measuring_point_reference_station
 reach_progression_alternative
 solids_retention
 tank_cleaning

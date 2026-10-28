@@ -1933,7 +1933,8 @@
          <column autoUpdated="false" defaultValue="tww_app.generate_oid('tww_od'::text, 'measuring_point'::text)" digits="0" id="0" name="obj_id" nullable="false" remarks="INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch" size="2147483647" type="&quot;tww_od&quot;.&quot;interlis_standardoid&quot;" typeCode="2001">
             <child column="fk_measuring_point" foreignKey="rel_measurement_series_measuring_point" implied="false" onDeleteCascade="true" schema="tww_od" table="measurement_series"/>
             <child column="fk_measuring_point" foreignKey="rel_measuring_device_measuring_point" implied="false" onDeleteCascade="false" schema="tww_od" table="measuring_device"/>
-            <child column="fk_reference_station" foreignKey="rel_measuring_point_reference_station" implied="false" onDeleteCascade="false" schema="tww_od" table="measuring_point"/>
+            <child column="fk_measuring_point" foreignKey="rel_measuring_point_reference_station_measuring_point" implied="false" onDeleteCascade="true" schema="tww_od" table="re_measuring_point_reference_station"/>
+            <child column="fk_reference_station" foreignKey="rel_measuring_point_reference_station_reference_station" implied="false" onDeleteCascade="true" schema="tww_od" table="re_measuring_point_reference_station"/>
          </column>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="damming_device" nullable="true" remarks="" size="10" type="int4" typeCode="4">
             <parent column="code" foreignKey="fkey_vl_measuring_point_damming_device" implied="false" onDeleteCascade="false" schema="tww_vl" table="measuring_point_damming_device"/>
@@ -1952,16 +1953,13 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="fk_provider" nullable="true" remarks="Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données" size="16" type="varchar" typeCode="12">
             <parent column="obj_id" foreignKey="rel_od_measuring_point_fk_dataprovider" implied="false" onDeleteCascade="false" schema="tww_od" table="organisation"/>
          </column>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="fk_reference_station" nullable="true" remarks="" size="16" type="varchar" typeCode="12">
-            <parent column="obj_id" foreignKey="rel_measuring_point_reference_station" implied="false" onDeleteCascade="false" schema="tww_od" table="measuring_point"/>
-         </column>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="fk_operator" nullable="true" remarks="" size="16" type="varchar" typeCode="12">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="fk_operator" nullable="true" remarks="" size="16" type="varchar" typeCode="12">
             <parent column="obj_id" foreignKey="rel_measuring_point_operator" implied="false" onDeleteCascade="false" schema="tww_od" table="organisation"/>
          </column>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="fk_waste_water_treatment_plant" nullable="true" remarks="" size="16" type="varchar" typeCode="12">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="fk_waste_water_treatment_plant" nullable="true" remarks="" size="16" type="varchar" typeCode="12">
             <parent column="obj_id" foreignKey="rel_measuring_point_waste_water_treatment_plant" implied="false" onDeleteCascade="false" schema="tww_od" table="waste_water_treatment_plant"/>
          </column>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="fk_wastewater_structure" nullable="true" remarks="" size="16" type="varchar" typeCode="12">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="fk_wastewater_structure" nullable="true" remarks="" size="16" type="varchar" typeCode="12">
             <parent column="obj_id" foreignKey="rel_measuring_point_wastewater_structure" implied="false" onDeleteCascade="false" schema="tww_od" table="wastewater_structure"/>
          </column>
          <primaryKey column="obj_id" sequenceNumberInPK="1"/>
@@ -2475,6 +2473,19 @@
          </index>
          <index name="in_re_me_ws__fk_ws" unique="false">
             <column ascending="true" name="fk_wastewater_structure"/>
+         </index>
+      </table>
+      <table name="re_measuring_point_reference_station" remarks="" schema="tww_od" type="TABLE">
+         <column autoUpdated="false" defaultValue="gen_random_uuid()" digits="0" id="0" name="id" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="fk_measuring_point" nullable="true" remarks="" size="16" type="varchar" typeCode="12">
+            <parent column="obj_id" foreignKey="rel_measuring_point_reference_station_measuring_point" implied="false" onDeleteCascade="true" schema="tww_od" table="measuring_point"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="fk_reference_station" nullable="true" remarks="" size="16" type="varchar" typeCode="12">
+            <parent column="obj_id" foreignKey="rel_measuring_point_reference_station_reference_station" implied="false" onDeleteCascade="true" schema="tww_od" table="measuring_point"/>
+         </column>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_od_measuring_point_reference_station_id" unique="true">
+            <column ascending="true" name="id"/>
          </index>
       </table>
       <table name="reach" remarks="" schema="tww_od" type="TABLE">
