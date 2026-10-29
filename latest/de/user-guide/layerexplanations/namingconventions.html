@@ -110,7 +110,7 @@
 <h2>Schemas in der TWW-Datenbank<a class="headerlink" href="#schemas-in-the-tww-database" title="Link to this heading"></a></h2>
 <p>Die Schemata in TEKSI-Datenbanken folgen denselben Regeln. Zur Unterscheidung hat jedes Medium seine eigene Abkürzung (3 Buchstaben). TWW (TEKSI Abwasser) ist die Abkürzung für das Modul Abwasser. Die TWW-Datenbank enthält vier TWW-Schemas:</p>
 <ul class="simple">
-<li><p>tww_od: in this schema you find the tables that are stored persistently. They mainly correspond to the VSA-DSS-datamodel (cover, wastewater_node, channel, etc.), but also include some layers needed for symbology and labeling.  Also for sequences of these tables. Because of the new update-management, the views are no more in the *_od-schema, but in the *_app-schema.</p></li>
+<li><p>tww_od: in diesem Schema sind alle dauerhaft gespeicherten Tabellen. Sie entsprechen hauptsächlich den Klassen des VSA-DSS-Datenmodels (Deckel, Abwasserknoten, Kanal etc.), aber es gibt auch  für die Symbolisierung und Beschriftung benötigte Tabellen. Und die Sequenzen für das Erzeugen der Obj_ID. Wegen dem neuen  Update-Management in TWW (seit Version 2025), sind die Views nicht mehr im *_od-Schema, sondern im *_app-Schema.</p></li>
 <li><p>tww_vl: ist das Schema für die Wertelisten (value lists). Es gibt ein Tabelle für jede Werteliste der VSA-DSS. Als TWW-User kann man diese Tabellen nicht bearbeiten.</p></li>
 <li><p>tww_app: Schema für alle Modul-spezifischen Views, Materialized Views, Funktionen, Trigger etc. Auch für Views und Funktionen von Zusatz-Plugins (SWMM, Qfield). Während einem Update der Datenbank wird dieses Schema überschrieben.</p></li>
 <li><p>qgep_sys: Spezielle Tabellen für die Administration der Datenbank. Als TWW-User kann man diese Tabellen nicht bearbeiten.</p></li>
@@ -124,7 +124,7 @@
 </ul>
 <p>Das zeigt, dass die Tabelle im tww_od-Schema gefunden werden kann (wenn sie in der Layergruppe „Wertelisten“ sind, dann findet man sie im Schema tww_vl). Bei einer Unsicherheit über das entsprechende Schema: die Maus über dem Layer platzieren und im gelben Popup-Hinweisfenster nach ‚table=“tww_*‘ suchen.</p>
 <ul class="simple">
-<li><p>Layer Names that begin with <code class="docutils literal notranslate"><span class="pre">vw_</span></code></p></li>
+<li><p>Layer Namen welche mit <a href="#id1"><span class="problematic" id="id2">``</span></a>vw``_ beginnen</p></li>
 </ul>
 <p>Zwei oder mehrere VSA-DSS-Tabellen sind in einer View (vw) verknüpft. Der Layer hat die Bezeichnung der Haupttabelle. Beispiel: vw_tww_Haltung: die Haupttabellen ist die Tabelle Haltung (nicht die Tabelle Kanal). Es ist wichtig die Haupttabelle zu kennen, damit die richtigen Attribute verwendet werden.</p>
 </section>
@@ -135,9 +135,9 @@
 </ul>
 <p>In einer View gibt es Felder von verschiedenen Tabellen. In einfachen Fällen ist da nur die Superklasse und die Sub-Klasse vorhanden.  In den qgep-Hauptleyern sind es aber mehrere Sub- und Superklassen. Mit dem Präfix des Feldname wird angezeigt, zu welcher Klasse ein Feld gehört.  Das Präfix sind zwei Buchstaben welche für eine Klasse des VSA-DSS Datenmodell stehen. Beispiel: DE = Deckel, BW = Abwasserbauwerk. Es gilt folgende Konvention:  Felder der Haupttabelle haben kein Präfix, alle anderen Felder haben ein Präfix, dass auf die jeweilige Tabelle verweist. Bei Sub- und Superklasse werden die beiden Tabellen zusammengenommen. Beispiel im Layer vw_tww_Haltung: Bezeichnung ist ein Feld der Tabelle Abwassernetzelement (der Superklasse der Haupttabelle Haltung) und hat deswegen kein Präfix.  Material ist in der Tabelle Haltung und hat auch kein Präfix weil das die Haupttabelle ist.  KA_Nutzungsart_IST ist ein Feld der Tabelle Kanal. BW-Bemerkung ist das Feld Bemerkung der Tabelle Abwasserbauwerk.</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">fk_</span></code> fields</p></li>
+<li><p><a href="#id1"><span class="problematic" id="id2">``</span></a>fk``_ Felder</p></li>
 </ul>
-<p><code class="docutils literal notranslate"><span class="pre">fk_</span></code> is not a shortcut for a special table. It stands for foreign key.</p>
+<p><a href="#id1"><span class="problematic" id="id2">``</span></a>fk``_ ist nicht eine Abkürzung für eine spezielle Tabelle. Es steht für Fremdschlüssel (foreign key). Das sind Fremdschlüsselfelder.</p>
 <ul class="simple">
 <li><p>_ Felder</p></li>
 </ul>

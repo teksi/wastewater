@@ -52,7 +52,7 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Layer Erläuterungen</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#main-layers">Hauptlayer</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#layergroup-wastewater-structures">Layergruppe Abwasserbauwerke</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#layergroup-configuration">Layergroup Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#layergroup-configuration">Layergruppe Konfiguration</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#layergroup-examination-maintenance">Layergruppe Untersuchung-Unterhalt</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#documents">Dokumente</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#hydraulic">Hydraulik Layer</a></li>
@@ -210,13 +210,13 @@
 </section>
 </section>
 <section id="layergroup-configuration">
-<h2>Layergroup Configuration<a class="headerlink" href="#layergroup-configuration" title="Link to this heading"></a></h2>
+<h2>Layergruppe Konfiguration<a class="headerlink" href="#layergroup-configuration" title="Link to this heading"></a></h2>
 <section id="organisations-tww-od-organisation">
 <h3>Organisationen <code class="docutils literal notranslate"><span class="pre">tww_od.organisation</span></code><a class="headerlink" href="#organisations-tww-od-organisation" title="Link to this heading"></a></h3>
-<p>Table organisation contains the organisations that you can select in attributes like fk_dataowner, fk_operator, fk_provider, fk_owner, etc.</p>
-<p>Import the <a class="reference external" href="https://vsa.ch/models/organisation/vsa_organisationen_2020_1.xtf">VSA organisation 2020.1-dataset</a> that contains over 2’500 organisations. And/or create project-specific organisations, which, however, must be imported and exported additionally with every data exchange.</p>
-<p>In order to use the organisations efficiently, one can flag an organisation as active using the field <code class="docutils literal notranslate"><span class="pre">tww_active</span></code>. This flag filters the organisations accessible from the QGIS project.</p>
-<p>See <a class="reference external" href="../../admin-guide/interlis-io/index.html">INTERLIS Import</a> for more information.</p>
+<p>Die Tabelle Organisation enthält die Organisation die in den Attributen FS_Datenherr, FS_Eigentümer, FS_Betreiber, FS_Datenlieferant etc. gewählt werden können.</p>
+<p>Importiere den <a class="reference external" href="https://vsa.ch/models/organisation/vsa_organisationen_2020_1.xtf">VSA organisation 2020.1-Datensatz</a> der über 2’500 Organisationen enthält. Und/oder erzeuge projektspezifische Organisationen, welche aber bei jedem Datenaustausch zusätzlich importiert und exportiert werden müssen.</p>
+<p>Um Organisationen effizent zu verwenden, können Organisationen mit dem Feld <code class="docutils literal notranslate"><span class="pre">tww_active</span></code> aktiviert werden. Dieses Flag filtert dann im QGIS-Projekt die angezeigten Organisationen.</p>
+<p>Siehe <a class="reference external" href="../../admin-guide/interlis-io/index.html">INTERLIS Import</a> für weitere Informationen.</p>
 </section>
 </section>
 <section id="layergroup-examination-maintenance">
@@ -258,17 +258,17 @@
 <div class="versionchanged">
 <p><span class="versionmodified changed">Geändert in Version 2026.0.</span></p>
 </div>
-<p>This view replaces in some way the tww_app.vw_wastewater_node (it still exists for backward compatibility) as it integrates the symbology of the following views, that handle symbology now separatly:</p>
+<p>Diese View ersetzt die View tww_app.vw_wastewater_node (die aus Rückwärts-Kompatibilitätsgründen noch existiert) und integriert die Symbolisierung mit den folgenden Views, welche die Symbolisierung jetzt separat handhaben:</p>
 <ul class="simple">
-<li><p>a table tww_od.tww_reach_point_labels</p></li>
-<li><p>a table tww_od.tww_wastewater_structure_labels</p></li>
-<li><p>a table tww_od.tww_wastewater_node_symbology</p></li>
+<li><p>Tabelle tww_od.tww_reach_point_labels</p></li>
+<li><p>Tabelle tww_od.tww_wastewater_structure_labels</p></li>
+<li><p>Tabelle tww_od.tww_wastewater_node_symbology</p></li>
 </ul>
-<p>This allows to better mark the different inlets and outlets:</p>
+<p>Damit können die einzelnen Ein- und Ausläufe jetzt besser beschriftet werden:</p>
 <figure class="align-default">
 <img alt="../../_images/comparison_2025_and_2026symbolisation.png" src="../../_images/comparison_2025_and_2026symbolisation.png" />
 </figure>
-<p>Introduction of these new views needs adaption of existing TWW project files (for details see <a class="reference external" href="../releases/2026.html">2026 Release notes</a> )</p>
+<p>Diese neuen Views erfordern entsprechende Anpassungen an bestehenden TWW Projektdateien (Für Details vergleiche <a class="reference external" href="../releases/2026.html">2026 Release notes</a> )</p>
 </section>
 <section id="overflow-tables-tww-app-vw-tww-overflow">
 <h3>Überlauf Tabellen <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_overflow</span></code><a class="headerlink" href="#overflow-tables-tww-app-vw-tww-overflow" title="Link to this heading"></a></h3>
@@ -302,10 +302,10 @@ Der Layer vw_network_segment kann benutzt werden, um die Fliessrichtung darzuste
 </section>
 <section id="value-lists-tww-vl">
 <h2>Wertelisten <code class="docutils literal notranslate"><span class="pre">tww_vl.*</span></code><a class="headerlink" href="#value-lists-tww-vl" title="Link to this heading"></a></h2>
-<p>These value lists are defined in the VSA-datamodel.</p>
+<p>Diese Wertelisten sind im Datenmodell VSA-DSS definiert.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warnung</p>
-<p>Do not change!</p>
+<p>Nicht ändern!</p>
 </div>
 <div class="versionchanged">
 <p><span class="versionmodified changed">Geändert in Version 2025.0.</span></p>
@@ -345,7 +345,7 @@ Der Layer vw_network_segment kann benutzt werden, um die Fliessrichtung darzuste
 </div>
 <section id="log-card-tww-app-vw-tww-log-card">
 <h3>Stammkarte <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_log_card</span></code><a class="headerlink" href="#log-card-tww-app-vw-tww-log-card" title="Link to this heading"></a></h3>
-<p>Log card for special structures: Hydraulically specialized wastewater structures, e.g., storm water basins, storm water overflows, or pumping stations. Most special structures are also specialized structures. However, special structures such as separation structures or small pumping stations are often designed as manholes.</p>
+<p>Stammkarte für Sonderbauwerke: Hydraulisch-spezielle Abwasserbauwerke, z. B. Regenrückhaltebecken, Regenüberläufe oder Pumpwerke. Die meisten Sonderbauwerke sind auch Spezialbauwerke. Allerdings werden Sonderbauwerke wie Trennschächte oder kleine Pumpwerke häufig als Normschächte ausgeführt.</p>
 </section>
 <section id="catchment-area-totals-tww-app-catchment-area-totals">
 <h3>Gesamteinzugsgebiet <code class="docutils literal notranslate"><span class="pre">tww_app.catchment_area_totals</span></code><a class="headerlink" href="#catchment-area-totals-tww-app-catchment-area-totals" title="Link to this heading"></a></h3>

@@ -359,62 +359,57 @@
 </figure>
 <p>Ein neues Dock Widget wurde hinzugefügt (rechts), welches den Nutzern erlaubt:</p>
 <ul class="simple">
-<li><p>Choose the selection mode:
-- Add          -&gt; Union
-- Replace      -&gt; Overwrite
-- Remove       -&gt; Difference
-- Intersect    -&gt; Intersection</p></li>
-<li><p>Choose the status for catchment selection:</p>
+<li><p>Wähle den Auswahltyp: - Hinzufügen          -&gt; Union - Ersetzen      -&gt; Overwrite - Löschen       -&gt; Difference - Verschneiden    -&gt; Intersection</p></li>
+<li><p>Wähle den Einzugsgebiets Status:</p>
 <ul>
-<li><p>Current      -&gt; use fk_wastewater_networkelement_ww_current and fk_wastewater_networkelement_rw_current</p></li>
-<li><p>Planned      -&gt; use fk_wastewater_networkelement_ww_planned and fk_wastewater_networkelement_rw_planned</p></li>
+<li><p>Ist      -&gt; benutzt FS_Abwassernetzelement_SW_ist und FS_Abwassernetzelement_RW_ist</p></li>
+<li><p>geplant      -&gt; benutzt FS_Abwassernetzelement_SW_geplant und FS_Abwassernetzelement_RW_geplant</p></li>
 </ul>
 </li>
 </ul>
-<p>To use this tool, make a selection in layer vw_tww_reach, choose the selection type and catchment status and click on select.</p>
-<p>Repeat this steps as many time as you want. Every step will combine the last selection of reaches, structures and catchment with the new selection depending on your choice.</p>
-<p>Example:
-There is already a selection of catchments:</p>
+<p>Um das Tool zu benutzen, muss eine Selektion im Layer vw_tww_Haltung erstellt werden, der Auswahltyp und der Einzugsgebiets Status gewählt werden und dann Selektiere anklicken</p>
+<p>Wiederhole diese Schritte so oft wie gewünscht. Jedesmal wird die letzte Selektion der Haltungen, Abwasserbauwerke und Einzugsgebiete kombiniert mit einer neuen Selektion entsprechend den gewählten Optionen.</p>
+<p>Beispiel: Es gibt bereits eine Selektion der Einzugsgebiete:</p>
 <figure class="align-default">
 <img alt="../../_images/selection_extender_0.png" src="../../_images/selection_extender_0.png" />
 </figure>
 <ol class="arabic simple">
-<li><p>You want to add to this catchments all catchments, that are connected to one of the selected reaches:</p></li>
+<li><p>Es sollen zu diesen Einzugsgebieten alle Einzugsgebiete zugefügt werden, welche mit den einem der selektierten Haltungen verknüpft sind:</p></li>
 </ol>
 <ul class="simple">
-<li><p>Select the reaches and  choose „Add“, „Planned“</p></li>
+<li><p>Selektiere die Haltungen, wähle „Hinzufügen“, „geplant“</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/selection_extender_1.png" src="../../_images/selection_extender_1.png" />
 </figure>
-<p>and click „Select“</p>
-<p>In the Messages, you can see, how many records are selected now</p>
+<p>und klicke „Selektiere“</p>
+<p>In den Meldungen sieht man, wieviel Datensätze jetzt selektiert sind</p>
 <figure class="align-default">
 <img alt="../../_images/selection_extender_2.png" src="../../_images/selection_extender_2.png" />
 </figure>
 <ol class="arabic simple" start="2">
-<li><p>But there are now too many reaches selected.</p></li>
+<li><p>Wir stellen fest:  jetzt sind zu viele Haltung selektiert:</p></li>
 </ol>
 <ul class="simple">
-<li><p>Select the reaches, that should not be in the selection and choose „Remove“, „Planned“</p></li>
+<li><p>Selektiere diejenigen Haltungen, welche nicht in der Auswahl sein sollten und wähle „Löschen“, „geplant“</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/selection_extender_3.png" src="../../_images/selection_extender_3.png" />
 </figure>
-<p>and click „Select“</p>
+<p>und klicke „Selektiere“</p>
 <figure class="align-default">
 <img alt="../../_images/selection_extender_4.png" src="../../_images/selection_extender_4.png" />
 </figure>
-<p>Now you have all reaches, that were selected with step 1, but have not been selected in step 2.</p>
-<p>And you have all nodes and catchments, that are connected with these reaches and the records, that were selected before you started to use the Selection extender Tool.</p>
-<p>If you want to start with a new selection of reaches, then click on „Reset reaches memory“.</p>
+<p>Jetzt haben wir alle Haltungen, die mit Schritt 1 gewählt wurden, aber in Schritt 2 nicht gewählt waren.</p>
+<p>Und wir haben alle Knoten und Einzugsgebiete, die mit den diesen Haltungen verknüpft sind und diejenigen Datensätze die selektiert waren, bevor wir das Auswahl Erweitern Tool benutzt haben.</p>
+<p>Wenn mit einer neuen Auswahl von Haltungen gestartet werden soll, dann muss auf „Haltung Speicher zurücksetzen“ geklickt werden.</p>
 <figure class="align-default">
 <img alt="../../_images/selection_extender_5.png" src="../../_images/selection_extender_5.png" />
 </figure>
-<p>If you then choose „Replace“,</p>
+<p>Wenn dann „Ersetzen“ gewählt wird,</p>
 <ul class="simple">
-<li><p>you will clear also the selection of wastewater structures and catchments with your next select,</p></li>
-<li><p>otherwise you can work again with the old selection of structures and catchments.</p></li>
+<li><p>dann werden auch alle Selektionen von Abwasserbauwerken und Einzugsgebieten mit dem nächsten Selektiere gelöscht</p></li>
+<li><p>wenn nicht, kann mit der bestehenden Auswahl der Abwasserbauwerke und Einzugsgebiete weitergefahren werden.</p></li>
 </ul>
 </section>
 <section id="adding-additional-covers-and-nodes-to-an-existing-wastewater-structure">
@@ -464,7 +459,7 @@ There is already a selection of catchments:</p>
 </ul>
 <p>Warum ist vw_tww_Haltung so langsam: es gibt Trigger in der Datenbank, die bei jedem Datensatz die berechneten Felder der angeschlossenen Schächte und Knoten aktualisieren, damit die Symbologie dieser Themen immer auf dem neuesten Stand ist.</p>
 <p>TWW verfügt über eine Funktion zum Deaktivieren/Aktivieren von Symbolisierungs-Trigger (siehe Kapitel „How to“).</p>
-<p>See <a class="reference internal" href="../How-To/index.html#disable-enable-symbology-triggers"><span class="std std-ref">Beschleunigen von Berechnungen und aktualisieren von Symbolen und Beschriftungen.</span></a> in the User Guide - How to Chapter</p>
+<p>Siehe <a class="reference internal" href="../How-To/index.html#disable-enable-symbology-triggers"><span class="std std-ref">Beschleunigen von Berechnungen und aktualisieren von Symbolen und Beschriftungen.</span></a> in Benutzerhandbuch - How to</p>
 <ul class="simple">
 <li><p>QGIS-Feldrechner und vw_tww_Haltung, Symbolisierungs-Trigger ausgeschaltet: 15 Sekunden.</p></li>
 </ul>

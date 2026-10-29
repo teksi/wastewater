@@ -272,18 +272,16 @@
 </section>
 <section id="when-tww-automatically-updates-the-fields-dataowner-and-provider">
 <h2>When TWW automatically updates the fields <strong>dataowner</strong> and <strong>provider</strong><a class="headerlink" href="#when-tww-automatically-updates-the-fields-dataowner-and-provider" title="Link to this heading"></a></h2>
-<p>For all new data records, the default values ​​from the table tww_od.default_values ​​are used.</p>
-<p>What happens, if you change a dataowner- or provider-value of an existing record?
-In some cases, the fk_dataowner and fk_provider of connected tables do change also. But in many cases, you have to update manually.
-The following describes a change to the dataowner field. The same principle applies to a change in the provider field.</p>
+<p>Bei allen neuen Datensätzen werden die Vorgabewerte der Tabelle tww_od.default_values benutzt.</p>
+<p>Was passiert, wenn Datenherr oder Datenlieferant bei bestehenden Datensätzen geändert werden? In einigen Fällen ändern die Werte FS-Datenherr resp. FS_Datenlieferant von verknüpften Datensätzen ebenfalls. Aber in vielen Fällen muss die Änderung manuell durchgeführt werden. Die nachfolgende Beschreibung beschreibt die Änderung in einem Datenherr-Feld. Bei einer Änderung des Datenlieferanten gilt sinngemäss das Gleiche.</p>
 <ul class="simple">
-<li><p>change field fk_datawoner in vw_tww_wastewater_structure: also all fk_dataowner in connected wastewater_networkelements (node) and in connected structure_parts (covers,acces_aid etc) do change to the new fk_dataowner of the wastewater_structure</p></li>
-<li><p>change field wn_fk_datawoner in vw_tww_wastewater_structure: no other fk_dataowner-fields do change (also overflow, hydr_geometrie etc do not change)</p></li>
-<li><p>change field fk_datawoner in vw_cover: no other fk_dataowner-field does change</p></li>
-<li><p>change field fk_datawoner in hydr_geometry: fk_dataowner-fields in hydr_geometry_relation does not change</p></li>
-<li><p>change field fk_datawoner in vw_tww_reach (it’s the tww_od.wastewater_networkelement.fk_dataowner-field): also fk_dataowner in connected wastewater_structures (channel) does change. The values of fields reach_point.fk_dataowner or of connected structure_parts do not change!</p></li>
-<li><p>change field fk_datawoner in vw_wastewater_structure: also tww_od.wastewater_networkelement.fk_dataowner (reach) does change.</p></li>
-<li><p>change field fk_datawoner in pipe_profile: fk_dataowner in connected profile_geometry does not change</p></li>
+<li><p>Änderung im Feld FS_Datenherr in vw_tww_Abwasserbauwerk: auch alle FS_Datenherr in verknüpften Abwassernetzelementen (Knoten) and in verknüpften Bauwerkteilen(Deckel, Einstiegshilfen etc) ändern auf den neuen FS-Datenherr des Abwasserbauwerks</p></li>
+<li><p>Änderung im Feld FS_Datenherr in  vw_tww_Abwasserbauwerk: andere FS_Datenherr-Felder ändern nicht (also Überlauf, Hydr_Geometrie etc ändern nicht)</p></li>
+<li><p>Änderung im Feld FS_Datenherr in vw_Deckel: kein anderes FS-Datenherr-Feld wird geändert</p></li>
+<li><p>Änderung im Feld FS_Datenherr in  Hydr_Geometrie: FS_Datenherr-Feld in Hydr_Geometrie_Relation ändert nicht</p></li>
+<li><p>Änderung im Feld FS_Datenherr in vw_tww_Haltung (es ist eigentlich das tww_od.wastewater_networkelement.FS_Datenherr-Feld): auch FS_Datenherr in im verknüpften Abwasserbauwerk (Kanal) ändert. Aber die Wert im Feld reach_point.FS_Datenherr oder von verknüpften Bauwerksteilen ändern nicht!</p></li>
+<li><p>Änderung im Feld FS_Datenherr in vw_Abwasserbauwerk: auch tww_od.wastewater_networkelement.FS_Datenherr (Haltung) ändert.</p></li>
+<li><p>Änderung im Feld FS_Datenherr in Rohrprofil: FS_Datenherr in verknüpften Rohrprofil_Geometrie ändert nicht</p></li>
 </ul>
 </section>
 </section>
