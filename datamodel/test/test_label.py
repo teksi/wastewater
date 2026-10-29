@@ -86,7 +86,7 @@ class TestViews(unittest.TestCase, DbTestBase):
             data["rp_to_fk_wastewater_networkelement"] = to_id
         self.update("vw_tww_reach", data, reach_id)
 
-    def test_simpe_labels(self):
+    def test_simple_labels(self):
         manholes = {
             "main": {"obj_id": None, "wn_obj_id": None, "coords": [2600000, 1200000]},
             "N": {"obj_id": None, "wn_obj_id": None, "coords": [2600000, 1200001]},
