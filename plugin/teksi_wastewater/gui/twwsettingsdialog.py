@@ -31,7 +31,7 @@ from qgis.PyQt.QtWidgets import QDialog, QFileDialog
 from teksi_wastewater.utils.database_utils import DatabaseUtils
 from teksi_wastewater.utils.twwlayermanager import TwwLayerManager
 
-from ..utils import get_ui_class
+from ..utils.ui import get_ui_class
 
 DIALOG_UI = get_ui_class("twwsettingsdialog.ui")
 
@@ -47,18 +47,17 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
 
         project = QgsProject.instance()
 
-        svgprofile_path = self.settings.value("/TWW/SvgProfilePath", None)
-        if svgprofile_path:
-            self.mGbOverrideDefaultProfileTemplate.setChecked(True)
-            self.mProfileTemplateFile.setText(svgprofile_path)
-        else:
-            self.mGbOverrideDefaultProfileTemplate.setChecked(False)
-
         develmode = self.settings.value("/TWW/DeveloperMode", False, type=bool)
         self.mCbDevelMode.setChecked(develmode)
 
         adminmode = self.settings.value("/TWW/AdminMode", False, type=bool)
         self.mCbAdminMode.setChecked(adminmode)
+
+        orgimportmode = self.settings.value("/TWW/OrgImportMode", True, type=bool)
+        self.mCbOrgImportMode.setChecked(orgimportmode)
+
+        orgexportmode = self.settings.value("/TWW/OrgExportMode", False, type=bool)
+        self.mCbOrgExportMode.setChecked(orgexportmode)
 
         ag6496extension = self.settings.value("/TWW/AGxxExtensions", False, type=bool)
         self.mCbAg6496Extension.setChecked(ag6496extension)
@@ -83,7 +82,6 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
             QColor(self.settings.value("/TWW/HighlightColor", "#40FF40"))
         )
 
-        self.mPbnChooseProfileTemplateFile.clicked.connect(self.onChooseProfileTemplateFileClicked)
         self.mPbnChooseLogFile.clicked.connect(self.onChooseLogFileClicked)
 
         self.accepted.connect(self.onAccept)
@@ -218,13 +216,13 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
     def onAccept(self):
         twwlogger = logging.getLogger("tww")
         # General settings
-        if self.mGbOverrideDefaultProfileTemplate.isChecked() and self.mProfileTemplateFile.text():
-            self.settings.setValue("/TWW/SvgProfilePath", self.mProfileTemplateFile.text())
-        else:
-            self.settings.remove("/TWW/SvgProfilePath")
+        # Remove legacy setting from the old SVG profile implementation
+        self.settings.remove("/TWW/SvgProfilePath")
 
         self.settings.setValue("/TWW/DeveloperMode", self.mCbDevelMode.isChecked())
         self.settings.setValue("/TWW/AdminMode", self.mCbAdminMode.isChecked())
+        self.settings.setValue("/TWW/OrgImportMode", self.mCbOrgImportMode.isChecked())
+        self.settings.setValue("/TWW/OrgExportMode", self.mCbOrgExportMode.isChecked())
 
         # AG-xx extensions
         self.settings.setValue("/TWW/AGxxExtensions", self.mCbAg6496Extension.isChecked())
@@ -291,16 +289,6 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
         project.writeEntry(
             "TWW", "GraphNodeLayer", self.mCbGraphNodes.itemData(graph_nodelayer_idx)
         )
-
-    @pyqtSlot()
-    def onChooseProfileTemplateFileClicked(self):
-        filename, __ = QFileDialog.getOpenFileName(
-            self,
-            self.tr("Select profile template"),
-            "",
-            self.tr("HTML files(*.htm *.html)"),
-        )
-        self.mProfileTemplateFile.setText(filename)
 
     @pyqtSlot()
     def onChooseLogFileClicked(self):

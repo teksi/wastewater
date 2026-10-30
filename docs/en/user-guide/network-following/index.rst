@@ -4,9 +4,13 @@ Network following tools
 Refresh network topology
 ------------------------
 
+.. versionchanged:: 2026.0
+
+Note that from Version 2026.0 on the button is hidden in admin mode as the query can take quite long for big networks.
+
 * Before using the network following tools, be sure that your network topology is updated
 
-* To refresh the network topology, click the **Refresh network topology** tool (Button with SQL and drip)
+* To refresh the network topology, click the **Refresh network topology** tool (Button with SQL and drop).
 
 * If ok, there is a message: **Success: Network successfully updated**
 
@@ -108,7 +112,7 @@ Flow times downstream
 
 * This is a tool in the TWW-toolbox.
 
-* The idea for this tool is to get the flowtime between a startpoint (where e.g.is an accident) and an interesting wastewater structure downstreams. It is not the idea to create a flowtime plan for a whole network with this tool (use the SumUpTool_ tool for this task).
+* The idea for this tool is to get the flowtime between a startpoint (where e.g.is an accident) and an interesting wastewater structure downstreams. It is not the idea to create a flowtime plan for a whole network with this tool (use the SumUpUpstream_ tool for this task).
 
 * For this tool you need a layer (table) in the TWW-project with the flowtime per reach and the obj_id of the reach.
 

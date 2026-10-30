@@ -23,7 +23,7 @@
 # ---------------------------------------------------------------------
 
 
-from qgis.core import QgsFeatureRequest, QgsProject
+from qgis.core import QgsApplication, QgsFeatureRequest, QgsProject
 from qgis.PyQt.QtCore import Qt, pyqtSignal, pyqtSlot
 from qgis.PyQt.QtWidgets import (
     QAction,
@@ -35,8 +35,8 @@ from qgis.PyQt.QtWidgets import (
     QMessageBox,
 )
 
-from ..utils import get_ui_class
 from ..utils.twwlayermanager import TwwLayerManager
+from ..utils.ui import get_ui_class
 
 DOCK_WIDGET_UI = get_ui_class("twwdockwidget.ui")
 
@@ -44,10 +44,15 @@ DOCK_WIDGET_UI = get_ui_class("twwdockwidget.ui")
 class TwwProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
     # Signal emitted when the widget is closed
     closed = pyqtSignal()
+    # Emitted after Clear Canvas so the plugin can reset the profile map tool
+    # too (its retained path would otherwise resurrect on the next map click).
+    canvasCleared = pyqtSignal()
     canvas = None
     addDockWidget = None
-    # Lookup table for vertical exaggeration values
-    veLUT = {1: 1, 2: 2, 3: 3, 4: 5, 5: 10, 6: 20, 7: 30, 8: 50, 9: 100, 10: 500}
+    # Lookup table for vertical exaggeration values. Step 0 (0.5x) exists for
+    # paths whose relief is too tall to fit at 1x (alpine networks): the fit
+    # snap needs a sub-1 step or the first view of such a path is clipped.
+    veLUT = {0: 0.5, 1: 1, 2: 2, 3: 3, 4: 5, 5: 10, 6: 20, 7: 30, 8: 50, 9: 100, 10: 500}
 
     def __init__(self, parent, canvas, add_dock_widget):
         QDockWidget.__init__(self, parent)
@@ -60,6 +65,9 @@ class TwwProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
         self.configureSelectionAction.triggered.connect(self.onConfigureSelectAction)
         self.selectButton.addAction(self.configureSelectionAction)
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
+        # Theme icon so the button matches the native elevation-profile dock
+        # (and follows light/dark theme); the .ui cannot reference QGIS themes.
+        self.zoomFullButton.setIcon(QgsApplication.getThemeIcon("mActionZoomFullExtent.svg"))
         self.canvas = canvas
         self.addDockWidget = add_dock_widget
 
@@ -79,6 +87,9 @@ class TwwProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
 
         self.clearCanvasButton.clicked.connect(self.onClearCanvasClicked)
         self.printButton.clicked.connect(self.onPrintButtonClicked)
+        self.exportImageButton.clicked.connect(self.onExportImageButtonClicked)
+        self.performCalculationButton.clicked.connect(self.onPerformCalculationClicked)
+        self.zoomFullButton.clicked.connect(self.onZoomFullClicked)
 
         self.mSliderVerticalExaggeration.valueChanged.connect(self.onVerticalExaggerationChanged)
 
@@ -89,8 +100,40 @@ class TwwProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
     def addPlotWidget(self, plot_widget):
         self.plotWidget = plot_widget
         self.verticalLayoutForPlot.addWidget(self.plotWidget)
+        if hasattr(self.plotWidget, "fitExaggerationComputed"):
+            self.plotWidget.fitExaggerationComputed.connect(self.onFitExaggerationComputed)
+        # Take the startup label from the LUT rather than the .ui string, so the
+        # two cannot drift apart, and seed the widget with the same value: the
+        # profile is drawn at exactly the ratio the label claims. This value
+        # only governs until the first path is selected, which snaps the slider
+        # to that path's own scale (onFitExaggerationComputed).
         ve_val = self.veLUT[self.mSliderVerticalExaggeration.value()]
+        self.mLblVerticalExaggeration.setText(str(ve_val) + "x")
         self.plotWidget.changeVerticalExaggeration(ve_val)
+
+    @pyqtSlot(float)
+    def onFitExaggerationComputed(self, fit_ve):
+        """
+        Snap the slider to the best step for the path that was just selected.
+
+        The widget reports the ratio at which the whole path exactly fills the
+        canvas; which discrete steps exist is the dock's business, so the
+        snapping lives here. A single fixed default cannot serve every network
+        — the readable exaggeration follows the slope, and slopes differ by an
+        order of magnitude between a steep alpine network and a flat one.
+
+        Snapping DOWN (the largest step that still fits) keeps the promise that
+        a freshly selected path is first shown whole; snapping up would clip
+        it. Setting the slider re-enters onVerticalExaggerationChanged, which
+        relabels and re-applies — and when the step is already right nothing is
+        emitted, leaving the widget to apply the value it already holds.
+        """
+        target = min(self.veLUT)
+        for slider_value in sorted(self.veLUT):
+            if self.veLUT[slider_value] <= fit_ve:
+                target = slider_value
+        if self.mSliderVerticalExaggeration.value() != target:
+            self.mSliderVerticalExaggeration.setValue(target)
 
     @pyqtSlot(int)
     def onVerticalExaggerationChanged(self, value):
@@ -111,11 +154,12 @@ class TwwProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
         self.nodes = None
         self.edges = None
         self.selectCurrentPathAction.setEnabled(False)
+        self.performCalculationButton.setEnabled(False)
 
         # Deselect features on all related map layers
         for layer_name in [
             "vw_tww_reach",
-            "vw_wastewater_node",
+            "vw_tww_wastewater_node",
             "vw_tww_wastewater_structure",
             "vw_tww_catchment_area",
         ]:
@@ -123,17 +167,64 @@ class TwwProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
             if layer:
                 layer.removeSelection()
 
+        self.canvasCleared.emit()
+
+    @pyqtSlot()
+    def onPerformCalculationClicked(self):
+        """
+        Redraw the profile of the stored upstream/downstream trace.
+
+        Reopening the dock restores the last trace WITHOUT rendering it (see
+        setTree(render=False)); this button is the explicit way to draw it.
+        """
+        if getattr(self, "edges", None) is None:
+            return
+        if self.plotWidget and hasattr(self.plotWidget, "setProfileFromTree"):
+            self.plotWidget.setProfileFromTree(self.edges)
+
+    def _hasProfile(self):
+        """True when the plot widget currently holds a profile curve."""
+        if not self.plotWidget:
+            return False
+        has_profile = getattr(self.plotWidget, "hasProfile", None)
+        return bool(has_profile()) if callable(has_profile) else True
+
+    @pyqtSlot()
+    def onZoomFullClicked(self):
+        """
+        Reset the view to the whole current path.
+
+        Silent no-op without a profile: unlike Print/Export there is nothing
+        the user might believe was produced, so no dialog is warranted.
+        """
+        if not self._hasProfile():
+            return
+        if self.plotWidget and hasattr(self.plotWidget, "zoomFullProfile"):
+            self.plotWidget.zoomFullProfile()
+
     @pyqtSlot()
     def onPrintButtonClicked(self):
-        if not self.plotWidget:
-            QMessageBox.critical(
+        if not self._hasProfile():
+            QMessageBox.information(
                 self,
                 self.tr("Print function not available"),
-                self.tr("Print function not available because of missing dependeny QtWebKit"),
+                self.tr("No profile is currently displayed."),
             )
             return
 
         self.plotWidget.printProfile()
+
+    @pyqtSlot()
+    def onExportImageButtonClicked(self):
+        if not self._hasProfile():
+            QMessageBox.information(
+                self,
+                self.tr("Export function not available"),
+                self.tr("No profile is currently displayed."),
+            )
+            return
+
+        self.plotWidget.exportProfileImage()
 
     @pyqtSlot()
     def onConfigureSelectAction(self):
@@ -194,7 +285,7 @@ class TwwProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
                 wastewater_nodes.append(item["objId"])
 
         tww_wastewater_structures_layer = TwwLayerManager.layer("vw_tww_wastewater_structure")
-        wastewater_nodes_layer = TwwLayerManager.layer("vw_wastewater_node")
+        wastewater_nodes_layer = TwwLayerManager.layer("vw_tww_wastewater_node")
         tww_reach_layer = TwwLayerManager.layer("vw_tww_reach")
         catchment_areas_layer = TwwLayerManager.layer("vw_tww_catchment_area")
 
@@ -252,11 +343,14 @@ class TwwProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
             features = tww_wastewater_structures_layer.getFeatures(request)
             tww_wastewater_structures_layer.select([f.id() for f in features])
 
-    def setTree(self, nodes, edges):
+    def setTree(self, nodes, edges, render=True):
         self.nodes = nodes
         self.edges = edges
         self.selectCurrentPathAction.setEnabled(self.nodes is not None)
-        
-        # Update profile widget if it supports setProfileFromTree
-        if self.plotWidget and hasattr(self.plotWidget, 'setProfileFromTree'):
-            self.plotWidget.setProfileFromTree(nodes, edges)
+        self.performCalculationButton.setEnabled(self.nodes is not None)
+
+        # Update profile widget if it supports setProfileFromTree.
+        # render=False is used when merely restoring state on dock (re)open, so
+        # a previous trace is not silently redrawn onto the fresh canvas.
+        if render and self.plotWidget and hasattr(self.plotWidget, 'setProfileFromTree'):
+            self.plotWidget.setProfileFromTree(edges)

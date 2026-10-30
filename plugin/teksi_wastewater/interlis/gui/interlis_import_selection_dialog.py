@@ -41,15 +41,17 @@ class InterlisImportSelectionDialog(QDialog):
         self.accepted.connect(self.commit_session)
         self.rejected.connect(self.rollback_session)
 
-        self.treeWidget.header().setSectionResizeMode(QHeaderView.ResizeToContents)
-        self.treeWidget.header().setSectionResizeMode(self.Columns.NAME, QHeaderView.Stretch)
+        self.treeWidget.header().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
+        self.treeWidget.header().setSectionResizeMode(
+            self.Columns.NAME, QHeaderView.ResizeMode.Stretch
+        )
 
-        self.debugTreeWidget.header().setSectionResizeMode(QHeaderView.ResizeToContents)
+        self.debugTreeWidget.header().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
         self.debugTreeWidget.header().setSectionResizeMode(
-            self.ColumnsDebug.KEY, QHeaderView.Interactive
+            self.ColumnsDebug.KEY, QHeaderView.ResizeMode.Interactive
         )
         self.debugTreeWidget.header().setSectionResizeMode(
-            self.ColumnsDebug.VALUE, QHeaderView.Interactive
+            self.ColumnsDebug.VALUE, QHeaderView.ResizeMode.Interactive
         )
         self.debugTreeWidget.hideColumn(self.ColumnsDebug.VALUE_OLD)
 

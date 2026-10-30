@@ -24,9 +24,6 @@ simple_joins_yaml:
   vw_export_wastewater_structure: "view/simplejoins/export/vw_export_wastewater_structure.yaml"
 
 modification_repositories:
-  - id: ci
-    active: false
-    template: modification_repos/ci_extension/config.yaml
   - id: webgis
     active: false
     template: modification_repos/webgis/config.yaml

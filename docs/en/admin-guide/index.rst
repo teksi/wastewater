@@ -7,13 +7,14 @@ This represents a guide on how to administrate the database, install a Virtual m
    :maxdepth: 3
 
    datamodel
-   db-label-customization/index
+   db-label-customisation/index
    pgadmin/index
    security/index
    interlis-io/index
    db-customization/index
    datamodel-tool/index
    db-update-pum/index
+   db-production-readiness/index
 
 In discussion:
 

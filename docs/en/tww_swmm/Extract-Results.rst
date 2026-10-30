@@ -1,4 +1,3 @@
-.. _Extract-Results:
 
 SWMM Extract Results
 --------------------

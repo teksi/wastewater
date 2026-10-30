@@ -16,23 +16,32 @@ The AG-64/AG-96 object-ids are mapped to the database as follows:
  * GEPMassnahme is mapped to ``tww_od.measure``
  * VersickerungsbereichAG is mapped to ``tww_od.infiltration_zone``
 
-Wherever possible, the value lists of VSA DSS are used. In cases where a 1:1 mapping is possible, there is no additional value list entry for AG-64/96. Instead, one can use the corresponding VSA-DSS value which is translated on export. These cases are listed below.
+Wherever possible, the value lists of VSA DSS are used.
+In cases where a 1:1 mapping is possible, there is no additional value list entry for AG-64/96.
+Instead, one can use the corresponding VSA-DSS value which is translated on export. These cases are listed below.
 
-Almost all VSA-DSS values of the mentioned layers that do not exist in AG-64/96 are mapped to AG-64/96 using a backwards relation. Per default, the VSA-specific value list codes which are ambiguous in AG-64/96 are set to ``inactive``.
+Almost all VSA-DSS values of the mentioned layers that do not exist in AG-64/96 are mapped to AG-64/96 using a backwards relation.
+Per default, the VSA-specific value list codes which are ambiguous in AG-64/96 are set to ``inactive``.
 
 The AG-64/96 values are automatically mapped to VSA DSS where sensible, allowing to export both models.
 
 Handling of organisations
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-In the models AG-64/AG-96, the organisations table differs from VSA. It has 20 characters and uses a different prefix. In order to maintain the VSA compatibility, TWW 2 AG-64/96 uses the VSA tables.
+In the models AG-64/AG-96, the organisations table differs from VSA. It has 20 characters and uses a different prefix.
+In order to maintain the VSA compatibility, TWW 2 AG-64/96 uses the VSA tables.
 
-There is a set of private entities in the AG-64/AG-96 organisations dataset that were not ported to VSA DSS. For these organisations, we use a OID prefix that was generated solely for this purpose and the AG-64/AG-96 postfix. The corresponding data is imported on initialisation.
+There is a set of private entities in the AG-64/AG-96 organisations dataset that were not ported to VSA DSS.
+For these organisations, we use a OID prefix that was generated solely for this purpose and the AG-64/AG-96 postfix.
+The corresponding data is imported on initialisation.
 
-When exporting a dataset, the organisations are not exported from the TEKSI database. Instead, the AG-64/96 Organisation dataset is stored within the plugin and added to the export dataset.
+When exporting a dataset, the organisations are not exported from the TEKSI database.
+Instead, the AG-64/96 Organisation dataset is stored within the plugin and added to the export dataset.
 
 Last Modification
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-in AG-64/96, the last modification value of cadastre and general planning are separated. To keep track of them, they are managed on the database. There is a widget in the settings to alter the current value, `see here <./plugin_setup_agxx.html>`_ .
+in AG-64/96, the last modification value of cadastre and general planning are separated.
+To keep track of them, they are managed on the database.
+There is a widget in the settings to alter the current value, `see here <./plugin_setup_agxx.html>`_ .
 
 
 Infrastrukturknoten/GEPKnoten
@@ -53,7 +62,9 @@ The FunktionAG is mapped from
 
 The FunktionAG ``Kontrollschacht`` is not included in the value list. Use ``manhole`` or ``combined_manhole`` instead, which are mapped using a backwards relation.
 
-The following table explains the mapping of FunktionAG in detail. If there are multiple options for TWW class, the type is defined dependent on whether a detail geometry exists. The value_de is only listed if the AG-64/96 value is not eligible
+The following table explains the mapping of FunktionAG in detail.
+If there are multiple options for TWW class, the type is defined dependent on whether a detail geometry exists.
+The value_de is only listed if the AG-64/96 value is not eligible
 
 .. list-table::
    :widths: 30 45 25
@@ -247,7 +258,7 @@ In order to follow these limitations, there is an additional foreign key on ``tw
 Additionally, the attribute ``wastewater_node.ag64_function`` can be set to "andere".
 
 Handling of the attribute "IstSchnittstelle"
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 AG-96 has an attribute ``IstSchnittstelle`` which is not present in VSA DSS 2020.1. The value is stored in ``tww_od.wastewater_node.ag96_isgateway``.
 
 Infrastrukturhaltung/GEPHaltung
@@ -257,8 +268,11 @@ Apart from street water and square water, the NutzungsartAG are not modelled as 
 
 Handling of reach-reach connections
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AG-64/96 does not support reach-reach connections. If needed, the DSS topology is overridden on AG-64/96 export by a foreign key on ``tww_od.agxx_reach_point.ag64_fk_wastewater_node`` that points to ``tww_od.agxx_unconnected_node_bwrel``.  are defined in the datamodel as Infrastrukturknoten/GEPKnoten with funktionag "Anschluss". When this foreign key is not set, reach-reach connections throw an error on export.
-
+AG-64/96 does not support reach-reach connections.
+If needed, the DSS topology is overridden on AG-64/96 export by a foreign key on ``tww_od.agxx_reach_point.ag64_fk_wastewater_node`` that points to ``tww_od.agxx_unconnected_node_bwrel``.
+On Export, a ``Infrastrukturknoten/GEPKnoten`` with the reach point's ``obj_id`` and  funktionag ``Leitungsknoten`` is created.
+Note that using this type of mapping will break sequential imports from  AG-64 and AG-96, but ensures VSA-DSS compatibility.
+When the foreign key ``tww_od.agxx_reach_point.ag64_fk_wastewater_node`` is not set, reach-reach connections throw an error on export.
 
 Ueberlauf_Foerderaggregat
 ---------------------------------

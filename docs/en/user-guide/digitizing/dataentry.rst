@@ -41,6 +41,7 @@ When adding new **reach**, the wizard has some additional functionality:
 * Snapping on wastewater nodes and other reaches is on, even if QGIS **Enable Snapping** is off.
 * Snapping on nodes is always preferred to snapping on reaches.
 * When the new reach snaps, then the obj_id_links are automatically entered in the fk_fields of the reach points.
+* When the new reach snaps, the identifier is derived from start and end wastewater nodes. If it does not snap, the obj_id of the reach point is used. Note that this requires manual editing of the identifier in cases with parallel reaches (same start and end node).
 * The **Reuse last entered value** - option of QGIS does not work in this view. But the standard-fields on the general-tab (and only those fields) do reuse the last entered value.
 
 If you use another tool (e.g. the **Identify Features** tool) and then want to continue digitizing with the wizard, you can not select the wizard again. You have to click **Stop Data Entry** and then **Start Data Entry** and you can continue.

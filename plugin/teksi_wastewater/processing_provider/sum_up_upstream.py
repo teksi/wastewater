@@ -143,7 +143,7 @@ class SumUpUpstreamAlgorithm(TwwAlgorithm):
                 self.WASTEWATER_NODE_LAYER,
                 description=description,
                 types=[QgsProcessing.TypeVector],
-                defaultValue="vw_wastewater_node",
+                defaultValue="vw_tww_wastewater_node",
             )
         )
 

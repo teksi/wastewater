@@ -22,14 +22,21 @@
 #
 # ---------------------------------------------------------------------
 
-from qgis.core import QgsFeatureRequest
+import math
+
+from qgis.core import QgsFeatureRequest, QgsProfilePoint
 from qgis.gui import QgsHighlight
 from qgis.PyQt.QtCore import QPoint, QPointF, Qt
 from qgis.PyQt.QtGui import QColor
-from qgis.PyQt.QtWidgets import QLabel, QToolTip
+from qgis.PyQt.QtWidgets import QLabel
 
 from ...utils.twwlayermanager import TwwLayerManager
-from .layer_setup import _feature_attributes, _pick_attr, _to_float
+from .layer_setup import (
+    _feature_attributes,
+    _to_float,
+    reach_band_px,
+    resolve_value_list,
+)
 
 
 class ProfileHoverManager:
@@ -47,6 +54,47 @@ class ProfileHoverManager:
     HIGHLIGHT_COLOR = QColor("#2ECC71")  # Emerald green
     HIGHLIGHT_FILL_COLOR = QColor(46, 204, 113, 60)  # Semi-transparent fill
 
+    MISSING_DATA_HTML = '<span style="color:red">Missing Data</span>'
+
+    # tww_vl dictionary tables for resolving raw integer value-list codes.
+    REACH_MATERIAL_VL = "reach_material"
+    COVER_MATERIAL_VL = "cover_material"
+    COVER_SHAPE_VL = "cover_cover_shape"
+    SPECIAL_STRUCTURE_FUNCTION_VL = "special_structure_function"
+
+    # Canonical vw_tww_reach attribute names (see tww_app.vw_tww_reach).
+    REACH_OBJ_ID = "obj_id"
+    REACH_MATERIAL = "material"
+    REACH_CLEAR_HEIGHT = "clear_height"
+    REACH_LENGTH_EFFECTIVE = "length_effective"
+    REACH_SLOPE_PER_MILL = "_slope_per_mill"
+    REACH_RP_FROM_LEVEL = "rp_from_level"
+    REACH_RP_TO_LEVEL = "rp_to_level"
+
+    # Canonical main-cover fields on vw_tww_wastewater_structure (co_* from main_co).
+    COVER_OBJ_ID = "co_obj_id"
+    COVER_LEVEL = "co_level"
+    COVER_MATERIAL = "co_material"
+    COVER_SHAPE = "co_shape"
+    COVER_BRAND = "co_brand"
+
+    # Canonical vw_tww_wastewater_structure fields for manhole hover tooltips.
+    MANHOLE_OBJ_ID = "obj_id"
+    MANHOLE_WS_TYPE = "ws_type"
+    MANHOLE_CO_LEVEL = "co_level"
+    MANHOLE_BOTTOM_LEVEL = "wn_bottom_level"
+    MANHOLE_COVER_LABEL = "_cover_label"
+    MANHOLE_BOTTOM_LABEL = "_bottom_label"
+    MANHOLE_INPUT_LABEL = "_input_label"
+    MANHOLE_OUTPUT_LABEL = "_output_label"
+    MANHOLE_DIMENSION1 = "ma_dimension1"
+
+    # Canonical vw_change_points fields for the change-point tooltip.
+    CHANGE_POINT_OBJ_ID = "obj_id"
+    CHANGE_POINT_MATERIAL = "change_in_material"
+    CHANGE_POINT_CLEAR_HEIGHT = "change_in_clear_height"
+    CHANGE_POINT_SLOPE = "change_in_slope"
+
     def __init__(self, canvas, map_canvas):
         """
         :param canvas: TwwElevationProfileCanvas instance.
@@ -56,7 +104,6 @@ class ProfileHoverManager:
         self._map_canvas = map_canvas
 
         # Hover state
-        self._hover_enabled = True
         self._last_hover_match = None
         self._last_hover_pos = None
         self._last_hover_global_pos = None
@@ -97,8 +144,6 @@ class ProfileHoverManager:
         """
         if hasattr(self._canvas, "setSnappingEnabled"):
             self._canvas.setSnappingEnabled(True)
-        if hasattr(self._canvas, "canvasPointHovered"):
-            self._canvas.canvasPointHovered.connect(self._onCanvasPointHovered)
 
     # ------------------------------------------------------------------
     # Event handlers (called by TwwElevationProfileCanvas callbacks)
@@ -106,8 +151,6 @@ class ProfileHoverManager:
 
     def onCanvasMouseMove(self, event):
         """Handle raw mouseMoveEvent forwarded from the canvas."""
-        if not self._hover_enabled:
-            return
         self._last_hover_pos = event.pos()
         self._last_hover_global_pos = self._canvas.mapToGlobal(event.pos())
         self._handleCanvasHover(event.pos())
@@ -124,7 +167,6 @@ class ProfileHoverManager:
         """Clear all hover state: tooltip, highlight, last match."""
         self._last_hover_match = None
         self._last_tooltip_text = None
-        QToolTip.hideText()
         self._custom_tooltip.hide()
         self._clearHighlight()
 
@@ -132,15 +174,60 @@ class ProfileHoverManager:
     # Internal hover pipeline
     # ------------------------------------------------------------------
 
-    def _onCanvasPointHovered(self, _map_point, profile_point):
-        """Handle hover signal from QgsElevationProfileCanvas (official API)."""
-        if not self._hover_enabled:
-            return
-        self._updateHoverMatch(profile_point)
-
     def _handleCanvasHover(self, pos):
         """Handle hover using raw canvas pixel coordinates."""
         if not hasattr(self._canvas, "canvasPointToPlotPoint"):
+            return
+        # Deliberately NOT calling canvas.snapToPlot() here. Its result is of no
+        # use to us — the hit-testing below is our own — but its side effect is
+        # QGIS's snapped cross-hairs, whose two 6-decimal readouts cannot be
+        # restyled or rounded from Python (PyQGIS exposes no cross-hair API at
+        # all). The hover tooltip already reports the elevation at the cursor.
+
+        profile_point = self._canvas.canvasPointToPlotPoint(QPointF(pos))
+        if self._isEmptyProfilePoint(profile_point):
+            plot_point = None
+        else:
+            plot_point = self._profilePointToPlotPoint(profile_point)
+
+        # Structures are a pixel-space overlay whose exaggerated shafts can
+        # extend beyond the plot area (a cover cap pushed above the top axis).
+        # Hit-test them first, before the plot-area check, so the whole drawn
+        # shaft — cover included — stays hoverable and a structure under the
+        # cursor wins over the reach beneath it.
+        # Cover cap first (its band sits on top of the shaft body), so hovering
+        # the cover shows a dedicated cover tooltip; the body shows the manhole.
+        cover_match = self._identifyCoverDash(plot_point)
+        if cover_match is not None:
+            self._last_hover_match = cover_match
+            cover_point = cover_match.get("plot_point")
+            self._showHoverTooltip(cover_point, cover_match)
+            self._highlightMatchOnMap(cover_point, cover_match)
+            return
+
+        structure_match = self._identifyManholeDash(plot_point)
+        if structure_match is not None:
+            self._last_hover_match = structure_match
+            structure_point = structure_match.get("plot_point")
+            self._showHoverTooltip(structure_point, structure_match)
+            self._highlightMatchOnMap(structure_point, structure_match)
+            return
+
+        # Change-point X marks also sit on the pipe line; check them before the
+        # reach so hovering the X wins over the pipe beneath it.
+        change_point_match = self._identifyChangePoint(plot_point)
+        if change_point_match is not None:
+            self._last_hover_match = change_point_match
+            change_point = change_point_match.get("plot_point")
+            self._showHoverTooltip(change_point, change_point_match)
+            self._highlightMatchOnMap(change_point, change_point_match)
+            return
+
+        # No structure under the cursor → reach/surface hover, which is only
+        # valid inside the plot area. (Structures are checked above because their
+        # exaggerated shafts can legitimately stick out beyond it.)
+        if plot_point is None:
+            self.clearState()
             return
         if hasattr(self._canvas, "plotArea"):
             try:
@@ -150,22 +237,15 @@ class ProfileHoverManager:
                     return
             except Exception:
                 pass
-        if hasattr(self._canvas, "snapToPlot"):
-            try:
-                self._canvas.snapToPlot(pos)
-            except Exception:
-                pass
-        profile_point = self._canvas.canvasPointToPlotPoint(QPointF(pos))
-        if self._isEmptyProfilePoint(profile_point):
-            self.clearState()
-            return
         self._updateHoverMatch(profile_point)
 
     def _updateHoverMatch(self, profile_point):
         """
-        Convert hover to plot coordinates and match the nearest profile result.
+        Match the nearest identify() result for a reach/surface hover.
 
-        Uses official identify() API first, then custom manhole hit-test.
+        The overlay hit-tests (cover, manhole, change point) already ran — and
+        missed — in _handleCanvasHover before this is called, so only the
+        official identify() API is consulted here.
         """
         plot_point = self._profilePointToPlotPoint(profile_point)
         if plot_point is None:
@@ -180,11 +260,18 @@ class ProfileHoverManager:
             except Exception:
                 pass
 
-        manhole_match = self._identifyManholeDash(plot_point)
-        if manhole_match:
-            identify_results.append(manhole_match)
-
         nearest = self._nearestIdentifyResult(identify_results, plot_point)
+
+        # QGIS identify() on a profile matches a reach by horizontal proximity
+        # only, so a cursor far above/below the pipe still hits it. Reject a reach
+        # match unless the cursor is actually near the drawn pipe band.
+        if (
+            nearest is not None
+            and self._matchIsReach(nearest)
+            and not self._cursorNearReachBand(plot_point)
+        ):
+            self.clearState()
+            return
 
         if nearest:
             self._last_hover_match = nearest
@@ -200,75 +287,249 @@ class ProfileHoverManager:
     # Manhole dash hit-test
     # ------------------------------------------------------------------
 
-    def _identifyManholeDash(self, plot_point):
-        """
-        Identify custom-drawn manhole dashes (not in layers, drawn via drawForeground).
+    @staticmethod
+    def _rectPointDistance(rect, point):
+        """Pixel distance from a point to a QRectF (0 when the point is inside)."""
+        dx = max(rect.left() - point.x(), 0.0, point.x() - rect.right())
+        dy = max(rect.top() - point.y(), 0.0, point.y() - rect.bottom())
+        return math.hypot(dx, dy)
 
-        :param plot_point: QPointF with (distance, elevation) in plot coordinates.
-        :return: Fake identify-result dict, or None if no match.
+    def _hoverCanvasCursors(self, plot_point):
         """
-        if not hasattr(self._canvas, "_manhole_dashes") or not self._canvas._manhole_dashes:
+        Cursor position(s) in the canvas-point space the hit rects use.
+
+        The rects come from plotPointToCanvasPoint. The raw mouse event.pos() is
+        normally the same space, but can differ (view transform / HiDPI scaling),
+        which would silently miss every box. So we also round-trip the plot point
+        back through plotPointToCanvasPoint, which is guaranteed to land in the
+        rects' space; either cursor matching the box counts as a hit.
+        """
+        cursors = []
+        if self._last_hover_pos is not None:
+            cursors.append(QPointF(self._last_hover_pos))
+        if plot_point is not None and hasattr(self._canvas, "plotPointToCanvasPoint"):
+            try:
+                converted = self._canvas.plotPointToCanvasPoint(
+                    QgsProfilePoint(float(plot_point.x()), float(plot_point.y()))
+                )
+                if converted is not None and not (
+                    hasattr(converted, "isEmpty") and converted.isEmpty()
+                ):
+                    cursors.append(QPointF(converted.x(), converted.y()))
+            except (TypeError, ValueError):
+                pass
+        return cursors
+
+    def _nearestDashInRects(self, hit_rects, plot_point, tolerance=8.0):
+        """
+        Nearest dash whose (padded) rect is within ``tolerance`` px of the cursor.
+
+        Hit-tests in CANVAS PIXEL space, because the shafts are drawn in
+        exaggerated pixel space (their true levels collapse together at overview
+        zoom). The tolerance keeps small shafts / thin cover caps hoverable; the
+        cover band uses a tighter tolerance so it doesn't swallow the shaft body.
+        Returns the dash, or None.
+        """
+        if not hit_rects:
+            return None
+        cursors = self._hoverCanvasCursors(plot_point)
+        if not cursors:
             return None
 
-        distance = plot_point.x()
-        elevation = plot_point.y()
-
-        tolerance_dist = 5.0
-        tolerance_elev = 5.0
-
-        best_match = None
-        best_distance2 = float("inf")
-
-        for dash in self._canvas._manhole_dashes:
-            dash_distance = dash.get("distance")
-            cover_level = dash.get("cover_level")
-            bottom_level = dash.get("bottom_level")
-            width_px = dash.get("width", 10)
-
-            if dash_distance is None or cover_level is None or bottom_level is None:
+        best_dash = None
+        best_dist = None
+        for dash, rect in hit_rects:
+            if rect is None:
                 continue
-
-            dist_diff = abs(distance - dash_distance)
-            if dist_diff > tolerance_dist:
+            dist = min(self._rectPointDistance(rect, c) for c in cursors)
+            if dist > tolerance:
                 continue
+            if best_dist is None or dist < best_dist:
+                best_dist = dist
+                best_dash = dash
+        return best_dash
 
-            min_elev = min(bottom_level, cover_level) - tolerance_elev
-            max_elev = max(bottom_level, cover_level) + tolerance_elev
+    def _identifyManholeDash(self, plot_point):
+        """Identify the whole-manhole shaft under the cursor (body, not the cap)."""
+        if not hasattr(self._canvas, "getManholeDashHitRects"):
+            return None
+        dash = self._nearestDashInRects(
+            self._canvas.getManholeDashHitRects(), plot_point
+        )
+        if dash is None:
+            return None
 
-            if not (min_elev <= elevation <= max_elev):
-                continue
+        dash_distance = dash.get("distance")
+        cover_level = dash.get("cover_level")
+        bottom_level = dash.get("bottom_level")
+        rep_level = cover_level
+        if rep_level is None:
+            rep_level = bottom_level
+        if rep_level is None:
+            rep_level = dash.get("invert_level")
 
-            center_elev = (cover_level + bottom_level) / 2
-            elev_diff = abs(elevation - center_elev)
-            distance2 = dist_diff * dist_diff + elev_diff * elev_diff
+        result_point = plot_point
+        if dash_distance is not None and rep_level is not None:
+            result_point = QPointF(dash_distance, rep_level)
 
-            if distance2 < best_distance2:
-                best_distance2 = distance2
-                best_match = {
-                    "layer": None,
-                    "result": {
-                        "feature": None,
-                        "attributes": {
-                            "obj_id": dash.get("obj_id"),
-                            "cover_level": cover_level,
-                            "bottom_level": bottom_level,
-                            "bottom_level_missing": dash.get("bottom_level_missing", False),
-                            "width": width_px,
-                            "node_type": "manhole",
-                            "_is_manhole_dash": True,
-                        },
-                        "distance": dash_distance,
-                        "elevation": center_elev,
-                    },
-                    "plot_point": QPointF(dash_distance, center_elev),
-                    "distance2": distance2,
-                }
+        return {
+            "layer": None,
+            "result": {
+                "feature": None,
+                "attributes": {
+                    "obj_id": dash.get("obj_id"),
+                    "ws_type": dash.get("ws_type", "manhole"),
+                    "co_level": cover_level,
+                    "wn_bottom_level": bottom_level,
+                    "cover_level_missing": dash.get("cover_level_missing", False),
+                    "bottom_level_missing": dash.get("bottom_level_missing", False),
+                    "_cover_label": dash.get("_cover_label"),
+                    "_bottom_label": dash.get("_bottom_label"),
+                    "_input_label": dash.get("_input_label"),
+                    "_output_label": dash.get("_output_label"),
+                    "ma_dimension1": dash.get("dim1_mm"),
+                    "ss_function": dash.get("ss_function"),
+                    "_is_manhole_dash": True,
+                },
+                "distance": dash_distance,
+                "elevation": rep_level,
+            },
+            "plot_point": result_point,
+            # Cursor is literally inside the drawn box → win over reach identify.
+            "distance2": 0.0,
+        }
 
-        return best_match
+    def _identifyCoverDash(self, plot_point):
+        """Identify the cover cap under the cursor → a dedicated cover tooltip."""
+        if not hasattr(self._canvas, "getCoverHitRects"):
+            return None
+        # Tighter tolerance than the body so the cover band stays confined to the
+        # cap and doesn't make the manhole body hard to hover.
+        dash = self._nearestDashInRects(
+            self._canvas.getCoverHitRects(), plot_point, tolerance=4.0
+        )
+        if dash is None:
+            return None
+
+        dash_distance = dash.get("distance")
+        cover_level = dash.get("cover_level")
+        result_point = plot_point
+        if dash_distance is not None and cover_level is not None:
+            result_point = QPointF(dash_distance, cover_level)
+
+        return {
+            "layer": None,
+            "result": {
+                "feature": None,
+                "attributes": {
+                    "co_obj_id": dash.get("co_obj_id"),
+                    "co_level": cover_level,
+                    "co_material": dash.get("co_material"),
+                    "co_shape": dash.get("co_shape"),
+                    "co_brand": dash.get("co_brand"),
+                    "_is_cover_dash": True,
+                },
+                "distance": dash_distance,
+                "elevation": cover_level,
+            },
+            "plot_point": result_point,
+            "distance2": 0.0,
+        }
+
+    def _identifyChangePoint(self, plot_point):
+        """Identify the change-point X under the cursor → a change-point tooltip."""
+        if not hasattr(self._canvas, "getChangePointHitRects"):
+            return None
+        change_point = self._nearestDashInRects(
+            self._canvas.getChangePointHitRects(), plot_point, tolerance=6.0
+        )
+        if change_point is None:
+            return None
+
+        distance = change_point.get("distance")
+        level = change_point.get("level")
+        result_point = plot_point
+        if distance is not None and level is not None:
+            result_point = QPointF(distance, level)
+
+        return {
+            "layer": None,
+            "result": {
+                "feature": None,
+                "attributes": {
+                    "obj_id": change_point.get("obj_id"),
+                    "change_in_material": change_point.get("change_in_material"),
+                    "change_in_clear_height": change_point.get("change_in_clear_height"),
+                    "change_in_slope": change_point.get("change_in_slope"),
+                    "_is_change_point": True,
+                },
+                "distance": distance,
+                "elevation": level,
+            },
+            "plot_point": result_point,
+            "distance2": 0.0,
+        }
 
     # ------------------------------------------------------------------
     # Identify result helpers
     # ------------------------------------------------------------------
+
+    def _matchIsReach(self, match):
+        """True when the match resolves to a reach feature."""
+        attrs, layer_name, _feature, _layer = self._attrsFromMatch(match)
+        return self._isReachHover(layer_name, attrs)
+
+    def _cursorNearReachBand(self, plot_point):
+        """
+        True when the cursor sits on (or within a few px of) a drawn pipe band.
+
+        identify() only checks horizontal proximity, so this adds the missing
+        vertical check in pixel space using the band geometry the canvas drew.
+        """
+        if plot_point is None or not hasattr(self._canvas, "getReachBands"):
+            return True
+        bands = self._canvas.getReachBands()
+        if not bands:
+            return True  # no band data → don't over-filter
+        cursors = self._hoverCanvasCursors(plot_point)
+        if not cursors:
+            return True
+        cursor = cursors[-1]  # the round-trip (canvas-space) cursor when available
+
+        distance = plot_point.x()
+        margin = 12.0
+        for band in bands:
+            invert = band.get("invert") or []
+            invert_z = self._interpolateInvertZ(invert, distance)
+            if invert_z is None:
+                continue
+            invert_pt = self._canvas.plotPointToCanvasPointSafe(distance, invert_z)
+            if invert_pt is None:
+                continue
+            band_px = reach_band_px(band.get("clear_height_mm")) or 2.0
+            # The band is drawn from the invert upward (soffit above = smaller y).
+            top = invert_pt.y() - band_px - margin
+            bottom = invert_pt.y() + margin
+            if top <= cursor.y() <= bottom:
+                return True
+        return False
+
+    @staticmethod
+    def _interpolateInvertZ(invert, distance):
+        """Linear-interpolate the invert Z at a distance; None when out of range."""
+        if len(invert) < 2:
+            return None
+        if distance < invert[0][0] or distance > invert[-1][0]:
+            return None
+        for i in range(len(invert) - 1):
+            d0, z0 = invert[i]
+            d1, z1 = invert[i + 1]
+            if d0 <= distance <= d1:
+                if d1 == d0:
+                    return z0
+                ratio = (distance - d0) / (d1 - d0)
+                return z0 + (z1 - z0) * ratio
+        return None
 
     def _nearestIdentifyResult(self, identify_results, plot_point):
         """Pick the nearest identify result to a plot point."""
@@ -372,7 +633,6 @@ class ProfileHoverManager:
         should_hide = plot_point is None or match is None
 
         if should_hide:
-            QToolTip.hideText()
             self._custom_tooltip.hide()
             self._last_hover_global_pos = None
             self._last_tooltip_text = None
@@ -380,29 +640,19 @@ class ProfileHoverManager:
 
         text = self._formatHoverSummary(plot_point, match)
         if not text:
-            QToolTip.hideText()
             self._custom_tooltip.hide()
             self._last_hover_global_pos = None
             self._last_tooltip_text = None
             return
 
-        current_layer = match.get("layer_name", "")
-        current_fid = match.get("feature_id", "")
-        same_feature = False
-
-        if self._last_hover_match:
-            last_layer = self._last_hover_match.get("layer_name", "")
-            last_fid = self._last_hover_match.get("feature_id", "")
-            same_feature = current_layer == last_layer and current_fid == last_fid
-
         from qgis.PyQt.QtGui import QCursor
 
         current_pos = QCursor.pos()
 
+        # Dedup by the rendered text: a feature change always changes the text
+        # (obj_id is on the first line), so no separate identity check is needed.
         need_update = False
         if not self._last_tooltip_text:
-            need_update = True
-        elif not same_feature:
             need_update = True
         elif text != self._last_tooltip_text:
             need_update = True
@@ -425,164 +675,170 @@ class ProfileHoverManager:
 
     def _formatHoverSummary(self, plot_point, match):
         """Build rich-text tooltip content for a hover match."""
-        result = match.get("result") if match else None
-        layer = match.get("layer") if match else None
-        layer_name = layer.name() if layer and hasattr(layer, "name") else ""
-        feature = self._extractResultFeature(result, layer)
-        result_attrs = self._extractResultAttributes(result)
-
-        if feature:
-            attrs = _feature_attributes(feature)
-        else:
-            attrs = result_attrs
-
-        if result_attrs:
-            for key in ["distance", "elevation", "delta"]:
-                if key in result_attrs and key not in attrs:
-                    attrs[key] = result_attrs[key]
+        attrs, layer_name, _feature, _layer = self._attrsFromMatch(match)
 
         lines = []
 
         is_reach = self._isReachHover(layer_name, attrs)
         is_cover = self._isCoverHover(layer_name, attrs)
         is_manhole = self._isManholeHover(layer_name, attrs)
+        is_change_point = self._isChangePointHover(layer_name, attrs)
 
         if is_reach:
-            obj_id = _pick_attr(attrs, ["obj_id", "objId", "id", "reach_id"])
+            obj_id = attrs.get(self.REACH_OBJ_ID)
             lines.append(f"Reach {obj_id}" if obj_id else "Reach")
-            material = _pick_attr(
-                attrs,
-                ["material_abbr_en", "material_abbr_de", "material_abbr_fr", "material"],
-            )
-            self._appendLabeled(lines, "Material", material)
-            width_mm = _to_float(_pick_attr(attrs, ["clear_height", "width", "diameter"]))
-            if width_mm is not None:
-                lines.append(f"Width: {width_mm:.0f} mm")
-            length = _to_float(
-                _pick_attr(attrs, ["ch_pipe_length", "length_effective", "length_full", "length"])
-            )
+
+            material = attrs.get(self.REACH_MATERIAL)
+            if material is None or material == "":
+                lines.append(f"Material: {self.MISSING_DATA_HTML}")
+            else:
+                material_text = resolve_value_list(self.REACH_MATERIAL_VL, material)
+                lines.append(f"Material: {material_text or material}")
+
+            clear_height_mm = _to_float(attrs.get(self.REACH_CLEAR_HEIGHT))
+            if clear_height_mm is None:
+                lines.append(f"Clear height: {self.MISSING_DATA_HTML}")
+            else:
+                lines.append(f"Clear height: {clear_height_mm:.0f} mm")
+
+            length = _to_float(attrs.get(self.REACH_LENGTH_EFFECTIVE))
             if length is None:
-                length = self._lengthFromFeature(feature)
-            self._appendLabeled(lines, "Length", self._formatMeters(length))
-            gradient = self._deriveGradient(attrs, length)
-            if gradient is not None:
-                lines.append(f"Gradient: {gradient * 1000:.0f} \u2030")
-            entry_level = _to_float(
-                _pick_attr(attrs, ["rp_from_level", "from_level", "start_level", "startLevel"])
-            )
-            exit_level = _to_float(
-                _pick_attr(attrs, ["rp_to_level", "to_level", "end_level", "endLevel"])
-            )
-            if entry_level is None or exit_level is None:
-                start_z, end_z = self._levelsFromFeatureGeometry(feature)
-                if entry_level is None:
-                    entry_level = start_z
-                if exit_level is None:
-                    exit_level = end_z
-            self._appendLabeled(lines, "Entry level", self._formatMeters(entry_level, decimals=1))
-            self._appendLabeled(lines, "Exit level", self._formatMeters(exit_level, decimals=1))
-            if plot_point is not None and entry_level is not None and exit_level is not None:
+                lines.append(f"Length: {self.MISSING_DATA_HTML}")
+            else:
+                lines.append(f"Length: {self._formatMeters(length)}")
+
+            slope_per_mill = _to_float(attrs.get(self.REACH_SLOPE_PER_MILL))
+            if slope_per_mill is None:
+                lines.append(f"Gradient: {self.MISSING_DATA_HTML}")
+            else:
+                lines.append(f"Gradient: {slope_per_mill:.0f} \u2030")
+
+            entry_level = _to_float(attrs.get(self.REACH_RP_FROM_LEVEL))
+            if entry_level is None:
+                lines.append(f"Entry level: {self.MISSING_DATA_HTML}")
+            else:
+                lines.append(f"Entry level: {self._formatMeters(entry_level, decimals=2)}")
+
+            exit_level = _to_float(attrs.get(self.REACH_RP_TO_LEVEL))
+            if exit_level is None:
+                lines.append(f"Exit level: {self.MISSING_DATA_HTML}")
+            else:
+                lines.append(f"Exit level: {self._formatMeters(exit_level, decimals=2)}")
+
+            if plot_point is not None:
                 lines.append(f"Elevation at cursor: {plot_point.y():.2f} m")
 
         elif is_cover:
-            obj_id = _pick_attr(attrs, ["obj_id", "objId", "id"])
-            lines.append(f"Cover {obj_id}" if obj_id else "Cover")
-            cover_data = self._getCoverEnhancedData(obj_id, attrs)
-            level = cover_data.get("level") or _to_float(
-                _pick_attr(attrs, ["level", "cover_level"])
-            )
-            self._appendLabeled(lines, "Level", self._formatMeters(level, decimals=2))
-            self._appendLabeled(
-                lines, "Material", cover_data.get("material") or _pick_attr(attrs, ["material"])
-            )
-            self._appendLabeled(
-                lines,
-                "Cover shape",
-                cover_data.get("cover_shape") or _pick_attr(attrs, ["cover_shape"]),
-            )
-            self._appendLabeled(
-                lines, "Brand", cover_data.get("brand") or _pick_attr(attrs, ["brand"])
-            )
+            cover_obj_id = attrs.get(self.COVER_OBJ_ID)
+            lines.append(f"Cover {cover_obj_id}" if cover_obj_id else "Cover")
+
+            level = _to_float(attrs.get(self.COVER_LEVEL))
+            if level is None:
+                lines.append(f"Level: {self.MISSING_DATA_HTML}")
+            else:
+                lines.append(f"Level: {self._formatMeters(level, decimals=2)}")
+
+            material = attrs.get(self.COVER_MATERIAL)
+            if material is None or material == "":
+                lines.append(f"Material: {self.MISSING_DATA_HTML}")
+            else:
+                material_text = resolve_value_list(self.COVER_MATERIAL_VL, material)
+                lines.append(f"Material: {material_text or material}")
+
+            cover_shape = attrs.get(self.COVER_SHAPE)
+            if cover_shape is None or cover_shape == "":
+                lines.append(f"Cover shape: {self.MISSING_DATA_HTML}")
+            else:
+                shape_text = resolve_value_list(self.COVER_SHAPE_VL, cover_shape)
+                lines.append(f"Cover shape: {shape_text or cover_shape}")
+
+            brand = attrs.get(self.COVER_BRAND)
+            if brand is None or brand == "":
+                lines.append(f"Brand: {self.MISSING_DATA_HTML}")
+            else:
+                lines.append(f"Brand: {brand}")
 
         elif is_manhole:
-            node_type = str(_pick_attr(attrs, ["node_type", "nodeType", "type"]) or "").lower()
-            is_actual_manhole = "manhole" in node_type
-            obj_id = _pick_attr(attrs, ["obj_id", "objId", "id", "ws_obj_id"])
+            ws_type = str(attrs.get(self.MANHOLE_WS_TYPE) or "").lower()
+            is_actual_manhole = ws_type == "manhole"
+            obj_id = attrs.get(self.MANHOLE_OBJ_ID)
 
             if is_actual_manhole:
                 lines.append(f"Manhole: {obj_id}" if obj_id else "Manhole")
-                manhole_data = self._getManholeEnhancedData(obj_id, attrs, feature)
-
-                # Cover / Bottom: prefer DB-pre-formatted label (handles multi-cover etc.);
-                # fall back to numeric format if the label field is missing.
-                cover_level = manhole_data.get("cover_level")
-                cover_label = manhole_data.get("cover_label")
-                if cover_label:
-                    lines.append(
-                        "Cover level: " + str(cover_label).replace("\n", "<br>&nbsp;&nbsp;")
-                    )
-                else:
-                    self._appendLabeled(
-                        lines, "Cover level", self._formatMeters(cover_level, decimals=2)
-                    )
-
-                bottom_level = manhole_data.get("bottom_level")
-                bottom_level_missing = (
-                    manhole_data.get("bottom_level_missing", False)
-                    or attrs.get("bottom_level_missing", False)
-                    or bottom_level is None
-                    or bottom_level == 0
+                self._appendManholeLabelLine(
+                    lines, "Cover level", attrs.get(self.MANHOLE_COVER_LABEL)
                 )
-                if bottom_level_missing:
-                    lines.append('Bottom level: <span style="color:red">Missing Data</span>')
-                else:
-                    bottom_label = manhole_data.get("bottom_label")
-                    if bottom_label:
-                        lines.append(
-                            "Bottom level: " + str(bottom_label).replace("\n", "<br>&nbsp;&nbsp;")
-                        )
-                    else:
-                        self._appendLabeled(
-                            lines, "Bottom level", self._formatMeters(bottom_level, decimals=2)
-                        )
+                self._appendManholeLabelLine(
+                    lines, "Bottom level", attrs.get(self.MANHOLE_BOTTOM_LABEL)
+                )
+                self._appendManholeLabelLine(
+                    lines, "Entry level", attrs.get(self.MANHOLE_INPUT_LABEL)
+                )
+                self._appendManholeLabelLine(
+                    lines, "Exit level", attrs.get(self.MANHOLE_OUTPUT_LABEL)
+                )
 
-                # _input_label / _output_label are pre-formatted multi-line strings
-                # from the DB (e.g. '\nI1=2200.00\nI2=2200.00'); convert NL → <br>
-                # so they render in the RichText tooltip.
-                input_label = manhole_data.get("input_label")
-                if input_label:
-                    lines.append(
-                        "Entry level:" + str(input_label).replace("\n", "<br>&nbsp;&nbsp;")
-                    )
-                output_label = manhole_data.get("output_label")
-                if output_label:
-                    lines.append(
-                        "Exit level:" + str(output_label).replace("\n", "<br>&nbsp;&nbsp;")
-                    )
+                cover_level = self._manholeCoverLevelValue(attrs)
+                bottom_level = self._manholeBottomLevelValue(attrs)
                 if cover_level is not None and bottom_level is not None:
                     depth = cover_level - bottom_level
-                    self._appendLabeled(lines, "Depth", self._formatMeters(depth, decimals=2))
-                width = manhole_data.get("width")
-                if width is not None:
-                    lines.append(f"Width: {width:.0f} mm")
+                    lines.append(f"Depth: {self._formatMeters(depth, decimals=2)}")
+                else:
+                    lines.append(f"Depth: {self.MISSING_DATA_HTML}")
+
+                width_mm = _to_float(attrs.get(self.MANHOLE_DIMENSION1))
+                if width_mm is None:
+                    lines.append(f"Width: {self.MISSING_DATA_HTML}")
+                else:
+                    lines.append(f"Width: {width_mm:.0f} mm")
             else:
                 lines.append(f"Node: {obj_id}" if obj_id else "Node")
-                if node_type:
-                    lines.append(f"Type: {node_type}")
-                bottom_level = _to_float(
-                    _pick_attr(attrs, ["bottom_level", "bottomLevel", "level", "invert_level"])
-                )
-                if bottom_level is None or bottom_level == 0:
-                    lines.append('Bottom level: <span style="color:red">Missing Data</span>')
-                elif bottom_level is not None:
+                if ws_type:
+                    lines.append(f"Type: {ws_type}")
+                ss_function = attrs.get("ss_function")
+                if ss_function is not None and ss_function != "":
+                    function_text = resolve_value_list(
+                        self.SPECIAL_STRUCTURE_FUNCTION_VL, ss_function
+                    )
+                    lines.append(f"Function: {function_text or ss_function}")
+                bottom_level = self._manholeBottomLevelValue(attrs)
+                if bottom_level is None:
+                    lines.append(f"Level: {self.MISSING_DATA_HTML}")
+                else:
                     lines.append(f"Level: {bottom_level:.2f} m")
-                elif plot_point is not None:
-                    lines.append(f"Elevation: {plot_point.y():.2f} m")
+
+        elif is_change_point:
+            obj_id = attrs.get(self.CHANGE_POINT_OBJ_ID)
+            lines.append(f"Change point {obj_id}" if obj_id else "Change point")
+
+            if plot_point is not None:
+                lines.append(f"Level: {plot_point.y():.2f} m")
+
+            lines.append(
+                f"Material change: {self._formatYesNo(attrs.get(self.CHANGE_POINT_MATERIAL))}"
+            )
+            lines.append(
+                "Clear-height change: "
+                f"{self._formatYesNo(attrs.get(self.CHANGE_POINT_CLEAR_HEIGHT))}"
+            )
+            slope_change = _to_float(attrs.get(self.CHANGE_POINT_SLOPE))
+            if slope_change is None:
+                lines.append("Slope change: No")
+            elif slope_change == 0:
+                lines.append("Slope change: No")
+            else:
+                lines.append(f"Slope change: {slope_change:.0f} ‰")
         else:
             if layer_name:
                 lines.append(layer_name)
 
-        if plot_point is not None and not is_reach and not is_cover and not is_manhole:
+        if (
+            plot_point is not None
+            and not is_reach
+            and not is_cover
+            and not is_manhole
+            and not is_change_point
+        ):
             lines.append(f"distance: {plot_point.x():.2f}")
             lines.append(f"elevation: {plot_point.y():.2f}")
 
@@ -602,11 +858,14 @@ class ProfileHoverManager:
             return False
         if "change_point" in layer_name_lower:
             return False
-        has_material = _pick_attr(attrs, ["material"]) is not None
-        has_length = _pick_attr(attrs, ["length_full", "length"]) is not None
-        return has_material and has_length
+        return (
+            attrs.get(self.REACH_MATERIAL) is not None
+            and attrs.get(self.REACH_LENGTH_EFFECTIVE) is not None
+        )
 
-    def _isCoverHover(self, layer_name, attrs):
+    def _isCoverHover(self, layer_name, attrs=None):
+        if attrs and attrs.get("_is_cover_dash"):
+            return True
         layer_name_lower = (layer_name or "").lower()
         return "cover" in layer_name_lower and "wastewater_node" not in layer_name_lower
 
@@ -614,7 +873,7 @@ class ProfileHoverManager:
         if attrs and attrs.get("_is_manhole_dash"):
             return True
         layer_name_lower = (layer_name or "").lower()
-        if "wastewater_node" in layer_name_lower or "manhole" in layer_name_lower:
+        if "wastewater_node" in layer_name_lower:
             return True
         if "reach" in layer_name_lower:
             return False
@@ -622,150 +881,12 @@ class ProfileHoverManager:
             return False
         if "change_point" in layer_name_lower:
             return False
-        node_type = str(_pick_attr(attrs, ["node_type", "nodeType", "type"]) or "").lower()
-        if "manhole" in node_type:
+        return str(attrs.get(self.MANHOLE_WS_TYPE) or "").lower() == "manhole"
+
+    def _isChangePointHover(self, layer_name, attrs):
+        if attrs and attrs.get("_is_change_point"):
             return True
-        has_cover = _pick_attr(attrs, ["cover_level"]) is not None
-        has_bottom = _pick_attr(attrs, ["bottom_level"]) is not None
-        return has_cover and has_bottom
-
-    # ------------------------------------------------------------------
-    # Data enrichment (layer queries)
-    # ------------------------------------------------------------------
-
-    def _getCoverEnhancedData(self, obj_id, attrs):
-        """
-        Get enhanced cover data from vm_cover layer.
-
-        Fields: obj_id, level, material, cover_shape, brand.
-        """
-        result = {}
-        if not obj_id:
-            return result
-
-        cover_layer = TwwLayerManager.layer("vm_cover") or TwwLayerManager.layer("vw_cover")
-        if cover_layer is None:
-            result["level"] = _to_float(_pick_attr(attrs, ["level"]))
-            result["material"] = _pick_attr(attrs, ["material"])
-            result["cover_shape"] = _pick_attr(attrs, ["cover_shape"])
-            result["brand"] = _pick_attr(attrs, ["brand"])
-            return result
-
-        request = QgsFeatureRequest().setFilterExpression(f'"obj_id" = \'{obj_id}\'')
-        request.setLimit(1)
-        for feat in cover_layer.getFeatures(request):
-            feat_attrs = _feature_attributes(feat)
-            result["level"] = _to_float(_pick_attr(feat_attrs, ["level"]))
-            result["material"] = _pick_attr(feat_attrs, ["material"])
-            result["cover_shape"] = _pick_attr(feat_attrs, ["cover_shape"])
-            result["brand"] = _pick_attr(feat_attrs, ["brand"])
-
-        return result
-
-    def _getManholeEnhancedData(self, obj_id, attrs, feature):
-        """
-        Get enhanced manhole data from related tables.
-
-        Queries: vw_tww_wastewater_structure, vm_cover/vw_cover, vw_wastewater_node.
-
-        """
-        result = {}
-        ws_id = _pick_attr(
-            attrs,
-            [
-                "fk_wastewater_structure",
-                "fk_wastewater_structure_obj_id",
-                "ws_obj_id",
-                "fk_wastewater_structure_id",
-                "obj_id",
-            ],
-        )
-        if not ws_id:
-            ws_id = obj_id
-
-        # 1. Query vw_tww_wastewater_structure for entry/exit labels and shaft width.
-        # NB: vw_wastewater_node has NO dimension1 / width / diameter fields; the
-        # only authoritative shaft-width source is ma_dimension1 (mm) on the
-        # wastewater_structure view.
-        ws_layer = TwwLayerManager.layer("vw_tww_wastewater_structure") or TwwLayerManager.layer(
-            "tww_wastewater_structure"
-        )
-        if ws_layer and ws_id:
-            request = QgsFeatureRequest().setFilterExpression(f'"obj_id" = \'{ws_id}\'')
-            request.setLimit(1)
-            for ws_feat in ws_layer.getFeatures(request):
-                ws_attrs = _feature_attributes(ws_feat)
-                # _*_label are pre-formatted strings from the DB
-                # (e.g. '\nI1=2200.00\nI2=2200.00'), not numbers — keep them raw.
-                result["cover_label"] = _pick_attr(ws_attrs, ["_cover_label"])
-                result["bottom_label"] = _pick_attr(ws_attrs, ["_bottom_label"])
-                result["input_label"] = _pick_attr(ws_attrs, ["_input_label", "input_label"])
-                result["output_label"] = _pick_attr(ws_attrs, ["_output_label", "output_label"])
-                result["width"] = _to_float(_pick_attr(ws_attrs, ["ma_dimension1"]))
-
-        # 2. Query cover level from vm_cover or vw_cover (join on fk_wastewater_structure)
-        cover_layer = TwwLayerManager.layer("vm_cover") or TwwLayerManager.layer("vw_cover")
-        if cover_layer and ws_id:
-            request = QgsFeatureRequest().setFilterExpression(
-                f'"fk_wastewater_structure" = \'{ws_id}\''
-            )
-            request.setLimit(1)
-            for cover_feat in cover_layer.getFeatures(request):
-                cover_attrs = _feature_attributes(cover_feat)
-                result["cover_level"] = _to_float(
-                    _pick_attr(cover_attrs, ["level", "cover_level", "coverLevel", "elevation"])
-                )
-
-        if "cover_level" not in result or result["cover_level"] is None:
-            result["cover_level"] = _to_float(_pick_attr(attrs, ["cover_level", "coverLevel"]))
-
-        # 3. Query bottom level from vw_wastewater_node
-        node_layer = TwwLayerManager.layer("vw_wastewater_node")
-        if node_layer and obj_id:
-            request = QgsFeatureRequest().setFilterExpression(f'"obj_id" = \'{obj_id}\'')
-            request.setLimit(1)
-            for node_feat in node_layer.getFeatures(request):
-                node_attrs = _feature_attributes(node_feat)
-                result["bottom_level"] = _to_float(
-                    _pick_attr(node_attrs, ["bottom_level", "bottomLevel", "invert_level"])
-                )
-
-        if "bottom_level" not in result or result["bottom_level"] is None:
-            result["bottom_level"] = _to_float(
-                _pick_attr(attrs, ["bottom_level", "bottomLevel", "invert_level"])
-            )
-
-        # 4. Fallback for missing bottom_level: query connected reach endpoints.
-        if result.get("bottom_level") is None or result.get("bottom_level") == 0:
-            reach_layer = TwwLayerManager.layer("vw_tww_reach")
-            if reach_layer is not None and obj_id:
-                expr = (
-                    f'"rp_to_fk_wastewater_networkelement" = \'{obj_id}\''
-                    f' OR "rp_from_fk_wastewater_networkelement" = \'{obj_id}\''
-                )
-                request = QgsFeatureRequest().setFilterExpression(expr)
-                reach_levels = []
-                for reach_feat in reach_layer.getFeatures(request):
-                    reach_attrs = _feature_attributes(reach_feat)
-                    to_node = _pick_attr(reach_attrs, ["rp_to_fk_wastewater_networkelement"])
-                    from_node = _pick_attr(
-                        reach_attrs, ["rp_from_fk_wastewater_networkelement"]
-                    )
-                    if str(to_node) == str(obj_id):
-                        lv = _to_float(_pick_attr(reach_attrs, ["rp_to_level"]))
-                        if lv is not None:
-                            reach_levels.append(lv)
-                    if str(from_node) == str(obj_id):
-                        lv = _to_float(_pick_attr(reach_attrs, ["rp_from_level"]))
-                        if lv is not None:
-                            reach_levels.append(lv)
-                if reach_levels:
-                    result["bottom_level"] = min(reach_levels)
-            result["bottom_level_missing"] = True
-        else:
-            result["bottom_level_missing"] = False
-
-        return result
+        return "change_point" in (layer_name or "").lower()
 
     # ------------------------------------------------------------------
     # Map highlight
@@ -776,34 +897,24 @@ class ProfileHoverManager:
         Highlight the hovered feature on the QGIS main map canvas.
 
         - Reach → highlight on vw_tww_reach by obj_id
-        - Cover → highlight on vm_cover by obj_id
-        - Manhole → highlight associated cover on vm_cover via fk_wastewater_structure
+        - Cover → highlight on vw_cover by co_obj_id
+        - Manhole → highlight associated cover on vw_cover via fk_wastewater_structure
         """
         if self._map_canvas is None:
             return
 
-        result = match.get("result") if match else None
-        layer = match.get("layer") if match else None
-        layer_name = layer.name() if layer and hasattr(layer, "name") else ""
-        feature = self._extractResultFeature(result, layer)
-        result_attrs = self._extractResultAttributes(result)
-
-        attrs = _feature_attributes(feature) if feature else result_attrs
-        if result_attrs:
-            for key in result_attrs:
-                if key not in attrs:
-                    attrs[key] = result_attrs[key]
+        attrs, layer_name, _feature, _layer = self._attrsFromMatch(match)
 
         is_reach = self._isReachHover(layer_name, attrs)
         is_cover = self._isCoverHover(layer_name, attrs)
         is_manhole = self._isManholeHover(layer_name, attrs)
-        obj_id = _pick_attr(attrs, ["obj_id", "objId", "id"])
-
-        if not obj_id and not is_manhole:
-            self._clearHighlight()
-            return
+        is_change_point = self._isChangePointHover(layer_name, attrs)
 
         if is_reach:
+            obj_id = attrs.get(self.REACH_OBJ_ID)
+            if not obj_id:
+                self._clearHighlight()
+                return
             highlight_key = f"reach:{obj_id}"
             if highlight_key == self._current_highlight_key:
                 return
@@ -811,52 +922,52 @@ class ProfileHoverManager:
                 "vw_tww_reach", f'"obj_id" = \'{obj_id}\'', highlight_key
             )
         elif is_cover:
-            highlight_key = f"cover:{obj_id}"
+            cover_id = attrs.get(self.COVER_OBJ_ID)
+            if not cover_id:
+                self._clearHighlight()
+                return
+            highlight_key = f"cover:{cover_id}"
             if highlight_key == self._current_highlight_key:
                 return
             self._doHighlightFeature(
-                "vm_cover", f'"obj_id" = \'{obj_id}\'', highlight_key, "vw_cover"
+                "vw_cover", f'"obj_id" = \'{cover_id}\'', highlight_key
             )
         elif is_manhole:
-            ws_id = _pick_attr(
-                attrs, ["fk_wastewater_structure", "fk_wastewater_structure_obj_id", "ws_obj_id"]
-            )
-            if not ws_id and obj_id:
-                node_layer = TwwLayerManager.layer("vw_wastewater_node")
-                if node_layer:
-                    req = QgsFeatureRequest().setFilterExpression(f'"obj_id" = \'{obj_id}\'')
-                    req.setLimit(1)
-                    for nf in node_layer.getFeatures(req):
-                        na = _feature_attributes(nf)
-                        ws_id = _pick_attr(na, ["fk_wastewater_structure", "ws_obj_id"])
-                        break
-            if ws_id:
-                highlight_key = f"manhole:{ws_id}"
-                if highlight_key == self._current_highlight_key:
-                    return
-                self._doHighlightFeature(
-                    "vm_cover",
-                    f'"fk_wastewater_structure" = \'{ws_id}\'',
-                    highlight_key,
-                    "vw_cover",
-                )
-            else:
+            ws_id = attrs.get(self.MANHOLE_OBJ_ID)
+            if not ws_id:
                 self._clearHighlight()
+                return
+            highlight_key = f"manhole:{ws_id}"
+            if highlight_key == self._current_highlight_key:
+                return
+            self._doHighlightFeature(
+                "vw_cover",
+                f'"fk_wastewater_structure" = \'{ws_id}\'',
+                highlight_key,
+            )
+        elif is_change_point:
+            cp_id = attrs.get(self.CHANGE_POINT_OBJ_ID)
+            if not cp_id:
+                self._clearHighlight()
+                return
+            highlight_key = f"change_point:{cp_id}"
+            if highlight_key == self._current_highlight_key:
+                return
+            self._doHighlightFeature(
+                "vw_change_points", f'"obj_id" = \'{cp_id}\'', highlight_key
+            )
         else:
             self._clearHighlight()
 
-    def _doHighlightFeature(self, layer_name, filter_expr, highlight_key, fallback_layer=None):
+    def _doHighlightFeature(self, layer_name, filter_expr, highlight_key):
         """
         Create a QgsHighlight on the map canvas for the first matching feature.
 
         :param layer_name: Name of the layer to query.
         :param filter_expr: QgsFeatureRequest filter expression string.
         :param highlight_key: Unique key to prevent duplicate highlights.
-        :param fallback_layer: Fallback layer name if primary is not found.
         """
         map_layer = TwwLayerManager.layer(layer_name)
-        if map_layer is None and fallback_layer:
-            map_layer = TwwLayerManager.layer(fallback_layer)
         if map_layer is None:
             self._clearHighlight()
             return
@@ -895,6 +1006,25 @@ class ProfileHoverManager:
     # Attribute extraction helpers
     # ------------------------------------------------------------------
 
+    def _attrsFromMatch(self, match):
+        """Extract merged attributes, layer name, feature, and layer from a hover match."""
+        result = match.get("result") if match else None
+        layer = match.get("layer") if match else None
+        layer_name = layer.name() if layer and hasattr(layer, "name") else ""
+        feature = self._extractResultFeature(result, layer)
+        result_attrs = self._extractResultAttributes(result)
+
+        if feature:
+            attrs = _feature_attributes(feature)
+        else:
+            attrs = dict(result_attrs)
+
+        for key, value in result_attrs.items():
+            if key not in attrs:
+                attrs[key] = value
+
+        return attrs, layer_name, feature, layer
+
     def _extractResultAttributes(self, result):
         """Extract attribute dict from a QgsElevationProfile identify result."""
         if not result:
@@ -930,75 +1060,72 @@ class ProfileHoverManager:
         return None
 
     # ------------------------------------------------------------------
-    # Geometry / math helpers
+    # Manhole tooltip helpers
     # ------------------------------------------------------------------
 
-    def _lengthFromFeature(self, feature):
-        if feature is None or not hasattr(feature, "geometry"):
-            return None
-        try:
-            geometry = feature.geometry()
-            if geometry is None or geometry.isEmpty():
-                return None
-            return float(geometry.length())
-        except Exception:
-            return None
+    def _manholeCoverLevelValue(self, attrs):
+        return _to_float(attrs.get(self.MANHOLE_CO_LEVEL))
 
-    def _levelsFromFeatureGeometry(self, feature):
-        if feature is None or not hasattr(feature, "geometry"):
-            return (None, None)
-        try:
-            geometry = feature.geometry()
-            if geometry is None or geometry.isEmpty():
-                return (None, None)
-            points = geometry.asPolyline()
-            if not points:
-                multi = geometry.asMultiPolyline()
-                if multi:
-                    first = multi[0]
-                    last = multi[-1]
-                    if first:
-                        points = [first[0]]
-                    if last:
-                        points.append(last[-1])
-            if not points:
-                return (None, None)
-            return (self._pointZ(points[0]), self._pointZ(points[-1]))
-        except Exception:
-            return (None, None)
+    def _manholeBottomLevelValue(self, attrs):
+        level = _to_float(attrs.get(self.MANHOLE_BOTTOM_LEVEL))
+        if level == 0:
+            return None
+        return level
 
-    def _pointZ(self, point):
-        if point is None:
-            return None
-        if hasattr(point, "z"):
-            try:
-                z_value = point.z() if callable(point.z) else point.z
-                return _to_float(z_value)
-            except Exception:
-                return None
-        return None
-
-    def _deriveGradient(self, attrs, length):
-        gradient = _to_float(_pick_attr(attrs, ["_slope_per_mill", "gradient", "slope"]))
-        if gradient is not None:
-            if abs(gradient) < 1:
-                return gradient
-            return gradient / 1000
-        if length is None or length == 0:
-            return None
-        from_level = _to_float(
-            _pick_attr(attrs, ["rp_from_level", "from_level", "start_level", "startLevel"])
-        )
-        to_level = _to_float(
-            _pick_attr(attrs, ["rp_to_level", "to_level", "end_level", "endLevel"])
-        )
-        if from_level is None or to_level is None:
-            return None
-        return (from_level - to_level) / float(length)
+    def _appendManholeLabelLine(self, lines, title, label_value):
+        text = self._formatLevelLabel(label_value)
+        if not text:
+            lines.append(f"{title}: {self.MISSING_DATA_HTML}")
+        else:
+            lines.append(f"{title}: {text}")
 
     # ------------------------------------------------------------------
     # Formatting helpers
     # ------------------------------------------------------------------
+
+    def _parseLevelLabel(self, label):
+        """
+        Parse a DB level label into a list of (index, value) tuples.
+
+        The DB stores pre-formatted strings like '\\nC=3401.00' or
+        '\\nI1=2736.50\\nI2=2736.50'. We strip the letter prefix and keep
+        only the numeric value; a trailing digit on the prefix (I1, I2, …)
+        is captured as the index.
+        """
+        if label is None:
+            return []
+        entries = []
+        for raw in str(label).replace("\r", "\n").split("\n"):
+            token = raw.strip()
+            if not token:
+                continue
+            if "=" in token:
+                prefix, value = token.split("=", 1)
+                prefix = prefix.strip()
+                value = value.strip()
+                cut = len(prefix)
+                while cut > 0 and prefix[cut - 1].isdigit():
+                    cut -= 1
+                entries.append((prefix[cut:], value))
+            else:
+                entries.append(("", token))
+        return entries
+
+    def _formatLevelLabel(self, label):
+        """
+        Format a level label inline (no line breaks).
+
+        Single value → just the number; multiple values → '1: v1; 2: v2'.
+        """
+        entries = self._parseLevelLabel(label)
+        if not entries:
+            return None
+        if len(entries) == 1:
+            return entries[0][1]
+        parts = []
+        for i, (idx, value) in enumerate(entries):
+            parts.append(f"{idx or (i + 1)}: {value}")
+        return "; ".join(parts)
 
     def _formatMeters(self, value, decimals=2):
         if value is None:
@@ -1008,7 +1135,16 @@ class ProfileHoverManager:
         except (TypeError, ValueError):
             return str(value)
 
-    def _appendLabeled(self, lines, label, value):
-        if value is None or value == "":
-            return
-        lines.append(f"{label}: {value}")
+    @staticmethod
+    def _formatYesNo(value):
+        """Render a vw_change_points boolean flag as Yes / No (? when unknown)."""
+        if value is None:
+            return "?"
+        if isinstance(value, str):
+            token = value.strip().lower()
+            if token in ("true", "t", "1", "yes"):
+                return "Yes"
+            if token in ("false", "f", "0", "no", ""):
+                return "No"
+            return value
+        return "Yes" if value else "No"

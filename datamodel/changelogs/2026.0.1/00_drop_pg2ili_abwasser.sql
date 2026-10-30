@@ -1,1 +1,1 @@
-DROP SCHEMA IF EXISTS pg2ili_abwasser;
+DROP SCHEMA IF EXISTS pg2ili_abwasser CASCADE;

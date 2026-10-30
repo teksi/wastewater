@@ -177,3 +177,27 @@ This works just for layers based directly from the tww_od - tables, not for view
 Place your mouse over the name of the attribut and you get additional info for this field if there is an additionial discription on the VSA-DSS-Objektkatalog.
 
 .. figure:: images/hintattribute.jpg
+
+
+When TWW automatically updates the fields **dataowner** and **provider**
+------------------------------------------------------------------------
+
+For all new data records, the default values ​​from the table tww_od.default_values ​​are used.
+
+What happens, if you change a dataowner- or provider-value of an existing record?
+In some cases, the fk_dataowner and fk_provider of connected tables do change also. But in many cases, you have to update manually.
+The following describes a change to the dataowner field. The same principle applies to a change in the provider field.
+
+*	change field fk_datawoner in vw_tww_wastewater_structure: also all fk_dataowner in connected wastewater_networkelements (node) and in connected structure_parts (covers,acces_aid etc) do change to the new fk_dataowner of the wastewater_structure
+
+*	change field wn_fk_datawoner in vw_tww_wastewater_structure: no other fk_dataowner-fields do change (also overflow, hydr_geometrie etc do not change)
+
+*	change field fk_datawoner in vw_cover: no other fk_dataowner-field does change
+
+*	change field fk_datawoner in hydr_geometry: fk_dataowner-fields in hydr_geometry_relation does not change
+
+*	change field fk_datawoner in vw_tww_reach (it's the tww_od.wastewater_networkelement.fk_dataowner-field): also fk_dataowner in connected wastewater_structures (channel) does change. The values of fields reach_point.fk_dataowner or of connected structure_parts do not change!
+
+*	change field fk_datawoner in vw_wastewater_structure: also tww_od.wastewater_networkelement.fk_dataowner (reach) does change.
+
+*	change field fk_datawoner in pipe_profile: fk_dataowner in connected profile_geometry does not change

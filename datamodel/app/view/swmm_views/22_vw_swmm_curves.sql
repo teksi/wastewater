@@ -18,7 +18,7 @@ CREATE OR REPLACE VIEW tww_app.swmm_vw_curves AS
 		ELSE 'current'
 	END as state,
 	CASE
-		WHEN cfhi.vsacode in (5062, 5064, 5066, 5068, 5069, 5070, 5071, 5072, 5074) THEN 'primary'
+		WHEN cfhi.tww_is_primary THEN 'primary'
 		ELSE 'secondary'
 	END as hierarchy,
 	wn.obj_id as obj_id
@@ -58,7 +58,7 @@ UNION ALL
 		ELSE 'current'
 	END as state,
 	CASE
-		WHEN cfhi.vsacode in (5062, 5064, 5066, 5068, 5069, 5070, 5071, 5072, 5074) THEN 'primary'
+		WHEN cfhi.tww_is_primary THEN 'primary'
 		ELSE 'secondary'
 	END as hierarchy,
 	wn.obj_id as obj_id
@@ -98,7 +98,7 @@ UNION ALL
 		ELSE 'current'
 	END as state,
 	CASE
-		WHEN cfhi.vsacode in (5062, 5064, 5066, 5068, 5069, 5070, 5071, 5072, 5074) THEN 'primary'
+		WHEN cfhi.tww_is_primary THEN 'primary'
 		ELSE 'secondary'
 	END as hierarchy,
 	wn.obj_id as obj_id

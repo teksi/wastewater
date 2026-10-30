@@ -1,0 +1,22 @@
+UPDATE tww_vl.damage_channel_channel_damage_code SET
+   value_en = 'BCBF',
+   value_de = 'BCBF',
+   value_fr = 'BCBF',
+   value_it = 'BCBF',
+   value_ro = 'BCBF',
+   abbr_en = '',
+   abbr_de = '',
+   abbr_fr = '',
+   abbr_it = '',
+   abbr_ro = '',
+   description_en = 'yyy_Reparatur, örtlich begrenzte Innenauskleidung des Anschlusses',
+   description_de = 'Reparatur, örtlich begrenzte Innenauskleidung des Anschlusses',
+   description_fr = 'Réparation, revêtement intérieur du Raccordement localisé',
+   description_it = 'Riparazione, rivestimento puntuale dell’allacciamento',
+   description_ro = 'rrr_Reparatur, örtlich begrenzte Innenauskleidung des Anschlusses',
+   display_en = 'BCBF',
+   display_de = 'BCBF',
+   display_fr = 'BCBF',
+   display_it = 'BCBF',
+   display_ro = ''
+WHERE code = 8868;
