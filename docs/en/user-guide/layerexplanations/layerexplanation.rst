@@ -81,7 +81,7 @@ Use this layer to change the situation of some specific cover (and not the whole
 
 
 Channels ``tww_app.mvw_tww_channel``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. versionadded:: 2025.0
 
@@ -102,17 +102,19 @@ Change Points ``tww_app.vw_change_points``
 A view to visualize the points (wastewater_nodes between to reaches of the same channel), where material or clear_heigth or slope changes.
 
 
+Layergroup Configuration
+-------------------------
+
 Organisations ``tww_od.organisation``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-organisation contains the organisation that you can select in attributes like fk_dataowner, fk_operator, fk_provider, fk_owner, etc.
+Table organisation contains the organisations that you can select in attributes like fk_dataowner, fk_operator, fk_provider, fk_owner, etc.
 
-In order to use the organisations efficiently, one can flag an organisation as active using the flag ``tww_active``. This flag filters the organisations accessible from the QGIS project.
+Import the `VSA organisation 2020.1-dataset <https://vsa.ch/models/organisation/vsa_organisationen_2020_1.xtf>`_ that contains over 2'500 organisations. And/or create project-specific organisations, which, however, must be imported and exported additionally with every data exchange.
 
- .. figure:: images/od_organisation.jpg
+In order to use the organisations efficiently, one can flag an organisation as active using the field ``tww_active``. This flag filters the organisations accessible from the QGIS project.
 
-This table is today a little bit hidden in the wastewater_structures group (but it is not only related to wastewater structures).
-As the VSA dataset contains over 2'300 organisations, there is a filter set up to limit the selection of organisations to the active ones (attribute tww_active)
+See `INTERLIS Import <../../admin-guide/interlis-io/index.html>`_ for more information.
 
 
 Layergroup Examination-Maintenance
@@ -124,7 +126,7 @@ You can not create new maintenance-events with this views, but you can edit attr
 
 
 Maintenance events ``tww_app.vw_tww_maintenance``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Maintenance events can be created through the view tww_app.vw_tww_maintenance.
 
@@ -154,11 +156,28 @@ Documents have now there own layergroup (before in layergroup Wastewater Structu
 Hydraulic
 ---------
 
-Wastewater nodes ``tww_app.vw_tww_wastewater_node``
+Wastewater nodes ``tww_app.vw_wastewater_node``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Use this layer to change the situation of one selected wastewater node (and not the whole wastewater structure) or if you want to add a new wastewater node to an existing wastewater structure. You can add additional wastewater nodes in the wastewater nodes-tab of the `vw_tww_wastewater_structure` too.
 When moving the geometry of the wastewater node, the geometry of the connected reaches is updated automatically. If you want to move a wastewater node without moving the reaches, disconnect the reaches, move the node and reconnect the reaches.
+
+Wastewater nodes ``tww_app.vw_tww_wastewater_node``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. versionchanged:: 2026.0
+
+This view replaces in some way the tww_app.vw_wastewater_node (it still exists for backward compatibility) as it integrates the symbology of the following views, that handle symbology now separatly:
+
+* a table tww_od.tww_reach_point_labels
+* a table tww_od.tww_wastewater_structure_labels
+* a table tww_od.tww_wastewater_node_symbology
+
+This allows to better mark the different inlets and outlets:
+
+.. figure:: images/comparison_2025_and_2026symbolisation.png
+
+Introduction of these new views needs adaption of existing TWW project files (for details see `2026 Release notes <../releases/2026.html>`_ )
 
 Overflow tables ``tww_app.vw_tww_overflow``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -200,11 +219,12 @@ See `connect wastewater network elements <../editing/connect_wastewater_network_
 Value Lists ``tww_vl.*``
 -------------------------
 
-These value lists are defined in the VSA-datamodel. Do not change.
+These value lists are defined in the VSA-datamodel.
+
+.. warning:: Do not change!
 
 .. versionchanged:: 2025.0
 
-Main layer to digitize and edit the catchment_areas.
 
 Rural
 --------
@@ -249,7 +269,7 @@ Log card
 Log card ``tww_app.vw_tww_log_card``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Log card for special structures: Hydraulically specialized wastewater structures, e.g., storm water basins, storm water overflows, or pumping stations. Most special structures are also specialized structures. However, special structures such as separation structures or small pumping stations are often designed as standard shafts.
+Log card for special structures: Hydraulically specialized wastewater structures, e.g., storm water basins, storm water overflows, or pumping stations. Most special structures are also specialized structures. However, special structures such as separation structures or small pumping stations are often designed as manholes.
 
 
 
@@ -269,7 +289,7 @@ Information on the attached catchment area (total), water volumes, and discharge
 
 
 Catchment area totals aggregated ``tww_app.vw_catchment_area_totals_aggregated``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 It is not to be confused with ``tww_app.vw_catchment_area_totals``.
 

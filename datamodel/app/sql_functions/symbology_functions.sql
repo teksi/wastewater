@@ -395,14 +395,15 @@ BEGIN
   UPDATE tww_od.wastewater_structure ws
   SET _depth = calc_depth
   FROM (
-    SELECT WS.obj_id, CO.level - COALESCE(MIN(NO.bottom_level), MIN(RP.level)) as calc_depth
-      FROM tww_od.wastewater_structure WS
-      LEFT JOIN tww_od.cover CO on WS.fk_main_cover = CO.obj_id
-      LEFT JOIN tww_od.wastewater_networkelement NE ON NE.fk_wastewater_structure = WS.obj_id
-      RIGHT JOIN tww_od.wastewater_node NO on NO.obj_id = NE.obj_id
-      LEFT JOIN tww_od.reach_point RP ON RP.fk_wastewater_networkelement = NE.obj_id
-      WHERE _all OR WS.obj_id = _obj_id
-      GROUP BY WS.obj_id, CO.level
+    SELECT ws.obj_id,
+      nullif(MAX(co.level),0)::numeric - COALESCE(nullif(MIN(wn.bottom_level),0), nullif(MIN(RP.level),0))::numeric as calc_depth
+      FROM tww_od.wastewater_structure ws
+      LEFT JOIN tww_od.cover co on ws.fk_main_cover = co.obj_id
+      LEFT JOIN tww_od.wastewater_networkelement ne ON ne.fk_wastewater_structure = ws.obj_id
+      RIGHT JOIN tww_od.wastewater_node wn on wn.obj_id = ne.obj_id
+      LEFT JOIN tww_od.reach_point rp ON rp.fk_wastewater_networkelement = ne.obj_id
+      WHERE _all OR ws.obj_id = _obj_id
+      GROUP BY ws.obj_id
   ) ws_depths
   where ws.obj_id = ws_depths.obj_id;
 END

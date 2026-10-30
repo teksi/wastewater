@@ -1,4 +1,3 @@
-.. _Import-Results:
 
 SWMM Import Results
 -------------------

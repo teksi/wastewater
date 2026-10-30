@@ -22,9 +22,17 @@ class InterlisImportSettingsDialog(QDialog):
             settings_value is True or settings_value == "true"
         )
 
+        dialog_value = QgsSettings().value("tww_plugin/suppress_import_dialog", False)
+        self.suppress_import_dialog_checkbox.setChecked(
+            dialog_value is True or dialog_value == "true"
+        )
+
     def on_finish(self):
         # Remember save next to file checkbox
         QgsSettings().setValue("tww_plugin/logs_next_to_file", self.logs_next_to_file)
+
+        # Remember save next to file checkbox
+        QgsSettings().setValue("tww_plugin/suppress_import_dialog", self.show_selection_dialog)
 
         # Remember save next to file checkbox
         QgsSettings().setValue("tww_plugin/filter_nulls_import", self.filter_nulls)
@@ -32,6 +40,10 @@ class InterlisImportSettingsDialog(QDialog):
     @property
     def logs_next_to_file(self):
         return self.save_logs_next_to_file_checkbox.isChecked()
+
+    @property
+    def show_selection_dialog(self):
+        return not (self.suppress_import_dialog_checkbox.isChecked())
 
     @property
     def filter_nulls(self):

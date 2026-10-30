@@ -349,3 +349,9 @@ class ModelInterlisDss(ModelInterlisSia405Abwasser):
             __table_args__ = {"schema": config.ABWASSER_SCHEMA}
 
         ModelInterlisDss.gebaeudegruppe_entsorgungassoc = gebaeudegruppe_entsorgungassoc
+
+        class messstelle_referenzstelleassoc(self.Base):
+            __tablename__ = "messstelle_referenzstelleassoc"
+            __table_args__ = {"schema": config.ABWASSER_SCHEMA}
+
+        ModelInterlisDss.messstelle_referenzstelleassoc = messstelle_referenzstelleassoc

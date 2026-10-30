@@ -29,7 +29,7 @@ import os
 import shutil
 
 from qgis.core import Qgis, QgsApplication, QgsProject
-from qgis.PyQt.QtCore import QLocale, QSettings, Qt, QTimer
+from qgis.PyQt.QtCore import QLocale, QSettings, Qt
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QApplication, QMessageBox, QToolBar
 from qgis.utils import qgsfunction
@@ -41,12 +41,13 @@ from .gui.twwprofiledockwidget import TwwProfileDockWidget
 from .gui.twwselectionextenderwidget import TwwSelectionExtenderWidget
 from .gui.twwsettingsdialog import TwwSettingsDialog
 from .gui.twwwizard import TwwWizard
-from .libs.modelbaker.iliwrapper.ili2dbutils import JavaNotFoundError
+from .interlis.utils.modelbaker.iliwrapper.ili2dbutils import JavaNotFoundError
 from .processing_provider.provider import TwwProcessingProvider
 from .tools.twwmaptools import TwwMapToolConnectNetworkElements, TwwTreeMapTool,TwwProfileMapTool
 from .tools.twwnetwork import TwwGraphManager
 from .tools.twwselectionextender import TwwSelectionExtender
 from .utils.database_utils import DatabaseUtils
+from .utils.issues import Issue, IssueLevel
 from .utils.plugin_utils import plugin_root_path
 from .utils.qt_utils import OverrideCursor
 from .utils.translation import setup_i18n
@@ -54,6 +55,12 @@ from .utils.twwlayermanager import TwwLayerManager
 from .utils.twwlogging import TwwQgsLogHandler
 
 LOGFORMAT = "%(asctime)s:%(levelname)s:%(module)s:%(message)s"
+
+REQUIRED_LAYERS = {
+    "vw_network_node",
+    "vw_network_segment",
+    "vw_tww_wastewater_structure",
+}
 
 
 @qgsfunction(0, "System")
@@ -95,6 +102,7 @@ class TeksiWastewaterPlugin:
         self.nodes = None
         self.edges = None
         self.plotWidget = None
+        self._tww_available = False
 
         self.interlisImporterExporter = None
 
@@ -193,7 +201,7 @@ class TeksiWastewaterPlugin:
 
         self.wizardAction = QAction(
             QIcon(os.path.join(plugin_root_path(), "icons/wizard.svg")),
-            "Wizard",
+            self.tr("Wizard"),
             self.iface.mainWindow(),
         )
         self.wizardAction.setWhatsThis(self.tr("Create new manholes and reaches"))
@@ -203,7 +211,7 @@ class TeksiWastewaterPlugin:
 
         self.connectNetworkElementsAction = QAction(
             QIcon(os.path.join(plugin_root_path(), "icons/link-wastewater-networkelement.svg")),
-            QApplication.translate("teksi_wastewater", "Connect wastewater networkelements"),
+            self.tr("Connect wastewater networkelements"),
             self.iface.mainWindow(),
         )
         self.connectNetworkElementsAction.setEnabled(False)
@@ -212,7 +220,7 @@ class TeksiWastewaterPlugin:
 
         self.refreshNetworkTopologyAction = QAction(
             QIcon(os.path.join(plugin_root_path(), "icons/refresh-network.svg")),
-            "Refresh network topology",
+            self.tr("Refresh network topology"),
             self.iface.mainWindow(),
         )
         self.refreshNetworkTopologyAction.setWhatsThis(self.tr("Refresh network topology"))
@@ -237,6 +245,11 @@ class TeksiWastewaterPlugin:
             self.tr("Disable symbology triggers"), self.iface.mainWindow()
         )
         self.disableSymbologyTriggersAction.triggered.connect(self.disable_symbology_triggers)
+
+        self.refreshmaterializedViewsAction = QAction(
+            self.tr("Refresh materialized views"), self.iface.mainWindow()
+        )
+        self.refreshmaterializedViewsAction.triggered.connect(self.refresh_materialized_views)
 
         self.settingsAction = QAction(
             QIcon(QgsApplication.getThemeIcon("/mActionOptions.svg")),
@@ -288,6 +301,7 @@ class TeksiWastewaterPlugin:
         self.iface.addPluginToMenu(self.main_menu_name, self.validityCheckAction)
         self.iface.addPluginToMenu(self.main_menu_name, self.enableSymbologyTriggersAction)
         self.iface.addPluginToMenu(self.main_menu_name, self.disableSymbologyTriggersAction)
+        self.iface.addPluginToMenu(self.main_menu_name, self.refreshmaterializedViewsAction)
         self.iface.addPluginToMenu(self.main_menu_name, self.settingsAction)
         self.iface.addPluginToMenu(self.main_menu_name, self.aboutAction)
 
@@ -308,8 +322,12 @@ class TeksiWastewaterPlugin:
         self.toolbarButtons.append(self.importAction)
         self.toolbarButtons.append(self.exportAction)
 
-        QgsProject.instance().layerLoaded.connect(self._on_layer_loaded)
-        QgsProject.instance().cleared.connect(self._on_project_cleared)
+        # plugin activation
+        project = QgsProject.instance()
+        project.layersAdded.connect(self._on_layers_added)
+        project.readProject.connect(self._check_tww_layers)
+        project.cleared.connect(self._on_project_cleared)
+        self._tww_available = False
 
         # Init the object maintaining the network
         self.network_analyzer = TwwGraphManager()
@@ -355,43 +373,87 @@ class TeksiWastewaterPlugin:
         self.toolbarButtons.append(self.selectionExtenderAction)
         self.selectionExtenderController = TwwSelectionExtender(self.iface)
 
-    def tww_validity_check_startup(self):
-        messages = []
+    def _on_layers_added(self, layers):
+        if self._tww_available:
+            return
+
+        if any(
+            any(layer.id().startswith(prefix) for prefix in REQUIRED_LAYERS) for layer in layers
+        ):
+            self._check_tww_layers()
+
+    def _get_validity_issues(self, include_ili: bool = False) -> list[Issue]:
         try:
-            messages = DatabaseUtils.get_validity_check_issues()
+            return DatabaseUtils.get_validity_check_issues(
+                include_ili=include_ili, logger=self.logger
+            )
+        except Exception as exception:
+            return [
+                Issue(
+                    self.tr(f"Could not check database validity: {exception}"),
+                    IssueLevel.ERROR,
+                )
+            ]
+
+    def tww_validity_check_startup(self):
+        try:
+            messages = []
+            wastewater_node = TwwLayerManager.layer("vw_tww_wastewater_node")
+            if not wastewater_node:
+                wastewater_node = TwwLayerManager.layer("vw_wastewater_node")
+                if wastewater_node:
+                    messages.append(
+                        Issue(
+                            self.tr(
+                                "Project uses tww_app.vw_wastewater_node instead of "
+                                "tww_app.vw_tww_wastewater_node. This will make plugin functionalities fail."
+                            ),
+                            IssueLevel.ERROR,
+                        )
+                    )
+                else:
+                    messages.append(
+                        Issue(
+                            self.tr(
+                                "Project does not load tww_app.vw_tww_wastewater_node. "
+                                "This will make plugin functionalities fail."
+                            ),
+                            IssueLevel.ERROR,
+                        )
+                    )
 
         except Exception as exception:
-            messages.append(self.tr(f"Could not check database validity: {exception}"))
+            return [
+                Issue(
+                    self.tr(f"Could not check database validity: {exception}"),
+                    IssueLevel.ERROR,
+                )
+            ]
+        issues = self._get_validity_issues(include_ili=False)
 
-        for message in messages:
+        for issue in issues:
             self.iface.messageBar().pushMessage(
-                "Warning",
-                message,
-                level=Qgis.Warning,
+                issue.level.name.title(),
+                issue.message,
+                level=self._qgis_issue_level(issue.level),
             )
 
     def tww_validity_check_action(self):
-        messages = []
-        try:
-            messages = DatabaseUtils.get_validity_check_issues()
+        issues = self._get_validity_issues(include_ili=True)
+        errors = [i for i in issues if i.level == IssueLevel.ERROR]
 
-        except Exception as exception:
-            messages.append(self.tr(f"Could not check database validity: {exception}"))
-
-        if len(messages) == 0:
+        if not errors:
             QMessageBox.information(
                 self.iface.mainWindow(),
                 self.validityCheckAction.text(),
                 self.tr("There are no database validity issues."),
             )
-            return
-
-        messagesText = "\n".join(messages)
-        QMessageBox.critical(
-            self.iface.mainWindow(),
-            self.validityCheckAction.text(),
-            self.tr(f"Database has following validity issues:\n\n{messagesText}"),
-        )
+        else:
+            QMessageBox.critical(
+                self.iface.mainWindow(),
+                self.validityCheckAction.text(),
+                self.tr("Database has validity issues: see logs for details"),
+            )
 
     def enable_symbology_triggers(self):
         try:
@@ -423,6 +485,22 @@ class TeksiWastewaterPlugin:
                 self.iface.mainWindow(),
                 self.disableSymbologyTriggersAction.text(),
                 self.tr(f"Symbology triggers cannot be disabled:\n\n{exception}"),
+            )
+
+    def refresh_materialized_views(self):
+        try:
+            DatabaseUtils.refresh_matviews()
+            QMessageBox.information(
+                self.iface.mainWindow(),
+                self.refreshmaterializedViewsAction.text(),
+                self.tr("Materialized views have been successfully refreshed"),
+            )
+
+        except Exception as exception:
+            QMessageBox.critical(
+                self.iface.mainWindow(),
+                self.refreshmaterializedViewsAction.text(),
+                self.tr(f"Materialized views cannot be refreshed:\n\n{exception}"),
             )
 
     def unload(self):
@@ -457,6 +535,7 @@ class TeksiWastewaterPlugin:
         self.iface.removePluginMenu(self.main_menu_name, self.aboutAction)
         self.iface.removePluginMenu(self.main_menu_name, self.enableSymbologyTriggersAction)
         self.iface.removePluginMenu(self.main_menu_name, self.disableSymbologyTriggersAction)
+        self.iface.removePluginMenu(self.main_menu_name, self.refreshmaterializedViewsAction)
 
         QgsApplication.processingRegistry().removeProvider(self.processing_provider)
 
@@ -482,14 +561,6 @@ class TeksiWastewaterPlugin:
             self.wizarddock.deleteLater()
             self.wizarddock = None
 
-    def _on_layer_loaded(self, i, n):
-        """
-        Called during project loading for each layer. When the last layer is loaded,
-        schedule a deferred check so all C++ layer objects are fully constructed.
-        """
-        if i == n:
-            QTimer.singleShot(0, self._check_tww_layers)
-
     def _on_project_cleared(self):
         self._on_tww_project_unavailable()
 
@@ -498,16 +569,26 @@ class TeksiWastewaterPlugin:
         Checks whether a TWW project is available (i.e. some required TWW layers are present in the current project).
         If so, enables the plugin.
         """
-        required_layers = ["vw_network_node", "vw_network_segment", "vw_tww_wastewater_structure"]
         all_layer_ids = list(QgsProject.instance().mapLayers().keys())
 
-        for tww_id in required_layers:
+        for tww_id in REQUIRED_LAYERS:
             if not any(lyr_id.startswith(tww_id) for lyr_id in all_layer_ids):
                 return
 
         self._on_tww_project_available()
 
+    def _check_layers_in_edit_mode(self):
+        # Check that layers are not in edit mode
+        if (
+            TwwLayerManager.layer("vw_network_segment").isEditable()
+            or TwwLayerManager.layer("vw_network_node").isEditable()
+        ):
+            return True
+
+        return False
+
     def _on_tww_project_available(self):
+        self._tww_available = True
         network_segment = TwwLayerManager.layer("vw_network_segment")
         network_node = TwwLayerManager.layer("vw_network_node")
 
@@ -521,6 +602,7 @@ class TeksiWastewaterPlugin:
         self.tww_validity_check_startup()
 
     def _on_tww_project_unavailable(self):
+        self._tww_available = False
         self.connectNetworkElementsAction.setEnabled(False)
         self.network_analyzer.setLayers(None, None)
 
@@ -560,6 +642,16 @@ class TeksiWastewaterPlugin:
         """
         Is executed when the user clicks the refreshNetworkTopologyAction tool
         """
+
+        # Check that layers are not in edit mode
+        if self._check_layers_in_edit_mode():
+            self.iface.messageBar().pushMessage(
+                "Error",
+                "Cannot refresh network topology while layers are in edit mode. Please save or discard your edits first.",
+                level=Qgis.Critical,
+            )
+            return
+
         self.network_analyzer.refresh()
 
     def wizard(self):
@@ -750,6 +842,16 @@ class TeksiWastewaterPlugin:
         AboutDialog(self.iface.mainWindow()).exec()
 
     def actionExportClicked(self):
+
+        # Check that layers are not in edit mode
+        if self._check_layers_in_edit_mode():
+            self.iface.messageBar().pushMessage(
+                "Error",
+                "Cannot export data while layers are in edit mode. Please save or discard your edits first.",
+                level=Qgis.Critical,
+            )
+            return
+
         if self.interlisImporterExporter is None:
             try:
                 # We only import now to avoid useless exception if dependencies aren't met
@@ -793,6 +895,16 @@ class TeksiWastewaterPlugin:
         self.interlisImporterExporter.action_export()
 
     def actionImportClicked(self):
+
+        # Check that layers are not in edit mode
+        if self._check_layers_in_edit_mode():
+            self.iface.messageBar().pushMessage(
+                "Error",
+                "Cannot export data while layers are in edit mode. Please save or discard your edits first.",
+                level=Qgis.Critical,
+            )
+            return
+
         if self.interlisImporterExporter is None:
             try:
                 # We only import now to avoid useless exception if dependencies aren't met
@@ -875,15 +987,18 @@ class TeksiWastewaterPlugin:
         # seems QGIS loads True as "true" on restart ?!
         if admin_mode and admin_mode != "false":
             admin_mode = True
+            self.toolbar.addAction(self.refreshNetworkTopologyAction)
             self.toolbar.addAction(self.importAction)
             self.toolbar.addAction(self.exportAction)
         else:
+            self.toolbar.removeAction(self.refreshNetworkTopologyAction)
             self.toolbar.removeAction(self.importAction)
             self.toolbar.removeAction(self.exportAction)
             admin_mode = False
 
         self.enableSymbologyTriggersAction.setEnabled(admin_mode)
         self.disableSymbologyTriggersAction.setEnabled(admin_mode)
+        self.refreshmaterializedViewsAction.setEnabled(admin_mode)
 
     def toggleSelectionExtenderWidget(self, checked: bool):
         if checked:
@@ -915,3 +1030,11 @@ class TeksiWastewaterPlugin:
         self.selectionExtenderAction.blockSignals(True)
         self.selectionExtenderAction.setChecked(visible)
         self.selectionExtenderAction.blockSignals(False)
+
+    def _qgis_issue_level(self, issue_level):
+        if issue_level == IssueLevel.ERROR:
+            return Qgis.Critical
+        elif issue_level == IssueLevel.INFO:
+            return Qgis.Info
+
+        return Qgis.Warning

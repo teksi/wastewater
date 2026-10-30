@@ -37,12 +37,6 @@ source_lang = en
 file_filter = i18n/<lang>/tww_swmm.po
 type = PO
 
-[o:teksi:p:tww-docs:r:wincan2qgep]
-source_file = i18n/pot/wincan2qgep.pot
-source_lang = en
-file_filter = i18n/<lang>/wincan2qgep.po
-type = PO
-
 [o:teksi:p:tww-docs:r:admin-guide]
 source_file = i18n/pot/admin-guide.pot
 source_lang = en

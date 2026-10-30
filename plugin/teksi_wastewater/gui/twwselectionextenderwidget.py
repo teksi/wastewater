@@ -2,7 +2,7 @@ from qgis.core import Qgis
 from qgis.PyQt.QtCore import QSize
 from qgis.PyQt.QtWidgets import QApplication, QDockWidget
 
-from ..utils import get_ui_class
+from ..utils.ui import get_ui_class
 
 DOCK_WIDGET_UI = get_ui_class("twwselectionextenderwidget.ui")
 
