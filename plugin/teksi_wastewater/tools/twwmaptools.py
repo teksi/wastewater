@@ -516,9 +516,9 @@ class TwwProfileMapTool(TwwMapTool):
                     continue
 
                 from_pt = self._nodePoint(node_features, p1)
-                if from_pt is not None and reach_polyline[-1].sqrDist(
-                    from_pt
-                ) < reach_polyline[0].sqrDist(from_pt):
+                if from_pt is not None and reach_polyline[-1].sqrDist(from_pt) < reach_polyline[
+                    0
+                ].sqrDist(from_pt):
                     reach_polyline.reverse()
 
                 if self.pathPolyline and self.pathPolyline[-1].sqrDist(reach_polyline[0]) < 1e-6:
@@ -528,7 +528,9 @@ class TwwProfileMapTool(TwwMapTool):
 
             self.rubberBand.addGeometry(QgsGeometry.fromPolylineXY(self.pathPolyline), node_layer)
 
-            self.logger.debug(f"appendProfile: pathPolyline now has {len(self.pathPolyline)} points")
+            self.logger.debug(
+                f"appendProfile: pathPolyline now has {len(self.pathPolyline)} points"
+            )
 
             self.profileChanged.emit(self.profile)
             return True
@@ -622,9 +624,7 @@ class TwwProfileMapTool(TwwMapTool):
         # Revert selectedPathPoints by one (Option A: keep previous endpoint)
         if len(self.selectedPathPoints) > 1:
             self.selectedPathPoints.pop()
-        self._setAnchorMarker(
-            self.selectedPathPoints[-1][1] if self.selectedPathPoints else None
-        )
+        self._setAnchorMarker(self.selectedPathPoints[-1][1] if self.selectedPathPoints else None)
 
         # Rebuild profile from remaining history
         self.profile.reset()
@@ -653,7 +653,7 @@ class TwwProfileMapTool(TwwMapTool):
     def rightClicked(self, _):
         """
         Cancel any ongoing path selection
-        
+
         First right-click: Cancel mouse attachment (ongoing selection)
         Second right-click: Clear the selected path line
 

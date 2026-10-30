@@ -147,7 +147,7 @@ class TwwProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
     def onClearCanvasClicked(self):
         """Clear the profile canvas and deselect features on map layers."""
         # Clear the profile widget (canvas, hover, manhole dashes)
-        if self.plotWidget and hasattr(self.plotWidget, 'clearProfile'):
+        if self.plotWidget and hasattr(self.plotWidget, "clearProfile"):
             self.plotWidget.clearProfile()
 
         # Clear stored tree data
@@ -352,5 +352,5 @@ class TwwProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
         # Update profile widget if it supports setProfileFromTree.
         # render=False is used when merely restoring state on dock (re)open, so
         # a previous trace is not silently redrawn onto the fresh canvas.
-        if render and self.plotWidget and hasattr(self.plotWidget, 'setProfileFromTree'):
+        if render and self.plotWidget and hasattr(self.plotWidget, "setProfileFromTree"):
             self.plotWidget.setProfileFromTree(edges)

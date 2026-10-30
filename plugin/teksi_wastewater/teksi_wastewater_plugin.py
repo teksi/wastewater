@@ -35,15 +35,17 @@ from qgis.PyQt.QtWidgets import QAction, QApplication, QMessageBox, QToolBar
 from qgis.utils import qgsfunction
 
 from .gui.twwelevationprofilewidget import TwwElevationProfileWidget
-
-
 from .gui.twwprofiledockwidget import TwwProfileDockWidget
 from .gui.twwselectionextenderwidget import TwwSelectionExtenderWidget
 from .gui.twwsettingsdialog import TwwSettingsDialog
 from .gui.twwwizard import TwwWizard
 from .interlis.utils.modelbaker.iliwrapper.ili2dbutils import JavaNotFoundError
 from .processing_provider.provider import TwwProcessingProvider
-from .tools.twwmaptools import TwwMapToolConnectNetworkElements, TwwTreeMapTool,TwwProfileMapTool
+from .tools.twwmaptools import (
+    TwwMapToolConnectNetworkElements,
+    TwwProfileMapTool,
+    TwwTreeMapTool,
+)
 from .tools.twwnetwork import TwwGraphManager
 from .tools.twwselectionextender import TwwSelectionExtender
 from .utils.database_utils import DatabaseUtils
@@ -332,9 +334,9 @@ class TeksiWastewaterPlugin:
         # Init the object maintaining the network
         self.network_analyzer = TwwGraphManager()
         self.network_analyzer.message_emitted.connect(self.iface.messageBar().pushMessage)
-        #Create the map tool for profile selection
+        # Create the map tool for profile selection
         self.profile_tool = TwwProfileMapTool(
-           self.iface, self.profileAction, self.network_analyzer
+            self.iface, self.profileAction, self.network_analyzer
         )
         self.profile_tool.profileChanged.connect(self.onProfileChanged)
 
@@ -609,7 +611,6 @@ class TeksiWastewaterPlugin:
         for b in self.toolbarButtons:
             b.setEnabled(False)
 
-
     def profileToolClicked(self):
         """
         Is executed when the profile button is clicked
@@ -703,7 +704,7 @@ class TeksiWastewaterPlugin:
         All the cleanup of the dock has to be done here
         """
         # Deactivate profile map tool and restore previous tool
-        if hasattr(self, 'profile_tool') and self.profile_tool:
+        if hasattr(self, "profile_tool") and self.profile_tool:
             canvas = self.iface.mapCanvas()
             # Save extent before cleanup to prevent zoom caused by rubberBand.reset()
             saved_extent = canvas.extent()
@@ -775,8 +776,12 @@ class TeksiWastewaterPlugin:
         from qgis.core import QgsGeometry
 
         reach_elements = [
-            elem for elem in profile.getElements()
-            if hasattr(elem, 'type') and elem.type == "reach" and hasattr(elem, 'detail_geometry') and elem.detail_geometry
+            elem
+            for elem in profile.getElements()
+            if hasattr(elem, "type")
+            and elem.type == "reach"
+            and hasattr(elem, "detail_geometry")
+            and elem.detail_geometry
         ]
 
         if not reach_elements:
@@ -785,8 +790,8 @@ class TeksiWastewaterPlugin:
 
         # Sort by start offset
         def get_start_offset(elem):
-            if hasattr(elem, 'reachPoints') and elem.reachPoints:
-                offsets = [p.get('offset', 0) for p in elem.reachPoints.values() if 'offset' in p]
+            if hasattr(elem, "reachPoints") and elem.reachPoints:
+                offsets = [p.get("offset", 0) for p in elem.reachPoints.values() if "offset" in p]
                 return min(offsets) if offsets else 0
             return 0
 
@@ -805,7 +810,9 @@ class TeksiWastewaterPlugin:
             profile_geometry = QgsGeometry.fromPolylineXY(points)
             self.plotWidget.setProfileCurve(profile_geometry)
         else:
-            self.logger.warning("_buildProfileFromElements: No points extracted from reach elements")
+            self.logger.warning(
+                "_buildProfileFromElements: No points extracted from reach elements"
+            )
 
     def onTreeChanged(self, nodes, edges):
         if self.profile_dock:

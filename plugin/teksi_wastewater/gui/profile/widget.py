@@ -205,9 +205,7 @@ class TwwElevationProfileWidget(QWidget):
         printer.setPageOrientation(QPageLayout.Orientation.Landscape)
 
         dialog = QPrintPreviewDialog(printer, self)
-        dialog.paintRequested.connect(
-            lambda p, pm=pixmap: self._paintProfilePage(p, pm)
-        )
+        dialog.paintRequested.connect(lambda p, pm=pixmap: self._paintProfilePage(p, pm))
         dialog.exec()
 
     def exportProfileImage(self):
@@ -283,7 +281,9 @@ class TwwElevationProfileWidget(QWidget):
             font = QFont(self.font())
             font.setPointSize(10)
             painter.setFont(font)
-            header = self.tr("TEKSI wastewater — length profile") + f"  ({date.today().isoformat()})"
+            header = (
+                self.tr("TEKSI wastewater — length profile") + f"  ({date.today().isoformat()})"
+            )
             metrics = painter.fontMetrics()
             painter.drawText(QRectF(0, 0, page_w, metrics.height() * 1.5), header)
             header_h = metrics.height() * 2.0
@@ -524,9 +524,7 @@ class TwwElevationProfileWidget(QWidget):
 
         if len(points) >= 2:
             profile_geometry = QgsGeometry.fromPolylineXY(points)
-            self.setProfileCurve(
-                profile_geometry, reach_ids=reach_ids, node_points=node_points
-            )
+            self.setProfileCurve(profile_geometry, reach_ids=reach_ids, node_points=node_points)
 
     # ------------------------------------------------------------------
     # Canvas helpers
@@ -601,15 +599,9 @@ class TwwElevationProfileWidget(QWidget):
                     margin_left = margin_right = base_dist
                     for dist, anchor, up_px, down_px, half_w_px in extents:
                         margin_top = max(margin_top, up_px / px_per_m - (e_hi - anchor))
-                        margin_bottom = max(
-                            margin_bottom, down_px / px_per_m - (anchor - e_lo)
-                        )
-                        margin_left = max(
-                            margin_left, half_w_px / px_per_d - (dist - d_lo)
-                        )
-                        margin_right = max(
-                            margin_right, half_w_px / px_per_d - (d_hi - dist)
-                        )
+                        margin_bottom = max(margin_bottom, down_px / px_per_m - (anchor - e_lo))
+                        margin_left = max(margin_left, half_w_px / px_per_d - (dist - d_lo))
+                        margin_right = max(margin_right, half_w_px / px_per_d - (d_hi - dist))
 
             self.canvas.setVisiblePlotRange(
                 d_lo - margin_left,

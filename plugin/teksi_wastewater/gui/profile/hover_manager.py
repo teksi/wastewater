@@ -116,10 +116,11 @@ class ProfileHoverManager:
         # Persistent tooltip widget (avoids QToolTip auto-timeout)
         self._custom_tooltip = QLabel(None)
         self._custom_tooltip.setWindowFlags(
-            Qt.WindowType.ToolTip | Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint
+            Qt.WindowType.ToolTip
+            | Qt.WindowType.FramelessWindowHint
+            | Qt.WindowType.WindowStaysOnTopHint
         )
-        self._custom_tooltip.setStyleSheet(
-            """
+        self._custom_tooltip.setStyleSheet("""
             QLabel {
                 background-color: #ffffcc;
                 border: 1px solid #000000;
@@ -128,8 +129,7 @@ class ProfileHoverManager:
                 font-family: monospace;
                 font-size: 10pt;
             }
-        """
-        )
+        """)
         self._custom_tooltip.hide()
 
     # ------------------------------------------------------------------
@@ -353,9 +353,7 @@ class ProfileHoverManager:
         """Identify the whole-manhole shaft under the cursor (body, not the cap)."""
         if not hasattr(self._canvas, "getManholeDashHitRects"):
             return None
-        dash = self._nearestDashInRects(
-            self._canvas.getManholeDashHitRects(), plot_point
-        )
+        dash = self._nearestDashInRects(self._canvas.getManholeDashHitRects(), plot_point)
         if dash is None:
             return None
 
@@ -405,9 +403,7 @@ class ProfileHoverManager:
             return None
         # Tighter tolerance than the body so the cover band stays confined to the
         # cap and doesn't make the manhole body hard to hover.
-        dash = self._nearestDashInRects(
-            self._canvas.getCoverHitRects(), plot_point, tolerance=4.0
-        )
+        dash = self._nearestDashInRects(self._canvas.getCoverHitRects(), plot_point, tolerance=4.0)
         if dash is None:
             return None
 
@@ -918,9 +914,7 @@ class ProfileHoverManager:
             highlight_key = f"reach:{obj_id}"
             if highlight_key == self._current_highlight_key:
                 return
-            self._doHighlightFeature(
-                "vw_tww_reach", f'"obj_id" = \'{obj_id}\'', highlight_key
-            )
+            self._doHighlightFeature("vw_tww_reach", f"\"obj_id\" = '{obj_id}'", highlight_key)
         elif is_cover:
             cover_id = attrs.get(self.COVER_OBJ_ID)
             if not cover_id:
@@ -929,9 +923,7 @@ class ProfileHoverManager:
             highlight_key = f"cover:{cover_id}"
             if highlight_key == self._current_highlight_key:
                 return
-            self._doHighlightFeature(
-                "vw_cover", f'"obj_id" = \'{cover_id}\'', highlight_key
-            )
+            self._doHighlightFeature("vw_cover", f"\"obj_id\" = '{cover_id}'", highlight_key)
         elif is_manhole:
             ws_id = attrs.get(self.MANHOLE_OBJ_ID)
             if not ws_id:
@@ -942,7 +934,7 @@ class ProfileHoverManager:
                 return
             self._doHighlightFeature(
                 "vw_cover",
-                f'"fk_wastewater_structure" = \'{ws_id}\'',
+                f"\"fk_wastewater_structure\" = '{ws_id}'",
                 highlight_key,
             )
         elif is_change_point:
@@ -953,9 +945,7 @@ class ProfileHoverManager:
             highlight_key = f"change_point:{cp_id}"
             if highlight_key == self._current_highlight_key:
                 return
-            self._doHighlightFeature(
-                "vw_change_points", f'"obj_id" = \'{cp_id}\'', highlight_key
-            )
+            self._doHighlightFeature("vw_change_points", f"\"obj_id\" = '{cp_id}'", highlight_key)
         else:
             self._clearHighlight()
 

@@ -6,7 +6,7 @@ This represents a guide on how to choose a section and display a length profile.
 General
 -------
 
-TWW has a unique function to display length profiles. 
+TWW has a unique function to display length profiles.
 
 The following elements are displayed:
 
@@ -15,7 +15,7 @@ Cover
 Bottom_Level
 
 
-Reaches with 
+Reaches with
 From and to Reach_point
 
 TO DO: Add some screenshots to show details

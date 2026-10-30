@@ -25,6 +25,7 @@
 import math
 
 from qgis.core import QgsProfilePoint
+from qgis.gui import QgsElevationProfileCanvas, QgsPlotCanvasItem
 from qgis.PyQt.QtCore import QPointF, QRectF, Qt
 from qgis.PyQt.QtGui import (
     QBrush,
@@ -35,7 +36,6 @@ from qgis.PyQt.QtGui import (
     QPen,
     QPolygonF,
 )
-from qgis.gui import QgsElevationProfileCanvas, QgsPlotCanvasItem
 
 from .layer_setup import (
     MANHOLE_DEFAULT_PX_WIDTH,
@@ -245,8 +245,10 @@ class ManholeDashPlotItem(QgsPlotCanvasItem):
         painter.drawLine(QPointF(right, y), QPointF(right, y + 5))
 
     def paint(self, painter, option=None, widget=None):
-        if painter is None or not painter.isActive() or (
-            not self._dashes and not self._bands and not self._change_points
+        if (
+            painter is None
+            or not painter.isActive()
+            or (not self._dashes and not self._bands and not self._change_points)
         ):
             return
 
@@ -284,7 +286,9 @@ class ManholeDashPlotItem(QgsPlotCanvasItem):
         special_color = getattr(self._canvas, "_special_structure_shaft_color", QColor("#E67E22"))
         cover_color = getattr(self._canvas, "_manhole_cover_color", QColor("#2C3E50"))
         chamber_color = getattr(self._canvas, "_manhole_chamber_color", QColor("#FFFFFF"))
-        default_px_width = getattr(self._canvas, "_manhole_default_px_width", MANHOLE_DEFAULT_PX_WIDTH)
+        default_px_width = getattr(
+            self._canvas, "_manhole_default_px_width", MANHOLE_DEFAULT_PX_WIDTH
+        )
 
         cover_pen = QPen(cover_color, 2.5)
         cover_pen.setStyle(Qt.PenStyle.SolidLine)
@@ -380,7 +384,9 @@ class ManholeDashPlotItem(QgsPlotCanvasItem):
                     # cover far higher, so the shaft reaches its real cover and the
                     # inflow pipe lands on the wall instead of dangling mid-air.
                     # dashExtentsPx() deliberately omits this — see its docstring.
-                    top_y_exag = invert_pt.y() - manhole_cover_offset_px(cover_level - invert_level)
+                    top_y_exag = invert_pt.y() - manhole_cover_offset_px(
+                        cover_level - invert_level
+                    )
                     cover_true_pt = self._projectPoint(distance, cover_level, mapper)
                     top_y = (
                         min(top_y_exag, cover_true_pt.y())
@@ -521,7 +527,15 @@ class ManholeDashPlotItem(QgsPlotCanvasItem):
                 self._drawMissingDataX(painter, x_center)
                 self._drawMissingLabel(painter, x_center, "no cover level")
                 self._hit_rects.append(
-                    (dash, QRectF(left_x - 4, x_center.y() - 10, shaft_width_px + 8, floor_y - (x_center.y() - 10)))
+                    (
+                        dash,
+                        QRectF(
+                            left_x - 4,
+                            x_center.y() - 10,
+                            shaft_width_px + 8,
+                            floor_y - (x_center.y() - 10),
+                        ),
+                    )
                 )
                 any_x = True
 
@@ -613,9 +627,7 @@ class ManholeDashPlotItem(QgsPlotCanvasItem):
                 if left < plot_area.left() or left + width > plot_area.right():
                     continue
                 baseline = max(baseline, plot_area.top() + metrics.ascent() + 2.0)
-            label_rect = QRectF(
-                left, baseline - metrics.ascent(), width, metrics.height()
-            )
+            label_rect = QRectF(left, baseline - metrics.ascent(), width, metrics.height())
             if any(label_rect.intersects(r) for r in reserved):
                 continue
             painter.drawText(QPointF(left, baseline), text)
@@ -772,9 +784,7 @@ class ManholeDashPlotItem(QgsPlotCanvasItem):
                     nx, ny = seg_normals[i]
                 else:
                     nx, ny = nx / length, ny / length
-            result.append(
-                QPointF(points[i].x() + nx * offset_px, points[i].y() + ny * offset_px)
-            )
+            result.append(QPointF(points[i].x() + nx * offset_px, points[i].y() + ny * offset_px))
         return result
 
     def _drawChangePoints(self, painter, plot_area):
@@ -974,9 +984,7 @@ class TwwElevationProfileCanvas(QgsElevationProfileCanvas):
             )
         except (TypeError, ValueError):
             return None
-        if canvas_point is None or (
-            hasattr(canvas_point, "isEmpty") and canvas_point.isEmpty()
-        ):
+        if canvas_point is None or (hasattr(canvas_point, "isEmpty") and canvas_point.isEmpty()):
             return None
         return QPointF(canvas_point.x(), canvas_point.y())
 

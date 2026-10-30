@@ -434,9 +434,7 @@ class ProfileLayerSetup:
         for dx in (-0.1, 0.0, 0.1):
             for dy in (-0.1, 0.0, 0.1):
                 candidates.extend(
-                    self._reach_vertex_buckets.get(
-                        (round(cx + dx, 1), round(cy + dy, 1)), ()
-                    )
+                    self._reach_vertex_buckets.get((round(cx + dx, 1), round(cy + dy, 1)), ())
                 )
         if not candidates:
             candidates = self._reach_vertices
@@ -1146,8 +1144,7 @@ def _load_value_list(table):
         # value_<lang> with English/German fallbacks for incomplete dictionaries.
         # ``table`` is always a hard-coded constant from the callers below.
         rows = DatabaseUtils.fetchall(
-            f"SELECT code, COALESCE(value_{lang}, value_en, value_de) "
-            f"FROM tww_vl.{table}"
+            f"SELECT code, COALESCE(value_{lang}, value_en, value_de) " f"FROM tww_vl.{table}"
         )
     except Exception:
         # DB not reachable — not cached (a later hover retries), but throttled
