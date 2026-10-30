@@ -328,3 +328,9 @@ class ModelTwwOd(ModelBase):
             __table_args__ = {"schema": config.TWW_OD_SCHEMA}
 
         ModelTwwOd.re_building_group_disposal = re_building_group_disposal
+        
+        class re_measuring_point_reference_station(self.Base):
+            __tablename__ = "re_measuring_point_reference_station"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.re_measuring_point_reference_station = re_measuring_point_reference_station
