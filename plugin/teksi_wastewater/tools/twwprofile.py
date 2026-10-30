@@ -422,7 +422,10 @@ class TwwProfileNodeElement(TwwProfileElement):
 
         self.offset = offset
         self.cover_level = node_cache.attrAsFloat(point, "cover_level")
-        self.backflow_level = node_cache.attrAsFloat(point, "backflow_level")
+        # TEKSI renamed the QGEP-era backflow_level: vw_network_node exposes
+        # backflow_level_current. The old name logs CRITICAL "Unknown field"
+        # once per node element.
+        self.backflow_level = node_cache.attrAsFloat(point, "backflow_level_current")
 
     def asDict(self):
         el = TwwProfileElement.asDict(self)

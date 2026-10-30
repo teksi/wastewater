@@ -20,3 +20,7 @@ plugin*.tar.gz
 .pycache
 __pycache__
 .DS_Store
+.cursor
+.agent
+.claude/
+CLAUDE.md

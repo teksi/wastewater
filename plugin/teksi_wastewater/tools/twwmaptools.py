@@ -257,6 +257,7 @@ class TwwProfileMapTool(TwwMapTool):
 
     selectedPathPoints = []
     pathPolyline = []
+    _segment_history = []  # list of (vertices, edges) for undo
 
     def __init__(self, canvas, button, network_analyzer):
         TwwMapTool.__init__(self, canvas, button, network_analyzer)
@@ -275,6 +276,16 @@ class TwwProfileMapTool(TwwMapTool):
         self.rbHighlight.setWidth(5)
 
         self.profile.setRubberband(self.rbHighlight)
+
+        # obj_ids / node points of the currently selected path, used to restrict
+        # the elevation profile to the path (and keep side branches out).
+        self.profile_reach_ids = set()
+        self.profile_node_points = []
+
+        # Marker for the node the next click continues the path from. Without
+        # it, a failed "No path found" click leaves the user blind to where the
+        # selection is still anchored.
+        self._anchor_marker = None
 
         self.saveTool = None
 
@@ -295,6 +306,46 @@ class TwwProfileMapTool(TwwMapTool):
         self.rbHelperLine.reset()
         self.selectedPathPoints = []
         self.pathPolyline = []
+        self.profile_reach_ids = set()
+        self.profile_node_points = []
+        self._setAnchorMarker(None)
+
+    def clearAll(self):
+        """
+        Reset the whole path selection AND tell listeners.
+
+        The profileChanged emit is the point: every tool-side reset must reach
+        the elevation canvas too, otherwise the dock keeps drawing a profile
+        this tool no longer holds (and the next click appends to a path the
+        user believes is gone).
+        """
+        self.selectedPathPoints = []
+        self.pathPolyline = []
+        self.profile_reach_ids = set()
+        self.profile_node_points = []
+        self.segmentOffset = 0
+        self._segment_history = []
+        self.rubberBand.reset()
+        self.rbHelperLine.reset()
+        self._setAnchorMarker(None)
+        self.profile.reset()
+        self.profileChanged.emit(self.profile)
+
+    def _setAnchorMarker(self, point):
+        """Show, move or (with None) remove the path-anchor marker."""
+        if point is None:
+            if self._anchor_marker is not None:
+                self.canvas.scene().removeItem(self._anchor_marker)
+                self._anchor_marker = None
+            return
+        if self._anchor_marker is None:
+            marker = QgsVertexMarker(self.canvas)
+            marker.setColor(QColor("#FF9500"))
+            marker.setIconSize(12)
+            marker.setIconType(QgsVertexMarker.ICON_CIRCLE)
+            marker.setPenWidth(3)
+            self._anchor_marker = marker
+        self._anchor_marker.setCenter(point)
 
     def findPath(self, start_point, end_point):
         """
@@ -309,9 +360,10 @@ class TwwProfileMapTool(TwwMapTool):
         QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         # try:
         vertices, edges = self.network_analyzer.shortestPath(start_point, end_point)
+        if len(vertices) > 0:
+            # Save segment for undo before appending
+            self._segment_history.append((vertices, edges))
         self.appendProfile(vertices, edges)
-        #        except:
-        #            pass
         QApplication.restoreOverrideCursor()
         if len(vertices) > 0:
             return True
@@ -359,6 +411,18 @@ class TwwProfileMapTool(TwwMapTool):
 
         if len(vertices) > 1:
             self.rubberBand.reset()
+
+            # Record the path's reaches and node points so the elevation profile
+            # can render only the selected path (not every nearby branch).
+            for _p1, _p2, edge in edges:
+                if edge.get("objType") == "reach":
+                    base_feature = edge.get("baseFeature")
+                    if base_feature:
+                        self.profile_reach_ids.add(base_feature)
+            for v in vertices:
+                node_point = self._nodePoint(node_features, v)
+                if node_point is not None:
+                    self.profile_node_points.append(node_point)
 
             elem = TwwProfileNodeElement(vertices[0], node_features, self.segmentOffset)
             self.profile.addElement(vertices[0], elem)
@@ -418,15 +482,117 @@ class TwwProfileMapTool(TwwMapTool):
 
                 self.segmentOffset = to_offset
 
-            # Create rubberband geometry
-            for feat_id in edge_ids:
-                self.pathPolyline.extend(edge_features[feat_id].geometry().asPolyline())
+            # Create rubberband geometry.
+            # Build the path polyline from the ACTUAL reach geometries
+            # (vw_tww_reach), not the routing-network segments. The routing
+            # geometry (vw_network_segment) can detour out to intermediate node
+            # centres, adding small out-and-back spikes to the curve; QGIS then
+            # fails to project the smooth reach across a spike and leaves a
+            # visual gap in the pipe. Using the real reach geometry keeps the
+            # curve identical to the drawn pipes. Each reach is oriented to the
+            # traversal direction and its shared junction vertex de-duplicated.
+            segment_reach_ids = {
+                edge.get("baseFeature")
+                for _p1, _p2, edge in edges
+                if edge.get("objType") == "reach"
+            }
+            reach_geoms = self._fetchReachPolylines(segment_reach_ids)
+
+            appended_reach = None
+            for p1, p2, edge in edges:
+                base_feature = edge.get("baseFeature")
+                if edge.get("objType") == "reach" and base_feature in reach_geoms:
+                    # A reach can span several routing segments; append it once.
+                    if base_feature == appended_reach:
+                        continue
+                    reach_polyline = list(reach_geoms[base_feature])
+                    appended_reach = base_feature
+                else:
+                    # Special structures (and any reach without a vw_tww_reach
+                    # geometry) fall back to the routing-segment geometry.
+                    reach_polyline = edge_features[edge["feature"]].geometry().asPolyline()
+
+                if not reach_polyline:
+                    continue
+
+                from_pt = self._nodePoint(node_features, p1)
+                if from_pt is not None and reach_polyline[-1].sqrDist(from_pt) < reach_polyline[
+                    0
+                ].sqrDist(from_pt):
+                    reach_polyline.reverse()
+
+                if self.pathPolyline and self.pathPolyline[-1].sqrDist(reach_polyline[0]) < 1e-6:
+                    reach_polyline = reach_polyline[1:]
+
+                self.pathPolyline.extend(reach_polyline)
 
             self.rubberBand.addGeometry(QgsGeometry.fromPolylineXY(self.pathPolyline), node_layer)
+
+            self.logger.debug(
+                f"appendProfile: pathPolyline now has {len(self.pathPolyline)} points"
+            )
+
             self.profileChanged.emit(self.profile)
             return True
         else:
             return False
+
+    @staticmethod
+    def _fetchReachPolylines(reach_ids):
+        """
+        Fetch {obj_id: [QgsPointXY, ...]} for the given reaches from
+        vw_tww_reach. The profile curve is built from these real pipe
+        geometries so it matches the rendered reaches exactly (the routing
+        network geometry can detour through node centres and differ slightly).
+        """
+        polylines = {}
+        ids = [rid for rid in reach_ids if rid]
+        if not ids:
+            return polylines
+
+        reach_layer = TwwLayerManager.layer("vw_tww_reach")
+        if reach_layer is None:
+            return polylines
+
+        quoted = ",".join("'" + str(rid).replace("'", "''") + "'" for rid in ids)
+        request = QgsFeatureRequest()
+        request.setFilterExpression(f"obj_id IN ({quoted})")
+        for feat in reach_layer.getFeatures(request):
+            geom = feat.geometry()
+            if geom is None or geom.isEmpty():
+                continue
+            # Use vertices() rather than asPolyline(): curved reaches are stored
+            # as CircularString / CompoundCurve, for which asPolyline() returns
+            # an empty list (which previously dropped them back to the spiky
+            # routing geometry). vertices() also returns the SAME control points
+            # the rendered reach layer uses (see _reachZFeatures), so the curve
+            # stays identical to the drawn pipe.
+            verts = list(geom.vertices())
+            if len(verts) < 2:
+                continue
+            try:
+                polylines[feat["obj_id"]] = [QgsPointXY(v.x(), v.y()) for v in verts]
+            except KeyError:
+                continue
+        return polylines
+
+    @staticmethod
+    def _nodePoint(node_cache, node_id):
+        """
+        Return the QgsPointXY of a graph node, or None if unavailable.
+
+        Used to orient reach geometries to the path traversal direction.
+        """
+        try:
+            geometry = node_cache.featureById(node_id).geometry()
+        except (KeyError, AttributeError):
+            return None
+        if geometry is None or geometry.isEmpty():
+            return None
+        try:
+            return geometry.asPoint()
+        except (ValueError, AttributeError):
+            return None
 
     def canvasMoveEvent(self, event):
         """
@@ -443,17 +609,66 @@ class TwwProfileMapTool(TwwMapTool):
             )
             self.rbHelperLine.addPoint(mouse_pos)
 
+    def undoLastSegment(self):
+        """
+        Undo the last profile segment (Ctrl+Z).
+        Removes the last segment and rebuilds the profile from remaining history.
+        Reverts selectedPathPoints by one so the user can re-click a different node.
+        """
+        if not self._segment_history:
+            return
+
+        # Remove last segment
+        self._segment_history.pop()
+
+        # Revert selectedPathPoints by one (Option A: keep previous endpoint)
+        if len(self.selectedPathPoints) > 1:
+            self.selectedPathPoints.pop()
+        self._setAnchorMarker(self.selectedPathPoints[-1][1] if self.selectedPathPoints else None)
+
+        # Rebuild profile from remaining history
+        self.profile.reset()
+        self.pathPolyline = []
+        self.profile_reach_ids = set()
+        self.profile_node_points = []
+        self.segmentOffset = 0
+        self.rubberBand.reset()
+
+        if self._segment_history:
+            for vertices, edges in self._segment_history:
+                self.appendProfile(vertices, edges)
+        else:
+            # No segments left, emit empty profile to clear canvas
+            self.profileChanged.emit(self.profile)
+
+    def keyPressEvent(self, event):
+        """
+        Handle key press events. Ctrl+Z triggers undo.
+        """
+        if event.key() == Qt.Key.Key_Z and event.modifiers() & Qt.KeyboardModifier.ControlModifier:
+            self.undoLastSegment()
+        else:
+            super().keyPressEvent(event)
+
     def rightClicked(self, _):
         """
         Cancel any ongoing path selection
 
+        First right-click: Cancel mouse attachment (ongoing selection)
+        Second right-click: Clear the selected path line
+
         @param event: The mouse event with coordinates and all
         """
-        self.selectedPathPoints = []
-        self.pathPolyline = []
-        self.rbHelperLine.reset()
-        self.profile.reset()
-        self.segmentOffset = 0
+        # If there's an ongoing selection, just cancel it (first right-click)
+        if self.selectedPathPoints:
+            self.selectedPathPoints = []
+            self.rbHelperLine.reset()
+            self._setAnchorMarker(None)
+        else:
+            # No ongoing selection, clear everything (second right-click).
+            # clearAll also emits profileChanged so the elevation canvas is
+            # cleared together with the map rubber band.
+            self.clearAll()
 
     def leftClicked(self, event):
         """
@@ -468,11 +683,28 @@ class TwwProfileMapTool(TwwMapTool):
                 pf = self.findPath(self.selectedPathPoints[-1][0], match.featureId())
                 if pf:
                     self.selectedPathPoints.append((match.featureId(), QgsPointXY(match.point())))
+                    self._setAnchorMarker(self.selectedPathPoints[-1][1])
                 else:
-                    msg = self.msgBar.createMessage("No path found")
-                    self.msgBar.pushWidget(msg, Qgis.Info)
+                    # Timed message: an untimed one per failed click piles up
+                    # as unread. The selection stays anchored (retrying another
+                    # endpoint is legitimate), so say where and how to escape.
+                    self.msgBar.pushMessage(
+                        "TWW",
+                        self.tr(
+                            "No path found from the marked node "
+                            "(profiles follow the flow direction). "
+                            "Right-click to cancel the selection."
+                        ),
+                        Qgis.Info,
+                        5,
+                    )
             else:
+                # Starting a new path: clear old accumulated data everywhere,
+                # including the elevation canvas (clearAll emits profileChanged
+                # — the stale profile must not outlive the path it came from).
+                self.clearAll()
                 self.selectedPathPoints.append((match.featureId(), QgsPointXY(match.point())))
+                self._setAnchorMarker(self.selectedPathPoints[-1][1])
 
 
 class TwwTreeMapTool(TwwMapTool):
