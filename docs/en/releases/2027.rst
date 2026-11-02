@@ -1,0 +1,52 @@
+.. _2027:
+
+Here you can find information about the future 2027.x release of TEKSI wastewater
+
+
+2027.0.1
+=========
+
+Main features
+----------------
+
+- Tech Preview Version of TEKSI wastewater module for QGIS 4.2 LTR and initialized and upgrade via the PostgreSQL Update Manager (PUM) and the TEKSI Module Management Tool (TMMT).
+- Check the `installation guide <../installation-guide/index.html>`__ for more information on how to install TEKSI wastewater module (TWW) via TMMT.
+
+
+ - xxx
+
+Documentation
+--------------
+ - xxx
+
+Bug fixes and performance improvements
+-----------------------------------------
+ - xxx
+ -
+
+Extension improvements
+----------------------
+ - xxx
+
+
+CI improvements
+---------------
+ - xxx
+
+
+Adaptions to project file
+----------------------------------------
+
+ The following new views have been integrated in this release:
+
+
+* xxx
+
+Please export and use the corresponding :literal:`* \ .qml` files to integrate them into your existing TWW 2025 project files
+
+
+The following views have been adapted and need an adaption of existing TWW 2026 project files:
+
+ - xxx
+
+ For Reference see https://github.com/teksi/wastewater/issues/995#issuecomment-4803889291
