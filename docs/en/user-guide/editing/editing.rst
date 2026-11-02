@@ -357,7 +357,7 @@ The detailpoints can be visualized with a sql-expression, that is already saved 
 
 - delete the sql-expression, that is already written in the field and choose in the rightmost tool **visualize profile_geometry**
 
-.. figure:: images/profile_geometry_stored_sql.jpg  
+.. figure:: images/profile_geometry_stored_sql.jpg
    :scale: 50 %
 
 

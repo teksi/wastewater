@@ -88,7 +88,7 @@ Main features
 
   .. figure:: ../user-guide/editing/images/network_plan_reachpoint_labels.jpg
 
- - configuration in the project-file for `profile-geometries <../user-guide/layerexplanations/layerexplanation.rst#layergroup-wastewater-structures>`_ , including a project-saved execute sql to `visualize profile-geometries <../user-guide/editing/editing.rst#changing-and-visualizing-a-profile_geometry>`_ 
+ - configuration in the project-file for `profile-geometries <../user-guide/layerexplanations/layerexplanation.rst#layergroup-wastewater-structures>`_ , including a project-saved execute sql to `visualize profile-geometries <../user-guide/editing/editing.rst#changing-and-visualizing-a-profile_geometry>`_
  - control length of identifiers while editing with enforced constraints in the attribute form
  - `The OID Prefix can be set in TMMT from 2026.0.1 on <../admin-guide/db-production-readiness/index.rst>`_
  - create _CH copies of translation files ( '\*.qm' )
@@ -96,7 +96,7 @@ Main features
 
 Documentation
 --------------
- - `New chapter What happens if I change dataowner or provider fields <../user-guide/layerexplanations/twwproject.rst#when-tww-automatically-updates-the-fields-dataowner-and-provider>`_  
+ - `New chapter What happens if I change dataowner or provider fields <../user-guide/layerexplanations/twwproject.rst#when-tww-automatically-updates-the-fields-dataowner-and-provider>`_
  - `New chapter Common editing mistakes <../user-guide/How-To/index.rst#common-mistakes>`_
  - `Add chapter Obj_ID <../admin-guide/db-production-readiness/index.rst>`_
  - `Document labeling and symbology flags <../admin-guide/db-label-customisation/index.rst#customisation-of-labeling-and-symbology-behaviour>`_
