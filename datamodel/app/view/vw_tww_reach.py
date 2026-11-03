@@ -164,10 +164,10 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
     $BODY$
     BEGIN
       -- Synchronize geometry with level
-      NEW.progression3d_geometry = ST_ForceCurve(ST_SetPoint(ST_CurveToLine(NEW.progression3d_geometry),0,
+      NEW.progression3d_geometry = ST_LineToCurve(ST_SetPoint(ST_CurveToLine(NEW.progression3d_geometry),0,
       ST_MakePoint(ST_X(ST_StartPoint(NEW.progression3d_geometry)),ST_Y(ST_StartPoint(NEW.progression3d_geometry)),COALESCE(NEW.rp_from_level,'NaN'))));
 
-      NEW.progression3d_geometry = ST_ForceCurve(ST_SetPoint(ST_CurveToLine(NEW.progression3d_geometry),ST_NumPoints(NEW.progression3d_geometry)-1,
+      NEW.progression3d_geometry = ST_LineToCurve(ST_SetPoint(ST_CurveToLine(NEW.progression3d_geometry),ST_NumPoints(NEW.progression3d_geometry)-1,
       ST_MakePoint(ST_X(ST_EndPoint(NEW.progression3d_geometry)),ST_Y(ST_EndPoint(NEW.progression3d_geometry)),COALESCE(NEW.rp_to_level,'NaN'))));
 
       {rp_from}
@@ -285,7 +285,7 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
 
       IF NEW.rp_from_level IS DISTINCT FROM new_lvl THEN -- we need additional checks
         CASE WHEN NEW.rp_from_level IS DISTINCT FROM OLD.rp_from_level THEN --rp_from_level was changed
-          NEW.progression3d_geometry = ST_ForceCurve(ST_SetPoint(ST_CurveToLine(NEW.progression3d_geometry),0,
+          NEW.progression3d_geometry = ST_LineToCurve(ST_SetPoint(ST_CurveToLine(NEW.progression3d_geometry),0,
           ST_MakePoint(ST_X(ST_StartPoint(NEW.progression3d_geometry)),ST_Y(ST_StartPoint(NEW.progression3d_geometry)),COALESCE(NEW.rp_from_level,'NaN'))));
         WHEN
           COALESCE(new_lvl,0) != 0  -- filter out NULL and 0
@@ -294,7 +294,7 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
         THEN
           NEW.rp_from_level = new_lvl;
         ELSE -- 3D geometry was set to NULL or zero, we use the old Z
-          NEW.progression3d_geometry = ST_ForceCurve(ST_SetPoint(ST_CurveToLine(NEW.progression3d_geometry),0,
+          NEW.progression3d_geometry = ST_LineToCurve(ST_SetPoint(ST_CurveToLine(NEW.progression3d_geometry),0,
           ST_MakePoint(ST_X(ST_StartPoint(NEW.progression3d_geometry)),ST_Y(ST_StartPoint(NEW.progression3d_geometry)),COALESCE(NEW.rp_from_level,'NaN'))));
         END CASE;
       ELSE NULL;
@@ -305,7 +305,7 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
       IF NEW.rp_to_level IS DISTINCT FROM new_lvl THEN -- we need additional checks
         CASE
         WHEN NEW.rp_to_level IS DISTINCT FROM OLD.rp_to_level THEN --rp_to_level was changed
-          NEW.progression3d_geometry = ST_ForceCurve(ST_SetPoint(ST_CurveToLine(NEW.progression3d_geometry),-1,
+          NEW.progression3d_geometry = ST_LineToCurve(ST_SetPoint(ST_CurveToLine(NEW.progression3d_geometry),-1,
           ST_MakePoint(ST_X(ST_EndPoint(NEW.progression3d_geometry)),ST_Y(ST_EndPoint(NEW.progression3d_geometry)),COALESCE(NEW.rp_to_level,'NaN'))));
         WHEN
           COALESCE(new_lvl,0) != 0  -- filter out NULL and 0
@@ -314,7 +314,7 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
         THEN
           NEW.rp_to_level = new_lvl;
         ELSE -- 3D geometry was set to NULL or zero, we use the old Z
-          NEW.progression3d_geometry = ST_ForceCurve(ST_SetPoint(ST_CurveToLine(NEW.progression3d_geometry),-1,
+          NEW.progression3d_geometry = ST_LineToCurve(ST_SetPoint(ST_CurveToLine(NEW.progression3d_geometry),-1,
           ST_MakePoint(ST_X(ST_EndPoint(NEW.progression3d_geometry)),ST_Y(ST_EndPoint(NEW.progression3d_geometry)),COALESCE(NEW.rp_to_level,'NaN'))));
         END CASE;
       ELSE NULL;
