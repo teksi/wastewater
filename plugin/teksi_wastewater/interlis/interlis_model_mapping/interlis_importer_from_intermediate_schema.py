@@ -18,6 +18,8 @@ class InterlisImporterFromIntermediateSchema:
         model_classes_tww_vl,
         model_classes_tww_app=None,
         callback_progress_done=None,
+        session_interlis: Session | None=None,
+        session_tww: Session | None=None,
         filter_nulls=False,
     ):
         self.model_groups = set(model_selection.groups_for_models(model))
@@ -28,24 +30,35 @@ class InterlisImporterFromIntermediateSchema:
         self.model_classes_tww_vl = model_classes_tww_vl
         self.model_classes_tww_app = model_classes_tww_app
 
-        self.session_interlis = None
-        self.session_tww = None
+        self.session_interlis = session_interlis
+        self.session_tww = session_tww
+        self.owns_sessions = session_interlis is None
 
         self.filter_nulls = filter_nulls
 
+        self.skip_closing_tww_session=False
+
     def tww_import(self, skip_closing_tww_session=False):
+        previous_skip_closing=self.skip_closing_tww_session
         try:
-            self._tww_import(skip_closing_tww_session)
+            self.skip_closing_tww_session=skip_closing_tww_session
+            self._tww_import()
         except Exception as exception:
             try:
-                self.session_tww.rollback()
-                self.session_tww.close()
-                self.session_interlis.close()
+                if self.owns_sessions:
+                    self._rollback_owned_sessions()
             except Exception as cleanup_exception:
                 logger.warning(f"Could not close sessions cleanly: {cleanup_exception}")
             raise exception
+        else:
+            if self.owns_sessions:
+                self._commit_owned_sessions()
+        finally:
+            if self.owns_sessions:
+                self._close_owned_sessions()
+            self.skip_closing_tww_session=previous_skip_closing
 
-    def _tww_import(self, skip_closing_tww_session):
+    def _tww_import(self):
         """
         Imports data from the ili2pg model into the TWW model.
 
@@ -58,12 +71,13 @@ class InterlisImporterFromIntermediateSchema:
         # We use two different sessions for reading and writing so it's easier to
         # review imports and to keep the door open to getting data from another
         # connection / database type.
-        self.session_interlis = Session(
-            utils.tww_sqlalchemy.create_engine(), autocommit=False, autoflush=False
-        )
-        self.session_tww = Session(
-            utils.tww_sqlalchemy.create_engine(), autocommit=False, autoflush=False
-        )
+        if self.owns_sessions:
+            self.session_interlis = Session(
+                utils.tww_sqlalchemy.create_engine(), autocommit=False, autoflush=False
+            )
+            self.session_tww = Session(
+                utils.tww_sqlalchemy.create_engine(), autocommit=False, autoflush=False
+            )
 
         # Allow to insert rows with cyclic dependencies at once
         self.session_tww.execute(text("SET CONSTRAINTS ALL DEFERRED;"))
@@ -91,8 +105,8 @@ class InterlisImporterFromIntermediateSchema:
         if "sia405_protection_tube" in self.model_groups:
             self._import_sia405_protection_tube()
 
-        self.close_sessions(skip_closing_tww_session=skip_closing_tww_session)
-
+        self.session_tww.flush()
+        
     def _import_sia405_abwasser_base(self):
         logger.info("\nImporting ABWASSER.organisation -> TWW.organisation")
         self._import_organisation()
@@ -420,13 +434,6 @@ class InterlisImporterFromIntermediateSchema:
     def _import_sia405_protection_tube(self):
         logger.error("_import_sia405_protection_tube not implemented")
         self._check_for_stop()
-
-    def close_sessions(self, skip_closing_tww_session=False):
-        # Calling the precommit callback if provided, allowing to filter before final import
-        if not skip_closing_tww_session:
-            self.session_tww.commit()
-            self.session_tww.close()
-        self.session_interlis.close()
 
     def get_vl_instance(self, vl_table, value_de):
         """
@@ -2966,3 +2973,29 @@ class InterlisImporterFromIntermediateSchema:
             )
             self.session_tww.add(versickerungsbereichag)
             print(".", end="")
+
+    def _rollback_owned_sessions(
+        self,
+    ) -> None:
+        if self.session_tww is not None:
+            self.session_tww.rollback()
+
+
+    def _commit_owned_sessions(
+        self,
+    ) -> None:
+        if self.session_tww is not None:
+            self.session_tww.commit()
+
+
+    def _close_owned_sessions(
+        self,
+    ) -> None:
+        if (
+            self.session_tww is not None
+            and not self.skip_closing_tww_session
+        ):
+            self.session_tww.close()
+
+        if self.session_interlis is not None:
+            self.session_interlis.close()

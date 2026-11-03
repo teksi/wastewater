@@ -1,5 +1,3 @@
-# teksi_wastewater/hooks/adapters/tww_database_connection_factory.py
-
 from __future__ import annotations
 
 from contextlib import AbstractContextManager

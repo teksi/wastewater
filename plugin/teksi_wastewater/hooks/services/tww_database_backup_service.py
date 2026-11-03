@@ -1,23 +1,18 @@
-# teksi_wastewater/hooks/services/tww_database_backup_service.py
-
 from __future__ import annotations
 
+from dataclasses import dataclass, field
 import logging
 import os
+from pathlib import Path
 import re
 import shutil
 import subprocess
 import tempfile
-from dataclasses import dataclass
-from pathlib import Path
-from collections.abc import Mapping
+from time import perf_counter
+from typing import Mapping
 
 from ..adapters.tww_database_connection_factory import (
     TwwDatabaseConnectionFactory,
-)
-
-logger = logging.getLogger(
-    __name__,
 )
 
 
@@ -34,12 +29,16 @@ class TwwDatabaseBackupService:
     """
     Back up and restore one quarantine schema.
 
-    The service creates PostgreSQL custom-format archives using ``pg_dump``.
-    A failed persistence attempt can restore the original quarantine schema
-    with ``pg_restore``.
+    Backups use PostgreSQL custom-format archives created by ``pg_dump``.
+    Restores use ``pg_restore --clean`` and run in one transaction.
 
-    Database passwords are passed through the subprocess environment and are
-    never included in command-line arguments.
+    PostgreSQL credentials are passed through the subprocess environment and
+    are never written to command-line arguments or logs.
+
+    The caller must release application-owned database transactions before
+    calling ``restore_backup()``. Defensive PostgreSQL and subprocess timeouts
+    prevent external or accidentally retained sessions from blocking recovery
+    indefinitely.
     """
 
     connection_factory: TwwDatabaseConnectionFactory
@@ -50,6 +49,23 @@ class TwwDatabaseBackupService:
 
     pg_restore_executable: str = "pg_restore"
 
+    dump_timeout_seconds: float = 300.0
+
+    archive_verification_timeout_seconds: float = 60.0
+
+    restore_timeout_seconds: float = 360.0
+
+    restore_lock_timeout_milliseconds: int = 30_000
+
+    restore_statement_timeout_milliseconds: int = 300_000
+
+    logger: logging.Logger = field(
+        default_factory=lambda: logging.getLogger(
+            __name__,
+        ),
+        repr=False,
+    )
+
     def create_backup(
         self,
         *,
@@ -59,10 +75,10 @@ class TwwDatabaseBackupService:
         """
         Create a custom-format backup of one quarantine schema.
 
-        The backup is written to a temporary file and moved to its final path
-        only after ``pg_dump`` completes successfully.
+        The archive is first written to a temporary path and moved to its
+        final path only after ``pg_dump`` succeeds and creates a non-empty
+        file.
         """
-
         normalized_job_id = self._required_value(
             value=job_id,
             label="job_id",
@@ -73,16 +89,21 @@ class TwwDatabaseBackupService:
             label="import_schema",
         )
 
-        backup_directory = self._resolved_backup_directory()
+        backup_directory = (
+            self._resolved_backup_directory()
+        )
 
         backup_directory.mkdir(
             parents=True,
             exist_ok=True,
         )
 
-        backup_path = backup_directory / self._backup_filename(
-            job_id=normalized_job_id,
-            import_schema=normalized_schema,
+        backup_path = (
+            backup_directory
+            / self._backup_filename(
+                job_id=normalized_job_id,
+                import_schema=normalized_schema,
+            )
         )
 
         temporary_path = backup_path.with_suffix(
@@ -93,13 +114,11 @@ class TwwDatabaseBackupService:
             temporary_path,
         )
 
-        connection_arguments = self._connection_arguments()
-
         command = [
             self._resolve_executable(
                 self.pg_dump_executable,
             ),
-            *connection_arguments,
+            *self._connection_arguments(),
             "--format=custom",
             "--no-owner",
             "--no-privileges",
@@ -114,9 +133,18 @@ class TwwDatabaseBackupService:
         try:
             self._run(
                 command,
+                operation=(
+                    "PostgreSQL quarantine backup creation"
+                ),
+                timeout_seconds=(
+                    self.dump_timeout_seconds
+                ),
             )
 
-            if not temporary_path.is_file() or temporary_path.stat().st_size == 0:
+            if (
+                not temporary_path.is_file()
+                or temporary_path.stat().st_size == 0
+            ):
                 raise RuntimeError(
                     "PostgreSQL backup completed without creating "
                     f"a valid archive at {temporary_path!s}."
@@ -130,16 +158,18 @@ class TwwDatabaseBackupService:
                 backup_path,
             )
 
-        except Exception:
+        except BaseException:
             self._remove_file_if_present(
                 temporary_path,
             )
 
             raise
 
-        logger.info(
-            "Created quarantine backup for job %r at %s.",
+        self.logger.info(
+            "Created quarantine backup for job %r and schema %r "
+            "at %s.",
             normalized_job_id,
+            normalized_schema,
             backup_path,
         )
 
@@ -154,11 +184,13 @@ class TwwDatabaseBackupService:
         """
         Restore a quarantine schema from a custom-format archive.
 
-        Objects contained in the archive are cleaned before restoration. The
-        restore runs as one transaction so a failed restore does not leave a
-        partially restored quarantine schema.
-        """
+        Archive objects are cleaned before restoration. The restore runs in
+        one transaction so a failed restore cannot leave a partially restored
+        schema.
 
+        A PostgreSQL lock timeout turns retained-session conflicts into a
+        prompt, explicit failure instead of an indefinite ``pg_restore`` wait.
+        """
         normalized_schema = self._required_value(
             value=import_schema,
             label="import_schema",
@@ -169,10 +201,16 @@ class TwwDatabaseBackupService:
         )
 
         if not resolved_backup_path.is_file():
-            raise FileNotFoundError("Database backup does not exist: " f"{resolved_backup_path!s}")
+            raise FileNotFoundError(
+                "Database backup does not exist: "
+                f"{resolved_backup_path!s}"
+            )
 
         if resolved_backup_path.stat().st_size == 0:
-            raise RuntimeError("Database backup is empty: " f"{resolved_backup_path!s}")
+            raise RuntimeError(
+                "Database backup is empty: "
+                f"{resolved_backup_path!s}"
+            )
 
         self._verify_archive(
             resolved_backup_path,
@@ -198,9 +236,18 @@ class TwwDatabaseBackupService:
 
         self._run(
             command,
+            operation=(
+                "PostgreSQL quarantine backup restoration"
+            ),
+            timeout_seconds=(
+                self.restore_timeout_seconds
+            ),
+            environment_overrides={
+                "PGOPTIONS": self._restore_pgoptions(),
+            },
         )
 
-        logger.info(
+        self.logger.info(
             "Restored quarantine schema %r from %s.",
             normalized_schema,
             resolved_backup_path,
@@ -216,7 +263,6 @@ class TwwDatabaseBackupService:
 
         Deleting a backup that no longer exists is treated as successful.
         """
-
         resolved_backup_path = Path(
             backup_path,
         )
@@ -228,10 +274,11 @@ class TwwDatabaseBackupService:
 
         except OSError as exception:
             raise RuntimeError(
-                "Could not delete database backup " f"{resolved_backup_path!s}: {exception}"
+                "Could not delete database backup "
+                f"{resolved_backup_path!s}: {exception}"
             ) from exception
 
-        logger.info(
+        self.logger.info(
             "Deleted quarantine backup %s.",
             resolved_backup_path,
         )
@@ -241,9 +288,8 @@ class TwwDatabaseBackupService:
         backup_path: Path,
     ) -> None:
         """
-        Require ``pg_restore`` to recognize the archive.
+        Require ``pg_restore`` to recognize one custom-format archive.
         """
-
         command = [
             self._resolve_executable(
                 self.pg_restore_executable,
@@ -256,6 +302,12 @@ class TwwDatabaseBackupService:
 
         self._run(
             command,
+            operation=(
+                "PostgreSQL backup archive verification"
+            ),
+            timeout_seconds=(
+                self.archive_verification_timeout_seconds
+            ),
         )
 
     def _resolved_backup_directory(
@@ -264,7 +316,6 @@ class TwwDatabaseBackupService:
         """
         Return the directory used for temporary quarantine backups.
         """
-
         if self.backup_directory is not None:
             return Path(
                 self.backup_directory,
@@ -287,7 +338,6 @@ class TwwDatabaseBackupService:
         """
         Return a filesystem-safe backup filename for one job and schema.
         """
-
         safe_job_id = _SAFE_FILE_COMPONENT.sub(
             "_",
             job_id,
@@ -303,26 +353,34 @@ class TwwDatabaseBackupService:
         )
 
         if not safe_job_id:
-            raise ValueError("job_id does not contain any usable filename " "characters.")
+            raise ValueError(
+                "job_id does not contain any usable filename "
+                "characters."
+            )
 
         if not safe_import_schema:
-            raise ValueError("import_schema does not contain any usable filename " "characters.")
+            raise ValueError(
+                "import_schema does not contain any usable filename "
+                "characters."
+            )
 
-        return f"tww-diff-{safe_job_id}-" f"{safe_import_schema}.dump"
+        return (
+            f"tww-diff-{safe_job_id}-"
+            f"{safe_import_schema}.dump"
+        )
 
     def _connection_arguments(
         self,
-    ) -> list[str,]:
+    ) -> list[
+        str,
+    ]:
         """
         Return PostgreSQL client connection arguments.
 
         The password is intentionally omitted and supplied through
         ``PGPASSWORD`` instead.
         """
-
         parameters = self.connection_factory.parameters
-
-        arguments: list[str,] = []
 
         service = self._optional_parameter(
             parameters,
@@ -330,14 +388,10 @@ class TwwDatabaseBackupService:
         )
 
         if service is not None:
-            arguments.extend(
-                [
-                    "--dbname",
-                    f"service={service}",
-                ]
-            )
-
-            return arguments
+            return [
+                "--dbname",
+                f"service={service}",
+            ]
 
         host = self._optional_parameter(
             parameters,
@@ -359,6 +413,16 @@ class TwwDatabaseBackupService:
             "user",
         )
 
+        if database is None:
+            raise RuntimeError(
+                "The database connection configuration does not "
+                "contain a PostgreSQL database name or service."
+            )
+
+        arguments: list[
+            str,
+        ] = []
+
         if host is not None:
             arguments.extend(
                 [
@@ -375,13 +439,12 @@ class TwwDatabaseBackupService:
                 ]
             )
 
-        if database is not None:
-            arguments.extend(
-                [
-                    "--dbname",
-                    database,
-                ]
-            )
+        arguments.extend(
+            [
+                "--dbname",
+                database,
+            ]
+        )
 
         if user is not None:
             arguments.extend(
@@ -391,16 +454,15 @@ class TwwDatabaseBackupService:
                 ]
             )
 
-        if database is None:
-            raise RuntimeError(
-                "The database connection configuration does not "
-                "contain a PostgreSQL database name or service."
-            )
-
         return arguments
 
     def _subprocess_environment(
         self,
+        *,
+        overrides: Mapping[
+            str,
+            str,
+        ] | None = None,
     ) -> dict[
         str,
         str,
@@ -408,7 +470,6 @@ class TwwDatabaseBackupService:
         """
         Return the environment used by PostgreSQL client processes.
         """
-
         environment = dict(
             os.environ,
         )
@@ -419,53 +480,230 @@ class TwwDatabaseBackupService:
         )
 
         if password is not None:
-            environment["PGPASSWORD"] = password
+            environment[
+                "PGPASSWORD"
+            ] = password
+
+        if overrides:
+            for key, value in overrides.items():
+                if key == "PGOPTIONS":
+                    existing_value = environment.get(
+                        key,
+                        "",
+                    ).strip()
+
+                    environment[
+                        key
+                    ] = " ".join(
+                        item
+                        for item in (
+                            existing_value,
+                            value.strip(),
+                        )
+                        if item
+                    )
+
+                    continue
+
+                environment[
+                    key
+                ] = value
 
         return environment
 
-    def _run(
+    def _restore_pgoptions(
         self,
-        command: list[str,],
-    ) -> None:
+    ) -> str:
         """
-        Execute one PostgreSQL client command.
+        Return defensive PostgreSQL settings used by ``pg_restore``.
         """
-
-        logger.debug(
-            "Executing PostgreSQL backup command: %s",
-            self._redacted_command(
-                command,
+        lock_timeout = self._positive_integer(
+            value=(
+                self.restore_lock_timeout_milliseconds
+            ),
+            label=(
+                "restore_lock_timeout_milliseconds"
             ),
         )
 
+        statement_timeout = self._positive_integer(
+            value=(
+                self.restore_statement_timeout_milliseconds
+            ),
+            label=(
+                "restore_statement_timeout_milliseconds"
+            ),
+        )
+
+        return (
+            f"-c lock_timeout={lock_timeout}ms "
+            f"-c statement_timeout={statement_timeout}ms"
+        )
+
+    def _run(
+        self,
+        command: list[
+            str,
+        ],
+        *,
+        operation: str,
+        timeout_seconds: float,
+        environment_overrides: Mapping[
+            str,
+            str,
+        ] | None = None,
+    ) -> None:
+        """
+        Execute one PostgreSQL client command with bounded runtime.
+        """
+        normalized_timeout = self._positive_timeout(
+            value=timeout_seconds,
+            label="timeout_seconds",
+        )
+
+        redacted_command = self._redacted_command(
+            command,
+        )
+
+        self.logger.info(
+            "Executing %s: %s",
+            operation,
+            redacted_command,
+        )
+
+        started = perf_counter()
+
         try:
-            subprocess.run(
+            completed = subprocess.run(
                 command,
                 check=True,
                 capture_output=True,
                 text=True,
                 encoding="utf-8",
                 errors="replace",
-                env=(self._subprocess_environment()),
+                timeout=normalized_timeout,
+                env=self._subprocess_environment(
+                    overrides=environment_overrides,
+                ),
             )
+
+        except subprocess.TimeoutExpired as exception:
+            elapsed = perf_counter() - started
+
+            stdout = self._decoded_output(
+                exception.stdout,
+            )
+
+            stderr = self._decoded_output(
+                exception.stderr,
+            )
+
+            detail = self._command_output_detail(
+                stdout=stdout,
+                stderr=stderr,
+            )
+
+            self.logger.error(
+                "%s timed out after %.3f seconds. Command: %s%s",
+                operation,
+                elapsed,
+                redacted_command,
+                self._formatted_detail_suffix(
+                    detail,
+                ),
+            )
+
+            raise RuntimeError(
+                f"{operation} exceeded "
+                f"{normalized_timeout:.3f} seconds. "
+                f"Command: {redacted_command}"
+                f"{self._formatted_detail_suffix(detail)}"
+            ) from exception
 
         except subprocess.CalledProcessError as exception:
-            stderr = (exception.stderr or "").strip()
+            elapsed = perf_counter() - started
 
-            stdout = (exception.stdout or "").strip()
-
-            detail = (
-                stderr
-                or stdout
-                or ("The PostgreSQL client returned " f"exit code {exception.returncode}.")
+            stdout = self._decoded_output(
+                exception.stdout,
             )
 
-            raise RuntimeError("PostgreSQL backup command failed: " f"{detail}") from exception
+            stderr = self._decoded_output(
+                exception.stderr,
+            )
+
+            detail = self._command_output_detail(
+                stdout=stdout,
+                stderr=stderr,
+            )
+
+            if not detail:
+                detail = (
+                    "The PostgreSQL client returned "
+                    f"exit code {exception.returncode}."
+                )
+
+            self.logger.error(
+                "%s failed after %.3f seconds with exit code %s. "
+                "Command: %s. Detail: %s",
+                operation,
+                elapsed,
+                exception.returncode,
+                redacted_command,
+                detail,
+            )
+
+            raise RuntimeError(
+                f"{operation} failed with exit code "
+                f"{exception.returncode}: {detail}"
+            ) from exception
 
         except OSError as exception:
+            elapsed = perf_counter() - started
+
+            self.logger.error(
+                "Could not start %s after %.3f seconds. "
+                "Command: %s. Detail: %s",
+                operation,
+                elapsed,
+                redacted_command,
+                exception,
+            )
+
             raise RuntimeError(
-                "Could not start PostgreSQL backup command " f"{command[0]!r}: {exception}"
+                f"Could not start {operation} command "
+                f"{command[0]!r}: {exception}"
             ) from exception
+
+        except BaseException:
+            elapsed = perf_counter() - started
+
+            self.logger.exception(
+                "%s was interrupted after %.3f seconds. "
+                "Command: %s",
+                operation,
+                elapsed,
+                redacted_command,
+            )
+
+            raise
+
+        elapsed = perf_counter() - started
+
+        self.logger.info(
+            "%s succeeded after %.3f seconds.",
+            operation,
+            elapsed,
+        )
+
+        if completed.stderr:
+            stderr = completed.stderr.strip()
+
+            if stderr:
+                self.logger.debug(
+                    "%s stderr: %s",
+                    operation,
+                    stderr,
+                )
 
     def _resolve_executable(
         self,
@@ -474,15 +712,19 @@ class TwwDatabaseBackupService:
         """
         Resolve one PostgreSQL client executable.
         """
-
         configured_path = Path(
             executable,
         )
 
-        if configured_path.is_absolute() or configured_path.parent != Path("."):
+        if (
+            configured_path.is_absolute()
+            or configured_path.parent
+            != Path(".")
+        ):
             if not configured_path.is_file():
                 raise RuntimeError(
-                    "PostgreSQL client executable does not exist: " f"{configured_path!s}"
+                    "PostgreSQL client executable does not exist: "
+                    f"{configured_path!s}"
                 )
 
             return str(
@@ -495,7 +737,8 @@ class TwwDatabaseBackupService:
 
         if resolved is None:
             raise RuntimeError(
-                "PostgreSQL client executable " f"{executable!r} was not found in PATH."
+                "PostgreSQL client executable "
+                f"{executable!r} was not found in PATH."
             )
 
         return resolved
@@ -511,7 +754,6 @@ class TwwDatabaseBackupService:
         """
         Return one optional connection parameter as a string.
         """
-
         value = parameters.get(
             key,
         )
@@ -535,7 +777,6 @@ class TwwDatabaseBackupService:
         """
         Return one required non-empty string.
         """
-
         if (
             not isinstance(
                 value,
@@ -543,9 +784,78 @@ class TwwDatabaseBackupService:
             )
             or not value.strip()
         ):
-            raise ValueError(f"{label} must be a non-empty string.")
+            raise ValueError(
+                f"{label} must be a non-empty string."
+            )
 
         return value.strip()
+
+    def _positive_timeout(
+        self,
+        *,
+        value: float,
+        label: str,
+    ) -> float:
+        """
+        Return one positive subprocess timeout in seconds.
+        """
+        if isinstance(
+            value,
+            bool,
+        ):
+            raise TypeError(
+                f"{label} must be a positive number."
+            )
+
+        try:
+            normalized_value = float(
+                value,
+            )
+
+        except (
+            TypeError,
+            ValueError,
+        ) as exception:
+            raise TypeError(
+                f"{label} must be a positive number."
+            ) from exception
+
+        if normalized_value <= 0:
+            raise ValueError(
+                f"{label} must be greater than zero."
+            )
+
+        return normalized_value
+
+    def _positive_integer(
+        self,
+        *,
+        value: int,
+        label: str,
+    ) -> int:
+        """
+        Return one positive integer setting.
+        """
+        if (
+            isinstance(
+                value,
+                bool,
+            )
+            or not isinstance(
+                value,
+                int,
+            )
+        ):
+            raise TypeError(
+                f"{label} must be a positive integer."
+            )
+
+        if value <= 0:
+            raise ValueError(
+                f"{label} must be greater than zero."
+            )
+
+        return value
 
     def _remove_file_if_present(
         self,
@@ -554,23 +864,72 @@ class TwwDatabaseBackupService:
         """
         Remove one file if it exists.
         """
-
         try:
             path.unlink(
                 missing_ok=True,
             )
 
         except OSError as exception:
-            raise RuntimeError(f"Could not remove file {path!s}: {exception}") from exception
+            raise RuntimeError(
+                f"Could not remove file {path!s}: {exception}"
+            ) from exception
 
     def _redacted_command(
         self,
-        command: list[str,],
+        command: list[
+            str,
+        ],
     ) -> str:
         """
-        Return a log-safe representation of a command.
+        Return a platform-appropriate, log-safe command representation.
         """
-
-        return " ".join(
+        return subprocess.list2cmdline(
             command,
         )
+
+    def _decoded_output(
+        self,
+        value: str | bytes | None,
+    ) -> str:
+        """
+        Return subprocess output as normalized text.
+        """
+        if value is None:
+            return ""
+
+        if isinstance(
+            value,
+            bytes,
+        ):
+            return value.decode(
+                "utf-8",
+                errors="replace",
+            ).strip()
+
+        return value.strip()
+
+    def _command_output_detail(
+        self,
+        *,
+        stdout: str,
+        stderr: str,
+    ) -> str:
+        """
+        Select the most useful PostgreSQL client output.
+        """
+        return (
+            stderr
+            or stdout
+        )
+
+    def _formatted_detail_suffix(
+        self,
+        detail: str,
+    ) -> str:
+        """
+        Format optional subprocess output for an exception or log message.
+        """
+        if not detail:
+            return ""
+
+        return f" Detail: {detail}"

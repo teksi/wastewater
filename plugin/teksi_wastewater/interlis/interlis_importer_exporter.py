@@ -445,12 +445,15 @@ class InterlisImporterExporter:
         self,
         xtf_file_output=None,
         logs_next_to_file=True,
+        base_log_path: Path | None=None,
     ):
         # File name without extension (used later for export)
         file_name_base, _ = os.path.splitext(xtf_file_output)
 
         # Configure logging
-        if logs_next_to_file:
+        if base_log_path:
+            self.base_log_path = base_log_path
+        elif logs_next_to_file:
             self.base_log_path = xtf_file_output
         else:
             self.base_log_path = None
@@ -474,6 +477,7 @@ class InterlisImporterExporter:
         import_orgs: bool = False,
         progress_scope: ProgressScope = ProgressScope(),
         allow_schema_recreation: bool = False,
+        base_log_path: Path | None=None,
     ):
 
         if not allow_schema_recreation:
@@ -490,6 +494,7 @@ class InterlisImporterExporter:
         _ = self._prepare_interlis_export(
             xtf_file_output=xtf_file_output,
             logs_next_to_file=logs_next_to_file,
+            base_log_path=base_log_path,
         )
         if not self.from_quarantine_only:
             self._progress_done_in_scope(progress_scope, 5, "Clearing ili schema...")
@@ -565,10 +570,12 @@ class InterlisImporterExporter:
         export_models=None,
         logs_next_to_file=True,
         progress_scope: ProgressScope = ProgressScope(),
+        base_log_path: Path | None=None,
     ):
         file_name_base = self._prepare_interlis_export(
             xtf_file_output=xtf_file_output,
             logs_next_to_file=logs_next_to_file,
+            base_log_path=base_log_path,
         )
 
         self._progress_done_in_scope(progress_scope, 0, "starting INTERLIS export")

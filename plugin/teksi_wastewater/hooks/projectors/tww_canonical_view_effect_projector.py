@@ -5,10 +5,13 @@ from collections.abc import (
     MutableSequence,
     Sequence,
 )
+from geoalchemy2.functions import (
+    ST_Force3D,
+)
 from dataclasses import dataclass, field
 from typing import Any
 
-from sqlalchemy.orm import Session
+
 from teksi_hooks.capabilities.effects import (
     CanonicalViewEffectProjector,
 )
@@ -18,13 +21,20 @@ from teksi_hooks.models.canonical_object import (
 from teksi_hooks.models.effects import (
     Effect,
     EffectDocument,
+    EffectProjectionResult,
     EffectSource,
+    EnforceExistsEffect,
     UpdateAttributeEffect,
 )
 from teksi_hooks.models.mapping import (
     CanonicalViewProjectionMapping,
     ProjectionReferenceMapping,
     ValueListMapping,
+    RelationContext,
+)
+
+from ..adapters.tww_session_manager import (
+    TwwSessionContext,
 )
 
 from ..capabilities.tww_canonical_projection_capability import (
@@ -33,6 +43,30 @@ from ..capabilities.tww_canonical_projection_capability import (
     TwwCanonicalProjectionLookupCapability,
 )
 
+_AGXX_GEPHALTUNG_EXTENSION_VALUES: Mapping[
+    str,
+    frozenset[
+        str,
+    ],
+] = {
+    "nutzungsartag_ist": frozenset(
+        {
+            "Platzwasser",
+            "Strassenwasser",
+        }
+    ),
+    "nutzungsartag_geplant": frozenset(
+        {
+            "Platzwasser",
+            "Strassenwasser",
+        }
+    ),
+    "funktionhierarchisch": frozenset(
+        {
+            "PAA.Arealentwaesserung",
+        }
+    ),
+}
 
 @dataclass(
     slots=True,
@@ -126,11 +160,14 @@ class TwwProjectionContext:
         """
 
         try:
-            return self.references_by_source_attribute[source_attribute]
+            return self.references_by_source_attribute[
+                source_attribute
+            ]
 
         except KeyError as exception:
             raise KeyError(
-                "Projection context does not contain source " f"reference {source_attribute!r}."
+                "Projection context does not contain source "
+                f"reference {source_attribute!r}."
             ) from exception
 
     def canonical_oids(
@@ -145,11 +182,14 @@ class TwwProjectionContext:
         """
 
         try:
-            return self.canonical_oids_by_mapping[mapping_name]
+            return self.canonical_oids_by_mapping[
+                mapping_name
+            ]
 
         except KeyError as exception:
             raise KeyError(
-                "Projection context does not contain canonical " f"OID mapping {mapping_name!r}."
+                "Projection context does not contain canonical "
+                f"OID mapping {mapping_name!r}."
             ) from exception
 
     def value_candidates(
@@ -172,7 +212,8 @@ class TwwProjectionContext:
 
         if value_mapping is None:
             raise KeyError(
-                "Projection does not define a value-list " f"mapping for {source_attribute!r}."
+                "Projection does not define a value-list "
+                f"mapping for {source_attribute!r}."
             )
 
         if value_mapping.ignores(
@@ -180,12 +221,16 @@ class TwwProjectionContext:
         ):
             return ()
 
-        return self.value_candidates_by_source_attribute.get(
-            source_attribute,
-            {},
-        ).get(
-            source_value,
-            (),
+        return (
+            self.value_candidates_by_source_attribute
+            .get(
+                source_attribute,
+                {},
+            )
+            .get(
+                source_value,
+                (),
+            )
         )
 
 
@@ -207,23 +252,25 @@ class TwwCanonicalViewEffectProjector(
     ORM classes, or canonical persistence.
     """
 
-    canonical_lookup: TwwCanonicalProjectionLookupCapability
+    canonical_lookup: (
+        TwwCanonicalProjectionLookupCapability
+    )
 
     source_lookup: SourceReferenceLookupCapability
+
+    session_context: TwwSessionContext
 
     def project_effects(
         self,
         *,
         source_model: str,
         source_class_id: str,
-        source_rows: Sequence[Any,],
-        quarantine_session: Session,
-        live_session: Session,
+        source_rows: Sequence[
+            Any,
+        ],
+        relation_context: RelationContext,
         projection: CanonicalViewProjectionMapping,
-    ) -> tuple[
-        EffectDocument,
-        ...,
-    ]:
+    ) -> EffectProjectionResult:
         """
         Project one complete source class against current canonical state.
 
@@ -232,12 +279,18 @@ class TwwCanonicalViewEffectProjector(
         source-row order.
         """
 
+
+        del relation_context
+
         source_rows = tuple(
             source_rows,
         )
 
         if not source_rows:
-            return ()
+            return EffectProjectionResult(
+                documents=(),
+                source_objects=(),
+            )
 
         self._assert_unique_source_identities(
             source_class_id=source_class_id,
@@ -246,8 +299,6 @@ class TwwCanonicalViewEffectProjector(
 
         context = self._projection_context(
             source_rows=source_rows,
-            quarantine_session=quarantine_session,
-            live_session=live_session,
             projection=projection,
         )
 
@@ -272,14 +323,19 @@ class TwwCanonicalViewEffectProjector(
             documents=documents,
         )
 
-        return documents
+        return EffectProjectionResult(
+            documents=documents,
+            source_objects=source_rows,
+        )
+
+
 
     def _projection_context(
         self,
         *,
-        source_rows: Sequence[Any,],
-        quarantine_session: Session,
-        live_session: Session,
+        source_rows: Sequence[
+            Any,
+        ],
         projection: CanonicalViewProjectionMapping,
     ) -> TwwProjectionContext:
         """
@@ -295,17 +351,31 @@ class TwwCanonicalViewEffectProjector(
             )
         )
 
-        canonical_rows_by_identity = self.canonical_lookup.rows_by_identity(
-            session=live_session,
-            view=projection.canonical_view,
-            identities=source_object_ids,
+        canonical_rows_by_identity = (
+            self.canonical_lookup.canonical_view_rows_by_identity(
+                session=self.session_context.live,
+                view=projection.canonical_view,
+                identities=source_object_ids,
+            )
         )
 
-        unexpected_identities = set(
-            canonical_rows_by_identity,
-        ) - set(
-            source_object_ids,
+        if canonical_rows_by_identity is None:
+            raise TypeError(
+                "Canonical projection lookup "
+                f"{type(self.canonical_lookup).__name__}.rows_by_identity() "
+                "returned None. The lookup contract requires a mapping, "
+                "using an empty mapping when no rows match."
+            )
+
+        unexpected_identities = (
+            set(
+                canonical_rows_by_identity,
+            )
+            - set(
+                source_object_ids,
+            )
         )
+
 
         if unexpected_identities:
             raise ValueError(
@@ -316,15 +386,20 @@ class TwwCanonicalViewEffectProjector(
                 f"{tuple(sorted(unexpected_identities))!r}."
             )
 
-        references_by_source_attribute = self._resolved_projection_references(
-            source_rows=source_rows,
-            quarantine_session=(quarantine_session),
-            references=projection.references,
+        references_by_source_attribute = (
+            self._resolved_projection_references(
+                source_rows=source_rows,
+                references=projection.references,
+            )
         )
 
-        organisation_oids = self._referenced_external_identities(
-            references=(references_by_source_attribute),
-            source_class_id="Organisation",
+        organisation_oids = (
+            self._referenced_external_identities(
+                references=(
+                    references_by_source_attribute
+                ),
+                source_class_id="Organisation",
+            )
         )
 
         canonical_oids_by_mapping: dict[
@@ -336,32 +411,45 @@ class TwwCanonicalViewEffectProjector(
         ] = {}
 
         if organisation_oids:
-            canonical_oids_by_mapping["organisation"] = (
-                self.canonical_lookup.organisation_oids_by_agxx_oid(
-                    session=live_session,
+            canonical_oids_by_mapping[
+                "organisation"
+            ] = (
+                self.canonical_lookup
+                .organisation_oids_by_agxx_oid(
+                    session=self.session_context.live,
                     agxx_oids=organisation_oids,
                 )
             )
 
-        value_candidates_by_source_attribute = self._projection_value_candidates(
-            source_rows=source_rows,
-            live_session=live_session,
-            value_lists=projection.value_lists,
+        value_candidates_by_source_attribute = (
+            self._projection_value_candidates(
+                source_rows=source_rows,
+                value_lists=projection.value_lists,
+            )
         )
 
         return TwwProjectionContext(
             projection=projection,
-            canonical_rows_by_identity=(canonical_rows_by_identity),
-            references_by_source_attribute=(references_by_source_attribute),
-            canonical_oids_by_mapping=(canonical_oids_by_mapping),
-            value_candidates_by_source_attribute=(value_candidates_by_source_attribute),
+            canonical_rows_by_identity=(
+                canonical_rows_by_identity
+            ),
+            references_by_source_attribute=(
+                references_by_source_attribute
+            ),
+            canonical_oids_by_mapping=(
+                canonical_oids_by_mapping
+            ),
+            value_candidates_by_source_attribute=(
+                value_candidates_by_source_attribute
+            ),
         )
 
     def _resolved_projection_references(
         self,
         *,
-        source_rows: Sequence[Any,],
-        quarantine_session: Session,
+        source_rows: Sequence[
+            Any,
+        ],
         references: Mapping[
             str,
             ProjectionReferenceMapping,
@@ -379,12 +467,16 @@ class TwwCanonicalViewEffectProjector(
 
         t_ids_by_mapping: dict[
             ProjectionReferenceMapping,
-            set[int,],
+            set[
+                int,
+            ],
         ] = {}
 
         attributes_by_mapping: dict[
             ProjectionReferenceMapping,
-            list[str,],
+            list[
+                str,
+            ],
         ] = {}
 
         for (
@@ -418,7 +510,7 @@ class TwwCanonicalViewEffectProjector(
                 )
 
                 if source_reference is None:
-                    return None
+                    continue
 
                 if isinstance(
                     source_reference,
@@ -441,19 +533,29 @@ class TwwCanonicalViewEffectProjector(
             referenced_t_ids,
         ) in t_ids_by_mapping.items():
             if not referenced_t_ids:
-                resolved_rows_by_mapping[reference_mapping] = {}
+                resolved_rows_by_mapping[
+                    reference_mapping
+                ] = {}
 
                 continue
 
-            resolved_rows_by_mapping[reference_mapping] = self.source_lookup.rows_by_t_id(
-                session=quarantine_session,
-                source_class_id=(reference_mapping.source_class_id),
+            resolved_rows_by_mapping[
+                reference_mapping
+            ] = self.source_lookup.rows_by_t_id(
+                session=self.session_context.quarantine,
+                source_class_id=(
+                    reference_mapping
+                    .source_class_id
+                ),
                 t_ids=tuple(
                     sorted(
                         referenced_t_ids,
                     )
                 ),
-                discriminator=(reference_mapping.discriminator),
+                discriminator=(
+                    reference_mapping
+                    .discriminator
+                ),
             )
 
         result: dict[
@@ -465,18 +567,22 @@ class TwwCanonicalViewEffectProjector(
             reference_mapping,
             source_attributes,
         ) in attributes_by_mapping.items():
-            resolved_reference = ResolvedProjectionReference(
-                mapping=reference_mapping,
-                rows_by_t_id=(
-                    resolved_rows_by_mapping.get(
-                        reference_mapping,
-                        {},
-                    )
-                ),
+            resolved_reference = (
+                ResolvedProjectionReference(
+                    mapping=reference_mapping,
+                    rows_by_t_id=(
+                        resolved_rows_by_mapping.get(
+                            reference_mapping,
+                            {},
+                        )
+                    ),
+                )
             )
 
             for source_attribute in source_attributes:
-                result[source_attribute] = resolved_reference
+                result[
+                    source_attribute
+                ] = resolved_reference
 
         return result
 
@@ -501,7 +607,9 @@ class TwwCanonicalViewEffectProjector(
             None,
         ] = {}
 
-        processed_references: set[int,] = set()
+        processed_references: set[
+            int,
+        ] = set()
 
         for resolved_reference in references.values():
             reference_marker = id(
@@ -517,7 +625,10 @@ class TwwCanonicalViewEffectProjector(
 
             mapping = resolved_reference.mapping
 
-            if mapping.source_class_id != source_class_id:
+            if (
+                mapping.source_class_id
+                != source_class_id
+            ):
                 continue
 
             for row in resolved_reference.rows_by_t_id.values():
@@ -534,7 +645,9 @@ class TwwCanonicalViewEffectProjector(
                     )
                     and identity.strip()
                 ):
-                    identities[identity.strip()] = None
+                    identities[
+                        identity.strip()
+                    ] = None
 
         return tuple(
             identities,
@@ -543,8 +656,9 @@ class TwwCanonicalViewEffectProjector(
     def _projection_value_candidates(
         self,
         *,
-        source_rows: Sequence[Any,],
-        live_session: Session,
+        source_rows: Sequence[
+            Any,
+        ],
         value_lists: Mapping[
             str,
             ValueListMapping,
@@ -561,8 +675,10 @@ class TwwCanonicalViewEffectProjector(
     ]:
         """
         Resolve configured projection value-list lookups in batches.
-        """
 
+        The canonical lookup returns ordinary and targeted projection candidates
+        through the same protocol method.
+        """
         result: dict[
             str,
             Mapping[
@@ -585,22 +701,99 @@ class TwwCanonicalViewEffectProjector(
             )
 
             if not source_values:
-                result[source_attribute] = {}
+                result[
+                    source_attribute
+                ] = {}
 
                 continue
 
-            result[source_attribute] = self.canonical_lookup.value_candidates_by_source_value(
-                session=live_session,
-                mapping=value_mapping,
-                source_values=source_values,
+            source_value_by_normalized_value: dict[
+                str,
+                Any,
+            ] = {}
+
+            for source_value in source_values:
+                normalized_value = str(
+                    source_value,
+                )
+
+                previous_source_value = (
+                    source_value_by_normalized_value.get(
+                        normalized_value,
+                    )
+                )
+
+                if (
+                    previous_source_value is not None
+                    and previous_source_value != source_value
+                ):
+                    raise ValueError(
+                        "Several source values normalize to "
+                        "the same value-list lookup value "
+                        f"{normalized_value!r}: "
+                        f"{previous_source_value!r} and "
+                        f"{source_value!r}."
+                    )
+
+                source_value_by_normalized_value[
+                    normalized_value
+                ] = source_value
+
+            candidates_by_normalized_value = (
+                self.canonical_lookup
+                .value_codes_by_value(
+                    session=self.session_context.live,
+                    relation=value_mapping.relation,
+                    values=tuple(
+                        source_value_by_normalized_value
+                    ),
+                )
             )
+
+            candidates_by_source_value: dict[
+                Any,
+                tuple[
+                    ProjectionValueCandidate,
+                    ...,
+                ],
+            ] = {}
+
+            for (
+                normalized_value,
+                candidates,
+            ) in candidates_by_normalized_value.items():
+                source_value = (
+                    source_value_by_normalized_value.get(
+                        normalized_value,
+                    )
+                )
+
+                if source_value is None:
+                    raise ValueError(
+                        "Canonical value-list lookup returned "
+                        "an unrequested source-facing value "
+                        f"{normalized_value!r} for relation "
+                        f"{value_mapping.relation!r}."
+                    )
+
+                candidates_by_source_value[
+                    source_value
+                ] = tuple(
+                    candidates,
+                )
+
+            result[
+                source_attribute
+            ] = candidates_by_source_value
 
         return result
 
     def _source_values(
         self,
         *,
-        source_rows: Sequence[Any,],
+        source_rows: Sequence[
+            Any,
+        ],
         source_attribute: str,
         mapping: ValueListMapping,
     ) -> tuple[
@@ -632,13 +825,18 @@ class TwwCanonicalViewEffectProjector(
                 source_attribute,
             )
 
-            if source_value is None or mapping.ignores(
-                source_value,
+            if (
+                source_value is None
+                or mapping.ignores(
+                    source_value,
+                )
             ):
                 continue
 
             try:
-                values[source_value] = None
+                values[
+                    source_value
+                ] = None
 
             except TypeError as exception:
                 raise TypeError(
@@ -683,11 +881,17 @@ class TwwCanonicalViewEffectProjector(
                 context=context,
             )
 
-        elif source_class_id == "Ueberlauf_Foerderaggregat":
-            effects = self._project_ueberlauf_foerderaggregat(
-                source_row=source_row,
-                current_row=current_row,
-                context=context,
+        elif (
+            source_class_id
+            == "Ueberlauf_Foerderaggregat"
+        ):
+            effects = (
+                self
+                ._project_ueberlauf_foerderaggregat(
+                    source_row=source_row,
+                    current_row=current_row,
+                    context=context,
+                )
             )
 
         else:
@@ -721,18 +925,895 @@ class TwwCanonicalViewEffectProjector(
         ...,
     ]:
         """
-        Project one AGXX GepKnoten row.
+        Project AGXX-only GepKnoten content.
 
-        Target-class and target-attribute disambiguation belongs here. All
-        required reference and value mappings are already available in
-        ``context``.
+        Ordinary DSS attributes are ignored for connected wastewater nodes.
+        Missing AGXX extension rows are created only when at least one
+        non-neutral update targets the row.
         """
+        effects: list[
+            Effect,
+        ] = []
 
-        del source_row
-        del current_row
-        del context
+        source_object_id = self._source_object_id(
+            source_row,
+        )
 
-        return ()
+        wastewater_node_extension_identity = (
+            CanonicalObjectIdentity(
+                class_id="agxx_wastewater_node",
+                attributes={
+                    "fk_wastewater_node": source_object_id,
+                },
+            )
+        )
+
+        wastewater_networkelement_extension_identity = (
+            CanonicalObjectIdentity(
+                class_id=(
+                    "agxx_wastewater_networkelement"
+                ),
+                attributes={
+                    "fk_wastewater_networkelement": (
+                        source_object_id
+                    ),
+                },
+            )
+        )
+
+        last_modification_identity = (
+            CanonicalObjectIdentity(
+                class_id="agxx_last_modification",
+                attributes={
+                    "fk_element": source_object_id,
+                },
+            )
+        )
+
+        node_extension_effects_start = len(
+            effects,
+        )
+
+        self._append_mapped_update_if_changed(
+            effects=effects,
+            source_row=source_row,
+            current_row=current_row,
+            source_attribute="istschnittstelle",
+            identity=(
+                wastewater_node_extension_identity
+            ),
+            target_attribute="ag96_is_gateway",
+            context=context,
+        )
+
+        self._prepend_exists_if_updates_added(
+            effects=effects,
+            identity=(
+                wastewater_node_extension_identity
+            ),
+            effects_start_index=(
+                node_extension_effects_start
+            ),
+        )
+
+        self._append_agxx_gep_metadata_updates(
+            effects=effects,
+            source_row=source_row,
+            current_row=current_row,
+            context=context,
+            extension_identity=(
+                wastewater_networkelement_extension_identity
+            ),
+            last_modification_identity=(
+                last_modification_identity
+            ),
+        )
+
+        self._append_agxx_wi_metadata_updates(
+            effects=effects,
+            source_row=source_row,
+            current_row=current_row,
+            context=context,
+            extension_identity=(
+                wastewater_networkelement_extension_identity
+            ),
+            last_modification_identity=(
+                last_modification_identity
+            ),
+        )
+
+        self._append_gepknoten_measure_update(
+            effects=effects,
+            source_row=source_row,
+            current_row=current_row,
+        )
+
+        self._append_gepknoten_function_update(
+            effects=effects,
+            source_row=source_row,
+            current_row=current_row,
+            context=context,
+        )
+
+        self._append_unconnected_node_updates(
+            effects=effects,
+            source_row=source_row,
+            current_row=current_row,
+            context=context,
+        )
+
+        return tuple(
+            effects,
+        )
+
+    def _append_agxx_wi_metadata_updates(
+        self,
+        *,
+        effects: MutableSequence[
+            Effect,
+        ],
+        source_row: Any,
+        current_row: Any | None,
+        context: TwwProjectionContext,
+        extension_identity: CanonicalObjectIdentity,
+        last_modification_identity: CanonicalObjectIdentity,
+    ) -> None:
+        """
+        Project common AGXX/WI metadata and create extension rows as needed.
+        """
+        extension_effects_start = len(
+            effects,
+        )
+
+        self._append_agxx_wiprovider_update(
+            effects=effects,
+            source_row=source_row,
+            current_row=current_row,
+            context=context,
+            identity=extension_identity,
+        )
+
+        self._append_source_update_if_changed(
+            effects=effects,
+            source_row=source_row,
+            current_row=current_row,
+            source_attribute="bemerkung_wi",
+            identity=extension_identity,
+            target_attribute="ag64_remark",
+        )
+
+        self._prepend_exists_if_updates_added(
+            effects=effects,
+            identity=extension_identity,
+            effects_start_index=(
+                extension_effects_start
+            ),
+        )
+
+        last_modification_effects_start = len(
+            effects,
+        )
+
+        self._append_source_update_if_changed(
+            effects=effects,
+            source_row=source_row,
+            current_row=current_row,
+            source_attribute="letzte_aenderung_wi",
+            identity=last_modification_identity,
+            target_attribute=(
+                "ag64_last_modification"
+            ),
+        )
+
+        self._prepend_exists_if_updates_added(
+            effects=effects,
+            identity=last_modification_identity,
+            effects_start_index=(
+                last_modification_effects_start
+            ),
+        )
+
+    def _append_agxx_wiprovider_update(
+        self,
+        *,
+        effects: MutableSequence[
+            Effect,
+        ],
+        source_row: Any,
+        current_row: Any | None,
+        context: TwwProjectionContext,
+        identity: CanonicalObjectIdentity,
+    ) -> None:
+        """
+        Project ``datenbewirtschafter_wi`` to the common AGXX provider extension.
+        """
+        source_provider_oid = self._resolved_reference(
+            source_row=source_row,
+            source_attribute=(
+                "datenbewirtschafter_wi"
+            ),
+            context=context,
+        )
+
+        canonical_provider_oid = self._canonical_oid(
+            source_oid=source_provider_oid,
+            mapping_name="organisation",
+            context=context,
+            source_row=source_row,
+            reference_name="AGXX/WI data provider",
+        )
+
+        if canonical_provider_oid is None:
+            return
+
+        current_provider_oid = self._row_value(
+            current_row,
+            "datenbewirtschafter_wi",
+        )
+
+        self._append_update_if_changed(
+            effects=effects,
+            identity=identity,
+            target_attribute="ag64_fk_provider",
+            desired_value=canonical_provider_oid,
+            current_value=current_provider_oid,
+        )
+
+    def _append_unconnected_node_updates(
+        self,
+        *,
+        effects: MutableSequence[
+            Effect,
+        ],
+        source_row: Any,
+        current_row: Any | None,
+        context: TwwProjectionContext,
+    ) -> None:
+        """
+        Project values stored in ``agxx_unconnected_node_bwrel``.
+
+        Connected DSS wastewater nodes remain unaffected. If an applicable
+        fallback row is missing, it is created only when at least one non-null
+        update is emitted.
+        """
+        if current_row is None:
+            return
+
+        is_synthetic = bool(
+            self._row_value(
+                current_row,
+                "_mapping_is_synthetic",
+            )
+        )
+
+        has_unconnected_fallback = bool(
+            self._row_value(
+                current_row,
+                "_mapping_has_unc_fallback",
+            )
+        )
+
+        if not is_synthetic and not has_unconnected_fallback:
+            return
+
+        identity = CanonicalObjectIdentity(
+            class_id="agxx_unconnected_node_bwrel",
+            attributes={
+                "obj_id": self._source_object_id(
+                    source_row,
+                ),
+            },
+        )
+
+        effects_start = len(
+            effects,
+        )
+
+        self._append_source_update_if_changed(
+            effects=effects,
+            source_row=source_row,
+            current_row=current_row,
+            source_attribute="deckelkote",
+            identity=identity,
+            target_attribute="co_level",
+        )
+
+        self._append_unconnected_geometry_update(
+            effects=effects,
+            source_row=source_row,
+            source_attribute="detailgeometrie",
+            target_attribute="detail_geometry3d_geometry",
+            identity=identity,
+        )
+
+        self._append_mapped_update_if_changed(
+            effects=effects,
+            source_row=source_row,
+            current_row=current_row,
+            source_attribute="lagegenauigkeit",
+            identity=identity,
+            target_attribute="co_positional_accuracy",
+            context=context,
+        )
+
+        bottom_level = getattr(
+            source_row,
+            "sohlenkote",
+            None,
+        )
+
+        self._append_unconnected_geometry_update(
+            effects=effects,
+            source_row=source_row,
+            source_attribute="lage",
+            target_attribute="situation3d_geometry",
+            identity=identity,
+            z_value=bottom_level,
+        )
+
+        self._append_source_update_if_changed(
+            effects=effects,
+            source_row=source_row,
+            current_row=current_row,
+            source_attribute="rueckstaukote_ist",
+            identity=identity,
+            target_attribute="backflow_level_current",
+        )
+
+        self._append_source_update_if_changed(
+            effects=effects,
+            source_row=source_row,
+            current_row=current_row,
+            source_attribute="sohlenkote",
+            identity=identity,
+            target_attribute="bottom_level",
+        )
+
+        self._append_mapped_update_if_changed(
+            effects=effects,
+            source_row=source_row,
+            current_row=current_row,
+            source_attribute="funktionhierarchisch",
+            identity=identity,
+            target_attribute="ch_function_hierarchic",
+            context=context,
+        )
+
+        self._prepend_exists_if_updates_added(
+            effects=effects,
+            identity=identity,
+            effects_start_index=effects_start,
+        )
+
+    def _append_unconnected_geometry_update(
+        self,
+        *,
+        effects: MutableSequence[
+            Effect,
+        ],
+        source_row: Any,
+        source_attribute: str,
+        target_attribute: str,
+        identity: CanonicalObjectIdentity,
+        z_value: Any | None = None,
+    ) -> None:
+        """
+        Append one three-dimensional unconnected-node geometry update.
+
+        Null source geometries are neutral and therefore produce no effect.
+
+        Geometry conversion is delegated to ``_append_force_3d_update()``, which
+        represents the conversion as a PostGIS ``ST_Force3D`` expression. The
+        effect persister is responsible for executing that expression when the
+        canonical update is applied.
+        """
+        if not hasattr(
+            source_row,
+            source_attribute,
+        ):
+            raise ValueError(
+                "Projection source row does not expose "
+                f"geometry attribute {source_attribute!r}."
+            )
+
+        source_geometry = getattr(
+            source_row,
+            source_attribute,
+        )
+
+        if source_geometry is None:
+            return
+
+        self._append_force_3d_update(
+            effects=effects,
+            source_row=source_row,
+            source_attribute=source_attribute,
+            target_attribute=target_attribute,
+            identity=identity,
+            z_value=z_value,
+        )
+    
+    def _append_force_3d_update(
+        self,
+        *,
+        effects: MutableSequence[
+            Effect,
+        ],
+        source_row: Any,
+        source_attribute: str,
+        target_attribute: str,
+        identity: CanonicalObjectIdentity,
+        z_value: Any | None = None,
+    ) -> None:
+        """
+        Append one geometry update using PostGIS ``ST_Force3D``.
+
+        Existing Z coordinates are preserved. Two-dimensional coordinates receive
+        the supplied Z value. When no Z value is supplied, PostGIS uses its
+        default value.
+
+        Geometry conversion is intentionally represented as a SQLAlchemy
+        expression so no Shapely dependency or client-side geometry conversion is
+        required.
+        """
+        if not hasattr(
+            source_row,
+            source_attribute,
+        ):
+            raise ValueError(
+                "Projection source row does not expose "
+                f"geometry attribute {source_attribute!r}."
+            )
+
+        source_geometry = getattr(
+            source_row,
+            source_attribute,
+        )
+
+        if source_geometry is None:
+            return
+
+        if z_value is None:
+            desired_geometry = ST_Force3D(
+                source_geometry,
+            )
+        else:
+            desired_geometry = ST_Force3D(
+                source_geometry,
+                z_value,
+            )
+
+        effects.append(
+            UpdateAttributeEffect(
+                identity=identity,
+                attribute_id=target_attribute,
+                value=desired_geometry,
+            )
+        )
+
+    def _append_agxx_gepprovider_update(
+        self,
+        *,
+        effects: MutableSequence[
+            Effect,
+        ],
+        source_row: Any,
+        current_row: Any | None,
+        context: TwwProjectionContext,
+        identity: CanonicalObjectIdentity,
+    ) -> None:
+        """
+        Project ``datenbewirtschafter_gep`` to the AG96 provider extension.
+        """
+        source_provider_oid = (
+            self._resolved_reference(
+                source_row=source_row,
+                source_attribute=(
+                    "datenbewirtschafter_gep"
+                ),
+                context=context,
+            )
+        )
+
+        canonical_provider_oid = (
+            self._canonical_oid(
+                source_oid=source_provider_oid,
+                mapping_name="organisation",
+                context=context,
+                source_row=source_row,
+                reference_name=(
+                    "AG96 data provider"
+                ),
+            )
+        )
+
+        if canonical_provider_oid is None:
+            return
+
+        current_provider_oid = self._row_value(
+            current_row,
+            "datenbewirtschafter_gep",
+        )
+
+        self._append_update_if_changed(
+            effects=effects,
+            identity=identity,
+            target_attribute="ag96_fk_provider",
+            desired_value=canonical_provider_oid,
+            current_value=current_provider_oid,
+        )
+
+    def _append_gepknoten_measure_update(
+        self,
+        *,
+        effects: MutableSequence[
+            Effect,
+        ],
+        source_row: Any,
+        current_row: Any | None,
+    ) -> None:
+        """
+        Project the AG96 measure reference on the structure extension.
+        """
+        if not hasattr(
+            source_row,
+            "gepmassnahmeref",
+        ):
+            return
+
+        desired_measure_id = getattr(
+            source_row,
+            "gepmassnahmeref",
+        )
+
+        if desired_measure_id is None:
+            return
+
+        wastewater_structure_object_id = (
+            self._row_value(
+                current_row,
+                (
+                    "_mapping_wastewater_"
+                    "structure_obj_id"
+                ),
+            )
+        )
+
+        if (
+            not isinstance(
+                wastewater_structure_object_id,
+                str,
+            )
+            or not wastewater_structure_object_id.strip()
+        ):
+            raise ValueError(
+                "Cannot project GepKnoten measure reference "
+                f"for source object "
+                f"{self._source_object_id(source_row)!r}: "
+                "the canonical comparison row does not "
+                "identify an associated wastewater structure."
+            )
+
+        identity = CanonicalObjectIdentity(
+            class_id=(
+                "agxx_wastewater_structure"
+            ),
+            attributes={
+                "fk_wastewater_structure": (
+                    wastewater_structure_object_id.strip()
+                ),
+            },
+        )
+
+        current_measure_id = self._row_value(
+            current_row,
+            "gepmassnahmeref",
+        )
+
+        effects_start = len(
+            effects,
+        )
+
+        self._append_update_if_changed(
+            effects=effects,
+            identity=identity,
+            target_attribute="ag96_fk_measure",
+            desired_value=desired_measure_id,
+            current_value=current_measure_id,
+        )
+
+        self._prepend_exists_if_updates_added(
+            effects=effects,
+            identity=identity,
+            effects_start_index=effects_start,
+        )
+
+    def _append_gepknoten_function_update(
+        self,
+        *,
+        effects: MutableSequence[
+            Effect,
+        ],
+        source_row: Any,
+        current_row: Any | None,
+        context: TwwProjectionContext,
+    ) -> None:
+        """
+        Project ``funktionag`` through the AGXX semantic candidate mapping.
+
+        AGXX wastewater-node extension rows may be created. DSS subtype rows
+        must already exist and are never created by this method.
+        """
+        if not hasattr(
+            source_row,
+            "funktionag",
+        ):
+            return
+
+        source_value = getattr(
+            source_row,
+            "funktionag",
+        )
+
+        value_mapping = (
+            context.projection.value_lists.get(
+                "funktionag",
+            )
+        )
+
+        if value_mapping is None:
+            raise KeyError(
+                "GepKnoten projection does not define "
+                "the required ``funktionag`` value-list "
+                "mapping."
+            )
+
+        if (
+            source_value is None
+            or value_mapping.ignores(
+                source_value,
+            )
+        ):
+            return
+
+        current_value = self._row_value(
+            current_row,
+            "funktionag",
+        )
+
+        if self._values_equal(
+            current_value=current_value,
+            desired_value=source_value,
+        ):
+            return
+
+        candidates = context.value_candidates(
+            "funktionag",
+            source_value,
+        )
+
+        if not candidates:
+            self._raise_missing_value_mapping(
+                source_row=source_row,
+                source_attribute="funktionag",
+                source_value=source_value,
+                mapping=value_mapping,
+            )
+
+        current_subtype = self._row_value(
+            current_row,
+            "ws_type",
+        )
+
+        selected_candidate = (
+            self._select_gepknoten_function_candidate(
+                source_row=source_row,
+                source_value=source_value,
+                current_subtype=current_subtype,
+                candidates=candidates,
+            )
+        )
+
+        target_class_id = (
+            selected_candidate.target_class_id
+        )
+
+        target_attribute_id = (
+            selected_candidate.target_attribute_id
+        )
+
+        if (
+            target_class_id is None
+            or target_attribute_id is None
+        ):
+            raise ValueError(
+                "GepKnoten ``funktionag`` mapping "
+                f"for value {source_value!r} must define "
+                "both target class and target attribute."
+            )
+
+        if target_class_id == "agxx_wastewater_node":
+            identity = CanonicalObjectIdentity(
+                class_id=target_class_id,
+                attributes={
+                    "fk_wastewater_node": (
+                        self._source_object_id(
+                            source_row,
+                        )
+                    ),
+                },
+            )
+
+        else:
+            wastewater_structure_object_id = (
+                self._row_value(
+                    current_row,
+                    (
+                        "_mapping_wastewater_"
+                        "structure_obj_id"
+                    ),
+                )
+            )
+
+            if (
+                not isinstance(
+                    wastewater_structure_object_id,
+                    str,
+                )
+                or not wastewater_structure_object_id.strip()
+            ):
+                raise ValueError(
+                    "Cannot project GepKnoten "
+                    f"``funktionag`` value "
+                    f"{source_value!r} for source object "
+                    f"{self._source_object_id(source_row)!r}: "
+                    "the canonical comparison row does "
+                    "not identify a wastewater structure."
+                )
+
+            identity = CanonicalObjectIdentity(
+                class_id=target_class_id,
+                attributes={
+                    "obj_id": (
+                        wastewater_structure_object_id.strip()
+                    ),
+                },
+            )
+
+        effects_start = len(
+            effects,
+        )
+
+        effects.append(
+            UpdateAttributeEffect(
+                identity=identity,
+                attribute_id=target_attribute_id,
+                value=selected_candidate.value,
+            )
+        )
+
+        if target_class_id == "agxx_wastewater_node":
+            self._prepend_exists_if_updates_added(
+                effects=effects,
+                identity=identity,
+                effects_start_index=effects_start,
+            )
+
+    def _select_gepknoten_function_candidate(
+        self,
+        *,
+        source_row: Any,
+        source_value: Any,
+        current_subtype: Any,
+        candidates: tuple[
+            ProjectionValueCandidate,
+            ...,
+        ],
+    ) -> ProjectionValueCandidate:
+        """
+        Select the candidate compatible with the current canonical subtype.
+
+        Structural subtype transitions are rejected by the MVP.
+        """
+        extension_candidates = tuple(
+            candidate
+            for candidate in candidates
+            if (
+                candidate.target_class_id
+                == "agxx_wastewater_node"
+            )
+        )
+
+        if len(
+            extension_candidates,
+        ) == 1:
+            return extension_candidates[
+                0
+            ]
+
+        target_class_by_subtype = {
+            "manhole": "manhole",
+            "special_structure": (
+                "special_structure"
+            ),
+            "discharge_point": (
+                "discharge_point"
+            ),
+            "infiltration_installation": (
+                "infiltration_installation"
+            ),
+            "wwtp_structure": "wwtp_structure",
+        }
+
+        current_target_class = (
+            target_class_by_subtype.get(
+                current_subtype,
+            )
+        )
+
+        compatible_candidates = tuple(
+            candidate
+            for candidate in candidates
+            if (
+                candidate.target_class_id
+                == current_target_class
+            )
+        )
+
+        if len(
+            compatible_candidates,
+        ) == 1:
+            return compatible_candidates[
+                0
+            ]
+
+        available_targets = tuple(
+            sorted(
+                {
+                    (
+                        candidate.target_class_id,
+                        candidate.target_attribute_id,
+                    )
+                    for candidate in candidates
+                },
+                key=lambda target: (
+                    str(
+                        target[
+                            0
+                        ]
+                    ),
+                    str(
+                        target[
+                            1
+                        ]
+                    ),
+                ),
+            )
+        )
+
+        if current_target_class is None:
+            raise ValueError(
+                "Cannot project GepKnoten "
+                f"``funktionag`` value {source_value!r} "
+                f"for source object "
+                f"{self._source_object_id(source_row)!r}. "
+                f"The current wastewater-structure subtype "
+                f"is {current_subtype!r}, and the MVP does "
+                "not create or replace canonical subtypes. "
+                f"Available mapping targets: "
+                f"{available_targets!r}."
+            )
+
+        raise ValueError(
+            "GepKnoten ``funktionag`` value "
+            f"{source_value!r} for source object "
+            f"{self._source_object_id(source_row)!r} "
+            "would require a canonical subtype change or "
+            "has an ambiguous mapping. Current subtype: "
+            f"{current_subtype!r}; expected target class: "
+            f"{current_target_class!r}; available targets: "
+            f"{available_targets!r}."
+        )
 
     def _project_gephaltung(
         self,
@@ -745,14 +1826,362 @@ class TwwCanonicalViewEffectProjector(
         ...,
     ]:
         """
-        Project one AGXX GepHaltung row.
+        Project AGXX-only GepHaltung content.
+
+        Missing AGXX extension rows are created only when corresponding
+        non-null source values produce updates. Existing rows are updated in
+        place. DSS channel and structure rows must already exist.
         """
+        effects: list[
+            Effect,
+        ] = []
 
-        del source_row
-        del current_row
-        del context
+        source_object_id = self._source_object_id(
+            source_row,
+        )
 
-        return ()
+        networkelement_extension_identity = (
+            CanonicalObjectIdentity(
+                class_id=(
+                    "agxx_wastewater_networkelement"
+                ),
+                attributes={
+                    "fk_wastewater_networkelement": (
+                        source_object_id
+                    ),
+                },
+            )
+        )
+
+        last_modification_identity = (
+            CanonicalObjectIdentity(
+                class_id="agxx_last_modification",
+                attributes={
+                    "fk_element": source_object_id,
+                },
+            )
+        )
+
+        reach_extension_identity = (
+            CanonicalObjectIdentity(
+                class_id="agxx_reach",
+                attributes={
+                    "fk_reach": source_object_id,
+                },
+            )
+        )
+
+        self._append_agxx_wi_metadata_updates(
+            effects=effects,
+            source_row=source_row,
+            current_row=current_row,
+            context=context,
+            extension_identity=(
+                networkelement_extension_identity
+            ),
+            last_modification_identity=(
+                last_modification_identity
+            ),
+        )
+
+        self._append_agxx_gep_metadata_updates(
+            effects=effects,
+            source_row=source_row,
+            current_row=current_row,
+            context=context,
+            extension_identity=(
+                networkelement_extension_identity
+            ),
+            last_modification_identity=(
+                last_modification_identity
+            ),
+        )
+
+        reach_effects_start = len(
+            effects,
+        )
+
+        self._append_source_update_if_changed(
+            effects=effects,
+            source_row=source_row,
+            current_row=current_row,
+            source_attribute="lichte_hoehe_geplant",
+            identity=reach_extension_identity,
+            target_attribute=(
+                "ag96_clear_height_planned"
+            ),
+        )
+
+        self._append_source_update_if_changed(
+            effects=effects,
+            source_row=source_row,
+            current_row=current_row,
+            source_attribute="lichte_breite_geplant",
+            identity=reach_extension_identity,
+            target_attribute=(
+                "ag96_clear_width_planned"
+            ),
+        )
+
+        self._prepend_exists_if_updates_added(
+            effects=effects,
+            identity=reach_extension_identity,
+            effects_start_index=reach_effects_start,
+        )
+
+        self._append_gephaltung_measure_update(
+            effects=effects,
+            source_row=source_row,
+            current_row=current_row,
+        )
+
+        self._append_gephaltung_extension_value_updates(
+            effects=effects,
+            source_row=source_row,
+            current_row=current_row,
+            context=context,
+        )
+
+        return tuple(
+            effects,
+        )
+
+    def _append_agxx_gep_metadata_updates(
+        self,
+        *,
+        effects: MutableSequence[
+            Effect,
+        ],
+        source_row: Any,
+        current_row: Any | None,
+        context: TwwProjectionContext,
+        extension_identity: CanonicalObjectIdentity,
+        last_modification_identity: CanonicalObjectIdentity,
+    ) -> None:
+        """
+        Project common AG96/GEP metadata and create extension rows as needed.
+        """
+        extension_effects_start = len(
+            effects,
+        )
+
+        self._append_agxx_gepprovider_update(
+            effects=effects,
+            source_row=source_row,
+            current_row=current_row,
+            context=context,
+            identity=extension_identity,
+        )
+
+        self._append_source_update_if_changed(
+            effects=effects,
+            source_row=source_row,
+            current_row=current_row,
+            source_attribute="bemerkung_gep",
+            identity=extension_identity,
+            target_attribute="ag96_remark",
+        )
+
+        self._prepend_exists_if_updates_added(
+            effects=effects,
+            identity=extension_identity,
+            effects_start_index=(
+                extension_effects_start
+            ),
+        )
+
+        last_modification_effects_start = len(
+            effects,
+        )
+
+        self._append_source_update_if_changed(
+            effects=effects,
+            source_row=source_row,
+            current_row=current_row,
+            source_attribute="letzte_aenderung_gep",
+            identity=last_modification_identity,
+            target_attribute=(
+                "ag96_last_modification"
+            ),
+        )
+
+        self._prepend_exists_if_updates_added(
+            effects=effects,
+            identity=last_modification_identity,
+            effects_start_index=(
+                last_modification_effects_start
+            ),
+        )
+
+    def _append_gephaltung_measure_update(
+        self,
+        *,
+        effects: MutableSequence[
+            Effect,
+        ],
+        source_row: Any,
+        current_row: Any | None,
+    ) -> None:
+        """
+        Project the AG96 measure reference on the structure extension.
+        """
+        if not hasattr(
+            source_row,
+            "gepmassnahmeref",
+        ):
+            return
+
+        desired_measure_id = getattr(
+            source_row,
+            "gepmassnahmeref",
+        )
+
+        if desired_measure_id is None:
+            return
+
+        structure_object_id = self._row_value(
+            current_row,
+            "_mapping_wastewater_structure_obj_id",
+        )
+
+        if (
+            not isinstance(
+                structure_object_id,
+                str,
+            )
+            or not structure_object_id.strip()
+        ):
+            raise ValueError(
+                "Cannot project GepHaltung measure reference for "
+                f"source object "
+                f"{self._source_object_id(source_row)!r}: "
+                "the canonical comparison row does not expose "
+                "`_mapping_wastewater_structure_obj_id`."
+            )
+
+        identity = CanonicalObjectIdentity(
+            class_id=(
+                "agxx_wastewater_structure"
+            ),
+            attributes={
+                "fk_wastewater_structure": (
+                    structure_object_id.strip()
+                ),
+            },
+        )
+
+        current_measure_id = self._row_value(
+            current_row,
+            "gepmassnahmeref",
+        )
+
+        effects_start = len(
+            effects,
+        )
+
+        self._append_update_if_changed(
+            effects=effects,
+            identity=identity,
+            target_attribute="ag96_fk_measure",
+            desired_value=desired_measure_id,
+            current_value=current_measure_id,
+        )
+
+        self._prepend_exists_if_updates_added(
+            effects=effects,
+            identity=identity,
+            effects_start_index=effects_start,
+        )
+
+    def _append_gephaltung_extension_value_updates(
+        self,
+        *,
+        effects: MutableSequence[
+            Effect,
+        ],
+        source_row: Any,
+        current_row: Any | None,
+        context: TwwProjectionContext,
+    ) -> None:
+        """
+        Project channel values added to existing DSS value lists for AGXX.
+
+        Ordinary DSS values are ignored. Only the explicitly registered AGXX
+        extension values are projected by the incremental importer.
+        """
+        structure_object_id = self._row_value(
+            current_row,
+            "_mapping_wastewater_structure_obj_id",
+        )
+
+        if (
+            not isinstance(
+                structure_object_id,
+                str,
+            )
+            or not structure_object_id.strip()
+        ):
+            raise ValueError(
+                "Cannot project AGXX GepHaltung channel extensions "
+                f"for source object "
+                f"{self._source_object_id(source_row)!r}: "
+                "the canonical comparison row does not expose "
+                "`_mapping_wastewater_structure_obj_id`."
+            )
+
+        channel_identity = CanonicalObjectIdentity(
+            class_id="channel",
+            attributes={
+                "obj_id": structure_object_id.strip(),
+            },
+        )
+
+        mappings = {
+            "nutzungsartag_ist": "usage_current",
+            "nutzungsartag_geplant": (
+                "usage_planned"
+            ),
+            "funktionhierarchisch": (
+                "function_hierarchic"
+            ),
+        }
+
+        for (
+            source_attribute,
+            target_attribute,
+        ) in mappings.items():
+            if not hasattr(
+                source_row,
+                source_attribute,
+            ):
+                continue
+
+            source_value = getattr(
+                source_row,
+                source_attribute,
+            )
+
+            if source_value is None:
+                continue
+
+            extension_values = (
+                _AGXX_GEPHALTUNG_EXTENSION_VALUES[
+                    source_attribute
+                ]
+            )
+
+            if source_value not in extension_values:
+                continue
+
+            self._append_mapped_update_if_changed(
+                effects=effects,
+                source_row=source_row,
+                current_row=current_row,
+                source_attribute=source_attribute,
+                identity=channel_identity,
+                target_attribute=target_attribute,
+                context=context,
+            )
 
     def _project_ueberlauf_foerderaggregat(
         self,
@@ -765,14 +2194,132 @@ class TwwCanonicalViewEffectProjector(
         ...,
     ]:
         """
-        Project one AGXX overflow or pump row.
+        Project AGXX-only overflow and pump metadata.
+
+        Ordinary DSS overflow attributes are deliberately ignored because they
+        were handled by the baseline import.
+
+        The canonical subtype is validated against the AGXX ``art`` value. The
+        MVP does not create, delete or replace pump, leaping-weir or prank-weir
+        subtype rows.
         """
+        if current_row is None:
+            raise ValueError(
+                "Cannot project AGXX overflow source object "
+                f"{self._source_object_id(source_row)!r}: "
+                "no canonical comparison row exists."
+            )
 
-        del source_row
-        del current_row
-        del context
+        self._assert_overflow_subtype(
+            source_row=source_row,
+            current_row=current_row,
+        )
 
-        return ()
+        effects: list[
+            Effect,
+        ] = []
+
+        source_object_id = self._source_object_id(
+            source_row,
+        )
+
+        overflow_extension_identity = (
+            CanonicalObjectIdentity(
+                class_id="agxx_overflow",
+                attributes={
+                    "fk_overflow": source_object_id,
+                },
+            )
+        )
+
+        last_modification_identity = (
+            CanonicalObjectIdentity(
+                class_id="agxx_last_modification",
+                attributes={
+                    "fk_element": source_object_id,
+                },
+            )
+        )
+
+        self._append_agxx_gep_metadata_updates(
+            effects=effects,
+            source_row=source_row,
+            current_row=current_row,
+            context=context,
+            extension_identity=(
+                overflow_extension_identity
+            ),
+            last_modification_identity=(
+                last_modification_identity
+            ),
+        )
+
+        return tuple(
+            effects,
+        )
+
+    def _assert_overflow_subtype(
+        self,
+        *,
+        source_row: Any,
+        current_row: Any,
+    ) -> None:
+        """
+        Require the AGXX source type to match the existing canonical subtype.
+
+        Structural subtype transitions are deliberately outside the MVP because
+        they would require creating one subtype row and deleting another.
+        """
+        if not hasattr(
+            source_row,
+            "art",
+        ):
+            raise ValueError(
+                "AGXX overflow source row does not expose "
+                "the required `art` discriminator."
+            )
+
+        source_type = getattr(
+            source_row,
+            "art",
+        )
+
+        expected_subtype_by_source_type = {
+            "Foerderaggregat": "pump",
+            "Leapingwehr": "leapingweir",
+            "Streichwehr": "prank_weir",
+        }
+
+        expected_subtype = (
+            expected_subtype_by_source_type.get(
+                source_type,
+            )
+        )
+
+        if expected_subtype is None:
+            raise ValueError(
+                "Unsupported AGXX overflow type "
+                f"{source_type!r} for source object "
+                f"{self._source_object_id(source_row)!r}. "
+                "Supported types are "
+                f"{tuple(expected_subtype_by_source_type)!r}."
+            )
+
+        current_subtype = self._row_value(
+            current_row,
+            "ov_type",
+        )
+
+        if current_subtype == expected_subtype:
+            return
+
+        raise ValueError(
+            "AGXX overflow subtype change is outside the MVP. "
+            f"Source object {self._source_object_id(source_row)!r} "
+            f"declares type {source_type!r}, which requires "
+            f"canonical subtype {expected_subtype!r}, but the "
+            f"existing canonical subtype is {current_subtype!r}."
+        )
 
     def _resolved_reference(
         self,
@@ -794,7 +2341,8 @@ class TwwCanonicalViewEffectProjector(
             source_attribute,
         ):
             raise ValueError(
-                "Projection source row does not expose " f"reference {source_attribute!r}."
+                "Projection source row does not expose "
+                f"reference {source_attribute!r}."
             )
 
         source_reference = getattr(
@@ -847,8 +2395,12 @@ class TwwCanonicalViewEffectProjector(
             source_attribute,
         )
 
-        referenced_row = resolved_reference.rows_by_t_id.get(
-            source_reference,
+        referenced_row = (
+            resolved_reference
+            .rows_by_t_id
+            .get(
+                source_reference,
+            )
         )
 
         if referenced_row is None:
@@ -859,7 +2411,11 @@ class TwwCanonicalViewEffectProjector(
                 f"{self._source_object_id(source_row)!r}."
             )
 
-        identity_attribute = resolved_reference.mapping.identity_attribute
+        identity_attribute = (
+            resolved_reference
+            .mapping
+            .identity_attribute
+        )
 
         referenced_identity = getattr(
             referenced_row,
@@ -951,17 +2507,23 @@ class TwwCanonicalViewEffectProjector(
             source_attribute,
         )
 
-        value_mapping = context.projection.value_lists.get(
-            source_attribute,
+        value_mapping = (
+            context.projection.value_lists.get(
+                source_attribute,
+            )
         )
 
         if value_mapping is None:
             raise KeyError(
-                "Projection does not define a value-list " f"mapping for {source_attribute!r}."
+                "Projection does not define a value-list "
+                f"mapping for {source_attribute!r}."
             )
 
-        if source_value is None or value_mapping.ignores(
-            source_value,
+        if (
+            source_value is None
+            or value_mapping.ignores(
+                source_value,
+            )
         ):
             return None
 
@@ -978,12 +2540,9 @@ class TwwCanonicalViewEffectProjector(
                 mapping=value_mapping,
             )
 
-        if (
-            len(
-                candidates,
-            )
-            != 1
-        ):
+        if len(
+            candidates,
+        ) != 1:
             raise ValueError(
                 "Projection value mapping for source attribute "
                 f"{source_attribute!r} with value "
@@ -992,12 +2551,16 @@ class TwwCanonicalViewEffectProjector(
                 "target disambiguation is required."
             )
 
-        return candidates[0]
+        return candidates[
+            0
+        ]
 
     def _append_source_update_if_changed(
         self,
         *,
-        effects: MutableSequence[Effect,],
+        effects: MutableSequence[
+            Effect,
+        ],
         source_row: Any,
         current_row: Any | None,
         source_attribute: str,
@@ -1017,7 +2580,8 @@ class TwwCanonicalViewEffectProjector(
             source_attribute,
         ):
             raise ValueError(
-                "Projection source row does not expose " f"attribute {source_attribute!r}."
+                "Projection source row does not expose "
+                f"attribute {source_attribute!r}."
             )
 
         desired_value = getattr(
@@ -1028,7 +2592,10 @@ class TwwCanonicalViewEffectProjector(
         if desired_value is None:
             return
 
-        comparison_attribute = current_attribute or source_attribute
+        comparison_attribute = (
+            current_attribute
+            or source_attribute
+        )
 
         current_value = self._row_value(
             current_row,
@@ -1046,7 +2613,9 @@ class TwwCanonicalViewEffectProjector(
     def _append_mapped_update_if_changed(
         self,
         *,
-        effects: MutableSequence[Effect,],
+        effects: MutableSequence[
+            Effect,
+        ],
         source_row: Any,
         current_row: Any | None,
         source_attribute: str,
@@ -1062,7 +2631,20 @@ class TwwCanonicalViewEffectProjector(
         class-specific semantic logic instead.
         """
 
-        value_mapping = context.projection.value_lists[source_attribute]
+        if not hasattr(
+            source_row,
+            source_attribute,
+        ):
+            raise ValueError(
+                "Projection source row does not expose "
+                f"value-list attribute {source_attribute!r}."
+            )
+
+        value_mapping = (
+            context.projection.value_lists[
+                source_attribute
+            ]
+        )
         source_value = getattr(
             source_row,
             source_attribute,
@@ -1073,7 +2655,10 @@ class TwwCanonicalViewEffectProjector(
         ):
             return
 
-        comparison_attribute = current_attribute or source_attribute
+        comparison_attribute = (
+            current_attribute
+            or source_attribute
+        )
 
         current_value = self._row_value(
             current_row,
@@ -1086,33 +2671,28 @@ class TwwCanonicalViewEffectProjector(
         ):
             return
 
-        if source_value is None:
-            desired_value = None
+        candidate = self._single_value_candidate(
+            source_row=source_row,
+            source_attribute=source_attribute,
+            context=context,
+        )
 
-        else:
-            candidate = self._single_value_candidate(
-                source_row=source_row,
-                source_attribute=source_attribute,
-                context=context,
+        if candidate is None:
+            return
+
+        if (
+            candidate.target_class_id is not None
+            or candidate.target_attribute_id is not None
+        ):
+            raise ValueError(
+                "Projection value mapping for "
+                f"{source_attribute!r} returned target "
+                "metadata. Use class-specific semantic "
+                "disambiguation instead of the ordinary "
+                "mapped-update helper."
             )
 
-            if candidate is None:
-                desired_value = None
-
-            else:
-                desired_value = candidate.value
-
-                if (
-                    candidate.target_class_id is not None
-                    or candidate.target_attribute_id is not None
-                ):
-                    raise ValueError(
-                        "Projection value mapping for "
-                        f"{source_attribute!r} returned target "
-                        "metadata. Use class-specific semantic "
-                        "disambiguation instead of the ordinary "
-                        "mapped-update helper."
-                    )
+        desired_value = candidate.value
 
         self._append_update_if_changed(
             effects=effects,
@@ -1125,7 +2705,9 @@ class TwwCanonicalViewEffectProjector(
     def _append_update_if_changed(
         self,
         *,
-        effects: MutableSequence[Effect,],
+        effects: MutableSequence[
+            Effect,
+        ],
         identity: CanonicalObjectIdentity,
         target_attribute: str,
         desired_value: Any,
@@ -1203,14 +2785,17 @@ class TwwCanonicalViewEffectProjector(
                     f"{tuple(sorted(row))!r}."
                 )
 
-            return row[attribute]
+            return row[
+                attribute
+            ]
 
         if not hasattr(
             row,
             attribute,
         ):
             raise ValueError(
-                "Canonical comparison row does not expose " f"attribute {attribute!r}."
+                "Canonical comparison row does not expose "
+                f"attribute {attribute!r}."
             )
 
         return getattr(
@@ -1247,7 +2832,8 @@ class TwwCanonicalViewEffectProjector(
             or not value.strip()
         ):
             raise ValueError(
-                "Projection source row does not expose a valid " "`t_ili_tid` or `obj_id`."
+                "Projection source row does not expose a valid "
+                "`t_ili_tid` or `obj_id`."
             )
 
         return value.strip()
@@ -1265,7 +2851,10 @@ class TwwCanonicalViewEffectProjector(
         if current_value == desired_value:
             return True
 
-        if current_value is None or desired_value is None:
+        if (
+            current_value is None
+            or desired_value is None
+        ):
             return False
 
         return str(
@@ -1278,13 +2867,17 @@ class TwwCanonicalViewEffectProjector(
         self,
         *,
         source_class_id: str,
-        source_rows: Sequence[Any,],
+        source_rows: Sequence[
+            Any,
+        ],
     ) -> None:
         """
         Require unique source object identities within one projected class.
         """
 
-        seen: set[str,] = set()
+        seen: set[
+            str,
+        ] = set()
 
         for source_row in source_rows:
             object_id = self._source_object_id(
@@ -1306,8 +2899,12 @@ class TwwCanonicalViewEffectProjector(
         self,
         *,
         source_class_id: str,
-        source_rows: Sequence[Any,],
-        documents: Sequence[EffectDocument,],
+        source_rows: Sequence[
+            Any,
+        ],
+        documents: Sequence[
+            EffectDocument,
+        ],
     ) -> None:
         """
         Require exactly one source-aligned document per source row.
@@ -1333,20 +2930,88 @@ class TwwCanonicalViewEffectProjector(
             documents,
             strict=True,
         ):
-            expected_object_id = self._source_object_id(
-                source_row,
+            expected_object_id = (
+                self._source_object_id(
+                    source_row,
+                )
             )
 
-            if document.source.class_id != source_class_id:
+            if (
+                document.source.class_id
+                != source_class_id
+            ):
                 raise ValueError(
                     "Canonical-view projection returned source "
                     f"class {document.source.class_id!r}; "
                     f"expected {source_class_id!r}."
                 )
 
-            if document.source.object_id != expected_object_id:
+            if (
+                document.source.object_id
+                != expected_object_id
+            ):
                 raise ValueError(
                     "Canonical-view projection returned source "
                     f"object {document.source.object_id!r}; "
                     f"expected {expected_object_id!r}."
                 )
+
+    def _prepend_exists_if_updates_added(
+        self,
+        *,
+        effects: MutableSequence[
+            Effect,
+        ],
+        identity: CanonicalObjectIdentity,
+        effects_start_index: int,
+    ) -> None:
+        """
+        Require one canonical object when updates were added for its identity.
+
+        The existence effect is inserted before the generated updates so the
+        evaluator can project creation into its in-memory desired state before
+        evaluating subsequent attribute updates. Empty extension objects are
+        not created when all source values are null, ignored or unchanged.
+        """
+        if (
+            effects_start_index < 0
+            or effects_start_index > len(
+                effects,
+            )
+        ):
+            raise ValueError(
+                "effects_start_index is outside the effect sequence."
+            )
+
+        updates_added = any(
+            isinstance(
+                effect,
+                UpdateAttributeEffect,
+            )
+            and effect.identity == identity
+            for effect in effects[
+                effects_start_index:
+            ]
+        )
+
+        if not updates_added:
+            return
+
+        already_required = any(
+            isinstance(
+                effect,
+                EnforceExistsEffect,
+            )
+            and effect.identity == identity
+            for effect in effects
+        )
+
+        if already_required:
+            return
+
+        effects.insert(
+            effects_start_index,
+            EnforceExistsEffect(
+                identity=identity,
+            ),
+        )

@@ -8,7 +8,6 @@ from datetime import date, datetime
 from enum import Enum
 from typing import Any
 
-from osgeo import ogr
 from teksi_hooks.capabilities.connection import (
     DatabaseConnectionFactory,
 )
@@ -23,6 +22,10 @@ from teksi_hooks.models.review import (
     DiffSchemaWriteResult,
     PreparedSource,
     ReviewFeature,
+    ReviewGeometry,
+)
+from teksi_hooks.models.canonical_object import (
+    CanonicalGeometryFamily,
 )
 from teksi_wastewater.hooks.capabilities.tww_interlis_persistence_capability import (
     TwwInterlisPersistenceResult,
@@ -427,7 +430,9 @@ class TwwDiffSchemaService(
                    FROM {self._table(table_name)}
                    WHERE job_id = %s;
                     """,
-                    (job_db_id,),
+                    (
+                        job_db_id,
+                    ),
                 )
 
                 row = cursor.fetchone()
@@ -849,16 +854,19 @@ class TwwDiffSchemaService(
         using only ``import_schema`` remains supported.
         """
 
-        if (
-            not isinstance(
-                import_schema,
-                str,
+        if not isinstance(
+            import_schema,
+            str,
+        ) or not import_schema.strip():
+            raise ValueError(
+                "import_schema must be a non-empty string."
             )
-            or not import_schema.strip()
-        ):
-            raise ValueError("import_schema must be a non-empty string.")
-
-        normalized_exclude_job_id = exclude_job_id.strip() if exclude_job_id is not None else None
+        
+        normalized_exclude_job_id = (
+            exclude_job_id.strip()
+            if exclude_job_id is not None
+            else None
+        )
 
         query = """
             SELECT
@@ -889,14 +897,14 @@ class TwwDiffSchemaService(
             query = query + """
                         AND job_id <> %s
                 """
-            parse_args = (
+            parse_args =(
                 import_schema,
                 import_schema,
                 import_schema,
                 normalized_exclude_job_id,
             )
         else:
-            parse_args = (
+            parse_args =(
                 import_schema,
                 import_schema,
                 import_schema,
@@ -940,7 +948,11 @@ class TwwDiffSchemaService(
             return
 
         job_descriptions = ", ".join(
-            (f"{row['job_id']!r} " f"({row['job_status']})") for row in active_jobs
+            (
+                f"{row['job_id']!r} "
+                f"({row['job_status']})"
+            )
+            for row in active_jobs
         )
 
         raise RuntimeError(
@@ -974,15 +986,14 @@ class TwwDiffSchemaService(
                 actual_status=job.job_status,
             )
 
-        if (
-            job.metadata.get(
-                "job_type",
-            )
-            != "review"
-        ):
+        if job.metadata.get(
+            "job_type",
+        ) != "review":
             raise DiffJobEligibilityError(
                 job_id=job_id,
-                reason=("only review jobs can be refreshed."),
+                reason=(
+                    "only review jobs can be refreshed."
+                ),
             )
 
         diff_tstamp = job.metadata.get(
@@ -995,7 +1006,9 @@ class TwwDiffSchemaService(
         ):
             raise DiffJobEligibilityError(
                 job_id=job_id,
-                reason=("the job has no valid diff refresh timestamp."),
+                reason=(
+                    "the job has no valid diff refresh timestamp."
+                ),
             )
 
         live_schema = job.metadata.get(
@@ -1011,7 +1024,9 @@ class TwwDiffSchemaService(
         ):
             raise DiffJobEligibilityError(
                 job_id=job_id,
-                reason=("the job has no valid live schema."),
+                reason=(
+                    "the job has no valid live schema."
+                ),
             )
 
         import_schemas = self._job_import_schemas(
@@ -1021,7 +1036,9 @@ class TwwDiffSchemaService(
         if not import_schemas:
             raise DiffJobEligibilityError(
                 job_id=job_id,
-                reason=("the job has no retained quarantine schema."),
+                reason=(
+                    "the job has no retained quarantine schema."
+                ),
             )
 
         return job
@@ -1040,17 +1057,25 @@ class TwwDiffSchemaService(
         quarantine preparation before the quarantine-to-live import.
         """
 
+
+
         with self.connection_factory.connection(
             autocommit=True,
         ) as connection:
             cursor = connection.cursor()
+
+
 
             job_db_id = self._job_db_id(
                 cursor=cursor,
                 job_id=job_id,
             )
 
+
+
             rejected_count = 0
+
+
 
             for table_name in self._review_table_names(
                 cursor=cursor,
@@ -1067,7 +1092,11 @@ class TwwDiffSchemaService(
                     (job_db_id,),
                 )
 
+
+
                 row = cursor.fetchone()
+
+
 
                 if row is None:
                     raise RuntimeError(
@@ -1075,9 +1104,13 @@ class TwwDiffSchemaService(
                         f"count for {self.schema}.{table_name}."
                     )
 
+
+
                 rejected_count += int(
                     row[0],
                 )
+
+
 
         return rejected_count
 
@@ -1107,7 +1140,9 @@ class TwwDiffSchemaService(
             ),
         )
 
-        import_schemas: list[str,] = []
+        import_schemas: list[
+            str,
+        ] = []
 
         for candidate in candidates:
             if (
@@ -1459,7 +1494,7 @@ class TwwDiffSchemaService(
 
         reserved_columns = self._reserved_feature_columns()
 
-        for column_name, value in row.items():
+        for column_name,value in row.items():
             if column_name in reserved_columns:
                 continue
 
@@ -1475,7 +1510,7 @@ class TwwDiffSchemaService(
                 continue
             if column_name in reserved_columns:
                 continue
-
+            
             attributes[column_name] = value
 
         return ReviewFeature(
@@ -1791,7 +1826,9 @@ class TwwDiffSchemaService(
         job_db_id: int,
         table_name: str,
         feature: ReviewFeature,
-        table_columns: set[str,],
+        table_columns: set[
+            str,
+        ],
     ) -> None:
         """
         Insert one review feature into its class-specific diff table.
@@ -1817,11 +1854,17 @@ class TwwDiffSchemaService(
             feature=feature,
         )
 
-        columns: list[str,] = []
+        columns: list[
+            str,
+        ] = []
 
-        expressions: list[str,] = []
+        expressions: list[
+            str,
+        ] = []
 
-        parameters: list[Any,] = []
+        parameters: list[
+            Any,
+        ] = []
 
         for (
             column_name,
@@ -1885,8 +1928,13 @@ class TwwDiffSchemaService(
 
         if not columns:
             raise DiffSchemaContractError(
-                table_name=(f"{self.schema}.{table_name}"),
-                message=("The review feature contains no persistable " "columns."),
+                table_name=(
+                    f"{self.schema}.{table_name}"
+                ),
+                message=(
+                    "The review feature contains no persistable "
+                    "columns."
+                ),
             )
 
         cursor.execute(
@@ -1977,7 +2025,9 @@ class TwwDiffSchemaService(
 
     def _reserved_feature_columns(
         self,
-    ) -> frozenset[str,]:
+    ) -> frozenset[
+        str,
+    ]:
         """
         Return infrastructure columns that are not ordinary review attributes.
         """
@@ -2042,96 +2092,39 @@ class TwwDiffSchemaService(
 
     def _geometry_expression(
         self,
-        value: Any,
+        value: ReviewGeometry,
     ) -> tuple[
         str,
-        list[Any,],
+        list[
+            Any,
+        ],
     ]:
         """
-        Return a PostGIS expression and bind parameters for one geometry.
+        Return the PostGIS expression for one review geometry.
 
-        Geometry dimensionality and curved geometry representation are preserved.
-        The configured review SRID is assigned explicitly.
+        The EWKB payload carries its exact subtype, coordinate dimensions, and
+        spatial reference identifier.
         """
 
-        if value is None:
-            return (
-                "%s",
-                [
-                    None,
-                ],
-            )
-
-        geometry = self._ogr_geometry(
+        if not isinstance(
             value,
-        )
-
-        if geometry is None:
+            ReviewGeometry,
+        ):
             raise DiffSchemaContractError(
                 column_name="geometry",
-                message=("Unsupported non-null geometry " f"representation {type(value)!r}."),
-            )
-
-        try:
-            wkb = bytes(geometry.ExportToWkb())
-
-        except Exception:
-            wkt = geometry.ExportToWkt()
-
-            if not wkt:
-                raise DiffSchemaContractError(
-                    column_name="geometry",
-                    message=("Could not serialize the review geometry " "as WKB or WKT."),
-                )
-
-            return (
-                "ST_GeomFromText(%s, %s)",
-                [
-                    wkt,
-                    self.srid,
-                ],
+                message=(
+                    "Persisted review geometries must be "
+                    "ReviewGeometry instances, received "
+                    f"{type(value)!r}."
+                ),
             )
 
         return (
-            "ST_SetSRID(ST_GeomFromWKB(%s), %s)",
+            "ST_GeomFromEWKB(%s)",
             [
-                wkb,
-                self.srid,
+                value.ewkb,
             ],
         )
-
-    def _geometry_to_wkt(
-        self,
-        value: Any,
-    ) -> str | None:
-        if value is None:
-            return None
-
-        if hasattr(
-            value,
-            "asWkt",
-        ):
-            return value.asWkt()
-
-        if hasattr(
-            value,
-            "ExportToWkt",
-        ):
-            return value.ExportToWkt()
-
-        if hasattr(
-            value,
-            "wkt",
-        ):
-            return value.wkt
-
-        if isinstance(
-            value,
-            str,
-        ):
-            return value
-
-        return None
 
     def _database_value(
         self,
@@ -2247,24 +2240,34 @@ class TwwDiffSchemaService(
         feature: ReviewFeature,
     ) -> dict[
         str,
-        Any | None,
+        ReviewGeometry | None,
     ]:
         """
-        Assign canonical geometries to generic diff geometry columns.
+        Assign review geometries to the generic family columns.
 
-        The current storage contract supports at most one geometry from each
-        point, line, or polygon family per review feature.
-
-        Geometry dimensionality and curved geometry representation are preserved.
+        The current diff-schema contract permits at most one geometry from each
+        broad family on one review feature.
         """
+
+        columns_by_family = {
+            CanonicalGeometryFamily.POINT: (
+                "point_geometry"
+            ),
+            CanonicalGeometryFamily.LINE: (
+                "line_geometry"
+            ),
+            CanonicalGeometryFamily.POLYGON: (
+                "polygon_geometry"
+            ),
+        }
 
         result: dict[
             str,
-            Any | None,
+            ReviewGeometry | None,
         ] = {
-            "point_geometry": None,
-            "line_geometry": None,
-            "polygon_geometry": None,
+            column_name: None
+            for column_name
+            in columns_by_family.values()
         }
 
         attribute_by_column: dict[
@@ -2274,250 +2277,59 @@ class TwwDiffSchemaService(
 
         for (
             attribute_name,
-            geometry_value,
+            geometry,
         ) in feature.geometries.items():
-            if geometry_value is None:
-                continue
+            if not isinstance(
+                geometry,
+                ReviewGeometry,
+            ):
+                raise DiffSchemaContractError(
+                    table_name=(
+                        f"{self.schema}."
+                        f"{feature.class_id}"
+                    ),
+                    message=(
+                        "Review geometry "
+                        f"{attribute_name!r} must be a "
+                        "ReviewGeometry instance, received "
+                        f"{type(geometry)!r}."
+                    ),
+                )
 
-            geometry_family = self._geometry_family(
-                geometry_value,
-            )
+            column_name = columns_by_family[
+                geometry.family
+            ]
 
-            column_name = f"{geometry_family}_geometry"
-
-            previous_attribute = attribute_by_column.get(
-                column_name,
+            previous_attribute = (
+                attribute_by_column.get(
+                    column_name,
+                )
             )
 
             if previous_attribute is not None:
                 raise DiffSchemaContractError(
-                    table_name=(f"{self.schema}." f"{feature.class_id}"),
+                    table_name=(
+                        f"{self.schema}."
+                        f"{feature.class_id}"
+                    ),
                     column_name=column_name,
                     message=(
-                        "The review feature contains more than one "
-                        f"{geometry_family} geometry: "
+                        "The review feature contains more than "
+                        f"one {geometry.family.value} geometry: "
                         f"{previous_attribute!r} and "
-                        f"{attribute_name!r}. The current diff "
-                        "schema supports only one geometry per "
-                        "geometry family."
+                        f"{attribute_name!r}."
                     ),
                 )
 
-            result[column_name] = geometry_value
+            result[
+                column_name
+            ] = geometry
 
-            attribute_by_column[column_name] = attribute_name
+            attribute_by_column[
+                column_name
+            ] = attribute_name
 
         return result
-
-    def _ogr_geometry(
-        self,
-        value: Any,
-    ):
-        """
-        Convert one supported geometry representation to an OGR geometry.
-
-        The conversion does not flatten dimensions or linearize curved geometry.
-        """
-
-        if value is None:
-            return None
-
-        if hasattr(
-            value,
-            "ExportToWkb",
-        ):
-            clone = getattr(
-                value,
-                "Clone",
-                None,
-            )
-
-            if clone is not None:
-                return clone()
-
-            return value
-
-        if hasattr(
-            value,
-            "asWkb",
-        ):
-            return ogr.CreateGeometryFromWkb(
-                bytes(
-                    value.asWkb(),
-                )
-            )
-
-        if hasattr(
-            value,
-            "asWkt",
-        ):
-            return ogr.CreateGeometryFromWkt(
-                value.asWkt(),
-            )
-
-        if hasattr(
-            value,
-            "wkb",
-        ):
-            return ogr.CreateGeometryFromWkb(
-                bytes(
-                    value.wkb,
-                )
-            )
-
-        if hasattr(
-            value,
-            "wkt",
-        ):
-            return ogr.CreateGeometryFromWkt(
-                value.wkt,
-            )
-
-        if isinstance(
-            value,
-            memoryview,
-        ):
-            return ogr.CreateGeometryFromWkb(
-                bytes(
-                    value,
-                )
-            )
-
-        if isinstance(
-            value,
-            (
-                bytes,
-                bytearray,
-            ),
-        ):
-            return ogr.CreateGeometryFromWkb(
-                bytes(
-                    value,
-                )
-            )
-
-        if isinstance(
-            value,
-            str,
-        ):
-            return ogr.CreateGeometryFromWkt(
-                value,
-            )
-
-        return None
-
-    def _geometry_family(
-        self,
-        value: Any,
-    ) -> str:
-        """
-        Return the point, line, or polygon family of one review geometry.
-
-        OGR type flattening removes only the dimensional type flag for
-        classification. It does not modify the geometry that is persisted.
-        """
-
-        geometry = self._ogr_geometry(
-            value,
-        )
-
-        if geometry is None:
-            raise DiffSchemaContractError(
-                column_name="geometry",
-                message=("Unsupported non-null geometry " f"representation {type(value)!r}."),
-            )
-
-        geometry_type = ogr.wkbFlatten(geometry.GetGeometryType())
-
-        point_types = {
-            geometry_type
-            for geometry_type in (
-                getattr(
-                    ogr,
-                    "wkbPoint",
-                    None,
-                ),
-                getattr(
-                    ogr,
-                    "wkbMultiPoint",
-                    None,
-                ),
-            )
-            if geometry_type is not None
-        }
-
-        line_types = {
-            geometry_type
-            for geometry_type in (
-                getattr(
-                    ogr,
-                    "wkbLineString",
-                    None,
-                ),
-                getattr(
-                    ogr,
-                    "wkbMultiLineString",
-                    None,
-                ),
-                getattr(
-                    ogr,
-                    "wkbCircularString",
-                    None,
-                ),
-                getattr(
-                    ogr,
-                    "wkbCompoundCurve",
-                    None,
-                ),
-                getattr(
-                    ogr,
-                    "wkbMultiCurve",
-                    None,
-                ),
-            )
-            if geometry_type is not None
-        }
-
-        polygon_types = {
-            geometry_type
-            for geometry_type in (
-                getattr(
-                    ogr,
-                    "wkbPolygon",
-                    None,
-                ),
-                getattr(
-                    ogr,
-                    "wkbMultiPolygon",
-                    None,
-                ),
-                getattr(
-                    ogr,
-                    "wkbCurvePolygon",
-                    None,
-                ),
-                getattr(
-                    ogr,
-                    "wkbMultiSurface",
-                    None,
-                ),
-            )
-            if geometry_type is not None
-        }
-
-        if geometry_type in point_types:
-            return "point"
-
-        if geometry_type in line_types:
-            return "line"
-
-        if geometry_type in polygon_types:
-            return "polygon"
-
-        raise DiffSchemaContractError(
-            column_name="geometry",
-            message=("Unsupported review geometry type " f"{geometry.GetGeometryName()!r}."),
-        )
 
     def _json_dumps(
         self,

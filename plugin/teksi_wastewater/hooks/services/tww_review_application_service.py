@@ -1,3 +1,4 @@
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -5,8 +6,12 @@ from dataclasses import dataclass
 from teksi_hooks.models.validation import (
     ValidationDefinition,
 )
+
 from teksi_wastewater.hooks.adapters.tww_canonical_model_adapter import (
     TwwCanonicalModelAdapter,
+)
+from teksi_wastewater.hooks.adapters.tww_session_manager import (
+    TwwSessionManager,
 )
 from teksi_wastewater.hooks.exceptions import (
     DiffJobEligibilityError,
@@ -45,6 +50,8 @@ class TwwReviewApplicationService:
 
     validation_definition: ValidationDefinition
 
+    session_manager: TwwSessionManager
+
     def apply_job(
         self,
         *,
@@ -52,8 +59,14 @@ class TwwReviewApplicationService:
     ) -> TwwJobPersistenceResult:
         """
         Reconstruct and apply one accepted review job.
-        """
 
+        This service owns the persistence session scope. All downstream services
+        borrow the sessions contained in that scope and must not commit, roll back
+        or close them.
+
+        Jobs containing an incremental source receive a dedicated incremental
+        quarantine session in addition to the base quarantine and live sessions.
+        """
         job = self.diff_schema_service.require_review_job(
             job_id=job_id,
             include_features=False,
@@ -69,7 +82,9 @@ class TwwReviewApplicationService:
         if not job.validation_success:
             raise DiffJobEligibilityError(
                 job_id=job_id,
-                reason=("source validation was not successful."),
+                reason=(
+                    "source validation was not successful."
+                ),
             )
 
         live_schema = job.metadata.get(
@@ -85,16 +100,34 @@ class TwwReviewApplicationService:
         ):
             raise DiffJobEligibilityError(
                 job_id=job_id,
-                reason=("required job metadata 'live_schema' is " "missing or invalid."),
+                reason=(
+                    "required job metadata 'live_schema' is "
+                    "missing or invalid."
+                ),
             )
 
-        canonical_metadata = self.canonical_model_adapter.canonical_model()
+        canonical_metadata = (
+            self.canonical_model_adapter
+            .canonical_model()
+        )
 
-        source_contexts = ()
+        has_incremental_source = (
+            self._has_incremental_source(
+                job,
+            )
+        )
 
-        try:
-            source_contexts = self.persistence_context_factory.source_contexts(
-                job=job,
+        with self.session_manager.persistence_scope(
+            include_incremental=(
+                has_incremental_source
+            ),
+        ) as session_context:
+            source_contexts = (
+                self.persistence_context_factory
+                .source_contexts(
+                    job=job,
+                    session_context=session_context,
+                )
             )
 
             return self.persistence_service.persist_job(
@@ -102,10 +135,29 @@ class TwwReviewApplicationService:
                 live_schema=live_schema.strip(),
                 source_contexts=source_contexts,
                 canonical_metadata=canonical_metadata,
-                validation_definition=(self.validation_definition),
+                validation_definition=(
+                    self.validation_definition
+                ),
+                session_context=session_context,
             )
 
-        finally:
-            self.persistence_context_factory.close_source_contexts(
-                source_contexts=source_contexts,
+    def _has_incremental_source(
+        self,
+        job,
+    ) -> bool:
+        """
+        Return whether one review job contains an incremental source.
+        """
+        incremental_schema = job.metadata.get(
+            "incremental_import_schema",
+        )
+
+        return (
+            isinstance(
+                incremental_schema,
+                str,
             )
+            and bool(
+                incremental_schema.strip()
+            )
+        )

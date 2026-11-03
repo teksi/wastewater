@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass, field, replace
 from typing import Any
 
 from sqlalchemy import inspect
 from sqlalchemy.orm import Session
+
 from teksi_hooks.models.canonical_object import (
     CanonicalObject,
     CanonicalObjectIdentity,
@@ -19,17 +21,17 @@ from teksi_hooks.models.effects import (
     UpdateAttributeEffect,
 )
 
-from ...interlis import (
-    config,
-)
-from ...interlis.interlis_model_mapping.model_tww_od import (
-    ModelTwwOd,
-)
 from ..capabilities.incremental_import import (
     IncrementalEffectEvaluator,
 )
 from ..evaluators.tww_effect_evaluation_policy import (
     TwwEffectEvaluationPolicy,
+)
+from ...interlis import (
+    config,
+)
+from ...interlis.interlis_model_mapping.model_tww_od import (
+    ModelTwwOd,
 )
 
 
@@ -42,21 +44,22 @@ class TwwIncrementalEffectEvaluator(
     """
     Evaluate incremental effects against current canonical TWW state.
 
+    Canonical ORM discovery is performed at most once per evaluator instance.
+    Callers may inject an already prepared canonical class collection to avoid
+    reflection entirely. Otherwise, ``ModelTwwOd`` is prepared lazily on the
+    first evaluation and retained for all subsequent documents.
+
     The evaluator determines whether each desired-state effect is already
-    satisfied.
-
-    Unsatisfied effects are delegated to ``TwwEffectEvaluationPolicy``, which
-    classifies them as either:
-
-    - ``REMEDIABLE``;
-    - ``BLOCKED``.
+    satisfied. Unsatisfied effects are delegated to
+    ``TwwEffectEvaluationPolicy``, which classifies them as either
+    ``REMEDIABLE`` or ``BLOCKED``.
 
     The evaluator assigns the actual effect-document index to every result.
     The policy may use ``effect_index=-1`` because it evaluates one isolated
     unsatisfied effect without knowledge of its document position.
 
     The supplied SQLAlchemy session is caller-owned. This evaluator does not
-    flush, commit, roll back, or close it.
+    flush, commit, roll back or close it.
     """
 
     policy: TwwEffectEvaluationPolicy = field(
@@ -64,6 +67,23 @@ class TwwIncrementalEffectEvaluator(
     )
 
     live_schema: str = config.TWW_OD_SCHEMA
+
+    canonical_classes: Mapping[
+        str,
+        Any,
+    ] | None = field(
+        default=None,
+        repr=False,
+    )
+
+    _canonical_classes_cache: Mapping[
+        str,
+        Any,
+    ] | None = field(
+        default=None,
+        init=False,
+        repr=False,
+    )
 
     def evaluate(
         self,
@@ -76,16 +96,18 @@ class TwwIncrementalEffectEvaluator(
     ]:
         """
         Evaluate every effect in document order.
+
+        Canonical ORM classes are resolved once and reused for all documents
+        evaluated by this instance.
         """
-
-        canonical_classes = self._canonical_classes()
-
         current_objects: dict[
             tuple,
             CanonicalObject | None,
         ] = {}
 
-        results: list[EffectEvaluationResult,] = []
+        results: list[
+            EffectEvaluationResult,
+        ] = []
 
         for (
             effect_index,
@@ -96,13 +118,16 @@ class TwwIncrementalEffectEvaluator(
             identity_key = effect.identity.key()
 
             if identity_key not in current_objects:
-                current_objects[identity_key] = self._current_object(
+                current_objects[
+                    identity_key
+                ] = self._current_object(
                     session=session,
-                    canonical_classes=(canonical_classes),
                     identity=effect.identity,
                 )
 
-            current_object = current_objects[identity_key]
+            current_object = current_objects[
+                identity_key
+            ]
 
             if self._is_satisfied(
                 effect=effect,
@@ -114,9 +139,11 @@ class TwwIncrementalEffectEvaluator(
                 )
 
             else:
-                policy_result = self.policy.unsatisfied_status(
-                    effect=effect,
-                    current_object=current_object,
+                policy_result = (
+                    self.policy.unsatisfied_status(
+                        effect=effect,
+                        current_object=current_object,
+                    )
                 )
 
                 result = replace(
@@ -128,7 +155,9 @@ class TwwIncrementalEffectEvaluator(
                 result,
             )
 
-            current_objects[identity_key] = self._project_effect_state(
+            current_objects[
+                identity_key
+            ] = self._project_effect_state(
                 effect=effect,
                 current_object=current_object,
                 evaluation=result,
@@ -137,6 +166,18 @@ class TwwIncrementalEffectEvaluator(
         return tuple(
             results,
         )
+
+    def clear_cache(
+        self,
+    ) -> None:
+        """
+        Clear lazily discovered canonical ORM classes.
+
+        Explicitly injected ``canonical_classes`` remain authoritative and are
+        not modified. This method is only needed when the database schema is
+        recreated while the same evaluator instance remains alive.
+        """
+        self._canonical_classes_cache = None
 
     def _is_satisfied(
         self,
@@ -147,7 +188,6 @@ class TwwIncrementalEffectEvaluator(
         """
         Return whether one effect already matches canonical state.
         """
-
         if isinstance(
             effect,
             EnforceExistsEffect,
@@ -187,19 +227,22 @@ class TwwIncrementalEffectEvaluator(
         """
         Build one satisfied effect-evaluation result.
         """
-
         metadata: dict[
             str,
             Any,
         ] = {
-            "target_class_id": (effect.identity.class_id),
+            "target_class_id": (
+                effect.identity.class_id
+            ),
         }
 
         if isinstance(
             effect,
             UpdateAttributeEffect,
         ):
-            metadata["target_attribute_id"] = effect.attribute_id
+            metadata[
+                "target_attribute_id"
+            ] = effect.attribute_id
 
         return EffectEvaluationResult(
             effect_index=effect_index,
@@ -220,17 +263,11 @@ class TwwIncrementalEffectEvaluator(
 
         This lets later effects in the same document observe preceding desired
         state without flushing changes to the database.
-
-        For example:
-
-        1. ``EnforceExistsEffect`` for a missing object;
-        2. ``UpdateAttributeEffect`` for that object.
-
-        The update is evaluated against the object that the preceding effect
-        plans to create.
         """
-
-        if evaluation.status == EffectEvaluationStatus.BLOCKED:
+        if (
+            evaluation.status
+            == EffectEvaluationStatus.BLOCKED
+        ):
             return current_object
 
         if isinstance(
@@ -264,7 +301,9 @@ class TwwIncrementalEffectEvaluator(
                 current_object.values,
             )
 
-            updated_values[effect.attribute_id] = effect.value
+            updated_values[
+                effect.attribute_id
+            ] = effect.value
 
             return CanonicalObject(
                 identity=current_object.identity,
@@ -277,15 +316,12 @@ class TwwIncrementalEffectEvaluator(
         self,
         *,
         session: Session,
-        canonical_classes: Any,
         identity: CanonicalObjectIdentity,
     ) -> CanonicalObject | None:
         """
         Load one canonical object using its complete identity.
         """
-
         target_class = self._canonical_class(
-            canonical_classes=canonical_classes,
             class_id=identity.class_id,
         )
 
@@ -322,18 +358,20 @@ class TwwIncrementalEffectEvaluator(
         if not rows:
             return None
 
-        if (
-            len(
-                rows,
+        if len(
+            rows,
+        ) > 1:
+            raise ValueError(
+                "Canonical identity is ambiguous: "
+                f"{identity!r}."
             )
-            > 1
-        ):
-            raise ValueError("Canonical identity is ambiguous: " f"{identity!r}.")
 
         return CanonicalObject(
             identity=identity,
             values=self._row_values(
-                rows[0],
+                rows[
+                    0
+                ],
             ),
         )
 
@@ -349,7 +387,6 @@ class TwwIncrementalEffectEvaluator(
 
         Relationship attributes and SQLAlchemy internal state are excluded.
         """
-
         mapper = inspect(
             type(
                 source_row,
@@ -364,13 +401,72 @@ class TwwIncrementalEffectEvaluator(
             for attribute in mapper.column_attrs
         }
 
-    def _canonical_classes(
+    def _resolved_canonical_classes(
         self,
+    ) -> Mapping[
+        str,
+        Any,
+    ]:
+        """
+        Return canonical live ORM classes without repeated schema reflection.
+
+        Explicitly supplied classes take precedence. Otherwise, the default
+        ``tww_od`` model is reflected once and cached for the lifetime of this
+        evaluator instance.
+        """
+        if self.canonical_classes is not None:
+            return self.canonical_classes
+
+        if self._canonical_classes_cache is None:
+            self._validate_live_schema()
+
+            self._canonical_classes_cache = (
+                ModelTwwOd().classes()
+            )
+
+        return self._canonical_classes_cache
+
+    def _canonical_class(
+        self,
+        *,
+        class_id: str,
     ) -> Any:
         """
-        Return schema-qualified canonical live ORM classes.
+        Return one canonical ORM class from the prepared collection.
         """
+        canonical_classes = (
+            self._resolved_canonical_classes()
+        )
 
+        target_class = canonical_classes.get(
+            class_id,
+        )
+
+        if target_class is None:
+            available_class_ids = tuple(
+                sorted(
+                    str(
+                        available_class_id,
+                    )
+                    for available_class_id
+                    in canonical_classes
+                )
+            )
+
+            raise ValueError(
+                "Unknown canonical ORM class "
+                f"{class_id!r}. Available classes: "
+                f"{available_class_ids!r}."
+            )
+
+        return target_class
+
+    def _validate_live_schema(
+        self,
+    ) -> None:
+        """
+        Require a non-empty configured canonical live schema.
+        """
         if (
             not isinstance(
                 self.live_schema,
@@ -378,53 +474,9 @@ class TwwIncrementalEffectEvaluator(
             )
             or not self.live_schema.strip()
         ):
-            raise ValueError("live_schema must be a non-empty string.")
-
-        return ModelTwwOd().classes()
-
-    def _canonical_class(
-        self,
-        *,
-        canonical_classes: Any,
-        class_id: str,
-    ) -> Any:
-        """
-        Return one canonical ORM class.
-        """
-
-        if isinstance(
-            canonical_classes,
-            dict,
-        ):
-            target_class = canonical_classes.get(
-                class_id,
+            raise ValueError(
+                "live_schema must be a non-empty string."
             )
-
-        else:
-            target_class = getattr(
-                canonical_classes,
-                class_id,
-                None,
-            )
-
-            if target_class is None:
-                classes_collection = getattr(
-                    canonical_classes,
-                    "classes",
-                    None,
-                )
-
-                if classes_collection is not None:
-                    target_class = getattr(
-                        classes_collection,
-                        class_id,
-                        None,
-                    )
-
-        if target_class is None:
-            raise ValueError("Unknown canonical ORM class " f"{class_id!r}.")
-
-        return target_class
 
     def _values_equal(
         self,
@@ -436,14 +488,16 @@ class TwwIncrementalEffectEvaluator(
         Compare current and desired canonical values.
 
         Native equality remains authoritative. A string fallback handles
-        compatible identifier, enum, numeric, and database-wrapper values that
+        compatible identifier, enum, numeric and database-wrapper values that
         use different Python representations.
         """
-
         if current_value == desired_value:
             return True
 
-        if current_value is None or desired_value is None:
+        if (
+            current_value is None
+            or desired_value is None
+        ):
             return False
 
         return str(

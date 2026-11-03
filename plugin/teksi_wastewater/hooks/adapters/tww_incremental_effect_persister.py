@@ -1,12 +1,11 @@
-# teksi_wastewater/hooks/adapters/tww_incremental_effect_persister.py
-
 from __future__ import annotations
 
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from typing import Any
 
 from sqlalchemy.orm import Session
+
 from teksi_hooks.models.canonical_object import (
     CanonicalObjectIdentity,
 )
@@ -19,14 +18,14 @@ from teksi_hooks.models.effects import (
     UpdateAttributeEffect,
 )
 
+from ..capabilities.incremental_import import (
+    IncrementalEffectPersister,
+)
 from ...interlis import (
     config,
 )
 from ...interlis.interlis_model_mapping.model_tww_od import (
     ModelTwwOd,
-)
-from ..capabilities.incremental_import import (
-    IncrementalEffectPersister,
 )
 
 
@@ -39,12 +38,35 @@ class TwwIncrementalEffectPersister(
     """
     Stage evaluated incremental effects in a live SQLAlchemy session.
 
+    Canonical ORM discovery is performed at most once per persister instance.
+    Callers may inject an already prepared canonical class collection to avoid
+    reflection entirely. Otherwise, ``ModelTwwOd`` is prepared lazily on the
+    first persistence call and retained for subsequent documents.
+
     The supplied session is owned by the incremental-import workflow. This
-    adapter may add, modify, delete, and flush ORM objects, but it does not
-    commit, roll back, or close the session.
+    adapter may add, modify and delete ORM objects, but it does not flush,
+    commit, roll back or close the session. The importer flushes once after all
+    effect documents have been staged.
     """
 
     live_schema: str = config.TWW_OD_SCHEMA
+
+    canonical_classes: Mapping[
+        str,
+        Any,
+    ] | None = field(
+        default=None,
+        repr=False,
+    )
+
+    _canonical_classes_cache: Mapping[
+        str,
+        Any,
+    ] | None = field(
+        default=None,
+        init=False,
+        repr=False,
+    )
 
     _row_cache: dict[
         tuple,
@@ -60,15 +82,18 @@ class TwwIncrementalEffectPersister(
         *,
         session: Session,
         document: EffectDocument,
-        evaluations: Sequence[EffectEvaluationResult,],
+        evaluations: Sequence[
+            EffectEvaluationResult,
+        ],
     ) -> None:
         """
-        Stage all satisfied and remediable effects.
+        Stage all satisfied and remediable effects from one document.
 
         Blocked effects cause an immediate failure before further effects from
-        this document are staged.
+        this document are staged. No flush is performed here because the
+        incremental importer flushes once after all documents have been
+        persisted.
         """
-
         if len(
             document.effects,
         ) != len(
@@ -80,8 +105,6 @@ class TwwIncrementalEffectPersister(
                 f"Effects: {len(document.effects)}; "
                 f"evaluations: {len(evaluations)}."
             )
-
-        canonical_classes = self._canonical_classes()
 
         for (
             effect,
@@ -99,21 +122,34 @@ class TwwIncrementalEffectPersister(
 
             if evaluated_effect != effect:
                 raise ValueError(
-                    "Effect evaluation order does not match the " "effect-document order."
+                    "Effect evaluation order does not match the "
+                    "effect-document order."
                 )
 
-            if evaluation.status == EffectEvaluationStatus.BLOCKED:
+            if (
+                evaluation.status
+                == EffectEvaluationStatus.BLOCKED
+            ):
                 raise RuntimeError(
                     "Blocked incremental effect cannot be "
                     "persisted: "
                     f"{getattr(evaluation, 'message', '')}"
                 )
 
-            if evaluation.status == EffectEvaluationStatus.SATISFIED:
+            if (
+                evaluation.status
+                == EffectEvaluationStatus.SATISFIED
+            ):
                 continue
 
-            if evaluation.status != EffectEvaluationStatus.REMEDIABLE:
-                raise ValueError("Unsupported effect-evaluation status " f"{evaluation.status!r}.")
+            if (
+                evaluation.status
+                != EffectEvaluationStatus.REMEDIABLE
+            ):
+                raise ValueError(
+                    "Unsupported effect-evaluation status "
+                    f"{evaluation.status!r}."
+                )
 
             if isinstance(
                 effect,
@@ -121,7 +157,6 @@ class TwwIncrementalEffectPersister(
             ):
                 self._ensure_exists(
                     session=session,
-                    canonical_classes=canonical_classes,
                     identity=effect.identity,
                 )
 
@@ -133,7 +168,6 @@ class TwwIncrementalEffectPersister(
             ):
                 source_row = self._required_row(
                     session=session,
-                    canonical_classes=canonical_classes,
                     identity=effect.identity,
                 )
 
@@ -162,30 +196,48 @@ class TwwIncrementalEffectPersister(
             ):
                 self._ensure_not_exists(
                     session=session,
-                    canonical_classes=canonical_classes,
                     identity=effect.identity,
                 )
 
                 continue
 
-            raise TypeError("Unsupported incremental effect type: " f"{type(effect)!r}.")
+            raise TypeError(
+                "Unsupported incremental effect type: "
+                f"{type(effect)!r}."
+            )
 
-        session.flush()
+    def clear_cache(
+        self,
+    ) -> None:
+        """
+        Clear cached ORM rows and lazily discovered canonical classes.
+
+        Call this when the live schema is recreated while the same persister
+        instance remains in use. Explicitly injected ``canonical_classes`` are
+        not modified.
+        """
+        self._row_cache.clear()
+        self._canonical_classes_cache = None
+
+    def clear_row_cache(
+        self,
+    ) -> None:
+        """
+        Clear only canonical ORM rows retained during one import batch.
+        """
+        self._row_cache.clear()
 
     def _ensure_exists(
         self,
         *,
         session: Session,
-        canonical_classes: Any,
         identity: CanonicalObjectIdentity,
     ) -> Any:
         """
         Return an existing row or stage creation of a new canonical row.
         """
-
         source_row = self._try_row(
             session=session,
-            canonical_classes=canonical_classes,
             identity=identity,
         )
 
@@ -193,7 +245,6 @@ class TwwIncrementalEffectPersister(
             return source_row
 
         target_class = self._canonical_class(
-            canonical_classes=canonical_classes,
             class_id=identity.class_id,
         )
 
@@ -224,7 +275,9 @@ class TwwIncrementalEffectPersister(
             source_row,
         )
 
-        self._row_cache[identity.key()] = source_row
+        self._row_cache[
+            identity.key()
+        ] = source_row
 
         return source_row
 
@@ -232,16 +285,13 @@ class TwwIncrementalEffectPersister(
         self,
         *,
         session: Session,
-        canonical_classes: Any,
         identity: CanonicalObjectIdentity,
     ) -> None:
         """
         Stage deletion of one canonical object if it exists.
         """
-
         source_row = self._try_row(
             session=session,
-            canonical_classes=canonical_classes,
             identity=identity,
         )
 
@@ -252,27 +302,29 @@ class TwwIncrementalEffectPersister(
             source_row,
         )
 
-        self._row_cache[identity.key()] = None
+        self._row_cache[
+            identity.key()
+        ] = None
 
     def _required_row(
         self,
         *,
         session: Session,
-        canonical_classes: Any,
         identity: CanonicalObjectIdentity,
     ) -> Any:
         """
         Return one required canonical ORM row.
         """
-
         source_row = self._try_row(
             session=session,
-            canonical_classes=canonical_classes,
             identity=identity,
         )
 
         if source_row is None:
-            raise ValueError("Canonical object does not exist for " f"identity {identity!r}.")
+            raise ValueError(
+                "Canonical object does not exist for "
+                f"identity {identity!r}."
+            )
 
         return source_row
 
@@ -280,20 +332,22 @@ class TwwIncrementalEffectPersister(
         self,
         *,
         session: Session,
-        canonical_classes: Any,
         identity: CanonicalObjectIdentity,
     ) -> Any | None:
         """
         Return one canonical ORM row using its complete identity.
-        """
 
+        Rows are retained across document calls so several effects targeting
+        the same canonical identity do not repeat the database lookup.
+        """
         identity_key = identity.key()
 
         if identity_key in self._row_cache:
-            return self._row_cache[identity_key]
+            return self._row_cache[
+                identity_key
+            ]
 
         target_class = self._canonical_class(
-            canonical_classes=canonical_classes,
             class_id=identity.class_id,
         )
 
@@ -328,60 +382,105 @@ class TwwIncrementalEffectPersister(
         ).all()
 
         if not rows:
-            self._row_cache[identity_key] = None
+            self._row_cache[
+                identity_key
+            ] = None
 
             return None
 
-        if (
-            len(
-                rows,
+        if len(
+            rows,
+        ) > 1:
+            raise ValueError(
+                "Canonical identity is ambiguous: "
+                f"{identity!r}."
             )
-            > 1
-        ):
-            raise ValueError("Canonical identity is ambiguous: " f"{identity!r}.")
 
-        source_row = rows[0]
+        source_row = rows[
+            0
+        ]
 
-        self._row_cache[identity_key] = source_row
+        self._row_cache[
+            identity_key
+        ] = source_row
 
         return source_row
 
-    def _canonical_classes(
+    def _resolved_canonical_classes(
         self,
-    ) -> Any:
+    ) -> Mapping[
+        str,
+        Any,
+    ]:
         """
-        Return schema-qualified canonical live ORM classes.
-        """
+        Return canonical live ORM classes without repeated schema reflection.
 
-        return ModelTwwOd(
-            schema=self.live_schema,
-        ).classes()
+        Explicitly supplied classes take precedence. Otherwise, the default
+        ``tww_od`` model is reflected once and cached for the lifetime of this
+        persister instance.
+        """
+        if self.canonical_classes is not None:
+            return self.canonical_classes
+
+        if self._canonical_classes_cache is None:
+            self._validate_live_schema()
+
+            self._canonical_classes_cache = (
+                ModelTwwOd(
+                    schema=self.live_schema,
+                ).classes()
+            )
+
+        return self._canonical_classes_cache
 
     def _canonical_class(
         self,
         *,
-        canonical_classes: Any,
         class_id: str,
     ) -> Any:
         """
-        Return one canonical ORM class.
+        Return one canonical ORM class from the prepared collection.
         """
+        canonical_classes = (
+            self._resolved_canonical_classes()
+        )
 
-        if isinstance(
-            canonical_classes,
-            dict,
-        ):
-            target_class = canonical_classes.get(
-                class_id,
-            )
-        else:
-            target_class = getattr(
-                canonical_classes,
-                class_id,
-                None,
-            )
+        target_class = canonical_classes.get(
+            class_id,
+        )
 
         if target_class is None:
-            raise ValueError("Unknown canonical ORM class " f"{class_id!r}.")
+            available_class_ids = tuple(
+                sorted(
+                    str(
+                        available_class_id,
+                    )
+                    for available_class_id
+                    in canonical_classes
+                )
+            )
+
+            raise ValueError(
+                "Unknown canonical ORM class "
+                f"{class_id!r}. Available classes: "
+                f"{available_class_ids!r}."
+            )
 
         return target_class
+
+    def _validate_live_schema(
+        self,
+    ) -> None:
+        """
+        Require a non-empty configured canonical live schema.
+        """
+        if (
+            not isinstance(
+                self.live_schema,
+                str,
+            )
+            or not self.live_schema.strip()
+        ):
+            raise ValueError(
+                "live_schema must be a non-empty string."
+            )

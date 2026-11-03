@@ -1,14 +1,15 @@
 from __future__ import annotations
 
-import logging
 from collections.abc import Mapping
 from dataclasses import dataclass, field, replace
 from enum import StrEnum
+import logging
 from typing import Any
 
 from sqlalchemy import inspect
 from sqlalchemy.exc import NoInspectionAvailable
 from sqlalchemy.sql import visitors
+
 from teksi_hooks.capabilities.mapping import (
     EffectiveModelMappingCapability,
 )
@@ -32,9 +33,55 @@ from .tww_canonical_model_adapter import (
 )
 
 
-class MappingProjectionMode(StrEnum):
+_AG96_MAPPING_ID_BY_RELATION_NAME: Mapping[
+    str,
+    str,
+] = {
+    "gepmassnahme": "GepMassnahme",
+    "gepknoten": "GepKnoten",
+    "abwasserbauwerk": "GepKnoten",
+    "gephaltung": "GepHaltung",
+    "haltung": "GepHaltung",
+    "einzugsgebiet": "Einzugsgebiet",
+    "bautenausserhalbbaugebiet": (
+        "BautenAusserhalbBaugebiet"
+    ),
+    "ueberlauf_foerderaggregat": (
+        "Ueberlauf_Foerderaggregat"
+    ),
+    "sbw_einzugsgebiet": "SBWEinzugsgebiet",
+    "versickerungsbereichag": (
+        "VersickerungsbereichAG"
+    ),
+}
+
+
+class MappingProjectionMode(
+    StrEnum,
+):
     FULL = "full"
     EXPLICIT_ONLY = "explicit_only"
+
+
+@dataclass(
+    slots=True,
+    frozen=True,
+)
+class ResolvedRelationClassMapping:
+    """
+    Hold the stable mapping identifier and executable mapping resolved for
+    one ORM relation.
+
+    ``source_class_id`` is the stable identifier used by explicit model
+    mappings, effect documents and incremental projection.
+
+    Physical ili2pg table names and generated ORM class names are used only
+    while resolving this object.
+    """
+
+    source_class_id: str
+
+    class_mapping: ClassMapping
 
 
 @dataclass(
@@ -46,35 +93,20 @@ class TwwRelationContextProvider(
     """
     Build relation contexts for one TEKSI Wastewater quarantine model.
 
-    Resolution order for attribute-backed classes:
+    Physical ORM relation names are resolved to stable source mapping
+    identifiers at the provider boundary.
 
-    1. implicit class mapping;
-    2. inherited explicit class mappings;
-    3. applicable explicit model defaults;
-    4. explicit localized relation declarations;
-    5. explicit class attributes;
-    6. identity localization;
-    7. canonical-model-backed foreign-key inference;
-    8. final mapping validation.
+    The stable identifier is retained in ``RelationContext.source_class_id``.
+    Downstream projectors must use that identifier and must not derive another
+    identifier from the physical ORM table or Python class name.
 
-    Internal ili2db tables, association tables, and joined-inheritance
-    relationships are not projected as canonical objects or business foreign
-    keys.
-
-    Physical ili2pg relation names and declared ORM class names are both
-    considered during mapping lookup.
-
-    Explicit identities, attributes, and relations are inherited from ORM
-    parent classes. Function mappings are not inherited because they represent
-    complete source-class projections.
-
-    Quarantine ORM reflection determines where a source foreign key points.
-    The canonical model adapter determines which canonical foreign-key
-    attribute represents that relationship.
+    For the current incremental-import MVP, explicit AG96 class bindings are
+    supported. Export-facing INTERLIS class names remain the responsibility
+    of external transformers.
 
     All derived mapping information is cached for the lifetime of this
-    provider. Call ``clear_cache()`` if any of its ORM, model-mapping, or
-    canonical-model inputs changes.
+    provider. Call ``clear_cache()`` if any ORM, model-mapping or canonical
+    model input changes.
     """
 
     quarantine_classes: Mapping[
@@ -86,7 +118,9 @@ class TwwRelationContextProvider(
 
     canonical_model_adapter: TwwCanonicalModelAdapter
 
-    projection_mode: MappingProjectionMode = MappingProjectionMode.FULL
+    projection_mode: MappingProjectionMode = (
+        MappingProjectionMode.FULL
+    )
 
     logger: logging.Logger = field(
         default_factory=lambda: logging.getLogger(
@@ -95,18 +129,20 @@ class TwwRelationContextProvider(
         repr=False,
     )
 
-    # ------------------------------------------------------------------
-    # Runtime caches
-    # ------------------------------------------------------------------
-
-    _relation_contexts_cache: (
-        tuple[
-            RelationContext,
-            ...,
-        ]
-        | None
-    ) = field(
+    _relation_contexts_cache: tuple[
+        RelationContext,
+        ...,
+    ] | None = field(
         default=None,
+        init=False,
+        repr=False,
+    )
+
+    _resolved_relation_mapping_cache: dict[
+        Any,
+        ResolvedRelationClassMapping | None,
+    ] = field(
+        default_factory=dict,
         init=False,
         repr=False,
     )
@@ -149,7 +185,9 @@ class TwwRelationContextProvider(
 
     _source_attribute_names_cache: dict[
         Any,
-        frozenset[str,],
+        frozenset[
+            str,
+        ],
     ] = field(
         default_factory=dict,
         init=False,
@@ -180,16 +218,11 @@ class TwwRelationContextProvider(
     ]:
         """
         Return cached contexts for mapped quarantine business relations.
-
-        Contexts are derived from one stable combination of:
-
-        - reflected quarantine ORM classes;
-        - effective explicit and implicit mappings;
-        - canonical ORM metadata.
         """
-
         if self._relation_contexts_cache is None:
-            self._relation_contexts_cache = self._build_relation_contexts()
+            self._relation_contexts_cache = (
+                self._build_relation_contexts()
+            )
 
         return self._relation_contexts_cache
 
@@ -198,27 +231,20 @@ class TwwRelationContextProvider(
     ) -> None:
         """
         Clear all data derived from the current ORM and mapping inputs.
-
-        This must be called if the provider instance is reused after:
-
-        - recreating or re-reflecting the quarantine schema;
-        - replacing the effective mapping;
-        - changing explicit mapping declarations;
-        - changing implicit mapping declarations;
-        - changing canonical ORM metadata.
-
-        Normally a new provider should be created for each separately
-        reflected quarantine ORM.
         """
-
         self._relation_contexts_cache = None
 
+        self._resolved_relation_mapping_cache.clear()
         self._explicit_mapping_cache.clear()
         self._implicit_mapping_cache.clear()
         self._inherited_explicit_mapping_cache.clear()
         self._referenced_mapping_cache.clear()
         self._source_attribute_names_cache.clear()
         self._relation_inheritance_hierarchy_cache.clear()
+
+    # ------------------------------------------------------------------
+    # Relation-context construction
+    # ------------------------------------------------------------------
 
     def _build_relation_contexts(
         self,
@@ -229,16 +255,41 @@ class TwwRelationContextProvider(
         """
         Build contexts for mapped quarantine business relations.
 
-        Internal ili2db metadata relations are ignored.
-
-        Association tables are excluded from canonical object projection.
-        They require a dedicated association projector.
-
-        Unmapped inheritance and helper relations remain available in the ORM
-        but do not produce independent canonical objects.
+        Each context retains the stable source mapping identifier that
+        successfully resolved the relation.
         """
+        contexts: list[
+            RelationContext,
+        ] = []
 
-        contexts: list[RelationContext,] = []
+        explicit_mapping = getattr(
+            self.model_mapping,
+            "explicit_mapping",
+            None,
+        )
+
+        explicit_model = getattr(
+            explicit_mapping,
+            "mapping",
+            None,
+        )
+
+        explicit_class_ids = (
+            tuple(
+                sorted(
+                    explicit_model.classes,
+                )
+            )
+            if explicit_model is not None
+            else ()
+        )
+
+        self.logger.info(
+            "Building relation contexts with projection_mode=%r "
+            "and explicit classes=%r.",
+            self.projection_mode,
+            explicit_class_ids,
+        )
 
         reflected_count = 0
 
@@ -267,39 +318,88 @@ class TwwRelationContextProvider(
                 relation_class,
             ):
                 self.logger.debug(
-                    "Ignoring association relation %r during " "canonical object projection.",
+                    "Ignoring association relation %r during "
+                    "canonical object projection.",
                     relation_name,
                 )
 
                 continue
 
-            if not self._has_class_mapping(
+            source_class_ids = self._source_class_ids(
                 relation_class,
-            ):
-                self.logger.debug(
-                    "Ignoring unmapped quarantine relation %r.",
-                    relation_name,
-                )
-
-                continue
-
-            contexts.append(
-                RelationContext(
-                    relation=relation_class,
-                    class_mapping=(
-                        self._class_mapping_for_relation(
-                            relation_class,
-                        )
-                    ),
-                )
             )
 
+            self.logger.info(
+                "Resolving quarantine relation %r with source "
+                "candidates %r.",
+                relation_name,
+                source_class_ids,
+            )
+
+            resolved = self._resolved_relation_mapping(
+                relation=relation_class,
+            )
+
+            if resolved is None:
+                self.logger.debug(
+                    "Ignoring unmapped quarantine relation %r. "
+                    "Candidate source identifiers: %r.",
+                    relation_name,
+                    source_class_ids,
+                )
+
+                continue
+
+            relation_context = RelationContext(
+                source_class_id=(
+                    resolved.source_class_id
+                ),
+                relation=relation_class,
+                class_mapping=(
+                    resolved.class_mapping
+                ),
+            )
+
+            contexts.append(
+                relation_context,
+            )
+
+            self.logger.debug(
+                "Prepared relation context: source_class_id=%r, "
+                "physical_relation=%r, declared_class=%r, "
+                "projection_backed=%s, attribute_backed=%s.",
+                relation_context.source_class_id,
+                relation_name,
+                self._declared_class_name(
+                    relation_class,
+                ),
+                (
+                    relation_context
+                    .class_mapping
+                    .is_projection_backed
+                ),
+                (
+                    relation_context
+                    .class_mapping
+                    .is_attribute_backed
+                ),
+            )
+
+        self._assert_unique_source_class_ids(
+            contexts=contexts,
+        )
+
         self.logger.info(
-            "Prepared %s relation contexts from %s reflected " "quarantine relations.",
+            "Prepared %s relation contexts from %s reflected "
+            "quarantine relations. Source classes: %r.",
             len(
                 contexts,
             ),
             reflected_count,
+            tuple(
+                relation_context.source_class_id
+                for relation_context in contexts
+            ),
         )
 
         return tuple(
@@ -310,51 +410,331 @@ class TwwRelationContextProvider(
     # Main mapping-resolution pipeline
     # ------------------------------------------------------------------
 
-    def _class_mapping_for_relation(
+    def _resolved_relation_mapping(
         self,
+        *,
         relation,
-    ) -> ClassMapping:
+    ) -> ResolvedRelationClassMapping | None:
         """
-        Return the executable class mapping for one source ORM relation.
+        Resolve the stable source-class ID and executable mapping.
 
-        The concrete relation's implicit canonical class remains authoritative.
-        An inherited parent mapping contributes declarations but cannot replace
-        the concrete child canonical class.
+        Direct class-level projection mappings are resolved first. Remaining
+        attribute-backed mappings use the existing inheritance, defaults,
+        identity localization, canonical normalization and validation
+        pipeline.
         """
+        if relation in self._resolved_relation_mapping_cache:
+            return self._resolved_relation_mapping_cache[
+                relation
+            ]
 
         source_class_ids = self._source_class_ids(
             relation,
         )
 
-        implicit_class = self._first_implicit_class_definition(
-            source_class_ids,
+        direct_projection = (
+            self._direct_explicit_projection_entry(
+                relation=relation,
+            )
         )
 
-        explicit_class = self._inherited_explicit_class_definition(
+        if direct_projection is not None:
+            (
+                source_class_id,
+                class_mapping,
+            ) = direct_projection
+
+            resolved = ResolvedRelationClassMapping(
+                source_class_id=source_class_id,
+                class_mapping=class_mapping,
+            )
+
+            self._resolved_relation_mapping_cache[
+                relation
+            ] = resolved
+
+            return resolved
+
+        implicit_class = (
+            self._first_implicit_class_definition(
+                source_class_ids,
+            )
+        )
+
+        explicit_class = (
+            self._inherited_explicit_class_definition(
+                relation=relation,
+            )
+        )
+
+        if (
+            self.projection_mode
+            == MappingProjectionMode.EXPLICIT_ONLY
+        ):
+            if not self._has_explicit_projection(
+                relation=relation,
+                explicit_class=explicit_class,
+            ):
+                self._resolved_relation_mapping_cache[
+                    relation
+                ] = None
+
+                return None
+
+            if not self._has_resolvable_target(
+                explicit_class=explicit_class,
+                implicit_class=implicit_class,
+            ):
+                self.logger.debug(
+                    "Ignoring explicit-only source relation %r "
+                    "because it has no resolvable canonical target.",
+                    self._relation_name(
+                        relation,
+                    ),
+                )
+
+                self._resolved_relation_mapping_cache[
+                    relation
+                ] = None
+
+                return None
+
+        elif (
+            explicit_class is None
+            and implicit_class is None
+        ):
+            self._resolved_relation_mapping_cache[
+                relation
+            ] = None
+
+            return None
+
+        source_class_id = (
+            self._resolved_attribute_source_class_id(
+                relation=relation,
+                candidate_ids=source_class_ids,
+            )
+        )
+
+        class_mapping = self._resolve_attribute_class_mapping(
+            relation=relation,
+            source_class_id=source_class_id,
+            explicit_class=explicit_class,
+            implicit_class=implicit_class,
+        )
+
+        resolved = ResolvedRelationClassMapping(
+            source_class_id=source_class_id,
+            class_mapping=class_mapping,
+        )
+
+        self._resolved_relation_mapping_cache[
+            relation
+        ] = resolved
+
+        return resolved
+
+    def _class_mapping_for_relation(
+        self,
+        relation,
+    ) -> ClassMapping:
+        """
+        Return the executable mapping for one ORM relation.
+        """
+        resolved = self._resolved_relation_mapping(
             relation=relation,
         )
 
-        if explicit_class is not None and explicit_class.function is not None:
-            return explicit_class
-
-        if explicit_class is None and implicit_class is None:
+        if resolved is None:
             raise KeyError(
-                "No explicit or implicit class mapping exists for "
-                "source relation identifiers "
-                f"{source_class_ids!r}. Explicit model defaults do "
-                "not create an independent canonical class mapping "
-                "for ORM inheritance or helper relations."
+                "No executable mapping exists for source "
+                f"relation {self._relation_name(relation)!r}. "
+                "Candidate identifiers: "
+                f"{self._source_class_ids(relation)!r}."
             )
 
-        source_class_id = source_class_ids[0]
+        return resolved.class_mapping
+
+    def _has_class_mapping(
+        self,
+        relation,
+    ) -> bool:
+        """
+        Return whether a relation produces a runtime relation context.
+        """
+        return (
+            self._resolved_relation_mapping(
+                relation=relation,
+            )
+            is not None
+        )
+
+    def _has_explicit_projection(
+        self,
+        *,
+        relation,
+        explicit_class: ClassMapping | None,
+    ) -> bool:
+        """
+        Return whether an attribute-backed relation contributes explicit
+        projected content.
+
+        Direct class-level projection mappings are handled before this
+        method. Identities and relation declarations provide structural
+        support but do not select a relation without mapped attributes.
+        """
+        if (
+            explicit_class is not None
+            and explicit_class.attributes
+        ):
+            return True
+
+        source_attributes = self._source_attribute_names(
+            relation,
+        )
+
+        defaults = self._explicit_defaults()
+
+        return any(
+            source_attribute in source_attributes
+            for source_attribute
+            in defaults.attributes
+        )
+
+    def _has_resolvable_target(
+        self,
+        *,
+        explicit_class: ClassMapping | None,
+        implicit_class: ClassMapping | None,
+    ) -> bool:
+        """
+        Return whether an attribute-backed mapping declares a canonical
+        target.
+
+        A mapping may omit its primary canonical class and address target
+        classes through attribute mappings and identities instead.
+        """
+        for class_mapping in (
+            explicit_class,
+            implicit_class,
+        ):
+            if class_mapping is None:
+                continue
+
+            if class_mapping.canonical_class_id is not None:
+                return True
+
+            if any(
+                attribute_mapping.canonical_class_id
+                is not None
+                for attribute_mapping
+                in class_mapping.attributes.values()
+            ):
+                return True
+
+            if class_mapping.identities:
+                return True
+
+        return False
+
+    def _resolved_attribute_source_class_id(
+        self,
+        *,
+        relation,
+        candidate_ids: tuple[
+            str,
+            ...,
+        ],
+    ) -> str:
+        """
+        Return the stable mapping identifier for an attribute-backed relation.
+
+        The configured AG96 mapping ID is preferred. Otherwise, the first
+        candidate resolving an explicit or implicit mapping is retained.
+        """
+        physical_name = self._relation_name(
+            relation,
+        )
+
+        declared_name = self._declared_class_name(
+            relation,
+        )
+
+        stable_mapping_id = self._ag96_mapping_id(
+            physical_name,
+            declared_name,
+        )
+
+        if stable_mapping_id is not None:
+            if (
+                self._try_explicit_class_definition(
+                    stable_mapping_id,
+                )
+                is not None
+                or self._try_implicit_class_definition(
+                    stable_mapping_id,
+                )
+                is not None
+            ):
+                return stable_mapping_id
+
+        for candidate_id in candidate_ids:
+            if (
+                self._try_explicit_class_definition(
+                    candidate_id,
+                )
+                is not None
+            ):
+                return candidate_id
+
+        for candidate_id in candidate_ids:
+            if (
+                self._try_implicit_class_definition(
+                    candidate_id,
+                )
+                is not None
+            ):
+                return candidate_id
+
+        raise KeyError(
+            "Could not determine the stable source-class "
+            f"identifier for relation {physical_name!r}. "
+            f"Candidates: {candidate_ids!r}."
+        )
+
+    def _resolve_attribute_class_mapping(
+        self,
+        *,
+        relation,
+        source_class_id: str,
+        explicit_class: ClassMapping | None,
+        implicit_class: ClassMapping | None,
+    ) -> ClassMapping:
+        """
+        Resolve, localize, normalize and validate an attribute-backed mapping.
+        """
+        if (
+            explicit_class is None
+            and implicit_class is None
+        ):
+            raise KeyError(
+                "No explicit or implicit class mapping exists for "
+                f"source class {source_class_id!r}."
+            )
 
         self.logger.debug(
-            "Resolving source relation %r. Source identifiers: %r; "
-            "implicit canonical class: %r; inherited explicit "
-            "mapping found: %s.",
+            "Resolving attribute-backed source relation %r. "
+            "Candidate identifiers: %r; implicit canonical "
+            "class: %r; inherited explicit mapping found: %s.",
             source_class_id,
-            source_class_ids,
-            (implicit_class.canonical_class_id if implicit_class is not None else None),
+            self._source_class_ids(
+                relation,
+            ),
+            (
+                implicit_class.canonical_class_id
+                if implicit_class is not None
+                else None
+            ),
             explicit_class is not None,
         )
 
@@ -370,17 +750,14 @@ class TwwRelationContextProvider(
             class_mapping=resolved,
         )
 
-        self.logger.debug(
-            "Mapped source attributes before automap for %r: %r.",
-            source_class_id,
-            tuple(
-                sorted(
-                    resolved.attributes,
-                )
-            ),
+        resolved = self._with_physical_canonical_attributes(
+            class_mapping=resolved,
         )
 
-        if self.projection_mode == MappingProjectionMode.FULL:
+        if (
+            self.projection_mode
+            == MappingProjectionMode.FULL
+        ):
             resolved = self._with_automap_foreign_keys(
                 relation=relation,
                 class_mapping=resolved,
@@ -394,99 +771,6 @@ class TwwRelationContextProvider(
 
         return resolved
 
-    def _has_class_mapping(
-        self,
-        relation,
-    ) -> bool:
-        """
-        Return whether a source relation should produce a relation context.
-
-        Full projection accepts relations with an implicit or explicit class
-        mapping.
-
-        Explicit-only projection additionally requires explicit projected
-        content. Explicit defaults may select attributes on mapped concrete
-        classes, but they do not turn unmapped ORM inheritance or helper tables
-        into independent canonical objects.
-
-        Function-backed explicit mappings are complete projections and do not
-        require an implicit class mapping.
-        """
-
-        source_class_ids = self._source_class_ids(
-            relation,
-        )
-
-        implicit_class = self._first_implicit_class_definition(
-            source_class_ids,
-        )
-
-        explicit_class = self._inherited_explicit_class_definition(
-            relation=relation,
-        )
-
-        if self.projection_mode == MappingProjectionMode.FULL:
-            return implicit_class is not None or explicit_class is not None
-
-        if explicit_class is not None and explicit_class.function is not None:
-            return True
-
-        has_resolvable_target_class = (
-            implicit_class is not None and implicit_class.canonical_class_id is not None
-        ) or (explicit_class is not None and explicit_class.canonical_class_id is not None)
-
-        if not has_resolvable_target_class:
-            self.logger.debug(
-                "Ignoring explicit-only source relation %r because "
-                "applicable explicit defaults do not provide an "
-                "independent canonical class mapping.",
-                self._relation_name(
-                    relation,
-                ),
-            )
-
-            return False
-
-        return self._has_explicit_projection(
-            relation=relation,
-            explicit_class=explicit_class,
-        )
-
-    def _has_explicit_projection(
-        self,
-        *,
-        relation,
-        explicit_class: ClassMapping | None,
-    ) -> bool:
-        """
-        Return whether a mapped relation contributes explicit projected content.
-
-        Function mappings and explicit class attributes select a relation.
-
-        Explicit default attributes select a mapped relation when their source
-        attributes are available through that relation's effective ORM mapper.
-
-        Identities and relation declarations provide structural support but do not
-        select a relation by themselves.
-        """
-
-        if explicit_class is not None:
-            if explicit_class.function is not None:
-                return True
-
-            if explicit_class.attributes:
-                return True
-
-        source_attributes = self._source_attribute_names(
-            relation,
-        )
-
-        defaults = self._explicit_defaults()
-
-        return any(
-            source_attribute in source_attributes for source_attribute in defaults.attributes
-        )
-
     def _resolve_attribute_backed_class(
         self,
         *,
@@ -496,13 +780,9 @@ class TwwRelationContextProvider(
         implicit_class: ClassMapping | None,
     ) -> ClassMapping:
         """
-        Resolve one attribute-backed class using declarations and ORM metadata.
-
-        Implicit dictionary mappings provide the source-to-canonical class and
-        attribute mappings. Explicit mappings provide inherited defaults,
-        identities, relation roles, and source-specific overrides.
+        Resolve one attribute-backed class using declarations and ORM
+        metadata.
         """
-
         source_attributes = self._source_attribute_names(
             relation,
         )
@@ -514,9 +794,11 @@ class TwwRelationContextProvider(
             implicit_class=implicit_class,
         )
 
-        applicable_default_attributes = self._applicable_default_attributes(
-            source_attributes=source_attributes,
-            defaults=defaults,
+        applicable_default_attributes = (
+            self._applicable_default_attributes(
+                source_attributes=source_attributes,
+                defaults=defaults,
+            )
         )
 
         relations = self._resolved_relations(
@@ -537,38 +819,31 @@ class TwwRelationContextProvider(
             ),
         )
 
-        if self.projection_mode == MappingProjectionMode.FULL:
-            relation_attributes = self._localized_relation_attribute_mappings(
-                source_class_id=source_class_id,
-                canonical_class_id=canonical_class_id,
-                source_attributes=source_attributes,
-                relations=relations,
+        if (
+            self.projection_mode
+            == MappingProjectionMode.FULL
+        ):
+            relation_attributes = (
+                self._localized_relation_attribute_mappings(
+                    source_class_id=source_class_id,
+                    canonical_class_id=canonical_class_id,
+                    source_attributes=source_attributes,
+                    relations=relations,
+                )
             )
-
         else:
             relation_attributes = {}
-
-        self.logger.debug(
-            "Resolved localized relation attributes for source " "class %r: %r.",
-            source_class_id,
-            {
-                source_attribute: (
-                    attribute_mapping.canonical_class_id,
-                    attribute_mapping.canonical_attr_id,
-                )
-                for (
-                    source_attribute,
-                    attribute_mapping,
-                ) in relation_attributes.items()
-            },
-        )
 
         attributes: dict[
             str,
             AttributeMapping,
         ] = {}
 
-        if self.projection_mode == MappingProjectionMode.FULL and implicit_class is not None:
+        if (
+            self.projection_mode
+            == MappingProjectionMode.FULL
+            and implicit_class is not None
+        ):
             attributes.update(
                 implicit_class.attributes,
             )
@@ -594,12 +869,45 @@ class TwwRelationContextProvider(
             canonical_class_id=canonical_class_id,
         )
 
+        primary_identity = (
+            explicit_class.identity
+            if (
+                explicit_class is not None
+                and explicit_class.identity is not None
+            )
+            else (
+                implicit_class.identity
+                if (
+                    implicit_class is not None
+                    and implicit_class.identity is not None
+                )
+                else defaults.identity
+            )
+        )
+
+        localisations: dict[
+            str,
+            str,
+        ] = {}
+
+        if implicit_class is not None:
+            localisations.update(
+                implicit_class.localisations,
+            )
+
+        if explicit_class is not None:
+            localisations.update(
+                explicit_class.localisations,
+            )
+
         return ClassMapping(
             canonical_class_id=canonical_class_id,
+            identity=primary_identity,
             identities=identities,
             attributes=attributes,
             relations=relations,
-            function=None,
+            localisations=localisations,
+            projection=None,
         )
 
     # ------------------------------------------------------------------
@@ -616,10 +924,11 @@ class TwwRelationContextProvider(
         """
         Return the first explicit mapping found for candidate identifiers.
         """
-
         for class_id in class_ids:
-            class_mapping = self._try_explicit_class_definition(
-                class_id,
+            class_mapping = (
+                self._try_explicit_class_definition(
+                    class_id,
+                )
             )
 
             if class_mapping is not None:
@@ -637,10 +946,11 @@ class TwwRelationContextProvider(
         """
         Return the first implicit mapping found for candidate identifiers.
         """
-
         for class_id in class_ids:
-            class_mapping = self._try_implicit_class_definition(
-                class_id,
+            class_mapping = (
+                self._try_implicit_class_definition(
+                    class_id,
+                )
             )
 
             if class_mapping is not None:
@@ -654,12 +964,11 @@ class TwwRelationContextProvider(
     ) -> ClassMapping | None:
         """
         Return a cached explicit class mapping if one exists.
-
-        Missing definitions are cached as ``None``.
         """
-
         if class_id in self._explicit_mapping_cache:
-            return self._explicit_mapping_cache[class_id]
+            return self._explicit_mapping_cache[
+                class_id
+            ]
 
         capability = getattr(
             self.model_mapping,
@@ -675,7 +984,9 @@ class TwwRelationContextProvider(
             else None
         )
 
-        self._explicit_mapping_cache[class_id] = class_mapping
+        self._explicit_mapping_cache[
+            class_id
+        ] = class_mapping
 
         return class_mapping
 
@@ -685,12 +996,11 @@ class TwwRelationContextProvider(
     ) -> ClassMapping | None:
         """
         Return a cached implicit class mapping if one exists.
-
-        Missing definitions are cached as ``None``.
         """
-
         if class_id in self._implicit_mapping_cache:
-            return self._implicit_mapping_cache[class_id]
+            return self._implicit_mapping_cache[
+                class_id
+            ]
 
         capability = getattr(
             self.model_mapping,
@@ -706,7 +1016,9 @@ class TwwRelationContextProvider(
             else None
         )
 
-        self._implicit_mapping_cache[class_id] = class_mapping
+        self._implicit_mapping_cache[
+            class_id
+        ] = class_mapping
 
         return class_mapping
 
@@ -714,9 +1026,8 @@ class TwwRelationContextProvider(
         self,
     ) -> MappingDefaults:
         """
-        Return defaults from the inheritance-resolved explicit mapping.
+        Return defaults from the resolved explicit mapping.
         """
-
         capability = getattr(
             self.model_mapping,
             "explicit_mapping",
@@ -745,12 +1056,12 @@ class TwwRelationContextProvider(
     ) -> str | None:
         """
         Return the primary canonical class identifier.
-
-        The concrete implicit mapping remains authoritative over inherited
-        explicit parent mappings.
         """
-
-        if implicit_class is not None and implicit_class.canonical_class_id is not None:
+        if (
+            implicit_class is not None
+            and implicit_class.canonical_class_id
+            is not None
+        ):
             return implicit_class.canonical_class_id
 
         if explicit_class is not None:
@@ -759,8 +1070,85 @@ class TwwRelationContextProvider(
         return None
 
     # ------------------------------------------------------------------
-    # Explicit class-mapping inheritance
+    # Direct projection lookup and inheritance
     # ------------------------------------------------------------------
+
+    def _direct_explicit_projection_entry(
+        self,
+        *,
+        relation,
+    ) -> tuple[
+        str,
+        ClassMapping,
+    ] | None:
+        """
+        Return the stable source-class ID and direct projection mapping.
+
+        Projection mappings describe complete concrete class projections and
+        are never inherited through the ORM hierarchy.
+        """
+        source_class_ids = list(
+            self._source_class_ids(
+                relation,
+            )
+        )
+
+        implicit_class = (
+            self._first_implicit_class_definition(
+                tuple(
+                    source_class_ids,
+                )
+            )
+        )
+
+        if (
+            implicit_class is not None
+            and implicit_class.canonical_class_id
+            is not None
+            and implicit_class.canonical_class_id
+            not in source_class_ids
+        ):
+            source_class_ids.append(
+                implicit_class.canonical_class_id,
+            )
+
+        for source_class_id in source_class_ids:
+            explicit_class = (
+                self._try_explicit_class_definition(
+                    source_class_id,
+                )
+            )
+
+            if (
+                explicit_class is not None
+                and explicit_class.projection
+                is not None
+            ):
+                return (
+                    source_class_id,
+                    explicit_class,
+                )
+
+        return None
+
+    def _direct_explicit_projection_definition(
+        self,
+        *,
+        relation,
+    ) -> ClassMapping | None:
+        """
+        Return a directly declared projection mapping.
+        """
+        entry = self._direct_explicit_projection_entry(
+            relation=relation,
+        )
+
+        if entry is None:
+            return None
+
+        return entry[
+            1
+        ]
 
     def _inherited_explicit_class_definition(
         self,
@@ -768,16 +1156,16 @@ class TwwRelationContextProvider(
         relation,
     ) -> ClassMapping | None:
         """
-        Return the cached merged explicit mapping for an ORM hierarchy.
+        Return the cached inherited explicit mapping for one ORM hierarchy.
 
-        Parent mappings are merged from root to child. Child identities,
-        attributes, and relations override entries inherited from parents.
-
-        Function mappings are not inherited.
+        Parent mappings are merged from root to child. Child declarations
+        override parent declarations with the same key. Projection mappings
+        are never inherited.
         """
-
         if relation in self._inherited_explicit_mapping_cache:
-            return self._inherited_explicit_mapping_cache[relation]
+            return self._inherited_explicit_mapping_cache[
+                relation
+            ]
 
         hierarchy = self._relation_inheritance_hierarchy(
             relation,
@@ -790,8 +1178,10 @@ class TwwRelationContextProvider(
                 hierarchy_relation,
             )
 
-            implicit_class = self._first_implicit_class_definition(
-                source_class_ids,
+            implicit_class = (
+                self._first_implicit_class_definition(
+                    source_class_ids,
+                )
             )
 
             explicit_class_ids = list(
@@ -800,16 +1190,20 @@ class TwwRelationContextProvider(
 
             if (
                 implicit_class is not None
-                and implicit_class.canonical_class_id is not None
-                and implicit_class.canonical_class_id not in explicit_class_ids
+                and implicit_class.canonical_class_id
+                is not None
+                and implicit_class.canonical_class_id
+                not in explicit_class_ids
             ):
                 explicit_class_ids.append(
                     implicit_class.canonical_class_id,
                 )
 
-            explicit_class = self._first_explicit_class_definition(
-                tuple(
-                    explicit_class_ids,
+            explicit_class = (
+                self._first_explicit_class_definition(
+                    tuple(
+                        explicit_class_ids,
+                    )
                 )
             )
 
@@ -821,7 +1215,11 @@ class TwwRelationContextProvider(
                     hierarchy_relation,
                 ),
                 source_class_ids,
-                (implicit_class.canonical_class_id if implicit_class is not None else None),
+                (
+                    implicit_class.canonical_class_id
+                    if implicit_class is not None
+                    else None
+                ),
                 tuple(
                     explicit_class_ids,
                 ),
@@ -831,16 +1229,22 @@ class TwwRelationContextProvider(
             if explicit_class is None:
                 continue
 
-            if merged is None:
-                merged = explicit_class
+            inheritance_mapping = replace(
+                explicit_class,
+                projection=None,
+            )
 
+            if merged is None:
+                merged = inheritance_mapping
             else:
                 merged = self._merge_inherited_class_mapping(
                     parent=merged,
-                    child=explicit_class,
+                    child=inheritance_mapping,
                 )
 
-        self._inherited_explicit_mapping_cache[relation] = merged
+        self._inherited_explicit_mapping_cache[
+            relation
+        ] = merged
 
         return merged
 
@@ -852,12 +1256,8 @@ class TwwRelationContextProvider(
         ...,
     ]:
         """
-        Return cached ORM classes from the root parent to the child.
-
-        Only joined-table ORM inheritance is followed. Ordinary relationships
-        are not included.
+        Return cached ORM classes from root parent to child.
         """
-
         cached = self._relation_inheritance_hierarchy_cache.get(
             relation,
         )
@@ -869,12 +1269,14 @@ class TwwRelationContextProvider(
             mapper = inspect(
                 relation,
             )
-
         except NoInspectionAvailable:
-            hierarchy = (relation,)
-
+            hierarchy = (
+                relation,
+            )
         else:
-            hierarchy_items: list[Any,] = []
+            hierarchy_items: list[
+                Any,
+            ] = []
 
             current_mapper = mapper
 
@@ -883,7 +1285,9 @@ class TwwRelationContextProvider(
                     current_mapper.class_,
                 )
 
-                current_mapper = current_mapper.inherits
+                current_mapper = (
+                    current_mapper.inherits
+                )
 
             hierarchy_items.reverse()
 
@@ -891,7 +1295,9 @@ class TwwRelationContextProvider(
                 hierarchy_items,
             )
 
-        self._relation_inheritance_hierarchy_cache[relation] = hierarchy
+        self._relation_inheritance_hierarchy_cache[
+            relation
+        ] = hierarchy
 
         return hierarchy
 
@@ -902,15 +1308,8 @@ class TwwRelationContextProvider(
         child: ClassMapping,
     ) -> ClassMapping:
         """
-        Merge an inherited explicit mapping into its child.
-
-        Parent identities, attributes, and relations are inherited. Child
-        declarations override entries using the same key.
-
-        Function mappings are not inherited. Only a function declared directly
-        by the child is retained.
+        Merge inherited explicit declarations.
         """
-
         identities = dict(
             parent.identities,
         )
@@ -935,16 +1334,30 @@ class TwwRelationContextProvider(
             child.relations,
         )
 
+        localisations = dict(
+            parent.localisations,
+        )
+
+        localisations.update(
+            child.localisations,
+        )
+
         return ClassMapping(
             canonical_class_id=(
                 child.canonical_class_id
                 if child.canonical_class_id is not None
                 else parent.canonical_class_id
             ),
+            identity=(
+                child.identity
+                if child.identity is not None
+                else parent.identity
+            ),
             identities=identities,
             attributes=attributes,
             relations=relations,
-            function=child.function,
+            localisations=localisations,
+            projection=None,
         )
 
     # ------------------------------------------------------------------
@@ -954,17 +1367,12 @@ class TwwRelationContextProvider(
     def _source_attribute_names(
         self,
         relation,
-    ) -> frozenset[str,]:
+    ) -> frozenset[
+        str,
+    ]:
         """
         Return cached effective SQLAlchemy source attribute identifiers.
-
-        Mapper column attributes include inherited ORM attributes. Local table
-        columns are included as a fallback.
-
-        In particular, ``t_ili_tid`` is retained because it represents the
-        INTERLIS object identity.
         """
-
         cached = self._source_attribute_names_cache.get(
             relation,
         )
@@ -972,13 +1380,14 @@ class TwwRelationContextProvider(
         if cached is not None:
             return cached
 
-        attribute_names: set[str,] = set()
+        attribute_names: set[
+            str,
+        ] = set()
 
         try:
             mapper = inspect(
                 relation,
             )
-
         except NoInspectionAvailable:
             mapper = None
 
@@ -1026,14 +1435,18 @@ class TwwRelationContextProvider(
             attribute_names,
         )
 
-        self._source_attribute_names_cache[relation] = result
+        self._source_attribute_names_cache[
+            relation
+        ] = result
 
         return result
 
     def _applicable_default_attributes(
         self,
         *,
-        source_attributes: frozenset[str,],
+        source_attributes: frozenset[
+            str,
+        ],
         defaults: MappingDefaults,
     ) -> dict[
         str,
@@ -1042,7 +1455,6 @@ class TwwRelationContextProvider(
         """
         Return default mappings whose source attributes exist.
         """
-
         return {
             source_attribute: mapping
             for (
@@ -1064,7 +1476,6 @@ class TwwRelationContextProvider(
         """
         Merge default and class-specific relation declarations.
         """
-
         relations = dict(
             defaults.relations,
         )
@@ -1081,7 +1492,9 @@ class TwwRelationContextProvider(
         *,
         source_class_id: str,
         canonical_class_id: str | None,
-        source_attributes: frozenset[str,],
+        source_attributes: frozenset[
+            str,
+        ],
         relations: Mapping[
             str,
             RelationMapping,
@@ -1092,21 +1505,13 @@ class TwwRelationContextProvider(
     ]:
         """
         Resolve explicit relation declarations to source ORM attributes.
-
-        Matching is case-insensitive because ili2pg and PostgreSQL normally
-        expose unquoted physical identifiers in lowercase.
-
-        Word order and spelling are not transformed.
-
-        Explicit relation declarations distinguish semantic roles when
-        several source foreign keys reference the same canonical class.
         """
-
         if canonical_class_id is None:
             return {}
 
         source_attribute_by_normalized_name = {
-            source_attribute.casefold(): source_attribute for source_attribute in source_attributes
+            source_attribute.casefold(): source_attribute
+            for source_attribute in source_attributes
         }
 
         attributes: dict[
@@ -1124,20 +1529,20 @@ class TwwRelationContextProvider(
             }
 
             matches = {
-                source_attribute_by_normalized_name[candidate.casefold()]
+                source_attribute_by_normalized_name[
+                    candidate.casefold()
+                ]
                 for candidate in candidates
-                if candidate.casefold() in source_attribute_by_normalized_name
+                if candidate.casefold()
+                in source_attribute_by_normalized_name
             }
 
             if not matches:
                 continue
 
-            if (
-                len(
-                    matches,
-                )
-                != 1
-            ):
+            if len(
+                matches,
+            ) != 1:
                 raise ValueError(
                     "Several source attributes match canonical "
                     f"relation {canonical_class_id!r}."
@@ -1151,18 +1556,25 @@ class TwwRelationContextProvider(
                 )
             )
 
-            attributes[source_attribute] = AttributeMapping(
+            attributes[
+                source_attribute
+            ] = AttributeMapping(
                 canonical_class_id=canonical_class_id,
                 canonical_attr_id=canonical_attribute_id,
                 foreign_key=ForeignKeyMapping(
-                    referenced_class_id=(relation_mapping.referenced_class_id),
-                    referenced_attribute_id=(relation_mapping.referenced_attribute_id),
+                    referenced_class_id=(
+                        relation_mapping.referenced_class_id
+                    ),
+                    referenced_attribute_id=(
+                        relation_mapping.referenced_attribute_id
+                    ),
                 ),
                 value_list=None,
             )
 
             self.logger.info(
-                "Resolved localized relation mapping " "%r.%r -> %r.%r, referencing %r.%r.",
+                "Resolved localized relation mapping "
+                "%r.%r -> %r.%r, referencing %r.%r.",
                 source_class_id,
                 source_attribute,
                 canonical_class_id,
@@ -1177,151 +1589,27 @@ class TwwRelationContextProvider(
     # Identity resolution and localization
     # ------------------------------------------------------------------
 
-    def _resolved_identities(
-        self,
-        *,
-        defaults: MappingDefaults,
-        explicit_class: ClassMapping | None,
-        implicit_class: ClassMapping | None,
-        attributes: Mapping[
-            str,
-            AttributeMapping,
-        ],
-        canonical_class_id: str | None,
-    ) -> dict[
-        str,
-        CanonicalIdentityMapping,
-    ]:
-        """
-        Resolve identities needed by effective attribute targets.
-        """
-
-        target_class_ids = {
-            attribute.canonical_class_id
-            for attribute in attributes.values()
-            if attribute.canonical_class_id is not None
-        }
-
-        if canonical_class_id is not None:
-            target_class_ids.add(
-                canonical_class_id,
-            )
-
-        identities: dict[
-            str,
-            CanonicalIdentityMapping,
-        ] = {}
-
-        if implicit_class is not None:
-            identities.update(
-                implicit_class.identities,
-            )
-
-        for (
-            target_class_id,
-            identity,
-        ) in defaults.identities.items():
-            if target_class_id in target_class_ids:
-                identities[target_class_id] = identity
-
-        if explicit_class is not None:
-            identities.update(
-                explicit_class.identities,
-            )
-
-        if canonical_class_id is not None and canonical_class_id not in identities:
-            identities[canonical_class_id] = defaults.identity
-
-        return {
-            target_class_id: identity
-            for (
-                target_class_id,
-                identity,
-            ) in identities.items()
-            if target_class_id in target_class_ids
-        }
-
-    def _with_localized_identities(
-        self,
-        *,
-        relation,
-        class_mapping: ClassMapping,
-    ) -> ClassMapping:
-        """
-        Localize canonical identities to physical source attributes.
-
-        For the primary canonical class, canonical ``obj_id`` may be sourced
-        from ili2pg ``t_ili_tid``.
-
-        Secondary canonical target identities must be declared explicitly.
-        """
-
-        if not class_mapping.identities:
-            return class_mapping
-
-        relation_name = self._relation_name(
-            relation,
-        )
-
-        source_attributes = self._source_attribute_names(
-            relation,
-        )
-
-        identities: dict[
-            str,
-            CanonicalIdentityMapping,
-        ] = {}
-
-        primary_canonical_class_id = class_mapping.canonical_class_id
-
-        for (
-            canonical_class_id,
-            identity,
-        ) in class_mapping.identities.items():
-            localized_identity = self._localized_identity(
-                canonical_class_id=canonical_class_id,
-                primary_canonical_class_id=(primary_canonical_class_id),
-                identity=identity,
-                source_attributes=source_attributes,
-            )
-
-            identities[canonical_class_id] = localized_identity
-
-            if localized_identity.source_attribute != identity.source_attribute:
-                self.logger.debug(
-                    "Localized identity for source relation %r and "
-                    "canonical class %r: source attribute %r -> %r, "
-                    "canonical attribute %r.",
-                    relation_name,
-                    canonical_class_id,
-                    identity.source_attribute,
-                    localized_identity.source_attribute,
-                    localized_identity.canonical_attribute,
-                )
-
-        return replace(
-            class_mapping,
-            identities=identities,
-        )
-
     def _localized_identity(
         self,
         *,
         canonical_class_id: str,
         primary_canonical_class_id: str | None,
         identity: CanonicalIdentityMapping,
-        source_attributes: frozenset[str,],
+        source_attributes: frozenset[
+            str,
+        ],
     ) -> CanonicalIdentityMapping:
         """
         Localize one canonical identity to an available source attribute.
         """
-
         if identity.source_attribute in source_attributes:
             return identity
 
         if (
-            canonical_class_id == primary_canonical_class_id
-            and identity.canonical_attribute == "obj_id"
+            canonical_class_id
+            == primary_canonical_class_id
+            and identity.canonical_attribute
+            == "obj_id"
             and "t_ili_tid" in source_attributes
         ):
             return replace(
@@ -1347,14 +1635,310 @@ class TwwRelationContextProvider(
         """
         Return the identity of the primary canonical class.
         """
-
-        canonical_class_id = class_mapping.canonical_class_id
+        canonical_class_id = (
+            class_mapping.canonical_class_id
+        )
 
         if canonical_class_id is None:
             return None
 
-        return class_mapping.identities.get(
+        identity = class_mapping.identities.get(
             canonical_class_id,
+        )
+
+        if identity is not None:
+            return identity
+
+        return class_mapping.identity
+
+    def _resolved_identities(
+        self,
+        *,
+        defaults: MappingDefaults,
+        explicit_class: ClassMapping | None,
+        implicit_class: ClassMapping | None,
+        attributes: Mapping[
+            str,
+            AttributeMapping,
+        ],
+        canonical_class_id: str | None,
+    ) -> dict[
+        str,
+        CanonicalIdentityMapping,
+    ]:
+        """
+        Resolve identities needed by effective attribute targets.
+        """
+        target_class_ids = {
+            attribute.canonical_class_id
+            for attribute in attributes.values()
+            if attribute.canonical_class_id is not None
+        }
+
+        if canonical_class_id is not None:
+            target_class_ids.add(
+                canonical_class_id,
+            )
+
+        identities: dict[
+            str,
+            CanonicalIdentityMapping,
+        ] = {}
+
+        if implicit_class is not None:
+            identities.update(
+                {
+                    target_class_id: identity
+                    for (
+                        target_class_id,
+                        identity,
+                    ) in implicit_class.identities.items()
+                    if identity is not None
+                }
+            )
+
+        for (
+            target_class_id,
+            identity,
+        ) in defaults.identities.items():
+            if (
+                target_class_id in target_class_ids
+                and identity is not None
+            ):
+                identities[
+                    target_class_id
+                ] = identity
+
+        if explicit_class is not None:
+            for (
+                target_class_id,
+                declared_identity,
+            ) in explicit_class.identities.items():
+                resolved_identity = declared_identity
+
+                if resolved_identity is None:
+                    resolved_identity = (
+                        defaults.identities.get(
+                            target_class_id,
+                        )
+                    )
+
+                if (
+                    resolved_identity is None
+                    and target_class_id
+                    == canonical_class_id
+                ):
+                    resolved_identity = (
+                        explicit_class.identity
+                        or defaults.identity
+                    )
+
+                if resolved_identity is None:
+                    raise ValueError(
+                        "Could not resolve identity declaration "
+                        f"for canonical target class "
+                        f"{target_class_id!r}."
+                    )
+
+                identities[
+                    target_class_id
+                ] = resolved_identity
+
+        if (
+            canonical_class_id is not None
+            and canonical_class_id not in identities
+        ):
+            primary_identity = None
+
+            if (
+                explicit_class is not None
+                and explicit_class.identity is not None
+            ):
+                primary_identity = (
+                    explicit_class.identity
+                )
+            elif (
+                implicit_class is not None
+                and implicit_class.identity is not None
+            ):
+                primary_identity = (
+                    implicit_class.identity
+                )
+            else:
+                primary_identity = (
+                    defaults.identity
+                )
+
+            identities[
+                canonical_class_id
+            ] = primary_identity
+
+        return {
+            target_class_id: identity
+            for (
+                target_class_id,
+                identity,
+            ) in identities.items()
+            if target_class_id in target_class_ids
+        }
+
+    def _with_localized_identities(
+        self,
+        *,
+        relation,
+        class_mapping: ClassMapping,
+    ) -> ClassMapping:
+        """
+        Localize canonical identities to physical source attributes.
+        """
+        if not class_mapping.identities:
+            return class_mapping
+
+        relation_name = self._relation_name(
+            relation,
+        )
+
+        source_attributes = self._source_attribute_names(
+            relation,
+        )
+
+        identities: dict[
+            str,
+            CanonicalIdentityMapping,
+        ] = {}
+
+        primary_canonical_class_id = (
+            class_mapping.canonical_class_id
+        )
+
+        for (
+            canonical_class_id,
+            identity,
+        ) in class_mapping.identities.items():
+            localized_identity = self._localized_identity(
+                canonical_class_id=canonical_class_id,
+                primary_canonical_class_id=(
+                    primary_canonical_class_id
+                ),
+                identity=identity,
+                source_attributes=source_attributes,
+            )
+
+            identities[
+                canonical_class_id
+            ] = localized_identity
+
+            if (
+                localized_identity.source_attribute
+                != identity.source_attribute
+            ):
+                self.logger.debug(
+                    "Localized identity for source relation %r and "
+                    "canonical class %r: source attribute %r -> %r, "
+                    "canonical attribute %r.",
+                    relation_name,
+                    canonical_class_id,
+                    identity.source_attribute,
+                    localized_identity.source_attribute,
+                    localized_identity.canonical_attribute,
+                )
+
+        primary_identity = (
+            class_mapping.identity
+        )
+
+        if (
+            primary_canonical_class_id is not None
+            and primary_canonical_class_id
+            in identities
+        ):
+            primary_identity = identities[
+                primary_canonical_class_id
+            ]
+
+        return replace(
+            class_mapping,
+            identity=primary_identity,
+            identities=identities,
+        )
+
+    def _with_physical_canonical_attributes(
+        self,
+        *,
+        class_mapping: ClassMapping,
+    ) -> ClassMapping:
+        """
+        Resolve semantic canonical attribute IDs to physical identifiers.
+        """
+        attributes: dict[
+            str,
+            AttributeMapping,
+        ] = {}
+
+        for (
+            source_attribute,
+            attribute_mapping,
+        ) in class_mapping.attributes.items():
+            canonical_class_id = (
+                attribute_mapping.canonical_class_id
+                or class_mapping.canonical_class_id
+            )
+
+            canonical_attribute_id = (
+                attribute_mapping.canonical_attr_id
+            )
+
+            if (
+                canonical_class_id is None
+                or canonical_attribute_id is None
+            ):
+                attributes[
+                    source_attribute
+                ] = attribute_mapping
+
+                continue
+
+            physical_attribute_id = (
+                self.canonical_model_adapter
+                .physical_attribute_id(
+                    class_id=canonical_class_id,
+                    attribute_id=canonical_attribute_id,
+                )
+            )
+
+            if (
+                physical_attribute_id
+                == canonical_attribute_id
+            ):
+                attributes[
+                    source_attribute
+                ] = attribute_mapping
+
+                continue
+
+            attributes[
+                source_attribute
+            ] = replace(
+                attribute_mapping,
+                canonical_attr_id=(
+                    physical_attribute_id
+                ),
+            )
+
+            self.logger.debug(
+                "Resolved semantic canonical attribute "
+                "%r.%r to physical attribute %r.%r for "
+                "source attribute %r.",
+                canonical_class_id,
+                canonical_attribute_id,
+                canonical_class_id,
+                physical_attribute_id,
+                source_attribute,
+            )
+
+        return replace(
+            class_mapping,
+            attributes=attributes,
         )
 
     # ------------------------------------------------------------------
@@ -1369,23 +1953,19 @@ class TwwRelationContextProvider(
     ) -> ClassMapping:
         """
         Add canonical-model-backed foreign-key mappings.
-
-        Existing explicit, localized, and implicit mappings take precedence.
-
-        Automap considers only source attributes not already present in the
-        effective mapping. ``setdefault`` remains as a defensive safeguard.
         """
-
         attributes = dict(
             class_mapping.attributes,
         )
 
-        foreign_key_mappings = self._automap_foreign_key_mappings(
-            relation=relation,
-            class_mapping=class_mapping,
-            mapped_source_attributes=frozenset(
-                attributes,
-            ),
+        foreign_key_mappings = (
+            self._automap_foreign_key_mappings(
+                relation=relation,
+                class_mapping=class_mapping,
+                mapped_source_attributes=frozenset(
+                    attributes,
+                ),
+            )
         )
 
         if not foreign_key_mappings:
@@ -1410,26 +1990,19 @@ class TwwRelationContextProvider(
         *,
         relation,
         class_mapping: ClassMapping,
-        mapped_source_attributes: frozenset[str,],
+        mapped_source_attributes: frozenset[
+            str,
+        ],
     ) -> dict[
         str,
         AttributeMapping,
     ]:
         """
         Derive missing FK mappings from quarantine and canonical ORM metadata.
-
-        Quarantine ORM relationships determine the referenced source class.
-
-        The effective source mapping determines the referenced canonical class.
-
-        Canonical ORM metadata determines which local canonical FK attribute
-        represents that relationship.
-
-        If the canonical target class has several foreign keys to the same
-        referenced class, the source role must be mapped explicitly.
         """
-
-        target_class_id = class_mapping.canonical_class_id
+        target_class_id = (
+            class_mapping.canonical_class_id
+        )
 
         if target_class_id is None:
             return {}
@@ -1438,7 +2011,6 @@ class TwwRelationContextProvider(
             mapper = inspect(
                 relation,
             )
-
         except NoInspectionAvailable:
             return {}
 
@@ -1446,8 +2018,10 @@ class TwwRelationContextProvider(
             relation,
         )
 
-        inheritance_columns = self._inheritance_local_columns(
-            mapper,
+        inheritance_columns = (
+            self._inheritance_local_columns(
+                mapper,
+            )
         )
 
         candidates: list[
@@ -1465,10 +2039,14 @@ class TwwRelationContextProvider(
             ):
                 continue
 
-            referenced_relation = relationship.mapper.class_
+            referenced_relation = (
+                relationship.mapper.class_
+            )
 
-            referenced_source_class_id = self._relation_name(
-                referenced_relation,
+            referenced_source_class_id = (
+                self._relation_name(
+                    referenced_relation,
+                )
             )
 
             if self._is_ili2db_metadata_relation(
@@ -1481,14 +2059,18 @@ class TwwRelationContextProvider(
             ):
                 continue
 
-            referenced_class_mapping = self._resolved_referenced_class_mapping(
-                relation=referenced_relation,
+            referenced_class_mapping = (
+                self._resolved_referenced_class_mapping(
+                    relation=referenced_relation,
+                )
             )
 
             if referenced_class_mapping is None:
                 continue
 
-            referenced_class_id = referenced_class_mapping.canonical_class_id
+            referenced_class_id = (
+                referenced_class_mapping.canonical_class_id
+            )
 
             if referenced_class_id is None:
                 continue
@@ -1500,17 +2082,24 @@ class TwwRelationContextProvider(
             if referenced_identity is None:
                 continue
 
-            canonical_attribute_ids = self.canonical_model_adapter.foreign_key_attributes_to_class(
-                class_id=target_class_id,
-                referenced_class_id=(referenced_class_id),
+            canonical_attribute_ids = (
+                self.canonical_model_adapter
+                .foreign_key_attributes_to_class(
+                    class_id=target_class_id,
+                    referenced_class_id=(
+                        referenced_class_id
+                    ),
+                )
             )
 
             for local_column in relationship.local_columns:
                 if local_column in inheritance_columns:
                     continue
 
-                source_attribute = self._column_attribute_name(
-                    local_column,
+                source_attribute = (
+                    self._column_attribute_name(
+                        local_column,
+                    )
                 )
 
                 if source_attribute in mapped_source_attributes:
@@ -1524,12 +2113,18 @@ class TwwRelationContextProvider(
                 if not local_column.foreign_keys:
                     continue
 
-                canonical_attribute_id = self._resolve_canonical_foreign_key_attribute(
-                    source_class_id=source_class_id,
-                    source_attribute=source_attribute,
-                    target_class_id=target_class_id,
-                    referenced_class_id=(referenced_class_id),
-                    canonical_attribute_ids=(canonical_attribute_ids),
+                canonical_attribute_id = (
+                    self._resolve_canonical_foreign_key_attribute(
+                        source_class_id=source_class_id,
+                        source_attribute=source_attribute,
+                        target_class_id=target_class_id,
+                        referenced_class_id=(
+                            referenced_class_id
+                        ),
+                        canonical_attribute_ids=(
+                            canonical_attribute_ids
+                        ),
+                    )
                 )
 
                 if canonical_attribute_id is None:
@@ -1539,8 +2134,13 @@ class TwwRelationContextProvider(
                     canonical_class_id=target_class_id,
                     canonical_attr_id=canonical_attribute_id,
                     foreign_key=ForeignKeyMapping(
-                        referenced_class_id=(referenced_class_id),
-                        referenced_attribute_id=(referenced_identity.canonical_attribute),
+                        referenced_class_id=(
+                            referenced_class_id
+                        ),
+                        referenced_attribute_id=(
+                            referenced_identity
+                            .canonical_attribute
+                        ),
                     ),
                     value_list=None,
                 )
@@ -1553,7 +2153,8 @@ class TwwRelationContextProvider(
                 )
 
                 self.logger.debug(
-                    "Inferred canonical foreign-key mapping " "%r.%r -> %r.%r, referencing %r.%r.",
+                    "Inferred canonical foreign-key mapping "
+                    "%r.%r -> %r.%r, referencing %r.%r.",
                     source_class_id,
                     source_attribute,
                     target_class_id,
@@ -1585,19 +2186,11 @@ class TwwRelationContextProvider(
     ) -> str | None:
         """
         Resolve one canonical local FK attribute.
-
-        A unique canonical FK to the referenced class can be inferred.
-
-        No matching canonical FK means that the source relationship cannot be
-        projected implicitly.
-
-        Several matching canonical FKs represent distinct semantic roles and
-        require an explicit relation mapping.
         """
-
         if not canonical_attribute_ids:
             self.logger.debug(
-                "Ignoring source foreign key %r.%r because " "canonical class %r has no FK to %r.",
+                "Ignoring source foreign key %r.%r because "
+                "canonical class %r has no FK to %r.",
                 source_class_id,
                 source_attribute,
                 target_class_id,
@@ -1606,13 +2199,12 @@ class TwwRelationContextProvider(
 
             return None
 
-        if (
-            len(
-                canonical_attribute_ids,
-            )
-            == 1
-        ):
-            return canonical_attribute_ids[0]
+        if len(
+            canonical_attribute_ids,
+        ) == 1:
+            return canonical_attribute_ids[
+                0
+            ]
 
         raise ValueError(
             "Cannot infer the canonical role of source foreign "
@@ -1630,32 +2222,48 @@ class TwwRelationContextProvider(
     ) -> ClassMapping | None:
         """
         Return cached mapping information for a referenced source relation.
-
-        This method deliberately does not apply recursive FK enrichment.
         """
-
         if relation in self._referenced_mapping_cache:
-            return self._referenced_mapping_cache[relation]
+            return self._referenced_mapping_cache[
+                relation
+            ]
+
+        direct_projection_class = (
+            self._direct_explicit_projection_definition(
+                relation=relation,
+            )
+        )
+
+        if direct_projection_class is not None:
+            self._referenced_mapping_cache[
+                relation
+            ] = direct_projection_class
+
+            return direct_projection_class
 
         source_class_ids = self._source_class_ids(
             relation,
         )
 
-        implicit_class = self._first_implicit_class_definition(
-            source_class_ids,
+        implicit_class = (
+            self._first_implicit_class_definition(
+                source_class_ids,
+            )
         )
 
-        explicit_class = self._inherited_explicit_class_definition(
-            relation=relation,
+        explicit_class = (
+            self._inherited_explicit_class_definition(
+                relation=relation,
+            )
         )
 
-        if explicit_class is not None and explicit_class.function is not None:
-            self._referenced_mapping_cache[relation] = explicit_class
-
-            return explicit_class
-
-        if explicit_class is None and implicit_class is None:
-            self._referenced_mapping_cache[relation] = None
+        if (
+            explicit_class is None
+            and implicit_class is None
+        ):
+            self._referenced_mapping_cache[
+                relation
+            ] = None
 
             return None
 
@@ -1664,36 +2272,120 @@ class TwwRelationContextProvider(
             implicit_class=implicit_class,
         )
 
+        defaults = self._explicit_defaults()
+
+        primary_identity = (
+            explicit_class.identity
+            if (
+                explicit_class is not None
+                and explicit_class.identity is not None
+            )
+            else (
+                implicit_class.identity
+                if (
+                    implicit_class is not None
+                    and implicit_class.identity is not None
+                )
+                else defaults.identity
+            )
+        )
+
+        declared_identities: dict[
+            str,
+            CanonicalIdentityMapping | None,
+        ] = {}
+
+        if implicit_class is not None:
+            declared_identities.update(
+                implicit_class.identities,
+            )
+
+        if explicit_class is not None:
+            declared_identities.update(
+                explicit_class.identities,
+            )
+
+        if (
+            canonical_class_id is not None
+            and canonical_class_id
+            not in declared_identities
+        ):
+            declared_identities[
+                canonical_class_id
+            ] = primary_identity
+
         identities: dict[
             str,
             CanonicalIdentityMapping,
         ] = {}
 
+        for (
+            target_class_id,
+            declared_identity,
+        ) in declared_identities.items():
+            resolved_identity = declared_identity
+
+            if resolved_identity is None:
+                resolved_identity = (
+                    defaults.identities.get(
+                        target_class_id,
+                    )
+                )
+
+            if (
+                resolved_identity is None
+                and target_class_id
+                == canonical_class_id
+            ):
+                resolved_identity = primary_identity
+
+            if resolved_identity is None:
+                raise ValueError(
+                    "Could not resolve the inherited identity "
+                    "declaration for referenced canonical class "
+                    f"{target_class_id!r} from source relation "
+                    f"{self._relation_name(relation)!r}."
+                )
+
+            identities[
+                target_class_id
+            ] = resolved_identity
+
+        relations: dict[
+            str,
+            RelationMapping,
+        ] = dict(
+            defaults.relations,
+        )
+
+        if explicit_class is not None:
+            relations.update(
+                explicit_class.relations,
+            )
+
+        localisations: dict[
+            str,
+            str,
+        ] = {}
+
         if implicit_class is not None:
-            identities.update(
-                implicit_class.identities,
+            localisations.update(
+                implicit_class.localisations,
             )
 
         if explicit_class is not None:
-            identities.update(
-                explicit_class.identities,
+            localisations.update(
+                explicit_class.localisations,
             )
-
-        if canonical_class_id is not None and canonical_class_id not in identities:
-            identities[canonical_class_id] = self._explicit_defaults().identity
 
         referenced_mapping = ClassMapping(
             canonical_class_id=canonical_class_id,
+            identity=primary_identity,
             identities=identities,
             attributes={},
-            relations=(
-                dict(
-                    explicit_class.relations,
-                )
-                if explicit_class is not None
-                else {}
-            ),
-            function=(explicit_class.function if explicit_class is not None else None),
+            relations=relations,
+            localisations=localisations,
+            projection=None,
         )
 
         result = self._with_localized_identities(
@@ -1701,7 +2393,9 @@ class TwwRelationContextProvider(
             class_mapping=referenced_mapping,
         )
 
-        self._referenced_mapping_cache[relation] = result
+        self._referenced_mapping_cache[
+            relation
+        ] = result
 
         return result
 
@@ -1718,28 +2412,33 @@ class TwwRelationContextProvider(
     ) -> None:
         """
         Reject several source FKs targeting one canonical local attribute.
-
-        Such relationships represent distinct semantic roles and must be
-        mapped explicitly.
         """
-
         source_attributes_by_target: dict[
             tuple[
                 str,
                 str,
             ],
-            list[str,],
+            list[
+                str,
+            ],
         ] = {}
 
         for (
             source_attribute,
             attribute_mapping,
         ) in candidates:
-            target_class_id = attribute_mapping.canonical_class_id
+            target_class_id = (
+                attribute_mapping.canonical_class_id
+            )
 
-            canonical_attribute_id = attribute_mapping.canonical_attr_id
+            canonical_attribute_id = (
+                attribute_mapping.canonical_attr_id
+            )
 
-            if target_class_id is None or canonical_attribute_id is None:
+            if (
+                target_class_id is None
+                or canonical_attribute_id is None
+            ):
                 continue
 
             target = (
@@ -1766,12 +2465,9 @@ class TwwRelationContextProvider(
                 )
             )
 
-            if (
-                len(
-                    unique_source_attributes,
-                )
-                <= 1
-            ):
+            if len(
+                unique_source_attributes,
+            ) <= 1:
                 continue
 
             (
@@ -1800,8 +2496,10 @@ class TwwRelationContextProvider(
         """
         Return child-side columns participating in joined inheritance.
         """
-
-        if mapper.inherits is None or mapper.inherit_condition is None:
+        if (
+            mapper.inherits is None
+            or mapper.inherit_condition is None
+        ):
             return frozenset()
 
         local_table = mapper.local_table
@@ -1829,7 +2527,6 @@ class TwwRelationContextProvider(
         """
         Return whether one relationship represents ORM inheritance.
         """
-
         parent_mapper = mapper.inherits
 
         if parent_mapper is None:
@@ -1861,8 +2558,7 @@ class TwwRelationContextProvider(
         """
         Validate one executable relation-specific class mapping.
         """
-
-        if class_mapping.function is not None:
+        if class_mapping.projection is not None:
             return
 
         source_attributes = self._source_attribute_names(
@@ -1884,11 +2580,20 @@ class TwwRelationContextProvider(
                 f"{tuple(sorted(missing_source_attributes))!r}."
             )
 
-        canonical_metadata = self.canonical_model_adapter.canonical_model()
+        canonical_metadata = (
+            self.canonical_model_adapter
+            .canonical_model()
+        )
 
-        canonical_class_id = class_mapping.canonical_class_id
+        canonical_class_id = (
+            class_mapping.canonical_class_id
+        )
 
-        if canonical_class_id is not None and canonical_class_id not in canonical_metadata.classes:
+        if (
+            canonical_class_id is not None
+            and canonical_class_id
+            not in canonical_metadata.classes
+        ):
             raise ValueError(
                 "Resolved mapping targets unknown canonical "
                 f"class {canonical_class_id!r} for source "
@@ -1899,7 +2604,10 @@ class TwwRelationContextProvider(
             source_attribute,
             attribute_mapping,
         ) in class_mapping.attributes.items():
-            target_class_id = attribute_mapping.canonical_class_id or canonical_class_id
+            target_class_id = (
+                attribute_mapping.canonical_class_id
+                or canonical_class_id
+            )
 
             if target_class_id is None:
                 raise ValueError(
@@ -1908,7 +2616,10 @@ class TwwRelationContextProvider(
                     f"{source_attribute!r}."
                 )
 
-            if target_class_id not in canonical_metadata.classes:
+            if (
+                target_class_id
+                not in canonical_metadata.classes
+            ):
                 raise ValueError(
                     "Resolved mapping targets unknown canonical "
                     f"class {target_class_id!r}, required by "
@@ -1916,7 +2627,9 @@ class TwwRelationContextProvider(
                     f"{source_attribute!r}."
                 )
 
-            canonical_attribute_id = attribute_mapping.canonical_attr_id
+            canonical_attribute_id = (
+                attribute_mapping.canonical_attr_id
+            )
 
             if (
                 canonical_attribute_id is not None
@@ -1934,7 +2647,10 @@ class TwwRelationContextProvider(
                     f"{source_attribute!r}."
                 )
 
-            if target_class_id not in class_mapping.identities:
+            if (
+                target_class_id
+                not in class_mapping.identities
+            ):
                 raise ValueError(
                     "Resolved mapping has no canonical identity "
                     f"for target class {target_class_id!r}, "
@@ -1952,10 +2668,7 @@ class TwwRelationContextProvider(
     ):
         """
         Return the mapped ORM class for one quarantine-class entry.
-
-        Automap collections may yield mapped classes directly or string keys.
         """
-
         if isinstance(
             relation_entry,
             str,
@@ -1965,31 +2678,30 @@ class TwwRelationContextProvider(
                     self.quarantine_classes,
                     relation_entry,
                 )
-
             except AttributeError:
                 try:
-                    return self.quarantine_classes[relation_entry]
-
+                    return self.quarantine_classes[
+                        relation_entry
+                    ]
                 except (
                     KeyError,
                     TypeError,
                 ) as exception:
                     raise KeyError(
-                        "No quarantine ORM class exists for " f"relation {relation_entry!r}."
+                        "No quarantine ORM class exists for "
+                        f"relation {relation_entry!r}."
                     ) from exception
 
-        if (
-            getattr(
-                relation_entry,
-                "__table__",
-                None,
-            )
-            is not None
-        ):
+        if getattr(
+            relation_entry,
+            "__table__",
+            None,
+        ) is not None:
             return relation_entry
 
         raise TypeError(
-            "Expected a quarantine relation name or mapped ORM " f"class, got {relation_entry!r}."
+            "Expected a quarantine relation name or mapped ORM "
+            f"class, got {relation_entry!r}."
         )
 
     def _relation_name(
@@ -1999,7 +2711,6 @@ class TwwRelationContextProvider(
         """
         Return the physical table name of one mapped ORM class.
         """
-
         table = getattr(
             relation_class,
             "__table__",
@@ -2037,7 +2748,10 @@ class TwwRelationContextProvider(
         ):
             return class_name
 
-        raise TypeError("Could not determine a relation name for " f"{relation_class!r}.")
+        raise TypeError(
+            "Could not determine a relation name for "
+            f"{relation_class!r}."
+        )
 
     def _declared_class_name(
         self,
@@ -2046,7 +2760,6 @@ class TwwRelationContextProvider(
         """
         Return the declared Python ORM class name.
         """
-
         class_name = getattr(
             relation_class,
             "__name__",
@@ -2064,6 +2777,34 @@ class TwwRelationContextProvider(
 
         return None
 
+    def _ag96_mapping_id(
+        self,
+        *relation_names: str | None,
+    ) -> str | None:
+        """
+        Resolve a stable AG96 mapping ID from physical ORM identifiers.
+
+        Matching is case-insensitive only at this boundary. The exact stable
+        mapping identifier is preserved after resolution.
+        """
+        for relation_name in relation_names:
+            if not isinstance(
+                relation_name,
+                str,
+            ):
+                continue
+
+            mapping_id = (
+                _AG96_MAPPING_ID_BY_RELATION_NAME.get(
+                    relation_name.casefold(),
+                )
+            )
+
+            if mapping_id is not None:
+                return mapping_id
+
+        return None
+
     def _source_class_ids(
         self,
         relation,
@@ -2072,35 +2813,62 @@ class TwwRelationContextProvider(
         ...,
     ]:
         """
-        Return candidate source identifiers for one relation.
+        Return mapping candidates for one ORM relation.
 
-        The physical table name is first. The declared ORM class name is
-        included as a fallback.
+        Physical table and declared ORM identifiers remain available for
+        implicit mapping lookup. A stable AG96 mapping identifier is appended
+        when the relation has a configured binding.
 
-        For example, an ORM class ``zone`` with a physical table ``azone``
-        produces ``("azone", "zone")``.
+        Export-facing INTERLIS names are deliberately not resolved here.
         """
-
         if isinstance(
             relation,
             str,
         ):
-            return (relation,)
-
-        candidates: list[str,] = [
-            self._relation_name(
+            physical_name = relation
+            declared_name = None
+        else:
+            physical_name = self._relation_name(
                 relation,
             )
-        ]
 
-        declared_name = self._declared_class_name(
-            relation,
+            declared_name = self._declared_class_name(
+                relation,
+            )
+
+        candidates: list[
+            str,
+        ] = []
+
+        def append_candidate(
+            candidate: str | None,
+        ) -> None:
+            if (
+                isinstance(
+                    candidate,
+                    str,
+                )
+                and candidate
+                and candidate not in candidates
+            ):
+                candidates.append(
+                    candidate,
+                )
+
+        append_candidate(
+            physical_name,
         )
 
-        if declared_name is not None and declared_name not in candidates:
-            candidates.append(
+        append_candidate(
+            declared_name,
+        )
+
+        append_candidate(
+            self._ag96_mapping_id(
+                physical_name,
                 declared_name,
             )
+        )
 
         return tuple(
             candidates,
@@ -2113,7 +2881,6 @@ class TwwRelationContextProvider(
         """
         Return the source attribute identifier for a SQLAlchemy column.
         """
-
         return str(
             getattr(
                 column,
@@ -2134,8 +2901,9 @@ class TwwRelationContextProvider(
         """
         Return whether a relation contains internal ili2db metadata.
         """
-
-        return relation_name.casefold().startswith("t_ili2db_")
+        return relation_name.casefold().startswith(
+            "t_ili2db_"
+        )
 
     def _is_association_class(
         self,
@@ -2144,7 +2912,6 @@ class TwwRelationContextProvider(
         """
         Return whether an ORM class represents an association table.
         """
-
         table = getattr(
             relation_class,
             "__table__",
@@ -2154,12 +2921,10 @@ class TwwRelationContextProvider(
         if table is None:
             return False
 
-        return (
-            str(
-                table.name,
-            )
-            .casefold()
-            .endswith("assoc")
+        return str(
+            table.name,
+        ).casefold().endswith(
+            "assoc"
         )
 
     def _is_ili2pg_technical_column(
@@ -2172,9 +2937,51 @@ class TwwRelationContextProvider(
         ``t_ili_tid`` is deliberately excluded because it represents the
         imported INTERLIS object identity.
         """
-
         return source_attribute.casefold() in {
             "t_id",
             "t_basket",
             "t_seq",
         }
+
+    # ------------------------------------------------------------------
+    # Context uniqueness
+    # ------------------------------------------------------------------
+
+    def _assert_unique_source_class_ids(
+        self,
+        *,
+        contexts: list[
+            RelationContext,
+        ],
+    ) -> None:
+        """
+        Require one concrete ORM relation per stable source mapping ID.
+        """
+        relation_by_source_class_id: dict[
+            str,
+            Any,
+        ] = {}
+
+        for relation_context in contexts:
+            source_class_id = (
+                relation_context.source_class_id
+            )
+
+            previous_relation = (
+                relation_by_source_class_id.get(
+                    source_class_id,
+                )
+            )
+
+            if previous_relation is not None:
+                raise ValueError(
+                    "Several quarantine ORM relations resolve to "
+                    f"source class {source_class_id!r}: "
+                    f"{self._relation_name(previous_relation)!r} "
+                    "and "
+                    f"{self._relation_name(relation_context.relation)!r}."
+                )
+
+            relation_by_source_class_id[
+                source_class_id
+            ] = relation_context.relation

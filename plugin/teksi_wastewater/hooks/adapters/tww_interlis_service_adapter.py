@@ -4,9 +4,6 @@ from collections.abc import Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from teksi_hooks.capabilities.connection import (
-    DatabaseConnectionFactory,
-)
 from teksi_hooks.services.interlis import (
     InterlisContext,
     InterlisService,
@@ -94,7 +91,7 @@ class TwwInterlisServiceAdapter(InterlisService):
     def __init__(
         self,
         importer_exporter: InterlisImporterExporter | None = None,
-        connection_factory: DatabaseConnectionFactory | None = None,
+        connection_factory: TwwDatabaseConnectionFactory | None = None,
     ) -> None:
         self._connection_factory = (
             connection_factory
@@ -228,11 +225,7 @@ class TwwInterlisServiceAdapter(InterlisService):
         should use ``identify_model()``.
         """
 
-        selection = self.identify_model(
+        return self._importer_exporter.find_import_selection_models(
             xtf_file,
         )
 
-        return (
-            selection.import_model,
-            selection.created_models,
-        )

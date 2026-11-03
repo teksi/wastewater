@@ -1,13 +1,14 @@
 from __future__ import annotations
-
 import logging
-import warnings
 
 import sqlalchemy
 from sqlalchemy import ForeignKeyConstraint, inspect
 from sqlalchemy.exc import SAWarning
 from sqlalchemy.ext.automap import generate_relationship
 from sqlalchemy.orm import ColumnProperty
+import warnings
+from importlib.util import find_spec
+
 
 from ...utils.database_utils import DatabaseUtils
 
@@ -21,9 +22,25 @@ def create_engine(logger_name=None):
         logging_args = {"logging_name": logger_name, "echo": True}
 
     pgconf = DatabaseUtils.get_pgconf()
+    driver_name = (
+        "postgresql+psycopg"
+        if psycopg3_available()
+        else "postgresql+psycopg2"
+    )
+
+    database_url = sqlalchemy.URL.create(
+        drivername=driver_name,
+        username=pgconf["user"],
+        password=pgconf["password"],
+        host=pgconf["host"],
+        port=int(
+            pgconf["port"],
+        ),
+        database=pgconf["dbname"],
+    )
 
     return sqlalchemy.create_engine(
-        f"postgresql://{pgconf['user']}:{pgconf['password']}@{pgconf['host']}:{pgconf['port']}/{pgconf['dbname']}",
+        database_url,
         **logging_args,
     )
 
@@ -107,9 +124,15 @@ def prepare_automap_base(
         )
 
         base.prepare(
-            name_for_collection_relationship=(custom_name_for_collection_relationship),
-            name_for_scalar_relationship=(custom_name_for_scalar_relationship),
-            generate_relationship=(custom_generate_relationship),
+            name_for_collection_relationship=(
+                custom_name_for_collection_relationship
+            ),
+            name_for_scalar_relationship=(
+                custom_name_for_scalar_relationship
+            ),
+            generate_relationship=(
+                custom_generate_relationship
+            ),
         )
 
     _add_declared_classes(
@@ -130,6 +153,18 @@ def copy_instance(instance):
     return new_instance
 
 
+def psycopg3_available() -> bool:
+    """
+    Return whether the Psycopg 3 package is importable.
+
+    The package is located through Python's import machinery but is not
+    imported.
+    """
+
+    return find_spec(
+        "psycopg",
+    ) is not None
+
 def _add_missing_inheritance_constraints(
     *,
     base,
@@ -145,7 +180,9 @@ def _add_missing_inheritance_constraints(
     and are ignored.
     """
 
-    visited: set[type,] = set()
+    visited: set[
+        type,
+    ] = set()
 
     def visit_subclasses(
         parent_class: type,
@@ -198,10 +235,17 @@ def _add_inheritance_constraint(
         None,
     )
 
-    if parent_table is None or child_table is None or parent_table is child_table:
+    if (
+        parent_table is None
+        or child_table is None
+        or parent_table is child_table
+    ):
         return
 
-    if parent_table.schema != schema or child_table.schema != schema:
+    if (
+        parent_table.schema != schema
+        or child_table.schema != schema
+    ):
         return
 
     if inheritance_key not in parent_table.c:
@@ -222,12 +266,21 @@ def _add_inheritance_constraint(
             f"{inheritance_key!r}."
         )
 
-    child_column = child_table.c[inheritance_key]
+    child_column = child_table.c[
+        inheritance_key
+    ]
 
-    target_fullname = f"{parent_table.schema}." f"{parent_table.name}." f"{inheritance_key}"
+    target_fullname = (
+        f"{parent_table.schema}."
+        f"{parent_table.name}."
+        f"{inheritance_key}"
+    )
 
     if any(
-        foreign_key.target_fullname == target_fullname for foreign_key in child_column.foreign_keys
+        foreign_key.target_fullname
+        == target_fullname
+        for foreign_key
+        in child_column.foreign_keys
     ):
         return
 
@@ -239,7 +292,11 @@ def _add_inheritance_constraint(
             [
                 target_fullname,
             ],
-            name=("orm_inheritance_" f"{child_table.name}_" f"{parent_table.name}"),
+            name=(
+                "orm_inheritance_"
+                f"{child_table.name}_"
+                f"{parent_table.name}"
+            ),
         )
     )
 
@@ -251,7 +308,9 @@ def _add_declared_classes(
     Add manually declared classes to the automap class collection.
     """
 
-    visited: set[type,] = set()
+    visited: set[
+        type,
+    ] = set()
 
     def add_subclasses(
         parent_class: type,
@@ -265,7 +324,9 @@ def _add_declared_classes(
             )
 
             if subclass.__name__ not in base.classes:
-                base.classes[subclass.__name__] = subclass
+                base.classes[
+                    subclass.__name__
+                ] = subclass
 
             add_subclasses(
                 subclass,

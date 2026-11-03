@@ -15,7 +15,7 @@ models:
           target:
             class: agxx_last_modification
             attribute: ag96_last_modification
-
+      
     projection_defaults:
       references:
         datenbewirtschafter_wi:
@@ -61,7 +61,7 @@ models:
 
             funktionag:
               relation: tww_vl.agxx_import_rel_mapping_gepknoten_funktionag
-              ignore:
+              ignore: 
                 - Leitungsknoten
 
             baulicherzustand:
@@ -280,6 +280,17 @@ models:
             target:
               class: infiltration_zone
               attribute: fk_provider
+
+      Organisation:
+        source_attribute: obj_id
+
+        projection:
+          kind: canonical_view
+
+          canonical_view:
+            schema: tww_app
+            name: vw_agxx_organisation
+            identity_attribute: obj_id
 
   sia405_abwasser:
     defaults:

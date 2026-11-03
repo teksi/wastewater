@@ -4,11 +4,13 @@ from dataclasses import dataclass
 from typing import Any
 
 from sqlalchemy.orm import Session
-from teksi_wastewater.interlis.model_config import (
-    interlis_models,
-)
+
 from teksi_wastewater.interlis.utils import (
     tww_sqlalchemy,
+)
+
+from teksi_wastewater.interlis.model_config import (
+    interlis_models,
 )
 
 
@@ -36,7 +38,9 @@ class TwwQuarantineClassesFactory:
         """
 
         try:
-            model_configuration = interlis_models[model_group]
+            model_configuration = interlis_models[
+                model_group
+            ]
 
         except KeyError as exception:
             raise ValueError(
@@ -45,8 +49,10 @@ class TwwQuarantineClassesFactory:
                 f"{tuple(sorted(interlis_models))!r}."
             ) from exception
 
-        configured_model_name = model_configuration.lang_name(
-            model_language,
+        configured_model_name = (
+            model_configuration.lang_name(
+                model_language,
+            )
         )
 
         if configured_model_name != source_model:
@@ -59,46 +65,10 @@ class TwwQuarantineClassesFactory:
                 f"{configured_model_name!r}."
             )
 
-        quarantine_model = model_configuration.quarantine_model(
-            schema=import_schema,
+        quarantine_model = (
+            model_configuration.quarantine_model(
+                schema=import_schema,
+            )
         )
 
         return quarantine_model.classes()
-
-
-class TwwQuarantineSessionFactory:
-    """
-    Create caller-owned SQLAlchemy sessions for quarantine persistence.
-
-    Database parameters come from the active TEKSI Wastewater database
-    configuration. The ORM classes determine the schema-qualified tables.
-
-    The caller owns commit, rollback, and session closure.
-    """
-
-    def __call__(
-        self,
-        *,
-        import_schema: str,
-    ) -> Session:
-        """
-        Return a new session for an existing quarantine schema.
-
-        ``import_schema`` is validated for contract clarity. Schema selection
-        itself is encoded in the generated ORM classes.
-        """
-
-        if (
-            not isinstance(
-                import_schema,
-                str,
-            )
-            or not import_schema.strip()
-        ):
-            raise ValueError("import_schema must be a non-empty string.")
-
-        return Session(
-            tww_sqlalchemy.create_engine(),
-            autocommit=False,
-            autoflush=False,
-        )

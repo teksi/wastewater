@@ -292,6 +292,7 @@ CREATE OR REPLACE VIEW tww_app.vw_agxx_gepknoten
             WHEN wwtp.obj_id IS NOT NULL THEN 'wwtp_structure'::text
             ELSE 'unknown'::text
         END AS ws_type,
+		main_ws.obj_id AS _mapping_wastewater_structure_obj_id,
 		wn._mapping_origin,
 		wn._mapping_origin = 'wastewater_node'
 			AS _mapping_is_wastewater_node,
@@ -423,7 +424,12 @@ CREATE OR REPLACE VIEW tww_app.vw_agxx_gephaltung
     ws_agxx.ag96_fk_measure AS gepmassnahmeref,
     concat_ws(''::text, 'ch113jqg0000', "right"(COALESCE(ne_agxx.ag96_fk_provider, '00000107'::character varying)::text, 8)) AS datenbewirtschafter_gep,
     ne_agxx.ag96_remark AS bemerkung_gep,
-    COALESCE(ne_agxx_lm.ag96_last_modification::timestamp with time zone, to_timestamp('1800-01-01'::text, 'YYYY-MM-DD'::text)) AS letzte_aenderung_gep
+    COALESCE(ne_agxx_lm.ag96_last_modification::timestamp with time zone, to_timestamp('1800-01-01'::text, 'YYYY-MM-DD'::text)) AS letzte_aenderung_gep,
+	ws.obj_id AS _mapping_wastewater_structure_obj_id,
+	re.fk_reach_point_from AS _mapping_reach_point_from_obj_id,
+	re.fk_reach_point_to AS _mapping_reach_point_to_obj_id,
+	re.fk_pipe_profile AS _mapping_pipe_profile_obj_id
+
   FROM tww_od.reach re
     LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id::text = re.obj_id::text
     LEFT JOIN tww_od.reach_point rp_from ON rp_from.obj_id::text = re.fk_reach_point_from::text

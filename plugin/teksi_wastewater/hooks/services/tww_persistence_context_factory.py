@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any, Protocol
 
 from sqlalchemy.orm import Session
+
 from teksi_hooks.capabilities.mapping import (
     EffectiveModelMappingCapability,
     ModelMappingCapability,
@@ -17,14 +18,14 @@ from teksi_hooks.models.review import (
 from teksi_hooks.parser.model_mapping_parser import (
     ModelMappingParser,
 )
-from teksi_wastewater.hooks.adapters.tww_database_connection_factory import (
-    TwwDatabaseConnectionFactory,
-)
 from teksi_wastewater.hooks.adapters.tww_implicit_model_mapping_adapter import (
     TwwImplicitModelMappingAdapter,
 )
 from teksi_wastewater.hooks.exceptions import (
     DiffJobEligibilityError,
+)
+from teksi_wastewater.hooks.adapters.tww_session_manager import (
+    TwwSessionContext,
 )
 
 
@@ -90,7 +91,6 @@ class TwwPersistenceSourceContext:
     quarantine_session: Session
     model_mapping: EffectiveModelMappingCapability
 
-
 @dataclass(
     slots=True,
 )
@@ -98,17 +98,28 @@ class TwwPersistenceContextFactory:
     """
     Reconstruct persistence contexts from persisted diff-job metadata.
 
-    ORM class and session construction are supplied by the plugin composition
-    layer. This service does not recreate or reimport quarantine schemas.
-    """
+    The enclosing persistence workflow owns the quarantine and live sessions.
+    This factory borrows those sessions while reconstructing source contexts.
 
-    connection_factory: TwwDatabaseConnectionFactory
+    Generated quarantine ORM classes contain schema-qualified table metadata.
+    Therefore, one quarantine session may query retained base and incremental
+    source schemas through their respective ORM class collections.
+
+    Implicit model-mapping discovery uses the same quarantine and live
+    sessions as the subsequent persistence workflow. The factory does not:
+
+    - create database sessions;
+    - commit or roll back transactions;
+    - close database sessions;
+    - recreate quarantine schemas;
+    - reimport source data.
+    """
 
     model_config_dir: Path
 
-    quarantine_classes_factory: QuarantineClassesFactory
-
-    quarantine_session_factory: QuarantineSessionFactory
+    quarantine_classes_factory: (
+        QuarantineClassesFactory
+    )
 
     logger: logging.Logger
 
@@ -116,107 +127,82 @@ class TwwPersistenceContextFactory:
         self,
         *,
         job: DiffReviewJob,
+        session_context: TwwSessionContext,
     ) -> tuple[
         TwwPersistenceSourceContext,
         ...,
     ]:
         """
-        Build base and incremental contexts in persistence order.
+        Build base and incremental source contexts in persistence order.
+
+        Both sessions are borrowed from ``session_context``. The caller
+        remains responsible for transaction completion and session closure.
         """
 
-        contexts: list[TwwPersistenceSourceContext,] = []
+        self._assert_session_context(
+            session_context,
+        )
 
-        try:
-            for source_role in (
-                "base",
-                "incremental",
-            ):
-                descriptor = self._source_descriptor(
-                    job=job,
-                    source_role=source_role,
-                )
+        contexts: list[
+            TwwPersistenceSourceContext,
+        ] = []
 
-                if descriptor is None:
-                    continue
-
-                contexts.append(
-                    self._source_context(
-                        descriptor=descriptor,
-                    )
-                )
-
-        except Exception:
-            self.close_source_contexts(
-                source_contexts=tuple(
-                    contexts,
-                ),
+        for source_role in (
+            "base",
+            "incremental",
+        ):
+            descriptor = self._source_descriptor(
+                job=job,
+                source_role=source_role,
             )
 
-            raise
+            if descriptor is None:
+                continue
+
+            contexts.append(
+                self._source_context(
+                    descriptor=descriptor,
+                    session_context=session_context,
+                )
+            )
 
         if not contexts:
             raise DiffJobEligibilityError(
                 job_id=job.job_id,
-                reason=("the job contains no retained source " "contexts."),
+                reason=(
+                    "the job contains no retained source "
+                    "contexts."
+                ),
             )
 
         return tuple(
             contexts,
         )
 
-    def close_source_contexts(
-        self,
-        *,
-        source_contexts: tuple[
-            TwwPersistenceSourceContext,
-            ...,
-        ],
-    ) -> None:
-        """
-        Roll back unfinished transactions and close all source sessions.
-        """
-
-        for source_context in reversed(
-            source_contexts,
-        ):
-            session = source_context.quarantine_session
-
-            try:
-                if session.in_transaction():
-                    session.rollback()
-
-            except Exception:
-                self.logger.exception(
-                    "Could not roll back quarantine session for " "source role %r and schema %r.",
-                    source_context.source_role,
-                    source_context.import_schema,
-                )
-
-            try:
-                session.close()
-
-            except Exception:
-                self.logger.exception(
-                    "Could not close quarantine session for " "source role %r and schema %r.",
-                    source_context.source_role,
-                    source_context.import_schema,
-                )
-
     def _source_descriptor(
         self,
         *,
         job: DiffReviewJob,
         source_role: str,
-    ) -> (
-        dict[
-            str,
-            str,
-        ]
-        | None
-    ):
+    ) -> dict[
+        str,
+        str,
+    ] | None:
         """
-        Return one persisted source descriptor.
+        Return one complete persisted source descriptor.
+
+        A completely absent source descriptor returns ``None``. A partially
+        populated descriptor is rejected.
         """
+
+        if source_role not in {
+            "base",
+            "incremental",
+        }:
+            raise ValueError(
+                "source_role must be either 'base' or "
+                f"'incremental', got {source_role!r}."
+            )
 
         metadata = job.metadata
 
@@ -242,21 +228,30 @@ class TwwPersistenceContextFactory:
             ),
         }
 
-        source_values = tuple(value for key, value in values.items() if key != "source_role")
+        descriptor_values = tuple(
+            value
+            for (
+                key,
+                value,
+            ) in values.items()
+            if key != "source_role"
+        )
 
         if all(
-            value
-            in (
+            value in (
                 None,
                 "",
             )
-            for value in source_values
+            for value in descriptor_values
         ):
             return None
 
         missing_keys = tuple(
             key
-            for key, value in values.items()
+            for (
+                key,
+                value,
+            ) in values.items()
             if (
                 not isinstance(
                     value,
@@ -276,7 +271,13 @@ class TwwPersistenceContextFactory:
                 ),
             )
 
-        return {key: value.strip() for key, value in values.items()}
+        return {
+            key: value.strip()
+            for (
+                key,
+                value,
+            ) in values.items()
+        }
 
     def _source_context(
         self,
@@ -285,39 +286,66 @@ class TwwPersistenceContextFactory:
             str,
             str,
         ],
+        session_context: TwwSessionContext,
     ) -> TwwPersistenceSourceContext:
         """
-        Build one runtime source context.
+        Build one runtime source context using borrowed workflow sessions.
         """
 
-        import_schema = descriptor["import_schema"]
+        import_schema = descriptor[
+            "import_schema"
+        ]
+
+        quarantine_classes = (
+            self.quarantine_classes_factory(
+                source_model=descriptor[
+                    "source_model"
+                ],
+                model_group=descriptor[
+                    "model_group"
+                ],
+                model_language=descriptor[
+                    "model_language"
+                ],
+                import_schema=import_schema,
+            )
+        )
 
         model_mapping = self._effective_model(
-            mapping_model_id=descriptor["mapping_model_id"],
+            mapping_model_id=descriptor[
+                "mapping_model_id"
+            ],
             import_schema=import_schema,
-            language=descriptor["model_language"],
-        )
-
-        quarantine_classes = self.quarantine_classes_factory(
-            source_model=descriptor["source_model"],
-            model_group=descriptor["model_group"],
-            model_language=descriptor["model_language"],
-            import_schema=import_schema,
-        )
-
-        quarantine_session = self.quarantine_session_factory(
-            import_schema=import_schema,
+            language=descriptor[
+                "model_language"
+            ],
+            quarantine_session=(
+                session_context.quarantine
+            ),
+            live_session=session_context.live,
         )
 
         return TwwPersistenceSourceContext(
-            source_role=descriptor["source_role"],
+            source_role=descriptor[
+                "source_role"
+            ],
             import_schema=import_schema,
-            source_model=descriptor["source_model"],
-            mapping_model_id=descriptor["mapping_model_id"],
-            model_language=descriptor["model_language"],
-            model_group=descriptor["model_group"],
+            source_model=descriptor[
+                "source_model"
+            ],
+            mapping_model_id=descriptor[
+                "mapping_model_id"
+            ],
+            model_language=descriptor[
+                "model_language"
+            ],
+            model_group=descriptor[
+                "model_group"
+            ],
             quarantine_classes=quarantine_classes,
-            quarantine_session=quarantine_session,
+            quarantine_session=(
+                session_context.quarantine
+            ),
             model_mapping=model_mapping,
         )
 
@@ -327,53 +355,63 @@ class TwwPersistenceContextFactory:
         mapping_model_id: str,
         import_schema: str,
         language: str,
+        quarantine_session: Session,
+        live_session: Session,
     ) -> EffectiveModelMappingCapability:
         """
         Rebuild the effective mapping for one retained source.
+
+        Explicit mapping metadata is loaded from configuration. Implicit
+        mapping discovery uses the sessions belonging to the active
+        persistence workflow.
         """
 
-        explicit_mapping = ModelMappingParser().parse_file(
-            self.model_config_dir / "explicit_mapping.yaml",
-            model_id=mapping_model_id,
+        explicit_mapping = (
+            ModelMappingParser().parse_file(
+                self.model_config_dir
+                / "explicit_mapping.yaml",
+                model_id=mapping_model_id,
+            )
         )
 
-        explicit_capability = ModelMappingCapability(
-            mapping=explicit_mapping,
+        explicit_capability = (
+            ModelMappingCapability(
+                mapping=explicit_mapping,
+            )
         )
 
-        implicit_capability = TwwImplicitModelMappingAdapter(
-            connection_factory=(self.connection_factory),
-            import_schema=import_schema,
-            language=language,
+        implicit_capability = (
+            TwwImplicitModelMappingAdapter(
+                import_schema=import_schema,
+                language=language,
+                quarantine_session=(
+                    quarantine_session
+                ),
+                live_session=live_session,
+            )
         )
-        for candidate_class_id in (
-            "GepMassnahme",
-            "gepmassnahme",
-        ):
-            class_mapping = explicit_mapping.classes.get(
-                candidate_class_id,
+
+        return EffectiveModelMappingCapability.load(
+            explicit_mapping=explicit_capability,
+            implicit_mapping=implicit_capability,
+        )
+
+    def _assert_session_context(
+        self,
+        session_context: TwwSessionContext,
+    ) -> None:
+        """
+        Require an initialized pair of borrowed workflow sessions.
+        """
+
+        if session_context.quarantine is None:
+            raise RuntimeError(
+                "The persistence session context has no "
+                "quarantine session."
             )
 
-            if class_mapping is None:
-                continue
-
-            self.logger.info(
-                "Explicit identity mapping for class %r: %r." "self.model_config_dir: %r",
-                candidate_class_id,
-                {
-                    target_class_id: {
-                        "source_attribute": (identity.source_attribute),
-                        "canonical_attribute": (identity.canonical_attribute),
-                    }
-                    for (
-                        target_class_id,
-                        identity,
-                    ) in class_mapping.identities.items()
-                },
-                self.model_config_dir,
+        if session_context.live is None:
+            raise RuntimeError(
+                "The persistence session context has no live "
+                "session."
             )
-
-        return EffectiveModelMappingCapability(
-            explicit_mapping=(explicit_capability),
-            implicit_mapping=(implicit_capability),
-        )

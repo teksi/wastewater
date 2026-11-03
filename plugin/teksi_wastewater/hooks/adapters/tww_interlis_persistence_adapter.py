@@ -1,16 +1,20 @@
-# teksi_wastewater/hooks/adapters/tww_interlis_persistence_adapter.py
-
 from __future__ import annotations
 
 import logging
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Mapping
 
 from teksi_hooks.capabilities.mapping import (
     ModelMappingLookupCapability,
 )
+from teksi_wastewater.hooks.services.tww_source_runtime_context import (
+    TwwSourceRuntimeContext,
+)
 from teksi_wastewater.hooks.adapters.tww_quarantine_runner import (
     TwwQuarantineRunner,
+)
+from teksi_wastewater.hooks.adapters.tww_session_manager import (
+    TwwSessionContext
 )
 from teksi_wastewater.hooks.capabilities.tww_interlis_persistence_capability import (
     TwwInterlisPersistenceCapability,
@@ -25,6 +29,7 @@ from teksi_wastewater.interlis import (
 from teksi_wastewater.interlis.model_selection import (
     model_selection_for_imported_models,
 )
+
 
 logger = logging.getLogger(
     __name__,
@@ -60,11 +65,17 @@ class TwwInterlisPersistenceAdapter(
 
     quarantine_runner: TwwQuarantineRunner
 
+    source_runtime_contexts: Mapping[
+            str,
+            TwwSourceRuntimeContext,
+        ]
+
     def persist_quarantine(
         self,
         *,
         job_id: str,
         source_role: str,
+        session_context: TwwSessionContext,
         import_schema: str,
         live_schema: str,
         source_model: str,
@@ -127,14 +138,18 @@ class TwwInterlisPersistenceAdapter(
         )
 
         try:
-            selection_models = model_selection_for_imported_models(
-                source_model,
+            selection_models = (
+                model_selection_for_imported_models(
+                    source_model,
+                )
             )
 
         except Exception as exception:
             raise DiffJobPersistenceError(
                 job_id=job_id,
-                phase=(f"model_selection_{source_role}"),
+                phase=(
+                    f"model_selection_{source_role}"
+                ),
                 message=(
                     "Could not resolve the INTERLIS model "
                     f"selection for source model "
@@ -142,7 +157,10 @@ class TwwInterlisPersistenceAdapter(
                 ),
             ) from exception
 
-        incremental_only = source_role == "incremental"
+        incremental_only = (
+            source_role
+            == "incremental"
+        )
 
         self._assert_selection_matches_role(
             job_id=job_id,
@@ -159,22 +177,30 @@ class TwwInterlisPersistenceAdapter(
             live_schema,
             source_model,
         )
-
+        source_context = self._source_runtime_context(
+            source_role=source_role,
+        )
         try:
             self.quarantine_runner.import_quarantine_to_live(
                 import_schema=import_schema,
                 live_schema=live_schema,
+                session_context=session_context,
                 selection_models=selection_models,
                 model_mapping=model_mapping,
                 source_role=source_role,
                 quarantine_classes=quarantine_classes,
+                relation_context_provider=(
+                    source_context.relation_context_provider
+                ),
                 filter_nulls=True,
             )
 
         except Exception as exception:
             raise DiffJobPersistenceError(
                 job_id=job_id,
-                phase=(f"persist_{source_role}"),
+                phase=(
+                    f"persist_{source_role}"
+                ),
                 message=(
                     "The quarantine-to-live import failed for "
                     f"source role {source_role!r}, source model "
@@ -208,6 +234,22 @@ class TwwInterlisPersistenceAdapter(
         """
 
         self.quarantine_runner.assert_incremental_ready()
+
+    def _source_runtime_context(
+        self,
+        *,
+        source_role: str,
+    ) -> TwwSourceRuntimeContext:
+        try:
+            return self.source_runtime_contexts[
+                source_role
+            ]
+
+        except KeyError as exception:
+            raise RuntimeError(
+                "No source runtime context is available for "
+                f"role {source_role!r}."
+            ) from exception
 
     def _assert_non_empty(
         self,
@@ -326,7 +368,10 @@ class TwwInterlisPersistenceAdapter(
                 ),
             )
 
-        if source_role == "base" and is_agxx:
+        if (
+            source_role == "base"
+            and is_agxx
+        ):
             raise DiffJobPersistenceError(
                 job_id=job_id,
                 phase="persistence_contract",
