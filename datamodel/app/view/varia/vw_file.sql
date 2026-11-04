@@ -22,7 +22,7 @@ CREATE OR REPLACE VIEW tww_app.vw_file AS
     f.object,
     f.classname,
     -- dm.path,
-    COALESCE(dm.path::text || f.path_relative::text, f.path_relative::text) AS _url,
+    COALESCE(regexp_replace(dm.path, '[\\/]+$', '')||'/'|| f.path_relative::text, f.path_relative::text) AS _url,
     f.fk_dataowner as dataowner,
     f.fk_provider as provider,
     f.remark
@@ -56,10 +56,49 @@ COST 100;
 CREATE OR REPLACE FUNCTION tww_app.vw_file_insert()
   RETURNS trigger AS
 $BODY$
-
+DECLARE
+  dm_oid varchar(16);
+  dm_path text;
+  relative_path text;
   BEGIN
 
     NEW._url = replace(NEW._url, '\', '/');
+
+    SELECT obj_id, "path" INTO dm_oid, dm_path
+    FROM tww_od.data_media
+    WHERE "path" = SUBSTRING(NEW._url FROM 1 FOR LENGTH("path"))
+    ORDER BY LENGTH("path") DESC
+    LIMIT 1;
+    IF NOT FOUND THEN
+      dm_path :=
+        CASE
+          WHEN NEW._url ~* '^https?://' THEN
+            regexp_replace(NEW._url,'^((https?://[^/]+/[^/]+)).*$','\1')
+
+          WHEN NEW._url ~ '^//[^/]+/' THEN
+            regexp_replace(NEW._url,'^((//[^/]+/[^/]+)).*$','\1')
+
+          WHEN NEW._url ~ '^[A-Za-z]:/' THEN
+            regexp_replace(NEW._url,'^(([A-Za-z]:)).*$','\1')
+
+          ELSE
+            regexp_replace(NEW._url,'^((/[^/]+)).*$','\1')
+        END;
+      INSERT INTO tww_od.data_media("path", kind, fk_dataowner, fk_provider) VALUES
+      (
+        dm_path,
+        CASE
+          WHEN _url ~* '^https?://' THEN 9318 -- webserver
+          WHEN _url ~ '^\\\\' THEN 3789       -- server
+          ELSE 3788                          -- harddisc
+        END,
+        NEW.dataowner,
+        NEW.provider)
+      RETURNING obj_id
+      INTO dm_oid;
+    END IF;
+
+    relative_path :=ltrim(substring(NEW._url from length(dm_path) + 1),'/');
 
     INSERT INTO tww_od.file(
       classname,
@@ -71,27 +110,16 @@ $BODY$
       fk_provider,
       fk_data_media,
       remark)
-
-    SELECT
+  VALUES(
       NEW.classname,
       NEW.identifier,
       NEW.kind,
       NEW.object,
-      SUBSTRING(NEW._url, LENGTH("path")+1, LENGTH(NEW._url)), -- path_relative,
+      relative_path, -- path_relative,
       NEW.dataowner, -- fk_dataowner,
       NEW.provider, -- fk_provider,
-      obj_id, -- fk_data_media
-      NEW.remark
-    FROM tww_od.data_media
-    WHERE "path" = SUBSTRING(NEW._url FROM 1 FOR LENGTH("path"))
-    ORDER BY LENGTH("path") DESC
-    LIMIT 1;
-
-    -- FOUND is a special variable which is always FALSE at the beginning of a PL/pgsql function and will be set by
-    -- e.g. INSERT to TRUE if at least one row is affected.
-    IF NOT FOUND THEN
-      RAISE WARNING 'Could not insert. File not in repository set in od_data_media!';
-    END IF;
+      dm_oid, -- fk_data_media
+      NEW.remark);
 
   RETURN NEW;
 END; $BODY$
