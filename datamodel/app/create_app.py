@@ -4,6 +4,7 @@ import os
 import re
 from argparse import ArgumentParser, BooleanOptionalAction
 from pathlib import Path
+from typing import Any
 
 import psycopg
 import yaml
@@ -58,17 +59,18 @@ class Hook(HookBase):
         self._connection = connection
 
         if modification_yaml:
+            modification_yaml = Path(modification_yaml).resolve()
             self.parameters = self.load_yaml(modification_yaml)
+            self.base_dir = modification_yaml.parent
         else:
             self.parameters = self.load_yaml(self.cwd / "app_modification.template.yaml")
+            self.base_dir = self.cwd
             if "modification_repositories" in self.parameters:
                 for entry in self.parameters["modification_repositories"]:
                     if webgis and entry["id"] == "webgis":
                         entry["active"] = True
                     if modification_agxx and entry["id"] == "agxx":
                         entry["active"] = True
-
-        self.abspath = self.cwd if not modification_yaml else ""
 
         variables_pirogue = {
             "SRID": psycopg.sql.SQL(f"{SRID}")
@@ -112,9 +114,9 @@ class Hook(HookBase):
             if entry.get("active")
         ]
 
-        self.extra_definitions = self.parameters.get("extra_definitions")
-        self.simple_joins_yaml = self.parameters.get("simple_joins_yaml")
-        self.multiple_inherintances = self.parameters.get("multiple_inherintances")
+        self.extra_definitions = self.parameters.get("extra_definitions", {})
+        self.simple_joins_yaml = self.parameters.get("simple_joins_yaml", {})
+        self.multiple_inherintances = self.parameters.get("multiple_inherintances", {})
 
         self.single_inherintances = self.load_yaml(self.cwd / "single_inherintances.yaml")
 
@@ -150,14 +152,14 @@ Running modification {modification.get('id')}
         for key in self.multiple_inherintances:
             MultipleInheritance(
                 connection=self._connection,
-                definition=self.load_yaml(self.abspath / self.multiple_inherintances[key]),
+                definition=self.load_yaml(self.resolve_path(self.multiple_inherintances[key])),
                 drop=True,
                 variables=variables_pirogue,
             ).create(commit=False)
 
         for key, value in self.extra_definitions.items():
             if value:
-                self.extra_definitions[key] = self.abspath / value
+                self.extra_definitions[key] = self.resolve_path(value)
 
         vw_wastewater_structure(
             connection=self._connection,
@@ -289,7 +291,8 @@ Running modification {modification.get('id')}
         # TODO: Are these export views necessary? cymed 13.03.25
         for _, yaml_path in self.simple_joins_yaml.items():
             SimpleJoins(
-                definition=self.load_yaml(self.abspath / yaml_path), connection=self._connection
+                definition=self.load_yaml(self.resolve_path(yaml_path)),
+                connection=self._connection,
             ).create(commit=False)
 
         sql_directories = [
@@ -308,7 +311,7 @@ Running modification {modification.get('id')}
         self.run_sql_files_in_folder(self.cwd / "post_all")
 
     @staticmethod
-    def load_yaml(file: Path) -> dict[str]:
+    def load_yaml(file: Path) -> dict[str, Any]:
         """Safely loads a YAML file and ensures it returns a dictionary."""
         file = Path(file)
         if not file.exists():
@@ -331,11 +334,11 @@ Running modification {modification.get('id')}
 
         # load definitions from config
         template_path = modification_config.get("template", None)
+        curr_dir = self.base_dir
         if template_path:
-            curr_dir = self.abspath / os.path.dirname(template_path)
-            modification_config = self.load_yaml(self.abspath / template_path)
-        else:
-            curr_dir = ""
+            template_path = self.resolve_path(template_path)
+            curr_dir = template_path.parent
+            modification_config = self.load_yaml(template_path)
 
         ext_variables = modification_config.get("variables", {})
         sql_vars = self.parse_variables({**self.variables_sql, **ext_variables})
@@ -361,11 +364,10 @@ Running modification {modification.get('id')}
                     )
 
             for key, value in modification_config.get("multiple_inherintances", {}).items():
-                if self.multiple_inherintances[key]:
-                    self.multiple_inherintances[key] = curr_dir / value
-                    logger.debug(
-                        f"altered {key} multipleInheritance definition to {self.multiple_inherintances[key]}"
-                    )
+                self.multiple_inherintances[key] = curr_dir / value
+                logger.debug(
+                    f"altered {key} multipleInheritance definition to {self.multiple_inherintances[key]}"
+                )
 
     def manage_vl(
         self,
@@ -383,10 +385,11 @@ Running modification {modification.get('id')}
         sql_vars = {"activate": {"value": is_active, "type": "literal"}}
         sql_vars = self.parse_variables(sql_vars)
         if template_path:
-            curr_dir = os.path.dirname(template_path)
+            template_path = self.resolve_path(template_path)
+            curr_dir = template_path.parent
             config = self.load_yaml(template_path)
         else:
-            curr_dir = ""
+            curr_dir = self.base_dir
 
         for sql_file in config.get("reset_vl_files", None):
             file_name = curr_dir / sql_file.get("file")
@@ -456,6 +459,14 @@ Running modification {modification.get('id')}
             else:
                 raise ValueError(f"Invalid variable format for '{key}'")
         return formatted_vars
+
+    def resolve_path(self, path: str | Path) -> Path:
+        path = Path(path)
+
+        if not path.is_absolute():
+            path = self.base_dir / path
+
+        return path.resolve()
 
 
 if __name__ == "__main__":
