@@ -3,9 +3,10 @@ import configparser
 import logging
 import os
 import re
+from collections.abc import Sequence
 from typing import Any
 
-from ..interlis import config
+from ..interlis import config, model_selection
 from .issues import CheckResult, Issue, IssueLevel
 from .plugin_utils import logger
 
@@ -79,6 +80,21 @@ class DatabaseUtils:
         return sql.SQL(query).format(*args, **kwargs)
 
     @staticmethod
+    def join_sql(
+        separator: str,
+        expressions: Sequence[sql.Composable,],
+    ) -> sql.Composed:
+        """
+        Join composable SQL expressions using a static SQL separator.
+        """
+
+        return sql.SQL(
+            separator,
+        ).join(
+            expressions,
+        )
+
+    @staticmethod
     def fetchone(query: str):
         with DatabaseUtils.PsycopgConnection() as connection:
             cursor = connection.cursor()
@@ -93,6 +109,25 @@ class DatabaseUtils:
 
             cursor.execute(query)
             return cursor.fetchall()
+
+    @staticmethod
+    def fetchall_dict(query):
+        with DatabaseUtils.PsycopgConnection() as connection:
+            cursor = connection.cursor()
+            cursor.execute(query)
+            rows = cursor.fetchall()
+
+            column_names = [column[0] for column in cursor.description]
+
+        return [
+            dict(
+                zip(
+                    column_names,
+                    row,
+                )
+            )
+            for row in rows
+        ]
 
     @staticmethod
     def execute(query: str):
@@ -129,15 +164,15 @@ class DatabaseUtils:
             PG_CONFIG_PATH = os.path.expanduser(f"~/{config_file}")
             logger.debug(f"PG_CONFIG_PATH:  {PG_CONFIG_PATH}")
 
-        config = configparser.ConfigParser()
+        parsed_config = configparser.ConfigParser()
         if os.path.exists(PG_CONFIG_PATH):
-            config.read(PG_CONFIG_PATH)
+            parsed_config.read(PG_CONFIG_PATH)
 
-        if service_name not in config:
+        if service_name not in parsed_config:
             logger.warning(f"Service `{service_name}` not found in {PG_CONFIG_PATH}.")
             return {}
 
-        return config[service_name]
+        return parsed_config[service_name]
 
     @staticmethod
     def get_pgconf():
@@ -161,7 +196,10 @@ class DatabaseUtils:
         if DatabaseUtils.databaseConfig.PGPASS:
             pgconf["password"] = DatabaseUtils.databaseConfig.PGPASS
 
-        return collections.defaultdict(str, pgconf)
+        return collections.defaultdict(
+            str,
+            {key: str(value) for key, value in pgconf.items() if value is not None},
+        )
 
     @staticmethod
     def get_pgconf_as_psycopg_dsn() -> list[str]:
@@ -278,29 +316,6 @@ class DatabaseUtils:
         return msg_list
 
     @staticmethod
-    def get_validity_check_issues(include_ili: bool = False, logger=None) -> list[Issue]:
-        messages = []
-        messages = DatabaseUtils.check_oid_prefix()
-        messages.extend(DatabaseUtils.check_fk_defaults())
-
-        if not DatabaseUtils.check_symbology_triggers_enabled():
-            messages.extend(
-                Issue(
-                    "Symbology triggers are disabled",
-                    IssueLevel.ERROR,
-                )
-            )
-
-        if include_ili:
-            IntegrityChecker = TWWIntegrityChecker(
-                models=[config.MODEL_NAME_DSS, config.MODEL_NAME_VSA_KEK], logger=logger
-            )
-            IntegrityChecker.run_integrity_checks()
-            messages.extend(IntegrityChecker.check_result.issues)
-
-        return messages
-
-    @staticmethod
     def refresh_network_simple():
         logger.info("Refreshing network")
         DatabaseUtils.execute("SELECT tww_app.network_refresh_network_simple();")
@@ -314,7 +329,11 @@ class DatabaseUtils:
 class TWWIntegrityChecker:
     def __init__(self, models=[], limit_to_selection=False, logger=None):
         self.limit_to_selection = limit_to_selection
-        self.models = models
+        self.model_groups = frozenset(
+            model_selection.groups_for_models(
+                models,
+            )
+        )
         self.check_result = CheckResult()
         self.logger = logger or logging.getLogger(__name__)
 
@@ -419,7 +438,7 @@ class TWWIntegrityChecker:
                 ],
             ),
         ]
-        if config.MODEL_NAME_VSA_KEK in self.models:
+        if "vsa_kek" in self.model_groups:
             checks.extend(
                 [
                     (
@@ -432,7 +451,7 @@ class TWWIntegrityChecker:
                     ),
                 ]
             )
-        if config.MODEL_NAME_DSS in self.models:
+        if "dss" in self.model_groups:
             checks.extend(
                 [
                     ("overflow", ["pump", "leapingweir", "prank_weir"]),
@@ -682,7 +701,7 @@ class TWWIntegrityChecker:
         check_classes = [
             ("organisation"),
         ]
-        if config.MODEL_NAME_VSA_KEK in self.models:
+        if "vsa_kek" in self.model_groups:
             check_classes.extend(
                 [
                     # VSA-KEK
@@ -691,7 +710,7 @@ class TWWIntegrityChecker:
                     ("maintenance_event"),
                 ]
             )
-        if config.MODEL_NAME_SIA405_ABWASSER in self.models:
+        if "sia405_abwasser" in self.model_groups:
             check_classes.extend(
                 [
                     ("wastewater_structure"),
@@ -701,7 +720,7 @@ class TWWIntegrityChecker:
                     ("pipe_profile"),
                 ]
             )
-        if config.MODEL_NAME_DSS in self.models:
+        if "dss" in self.model_groups:
             check_classes.extend(
                 [
                     # VSA-DSS
@@ -744,14 +763,14 @@ class TWWIntegrityChecker:
                     ("zone"),
                 ]
             )
-        if config.MODEL_NAME_AG64 in self.models:
+        if "ag64" in self.model_groups:
             check_classes.extend(
                 [
                     ("wastewater_networkelement"),
                     ("overflow"),
                 ]
             )
-        if config.MODEL_NAME_AG96 in self.models:
+        if "ag96" in self.model_groups:
             check_classes.extend(
                 [
                     ("wastewater_networkelement"),
@@ -771,11 +790,11 @@ class TWWIntegrityChecker:
         """
         check_classes = []
         check_models = {
-            config.MODEL_NAME_SIA405_ABWASSER,
-            config.MODEL_NAME_AG64,
-            config.MODEL_NAME_AG96,
+            "sia405_abwasser",
+            "ag64",
+            "ag96",
         }
-        if any(m in check_models for m in self.models):
+        if any(m in check_models for m in self.model_groups):
             check_classes = [
                 # SIA405 Abwasser
                 ("wastewater_structure"),
@@ -788,11 +807,11 @@ class TWWIntegrityChecker:
         """
         check_classes = []
         check_models = {
-            config.MODEL_NAME_SIA405_ABWASSER,
-            config.MODEL_NAME_AG64,
-            config.MODEL_NAME_AG96,
+            "sia405_abwasser",
+            "ag64",
+            "ag96",
         }
-        if any(m in check_models for m in self.models):
+        if any(m in check_models for m in self.model_groups):
             check_classes = [
                 # SIA405 Abwasser
                 ("wastewater_structure"),
@@ -804,7 +823,7 @@ class TWWIntegrityChecker:
         Check if MANDATORY fk_dataowner is Null
         """
         check_classes = []
-        if config.MODEL_NAME_VSA_KEK in self.models:
+        if "vsa_kek" in self.model_groups:
             check_classes.extend(
                 [
                     ("damage"),
@@ -814,10 +833,10 @@ class TWWIntegrityChecker:
                 ]
             )
         check_models = {
-            config.MODEL_NAME_SIA405_ABWASSER,
-            config.MODEL_NAME_DSS,
+            "sia405_abwasser",
+            "dss",
         }
-        if any(m in check_models for m in self.models):
+        if any(m in check_models for m in self.model_groups):
             check_classes.extend(
                 [
                     ("wastewater_structure"),
@@ -827,7 +846,7 @@ class TWWIntegrityChecker:
                     ("pipe_profile"),
                 ]
             )
-        if config.MODEL_NAME_DSS in self.models:
+        if "dss" in self.model_groups:
             check_classes.extend(
                 [
                     ("building_group"),
@@ -883,14 +902,14 @@ class TWWIntegrityChecker:
                     ("sia405pt_protection_tube"),
                 ]
             )
-        if config.MODEL_NAME_AG64 in self.models:
+        if "ag64" in self.model_groups:
             check_classes.extend(
                 [
                     ("wastewater_networkelement"),
                     ("overflow"),
                 ]
             )
-        if config.MODEL_NAME_AG96 in self.models:
+        if "ag96" in self.model_groups:
             check_classes.extend(
                 [
                     ("wastewater_networkelement"),
@@ -909,7 +928,7 @@ class TWWIntegrityChecker:
         Check if MANDATORY fk_provider is Null
         """
         check_classes = []
-        if config.MODEL_NAME_VSA_KEK in self.models:
+        if "vsa_kek" in self.model_groups:
             check_classes.extend(
                 [
                     # VSA-KEK
@@ -920,10 +939,10 @@ class TWWIntegrityChecker:
                 ]
             )
         check_models = {
-            config.MODEL_NAME_SIA405_ABWASSER,
-            config.MODEL_NAME_DSS,
+            "sia405_abwasser",
+            "dss",
         }
-        if any(m in check_models for m in self.models):
+        if any(m in check_models for m in self.model_groups):
             check_classes.extend(
                 [
                     # take out for DSS 2020
@@ -935,7 +954,7 @@ class TWWIntegrityChecker:
                     ("pipe_profile"),
                 ]
             )
-        if config.MODEL_NAME_DSS in self.models:
+        if "dss" in self.model_groups:
             check_classes.extend(
                 [
                     # new 2020
@@ -987,7 +1006,7 @@ class TWWIntegrityChecker:
                     ("zone"),
                 ]
             )
-        if config.MODEL_NAME_CABLE in self.models:
+        if "sia405_cable" in self.model_groups:
             check_classes.extend(
                 [
                     # sia405cc
@@ -995,20 +1014,20 @@ class TWWIntegrityChecker:
                     ("sia405cc_cable_point"),
                 ]
             )
-        if config.MODEL_NAME_PROTECTION_TUBE in self.models:
+        if "sia405_protection_tube" in self.model_groups:
             check_classes.extend(
                 [
                     ("sia405pt_protection_tube"),
                 ]
             )
-        if config.MODEL_NAME_AG64 in self.models:
+        if "ag64" in self.model_groups:
             check_classes.extend(
                 [
                     ("wastewater_networkelement"),
                     ("overflow"),
                 ]
             )
-        if config.MODEL_NAME_AG96 in self.models:
+        if "ag96" in self.model_groups:
             check_classes.extend(
                 [
                     ("wastewater_networkelement"),
@@ -1028,10 +1047,10 @@ class TWWIntegrityChecker:
         """
         check_classes = []
         check_models = {
-            config.MODEL_NAME_SIA405_ABWASSER,
-            config.MODEL_NAME_DSS,
+            "sia405_abwasser",
+            "dss",
         }
-        if any(m in check_models for m in self.models):
+        if any(m in check_models for m in self.model_groups):
             check_classes.extend(
                 [
                     ("structure_part"),
@@ -1044,7 +1063,7 @@ class TWWIntegrityChecker:
         Check if MANDATORY fk_wastewater_node is Null
         """
         check_classes = []
-        if config.MODEL_NAME_DSS in self.models:
+        if "dss" in self.model_groups:
             check_classes.extend(
                 [
                     ("hydraulic_char_data"),
@@ -1059,7 +1078,7 @@ class TWWIntegrityChecker:
         Check if MANDATORY fk_responsible_entity is Null
         """
         check_classes = []
-        if config.MODEL_NAME_DSS in self.models:
+        if "dss" in self.model_groups:
             check_classes.extend(
                 [
                     ("measure"),
@@ -1072,7 +1091,7 @@ class TWWIntegrityChecker:
         Check if MANDATORY fk_responsible_start is Null
         """
         check_classes = []
-        if config.MODEL_NAME_DSS in self.models:
+        if "dss" in self.model_groups:
             check_classes.extend(
                 [
                     ("measure"),
@@ -1085,7 +1104,7 @@ class TWWIntegrityChecker:
         Check if MANDATORY fk_discharge_point is Null
         """
         check_classes = []
-        if config.MODEL_NAME_DSS in self.models:
+        if "dss" in self.model_groups:
             check_classes.extend(
                 [
                     ("catchment_area_totals"),
@@ -1098,7 +1117,7 @@ class TWWIntegrityChecker:
         Check if MANDATORY fk_hydraulic_char_data is Null
         """
         check_classes = []
-        if config.MODEL_NAME_DSS in self.models:
+        if "dss" in self.model_groups:
             check_classes.extend(
                 [
                     ("catchment_area_totals"),
@@ -1111,7 +1130,7 @@ class TWWIntegrityChecker:
         Check if MANDATORY fk_building_group is Null
         """
         check_classes = []
-        if config.MODEL_NAME_DSS in self.models:
+        if "dss" in self.model_groups:
             check_classes.extend(
                 [
                     ("building_group_baugwr"),
@@ -1125,10 +1144,10 @@ class TWWIntegrityChecker:
         """
         check_classes = []
         check_models = {
-            config.MODEL_NAME_SIA405_ABWASSER,
-            config.MODEL_NAME_DSS,
+            "sia405_abwasser",
+            "dss",
         }
-        if any(m in check_models for m in self.models):
+        if any(m in check_models for m in self.model_groups):
             check_classes.extend(
                 [
                     ("reach_progression_alternative"),
@@ -1142,11 +1161,11 @@ class TWWIntegrityChecker:
         """
         check_classes = []
         check_models = {
-            config.MODEL_NAME_SIA405_ABWASSER,
-            config.MODEL_NAME_AG64,
-            config.MODEL_NAME_AG96,
+            "sia405_abwasser",
+            "ag64",
+            "ag96",
         }
-        if any(m in check_models for m in self.models):
+        if any(m in check_models for m in self.model_groups):
             check_classes = [
                 ("reach"),
             ]
@@ -1158,11 +1177,11 @@ class TWWIntegrityChecker:
         """
         check_classes = []
         check_models = {
-            config.MODEL_NAME_SIA405_ABWASSER,
-            config.MODEL_NAME_AG64,
-            config.MODEL_NAME_AG96,
+            "sia405_abwasser",
+            "ag64",
+            "ag96",
         }
-        if any(m in check_models for m in self.models):
+        if any(m in check_models for m in self.model_groups):
             check_classes = [
                 ("reach"),
             ]
@@ -1173,7 +1192,7 @@ class TWWIntegrityChecker:
         Check if MANDATORY fk_pwwf_wastewater_node is Null
         """
         check_classes = []
-        if config.MODEL_NAME_DSS in self.models:
+        if "dss" in self.model_groups:
             check_classes.extend(
                 [
                     ("log_card"),
@@ -1186,7 +1205,7 @@ class TWWIntegrityChecker:
         Check if MANDATORY fk_catchment_area is Null
         """
         check_classes = []
-        if config.MODEL_NAME_DSS in self.models:
+        if "dss" in self.model_groups:
             check_classes.extend(
                 [
                     ("surface_runoff_parameters"),

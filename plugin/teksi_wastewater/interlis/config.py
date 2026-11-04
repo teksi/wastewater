@@ -1,32 +1,24 @@
-import os
+from __future__ import annotations
 
-BASE = os.path.dirname(__file__)
+from pathlib import Path
 
-ILIVALIDATOR = os.path.join(BASE, "bin", "ilivalidator-1.15.0.jar")
+BASE = Path(
+    __file__,
+).parent
+
+ILIVALIDATOR = BASE / "bin" / "ilivalidator-1.15.0.jar"
 
 TWW_DEFAULT_PGSERVICE = "pg_tww"
+
 TWW_OD_SCHEMA = "tww_od"
 TWW_VL_SCHEMA = "tww_vl"
 TWW_SYS_SCHEMA = "tww_sys"
-ABWASSER_SCHEMA = "tww_app_pg2ili"
 TWW_APP_SCHEMA = "tww_app"
-MODEL_NAME_VSA_KEK = "VSA_KEK_2020_1_LV95"
-MODEL_NAME_SIA405_ABWASSER = "SIA405_ABWASSER_2020_1_LV95"
-MODEL_NAME_SIA405_BASE_ABWASSER = "SIA405_Base_Abwasser_1_LV95"
-MODEL_NAME_DSS = "DSS_2020_1_LV95"
-MODEL_NAME_AG96 = "Genereller_Entwaesserungsplan_AG"
-MODEL_NAME_AG64 = "Abwasserkataster_AG_V2_LV95"
-MODEL_NAME_CABLE = "SIA405_FERNWIRKKABEL_2015_LV95"
-MODEL_NAME_PROTECTION_TUBE = "SIA405_SCHUTZROHR_2015_LV95"
 
-TOPIC_NAME_SIA405_ADMINISTRATION = "SIA405_Base_Abwasser_1_LV95.Administration"
-TOPIC_NAME_SIA405_BASE_ABWASSER = "SIA405_Base_Abwasser_1_LV95"
-TOPIC_NAME_SIA405_ABWASSER = "SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser"
-TOPIC_NAME_DSS = "DSS_2020_1_LV95.Siedlungsentwaesserung"
-TOPIC_NAME_KEK = "VSA_KEK_2020_1_LV95.KEK"
-TOPIC_NAME_AG96 = "Genereller_Entwaesserungsplan_AG.AG96"
-TOPIC_NAME_AG64 = "Abwasserkataster_AG_V2_LV95.AG64"
-TOPIC_NAME_CABLE = "SIA405_FERNWIRKKABEL_2015_LV95.SIA405_Fernwirkkabel"
-TOPIC_NAME_PROTECTION_TUBE = "SIA405_SCHUTZROHR_2015_LV95.SIA405_Schutzrohr"
+EXPORT_SCHEMA = "tww_app_pg2xtf"
+IMPORT_SCHEMA = "tww_app_xtf2pg"
+IMPORT_SCHEMA_INCR = "tww_app_xtf2pg_incr"
 
-VSA_ORG_URL = "https://vsa.ch/models/organisation/vsa_organisationen_2020_1.xtf"
+DEFAULT_INTERLIS_LANGUAGE = "de"
+
+VSA_ORG_URL = "https://vsa.ch/models/organisation/" "vsa_organisationen_2020_1.xtf"

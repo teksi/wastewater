@@ -12,7 +12,8 @@ identifier_short AS kurzbezeichnung,
 'AfU Aargau' AS datenbewirtschafter_kt,
 ot.value_de  AS organisationtyp,
 last_modification  AS letzte_aenderung,
-remark AS bemerkung
+remark AS bemerkung,
+obj_id as _tww_obj_id
 FROM tww_od.organisation org
 LEFT JOIN tww_vl.organisation_organisation_type ot ON ot.code = org.organisation_type
 WHERE tww_active
@@ -290,13 +291,22 @@ CREATE OR REPLACE VIEW tww_app.vw_agxx_gepknoten
             WHEN ii.obj_id IS NOT NULL THEN 'infiltration_installation'::text
             WHEN wwtp.obj_id IS NOT NULL THEN 'wwtp_structure'::text
             ELSE 'unknown'::text
-        END AS ws_type
+        END AS ws_type,
+		main_ws.obj_id AS _mapping_wastewater_structure_obj_id,
+		wn._mapping_origin,
+		wn._mapping_origin = 'wastewater_node'
+			AS _mapping_is_wastewater_node,
+		wn._mapping_origin = 'agxx_unconnected_node_bwrel'
+			AS _mapping_is_synthetic,
+		unc.obj_id IS NOT NULL
+			AS _mapping_has_unc_fallback
     FROM ( SELECT wn_1.obj_id,
             wn_1.wwtp_number,
             wn_1.situation3d_geometry,
             wn_1.backflow_level_current,
             wn_1.bottom_level,
-            wns._function_hierarchic
+            wns._function_hierarchic,
+			'wastewater_node'::text AS _mapping_origin
            FROM tww_od.wastewater_node wn_1
              LEFT JOIN tww_od.tww_wastewater_node_symbology wns ON wns.fk_wastewater_node::text = wn_1.obj_id::text
         UNION (
@@ -305,7 +315,8 @@ CREATE OR REPLACE VIEW tww_app.vw_agxx_gepknoten
                     un.situation3d_geometry,
                     un.backflow_level_current,
                     un.bottom_level,
-                    un.ch_function_hierarchic AS _function_hierarchic
+                    un.ch_function_hierarchic AS _function_hierarchic,
+					'agxx_unconnected_node_bwrel'::text AS _mapping_origin
                    FROM tww_od.agxx_unconnected_node_bwrel un
                 EXCEPT
                  SELECT un.obj_id,
@@ -313,7 +324,8 @@ CREATE OR REPLACE VIEW tww_app.vw_agxx_gepknoten
                     un.situation3d_geometry,
                     un.backflow_level_current,
                     un.bottom_level,
-                    un.ch_function_hierarchic AS _function_hierarchic
+                    un.ch_function_hierarchic AS _function_hierarchic,
+					'agxx_unconnected_node_bwrel'::text AS _mapping_origin
                    FROM tww_od.agxx_unconnected_node_bwrel un
                   WHERE (un.obj_id::text IN ( SELECT wn_1.obj_id
                            FROM tww_od.wastewater_node wn_1))
@@ -412,7 +424,12 @@ CREATE OR REPLACE VIEW tww_app.vw_agxx_gephaltung
     ws_agxx.ag96_fk_measure AS gepmassnahmeref,
     concat_ws(''::text, 'ch113jqg0000', "right"(COALESCE(ne_agxx.ag96_fk_provider, '00000107'::character varying)::text, 8)) AS datenbewirtschafter_gep,
     ne_agxx.ag96_remark AS bemerkung_gep,
-    COALESCE(ne_agxx_lm.ag96_last_modification::timestamp with time zone, to_timestamp('1800-01-01'::text, 'YYYY-MM-DD'::text)) AS letzte_aenderung_gep
+    COALESCE(ne_agxx_lm.ag96_last_modification::timestamp with time zone, to_timestamp('1800-01-01'::text, 'YYYY-MM-DD'::text)) AS letzte_aenderung_gep,
+	ws.obj_id AS _mapping_wastewater_structure_obj_id,
+	re.fk_reach_point_from AS _mapping_reach_point_from_obj_id,
+	re.fk_reach_point_to AS _mapping_reach_point_to_obj_id,
+	re.fk_pipe_profile AS _mapping_pipe_profile_obj_id
+
   FROM tww_od.reach re
     LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id::text = re.obj_id::text
     LEFT JOIN tww_od.reach_point rp_from ON rp_from.obj_id::text = re.fk_reach_point_from::text

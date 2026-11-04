@@ -1,0 +1,25 @@
+providers:
+
+  - name: GEP Büro
+    organisation_oid: ch080qwzPR000020
+
+    permissions:
+      - dataowner_oid: ch080qwzPR000018
+        privileges:
+          - DBW_GEP
+
+  - name: VSA
+    organisation_oid: ch080qwzPR000017
+
+    permissions:
+      - dataowner_oid: ch080qwzPR000018
+        privileges:
+          - DBW_WI
+
+  - name: Gemeinde A
+    organisation_oid: ch080qwzGE000001
+
+    permissions:
+      - dataowner_oid: ch080qwzPR000018
+        privileges:
+          - FI_BU
