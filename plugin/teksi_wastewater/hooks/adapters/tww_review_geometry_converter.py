@@ -68,8 +68,7 @@ class TwwReviewGeometryConverter(
 
         except KeyError as exception:
             raise KeyError(
-                "No review geometry family is configured for "
-                f"{class_id!r}.{attribute_id!r}."
+                "No review geometry family is configured for " f"{class_id!r}.{attribute_id!r}."
             ) from exception
 
         return ReviewGeometry(
@@ -120,8 +119,7 @@ class TwwReviewGeometryConverter(
 
         if not ewkb:
             raise ValueError(
-                "TWW review geometry EWKB must not be empty "
-                f"for {class_id!r}.{attribute_id!r}."
+                "TWW review geometry EWKB must not be empty " f"for {class_id!r}.{attribute_id!r}."
             )
 
         return ewkb

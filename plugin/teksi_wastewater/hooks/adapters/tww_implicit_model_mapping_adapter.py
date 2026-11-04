@@ -6,10 +6,9 @@ from typing import Any
 
 from psycopg import sql
 from sqlalchemy.orm import Session
-
 from teksi_hooks.capabilities.mapping import (
-    ModelMappingCapability,
     ImplicitModelMappingCapability,
+    ModelMappingCapability,
 )
 from teksi_hooks.models.mapping import (
     AttributeMapping,
@@ -17,7 +16,6 @@ from teksi_hooks.models.mapping import (
     ModelMapping,
     ValueMapping,
 )
-
 
 SOURCE_CLASS_OVERRIDES = {
     "Zone": "azone",
@@ -62,9 +60,7 @@ class _SourceRelation:
 
     table_name: str
 
-    columns: frozenset[
-        str,
-    ]
+    columns: frozenset[str,]
 
 
 @dataclass(
@@ -130,9 +126,7 @@ class TwwImplicitModelMappingAdapter(
             )
 
         except ValueError as exception:
-            raise ValueError(
-                f"Unsupported language: {self.language!r}."
-            ) from exception
+            raise ValueError(f"Unsupported language: {self.language!r}.") from exception
 
         if (
             not isinstance(
@@ -141,25 +135,17 @@ class TwwImplicitModelMappingAdapter(
             )
             or not self.import_schema.strip()
         ):
-            raise ValueError(
-                "The import schema must not be empty."
-            )
+            raise ValueError("The import schema must not be empty.")
 
         if self.quarantine_session is None:
             raise RuntimeError(
-                "Implicit model-mapping discovery requires a "
-                "quarantine session."
+                "Implicit model-mapping discovery requires a " "quarantine session."
             )
 
         if self.live_session is None:
-            raise RuntimeError(
-                "Implicit model-mapping discovery requires a "
-                "live session."
-            )
+            raise RuntimeError("Implicit model-mapping discovery requires a " "live session.")
 
-        self._model_mapping = (
-            self._load_model_mapping()
-        )
+        self._model_mapping = self._load_model_mapping()
 
     def materialize(
         self,
@@ -187,9 +173,7 @@ class TwwImplicitModelMappingAdapter(
         """
 
         if self._model_mapping is None:
-            raise RuntimeError(
-                "Implicit model mapping has not been loaded."
-            )
+            raise RuntimeError("Implicit model mapping has not been loaded.")
 
         return self._model_mapping
 
@@ -219,8 +203,7 @@ class TwwImplicitModelMappingAdapter(
 
         if class_mapping is None:
             raise KeyError(
-                f"Unknown source class {class_id!r} "
-                f"in schema {self.import_schema!r}."
+                f"Unknown source class {class_id!r} " f"in schema {self.import_schema!r}."
             )
 
         return class_mapping
@@ -246,11 +229,9 @@ class TwwImplicitModelMappingAdapter(
         Return the mapping for one source attribute.
         """
 
-        attribute_mapping = (
-            self.try_attribute_definition(
-                class_id,
-                attribute_name,
-            )
+        attribute_mapping = self.try_attribute_definition(
+            class_id,
+            attribute_name,
         )
 
         if attribute_mapping is None:
@@ -301,8 +282,7 @@ class TwwImplicitModelMappingAdapter(
 
         if value_mapping is None:
             raise KeyError(
-                f"Unknown source value {value!r} for "
-                f"{class_id!r}.{attribute_name!r}."
+                f"Unknown source value {value!r} for " f"{class_id!r}.{attribute_name!r}."
             )
 
         return value_mapping
@@ -317,11 +297,9 @@ class TwwImplicitModelMappingAdapter(
         Return a value mapping if it exists.
         """
 
-        attribute_mapping = (
-            self.try_attribute_definition(
-                class_id,
-                attribute_name,
-            )
+        attribute_mapping = self.try_attribute_definition(
+            class_id,
+            attribute_name,
         )
 
         if attribute_mapping is None:
@@ -338,34 +316,22 @@ class TwwImplicitModelMappingAdapter(
         Load mappings for relations present in the current import schema.
         """
 
-        source_relations = (
-            self._load_source_relations()
-        )
+        source_relations = self._load_source_relations()
 
-        dictionary_classes = (
-            self._load_dictionary_classes()
-        )
+        dictionary_classes = self._load_dictionary_classes()
 
-        dictionary_attributes = (
-            self._load_attribute_mappings()
-        )
+        dictionary_attributes = self._load_attribute_mappings()
 
-        dictionary_values = (
-            self._load_value_mappings()
-        )
+        dictionary_values = self._load_value_mappings()
 
         classes: dict[
             str,
             ClassMapping,
         ] = {}
 
-        for source_relation in (
-            source_relations.values()
-        ):
-            class_definition = (
-                dictionary_classes.get(
-                    source_relation.table_name,
-                )
+        for source_relation in source_relations.values():
+            class_definition = dictionary_classes.get(
+                source_relation.table_name,
             )
 
             if class_definition is None:
@@ -388,16 +354,11 @@ class TwwImplicitModelMappingAdapter(
                 ili_class_name,
                 {},
             ).items():
-                source_attribute_name = (
-                    self._source_attribute_name(
-                        ili_attribute_name,
-                    )
+                source_attribute_name = self._source_attribute_name(
+                    ili_attribute_name,
                 )
 
-                if (
-                    source_attribute_name
-                    not in source_relation.columns
-                ):
+                if source_attribute_name not in source_relation.columns:
                     continue
 
                 values = dictionary_values.get(
@@ -408,32 +369,17 @@ class TwwImplicitModelMappingAdapter(
                     {},
                 )
 
-                attributes[
-                    source_attribute_name
-                ] = AttributeMapping(
-                    canonical_class_id=(
-                        attribute_mapping
-                        .canonical_class_id
-                    ),
-                    canonical_attr_id=(
-                        attribute_mapping
-                        .canonical_attr_id
-                    ),
-                    foreign_key=(
-                        attribute_mapping
-                        .foreign_key
-                    ),
+                attributes[source_attribute_name] = AttributeMapping(
+                    canonical_class_id=(attribute_mapping.canonical_class_id),
+                    canonical_attr_id=(attribute_mapping.canonical_attr_id),
+                    foreign_key=(attribute_mapping.foreign_key),
                     values=dict(
                         values,
                     ),
                 )
 
-            classes[
-                source_relation.table_name
-            ] = ClassMapping(
-                canonical_class_id=(
-                    canonical_class_id
-                ),
+            classes[source_relation.table_name] = ClassMapping(
+                canonical_class_id=(canonical_class_id),
                 attributes=attributes,
             )
 
@@ -454,8 +400,7 @@ class TwwImplicitModelMappingAdapter(
         The lookup uses the borrowed quarantine session.
         """
 
-        query = sql.SQL(
-            """
+        query = sql.SQL("""
             SELECT
                 table_name,
                 column_name
@@ -466,22 +411,17 @@ class TwwImplicitModelMappingAdapter(
             ORDER BY
                 table_name,
                 ordinal_position;
-            """
-        )
+            """)
 
         columns_by_table: dict[
             str,
-            set[
-                str,
-            ],
+            set[str,],
         ] = {}
 
         rows = self._fetchall(
             session=self.quarantine_session,
             query=query,
-            parameters=(
-                self.import_schema,
-            ),
+            parameters=(self.import_schema,),
             query_role="source relation discovery",
         )
 
@@ -502,8 +442,7 @@ class TwwImplicitModelMappingAdapter(
 
         if not columns_by_table:
             raise RuntimeError(
-                "The import schema contains no readable "
-                f"relations: {self.import_schema!r}."
+                "The import schema contains no readable " f"relations: {self.import_schema!r}."
             )
 
         return {
@@ -534,8 +473,7 @@ class TwwImplicitModelMappingAdapter(
         Dictionary metadata is read through the borrowed live session.
         """
 
-        query = sql.SQL(
-            """
+        query = sql.SQL("""
             SELECT
                 tablename,
                 {cls_name_column} AS ili_class_name
@@ -543,8 +481,7 @@ class TwwImplicitModelMappingAdapter(
                 {schema}.{table_dictionary}
             ORDER BY
                 tablename;
-            """
-        ).format(
+            """).format(
             cls_name_column=sql.Identifier(
                 self._ili_name_column(
                     "name",
@@ -579,17 +516,13 @@ class TwwImplicitModelMappingAdapter(
             if not ili_class_name:
                 continue
 
-            source_table_name = (
-                self._source_class_name(
-                    str(
-                        ili_class_name,
-                    )
+            source_table_name = self._source_class_name(
+                str(
+                    ili_class_name,
                 )
             )
 
-            classes[
-                source_table_name
-            ] = (
+            classes[source_table_name] = (
                 str(
                     ili_class_name,
                 ),
@@ -615,8 +548,7 @@ class TwwImplicitModelMappingAdapter(
         Dictionary metadata is read through the borrowed live session.
         """
 
-        query = sql.SQL(
-            """
+        query = sql.SQL("""
             SELECT
                 t.tablename AS canonical_class_id,
                 a.field_name AS canonical_attr_id,
@@ -630,8 +562,7 @@ class TwwImplicitModelMappingAdapter(
             ORDER BY
                 t.tablename,
                 a.field_name;
-            """
-        ).format(
+            """).format(
             cls_name_column=sql.Identifier(
                 self._ili_name_column(
                     "name",
@@ -673,10 +604,7 @@ class TwwImplicitModelMappingAdapter(
             ili_class_name,
             ili_attribute_name,
         ) in rows:
-            if (
-                not ili_class_name
-                or not ili_attribute_name
-            ):
+            if not ili_class_name or not ili_attribute_name:
                 continue
 
             source_attribute_name = str(
@@ -688,9 +616,7 @@ class TwwImplicitModelMappingAdapter(
                     ili_class_name,
                 ),
                 {},
-            )[
-                source_attribute_name
-            ] = AttributeMapping(
+            )[source_attribute_name] = AttributeMapping(
                 canonical_class_id=str(
                     canonical_class_id,
                 ),
@@ -723,8 +649,7 @@ class TwwImplicitModelMappingAdapter(
         Dictionary metadata is read through the borrowed live session.
         """
 
-        query = sql.SQL(
-            """
+        query = sql.SQL("""
             SELECT
                 t.{cls_name_column} AS ili_class_name,
                 f.{attr_name_column} AS ili_attribute_name,
@@ -744,8 +669,7 @@ class TwwImplicitModelMappingAdapter(
                 ili_class_name,
                 ili_attribute_name,
                 ili_value_name;
-            """
-        ).format(
+            """).format(
             cls_name_column=sql.Identifier(
                 self._ili_name_column(
                     "name",
@@ -799,11 +723,7 @@ class TwwImplicitModelMappingAdapter(
             canonical_value_id,
             canonical_value_name,
         ) in rows:
-            if (
-                not ili_class_name
-                or not ili_attribute_name
-                or not ili_value_name
-            ):
+            if not ili_class_name or not ili_attribute_name or not ili_value_name:
                 continue
 
             mappings.setdefault(
@@ -821,9 +741,7 @@ class TwwImplicitModelMappingAdapter(
                     ili_value_name,
                 )
             ] = ValueMapping(
-                canonical_value_id=(
-                    canonical_value_id
-                ),
+                canonical_value_id=(canonical_value_id),
                 value=canonical_value_name,
             )
 
@@ -837,12 +755,10 @@ class TwwImplicitModelMappingAdapter(
         Return the physical quarantine relation for an INTERLIS class.
         """
 
-        unqualified_class_name = (
-            ili_class_name.rsplit(
-                ".",
-                maxsplit=1,
-            )[-1]
-        )
+        unqualified_class_name = ili_class_name.rsplit(
+            ".",
+            maxsplit=1,
+        )[-1]
 
         return SOURCE_CLASS_OVERRIDES.get(
             unqualified_class_name,
@@ -857,11 +773,9 @@ class TwwImplicitModelMappingAdapter(
         Return the physical quarantine column for an INTERLIS attribute.
         """
 
-        overridden_name = (
-            SOURCE_ATTRIBUTE_OVERRIDES.get(
-                ili_attribute_name,
-                ili_attribute_name,
-            )
+        overridden_name = SOURCE_ATTRIBUTE_OVERRIDES.get(
+            ili_attribute_name,
+            ili_attribute_name,
         )
 
         return overridden_name.lower()
@@ -889,9 +803,7 @@ class TwwImplicitModelMappingAdapter(
             ...,
         ] = (),
         query_role: str,
-    ) -> list[
-        tuple,
-    ]:
+    ) -> list[tuple,]:
         """
         Execute one read-only query through a borrowed Psycopg 3 session.
 
@@ -945,13 +857,9 @@ class TwwImplicitModelMappingAdapter(
         SQLAlchemy connection, DBAPI connection, or session.
         """
 
-        sqlalchemy_connection = (
-            session.connection()
-        )
+        sqlalchemy_connection = session.connection()
 
-        connection_fairy = (
-            sqlalchemy_connection.connection
-        )
+        connection_fairy = sqlalchemy_connection.connection
 
         driver_connection = getattr(
             connection_fairy,
@@ -976,12 +884,7 @@ class TwwImplicitModelMappingAdapter(
             driver_connection,
         ).__module__
 
-        if not (
-            driver_module == "psycopg"
-            or driver_module.startswith(
-                "psycopg."
-            )
-        ):
+        if not (driver_module == "psycopg" or driver_module.startswith("psycopg.")):
             raise RuntimeError(
                 "The SQLAlchemy engine is not using Psycopg 3. "
                 "Expected a DBAPI connection from module "
@@ -1027,12 +930,6 @@ class TwwImplicitModelMappingAdapter(
             "value_name",
             "name",
         }:
-            raise ValueError(
-                f"Dictionary level {prefix!r} is not "
-                "supported."
-            )
+            raise ValueError(f"Dictionary level {prefix!r} is not " "supported.")
 
-        return (
-            f"{prefix}_"
-            f"{self.language.value}"
-        )
+        return f"{prefix}_" f"{self.language.value}"

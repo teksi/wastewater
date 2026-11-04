@@ -1,20 +1,19 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
 import logging
 import os
-from pathlib import Path
 import re
 import shutil
 import subprocess
 import tempfile
+from dataclasses import dataclass, field
+from pathlib import Path
 from time import perf_counter
-from typing import Mapping
+from collections.abc import Mapping
 
 from ..adapters.tww_database_connection_factory import (
     TwwDatabaseConnectionFactory,
 )
-
 
 _SAFE_FILE_COMPONENT = re.compile(
     r"[^A-Za-z0-9_.-]+",
@@ -89,21 +88,16 @@ class TwwDatabaseBackupService:
             label="import_schema",
         )
 
-        backup_directory = (
-            self._resolved_backup_directory()
-        )
+        backup_directory = self._resolved_backup_directory()
 
         backup_directory.mkdir(
             parents=True,
             exist_ok=True,
         )
 
-        backup_path = (
-            backup_directory
-            / self._backup_filename(
-                job_id=normalized_job_id,
-                import_schema=normalized_schema,
-            )
+        backup_path = backup_directory / self._backup_filename(
+            job_id=normalized_job_id,
+            import_schema=normalized_schema,
         )
 
         temporary_path = backup_path.with_suffix(
@@ -133,18 +127,11 @@ class TwwDatabaseBackupService:
         try:
             self._run(
                 command,
-                operation=(
-                    "PostgreSQL quarantine backup creation"
-                ),
-                timeout_seconds=(
-                    self.dump_timeout_seconds
-                ),
+                operation=("PostgreSQL quarantine backup creation"),
+                timeout_seconds=(self.dump_timeout_seconds),
             )
 
-            if (
-                not temporary_path.is_file()
-                or temporary_path.stat().st_size == 0
-            ):
+            if not temporary_path.is_file() or temporary_path.stat().st_size == 0:
                 raise RuntimeError(
                     "PostgreSQL backup completed without creating "
                     f"a valid archive at {temporary_path!s}."
@@ -166,8 +153,7 @@ class TwwDatabaseBackupService:
             raise
 
         self.logger.info(
-            "Created quarantine backup for job %r and schema %r "
-            "at %s.",
+            "Created quarantine backup for job %r and schema %r " "at %s.",
             normalized_job_id,
             normalized_schema,
             backup_path,
@@ -201,16 +187,10 @@ class TwwDatabaseBackupService:
         )
 
         if not resolved_backup_path.is_file():
-            raise FileNotFoundError(
-                "Database backup does not exist: "
-                f"{resolved_backup_path!s}"
-            )
+            raise FileNotFoundError("Database backup does not exist: " f"{resolved_backup_path!s}")
 
         if resolved_backup_path.stat().st_size == 0:
-            raise RuntimeError(
-                "Database backup is empty: "
-                f"{resolved_backup_path!s}"
-            )
+            raise RuntimeError("Database backup is empty: " f"{resolved_backup_path!s}")
 
         self._verify_archive(
             resolved_backup_path,
@@ -236,12 +216,8 @@ class TwwDatabaseBackupService:
 
         self._run(
             command,
-            operation=(
-                "PostgreSQL quarantine backup restoration"
-            ),
-            timeout_seconds=(
-                self.restore_timeout_seconds
-            ),
+            operation=("PostgreSQL quarantine backup restoration"),
+            timeout_seconds=(self.restore_timeout_seconds),
             environment_overrides={
                 "PGOPTIONS": self._restore_pgoptions(),
             },
@@ -274,8 +250,7 @@ class TwwDatabaseBackupService:
 
         except OSError as exception:
             raise RuntimeError(
-                "Could not delete database backup "
-                f"{resolved_backup_path!s}: {exception}"
+                "Could not delete database backup " f"{resolved_backup_path!s}: {exception}"
             ) from exception
 
         self.logger.info(
@@ -302,12 +277,8 @@ class TwwDatabaseBackupService:
 
         self._run(
             command,
-            operation=(
-                "PostgreSQL backup archive verification"
-            ),
-            timeout_seconds=(
-                self.archive_verification_timeout_seconds
-            ),
+            operation=("PostgreSQL backup archive verification"),
+            timeout_seconds=(self.archive_verification_timeout_seconds),
         )
 
     def _resolved_backup_directory(
@@ -353,27 +324,16 @@ class TwwDatabaseBackupService:
         )
 
         if not safe_job_id:
-            raise ValueError(
-                "job_id does not contain any usable filename "
-                "characters."
-            )
+            raise ValueError("job_id does not contain any usable filename " "characters.")
 
         if not safe_import_schema:
-            raise ValueError(
-                "import_schema does not contain any usable filename "
-                "characters."
-            )
+            raise ValueError("import_schema does not contain any usable filename " "characters.")
 
-        return (
-            f"tww-diff-{safe_job_id}-"
-            f"{safe_import_schema}.dump"
-        )
+        return f"tww-diff-{safe_job_id}-" f"{safe_import_schema}.dump"
 
     def _connection_arguments(
         self,
-    ) -> list[
-        str,
-    ]:
+    ) -> list[str,]:
         """
         Return PostgreSQL client connection arguments.
 
@@ -419,9 +379,7 @@ class TwwDatabaseBackupService:
                 "contain a PostgreSQL database name or service."
             )
 
-        arguments: list[
-            str,
-        ] = []
+        arguments: list[str,] = []
 
         if host is not None:
             arguments.extend(
@@ -459,10 +417,13 @@ class TwwDatabaseBackupService:
     def _subprocess_environment(
         self,
         *,
-        overrides: Mapping[
-            str,
-            str,
-        ] | None = None,
+        overrides: (
+            Mapping[
+                str,
+                str,
+            ]
+            | None
+        ) = None,
     ) -> dict[
         str,
         str,
@@ -480,9 +441,7 @@ class TwwDatabaseBackupService:
         )
 
         if password is not None:
-            environment[
-                "PGPASSWORD"
-            ] = password
+            environment["PGPASSWORD"] = password
 
         if overrides:
             for key, value in overrides.items():
@@ -492,9 +451,7 @@ class TwwDatabaseBackupService:
                         "",
                     ).strip()
 
-                    environment[
-                        key
-                    ] = " ".join(
+                    environment[key] = " ".join(
                         item
                         for item in (
                             existing_value,
@@ -505,9 +462,7 @@ class TwwDatabaseBackupService:
 
                     continue
 
-                environment[
-                    key
-                ] = value
+                environment[key] = value
 
         return environment
 
@@ -518,40 +473,30 @@ class TwwDatabaseBackupService:
         Return defensive PostgreSQL settings used by ``pg_restore``.
         """
         lock_timeout = self._positive_integer(
-            value=(
-                self.restore_lock_timeout_milliseconds
-            ),
-            label=(
-                "restore_lock_timeout_milliseconds"
-            ),
+            value=(self.restore_lock_timeout_milliseconds),
+            label=("restore_lock_timeout_milliseconds"),
         )
 
         statement_timeout = self._positive_integer(
-            value=(
-                self.restore_statement_timeout_milliseconds
-            ),
-            label=(
-                "restore_statement_timeout_milliseconds"
-            ),
+            value=(self.restore_statement_timeout_milliseconds),
+            label=("restore_statement_timeout_milliseconds"),
         )
 
-        return (
-            f"-c lock_timeout={lock_timeout}ms "
-            f"-c statement_timeout={statement_timeout}ms"
-        )
+        return f"-c lock_timeout={lock_timeout}ms " f"-c statement_timeout={statement_timeout}ms"
 
     def _run(
         self,
-        command: list[
-            str,
-        ],
+        command: list[str,],
         *,
         operation: str,
         timeout_seconds: float,
-        environment_overrides: Mapping[
-            str,
-            str,
-        ] | None = None,
+        environment_overrides: (
+            Mapping[
+                str,
+                str,
+            ]
+            | None
+        ) = None,
     ) -> None:
         """
         Execute one PostgreSQL client command with bounded runtime.
@@ -637,14 +582,10 @@ class TwwDatabaseBackupService:
             )
 
             if not detail:
-                detail = (
-                    "The PostgreSQL client returned "
-                    f"exit code {exception.returncode}."
-                )
+                detail = "The PostgreSQL client returned " f"exit code {exception.returncode}."
 
             self.logger.error(
-                "%s failed after %.3f seconds with exit code %s. "
-                "Command: %s. Detail: %s",
+                "%s failed after %.3f seconds with exit code %s. " "Command: %s. Detail: %s",
                 operation,
                 elapsed,
                 exception.returncode,
@@ -653,16 +594,14 @@ class TwwDatabaseBackupService:
             )
 
             raise RuntimeError(
-                f"{operation} failed with exit code "
-                f"{exception.returncode}: {detail}"
+                f"{operation} failed with exit code " f"{exception.returncode}: {detail}"
             ) from exception
 
         except OSError as exception:
             elapsed = perf_counter() - started
 
             self.logger.error(
-                "Could not start %s after %.3f seconds. "
-                "Command: %s. Detail: %s",
+                "Could not start %s after %.3f seconds. " "Command: %s. Detail: %s",
                 operation,
                 elapsed,
                 redacted_command,
@@ -670,16 +609,14 @@ class TwwDatabaseBackupService:
             )
 
             raise RuntimeError(
-                f"Could not start {operation} command "
-                f"{command[0]!r}: {exception}"
+                f"Could not start {operation} command " f"{command[0]!r}: {exception}"
             ) from exception
 
         except BaseException:
             elapsed = perf_counter() - started
 
             self.logger.exception(
-                "%s was interrupted after %.3f seconds. "
-                "Command: %s",
+                "%s was interrupted after %.3f seconds. " "Command: %s",
                 operation,
                 elapsed,
                 redacted_command,
@@ -716,15 +653,10 @@ class TwwDatabaseBackupService:
             executable,
         )
 
-        if (
-            configured_path.is_absolute()
-            or configured_path.parent
-            != Path(".")
-        ):
+        if configured_path.is_absolute() or configured_path.parent != Path("."):
             if not configured_path.is_file():
                 raise RuntimeError(
-                    "PostgreSQL client executable does not exist: "
-                    f"{configured_path!s}"
+                    "PostgreSQL client executable does not exist: " f"{configured_path!s}"
                 )
 
             return str(
@@ -737,8 +669,7 @@ class TwwDatabaseBackupService:
 
         if resolved is None:
             raise RuntimeError(
-                "PostgreSQL client executable "
-                f"{executable!r} was not found in PATH."
+                "PostgreSQL client executable " f"{executable!r} was not found in PATH."
             )
 
         return resolved
@@ -784,9 +715,7 @@ class TwwDatabaseBackupService:
             )
             or not value.strip()
         ):
-            raise ValueError(
-                f"{label} must be a non-empty string."
-            )
+            raise ValueError(f"{label} must be a non-empty string.")
 
         return value.strip()
 
@@ -803,9 +732,7 @@ class TwwDatabaseBackupService:
             value,
             bool,
         ):
-            raise TypeError(
-                f"{label} must be a positive number."
-            )
+            raise TypeError(f"{label} must be a positive number.")
 
         try:
             normalized_value = float(
@@ -816,14 +743,10 @@ class TwwDatabaseBackupService:
             TypeError,
             ValueError,
         ) as exception:
-            raise TypeError(
-                f"{label} must be a positive number."
-            ) from exception
+            raise TypeError(f"{label} must be a positive number.") from exception
 
         if normalized_value <= 0:
-            raise ValueError(
-                f"{label} must be greater than zero."
-            )
+            raise ValueError(f"{label} must be greater than zero.")
 
         return normalized_value
 
@@ -836,24 +759,17 @@ class TwwDatabaseBackupService:
         """
         Return one positive integer setting.
         """
-        if (
-            isinstance(
-                value,
-                bool,
-            )
-            or not isinstance(
-                value,
-                int,
-            )
+        if isinstance(
+            value,
+            bool,
+        ) or not isinstance(
+            value,
+            int,
         ):
-            raise TypeError(
-                f"{label} must be a positive integer."
-            )
+            raise TypeError(f"{label} must be a positive integer.")
 
         if value <= 0:
-            raise ValueError(
-                f"{label} must be greater than zero."
-            )
+            raise ValueError(f"{label} must be greater than zero.")
 
         return value
 
@@ -870,15 +786,11 @@ class TwwDatabaseBackupService:
             )
 
         except OSError as exception:
-            raise RuntimeError(
-                f"Could not remove file {path!s}: {exception}"
-            ) from exception
+            raise RuntimeError(f"Could not remove file {path!s}: {exception}") from exception
 
     def _redacted_command(
         self,
-        command: list[
-            str,
-        ],
+        command: list[str,],
     ) -> str:
         """
         Return a platform-appropriate, log-safe command representation.
@@ -917,10 +829,7 @@ class TwwDatabaseBackupService:
         """
         Select the most useful PostgreSQL client output.
         """
-        return (
-            stderr
-            or stdout
-        )
+        return stderr or stdout
 
     def _formatted_detail_suffix(
         self,

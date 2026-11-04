@@ -339,20 +339,16 @@ class ModelInterlisDss(ModelInterlisSia405Abwasser):
             __tablename__ = "erhaltungsereignis_abwasserbauwerkassoc"
             __table_args__ = {"schema": self.schema}
 
-        self.erhaltungsereignis_abwasserbauwerkassoc = (
-            erhaltungsereignis_abwasserbauwerkassoc
-        )
+        self.erhaltungsereignis_abwasserbauwerkassoc = erhaltungsereignis_abwasserbauwerkassoc
+
         class gebaeudegruppe_entsorgungassoc(self.Base):
             __tablename__ = "gebaeudegruppe_entsorgungassoc"
             __table_args__ = {"schema": self.schema}
 
         self.gebaeudegruppe_entsorgungassoc = gebaeudegruppe_entsorgungassoc
 
-
         class messstelle_referenzstelleassoc(self.Base):
             __tablename__ = "messstelle_referenzstelleassoc"
             __table_args__ = {"schema": self.schema}
 
-        self.messstelle_referenzstelleassoc = (
-            messstelle_referenzstelleassoc
-        )
+        self.messstelle_referenzstelleassoc = messstelle_referenzstelleassoc

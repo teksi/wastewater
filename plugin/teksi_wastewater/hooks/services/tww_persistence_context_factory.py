@@ -7,7 +7,6 @@ from pathlib import Path
 from typing import Any, Protocol
 
 from sqlalchemy.orm import Session
-
 from teksi_hooks.capabilities.mapping import (
     EffectiveModelMappingCapability,
     ModelMappingCapability,
@@ -21,11 +20,11 @@ from teksi_hooks.parser.model_mapping_parser import (
 from teksi_wastewater.hooks.adapters.tww_implicit_model_mapping_adapter import (
     TwwImplicitModelMappingAdapter,
 )
-from teksi_wastewater.hooks.exceptions import (
-    DiffJobEligibilityError,
-)
 from teksi_wastewater.hooks.adapters.tww_session_manager import (
     TwwSessionContext,
+)
+from teksi_wastewater.hooks.exceptions import (
+    DiffJobEligibilityError,
 )
 
 
@@ -91,6 +90,7 @@ class TwwPersistenceSourceContext:
     quarantine_session: Session
     model_mapping: EffectiveModelMappingCapability
 
+
 @dataclass(
     slots=True,
 )
@@ -117,9 +117,7 @@ class TwwPersistenceContextFactory:
 
     model_config_dir: Path
 
-    quarantine_classes_factory: (
-        QuarantineClassesFactory
-    )
+    quarantine_classes_factory: QuarantineClassesFactory
 
     logger: logging.Logger
 
@@ -143,9 +141,7 @@ class TwwPersistenceContextFactory:
             session_context,
         )
 
-        contexts: list[
-            TwwPersistenceSourceContext,
-        ] = []
+        contexts: list[TwwPersistenceSourceContext,] = []
 
         for source_role in (
             "base",
@@ -169,10 +165,7 @@ class TwwPersistenceContextFactory:
         if not contexts:
             raise DiffJobEligibilityError(
                 job_id=job.job_id,
-                reason=(
-                    "the job contains no retained source "
-                    "contexts."
-                ),
+                reason=("the job contains no retained source " "contexts."),
             )
 
         return tuple(
@@ -184,10 +177,13 @@ class TwwPersistenceContextFactory:
         *,
         job: DiffReviewJob,
         source_role: str,
-    ) -> dict[
-        str,
-        str,
-    ] | None:
+    ) -> (
+        dict[
+            str,
+            str,
+        ]
+        | None
+    ):
         """
         Return one complete persisted source descriptor.
 
@@ -200,8 +196,7 @@ class TwwPersistenceContextFactory:
             "incremental",
         }:
             raise ValueError(
-                "source_role must be either 'base' or "
-                f"'incremental', got {source_role!r}."
+                "source_role must be either 'base' or " f"'incremental', got {source_role!r}."
             )
 
         metadata = job.metadata
@@ -238,7 +233,8 @@ class TwwPersistenceContextFactory:
         )
 
         if all(
-            value in (
+            value
+            in (
                 None,
                 "",
             )
@@ -292,60 +288,32 @@ class TwwPersistenceContextFactory:
         Build one runtime source context using borrowed workflow sessions.
         """
 
-        import_schema = descriptor[
-            "import_schema"
-        ]
+        import_schema = descriptor["import_schema"]
 
-        quarantine_classes = (
-            self.quarantine_classes_factory(
-                source_model=descriptor[
-                    "source_model"
-                ],
-                model_group=descriptor[
-                    "model_group"
-                ],
-                model_language=descriptor[
-                    "model_language"
-                ],
-                import_schema=import_schema,
-            )
+        quarantine_classes = self.quarantine_classes_factory(
+            source_model=descriptor["source_model"],
+            model_group=descriptor["model_group"],
+            model_language=descriptor["model_language"],
+            import_schema=import_schema,
         )
 
         model_mapping = self._effective_model(
-            mapping_model_id=descriptor[
-                "mapping_model_id"
-            ],
+            mapping_model_id=descriptor["mapping_model_id"],
             import_schema=import_schema,
-            language=descriptor[
-                "model_language"
-            ],
-            quarantine_session=(
-                session_context.quarantine
-            ),
+            language=descriptor["model_language"],
+            quarantine_session=(session_context.quarantine),
             live_session=session_context.live,
         )
 
         return TwwPersistenceSourceContext(
-            source_role=descriptor[
-                "source_role"
-            ],
+            source_role=descriptor["source_role"],
             import_schema=import_schema,
-            source_model=descriptor[
-                "source_model"
-            ],
-            mapping_model_id=descriptor[
-                "mapping_model_id"
-            ],
-            model_language=descriptor[
-                "model_language"
-            ],
-            model_group=descriptor[
-                "model_group"
-            ],
+            source_model=descriptor["source_model"],
+            mapping_model_id=descriptor["mapping_model_id"],
+            model_language=descriptor["model_language"],
+            model_group=descriptor["model_group"],
             quarantine_classes=quarantine_classes,
-            quarantine_session=(
-                session_context.quarantine
-            ),
+            quarantine_session=(session_context.quarantine),
             model_mapping=model_mapping,
         )
 
@@ -366,29 +334,20 @@ class TwwPersistenceContextFactory:
         persistence workflow.
         """
 
-        explicit_mapping = (
-            ModelMappingParser().parse_file(
-                self.model_config_dir
-                / "explicit_mapping.yaml",
-                model_id=mapping_model_id,
-            )
+        explicit_mapping = ModelMappingParser().parse_file(
+            self.model_config_dir / "explicit_mapping.yaml",
+            model_id=mapping_model_id,
         )
 
-        explicit_capability = (
-            ModelMappingCapability(
-                mapping=explicit_mapping,
-            )
+        explicit_capability = ModelMappingCapability(
+            mapping=explicit_mapping,
         )
 
-        implicit_capability = (
-            TwwImplicitModelMappingAdapter(
-                import_schema=import_schema,
-                language=language,
-                quarantine_session=(
-                    quarantine_session
-                ),
-                live_session=live_session,
-            )
+        implicit_capability = TwwImplicitModelMappingAdapter(
+            import_schema=import_schema,
+            language=language,
+            quarantine_session=(quarantine_session),
+            live_session=live_session,
         )
 
         return EffectiveModelMappingCapability.load(
@@ -405,13 +364,7 @@ class TwwPersistenceContextFactory:
         """
 
         if session_context.quarantine is None:
-            raise RuntimeError(
-                "The persistence session context has no "
-                "quarantine session."
-            )
+            raise RuntimeError("The persistence session context has no " "quarantine session.")
 
         if session_context.live is None:
-            raise RuntimeError(
-                "The persistence session context has no live "
-                "session."
-            )
+            raise RuntimeError("The persistence session context has no live " "session.")

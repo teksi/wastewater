@@ -1,12 +1,9 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from types import TracebackType
 
-from sqlalchemy import text
-from sqlalchemy import Engine
+from sqlalchemy import Engine, text
 from sqlalchemy.orm import Session
-
 from teksi_hooks.models.persistence import DiffSourceRole
 from teksi_wastewater.interlis.utils import (
     tww_sqlalchemy,
@@ -50,16 +47,13 @@ class TwwSessionContext:
         if source_role == DiffSourceRole.INCREMENTAL:
             if self.quarantine_incremental is None:
                 raise RuntimeError(
-                    "Incremental persistence requires an incremental "
-                    "quarantine session."
+                    "Incremental persistence requires an incremental " "quarantine session."
                 )
 
             return self.quarantine_incremental
 
-        raise ValueError(
-            f"Unsupported source role: {source_role!r}."
-        )
-    
+        raise ValueError(f"Unsupported source role: {source_role!r}.")
+
     def for_incremental_source(
         self,
     ) -> TwwSessionContext:
@@ -68,16 +62,13 @@ class TwwSessionContext:
         """
         if self.quarantine_incremental is None:
             raise RuntimeError(
-                "Incremental persistence requires a dedicated "
-                "incremental quarantine session."
+                "Incremental persistence requires a dedicated " "incremental quarantine session."
             )
 
         return TwwSessionContext(
             live=self.live,
             quarantine=self.quarantine_incremental,
-            quarantine_incremental=(
-                self.quarantine_incremental
-            ),
+            quarantine_incremental=(self.quarantine_incremental),
         )
 
     def for_base_source(
@@ -91,6 +82,7 @@ class TwwSessionContext:
             quarantine=self.quarantine,
             quarantine_incremental=None,
         )
+
 
 class TwwSessionScope:
     """
@@ -116,19 +108,13 @@ class TwwSessionScope:
         defer_constraints: bool = False,
         quarantine_incremental_session: Session | None = None,
     ) -> None:
-        self._quarantine_session = (
-            quarantine_session
-        )
+        self._quarantine_session = quarantine_session
 
         self._live_session = live_session
-        self._quarantine_incremental_session = (
-            quarantine_incremental_session
-        )
+        self._quarantine_incremental_session = quarantine_incremental_session
         self._transactional = transactional
 
-        self._defer_constraints = (
-            defer_constraints
-        )
+        self._defer_constraints = defer_constraints
 
         self._context = TwwSessionContext(
             live=live_session,
@@ -142,19 +128,12 @@ class TwwSessionScope:
         self,
     ) -> TwwSessionContext:
         if self._entered:
-            raise RuntimeError(
-                "TWW session scope cannot be entered more "
-                "than once."
-            )
+            raise RuntimeError("TWW session scope cannot be entered more " "than once.")
 
         self._entered = True
 
         if self._defer_constraints:
-            self._live_session.execute(
-                text(
-                    "SET CONSTRAINTS ALL DEFERRED;"
-                )
-            )
+            self._live_session.execute(text("SET CONSTRAINTS ALL DEFERRED;"))
 
         return self._context
 
@@ -183,7 +162,7 @@ class TwwSessionScope:
                 session.close()
 
         return False
-    
+
     def _quarantine_sessions(
         self,
     ) -> tuple[Session, ...]:
@@ -193,14 +172,14 @@ class TwwSessionScope:
 
         if (
             self._quarantine_incremental_session is not None
-            and self._quarantine_incremental_session
-            is not self._quarantine_session
+            and self._quarantine_incremental_session is not self._quarantine_session
         ):
             sessions.append(
                 self._quarantine_incremental_session,
             )
 
         return tuple(sessions)
+
 
 @dataclass(
     slots=True,
@@ -222,9 +201,7 @@ class TwwSessionManager:
     """
 
     engine: Engine = field(
-        default_factory=(
-            tww_sqlalchemy.create_engine
-        ),
+        default_factory=(tww_sqlalchemy.create_engine),
         repr=False,
     )
 
@@ -243,9 +220,7 @@ class TwwSessionManager:
         is required here.
         """
         return TwwSessionScope(
-            quarantine_session=(
-                self._quarantine_session()
-            ),
+            quarantine_session=(self._quarantine_session()),
             live_session=self._live_session(),
             transactional=False,
             defer_constraints=False,
@@ -280,18 +255,12 @@ class TwwSessionManager:
         legacy importer, remain the responsibility of the persistence service.
         """
         quarantine_incremental_session = (
-            self._quarantine_session()
-            if include_incremental
-            else None
+            self._quarantine_session() if include_incremental else None
         )
 
         return TwwSessionScope(
-            quarantine_session=(
-                self._quarantine_session()
-            ),
-            quarantine_incremental_session=(
-                quarantine_incremental_session
-            ),
+            quarantine_session=(self._quarantine_session()),
+            quarantine_incremental_session=(quarantine_incremental_session),
             live_session=self._live_session(),
             transactional=True,
             defer_constraints=True,

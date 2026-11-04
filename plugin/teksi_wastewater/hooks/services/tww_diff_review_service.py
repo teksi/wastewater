@@ -2,23 +2,19 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from dataclasses import dataclass, field
-from enum import StrEnum
 from typing import Any, Protocol
-
 
 from teksi_hooks.capabilities.canonical_object import (
     CanonicalGeometryCapability,
 )
 from teksi_hooks.capabilities.review import (
-        ChangeObjectProvider,
-        ReviewGeometryConverter,
+    ChangeObjectProvider,
+    ReviewGeometryConverter,
 )
 from teksi_hooks.models.canonical_object import (
     CanonicalModelMetadata,
 )
 from teksi_hooks.models.persistence import (
-    DeletionPlan,
-    PersistenceResult,
     DiffJobMode,
 )
 from teksi_hooks.models.review import (
@@ -139,9 +135,7 @@ class TwwDiffReviewService:
 
         review_export_service = ChangeReviewExportService(
             object_provider=object_provider,
-            geometry_converter=(
-                self.review_geometry_converter
-            ),
+            geometry_converter=(self.review_geometry_converter),
             geometry_attribute_names_by_class=(
                 self._geometry_attribute_names_by_class(
                     canonical_metadata,
@@ -201,10 +195,7 @@ class TwwDiffReviewService:
                 job,
             )
 
-        raise ValueError(
-            f"Unsupported review decision: {decision!r}."
-        )
-
+        raise ValueError(f"Unsupported review decision: {decision!r}.")
 
     def reject(
         self,
@@ -220,7 +211,6 @@ class TwwDiffReviewService:
             decision=DiffReviewDecision.REJECT,
         )
 
-
     def accept(
         self,
     ) -> DiffReviewDecisionResult:
@@ -234,7 +224,6 @@ class TwwDiffReviewService:
         return self.decide(
             decision=DiffReviewDecision.ACCEPT,
         )
-
 
     def _reject_job(
         self,
@@ -258,7 +247,6 @@ class TwwDiffReviewService:
             decision=DiffReviewDecision.REJECT,
             job_status="rejected",
         )
-
 
     def _accept_job(
         self,
@@ -284,7 +272,7 @@ class TwwDiffReviewService:
             decision=DiffReviewDecision.ACCEPT,
             job_status="accepted",
         )
-   
+
     def _pending_job(
         self,
         job_id: str,
@@ -307,7 +295,6 @@ class TwwDiffReviewService:
             )
 
         return job
-
 
     def _geometry_attribute_names_by_class(
         self,

@@ -445,7 +445,7 @@ class InterlisImporterExporter:
         self,
         xtf_file_output=None,
         logs_next_to_file=True,
-        base_log_path: Path | None=None,
+        base_log_path: Path | None = None,
     ):
         # File name without extension (used later for export)
         file_name_base, _ = os.path.splitext(xtf_file_output)
@@ -477,7 +477,7 @@ class InterlisImporterExporter:
         import_orgs: bool = False,
         progress_scope: ProgressScope = ProgressScope(),
         allow_schema_recreation: bool = False,
-        base_log_path: Path | None=None,
+        base_log_path: Path | None = None,
     ):
 
         if not allow_schema_recreation:
@@ -570,7 +570,7 @@ class InterlisImporterExporter:
         export_models=None,
         logs_next_to_file=True,
         progress_scope: ProgressScope = ProgressScope(),
-        base_log_path: Path | None=None,
+        base_log_path: Path | None = None,
     ):
         file_name_base = self._prepare_interlis_export(
             xtf_file_output=xtf_file_output,

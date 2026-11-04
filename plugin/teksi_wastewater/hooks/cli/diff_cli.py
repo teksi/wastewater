@@ -28,12 +28,7 @@ def main() -> int:
 
     logging.basicConfig(
         level=logging.INFO,
-        format=(
-            "%(asctime)s "
-            "%(levelname)-8s "
-            "%(name)s: "
-            "%(message)s"
-        ),
+        format=("%(asctime)s " "%(levelname)-8s " "%(name)s: " "%(message)s"),
         datefmt="%H:%M:%S",
         force=True,
     )
@@ -135,7 +130,7 @@ def main() -> int:
             "should only be used when setting a baseline."
         ),
     )
-    
+
     parser.add_argument(
         "--auto-apply",
         action="store_true",
@@ -145,13 +140,11 @@ def main() -> int:
             "Its main use case is importing an incremental baseline dataset."
         ),
     )
-    
+
     parser.add_argument(
         "--supersede-existing-diff-jobs",
         action="store_true",
-        help=(
-            "Supersede existing diff jobs with this one. "
-        ),
+        help=("Supersede existing diff jobs with this one. "),
     )
     helpers.add_postgres_connection_args(
         parser,
