@@ -34,17 +34,18 @@ from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QApplication, QMessageBox, QToolBar
 from qgis.utils import qgsfunction
 
-try:
-    from .gui.twwplotsvgwidget import TwwPlotSVGWidget
-except ImportError:
-    TwwPlotSVGWidget = None
+from .gui.twwelevationprofilewidget import TwwElevationProfileWidget
 from .gui.twwprofiledockwidget import TwwProfileDockWidget
 from .gui.twwselectionextenderwidget import TwwSelectionExtenderWidget
 from .gui.twwsettingsdialog import TwwSettingsDialog
 from .gui.twwwizard import TwwWizard
 from .interlis.utils.modelbaker.iliwrapper.ili2dbutils import JavaNotFoundError
 from .processing_provider.provider import TwwProcessingProvider
-from .tools.twwmaptools import TwwMapToolConnectNetworkElements, TwwTreeMapTool
+from .tools.twwmaptools import (
+    TwwMapToolConnectNetworkElements,
+    TwwProfileMapTool,
+    TwwTreeMapTool,
+)
 from .tools.twwnetwork import TwwGraphManager
 from .tools.twwselectionextender import TwwSelectionExtender
 from .utils.database_utils import DatabaseUtils
@@ -84,14 +85,6 @@ class TeksiWastewaterPlugin:
     # Wizard
     wizarddock = None
 
-    # The layer ids the plugin will need
-    edgeLayer = None
-    nodeLayer = None
-    specialStructureLayer = None
-    networkElementLayer = None
-
-    profile = None
-
     def __init__(self, iface):
         if os.environ.get("QGIS_DEBUGPY_HAS_LOADED") is None and QSettings().value(
             "/TWW/DeveloperMode", False, type=bool
@@ -110,6 +103,7 @@ class TeksiWastewaterPlugin:
         self.canvas = iface.mapCanvas()
         self.nodes = None
         self.edges = None
+        self.plotWidget = None
         self._tww_available = False
 
         self.interlisImporterExporter = None
@@ -177,15 +171,15 @@ class TeksiWastewaterPlugin:
         self.toolbarButtons = []
 
         # Create toolbar button
-        # self.profileAction = QAction(
-        #     QIcon(os.path.join(plugin_root_path(), "icons/wastewater-profile.svg")),
-        #     self.tr("Profile"),
-        #     self.iface.mainWindow(),
-        # )
-        # self.profileAction.setWhatsThis(self.tr("Reach trace"))
-        # self.profileAction.setEnabled(False)
-        # self.profileAction.setCheckable(True)
-        # self.profileAction.triggered.connect(self.profileToolClicked)
+        self.profileAction = QAction(
+            QIcon(os.path.join(plugin_root_path(), "icons/wastewater-profile.svg")),
+            self.tr("Profile"),
+            self.iface.mainWindow(),
+        )
+        self.profileAction.setWhatsThis(self.tr("Reach trace"))
+        self.profileAction.setEnabled(False)
+        self.profileAction.setCheckable(True)
+        self.profileAction.triggered.connect(self.profileToolClicked)
 
         self.downstreamAction = QAction(
             QIcon(os.path.join(plugin_root_path(), "icons/wastewater-downstream.svg")),
@@ -296,7 +290,7 @@ class TeksiWastewaterPlugin:
         # Add toolbar button and menu item
         self.toolbar = QToolBar(self.tr("TEKSI Wastewater"))
         self.toolbar.setObjectName(self.toolbar.windowTitle())
-        # self.toolbar.addAction(self.profileAction)
+        self.toolbar.addAction(self.profileAction)
         self.toolbar.addAction(self.upstreamAction)
         self.toolbar.addAction(self.downstreamAction)
         self.toolbar.addAction(self.wizardAction)
@@ -304,7 +298,7 @@ class TeksiWastewaterPlugin:
         self.toolbar.addAction(self.connectNetworkElementsAction)
 
         self.main_menu_name = "TEKSI &Wastewater"
-        # self.iface.addPluginToMenu(self.menu, self.profileAction)
+        self.iface.addPluginToMenu(self.main_menu_name, self.profileAction)
         self.iface.addPluginToMenu(self.main_menu_name, self.updateSymbologyAction)
         self.iface.addPluginToMenu(self.main_menu_name, self.validityCheckAction)
         self.iface.addPluginToMenu(self.main_menu_name, self.enableSymbologyTriggersAction)
@@ -322,7 +316,7 @@ class TeksiWastewaterPlugin:
         self.iface.addToolBar(self.toolbar)
 
         # Local array of buttons to enable / disable based on context
-        # self.toolbarButtons.append(self.profileAction)
+        self.toolbarButtons.append(self.profileAction)
         self.toolbarButtons.append(self.upstreamAction)
         self.toolbarButtons.append(self.downstreamAction)
         self.toolbarButtons.append(self.wizardAction)
@@ -341,10 +335,10 @@ class TeksiWastewaterPlugin:
         self.network_analyzer = TwwGraphManager()
         self.network_analyzer.message_emitted.connect(self.iface.messageBar().pushMessage)
         # Create the map tool for profile selection
-        # self.profile_tool = TwwProfileMapTool(
-        #    self.iface, self.profileAction, self.network_analyzer
-        # )
-        # self.profile_tool.profileChanged.connect(self.onProfileChanged)
+        self.profile_tool = TwwProfileMapTool(
+            self.iface, self.profileAction, self.network_analyzer
+        )
+        self.profile_tool.profileChanged.connect(self.onProfileChanged)
 
         self.upstream_tree_tool = TwwTreeMapTool(
             self.iface, self.upstreamAction, self.network_analyzer
@@ -515,7 +509,7 @@ class TeksiWastewaterPlugin:
         """
         Called when unloading
         """
-        # self.toolbar.removeAction(self.profileAction)
+        self.toolbar.removeAction(self.profileAction)
         self.toolbar.removeAction(self.upstreamAction)
         self.toolbar.removeAction(self.downstreamAction)
         self.toolbar.removeAction(self.wizardAction)
@@ -528,9 +522,15 @@ class TeksiWastewaterPlugin:
         if self.exportAction in self.toolbar.actions():
             self.toolbar.removeAction(self.exportAction)
 
+        # Detach the toolbar from the main window before the deferred delete:
+        # Plugin Reloader re-adds a toolbar with the same objectName within the
+        # same event-loop turn, and a still-parented old one makes QGIS warn
+        # about "duplicated widget(s) not cleaned up ... during unload".
+        self.iface.mainWindow().removeToolBar(self.toolbar)
+        self.toolbar.setParent(None)
         self.toolbar.deleteLater()
 
-        # self.iface.removePluginMenu(self.menu, self.profileAction)
+        self.iface.removePluginMenu(self.main_menu_name, self.profileAction)
         self.iface.removePluginMenu(self.main_menu_name, self.updateSymbologyAction)
         self.iface.removePluginMenu(self.main_menu_name, self.validityCheckAction)
         self.iface.removePluginMenu(self.main_menu_name, self.settingsAction)
@@ -545,6 +545,23 @@ class TeksiWastewaterPlugin:
             self.iface.removeDockWidget(self.selectionExtenderWidget)
             self.selectionExtenderWidget.deleteLater()
             self.selectionExtenderWidget = None
+
+        # The profile and wizard docks are created lazily and stay parented to
+        # the main window; without this a reload leaves the old dock behind
+        # next to the one the new plugin instance creates.
+        if self.profile_dock is not None:
+            dock = self.profile_dock
+            self.iface.removeDockWidget(dock)
+            # close() runs the regular teardown (onDockClosed restores the map
+            # tool and clears our references) and WA_DeleteOnClose deletes it.
+            dock.close()
+            self.profile_dock = None
+
+        if self.wizarddock is not None:
+            self.iface.removeDockWidget(self.wizarddock)
+            self.wizarddock.setParent(None)
+            self.wizarddock.deleteLater()
+            self.wizarddock = None
 
     def _on_project_cleared(self):
         self._on_tww_project_unavailable()
@@ -598,9 +615,15 @@ class TeksiWastewaterPlugin:
         """
         Is executed when the profile button is clicked
         """
+        if not self.profileAction.isChecked():
+            # Button was unchecked — close the dock
+            if self.profile_dock is not None:
+                self.profile_dock.close()
+            return
+
         self.openDock()
         # Set the profile map tool
-        # self.profile_tool.setActive()
+        self.profile_tool.setActive()
 
     def upstreamToolClicked(self):
         """
@@ -655,48 +678,147 @@ class TeksiWastewaterPlugin:
                 self.iface.addDockWidget,
             )
             self.profile_dock.closed.connect(self.onDockClosed)
+            self.profile_dock.canvasCleared.connect(self.onDockCanvasCleared)
             self.profile_dock.showIt()
 
-            self.plotWidget = None
-            if TwwPlotSVGWidget is not None:
-                self.plotWidget = TwwPlotSVGWidget(self.profile_dock, self.network_analyzer)
-                self.plotWidget.specialStructureMouseOver.connect(self.highlightProfileElement)
-                self.plotWidget.specialStructureMouseOut.connect(self.unhighlightProfileElement)
-                self.plotWidget.reachMouseOver.connect(self.highlightProfileElement)
-                self.plotWidget.reachMouseOut.connect(self.unhighlightProfileElement)
-                self.profile_dock.addPlotWidget(self.plotWidget)
-                self.profile_dock.setTree(self.nodes, self.edges)
+            self.plotWidget = TwwElevationProfileWidget(self.profile_dock)
+            self.profile_dock.addPlotWidget(self.plotWidget)
+            # Restore the last trace's state (enables "Select current path") but
+            # do NOT redraw it: reopening the dock should start with an empty
+            # canvas, not silently re-render the previous selection.
+            self.profile_dock.setTree(self.nodes, self.edges, render=False)
+
+    def onDockCanvasCleared(self):
+        """
+        Clear Canvas was clicked in the dock: reset the profile map tool too.
+        Without this the tool keeps its path and segment history, and the
+        "cleared" profile resurrects in full on the next map click.
+        """
+        tool = getattr(self, "profile_tool", None)
+        if tool is not None and hasattr(tool, "clearAll"):
+            tool.clearAll()
 
     def onDockClosed(self):  # used when Dock dialog is closed
         """
         Gets called when the dock is closed
         All the cleanup of the dock has to be done here
         """
+        # Deactivate profile map tool and restore previous tool
+        if hasattr(self, "profile_tool") and self.profile_tool:
+            canvas = self.iface.mapCanvas()
+            # Save extent before cleanup to prevent zoom caused by rubberBand.reset()
+            saved_extent = canvas.extent()
+
+            if self.profile_tool.saveTool:
+                canvas.setMapTool(self.profile_tool.saveTool)
+            else:
+                canvas.unsetMapTool(self.profile_tool)
+
+            # Restore the original extent to prevent unwanted zoom
+            canvas.setExtent(saved_extent)
+
+        # Clear elevation profile widget highlight
+        if self.plotWidget and hasattr(self.plotWidget, "clearHighlight"):
+            self.plotWidget.clearHighlight()
+
+        self.profileAction.setChecked(False)
         self.profile_dock = None
+        # Dock uses WA_DeleteOnClose, so the plot widget is destroyed with it
+        self.plotWidget = None
 
     def onProfileChanged(self, profile):
         """
         The profile changed: update the plot
         @param profile: The profile to plot
         """
-        self.profile = profile.copy()
+        if not self.plotWidget:
+            return
 
-        if self.plotWidget:
-            self.plotWidget.setProfile(profile)
+        from qgis.core import QgsGeometry
+
+        self.logger.debug(
+            f"onProfileChanged: Received new profile with {len(profile.getElements())} elements"
+        )
+
+        # An empty profile is a deliberate clear (right-click, new path start,
+        # undo of the last segment): clear the plot too, or the canvas keeps
+        # showing a path the tool no longer holds.
+        if not profile.getElements():
+            if hasattr(self.plotWidget, "clearProfile"):
+                self.plotWidget.clearProfile()
+            return
+
+        # Get geometry directly from profile_tool's pathPolyline
+        # This is already in the correct order (built in appendProfile)
+        path_polyline = getattr(self.profile_tool, "pathPolyline", None)
+        # Selected-path features so the profile renders only this path, not the
+        # side branches that merely share a node with it.
+        reach_ids = getattr(self.profile_tool, "profile_reach_ids", None)
+        node_points = getattr(self.profile_tool, "profile_node_points", None)
+        if path_polyline:
+            profile_geometry = QgsGeometry.fromPolylineXY(path_polyline)
+            if profile_geometry and not profile_geometry.isEmpty():
+                self.plotWidget.setProfileCurve(
+                    profile_geometry, reach_ids=reach_ids, node_points=node_points
+                )
+            else:
+                self.logger.warning("onProfileChanged: Geometry is empty or invalid")
+        else:
+            self.logger.warning(
+                "onProfileChanged: pathPolyline is empty, building from profile elements"
+            )
+            self._buildProfileFromElements(profile)
+
+    def _buildProfileFromElements(self, profile):
+        """
+        Fallback method to build profile geometry from profile elements.
+        """
+        from qgis.core import QgsGeometry
+
+        reach_elements = [
+            elem
+            for elem in profile.getElements()
+            if hasattr(elem, "type")
+            and elem.type == "reach"
+            and hasattr(elem, "detail_geometry")
+            and elem.detail_geometry
+        ]
+
+        if not reach_elements:
+            self.logger.warning("_buildProfileFromElements: No reach elements found in profile")
+            return
+
+        # Sort by start offset
+        def get_start_offset(elem):
+            if hasattr(elem, "reachPoints") and elem.reachPoints:
+                offsets = [p.get("offset", 0) for p in elem.reachPoints.values() if "offset" in p]
+                return min(offsets) if offsets else 0
+            return 0
+
+        reach_elements_sorted = sorted(reach_elements, key=get_start_offset)
+
+        points = []
+        for elem in reach_elements_sorted:
+            if elem.detail_geometry:
+                geom_points = elem.detail_geometry.asPolyline()
+                if points and points[-1] == geom_points[0]:
+                    points.extend(geom_points[1:])
+                else:
+                    points.extend(geom_points)
+
+        if points:
+            profile_geometry = QgsGeometry.fromPolylineXY(points)
+            self.plotWidget.setProfileCurve(profile_geometry)
+        else:
+            self.logger.warning(
+                "_buildProfileFromElements: No points extracted from reach elements"
+            )
 
     def onTreeChanged(self, nodes, edges):
         if self.profile_dock:
             self.profile_dock.setTree(nodes, edges)
         self.nodes = nodes
         self.edges = edges
-
-    def highlightProfileElement(self, obj_id):
-        if self.profile is not None:
-            self.profile.highlight(str(obj_id))
-
-    def unhighlightProfileElement(self):
-        if self.profile is not None:
-            self.profile.highlight(None)
 
     def updateSymbology(self):
         try:
