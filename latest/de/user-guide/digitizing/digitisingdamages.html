@@ -59,7 +59,7 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Kanalschäden digitalisieren</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#prerequisites">Voraussetzungen</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#how-the-damage-position-is-calculated">Wie die Schadensposition berechnet wird</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#creating-a-channel-damage">Creating a channel damage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#creating-a-channel-damage">Kanalschaden erzeugen</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#adding-pictures-or-videos">Adding pictures or videos</a></li>
 </ul>
 </li>
@@ -125,18 +125,13 @@
 <p>Die Untersuchung benötigt:</p>
 <ul class="simple">
 <li><p>eine gültige Verknüpfung auf einen Kanal und</p></li>
-<li><p>a valid link to a reach point that is either at the start or the end of
-that channel and is referenced by the uppermost/lowermost reach of the
-channel.</p></li>
+<li><p>ein gültiger Verweis auf einen Haltungspunkt, der sich entweder am Anfang oder am Ende des betreffenden Kanals befindet und auf den durch die oberste bzw unterste Haltung Bezug genommen wird.</p></li>
 </ul>
 <p>Die Geometrie des Abwassernetzes, die für die Positionierung des Schadens genutzt wird, wird aus der materialisierten Sicht <code class="docutils literal notranslate"><span class="pre">tww_app.mvw_tww_channel</span></code> entnommen.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warnung</p>
 <p><code class="docutils literal notranslate"><span class="pre">tww_app.mvw_tww_channel</span></code> ist eine materialisierte Sicht und kann deshalb Daten enthalten, die nicht aktuell sind</p>
-<p>If a channel was recently created, modified, reconnected or assigned to
-different reaches, refresh the materialized view before digitising
-damages. Otherwise, the channel may be missing or its geometry and topology
-may no longer correspond to the current network data.</p>
+<p>Falls ein Kanal vor Kurzem erstellt, geändert, neu verknüpft oder dem andere Haltungen zugeordnet wurden, aktualisieren Sie die materialisierte View, bevor Sie Schäden digitalisieren. Andernfalls könnte der Kanal fehlen oder seine Geometrie und Topologie entsprechen möglicherweise nicht mehr den aktuellen Netzdaten.</p>
 </div>
 </section>
 <section id="how-the-damage-position-is-calculated">
@@ -153,85 +148,62 @@ may no longer correspond to the current network data.</p>
 </ul>
 <p>Die Inspektionsrichtung wird wie folgt bestimmt:</p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">downstream</span></code></dt><dd><p>The examination reach point corresponds to the
-<code class="docutils literal notranslate"><span class="pre">fk_reach_point_from</span></code> of the uppermost reach linked
-to the channel.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">inFliessrichtung</span></code></dt><dd><p>Der Untersuchungs-Haltungspunkt entspricht dem „fk_reach_point_from“ der obersten mit dem Kanal verknüpften Haltung.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">upstream</span></code></dt><dd><p>The examination reach point corresponds to the
-<code class="docutils literal notranslate"><span class="pre">fk_reach_point_to</span></code> of the lowermost reach linked
-to the channel.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">gegenFliessrichtung</span></code></dt><dd><p>Der Untersuchungs-Haltungspunkt entspricht dem „fk_reach_point_to“ der untersten mit dem Kanal verknüpften Haltung.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">unknown</span></code></dt><dd><p>The examination reach point matches neither of the above.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">unbekannt</span></code></dt><dd><p>Der Untersuchungs-Haltungspunkt stimmt mit keinem der oben genannten Punkte überein.</p>
 </dd>
 </dl>
-<p>The relative position is calculated by dividing <code class="docutils literal notranslate"><span class="pre">channel_distance</span></code> by the
-length of the channel geometry. Values greater than the channel length are
-limited to the end of the channel.</p>
-<p>For downstream inspections, the distance is measured from the beginning of
-the channel geometry. For upstream inspections, it is measured from the end
-of the channel geometry.</p>
+<p>Die relative Position wird berechnet, indem <code class="docutils literal notranslate"><span class="pre">channel_distance</span></code> durch die Länge der Kanalgeometrie dividiert wird. Werte, die größer als die Kanallänge sind, werden auf das Ende des Kanals begrenzt.</p>
+<p>Bei Inspektionen in Fließrichtung wird der Abstand vom Beginn der Kanalgeometrie aus gemessen. Bei Inspektionen gegenFließrichtung erfolgt die Messung vom Ende der Kanalgeometrie aus.</p>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>Only examinations with recording type <code class="docutils literal notranslate"><span class="pre">channel_TV</span></code> are included in
-<code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_damage_channel</span></code>. The corresponding code is <code class="docutils literal notranslate"><span class="pre">3686</span></code>.</p>
+<p>In <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_damage_channel</span></code> sind nur Untersuchungen mit der Erfassungsart <code class="docutils literal notranslate"><span class="pre">Kanalfernsehen</span></code> enthalten. Der zugehörige Code lautet <code class="docutils literal notranslate"><span class="pre">3686</span></code>.</p>
 </div>
 </section>
 <section id="creating-a-channel-damage">
-<h2>Creating a channel damage<a class="headerlink" href="#creating-a-channel-damage" title="Link to this heading"></a></h2>
-<p>Select <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_damage_channel</span></code> in the QGIS Layers panel and enable
-editing.</p>
-<p>Use the QGIS feature creation tool configured for the channel damage layer.</p>
-<p>The position clicked on the map is not the authoritative location of the
-damage. The final <code class="docutils literal notranslate"><span class="pre">situation2d_geometry</span></code> is calculated by the database from
-the damage attributes.</p>
-<p>Place a temporary point and enter the required attributes. After saving and
-refreshing the layer, the calculated position replaces the temporary point.</p>
-<p>New values are written to both:</p>
+<h2>Kanalschaden erzeugen<a class="headerlink" href="#creating-a-channel-damage" title="Link to this heading"></a></h2>
+<p>Wähle <code class="docutils literal notranslate"><span class="pre">vw_tww_Kanalschaden</span></code> in der Layergruppe Untersuchung-Unterhalt aus und aktiviere die Bearbeitung.</p>
+<p>Verwenden Sie das QGIS-Werkzeug zur Erstellung von Objekten, das für den Layer „vw_tww_Kanalschaden“ konfiguriert ist.</p>
+<p>Die auf der Karte angeklickte Position ist nicht der maßgebliche Ort des Schadens. Die endgültige „situation2d_geometry“ wird von der Datenbank anhand der Schadensattribute berechnet.</p>
+<p>Setzen Sie einen temporären Punkt und geben Sie die erforderlichen Attribute ein. Nach dem Speichern und Aktualisieren des Layers ersetzt die berechnete Position den temporären Punkt.</p>
+<p>Neue Werte werden in in zwei Tabellen geschrieben:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">tww_od.damage</span></code>; and</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tww_od.damage</span></code>; und</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">tww_od.damage_channel</span></code>.</p></li>
 </ul>
-<p>Values entered in fields that are not stored in these tables are not
-persisted. Such fields are calculated by the view, primarily from the
-examination referenced by <code class="docutils literal notranslate"><span class="pre">fk_examination</span></code>.</p>
+<p>Werte, die in Felder eingegeben werden, welche nicht in diesen Tabellen gespeichert sind, werden nicht dauerhaft gesichert. Solche Felder werden durch die View berechnet – primär auf Basis der Untersuchung, auf die mittels <code class="docutils literal notranslate"><span class="pre">FS_Untersuchung</span></code> verwiesen wird.</p>
 <section id="selecting-the-examination">
-<h3>Selecting the examination<a class="headerlink" href="#selecting-the-examination" title="Link to this heading"></a></h3>
-<p>The examination assigned through <code class="docutils literal notranslate"><span class="pre">fk_examination</span></code> must:</p>
+<h3>Auswahl der Untersuchung<a class="headerlink" href="#selecting-the-examination" title="Link to this heading"></a></h3>
+<p>Die mit „FS_Untersuchung“ verknüpfte Untersuchung muss:</p>
 <ul class="simple">
-<li><p>represent the relevant inspected channel;</p></li>
-<li><p>have recording type <code class="docutils literal notranslate"><span class="pre">channel_TV</span></code> with code <code class="docutils literal notranslate"><span class="pre">3686</span></code>;</p></li>
-<li><p>be connected to the correct wastewater structure; and</p></li>
-<li><p>have a valid examination reach point.</p></li>
+<li><p>den inspizierten Kanal repräsentieren;</p></li>
+<li><p>Erfassungsart <code class="docutils literal notranslate"><span class="pre">Kanalfernsehen</span></code>  Code <code class="docutils literal notranslate"><span class="pre">3686</span></code> haben;</p></li>
+<li><p>mit dem korrekten Abwasserbauwerk verknüpft sein; und</p></li>
+<li><p>einen gültigen Untersuchung Haltungspunkt haben.</p></li>
 </ul>
-<p>The examination reach point must correspond to either
-<code class="docutils literal notranslate"><span class="pre">fk_reach_point_from</span></code> or <code class="docutils literal notranslate"><span class="pre">fk_reach_point_to</span></code> of the most upstream/downstream
-reach of the channel.</p>
+<p>Der Untersuchungs-Haltungspunkt muss entweder dem „fk_reach_point_from“ oder dem „fk_reach_point_to“ der obersten/untersten mit dem Kanal verknüpften Haltung entsprechen.</p>
 </section>
 <section id="entering-the-channel-distance">
-<h3>Entering the channel distance<a class="headerlink" href="#entering-the-channel-distance" title="Link to this heading"></a></h3>
-<p>The value for <code class="docutils literal notranslate"><span class="pre">channel_distance</span></code> is usually obtained from the TV inspection
-recording or inspection report and must be entered manually.</p>
-<p>The value represents the distance travelled by the inspection camera in meters,
-starting at the examination reach point.</p>
+<h3>Eingabe der Distanz<a class="headerlink" href="#entering-the-channel-distance" title="Link to this heading"></a></h3>
+<p>Der Wert für <code class="docutils literal notranslate"><span class="pre">Distanz</span></code> wird üblicherweise aus der TV-Inspektionsaufzeichnung oder dem Inspektionsbericht entnommen und muss manuell eingegeben werden.</p>
+<p>Der Wert gibt die von der Inspektionskamera zurückgelegte Strecke in Metern an, ausgehend vom Untersuchung Haltungspunkt.</p>
 </section>
 <section id="saving-and-checking-the-damage">
-<h3>Saving and checking the damage<a class="headerlink" href="#saving-and-checking-the-damage" title="Link to this heading"></a></h3>
-<p>Save the new feature and refresh
-<code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_damage_channel</span></code>.</p>
-<p>Verify that:</p>
+<h3>Sichern und kontrollieren des Schaden<a class="headerlink" href="#saving-and-checking-the-damage" title="Link to this heading"></a></h3>
+<p>Speichere das neue Datensatzes und aktualisiere <code class="docutils literal notranslate"><span class="pre">vw_tww_Kanalschaden</span></code>.</p>
+<p>Kontrolliere das:</p>
 <ul class="simple">
-<li><p>the damage point lies on the expected channel;</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">direction</span></code> is either <code class="docutils literal notranslate"><span class="pre">upstream</span></code> or <code class="docutils literal notranslate"><span class="pre">downstream</span></code>;</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ws_identifier</span></code> identifies the inspected wastewater structure; and</p></li>
-<li><p>the point is located at the expected distance from the inspection start.</p></li>
+<li><p>Der Schadenpunkt auf dem untersuchten Kanal liegt</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">direction</span></code> ist entweder <code class="docutils literal notranslate"><span class="pre">upstream</span></code> oder <code class="docutils literal notranslate"><span class="pre">downstream</span></code>;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">BW_Bezeichnung</span></code> ist das untersuchte Abwasserbauwerk; und</p></li>
+<li><p>der Punkt befindet sich in der erwarteten Entfernung vom Inspektionsbeginn.</p></li>
 </ul>
-<p>If <code class="docutils literal notranslate"><span class="pre">direction</span></code> is <code class="docutils literal notranslate"><span class="pre">unknown</span></code>, correct the examination or network
-relationships before continuing.</p>
+<p>Wenn <code class="docutils literal notranslate"><span class="pre">direction</span></code> den Wert <code class="docutils literal notranslate"><span class="pre">unbekannt</span></code> hat, korrigieren Sie die Untersuchungs- oder Netzwerkbeziehungen, bevor Sie fortfahren.</p>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>The fields <code class="docutils literal notranslate"><span class="pre">situation2d_geometry</span></code>, <code class="docutils literal notranslate"><span class="pre">direction</span></code>, <code class="docutils literal notranslate"><span class="pre">ws_identifier</span></code> and
-<code class="docutils literal notranslate"><span class="pre">tww_is_primary</span></code> are calculated by the view and should not be edited
-manually.</p>
+<p>Die Felder <code class="docutils literal notranslate"><span class="pre">situation2d_geometry</span></code>, <code class="docutils literal notranslate"><span class="pre">direction</span></code>, <code class="docutils literal notranslate"><span class="pre">BW_Bezeichnung</span></code> und <code class="docutils literal notranslate"><span class="pre">tww_ist_primaer</span></code> werden durch die View berechnet und sollten nicht manuell bearbeitet werden.</p>
 </div>
 </section>
 </section>
