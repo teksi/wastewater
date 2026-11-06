@@ -60,7 +60,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#prerequisites">Voraussetzungen</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#how-the-damage-position-is-calculated">Wie die Schadensposition berechnet wird</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#creating-a-channel-damage">Kanalschaden erzeugen</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#adding-pictures-or-videos">Adding pictures or videos</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-pictures-or-videos">Bilder oder Videos hinzufügen</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="importingdata.html">Datenimport</a></li>
@@ -111,8 +111,8 @@
 <div></div></blockquote>
 <section id="digitising-channel-damages">
 <h1>Kanalschäden digitalisieren<a class="headerlink" href="#digitising-channel-damages" title="Link to this heading"></a></h1>
-<p>Kanalschäden werden in der Sicht <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_damage_channel</span></code> verwaltet.</p>
-<p>Diese Sicht berechnet die Lage des Schadens aus:</p>
+<p>Kanalschäden werden in der View <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_damage_channel</span></code> verwaltet.</p>
+<p>Diese View berechnet die Lage des Schadens aus:</p>
 <ul class="simple">
 <li><p>Der Geometrie des Kanals, welchen die Untersuchung referenziert;</p></li>
 <li><p>Der erfassten Kanal-Distanz; und</p></li>
@@ -127,17 +127,17 @@
 <li><p>eine gültige Verknüpfung auf einen Kanal und</p></li>
 <li><p>ein gültiger Verweis auf einen Haltungspunkt, der sich entweder am Anfang oder am Ende des betreffenden Kanals befindet und auf den durch die oberste bzw unterste Haltung Bezug genommen wird.</p></li>
 </ul>
-<p>Die Geometrie des Abwassernetzes, die für die Positionierung des Schadens genutzt wird, wird aus der materialisierten Sicht <code class="docutils literal notranslate"><span class="pre">tww_app.mvw_tww_channel</span></code> entnommen.</p>
+<p>Die Geometrie des Abwassernetzes, die für die Positionierung des Schadens genutzt wird, wird aus der materialisierten View <code class="docutils literal notranslate"><span class="pre">tww_app.mvw_tww_channel</span></code> entnommen.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warnung</p>
-<p><code class="docutils literal notranslate"><span class="pre">tww_app.mvw_tww_channel</span></code> ist eine materialisierte Sicht und kann deshalb Daten enthalten, die nicht aktuell sind</p>
+<p><code class="docutils literal notranslate"><span class="pre">tww_app.mvw_tww_channel</span></code> ist eine materialisierte View und kann deshalb Daten enthalten, die nicht aktuell sind</p>
 <p>Falls ein Kanal vor Kurzem erstellt, geändert, neu verknüpft oder dem andere Haltungen zugeordnet wurden, aktualisieren Sie die materialisierte View, bevor Sie Schäden digitalisieren. Andernfalls könnte der Kanal fehlen oder seine Geometrie und Topologie entsprechen möglicherweise nicht mehr den aktuellen Netzdaten.</p>
 </div>
 </section>
 <section id="how-the-damage-position-is-calculated">
 <h2>Wie die Schadensposition berechnet wird<a class="headerlink" href="#how-the-damage-position-is-calculated" title="Link to this heading"></a></h2>
 <p>Ein Kanalschaden wird als attributbasierte Position entlang eines Kanals gespeichert. Die in QGIS dargestellte Punktgeometrie wird durch <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_damage_channel</span></code> generiert.</p>
-<p>Die Sicht bestimmt:</p>
+<p>Die View bestimmt:</p>
 <ul class="simple">
 <li><p>die dem Schaden zugeordnete Inspektion;</p></li>
 <li><p>der Haltungspunkt, von dem aus die Untersuchung durchgeführt wurde;</p></li>
@@ -208,9 +208,8 @@
 </section>
 </section>
 <section id="adding-pictures-or-videos">
-<h2>Adding pictures or videos<a class="headerlink" href="#adding-pictures-or-videos" title="Link to this heading"></a></h2>
-<p>Damage pictures and examination videos can be managed through
-<code class="docutils literal notranslate"><span class="pre">tww_app.vw_file</span></code>.</p>
+<h2>Bilder oder Videos hinzufügen<a class="headerlink" href="#adding-pictures-or-videos" title="Link to this heading"></a></h2>
+<p>Schadensbilder und Inspektionsvideos können über <code class="docutils literal notranslate"><span class="pre">tww_app.vw_file</span></code> verwaltet werden.</p>
 <p>The channel damage view displays up to two associated pictures in:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">picture_1</span></code>; and</p></li>
