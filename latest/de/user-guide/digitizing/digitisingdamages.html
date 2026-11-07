@@ -127,22 +127,22 @@
 <li><p>eine gültige Verknüpfung auf einen Kanal und</p></li>
 <li><p>ein gültiger Verweis auf einen Haltungspunkt, der sich entweder am Anfang oder am Ende des betreffenden Kanals befindet und auf den durch die oberste bzw unterste Haltung Bezug genommen wird.</p></li>
 </ul>
-<p>Die Geometrie des Abwassernetzes, die für die Positionierung des Schadens genutzt wird, wird aus der materialisierten View <code class="docutils literal notranslate"><span class="pre">tww_app.mvw_tww_channel</span></code> entnommen.</p>
+<p>Die Geometrie des Abwassernetzes, die für die Positionierung des Schadens genutzt wird, wird aus der materialisierten View <code class="docutils literal notranslate"><span class="pre">mvw_tww_Kanal</span></code> entnommen.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warnung</p>
-<p><code class="docutils literal notranslate"><span class="pre">tww_app.mvw_tww_channel</span></code> ist eine materialisierte View und kann deshalb Daten enthalten, die nicht aktuell sind</p>
+<p><code class="docutils literal notranslate"><span class="pre">mvw_tww_Kanal</span></code> ist eine materialisierte View und kann deshalb Daten enthalten, die nicht aktuell sind</p>
 <p>Falls ein Kanal vor Kurzem erstellt, geändert, neu verknüpft oder dem andere Haltungen zugeordnet wurden, aktualisieren Sie die materialisierte View, bevor Sie Schäden digitalisieren. Andernfalls könnte der Kanal fehlen oder seine Geometrie und Topologie entsprechen möglicherweise nicht mehr den aktuellen Netzdaten.</p>
 </div>
 </section>
 <section id="how-the-damage-position-is-calculated">
 <h2>Wie die Schadensposition berechnet wird<a class="headerlink" href="#how-the-damage-position-is-calculated" title="Link to this heading"></a></h2>
-<p>Ein Kanalschaden wird als attributbasierte Position entlang eines Kanals gespeichert. Die in QGIS dargestellte Punktgeometrie wird durch <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_damage_channel</span></code> generiert.</p>
+<p>Ein Kanalschaden wird als attributbasierte Position entlang eines Kanals gespeichert. Die in QGIS dargestellte Punktgeometrie wird durch <code class="docutils literal notranslate"><span class="pre">vw_tww_Kanalschaden</span></code> generiert.</p>
 <p>Die View bestimmt:</p>
 <ul class="simple">
 <li><p>die dem Schaden zugeordnete Inspektion;</p></li>
 <li><p>der Haltungspunkt, von dem aus die Untersuchung durchgeführt wurde;</p></li>
 <li><p>the wastewater structure associated with the examination;</p></li>
-<li><p>  der entsprechende Kanal in  <code class="docutils literal notranslate"><span class="pre">tww_app.mvw_tww_channel</span></code>;</p></li>
+<li><p>  der entsprechende Kanal in  <code class="docutils literal notranslate"><span class="pre">mvw_tww_Kanal</span></code>;</p></li>
 <li><p>die Inspektionsrichtung, basierend auf dem Haltungspunkt der Untersuchung; und</p></li>
 <li><p>die relative Position entlang des Kanals.</p></li>
 </ul>
@@ -159,7 +159,7 @@
 <p>Bei Inspektionen in Fließrichtung wird der Abstand vom Beginn der Kanalgeometrie aus gemessen. Bei Inspektionen gegenFließrichtung erfolgt die Messung vom Ende der Kanalgeometrie aus.</p>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>In <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_damage_channel</span></code> sind nur Untersuchungen mit der Erfassungsart <code class="docutils literal notranslate"><span class="pre">Kanalfernsehen</span></code> enthalten. Der zugehörige Code lautet <code class="docutils literal notranslate"><span class="pre">3686</span></code>.</p>
+<p>In <code class="docutils literal notranslate"><span class="pre">tww_vw_tww_Kanalschaden</span></code> sind nur Untersuchungen mit der Erfassungsart <code class="docutils literal notranslate"><span class="pre">Kanalfernsehen</span></code> enthalten. Der zugehörige Code lautet <code class="docutils literal notranslate"><span class="pre">3686</span></code>.</p>
 </div>
 </section>
 <section id="creating-a-channel-damage">
@@ -209,15 +209,14 @@
 </section>
 <section id="adding-pictures-or-videos">
 <h2>Bilder oder Videos hinzufügen<a class="headerlink" href="#adding-pictures-or-videos" title="Link to this heading"></a></h2>
-<p>Schadensbilder und Inspektionsvideos können über <code class="docutils literal notranslate"><span class="pre">tww_app.vw_file</span></code> verwaltet werden.</p>
-<p>The channel damage view displays up to two associated pictures in:</p>
+<p>Schadensbilder und Inspektionsvideos können über <code class="docutils literal notranslate"><span class="pre">vw_Datei</span></code> verwaltet werden.</p>
+<p>Die View vw_tww_Kanalschaden kann zwei verknüpfte Bilder zeigen in den Feldern:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">picture_1</span></code>; and</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">picture_2</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Bild_1</span></code>; und</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Bild_2</span></code>.</p></li>
 </ul>
-<p>It also displays the associated examination video in <code class="docutils literal notranslate"><span class="pre">video</span></code>.</p>
-<p>Pictures are linked directly to the channel damage. Videos are linked to the
-examination associated with the damage.</p>
+<p>Zudem wird das zugehörige Untersuchungsvideo unter „Video“ angezeigt.</p>
+<p>Bilder sind direkt mit dem Kanalschaden verknüpft. Videos sind mit der Untersuchung verknüpft, in der der Schaden protokolliert ist.</p>
 <p>The picture and video fields are calculated from active file records. They
 are display fields and should not be edited directly in the channel damage
 view.</p>
