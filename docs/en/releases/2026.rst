@@ -157,7 +157,7 @@ Adaptions to project file
 * `tww_od.tww_wastewater_node_symbology`
 * new layer `tww_od.profile_geometry`
 * Added layer `vw_tww_damage`
-* vw_tww_damage_channel
+* tww_app.vw_tww_damage_channel
 
 Please export and use the corresponding :literal:`* \ .qml` files to integrate them into your existing TWW 2025 project files
 
