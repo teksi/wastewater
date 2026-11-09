@@ -73,7 +73,7 @@ def run_cli(command: str):
     """
     duration = time.time() - start
     print(f"CLI duration: {duration:.1f}s")
-    result = sp_run(cmd, shell=True, capture_output=True, text=True)
+    result = sp_run(cmd, shell=True, capture_output=True, text=True)  # nosec B602
 
     print("STDOUT")
     print(result.stdout)
