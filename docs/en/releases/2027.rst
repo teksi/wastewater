@@ -42,11 +42,11 @@ Adaptions to project file
 
 * xxx
 
-Please export and use the corresponding :literal:`* \ .qml` files to integrate them into your existing TWW 2025 project files
+Please export and use the corresponding :literal:`* \ .qml` files to integrate them into your existing TWW 2026 project files
 
 
 The following views have been adapted and need an adaption of existing TWW 2026 project files:
 
  - xxx
 
- For Reference see https://github.com/teksi/wastewater/issues/995#issuecomment-4803889291
+ For Reference see 
