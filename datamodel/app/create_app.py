@@ -460,12 +460,14 @@ Running modification {modification.get('id')}
                 raise ValueError(f"Invalid variable format for '{key}'")
         return formatted_vars
 
-    def resolve_path(self, path: str | Path) -> Path:
+    def resolve_path(self, path):
         path = Path(path)
-
         if not path.is_absolute():
+            for base in (self.base_dir, self.cwd):
+                candidate = (base / path).resolve()
+                if candidate.exists():
+                    return candidate
             path = self.base_dir / path
-
         return path.resolve()
 
 
