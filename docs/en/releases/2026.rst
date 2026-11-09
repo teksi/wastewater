@@ -162,6 +162,11 @@ Adaptions to project file
 Please export and use the corresponding :literal:`* \ .qml` files to integrate them into your existing TWW 2025 project files
 
 
+Make sure you edit the layer_id in the qgs file to match with what is expected e.g.
+
+  .. figure:: ../images/vw_tww_wastewater_node_properties.png
+
+
 The following views have been adapted and need an adaption of existing TWW 2025 project files:
 
  - Better configuration in `vw_tww_catchment_area_totals` (point-layer)
