@@ -1,4 +1,4 @@
-Digitising channel damages
+digitizing channel damages
 ==========================
 
 Channel damages are managed through the view
@@ -37,7 +37,7 @@ the materialized view ``tww_app.mvw_tww_channel``.
    ``tww_app.mvw_tww_channel`` is a materialized view and may be out of date.
 
    If a channel was recently created, modified, reconnected or assigned to
-   different reaches, refresh the materialized view before digitising
+   different reaches, refresh the materialized view before digitizing
    damages. Otherwise, the channel may be missing or its geometry and topology
    may no longer correspond to the current network data.
 

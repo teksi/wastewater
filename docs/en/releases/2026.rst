@@ -82,7 +82,7 @@ Main features
   .. figure:: ../user-guide/editing/images/selection_extender_2.png
 
 
- - New visualisation of `channel damages <../user-guide/digitizing/digitisingdamages.html>`_
+ - New visualisation of `channel damages <../user-guide/digitizing/digitizingdamages.html>`_
 
    .. figure:: ../user-guide/digitizing/images/vw_tww_channel_damage.png
 
@@ -111,7 +111,7 @@ Documentation
  - Adapt links and make these relative where possible
  - Release Notes 2025.0 added (incl. Video)
  - Release Notes 2026.0 added
- - Add docs for `digitising channel damages <../user-guide/digitizing/digitisingdamages.html>`_
+ - Add docs for `digitizing channel damages <../user-guide/digitizing/digitizingdamages.html>`_
  - Update copyright year
 
 Bug fixes and performance improvements
