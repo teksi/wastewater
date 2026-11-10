@@ -220,8 +220,13 @@
 <img alt="../_images/selection_extender_2.png" src="../_images/selection_extender_2.png" />
 </figure>
 </div></blockquote>
-<ul class="simple">
-<li><p><a class="reference external" href="../user-guide/network-following/index.rst">The “Refresh network topology” is only visible in Admin mode</a> as the query can take quite long for big networks.</p></li>
+<ul>
+<li><p>New visualisation of <a class="reference external" href="../user-guide/digitizing/digitizingdamages.html">channel damages</a></p>
+<figure class="align-default">
+<img alt="../_images/vw_tww_channel_damage.png" src="../_images/vw_tww_channel_damage.png" />
+</figure>
+</li>
+<li><p><a class="reference external" href="../user-guide/network-following/index.html">The “Refresh network topology” is only visible in Admin mode</a> as the query can take quite long for big networks.</p></li>
 <li><p><a class="reference external" href="../user-guide/editing/editing.rst#synchronize-identifiers-of-manholes">Improve identifier synchronization for wastewater structures</a></p></li>
 <li><p><a class="reference external" href="../user-guide/digitizing/digitizingchannels.rst#digitizing">Use wastewater node identifiers in reach wizard identifier creation</a></p></li>
 <li><p>network plan: possibility to label the reaches with I1, I2, …, A1, A2 (reach point labels)</p></li>
@@ -254,6 +259,7 @@
 <li><p>Adapt links and make these relative where possible</p></li>
 <li><p>Release Notes 2025.0 added (incl. Video)</p></li>
 <li><p>Release Notes 2026.0 added</p></li>
+<li><p>Add docs for <a class="reference external" href="../user-guide/digitizing/digitizingdamages.html">digitizing channel damages</a></p></li>
 <li><p>Update copyright year</p></li>
 </ul>
 </div></blockquote>
@@ -322,8 +328,15 @@
 <li><p><cite>tww_od.tww_wastewater_node_symbology</cite></p></li>
 <li><p>new layer <cite>tww_od.profile_geometry</cite></p></li>
 <li><p>Added layer <cite>vw_tww_damage</cite></p></li>
+<li><p>tww_app.vw_tww_damage_channel</p></li>
 </ul>
 <p>Please export and use the corresponding <code class="docutils literal notranslate"><span class="pre">*</span> <span class="pre">.qml</span></code> files to integrate them into your existing TWW 2025 project files</p>
+<p>Make sure you edit the layer_id in the qgs file to match with what is expected e.g.</p>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../_images/vw_tww_wastewater_node_properties.png" src="../_images/vw_tww_wastewater_node_properties.png" />
+</figure>
+</div></blockquote>
 <p>The following views have been adapted and need an adaption of existing TWW 2025 project files:</p>
 <blockquote>
 <div><ul class="simple">
