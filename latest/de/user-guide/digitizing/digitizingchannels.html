@@ -155,9 +155,12 @@
 <ul class="simple">
 <li><p>Das Schnappen auf Abwasserknoten oder andere Haltungen kann in den Feldern <strong>HP_von/nach_FS_Abwassernetzelement</strong> kontrolliert werden.</p></li>
 </ul>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2026.0.1.</span></p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>Wenn im Feld Bezeichnung (reach-identifier) im Reiter Allgemein keine Eingabe gemacht wird, übernimmt TWW die <cite>obj_id</cite> als Bezeichnung (kann später geändert werden). Als Vorgabewert ist die Bezeichnung der Haltung gleich dem <cite>ws_identifier</cite> des Kanals. Als Vorgabewert ist die Bezeichnung der Haltungspunkte gleich der <cite>obj_id</cite> der Haltungspunkte.</p>
+<p>If you do not enter an <cite>identifier</cite> (reach-identifier) in the General tab, TWW will combine the wastewater_node-identifier of the connected nodes (from_node-tonode). If there is no connected node, TWW will use the reachpoint-identifier(s). If you change later the node-identifier or if you connect the reach to another node, the reach-identifier will not change automatic. As default, the <cite>obj_id</cite> of the channel is also the <cite>ws_identifier</cite> of the channel. As default, the reachpoint-identifier is set to the reachpoint-obj_id.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>

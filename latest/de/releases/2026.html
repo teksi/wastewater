@@ -213,7 +213,6 @@
 </ul>
 <blockquote>
 <div><ul class="simple">
-<li><p><a class="reference external" href="../admin-guide/db-production-readiness/index.html">Das OID Prefix kann in TMMT gesetzt werden ab Version 2026.0.1</a></p></li>
 <li><p><a class="reference external" href="../user-guide/editing/editing.html#id1">Das ‚Selektions-Erweiterungs-Tool‘ erlaubt es Nutzern, eine bestehende Selektion des Layers vw_tww_Haltung auf verknüpfte Objekte</a></p></li>
 </ul>
 <blockquote>
@@ -222,7 +221,20 @@
 </figure>
 </div></blockquote>
 <ul class="simple">
-<li><p><a class="reference external" href="../user-guide/network-following/index.html">Die ‚Netzwerk Topologie aktualisieren‘ (SQL-Knopf) ist nur im Admin mode</a>  sichtbar, weil die Abfrage in grossen Netzen sehr lange dauern kann.</p></li>
+<li><p><a class="reference external" href="../user-guide/network-following/index.rst">The ‚Refresh network topology‘ is only visible in Admin mode</a> as the query can take quite long for big networks.</p></li>
+<li><p><a class="reference external" href="../user-guide/editing/editing.rst#synchronize-identifiers-of-manholes">Improve identifier synchronization for wastewater structures</a></p></li>
+<li><p><a class="reference external" href="../user-guide/digitizing/digitizingchannels.rst#digitizing">Use wastewater node identifiers in reach wizard identifier creation</a></p></li>
+<li><p>network plan: possibility to label the reaches with I1, I2, …, A1, A2 (reach point labels)</p></li>
+</ul>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../_images/network_plan_reachpoint_labels.jpg" src="../_images/network_plan_reachpoint_labels.jpg" />
+</figure>
+</div></blockquote>
+<ul class="simple">
+<li><p>configuration in the project-file for <a class="reference external" href="../user-guide/layerexplanations/layerexplanation.rst#layergroup-wastewater-structures">profile-geometries</a> , including a project-saved execute sql to <a class="reference external" href="../user-guide/editing/editing.rst#changing-and-visualizing-a-profile_geometry">visualize profile-geometries</a></p></li>
+<li><p>control length of identifiers while editing with enforced constraints in the attribute form</p></li>
+<li><p><a class="reference external" href="../admin-guide/db-production-readiness/index.rst">The OID Prefix can be set in TMMT from 2026.0.1 on</a></p></li>
 <li><p>erzeugt _CH Kopien der Übersetzungsfiles ( ‚*.qm‘ )</p></li>
 <li><p>Import der VSA Organisationen aus dem Internet falls diese noch nicht vorhanden sind</p></li>
 </ul>
@@ -232,15 +244,15 @@
 <h2>Dokumentation<a class="headerlink" href="#id8" title="Link to this heading"></a></h2>
 <blockquote>
 <div><ul class="simple">
-<li><p>Versions Notizen 2025.0 eingefügt (inkl. Video)</p></li>
-<li><p>Doku: Korrektur betreffend Organisationstabelle in der Konfigurations-Layergruppe</p></li>
+<li><p><a class="reference external" href="../user-guide/layerexplanations/twwproject.rst#when-tww-automatically-updates-the-fields-dataowner-and-provider">New chapter What happens if I change dataowner or provider fields</a></p></li>
+<li><p><a class="reference external" href="../user-guide/How-To/index.rst#common-mistakes">New chapter Common editing mistakes</a></p></li>
+<li><p><a class="reference external" href="../admin-guide/db-production-readiness/index.rst">Add chapter Obj_ID</a></p></li>
+<li><p><a class="reference external" href="../admin-guide/db-label-customisation/index.rst#customisation-of-labeling-and-symbology-behaviour">Document labeling and symbology flags</a></p></li>
+<li><p><a class="reference external" href="../user-guide/layerexplanations/layerexplanation.rst#layergroup-configuration">Correction about organisation table in configuration-layergroup</a></p></li>
 <li><p>Doku: Korrekturen in Kapitel Installation</p></li>
 <li><p>Doku: Versionshinweise</p></li>
-<li><p><a class="reference external" href="../user-guide/layerexplanations/twwproject.html">Doku: Änderungen betreffend Attribut Datenherr</a></p></li>
-<li><p>Doku: Beschriftung- und Symbolisierung-Flags</p></li>
-<li><p>Doku: Kapitel zu Obj_ID eingefügt in Administratorhandbuch/Prepare database for production</p></li>
 <li><p>Links anpassen und – wo möglich – relativ gestalten</p></li>
-<li><p>Doku: Liste häufiger Fehler in Benutzerhandbuch/How To/Häufige Fehler</p></li>
+<li><p>Versions Notizen 2025.0 eingefügt (inkl. Video)</p></li>
 <li><p>Versions Notizen 2026.0 eingefügt</p></li>
 <li><p>Update copyright year</p></li>
 </ul>
@@ -251,7 +263,6 @@
 <blockquote>
 <div><ul class="simple">
 <li><p>Schnappen funktioniert bei neu erstellten Abwasserknoten nicht.</p></li>
-<li><p>Verbesserung der Bezeichnung-Synchronisation für Abwasserbauwerke (<a class="reference external" href="https://github.com/teksi/wastewater/pull/904#issuecomment-3723192972">https://github.com/teksi/wastewater/pull/904#issuecomment-3723192972</a>)</p></li>
 <li><p>pg2ili als App-Schema behandeln und die Rollenvergabe korrigieren</p></li>
 <li><p>Drop schema if exists</p></li>
 <li><p>Support für verschiedene SRID - SRID als Parameter (TMMT)</p></li>
@@ -264,7 +275,6 @@
 <li><p>Separate Symbolisierung und Beschriftungen</p></li>
 <li><p>Verbesserungen bei der Netzwerkaktualisierung</p></li>
 <li><p>Korrigiere Haltungs-View Einschränkungen</p></li>
-<li><p>Benutze Abwasserknotenbezeichnungen für die Haltungsbezeichnungen bei neuen Haltungen</p></li>
 <li><p>Fix SWMM input creation</p></li>
 <li><p>Materialized views gleichzeitig aktualisieren</p></li>
 <li><p>Korrigiere Haltungspunkt-Beschriftungen</p></li>
@@ -329,10 +339,16 @@
 <li><p>Neue Beziehung <cite>pipe_profile.obj_id</cite> to <cite>profile_geometry.fk_pipeprofile</cite></p></li>
 <li><p><cite>profile_geometry</cite> (Rohrprofil_Geometrie) Attributformular konfiguriert</p></li>
 <li><p><cite>Rohrprofil</cite> Attributformular (Rohrprofil_Geometrie Subtabelle nur für die Profiltypen Spezialprofil, Maulprofil, offenes_Profil)</p></li>
+<li><p>Neu ein SQL  „visualize profile_geometry“ für den Aufruf aus SQL ausführen</p></li>
 <li><p><cite>vw_tww_weitere_Abwasserbauwerke</cite>: Feld wn_fk_wastewater_structure` gibt es nicht mehr in der View</p></li>
 <li><p>Alle Bezeichnungsfelder: Neu mit erzwungener Restriktion <cite>length(„identifier“ )&lt;=nn or „identifier“ is NULL</cite> (sonst verliert man alle Änderungen, wenn die Bezeichnung zu lang ist)</p></li>
-<li><p>Neu ein SQL  „visualize profile_geometry“ für den Aufruf aus SQL ausführen</p></li>
+</ul>
+<blockquote>
+<div><ul class="simple">
 <li><p><cite>vw_tww_Abwasserbauwerk</cite>: tww_is_primary, tww_has_log_card, _owner_organisation_type` sind nicht editierbar, owner_organisation_type` konfiguriert als Wertbeziehung</p></li>
+</ul>
+</div></blockquote>
+<ul class="simple">
 <li><p><cite>vw_tww_weitere Abwasserbauwerke</cite>: <cite>reach_point_label</cite>, <cite>tww_is_primary</cite>, <cite>_channel_usage_current</cite>, <cite>_channel_function_hierarchic</cite>, <cite>_owner_organisation_type</cite> sind nicht editierbar. <cite>_channel_usage_current</cite>, <cite>_channel_function_hierarchic</cite>, <cite>owner_organisation_type</cite> konfiguriert als Wertbeziehung</p></li>
 <li><p><cite>vw_Abwasserbauwerk</cite> : <cite>tww_is_primary</cite>, <cite>_channel_usage_current</cite>, <cite>_channel_function_hierarchic</cite>, <cite>_owner_organisation_type</cite> sind nicht editierbar. <cite>_channel_usage_current</cite>, <cite>_channel_function_hierarchic</cite>, <cite>owner_organisation_type</cite> konfiguriert als Wertbeziehung</p></li>
 <li><p><cite>vw_tww_Haltung</cite>: <cite>owner_organisation_type</cite> sind nicht editierbar. <cite>owner_organisation_type</cite> konfiguriert als Wertbeziehung</p></li>

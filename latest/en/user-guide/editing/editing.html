@@ -65,6 +65,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#change-multiple-records-at-once">Change multiple records at once</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#saving-changes">Saving changes</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#changing-wastewater-structure-type-ws-type">Changing Wastewater Structure Type (ws_type)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#changing-and-visualizing-a-profile-geometry">Changing and visualizing a profile_geometry</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#split-a-reach-channel-into-different-reaches">Split a reach (channel) into different reaches</a></li>
 </ul>
 </li>
@@ -491,6 +492,32 @@ To explain, that it really matters, there was the following test:</p>
 <p class="admonition-title">Note</p>
 <p>You can not change a point - wastewater structure (e.g. manhole) to a line wastewater structure (channel) or vice versa.</p>
 </div>
+<div class="versionadded" id="visualize-profile-geometry">
+<p><span class="versionmodified added">Added in version 2026.0.1.</span></p>
+</div>
+</section>
+<section id="changing-and-visualizing-a-profile-geometry">
+<h2>Changing and visualizing a profile_geometry<a class="headerlink" href="#changing-and-visualizing-a-profile-geometry" title="Link to this heading"></a></h2>
+<p>Profile geometries can be defined for pipe profiles of <strong>type</strong> special, mouth or open.</p>
+<p>The detailpoints can be visualized with a sql-expression, that is already saved in the project.</p>
+<ul class="simple">
+<li><p>right click on any layer an choose “Execute SQL…”</p></li>
+<li><p>delete the sql-expression, that is already written in the field and choose in the rightmost tool <strong>visualize profile_geometry</strong></p></li>
+</ul>
+<figure class="align-default">
+<a class="reference internal image-reference" href="../../_images/profile_geometry_stored_sql.jpg"><img alt="../../_images/profile_geometry_stored_sql.jpg" height="150" src="../../_images/profile_geometry_stored_sql.jpg" width="335" />
+</a>
+</figure>
+<ul class="simple">
+<li><p>choose Execute, Load as new layer and enable the Geometry column</p></li>
+</ul>
+<figure class="align-default">
+<a class="reference internal image-reference" href="../../_images/profile_geometry_load_layer.jpg"><img alt="../../_images/profile_geometry_load_layer.jpg" height="242" src="../../_images/profile_geometry_load_layer.jpg" width="336" />
+</a>
+</figure>
+<ul class="simple">
+<li><p>Load Layer creates a new point layer with the detailpoints. Zoom to the new layer</p></li>
+</ul>
 </section>
 <section id="split-a-reach-channel-into-different-reaches">
 <h2>Split a reach (channel) into different reaches<a class="headerlink" href="#split-a-reach-channel-into-different-reaches" title="Link to this heading"></a></h2>

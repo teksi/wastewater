@@ -156,9 +156,12 @@ Ainsi, pour numériser une conduite simple comportant 2 points, il faudra deux c
 <ul class="simple">
 <li><p>Contrôlez l’accrochage aux noeuds ou autres tronçons du réseau assainissement dans les champs <strong>rp_de/vers_fk_assainissement_element_reseau</strong></p></li>
 </ul>
+<div class="versionadded">
+<p><span class="versionmodified added">Ajouté dans la version 2026.0.1.</span></p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Si vous ne saisissez pas d’<cite>identifier</cite> (identifiant du tronçon) dans l’onglet General, TWW utilisera automatiquement l’<cite>obj_id</cite> comme identifiant (ce paramètre peut être modifié ultérieurement). Par défaut, l’<cite>identifier</cite> du tronçon est également utilisé comme <cite>ws_identifier</cite> du canal. Par défaut également, l’identifiant du point de tronçon « reachpoint » est défini sur le obj_id du point de tronçon.</p>
+<p>If you do not enter an <cite>identifier</cite> (reach-identifier) in the General tab, TWW will combine the wastewater_node-identifier of the connected nodes (from_node-tonode). If there is no connected node, TWW will use the reachpoint-identifier(s). If you change later the node-identifier or if you connect the reach to another node, the reach-identifier will not change automatic. As default, the <cite>obj_id</cite> of the channel is also the <cite>ws_identifier</cite> of the channel. As default, the reachpoint-identifier is set to the reachpoint-obj_id.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>

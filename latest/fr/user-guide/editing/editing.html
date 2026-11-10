@@ -66,6 +66,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#change-multiple-records-at-once">Modifier plusieurs enregistrements simultanément</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#saving-changes">Sauver les modifications</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#changing-wastewater-structure-type-ws-type">Modification du type de wastewater structure (ws_type).</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#changing-and-visualizing-a-profile-geometry">Changing and visualizing a profile_geometry</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#split-a-reach-channel-into-different-reaches">Séparer un tronçon (conduite) en différents tronçons</a></li>
 </ul>
 </li>
@@ -480,6 +481,32 @@ si un couvercle avec le même identifiant existe déjà, aucune création + noti
 <p class="admonition-title">Note</p>
 <p>Vous ne pouvez pas changer un élément ponctuel assainissement (p.ex. regard) en élément linéaire assainissement (p.ex. conduite) ou vice versa.</p>
 </div>
+<div class="versionadded" id="visualize-profile-geometry">
+<p><span class="versionmodified added">Ajouté dans la version 2026.0.1.</span></p>
+</div>
+</section>
+<section id="changing-and-visualizing-a-profile-geometry">
+<h2>Changing and visualizing a profile_geometry<a class="headerlink" href="#changing-and-visualizing-a-profile-geometry" title="Lien vers cette rubrique"></a></h2>
+<p>Profile geometries can be defined for pipe profiles of <strong>type</strong> special, mouth or open.</p>
+<p>The detailpoints can be visualized with a sql-expression, that is already saved in the project.</p>
+<ul class="simple">
+<li><p>right click on any layer an choose « Execute SQL… »</p></li>
+<li><p>delete the sql-expression, that is already written in the field and choose in the rightmost tool <strong>visualize profile_geometry</strong></p></li>
+</ul>
+<figure class="align-default">
+<a class="reference internal image-reference" href="../../_images/profile_geometry_stored_sql.jpg"><img alt="../../_images/profile_geometry_stored_sql.jpg" height="150" src="../../_images/profile_geometry_stored_sql.jpg" width="335" />
+</a>
+</figure>
+<ul class="simple">
+<li><p>choose Execute, Load as new layer and enable the Geometry column</p></li>
+</ul>
+<figure class="align-default">
+<a class="reference internal image-reference" href="../../_images/profile_geometry_load_layer.jpg"><img alt="../../_images/profile_geometry_load_layer.jpg" height="242" src="../../_images/profile_geometry_load_layer.jpg" width="336" />
+</a>
+</figure>
+<ul class="simple">
+<li><p>Load Layer creates a new point layer with the detailpoints. Zoom to the new layer</p></li>
+</ul>
 </section>
 <section id="split-a-reach-channel-into-different-reaches">
 <h2>Séparer un tronçon (conduite) en différents tronçons<a class="headerlink" href="#split-a-reach-channel-into-different-reaches" title="Lien vers cette rubrique"></a></h2>

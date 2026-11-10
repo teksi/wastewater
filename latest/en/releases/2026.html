@@ -212,7 +212,6 @@
 </ul>
 <blockquote>
 <div><ul class="simple">
-<li><p><a class="reference external" href="../admin-guide/db-production-readiness/index.html">The OID Prefix can be set in TMMT from 2026.0.1 on</a></p></li>
 <li><p><a class="reference external" href="../user-guide/editing/editing.html#id1">The ‘Extend selection tool’ allows users to expand a selection made on the vw_tww_reach layer to related objects</a></p></li>
 </ul>
 <blockquote>
@@ -221,7 +220,20 @@
 </figure>
 </div></blockquote>
 <ul class="simple">
-<li><p><a class="reference external" href="../user-guide/network-following/index.html">The ‘Refresh network topology’ is only visible in Admin mode</a> as the query can take quite long for big networks.</p></li>
+<li><p><a class="reference external" href="../user-guide/network-following/index.rst">The ‘Refresh network topology’ is only visible in Admin mode</a> as the query can take quite long for big networks.</p></li>
+<li><p><a class="reference external" href="../user-guide/editing/editing.rst#synchronize-identifiers-of-manholes">Improve identifier synchronization for wastewater structures</a></p></li>
+<li><p><a class="reference external" href="../user-guide/digitizing/digitizingchannels.rst#digitizing">Use wastewater node identifiers in reach wizard identifier creation</a></p></li>
+<li><p>network plan: possibility to label the reaches with I1, I2, …, A1, A2 (reach point labels)</p></li>
+</ul>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../_images/network_plan_reachpoint_labels.jpg" src="../_images/network_plan_reachpoint_labels.jpg" />
+</figure>
+</div></blockquote>
+<ul class="simple">
+<li><p>configuration in the project-file for <a class="reference external" href="../user-guide/layerexplanations/layerexplanation.rst#layergroup-wastewater-structures">profile-geometries</a> , including a project-saved execute sql to <a class="reference external" href="../user-guide/editing/editing.rst#changing-and-visualizing-a-profile_geometry">visualize profile-geometries</a></p></li>
+<li><p>control length of identifiers while editing with enforced constraints in the attribute form</p></li>
+<li><p><a class="reference external" href="../admin-guide/db-production-readiness/index.rst">The OID Prefix can be set in TMMT from 2026.0.1 on</a></p></li>
 <li><p>create _CH copies of translation files ( ‘*.qm’ )</p></li>
 <li><p>Import VSA organisation from internet if not present</p></li>
 </ul>
@@ -231,15 +243,15 @@
 <h2>Documentation<a class="headerlink" href="#id8" title="Link to this heading"></a></h2>
 <blockquote>
 <div><ul class="simple">
-<li><p>Release Notes 2025.0 added (incl. Video)</p></li>
-<li><p>Docu: Correction about organisation table in configuration-layergroup</p></li>
+<li><p><a class="reference external" href="../user-guide/layerexplanations/twwproject.rst#when-tww-automatically-updates-the-fields-dataowner-and-provider">New chapter What happens if I change dataowner or provider fields</a></p></li>
+<li><p><a class="reference external" href="../user-guide/How-To/index.rst#common-mistakes">New chapter Common editing mistakes</a></p></li>
+<li><p><a class="reference external" href="../admin-guide/db-production-readiness/index.rst">Add chapter Obj_ID</a></p></li>
+<li><p><a class="reference external" href="../admin-guide/db-label-customisation/index.rst#customisation-of-labeling-and-symbology-behaviour">Document labeling and symbology flags</a></p></li>
+<li><p><a class="reference external" href="../user-guide/layerexplanations/layerexplanation.rst#layergroup-configuration">Correction about organisation table in configuration-layergroup</a></p></li>
 <li><p>Fix installation documentation</p></li>
 <li><p>Versionized docs</p></li>
-<li><p><a class="reference external" href="../user-guide/layerexplanations/twwproject.html">Doc changes in dataowner fields</a></p></li>
-<li><p>Document labeling and symbology flags</p></li>
-<li><p>Add chapter Obj_ID in TWW docs/en/admin-guide/db-production-readiness/index.rst</p></li>
 <li><p>Adapt links and make these relative where possible</p></li>
-<li><p>List common editing mistakes in docs</p></li>
+<li><p>Release Notes 2025.0 added (incl. Video)</p></li>
 <li><p>Release Notes 2026.0 added</p></li>
 <li><p>Update copyright year</p></li>
 </ul>
@@ -250,7 +262,6 @@
 <blockquote>
 <div><ul class="simple">
 <li><p>Snapping fails on freshly created wastewater nodes</p></li>
-<li><p>Improve identifier synchronization for wastewater structures (<a class="reference external" href="https://github.com/teksi/wastewater/pull/904#issuecomment-3723192972">https://github.com/teksi/wastewater/pull/904#issuecomment-3723192972</a>)</p></li>
 <li><p>Handle pg2ili as an app schema and fix roles granting</p></li>
 <li><p>Drop schema if exists</p></li>
 <li><p>Support of different SRID - SRID as a parameter</p></li>
@@ -263,7 +274,6 @@
 <li><p>Separate symbology and labels</p></li>
 <li><p>Improvements on network refresh</p></li>
 <li><p>Fix reach view limitations</p></li>
-<li><p>use wastewater node identifiers in reach wizard identifier creation</p></li>
 <li><p>Fix SWMM input creation</p></li>
 <li><p>Refresh materialized views concurrently</p></li>
 <li><p>Fix reach point label generation</p></li>
@@ -328,10 +338,16 @@
 <li><p>new relation <cite>pipe_profile.obj_id</cite> to <cite>profile_geometry.fk_pipeprofile</cite></p></li>
 <li><p><cite>profile_geometry</cite> Attribute form</p></li>
 <li><p><cite>pipe_profile</cite> Attribute form (profile_geometry subtable only for profile_type special, mouth, open)</p></li>
+<li><p>added a project-stored SQL “visualize profile_geometry”</p></li>
 <li><p><cite>vw_tww_additional_ws</cite>: field wn_fk_wastewater_structure` no more in view</p></li>
 <li><p>all identifier-fields: new enforced constraints <cite>length(“identifier” )&lt;=nn or “identifier” is NULL</cite> (otherwise you loose all entries, if the identifier is to long)</p></li>
-<li><p>added a project-stored SQL “visualize profile_geometry”</p></li>
+</ul>
+<blockquote>
+<div><ul class="simple">
 <li><p><cite>vw_tww_wastewater_structure</cite>: tww_is_primary, tww_has_log_card, _owner_organisation_type` is not editable, owner_organisation_type` configured as value relation</p></li>
+</ul>
+</div></blockquote>
+<ul class="simple">
 <li><p><cite>vw_tww_additional_wws</cite>: <cite>reach_point_label</cite>, <cite>tww_is_primary</cite>, <cite>_channel_usage_current</cite>, <cite>_channel_function_hierarchic</cite>, <cite>_owner_organisation_type</cite> is not editable. <cite>_channel_usage_current</cite>, <cite>_channel_function_hierarchic</cite>, <cite>owner_organisation_type</cite> configured as value relation</p></li>
 <li><p><cite>vw_wastewater_structure</cite> : <cite>tww_is_primary</cite>, <cite>_channel_usage_current</cite>, <cite>_channel_function_hierarchic</cite>, <cite>_owner_organisation_type</cite> is not editable. <cite>_channel_usage_current</cite>, <cite>_channel_function_hierarchic</cite>, <cite>owner_organisation_type</cite> configured as value relation</p></li>
 <li><p><cite>vw_tww_reach</cite>: <cite>owner_organisation_type</cite> is not editable. <cite>owner_organisation_type</cite> configured as value relation</p></li>
