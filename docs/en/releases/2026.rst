@@ -77,30 +77,39 @@ Main features
 - Check the `installation guide <../installation-guide/index.html>`__ for more information on how to install TEKSI wastewater module (TWW) via TMMT.
 
 
- - `The OID Prefix can be set in TMMT from 2026.0.1 on <../admin-guide/db-production-readiness/index.html>`_
  - `The 'Extend selection tool' allows users to expand a selection made on the vw_tww_reach layer to related objects <../user-guide/editing/editing.html#id1>`_
 
   .. figure:: ../user-guide/editing/images/selection_extender_2.png
+
 
  - New visualisation of `channel damages <../user-guide/digitizing/digitisingdamages.html>`_
 
    .. figure:: ../user-guide/editing/images/vw_tww_channel_damage.png
 
  - `The 'Refresh network topology' is only visible in Admin mode <../user-guide/network-following/index.html>`_ as the query can take quite long for big networks.
+ - `Improve identifier synchronization for wastewater structures <../user-guide/editing/editing.rst#synchronize-identifiers-of-manholes>`_
+ - `Use wastewater node identifiers in reach wizard identifier creation <../user-guide/digitizing/digitizingchannels.rst#digitizing>`_
+ - network plan: possibility to label the reaches with I1, I2, ..., A1, A2 (reach point labels)
+
+  .. figure:: ../user-guide/editing/images/network_plan_reachpoint_labels.jpg
+
+ - configuration in the project-file for `profile-geometries <../user-guide/layerexplanations/layerexplanation.rst#layergroup-wastewater-structures>`_ , including a project-saved execute sql to `visualize profile-geometries <../user-guide/editing/editing.rst#changing-and-visualizing-a-profile_geometry>`_
+ - control length of identifiers while editing with enforced constraints in the attribute form
+ - `The OID Prefix can be set in TMMT from 2026.0.1 on <../admin-guide/db-production-readiness/index.rst>`_
  - create _CH copies of translation files ( '\*.qm' )
  - Import VSA organisation from internet if not present
 
 Documentation
 --------------
- - Release Notes 2025.0 added (incl. Video)
- - Docu: Correction about organisation table in configuration-layergroup
+ - `New chapter What happens if I change dataowner or provider fields <../user-guide/layerexplanations/twwproject.rst#when-tww-automatically-updates-the-fields-dataowner-and-provider>`_
+ - `New chapter Common editing mistakes <../user-guide/How-To/index.rst#common-mistakes>`_
+ - `Add chapter Obj_ID <../admin-guide/db-production-readiness/index.rst>`_
+ - `Document labeling and symbology flags <../admin-guide/db-label-customisation/index.rst#customisation-of-labeling-and-symbology-behaviour>`_
+ - `Correction about organisation table in configuration-layergroup <../user-guide/layerexplanations/layerexplanation.rst#layergroup-configuration>`_
  - Fix installation documentation
  - Versionized docs
- - `Doc changes in dataowner fields <../user-guide/layerexplanations/twwproject.html>`_
- - Document labeling and symbology flags
- - Add chapter Obj_ID in TWW docs/en/admin-guide/db-production-readiness/index.rst
  - Adapt links and make these relative where possible
- - List common editing mistakes in docs
+ - Release Notes 2025.0 added (incl. Video)
  - Release Notes 2026.0 added
  - Add docs for `digitising channel damages <../user-guide/digitizing/digitisingdamages.html>`_
  - Update copyright year
@@ -108,7 +117,6 @@ Documentation
 Bug fixes and performance improvements
 -----------------------------------------
  - Snapping fails on freshly created wastewater nodes
- - Improve identifier synchronization for wastewater structures (https://github.com/teksi/wastewater/pull/904#issuecomment-3723192972)
  - Handle pg2ili as an app schema and fix roles granting
  - Drop schema if exists
  - Support of different SRID - SRID as a parameter
@@ -121,7 +129,7 @@ Bug fixes and performance improvements
  - Separate symbology and labels
  - Improvements on network refresh
  - Fix reach view limitations
- - use wastewater node identifiers in reach wizard identifier creation
+
  - Fix SWMM input creation
  - Refresh materialized views concurrently
  - Fix reach point label generation
@@ -186,10 +194,10 @@ The following views have been adapted and need an adaption of existing TWW 2025 
  - new relation `pipe_profile.obj_id` to `profile_geometry.fk_pipeprofile`
  - `profile_geometry` Attribute form
  - `pipe_profile` Attribute form (profile_geometry subtable only for profile_type special, mouth, open)
+ - added a project-stored SQL "visualize profile_geometry"
  - `vw_tww_additional_ws`: field wn_fk_wastewater_structure` no more in view
  - all identifier-fields: new enforced constraints `length("identifier" )<=nn or "identifier" is NULL` (otherwise you loose all entries, if the identifier is to long)
- - added a project-stored SQL "visualize profile_geometry"
- - `vw_tww_wastewater_structure`: tww_is_primary, tww_has_log_card, _owner_organisation_type` is not editable, owner_organisation_type` configured as value relation
+  - `vw_tww_wastewater_structure`: tww_is_primary, tww_has_log_card, _owner_organisation_type` is not editable, owner_organisation_type` configured as value relation
  - `vw_tww_additional_wws`: `reach_point_label`, `tww_is_primary`, `_channel_usage_current`, `_channel_function_hierarchic`, `_owner_organisation_type` is not editable. `_channel_usage_current`, `_channel_function_hierarchic`, `owner_organisation_type` configured as value relation
  - `vw_wastewater_structure` : `tww_is_primary`, `_channel_usage_current`, `_channel_function_hierarchic`, `_owner_organisation_type` is not editable. `_channel_usage_current`, `_channel_function_hierarchic`, `owner_organisation_type` configured as value relation
  - `vw_tww_reach`: `owner_organisation_type` is not editable. `owner_organisation_type` configured as value relation
