@@ -5,7 +5,7 @@ Channel damages are managed through the view
 ``tww_app.vw_tww_damage_channel``.
 
 
-   .. figure:: ../user-guide/editing/images/vw_tww_channel_damage.png
+   .. figure:: /images/vw_tww_channel_damage.png
 
 This view calculates the damage geometry from:
 
