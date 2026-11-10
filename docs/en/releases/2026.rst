@@ -176,7 +176,7 @@ Please export and use the corresponding :literal:`* \ .qml` files to integrate t
 
 Make sure you edit the layer_id in the qgs file to match with what is expected e.g.
 
-  .. figure:: /images/vw_tww_wastewater_node_properties.png
+  .. figure:: images/vw_tww_wastewater_node_properties.png
 
 
 The following views have been adapted and need an adaption of existing TWW 2025 project files:
