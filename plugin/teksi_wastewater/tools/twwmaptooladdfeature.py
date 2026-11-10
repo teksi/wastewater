@@ -47,7 +47,6 @@ from qgis.gui import (
     QgsAttributeEditorContext,
     QgsMapCanvas,
     QgsMapCanvasSnappingUtils,
-    QgsMapTool,
     QgsMapToolAdvancedDigitizing,
     QgsMessageBar,
     QgsRubberBand,
@@ -62,6 +61,7 @@ from qgis.PyQt.QtWidgets import (
     QGridLayout,
     QLabel,
     QLineEdit,
+    QMessageBox,
 )
 
 from ..utils.twwlayermanager import TwwLayerManager
@@ -424,125 +424,416 @@ class TwwMapToolAddReach(TwwMapToolAddFeature):
             return feat.attribute(f"rp_{idx}_obj_id")
 
 
-class TwwMapToolDigitizeDrainageChannel(QgsMapTool):
+class TwwMapToolRectangularGeometryBase(QgsMapToolAdvancedDigitizing):
     """
-    This is used to digitize a drainage channel.
+    Base class for rectangular geometry digitizing.
 
-    It lets you digitize two points and then creates a polygon based on these two points
-    by adding an orthogonal offset at each side.
-
-    Input:
-
-       x==============x
-
-    Output:
-
-       ----------------
-       |              |
-       ----------------
-
-    Usage:
-      Connect to the signals deactivated() and geometryDigitized()
-      If geometryDigitized() is called you can use the member variable geometry
-      which will contain a rectangle polygon
-      deactivated() will be emited after a right click
+    Provides:
+      - snapping
+      - replacement validation
+      - length display
+      - rectangle creation
+      - snapping marker
     """
 
     geometryDigitized = pyqtSignal()
 
-    def __init__(self, iface, layer):
-        QgsMapTool.__init__(self, iface.mapCanvas())
+    def __init__(self, iface, layer, ws_oid):
+        QgsMapToolAdvancedDigitizing.__init__(self, iface.mapCanvas(), iface.cadDockWidget())
+
         self.iface = iface
         self.canvas = iface.mapCanvas()
         self.layer = layer
-        self.rubberband = QgsRubberBand(iface.mapCanvas(), QgsWkbTypes.LineGeometry)
+        self.can_start = True
+        self.ws_geom_layer = TwwLayerManager.layer("vw_wastewater_structure")
+        assert self.ws_geom_layer is not None
+        request = QgsFeatureRequest().setFilterExpression(f"obj_id = '{ws_oid}'")
+
+        ws_feature = next(self.ws_geom_layer.getFeatures(request), None)
+        if not ws_feature:
+            raise RuntimeError(self.tr(f"Wastewater structure could not be found. OID: {ws_oid} "))
+
+        geom = ws_feature.geometry()
+        if not (geom is None or geom.isNull()) and not self.validateReplacement():
+            self.can_start = False
+
+        self.geometry = None
+        self.messageBarItem = None
+
+        self.firstPoint = None
+
+        self.rubberband = QgsRubberBand(
+            iface.mapCanvas(),
+            QgsWkbTypes.LineGeometry,
+        )
         self.rubberband.setColor(QColor("#ee5555"))
         self.rubberband.setWidth(2)
-        self.firstPoint = None
-        self.messageBarItem = None
-        self.geometry = None
+
+        self.snapping_marker = None
+
+        self.setAdvancedDigitizingAllowed(True)
+        self.setAutoSnapEnabled(True)
+
+        self.snapping_utils = QgsMapCanvasSnappingUtils(self.iface.mapCanvas())
+
+    # ------------------------------------------------------------------
+    # Common helpers
+    # ------------------------------------------------------------------
+
+    def validateReplacement(self):
+        """
+        Override if detailed_geometry can be checked directly.
+        """
+
+        reply = QMessageBox.question(
+            self.iface.mainWindow(),
+            self.tr("Replace geometry"),
+            self.tr("A detailed geometry already exists.\n\n" "Do you want to replace it?"),
+            QMessageBox.Yes | QMessageBox.No,
+        )
+
+        return reply == QMessageBox.Yes
+
+    def createRectangle(self, lp1, lp2, width):
+        length = math.sqrt(math.pow(lp1.x() - lp2.x(), 2) + math.pow(lp1.y() - lp2.y(), 2))
+
+        if length == 0:
+            return None
+
+        xd = lp2.x() - lp1.x()
+        yd = lp2.y() - lp1.y()
+
+        pt1 = QgsPointXY(
+            lp1.x() + width * (yd / length),
+            lp1.y() - width * (xd / length),
+        )
+
+        pt2 = QgsPointXY(
+            lp1.x() - width * (yd / length),
+            lp1.y() + width * (xd / length),
+        )
+
+        pt3 = QgsPointXY(
+            lp2.x() - width * (yd / length),
+            lp2.y() + width * (xd / length),
+        )
+
+        pt4 = QgsPointXY(
+            lp2.x() + width * (yd / length),
+            lp2.y() - width * (xd / length),
+        )
+
+        return QgsGeometry.fromPolygonXY([[pt1, pt2, pt3, pt4, pt1]])
+
+    def askWidth(self, default_value="0.20"):
+        dlg = QDialog()
+        dlg.setWindowTitle(self.tr("Rectangle Width"))
+
+        dlg.setLayout(QGridLayout())
+
+        dlg.layout().addWidget(QLabel(self.tr("Width [m]")))
+
+        txt = QLineEdit(default_value)
+        dlg.layout().addWidget(txt)
+
+        bb = QDialogButtonBox(
+            QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel
+        )
+
+        dlg.layout().addWidget(bb)
+
+        bb.accepted.connect(dlg.accept)
+        bb.rejected.connect(dlg.reject)
+
+        if not dlg.exec():
+            return None
+
+        try:
+            return float(txt.text()) / 2.0
+        except ValueError:
+            return None
+
+    # ------------------------------------------------------------------
+    # Snapping
+    # ------------------------------------------------------------------
+
+    def configureSnapping(self, layers):
+        self.snapping_configs = []
+
+        for layer in layers:
+
+            config = QgsSnappingConfig()
+            config.setEnabled(True)
+            config.setMode(QgsSnappingConfig.AdvancedConfiguration)
+
+            settings = QgsSnappingConfig.IndividualLayerSettings(
+                True,
+                QgsSnappingConfig.Vertex,
+                10,
+                QgsTolerance.Pixels,
+            )
+
+            config.setIndividualLayerSettings(
+                layer,
+                settings,
+            )
+
+            self.snapping_configs.append(config)
+
+    def snap(self, event):
+
+        for config in self.snapping_configs:
+
+            self.snapping_utils.setConfig(config)
+
+            match = self.snapping_utils.snapToMap(QgsPointXY(event.originalMapPoint()))
+
+            if match.isValid():
+                return QgsPointXY(match.point()), match
+
+        match = self.canvas.snappingUtils().snapToMap(QgsPointXY(event.originalMapPoint()))
+
+        if match.isValid():
+            return QgsPointXY(match.point()), match
+
+        return QgsPointXY(event.originalMapPoint()), match
+
+    def updateSnapMarker(self, match):
+
+        if not match.isValid():
+
+            if self.snapping_marker is not None:
+                self.canvas.scene().removeItem(self.snapping_marker)
+                self.snapping_marker = None
+
+            return
+
+        if self.snapping_marker is None:
+
+            self.snapping_marker = QgsVertexMarker(self.canvas)
+            self.snapping_marker.setPenWidth(3)
+            self.snapping_marker.setColor(QColor(Qt.magenta))
+
+        self.snapping_marker.setCenter(match.point())
+
+    # ------------------------------------------------------------------
+    # Generic map tool methods
+    # ------------------------------------------------------------------
 
     def activate(self):
-        """
-        Map tool is activated
-        """
-        QgsMapTool.activate(self)
+
+        super().activate()
+        if not self.can_start:
+            self.deactivate()
+            return
+
         self.canvas.setCursor(QCursor(Qt.CursorShape.CrossCursor))
-        msgtitle = self.tr("Digitizing Drainage Channel")
-        msg = self.tr("Digitize start and end point. Rightclick to abort.")
-        self.messageBarItem = QgsMessageBar.createMessage(msgtitle, msg)
-        self.iface.messageBar().pushItem(self.messageBarItem)
 
     def deactivate(self):
-        """
-        Map tool is deactivated
-        """
-        QgsMapTool.deactivate(self)
-        self.iface.messageBar().popWidget(self.messageBarItem)
+
+        super().deactivate()
+
         try:
-            self.iface.mapCanvas().scene().removeItem(self.rubberband)
-            del self.rubberband
-        except AttributeError:
-            # Called repeatedly... bail out
+            self.canvas.scene().removeItem(self.rubberband)
+        except Exception:
             pass
+
+        try:
+            self.canvas.scene().removeItem(self.snapping_marker)
+        except Exception:
+            pass
+
         self.canvas.unsetCursor()
+        self.iface.actionIdentify().trigger()
 
     def canvasMoveEvent(self, event):
-        """
-        Mouse is moved: Update rubberband
-        :param event: coordinates etc.
-        """
-        mousepos = event.mapPoint()
-        self.rubberband.movePoint(mousepos)
+
+        mousepos, match = self.snap(event)
+
+        self.updateSnapMarker(match)
+
+        if self.firstPoint:
+            self.rubberband.movePoint(mousepos)
+
+
+# ======================================================================
+# Drainage Channel
+# ======================================================================
+
+
+class TwwMapToolDigitizeDrainageChannel(TwwMapToolRectangularGeometryBase):
+    """
+    Drainage channel:
+
+    * starts automatically at wastewater node
+    * one click for endpoint
+    * width defaults to 0.20m
+    * Ctrl -> custom width
+    """
+
+    def __init__(
+        self,
+        iface,
+        layer,
+        ws_oid,
+    ):
+        super().__init__(iface, layer, ws_oid)
+
+        self.node_layer = TwwLayerManager.layer("vw_tww_wastewater_node")
+        assert self.node_layer is not None
+        self.ws_layer = TwwLayerManager.layer("vw_tww_wastewater_structure")
+        if not self.ws_layer:
+            self.ws_layer = TwwLayerManager.layer("vw_tww_additional_wastewater_structure")
+        assert self.ws_layer is not None
+        request = QgsFeatureRequest().setFilterExpression(f"obj_id = '{ws_oid}'")
+
+        ws_feature = next(self.ws_layer.getFeatures(request), None)
+        if not ws_feature:
+            raise RuntimeError(self.tr(f"Wastewater structure could not be found. OID: {ws_oid} "))
+        wn_oid = ws_feature["wn_obj_id"]
+        request = QgsFeatureRequest().setFilterExpression(f"obj_id = '{wn_oid}'")
+
+        self.wn_feature = next(self.node_layer.getFeatures(request), None)
+        if self.wn_feature:
+            node_point = self.wn_feature.geometry().asPoint()
+
+            self.firstPoint = QgsPointXY(
+                node_point.x(),
+                node_point.y(),
+            )
+        else:
+            QMessageBox.warning(
+                self.iface.mainWindow(),
+                self.tr("Drainage channel"),
+                self.tr("The selected wastewater structure " "has no associated wastewater node."),
+            )
+            return
+
+        self.configureSnapping([])
+
+    def activate(self):
+
+        super().activate()
+
+        self.rubberband.reset()
+
+        self.rubberband.addPoint(self.firstPoint)
+
+        msgtitle = self.tr("Digitize Drainage Channel")
+
+        msg = self.tr(
+            "Click channel endpoint. " "Hold CTRL for custom width. " "Right click to abort."
+        )
+
+        self.messageBarItem = self.iface.messageBar().createMessage(
+            msgtitle,
+            msg,
+        )
+
+        self.iface.messageBar().pushWidget(self.messageBarItem)
 
     def canvasReleaseEvent(self, event):
-        """
-        Canvas is released. This means:
-          * start digitizing
-          * stop digitizing (create a rectangle
-            * if the Ctrl-modifier is pressed, ask for the rectangle width
-        :param event: coordinates etc.
-        """
-        if event.button() == Qt.MouseButton.RightButton:
+
+        if event.button() == Qt.RightButton:
             self.deactivate()
-        else:
-            mousepos = self.canvas.getCoordinateTransform().toMapCoordinates(
-                event.pos().x(), event.pos().y()
-            )
-            self.rubberband.addPoint(mousepos)
-            if self.firstPoint:  # If the first point was set before, we are doing the second one
-                lp1 = self.rubberband.asGeometry().asPolyline()[0]
-                lp2 = self.rubberband.asGeometry().asPolyline()[1]
-                width = 0.1
-                if QApplication.keyboardModifiers() & Qt.ControlModifier:
-                    dlg = QDialog()
-                    dlg.setLayout(QGridLayout())
-                    dlg.layout().addWidget(QLabel(self.tr("Enter width")))
-                    txt = QLineEdit("0.1")
-                    dlg.layout().addWidget(txt)
-                    bb = QDialogButtonBox(
-                        QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel
-                    )
-                    dlg.layout().addWidget(bb)
-                    bb.accepted.connect(dlg.accept)
-                    bb.rejected.connect(dlg.reject)
-                    if dlg.exec():
-                        try:
-                            width = float(txt.text()) / 2
-                        except ValueError:
-                            width = 0.1
+            return
 
-                length = math.sqrt(math.pow(lp1.x() - lp2.x(), 2) + math.pow(lp1.y() - lp2.y(), 2))
-                xd = lp2.x() - lp1.x()
-                yd = lp2.y() - lp1.y()
+        endpoint, _ = self.snap(event)
 
-                pt1 = QgsPointXY(lp1.x() + width * (yd / length), lp1.y() - width * (xd / length))
-                pt2 = QgsPointXY(lp1.x() - width * (yd / length), lp1.y() + width * (xd / length))
-                pt3 = QgsPointXY(lp2.x() - width * (yd / length), lp2.y() + width * (xd / length))
-                pt4 = QgsPointXY(lp2.x() + width * (yd / length), lp2.y() - width * (xd / length))
+        width = 0.10
 
-                self.geometry = QgsGeometry.fromPolygonXY([[pt1, pt2, pt3, pt4, pt1]])
+        if QApplication.keyboardModifiers() & Qt.ControlModifier:
 
-                self.geometryDigitized.emit()
+            custom_width = self.askWidth("0.20")
 
-            self.firstPoint = mousepos
+            if custom_width is None:
+                return
+
+            width = custom_width
+
+        self.geometry = self.createRectangle(
+            self.firstPoint,
+            endpoint,
+            width,
+        )
+
+        if self.geometry:
+
+            self.geometryDigitized.emit()
+
+            self.deactivate()
+
+
+# ======================================================================
+# Generic rectangular detail geometry
+# ======================================================================
+
+
+class TwwMapToolDigitizeRectangularGeometry(TwwMapToolRectangularGeometryBase):
+    """
+    Generic rectangular detail geometry.
+
+    * two clicks
+    * always asks for width
+    * not tied to wastewater node
+    """
+
+    def __init__(self, iface, layer, ws_oid):
+
+        super().__init__(iface, layer, ws_oid)
+
+        self.firstPoint = None
+
+        self.configureSnapping([])
+
+    def activate(self):
+
+        super().activate()
+
+        msgtitle = self.tr("Digitize Rectangular Detail Geometry")
+
+        msg = self.tr(
+            "Digitize start and end point of middle axis. "
+            "Width will be requested afterwards. "
+            "Right click to abort."
+        )
+
+        self.messageBarItem = self.iface.messageBar().createMessage(
+            msgtitle,
+            msg,
+        )
+
+        self.iface.messageBar().pushWidget(self.messageBarItem)
+
+    def canvasReleaseEvent(self, event):
+
+        if event.button() == Qt.RightButton:
+            self.deactivate()
+            return
+
+        point, _ = self.snap(event)
+
+        self.rubberband.addPoint(point)
+
+        if self.firstPoint is None:
+
+            self.firstPoint = point
+
+            return
+
+        width = self.askWidth("1.00")
+
+        if width is None:
+            return
+
+        self.geometry = self.createRectangle(
+            self.firstPoint,
+            point,
+            width,
+        )
+
+        if self.geometry:
+
+            self.geometryDigitized.emit()
+
+            self.deactivate()
