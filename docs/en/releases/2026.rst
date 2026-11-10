@@ -98,7 +98,7 @@ Documentation
  - Adapt links and make these relative where possible
  - List common editing mistakes in docs
  - Release Notes 2026.0 added
- - Add docs for `digitizing channel damages <../user-guide/digitizing/digitisingdamages.html>`_
+ - Add docs for `digitising channel damages <../user-guide/digitizing/digitisingdamages.html>`_
  - Update copyright year
 
 Bug fixes and performance improvements
