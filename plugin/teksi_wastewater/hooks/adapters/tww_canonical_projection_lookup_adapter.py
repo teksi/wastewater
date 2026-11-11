@@ -1,12 +1,11 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Mapping, Sequence
+from typing import Any
+from collections.abc import Mapping, Sequence
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-
-
 from teksi_hooks.models.mapping import (
     CanonicalViewMapping,
 )
@@ -14,6 +13,7 @@ from teksi_wastewater.hooks.capabilities.tww_canonical_projection_capability imp
     ProjectionValueCandidate,
     TwwCanonicalProjectionLookupCapability,
 )
+
 from .tww_canonical_model_adapter import (
     TwwCanonicalModelAdapter,
 )
@@ -36,25 +36,23 @@ class TwwCanonicalProjectionLookupAdapter(
     adapter does not create, commit, roll back, or close sessions.
     """
 
-    canonical_model_adapter: (
-        TwwCanonicalModelAdapter
-    )
+    canonical_model_adapter: TwwCanonicalModelAdapter
 
     organisation_view_schema: str = "tww_app"
 
-    organisation_view_name: str = (
-        "vw_agxx_organisation"
-    )
+    organisation_view_name: str = "vw_agxx_organisation"
 
     organisation_agxx_attribute: str = "obj_id"
 
     organisation_oid_attribute: str = "_tww_obj_id"
 
-    value_list_classes: Mapping[
-        str,
-        Any,
-    ] | None = None
-
+    value_list_classes: (
+        Mapping[
+            str,
+            Any,
+        ]
+        | None
+    ) = None
 
     def canonical_view_class(
         self,
@@ -64,20 +62,15 @@ class TwwCanonicalProjectionLookupAdapter(
         Return the mapped ORM class for one canonical comparison view.
         """
 
-        return (
-            self.canonical_model_adapter
-            .canonical_view_class(
-                view,
-            )
+        return self.canonical_model_adapter.canonical_view_class(
+            view,
         )
 
     def canonical_view_rows_by_identity(
         self,
         *,
         view,
-        identities: Sequence[
-            Any,
-        ],
+        identities: Sequence[Any,],
         session: Session,
     ) -> dict[
         Any,
@@ -87,22 +80,17 @@ class TwwCanonicalProjectionLookupAdapter(
         Return canonical comparison rows keyed by configured identity.
         """
 
-        return (
-            self.canonical_model_adapter
-            .canonical_view_rows_by_identity(
-                view=view,
-                identities=identities,
-                session=session,
-            )
+        return self.canonical_model_adapter.canonical_view_rows_by_identity(
+            view=view,
+            identities=identities,
+            session=session,
         )
 
     def organisation_oids_by_agxx_oid(
         self,
         *,
         session: Session,
-        agxx_oids: Sequence[
-            str,
-        ],
+        agxx_oids: Sequence[str,],
     ) -> Mapping[
         str,
         str,
@@ -133,20 +121,11 @@ class TwwCanonicalProjectionLookupAdapter(
         if not unique_agxx_oids:
             return {}
 
-        organisation_view = (
-            self.canonical_model_adapter
-            .canonical_view_class(
-                CanonicalViewMapping(
-                    schema=(
-                        self.organisation_view_schema
-                    ),
-                    name=(
-                        self.organisation_view_name
-                    ),
-                    target_identity_attribute=(
-                        self.organisation_agxx_attribute
-                    ),
-                )
+        organisation_view = self.canonical_model_adapter.canonical_view_class(
+            CanonicalViewMapping(
+                schema=(self.organisation_view_schema),
+                name=(self.organisation_view_name),
+                target_identity_attribute=(self.organisation_agxx_attribute),
             )
         )
 
@@ -198,10 +177,7 @@ class TwwCanonicalProjectionLookupAdapter(
             agxx_oid,
             organisation_oid,
         ) in rows:
-            if (
-                agxx_oid is None
-                or organisation_oid is None
-            ):
+            if agxx_oid is None or organisation_oid is None:
                 continue
 
             normalized_agxx_oid = str(
@@ -212,21 +188,14 @@ class TwwCanonicalProjectionLookupAdapter(
                 organisation_oid,
             ).strip()
 
-            if (
-                not normalized_agxx_oid
-                or not normalized_organisation_oid
-            ):
+            if not normalized_agxx_oid or not normalized_organisation_oid:
                 continue
 
             existing = result.get(
                 normalized_agxx_oid,
             )
 
-            if (
-                existing is not None
-                and existing
-                != normalized_organisation_oid
-            ):
+            if existing is not None and existing != normalized_organisation_oid:
                 raise RuntimeError(
                     "Several canonical organisations exist "
                     "for AGXX OID "
@@ -235,9 +204,7 @@ class TwwCanonicalProjectionLookupAdapter(
                     f"{normalized_organisation_oid!r}."
                 )
 
-            result[
-                normalized_agxx_oid
-            ] = normalized_organisation_oid
+            result[normalized_agxx_oid] = normalized_organisation_oid
 
         return result
 
@@ -246,9 +213,7 @@ class TwwCanonicalProjectionLookupAdapter(
         *,
         session: Session,
         relation: str,
-        values: Sequence[
-            str,
-        ],
+        values: Sequence[str,],
         value_attribute: str = "value_de",
         code_attribute: str = "code",
     ) -> Mapping[
@@ -310,11 +275,7 @@ class TwwCanonicalProjectionLookupAdapter(
             None,
         )
 
-        if (
-            target_class_column is None
-        ) != (
-            target_attribute_column is None
-        ):
+        if (target_class_column is None) != (target_attribute_column is None):
             raise AttributeError(
                 "Value-list relation "
                 f"{relation!r} must expose either both "
@@ -374,12 +335,7 @@ class TwwCanonicalProjectionLookupAdapter(
                     normalized_value,
                 )
 
-                if (
-                    existing is not None
-                    and existing != (
-                        candidate,
-                    )
-                ):
+                if existing is not None and existing != (candidate,):
                     raise RuntimeError(
                         "Value-list relation "
                         f"{relation!r} returned several codes "
@@ -387,11 +343,7 @@ class TwwCanonicalProjectionLookupAdapter(
                         f"{normalized_value!r}."
                     )
 
-                result[
-                    normalized_value
-                ] = (
-                    candidate,
-                )
+                result[normalized_value] = (candidate,)
 
             return result
 
@@ -410,9 +362,7 @@ class TwwCanonicalProjectionLookupAdapter(
 
         candidate_lists: dict[
             str,
-            list[
-                ProjectionValueCandidate,
-            ],
+            list[ProjectionValueCandidate,],
         ] = {}
 
         for (
@@ -439,15 +389,10 @@ class TwwCanonicalProjectionLookupAdapter(
                     normalized_target_class_id = None
 
                 elif "." in normalized_target_class_id:
-                    normalized_target_class_id = (
-                        normalized_target_class_id
-                        .rsplit(
-                            ".",
-                            maxsplit=1,
-                        )[
-                            -1
-                        ]
-                    )
+                    normalized_target_class_id = normalized_target_class_id.rsplit(
+                        ".",
+                        maxsplit=1,
+                    )[-1]
 
             normalized_target_attribute_id = None
 
@@ -461,12 +406,8 @@ class TwwCanonicalProjectionLookupAdapter(
 
             candidate = ProjectionValueCandidate(
                 value=canonical_code,
-                target_class_id=(
-                    normalized_target_class_id
-                ),
-                target_attribute_id=(
-                    normalized_target_attribute_id
-                ),
+                target_class_id=(normalized_target_class_id),
+                target_attribute_id=(normalized_target_attribute_id),
             )
 
             candidates = candidate_lists.setdefault(
@@ -495,9 +436,7 @@ class TwwCanonicalProjectionLookupAdapter(
         session: Session,
         class_id: str,
         identity_attribute: str,
-        identities: Sequence[
-            Any,
-        ],
+        identities: Sequence[Any,],
     ) -> Mapping[
         Any,
         Any,
@@ -506,11 +445,8 @@ class TwwCanonicalProjectionLookupAdapter(
         Return canonical objects indexed by one identity attribute.
         """
 
-        canonical_class = (
-            self.canonical_model_adapter
-            .canonical_class(
-                class_id,
-            )
+        canonical_class = self.canonical_model_adapter.canonical_class(
+            class_id,
         )
 
         identity_column = getattr(
@@ -527,11 +463,7 @@ class TwwCanonicalProjectionLookupAdapter(
             )
 
         unique_identities = tuple(
-            dict.fromkeys(
-                identity
-                for identity in identities
-                if identity is not None
-            )
+            dict.fromkeys(identity for identity in identities if identity is not None)
         )
 
         if not unique_identities:
@@ -567,9 +499,7 @@ class TwwCanonicalProjectionLookupAdapter(
                     f"for identity {identity!r}."
                 )
 
-            result[
-                identity
-            ] = row
+            result[identity] = row
 
         return result
 
@@ -582,10 +512,7 @@ class TwwCanonicalProjectionLookupAdapter(
         """
 
         if self.value_list_classes is None:
-            raise RuntimeError(
-                "No canonical value-list ORM classes "
-                "are configured."
-            )
+            raise RuntimeError("No canonical value-list ORM classes " "are configured.")
 
         candidates = (
             relation,
@@ -596,16 +523,11 @@ class TwwCanonicalProjectionLookupAdapter(
         )
 
         for candidate in candidates:
-            value_list_class = (
-                self.value_list_classes.get(
-                    candidate,
-                )
+            value_list_class = self.value_list_classes.get(
+                candidate,
             )
 
             if value_list_class is not None:
                 return value_list_class
 
-        raise KeyError(
-            "No canonical value-list ORM class exists "
-            f"for relation {relation!r}."
-        )
+        raise KeyError("No canonical value-list ORM class exists " f"for relation {relation!r}.")

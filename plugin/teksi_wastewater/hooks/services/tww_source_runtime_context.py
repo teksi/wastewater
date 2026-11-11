@@ -11,6 +11,7 @@ from teksi_wastewater.interlis.model_config import (
     TwwInterlisModelSelection,
 )
 
+
 @dataclass(
     slots=True,
     frozen=True,
@@ -33,6 +34,4 @@ class TwwSourceRuntimeContext:
 
     quarantine_classes: Any
 
-    relation_context_provider: (
-        RelationContextProvider
-    )
+    relation_context_provider: RelationContextProvider

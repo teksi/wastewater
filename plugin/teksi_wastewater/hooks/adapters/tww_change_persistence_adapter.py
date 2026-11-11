@@ -115,9 +115,7 @@ class TwwChangePersistenceAdapter(
         transaction.
         """
 
-        results: list[
-            ChangePersistenceResult,
-        ] = []
+        results: list[ChangePersistenceResult,] = []
 
         for (
             change_index,
@@ -187,10 +185,7 @@ class TwwChangePersistenceAdapter(
                 change=change,
             )
 
-        raise ValueError(
-            "Unsupported change operation: "
-            f"{change.operation!r}."
-        )
+        raise ValueError("Unsupported change operation: " f"{change.operation!r}.")
 
     def _prepare_update(
         self,
@@ -208,20 +203,14 @@ class TwwChangePersistenceAdapter(
 
         if change.operation != ChangeOperation.UPDATE:
             raise ValueError(
-                "_prepare_update() requires an update decision, "
-                f"got {change.operation!r}."
+                "_prepare_update() requires an update decision, " f"got {change.operation!r}."
             )
 
         changed_attribute_ids = {
-            attribute_change.attribute_name
-            for attribute_change
-            in change.changed_attributes
+            attribute_change.attribute_name for attribute_change in change.changed_attributes
         }
 
-        unknown_decisions = (
-            decision.decided_attributes
-            - changed_attribute_ids
-        )
+        unknown_decisions = decision.decided_attributes - changed_attribute_ids
 
         if unknown_decisions:
             raise ValueError(
@@ -230,10 +219,7 @@ class TwwChangePersistenceAdapter(
                 f"{sorted(unknown_decisions)!r}."
             )
 
-        missing_decisions = (
-            changed_attribute_ids
-            - decision.decided_attributes
-        )
+        missing_decisions = changed_attribute_ids - decision.decided_attributes
 
         if missing_decisions:
             raise ValueError(
@@ -245,12 +231,8 @@ class TwwChangePersistenceAdapter(
             change.new_values,
         )
 
-        for attribute_id in (
-            decision.unpermitted_attributes
-        ):
-            persistence_values[
-                attribute_id
-            ] = None
+        for attribute_id in decision.unpermitted_attributes:
+            persistence_values[attribute_id] = None
 
         return replace(
             change,
@@ -273,8 +255,7 @@ class TwwChangePersistenceAdapter(
                 attribute_change.attribute_name,
             )
             is not None
-            for attribute_change
-            in change.changed_attributes
+            for attribute_change in change.changed_attributes
         )
 
     def _assert_compatible_document(
@@ -289,14 +270,10 @@ class TwwChangePersistenceAdapter(
 
         if decisions.version != 1:
             raise ValueError(
-                "Unsupported persistence-decision document "
-                f"version: {decisions.version!r}."
+                "Unsupported persistence-decision document " f"version: {decisions.version!r}."
             )
 
-        if (
-            decisions.snapshot_id
-            != snapshot.snapshot_id
-        ):
+        if decisions.snapshot_id != snapshot.snapshot_id:
             raise ValueError(
                 "Persistence decisions cannot be applied to "
                 "another snapshot. Snapshot: "
@@ -317,9 +294,7 @@ class TwwChangePersistenceAdapter(
         implementation must use the supplied cursor and must not commit.
         """
 
-        raise NotImplementedError(
-            "TWW insert persistence is not configured."
-        )
+        raise NotImplementedError("TWW insert persistence is not configured.")
 
     def _apply_update(
         self,
@@ -336,9 +311,7 @@ class TwwChangePersistenceAdapter(
         The implementation must use the supplied cursor and must not commit.
         """
 
-        raise NotImplementedError(
-            "TWW update persistence is not configured."
-        )
+        raise NotImplementedError("TWW update persistence is not configured.")
 
     def _apply_delete(
         self,
@@ -353,9 +326,7 @@ class TwwChangePersistenceAdapter(
         implementation must use the supplied cursor and must not commit.
         """
 
-        raise NotImplementedError(
-            "TWW delete persistence is not configured."
-        )
+        raise NotImplementedError("TWW delete persistence is not configured.")
 
     def _borrowed_cursor(
         self,
@@ -370,9 +341,7 @@ class TwwChangePersistenceAdapter(
 
         sqlalchemy_connection = session.connection()
 
-        connection_fairy = (
-            sqlalchemy_connection.connection
-        )
+        connection_fairy = sqlalchemy_connection.connection
 
         driver_connection = getattr(
             connection_fairy,
@@ -389,8 +358,7 @@ class TwwChangePersistenceAdapter(
 
         if driver_connection is None:
             raise RuntimeError(
-                "Could not access the DBAPI connection owned "
-                "by the live SQLAlchemy session."
+                "Could not access the DBAPI connection owned " "by the live SQLAlchemy session."
             )
 
         return driver_connection.cursor()

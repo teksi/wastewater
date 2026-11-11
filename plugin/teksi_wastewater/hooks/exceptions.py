@@ -227,6 +227,7 @@ class DiffJobPersistenceError(
             ),
         )
 
+
 class TwwReviewApplicationError(
     DiffJobPersistenceError,
 ):
