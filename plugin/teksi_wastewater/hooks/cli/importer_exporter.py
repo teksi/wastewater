@@ -12,21 +12,19 @@ from teksi_wastewater.hooks.adapters.tww_interlis_service_adapter import (
     TwwInterlisServiceAdapter,
 )
 from teksi_wastewater.hooks.cli import helpers
+from teksi_wastewater.hooks.services.tww_trusted_import_service import (
+    TwwTrustedImportService,
+)
 from teksi_wastewater.interlis import config, model_config, model_selection
 from teksi_wastewater.interlis.interlis_importer_exporter import (
     InterlisImporterExporterError,
 )
-from teksi_wastewater.hooks.services.tww_diff_schema_service import (
-    TwwDiffSchemaService,
-)
-from teksi_wastewater.hooks.services.tww_trusted_import_service import (
-    TwwTrustedImportService,
-)
+
 
 class TeksiWastewaterCmd:
     SUBPARSER_NAME_INTERLIS_IMPORT = "interlis_import"
     SUBPARSER_NAME_INTERLIS_EXPORT = "interlis_export"
-    job_id:str =  str(uuid4())
+    job_id: str = str(uuid4())
 
     def __init__(
         self,
@@ -273,7 +271,7 @@ class TeksiWastewaterCmd:
             logs_next_to_file=(self.args.logs_next_to_file),
             filter_nulls=self.args.filter_nulls,
             incremental_only=self.args.incremental_only,
-            allow_schema_recreation = self.args.allow_schema_recreation,
+            allow_schema_recreation=self.args.allow_schema_recreation,
         )
 
         xtf_file = Path(
@@ -287,7 +285,7 @@ class TeksiWastewaterCmd:
                     "import_schema": self.schema,
                     "incremental_import_schema": None,
                     "live_schema": config.TWW_OD_SCHEMA,
-                    "allow_schema_recreation":  self.args.allow_schema_recreation,
+                    "allow_schema_recreation": self.args.allow_schema_recreation,
                 },
             )
             service.import_xtf(
@@ -366,7 +364,7 @@ class TeksiWastewaterCmd:
             limit_to_selection=bool(
                 selected_ids,
             ),
-            allow_schema_recreation = self.args.allow_schema_recreation,
+            allow_schema_recreation=self.args.allow_schema_recreation,
         )
 
         xtf_file = Path(

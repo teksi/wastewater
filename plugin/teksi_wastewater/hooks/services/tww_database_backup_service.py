@@ -6,10 +6,10 @@ import re
 import shutil
 import subprocess
 import tempfile
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 from pathlib import Path
 from time import perf_counter
-from collections.abc import Mapping
 
 from ..adapters.tww_database_connection_factory import (
     TwwDatabaseConnectionFactory,

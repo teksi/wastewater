@@ -4,9 +4,9 @@ from .model_base import ModelBase
 
 class ModelTwwOd(ModelBase):
     inheritance_key = None
+
     def __init__(self):
         super().__init__(config.TWW_OD_SCHEMA)
-
 
         class mutation(self.Base):
             __tablename__ = "mutation"
@@ -19,7 +19,6 @@ class ModelTwwOd(ModelBase):
             __table_args__ = {"schema": config.TWW_OD_SCHEMA}
 
         self.wastewater_structure = wastewater_structure
-
 
         class wastewater_structure_text(self.Base):
             __tablename__ = "wastewater_structure_text"
@@ -340,9 +339,7 @@ class ModelTwwOd(ModelBase):
             __tablename__ = "re_maintenance_event_wastewater_structure"
             __table_args__ = {"schema": config.TWW_OD_SCHEMA}
 
-        self.re_maintenance_event_wastewater_structure = (
-            re_maintenance_event_wastewater_structure
-        )
+        self.re_maintenance_event_wastewater_structure = re_maintenance_event_wastewater_structure
 
         class re_building_group_disposal(self.Base):
             __tablename__ = "re_building_group_disposal"
@@ -350,14 +347,11 @@ class ModelTwwOd(ModelBase):
 
         self.re_building_group_disposal = re_building_group_disposal
 
-
         class re_measuring_point_reference_station(self.Base):
             __tablename__ = "re_maintenance_event_wastewater_structure"
             __table_args__ = {"schema": config.TWW_OD_SCHEMA}
 
-        self.re_measuring_point_reference_station = (
-            re_measuring_point_reference_station
-        )
+        self.re_measuring_point_reference_station = re_measuring_point_reference_station
 
         # used for AGXX model mapping on hooks
 

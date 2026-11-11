@@ -5,10 +5,11 @@ from dataclasses import dataclass
 from typing import Any
 
 from psycopg.types.json import Jsonb
-
 from teksi_hooks.capabilities.connection import (
     DatabaseConnectionFactory,
 )
+
+
 @dataclass(
     slots=True,
 )
@@ -50,37 +51,34 @@ class TwwTrustedImportService:
             "import_schema",
         )
 
-        if not isinstance(
-            import_schema,
-            str,
-        ) or not import_schema.strip():
+        if (
+            not isinstance(
+                import_schema,
+                str,
+            )
+            or not import_schema.strip()
+        ):
             raise ValueError(
-                "Trusted-import metadata must contain a non-empty "
-                "'import_schema'."
+                "Trusted-import metadata must contain a non-empty " "'import_schema'."
             )
 
         live_schema = normalized_metadata.get(
             "live_schema",
         )
 
-        if not isinstance(
-            live_schema,
-            str,
-        ) or not live_schema.strip():
-            raise ValueError(
-                "Trusted-import metadata must contain a non-empty "
-                "'live_schema'."
+        if (
+            not isinstance(
+                live_schema,
+                str,
             )
+            or not live_schema.strip()
+        ):
+            raise ValueError("Trusted-import metadata must contain a non-empty " "'live_schema'.")
 
         normalized_job_id = self.job_id.strip()
-        normalized_import_schema = (
-            import_schema.strip()
-        )
+        normalized_import_schema = import_schema.strip()
 
-        lock_identifier = (
-            "teksi-wastewater:"
-            f"trusted-import:{normalized_import_schema}"
-        )
+        lock_identifier = "teksi-wastewater:" f"trusted-import:{normalized_import_schema}"
 
         with self.connection_factory.connection(
             autocommit=False,
@@ -95,9 +93,7 @@ class TwwTrustedImportService:
                         )
                     );
                     """,
-                    (
-                        lock_identifier,
-                    ),
+                    (lock_identifier,),
                 )
 
                 cursor.execute(
@@ -197,14 +193,14 @@ class TwwTrustedImportService:
         transitioned.
         """
 
-        if not isinstance(
-            reason,
-            str,
-        ) or not reason.strip():
-            raise ValueError(
-                "The trusted-import failure reason must be "
-                "a non-empty string."
+        if (
+            not isinstance(
+                reason,
+                str,
             )
+            or not reason.strip()
+        ):
+            raise ValueError("The trusted-import failure reason must be " "a non-empty string.")
 
         self._transition_trusted_import(
             new_status="failed",
@@ -217,10 +213,13 @@ class TwwTrustedImportService:
         self,
         *,
         new_status: str,
-        metadata_update: Mapping[
-            str,
-            Any,
-        ] | None = None,
+        metadata_update: (
+            Mapping[
+                str,
+                Any,
+            ]
+            | None
+        ) = None,
     ) -> None:
         """
         Atomically transition the current trusted-import job.
@@ -245,9 +244,7 @@ class TwwTrustedImportService:
         normalized_job_id = self.job_id.strip()
 
         if not normalized_job_id:
-            raise ValueError(
-                "job_id must be a non-empty string."
-            )
+            raise ValueError("job_id must be a non-empty string.")
 
         normalized_metadata_update = dict(
             metadata_update or {},
@@ -300,4 +297,3 @@ class TwwTrustedImportService:
                 )
 
             connection.commit()
-

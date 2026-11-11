@@ -306,14 +306,14 @@ SELECT wn.obj_id,
             wn.situation3d_geometry,
             wn.backflow_level_current,
             wn.bottom_level,
-			CASE WHEN rp_ref.fk_wastewater_networkelement IS NULL 
-			AND wn_unc.obj_id IS NOT NULL 
+			CASE WHEN rp_ref.fk_wastewater_networkelement IS NULL
+			AND wn_unc.obj_id IS NOT NULL
 			THEN wn_unc.ch_function_hierarchic
 			ELSE wns._function_hierarchic
 			END AS _function_hierarchic,
-			CASE WHEN rp_ref.fk_wastewater_networkelement IS NULL 
-			AND wn_unc.obj_id IS NOT NULL 
-			THEN 'agxx_unconnected_node_bwrel'::text  
+			CASE WHEN rp_ref.fk_wastewater_networkelement IS NULL
+			AND wn_unc.obj_id IS NOT NULL
+			THEN 'agxx_unconnected_node_bwrel'::text
 			ELSE 'wastewater_node'::text
 			END AS _mapping_origin,
 			NULL as co_level,
@@ -326,11 +326,11 @@ SELECT wn.obj_id,
 		   INNER JOIN tww_od.wastewater_structure wn_ws ON wn_ne.fk_wastewater_structure= wn_ws.obj_id
 		   LEFT JOIN tww_od.agxx_unconnected_node_bwrel wn_unc on wn_unc.obj_id=wn.obj_id
 		   LEFT JOIN (
-		   	SELECT DISTINCT ON (fk_wastewater_networkelement) 
+		   	SELECT DISTINCT ON (fk_wastewater_networkelement)
 		   	fk_wastewater_networkelement
 			FROM tww_od.reach_point
 			) rp_ref on rp_ref.fk_wastewater_networkelement=wn.obj_id
-		   
+
 		UNION
 			SELECT
 			rp_1.obj_id,

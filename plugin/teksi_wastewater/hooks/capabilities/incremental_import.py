@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
-from typing import Any, Protocol
+from typing import Protocol
 
 from sqlalchemy.orm import Session
 from teksi_hooks.models.effects import (
@@ -11,7 +11,7 @@ from teksi_hooks.models.effects import (
     EffectEvaluationResult,
 )
 
-        
+
 class IncrementalEffectEvaluator(
     Protocol,
 ):

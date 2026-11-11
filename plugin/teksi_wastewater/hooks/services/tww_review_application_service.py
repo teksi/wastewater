@@ -1,21 +1,19 @@
-
 from __future__ import annotations
 
 from dataclasses import dataclass
 
+from teksi_hooks.exceptions import (
+    DiffJobEligibilityError,
+    DiffJobStateError,
+)
 from teksi_hooks.models.validation import (
     ValidationDefinition,
 )
-
 from teksi_wastewater.hooks.adapters.tww_canonical_model_adapter import (
     TwwCanonicalModelAdapter,
 )
 from teksi_wastewater.hooks.adapters.tww_session_manager import (
     TwwSessionManager,
-)
-from teksi_hooks.exceptions import (
-    DiffJobEligibilityError,
-    DiffJobStateError,
 )
 from teksi_wastewater.hooks.services.tww_diff_schema_service import (
     TwwDiffSchemaService,
@@ -82,9 +80,7 @@ class TwwReviewApplicationService:
         if not job.validation_success:
             raise DiffJobEligibilityError(
                 job_id=job_id,
-                reason=(
-                    "source validation was not successful."
-                ),
+                reason=("source validation was not successful."),
             )
 
         live_schema = job.metadata.get(
@@ -100,34 +96,21 @@ class TwwReviewApplicationService:
         ):
             raise DiffJobEligibilityError(
                 job_id=job_id,
-                reason=(
-                    "required job metadata 'live_schema' is "
-                    "missing or invalid."
-                ),
+                reason=("required job metadata 'live_schema' is " "missing or invalid."),
             )
 
-        canonical_metadata = (
-            self.canonical_model_adapter
-            .canonical_model()
-        )
+        canonical_metadata = self.canonical_model_adapter.canonical_model()
 
-        has_incremental_source = (
-            self._has_incremental_source(
-                job,
-            )
+        has_incremental_source = self._has_incremental_source(
+            job,
         )
 
         with self.session_manager.persistence_scope(
-            include_incremental=(
-                has_incremental_source
-            ),
+            include_incremental=(has_incremental_source),
         ) as session_context:
-            source_contexts = (
-                self.persistence_context_factory
-                .source_contexts(
-                    job=job,
-                    session_context=session_context,
-                )
+            source_contexts = self.persistence_context_factory.source_contexts(
+                job=job,
+                session_context=session_context,
             )
 
             return self.persistence_service.persist_job(
@@ -135,9 +118,7 @@ class TwwReviewApplicationService:
                 live_schema=live_schema.strip(),
                 source_contexts=source_contexts,
                 canonical_metadata=canonical_metadata,
-                validation_definition=(
-                    self.validation_definition
-                ),
+                validation_definition=(self.validation_definition),
                 session_context=session_context,
             )
 
@@ -152,12 +133,7 @@ class TwwReviewApplicationService:
             "incremental_import_schema",
         )
 
-        return (
-            isinstance(
-                incremental_schema,
-                str,
-            )
-            and bool(
-                incremental_schema.strip()
-            )
-        )
+        return isinstance(
+            incremental_schema,
+            str,
+        ) and bool(incremental_schema.strip())
