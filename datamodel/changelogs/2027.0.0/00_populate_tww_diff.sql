@@ -84,10 +84,10 @@ CREATE TABLE IF NOT EXISTS tww_diff.tww_review_feature (
         jsonb_array_length(validation_findings) > 0
     ) STORED,
 
-    import_values jsonb NOT NULL DEFAULT '{}'::jsonb,
-    canonical_values jsonb NOT NULL DEFAULT '{}'::jsonb,
+    import_values jsonb NOT NULL DEFAULT '{{}}'::jsonb,
+    canonical_values jsonb NOT NULL DEFAULT '{{}}'::jsonb,
     changed_attributes jsonb NOT NULL DEFAULT '[]'::jsonb,
-    unpermitted_values jsonb NOT NULL DEFAULT '{}'::jsonb,
+    unpermitted_values jsonb NOT NULL DEFAULT '{{}}'::jsonb,
     permission_findings jsonb NOT NULL DEFAULT '[]'::jsonb,
     validation_findings jsonb NOT NULL DEFAULT '[]'::jsonb,
     point_geometry geometry(Geometry, {SRID}),
