@@ -13,12 +13,14 @@ from teksi_hooks.hook import (
     HookContext,
     HookHandler,
 )
+
 from teksi_wastewater.hooks.cli import (
     helpers,
 )
 from teksi_wastewater.interlis import (
     config,
 )
+
 
 logger = logging.getLogger(
     __name__,
@@ -38,7 +40,10 @@ _REVIEW_COMMANDS = (
 
 
 def main(
-    argv: Sequence[str,] | None = None,
+    argv: Sequence[
+        str,
+    ]
+    | None = None,
 ) -> int:
     """
     Create and manage TWW diff-review jobs.
@@ -51,8 +56,10 @@ def main(
         argv,
     )
 
-    connection_factory = helpers.database_connection_factory(
-        args,
+    connection_factory = (
+        helpers.database_connection_factory(
+            args,
+        )
     )
 
     connection_factory.apply_to_database_config()
@@ -65,7 +72,9 @@ def main(
         parameters=parameters,
         logger=logger,
         capabilities={
-            DatabaseConnectionFactory: (connection_factory),
+            DatabaseConnectionFactory: (
+                connection_factory
+            ),
         },
     )
 
@@ -74,7 +83,9 @@ def main(
             __file__,
         )
         .resolve()
-        .parents[1]
+        .parents[
+            1
+        ]
         / "diff_creator_hook.py"
     )
 
@@ -88,24 +99,33 @@ def main(
     return 0
 
 
-def _configure_logging() -> None:
+def _configure_logging(
+) -> None:
     """
     Configure command-line logging.
     """
     logging.basicConfig(
         level=logging.INFO,
-        format=("%(asctime)s " "%(levelname)-8s " "%(name)s: " "%(message)s"),
+        format=(
+            "%(asctime)s "
+            "%(levelname)-8s "
+            "%(name)s: "
+            "%(message)s"
+        ),
         datefmt="%H:%M:%S",
         force=True,
     )
 
 
-def _argument_parser() -> argparse.ArgumentParser:
+def _argument_parser(
+) -> argparse.ArgumentParser:
     """
     Build the complete diff-review CLI parser.
     """
     parser = argparse.ArgumentParser(
-        description=("Create and manage TWW diff-review jobs."),
+        description=(
+            "Create and manage TWW diff-review jobs."
+        ),
     )
 
     subparsers = parser.add_subparsers(
@@ -121,19 +141,26 @@ def _argument_parser() -> argparse.ArgumentParser:
     _add_review_action_parser(
         subparsers,
         command=_ACCEPT_COMMAND,
-        help_text=("Accept a pending TWW diff-review job."),
+        help_text=(
+            "Accept a pending TWW diff-review job."
+        ),
     )
 
     _add_review_action_parser(
         subparsers,
         command=_REJECT_COMMAND,
-        help_text=("Reject a pending TWW diff-review job."),
+        help_text=(
+            "Reject a pending TWW diff-review job."
+        ),
     )
 
     _add_review_action_parser(
         subparsers,
         command=_PERSIST_COMMAND,
-        help_text=("Apply an accepted TWW diff-review job " "to the live schema."),
+        help_text=(
+            "Apply an accepted TWW diff-review job "
+            "to the live schema."
+        ),
     )
 
     return parser
@@ -153,7 +180,8 @@ def _add_create_parser(
             "incremental XTF."
         ),
         description=(
-            "Import source data into quarantine schemas " "and create a TWW diff-review job."
+            "Import source data into quarantine schemas "
+            "and create a TWW diff-review job."
         ),
     )
 
@@ -175,14 +203,19 @@ def _add_create_parser(
             "refresh",
         ),
         default="create",
-        help=("How an existing diff job with the same " "identifier is handled."),
+        help=(
+            "How an existing diff job with the same "
+            "identifier is handled."
+        ),
     )
 
     parser.add_argument(
         "--xtf-input",
         required=True,
         type=Path,
-        help=("Path to the baseline or main XTF file."),
+        help=(
+            "Path to the baseline or main XTF file."
+        ),
     )
 
     parser.add_argument(
@@ -190,32 +223,46 @@ def _add_create_parser(
         dest="incremental_xtf",
         type=Path,
         default=None,
-        help=("Optional incremental adaptation XTF, " "for example an AG-XX transfer."),
+        help=(
+            "Optional incremental adaptation XTF, "
+            "for example an AG-XX transfer."
+        ),
     )
 
     parser.add_argument(
         "--provider-oid",
         required=True,
-        help=("Provider organisation OID used for " "rights evaluation."),
+        help=(
+            "Provider organisation OID used for "
+            "rights evaluation."
+        ),
     )
 
     parser.add_argument(
         "--dataowner-oid",
         required=True,
-        help=("Data-owner organisation OID used for " "rights evaluation."),
+        help=(
+            "Data-owner organisation OID used for "
+            "rights evaluation."
+        ),
     )
 
     parser.add_argument(
         "--orgs-path",
         type=Path,
         default=None,
-        help=("Optional organisation or reference XTF."),
+        help=(
+            "Optional organisation or reference XTF."
+        ),
     )
 
     parser.add_argument(
         "--rights-profile",
         default="default",
-        help=("Rights-profile directory below the " "hook configuration directory."),
+        help=(
+            "Rights-profile directory below the "
+            "hook configuration directory."
+        ),
     )
 
     parser.add_argument(
@@ -235,7 +282,8 @@ def _add_create_parser(
         dest="skip_rights_evaluation",
         action="store_true",
         help=(
-            "Grant all available rights for this import. " "Use only for trusted baseline setup."
+            "Grant all available rights for this import. "
+            "Use only for trusted baseline setup."
         ),
     )
 
@@ -251,7 +299,10 @@ def _add_create_parser(
     parser.add_argument(
         "--supersede-existing-diff-jobs",
         action="store_true",
-        help=("Supersede applicable existing diff jobs " "when the new job is created."),
+        help=(
+            "Supersede applicable existing diff jobs "
+            "when the new job is created."
+        ),
     )
 
     helpers.add_postgres_connection_args(
@@ -277,13 +328,19 @@ def _add_review_action_parser(
     parser.add_argument(
         "--job-id",
         required=True,
-        help=("Identifier of the existing tww_diff " "review job."),
+        help=(
+            "Identifier of the existing tww_diff "
+            "review job."
+        ),
     )
 
     parser.add_argument(
         "--live-schema",
         default=config.TWW_OD_SCHEMA,
-        help=("Canonical live schema. Defaults to " f"{config.TWW_OD_SCHEMA!r}."),
+        help=(
+            "Canonical live schema. Defaults to "
+            f"{config.TWW_OD_SCHEMA!r}."
+        ),
     )
 
     if command in {
@@ -293,14 +350,20 @@ def _add_review_action_parser(
         parser.add_argument(
             "--expected-status",
             default="pending",
-            help=("Required current job status before " f"the job may be {command}ed."),
+            help=(
+                "Required current job status before "
+                f"the job may be {command}ed."
+            ),
         )
 
     if command == _PERSIST_COMMAND:
         parser.add_argument(
             "--expected-status",
             default="accepted",
-            help=("Required current job status before " "persistence."),
+            help=(
+                "Required current job status before "
+                "persistence."
+            ),
         )
 
         parser.add_argument(
@@ -318,7 +381,10 @@ def _add_review_action_parser(
         parser.add_argument(
             "--rights-profile",
             default="default",
-            help=("Rights profile used to reconstruct " "the persistence configuration."),
+            help=(
+                "Rights profile used to reconstruct "
+                "the persistence configuration."
+            ),
         )
 
     helpers.add_postgres_connection_args(
@@ -345,7 +411,10 @@ def _parameters(
             args,
         )
 
-    raise ValueError("Unsupported diff-review command " f"{args.command!r}.")
+    raise ValueError(
+        "Unsupported diff-review command "
+        f"{args.command!r}."
+    )
 
 
 def _create_parameters(
@@ -366,20 +435,38 @@ def _create_parameters(
         "xtf_input": args.xtf_input,
         "provider_oid": args.provider_oid,
         "dataowner_oid": args.dataowner_oid,
-        "import_schema": (config.IMPORT_SCHEMA),
-        "live_schema": (config.TWW_OD_SCHEMA),
+        "import_schema": (
+            config.IMPORT_SCHEMA
+        ),
+        "live_schema": (
+            config.TWW_OD_SCHEMA
+        ),
         "orgs_path": args.orgs_path,
-        "incremental_xtf": (args.incremental_xtf),
-        "incremental_import_schema": (config.IMPORT_SCHEMA_INCR),
-        "rights_profile": (args.rights_profile),
-        "hook_config_dir": (args.hook_config_dir),
-        "skip_rights_evaluation": (args.skip_rights_evaluation),
+        "incremental_xtf": (
+            args.incremental_xtf
+        ),
+        "incremental_import_schema": (
+            config.IMPORT_SCHEMA_INCR
+        ),
+        "rights_profile": (
+            args.rights_profile
+        ),
+        "hook_config_dir": (
+            args.hook_config_dir
+        ),
+        "skip_rights_evaluation": (
+            args.skip_rights_evaluation
+        ),
         "auto_apply": args.auto_apply,
-        "supersede_existing_diff_jobs": (args.supersede_existing_diff_jobs),
+        "supersede_existing_diff_jobs": (
+            args.supersede_existing_diff_jobs
+        ),
     }
 
     if args.job_id is not None:
-        parameters["job_id"] = args.job_id
+        parameters[
+            "job_id"
+        ] = args.job_id
 
     return parameters
 
@@ -399,23 +486,41 @@ def _review_action_parameters(
     ] = {
         "command": args.command,
         "job_id": args.job_id,
-        "expected_status": (args.expected_status),
-        "live_schema": (args.live_schema.strip()),
+        "expected_status": (
+            args.expected_status
+        ),
+        "live_schema": (
+            args.live_schema.strip()
+        ),
     }
 
-    if not parameters["live_schema"]:
-        raise ValueError("live_schema must be a non-empty string.")
+    if not parameters[
+        "live_schema"
+    ]:
+        raise ValueError(
+            "live_schema must be a non-empty string."
+        )
 
     if args.command == _PERSIST_COMMAND:
         parameters.update(
             {
-                "import_schema": (config.IMPORT_SCHEMA),
-                "incremental_import_schema": (config.IMPORT_SCHEMA_INCR),
-                "rights_profile": (args.rights_profile),
-                "hook_config_dir": (args.hook_config_dir),
+                "import_schema": (
+                    config.IMPORT_SCHEMA
+                ),
+                "incremental_import_schema": (
+                    config.IMPORT_SCHEMA_INCR
+                ),
+                "rights_profile": (
+                    args.rights_profile
+                ),
+                "hook_config_dir": (
+                    args.hook_config_dir
+                ),
                 "auto_apply": False,
                 "skip_rights_evaluation": False,
-                "supersede_existing_diff_jobs": (False),
+                "supersede_existing_diff_jobs": (
+                    False
+                ),
             }
         )
 
@@ -423,4 +528,6 @@ def _review_action_parameters(
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    raise SystemExit(
+        main()
+    )
