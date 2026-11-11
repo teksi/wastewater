@@ -10,6 +10,7 @@ from dataclasses import (
 )
 
 from sqlalchemy.orm import Session
+
 from teksi_hooks.capabilities.effects import (
     QuarantineEffectProjectorCapability,
 )
@@ -25,6 +26,7 @@ from teksi_hooks.models.effects import (
 from teksi_hooks.models.validation import (
     ValidationFinding,
 )
+
 from teksi_wastewater.hooks.capabilities.incremental_import import (
     IncrementalEffectEvaluator,
     IncrementalEffectPersister,
@@ -35,6 +37,7 @@ from teksi_wastewater.interlis import (
 from teksi_wastewater.interlis.utils.various import (
     InterlisImporterExporterError,
 )
+
 
 logger = logging.getLogger(
     __name__,
@@ -80,7 +83,9 @@ class InterlisIncrementalImporter:
 
     model: str
 
-    quarantine_effect_projector: QuarantineEffectProjectorCapability
+    quarantine_effect_projector: (
+        QuarantineEffectProjectorCapability
+    )
 
     effect_evaluator: IncrementalEffectEvaluator
 
@@ -98,18 +103,24 @@ class InterlisIncrementalImporter:
         | None
     ) = None
 
-    model_groups: frozenset[str,] = field(
+    model_groups: frozenset[
+        str,
+    ] = field(
         default_factory=frozenset,
         init=False,
     )
 
-    effect_documents: list[EffectDocument,] = field(
+    effect_documents: list[
+        EffectDocument,
+    ] = field(
         default_factory=list,
         init=False,
         repr=False,
     )
 
-    evaluation_results: list[EffectEvaluationResult,] = field(
+    evaluation_results: list[
+        EffectEvaluationResult,
+    ] = field(
         default_factory=list,
         init=False,
         repr=False,
@@ -141,24 +152,27 @@ class InterlisIncrementalImporter:
             )
         )
 
-        incremental_groups = self.model_groups & {
-            "ag64",
-            "ag96",
-        }
+        incremental_groups = (
+            self.model_groups
+            & {
+                "ag64",
+                "ag96",
+            }
+        )
 
         if not incremental_groups:
             raise InterlisImporterExporterError(
                 "INTERLIS import aborted",
-                ("No incremental import exists for selected " f"model {self.model!r}."),
+                (
+                    "No incremental import exists for selected "
+                    f"model {self.model!r}."
+                ),
                 None,
             )
 
-        if (
-            len(
-                incremental_groups,
-            )
-            != 1
-        ):
+        if len(
+            incremental_groups,
+        ) != 1:
             raise InterlisImporterExporterError(
                 "INTERLIS import aborted",
                 (
@@ -180,12 +194,17 @@ class InterlisIncrementalImporter:
         """
         self._reset_results()
 
-        source_class_ids = self._source_class_ids()
+        source_class_ids = (
+            self._source_class_ids()
+        )
 
         try:
-            projection_result = self.quarantine_effect_projector.project_effects(
-                source_model=self.model,
-                source_class_ids=source_class_ids,
+            projection_result = (
+                self.quarantine_effect_projector
+                .project_effects(
+                    source_model=self.model,
+                    source_class_ids=source_class_ids,
+                )
             )
         except EffectValidationError:
             raise
@@ -245,7 +264,10 @@ class InterlisIncrementalImporter:
 
         raise InterlisImporterExporterError(
             "INTERLIS import aborted",
-            ("The selected model does not resolve to an " "AG64 or AG96 incremental import."),
+            (
+                "The selected model does not resolve to an "
+                "AG64 or AG96 incremental import."
+            ),
             None,
         )
 
@@ -372,7 +394,10 @@ class InterlisIncrementalImporter:
             )
         )
 
-        actual_indices = tuple(evaluation.effect_index for evaluation in evaluations)
+        actual_indices = tuple(
+            evaluation.effect_index
+            for evaluation in evaluations
+        )
 
         if actual_indices != expected_indices:
             raise InterlisImporterExporterError(
@@ -398,13 +423,18 @@ class InterlisIncrementalImporter:
         blocked_results = tuple(
             evaluation
             for evaluation in self.evaluation_results
-            if (evaluation.status == EffectEvaluationStatus.BLOCKED)
+            if (
+                evaluation.status
+                == EffectEvaluationStatus.BLOCKED
+            )
         )
 
         if not blocked_results:
             return
 
-        findings: list[ValidationFinding,] = []
+        findings: list[
+            ValidationFinding,
+        ] = []
 
         for evaluation in blocked_results:
             findings.extend(
@@ -466,7 +496,9 @@ class InterlisIncrementalImporter:
         Return the initialized caller-owned live session.
         """
         if self.session_tww is None:
-            raise RuntimeError("The incremental live session is not initialized.")
+            raise RuntimeError(
+                "The incremental live session is not initialized."
+            )
 
         return self.session_tww
 

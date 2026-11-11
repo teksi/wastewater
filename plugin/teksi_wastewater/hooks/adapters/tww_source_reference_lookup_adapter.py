@@ -8,13 +8,13 @@ from dataclasses import dataclass
 from typing import Any
 
 from sqlalchemy import select
+
 from teksi_hooks.models.mapping import (
     ProjectionReferenceDiscriminator,
 )
 from teksi_wastewater.hooks.capabilities.tww_canonical_projection_capability import (
     SourceReferenceLookupCapability,
 )
-
 
 @dataclass(
     slots=True,
@@ -47,8 +47,13 @@ class TwwSourceReferenceLookupAdapter(
         *,
         session: Any,
         source_class_id: str,
-        t_ids: Sequence[int,],
-        discriminator: ProjectionReferenceDiscriminator | None = None,
+        t_ids: Sequence[
+            int,
+        ],
+        discriminator: (
+            ProjectionReferenceDiscriminator
+            | None
+        ) = None,
     ) -> Mapping[
         int,
         Any,
@@ -90,11 +95,14 @@ class TwwSourceReferenceLookupAdapter(
                 "ili2pg `t_id` attribute."
             )
 
-        statement = select(
-            source_class,
-        ).where(
-            t_id_column.in_(
-                unique_t_ids,
+        statement = (
+            select(
+                source_class,
+            )
+            .where(
+                t_id_column.in_(
+                    unique_t_ids,
+                )
             )
         )
 
@@ -113,7 +121,10 @@ class TwwSourceReferenceLookupAdapter(
                     f"{discriminator.attribute!r}."
                 )
 
-            statement = statement.where(discriminator_column == discriminator.value)
+            statement = statement.where(
+                discriminator_column
+                == discriminator.value
+            )
 
         rows = tuple(
             session.scalars(
@@ -151,9 +162,15 @@ class TwwSourceReferenceLookupAdapter(
                     f"{row_t_id!r}."
                 )
 
-            rows_by_t_id[row_t_id] = row
+            rows_by_t_id[
+                row_t_id
+            ] = row
 
-        missing_t_ids = tuple(t_id for t_id in unique_t_ids if t_id not in rows_by_t_id)
+        missing_t_ids = tuple(
+            t_id
+            for t_id in unique_t_ids
+            if t_id not in rows_by_t_id
+        )
 
         if missing_t_ids:
             discriminator_description = (
@@ -197,11 +214,15 @@ class TwwSourceReferenceLookupAdapter(
         if exact_match is not None:
             return exact_match
 
-        normalized_source_class_id = self._normalized_identifier(
-            source_class_id,
+        normalized_source_class_id = (
+            self._normalized_identifier(
+                source_class_id,
+            )
         )
 
-        matches: list[Any,] = []
+        matches: list[
+            Any,
+        ] = []
 
         for (
             configured_name,
@@ -265,12 +286,9 @@ class TwwSourceReferenceLookupAdapter(
                 f"{available_classes!r}."
             )
 
-        if (
-            len(
-                unique_matches,
-            )
-            != 1
-        ):
+        if len(
+            unique_matches,
+        ) != 1:
             matching_classes = tuple(
                 sorted(
                     self._class_description(
@@ -286,7 +304,9 @@ class TwwSourceReferenceLookupAdapter(
                 f"{matching_classes!r}."
             )
 
-        return unique_matches[0]
+        return unique_matches[
+            0
+        ]
 
     def _exact_source_class(
         self,
@@ -422,7 +442,10 @@ class TwwSourceReferenceLookupAdapter(
         )
 
         if schema_name:
-            return f"{schema_name}." f"{table_name}"
+            return (
+                f"{schema_name}."
+                f"{table_name}"
+            )
 
         return table_name
 
@@ -448,7 +471,9 @@ class TwwSourceReferenceLookupAdapter(
 
     def _unique_t_ids(
         self,
-        t_ids: Sequence[int,],
+        t_ids: Sequence[
+            int,
+        ],
     ) -> tuple[
         int,
         ...,
@@ -463,18 +488,24 @@ class TwwSourceReferenceLookupAdapter(
         ] = {}
 
         for t_id in t_ids:
-            if not isinstance(
-                t_id,
-                int,
-            ) or isinstance(
-                t_id,
-                bool,
+            if (
+                not isinstance(
+                    t_id,
+                    int,
+                )
+                or isinstance(
+                    t_id,
+                    bool,
+                )
             ):
                 raise TypeError(
-                    "Source reference t_id values must be " f"integers, received {t_id!r}."
+                    "Source reference t_id values must be "
+                    f"integers, received {t_id!r}."
                 )
 
-            unique_t_ids[t_id] = None
+            unique_t_ids[
+                t_id
+            ] = None
 
         return tuple(
             unique_t_ids,

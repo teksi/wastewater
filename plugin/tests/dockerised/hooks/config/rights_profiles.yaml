@@ -3,8 +3,8 @@
 # Paths are resolved relative to this file unless the implementation
 # explicitly supports absolute paths.
 
-default:
-  description: Default TEKSI Wastewater provider rights profile.
+CI:
+  description: TEKSI Wastewater CI provider rights profile.
   provider_rights: templates/provider_rights.yaml
   rights_definition: templates/provider_privilege.yaml
 

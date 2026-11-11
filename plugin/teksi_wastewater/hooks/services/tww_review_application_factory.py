@@ -2,10 +2,13 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
-from collections.abc import Mapping
+from typing import Mapping
 
 from teksi_hooks.models.validation import (
     ValidationDefinition,
+)
+from teksi_hooks.services.postgres_backup_service import (
+    PostgresBackupService,
 )
 
 from ..adapters.tww_canonical_model_adapter import (
@@ -26,9 +29,6 @@ from ..adapters.tww_quarantine_runner import (
 from ..adapters.tww_session_manager import (
     TwwSessionManager,
 )
-from .tww_database_backup_service import (
-    TwwDatabaseBackupService,
-)
 from .tww_diff_schema_service import (
     TwwDiffSchemaService,
 )
@@ -44,7 +44,6 @@ from .tww_review_persistence_service import (
 from .tww_source_runtime_context import (
     TwwSourceRuntimeContext,
 )
-
 
 def create_review_application_service(
     *,
@@ -65,20 +64,28 @@ def create_review_application_service(
     Compose the shared accepted-review application workflow.
     """
 
-    persistence_adapter = TwwInterlisPersistenceAdapter(
-        quarantine_runner=quarantine_runner,
-        source_runtime_contexts=source_runtime_contexts,
+    persistence_adapter = (
+        TwwInterlisPersistenceAdapter(
+            quarantine_runner=quarantine_runner,
+            source_runtime_contexts=source_runtime_contexts,
+        )
     )
 
-    persistence_service = TwwReviewPersistenceService(
-        diff_schema_service=diff_schema_service,
-        backup_service=(
-            TwwDatabaseBackupService(
-                connection_factory=(connection_factory),
-            )
-        ),
-        persistence_adapter=(persistence_adapter),
-        logger=logger,
+    persistence_service = (
+        TwwReviewPersistenceService(
+            diff_schema_service=diff_schema_service,
+            backup_service=(
+                PostgresBackupService(
+                    connection_factory=(
+                        connection_factory
+                    ),
+                )
+            ),
+            persistence_adapter=(
+                persistence_adapter
+            ),
+            logger=logger,
+        )
     )
 
     return TwwReviewApplicationService(
@@ -86,12 +93,18 @@ def create_review_application_service(
         persistence_context_factory=(
             TwwPersistenceContextFactory(
                 model_config_dir=model_config_dir,
-                quarantine_classes_factory=(TwwQuarantineClassesFactory()),
+                quarantine_classes_factory=(
+                    TwwQuarantineClassesFactory()
+                ),
                 logger=logger,
             )
         ),
         session_manager=session_manager,
         persistence_service=persistence_service,
-        canonical_model_adapter=(canonical_model_adapter),
-        validation_definition=(validation_definition),
+        canonical_model_adapter=(
+            canonical_model_adapter
+        ),
+        validation_definition=(
+            validation_definition
+        ),
     )

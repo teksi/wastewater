@@ -40,19 +40,15 @@ class TwwEffectEvaluationPolicy:
             "agxx_last_modification",
             "agxx_unconnected_node_bwrel",
             "agxx_reach_point",
+            "agxx_reach",
+            "agxx_building_group",
+            "agxx_catchment_area_totals",
+            "agxx_infiltration_zone",
+            "agxx_overflow",
         }
     )
 
-    deletable_classes: frozenset[str,] = frozenset(
-        {
-            "agxx_wastewater_node",
-            "agxx_wastewater_networkelement",
-            "agxx_wastewater_structure",
-            "agxx_last_modification",
-            "agxx_unconnected_node_bwrel",
-            "agxx_reach_point",
-        }
-    )
+    deletable_classes: frozenset[str,] = creatable_classes
 
     protected_classes: frozenset[str,] = frozenset(
         {

@@ -226,3 +226,27 @@ class DiffJobPersistenceError(
                 ),
             ),
         )
+
+class TwwReviewApplicationError(
+    DiffJobPersistenceError,
+):
+    """
+    Report review persistence failure with external recovery state.
+    """
+
+    def __init__(
+        self,
+        *,
+        recovery_state,
+        cause: Exception,
+    ) -> None:
+        super().__init__(
+            job_id=recovery_state.job_id,
+            phase=recovery_state.phase,
+            message=str(
+                cause,
+            ),
+        )
+
+        self.recovery_state = recovery_state
+        self.cause = cause

@@ -8,8 +8,8 @@ from zlib import crc32
 
 from psycopg import sql
 from sqlalchemy import inspect, select
-from sqlalchemy.exc import NoInspectionAvailable
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import NoInspectionAvailable
 from teksi_hooks.capabilities.connection import (
     DatabaseConnectionFactory,
 )
@@ -26,11 +26,12 @@ from teksi_hooks.models.mapping import (
     CanonicalViewMapping,
 )
 
-from ...interlis.interlis_model_mapping.model_tww_ag6496 import (
-    ModelTwwAG6496,
-)
 from ...interlis.interlis_model_mapping.model_tww_od import (
     ModelTwwOd,
+)
+
+from ...interlis.interlis_model_mapping.model_tww_ag6496 import (
+    ModelTwwAG6496,
 )
 
 AGXX_EXTENSION_CLASSES = frozenset(
@@ -109,7 +110,9 @@ class TwwCanonicalModelAdapter:
 
     canonical_schema: str = "tww_od"
 
-    reflected_class_ids: frozenset[str,] | None = None
+    reflected_class_ids: frozenset[
+        str,
+    ] | None = None
 
     languages: tuple[
         TwwLanguage,
@@ -143,88 +146,70 @@ class TwwCanonicalModelAdapter:
         repr=False,
     )
 
-    _canonical_foreign_keys_cache: (
+    _canonical_foreign_keys_cache: tuple[
+        CanonicalForeignKeyMetadata,
+        ...,
+    ] | None = field(
+        default=None,
+        init=False,
+        repr=False,
+    )
+
+    _resolved_automap_classes_cache: dict[
+        str,
+        Any,
+    ] | None = field(
+        default=None,
+        init=False,
+        repr=False,
+    )
+
+    _canonical_foreign_key_index_cache: dict[
         tuple[
-            CanonicalForeignKeyMetadata,
+            str,
+            str,
+        ],
+        tuple[
+            str,
             ...,
-        ]
-        | None
-    ) = field(
+        ],
+    ] | None = field(
         default=None,
         init=False,
         repr=False,
     )
 
-    _resolved_automap_classes_cache: (
-        dict[
+    _resolved_canonical_view_classes_cache: dict[
+        tuple[
             str,
-            Any,
-        ]
-        | None
-    ) = field(
-        default=None,
-        init=False,
-        repr=False,
-    )
-
-    _canonical_foreign_key_index_cache: (
-        dict[
-            tuple[
-                str,
-                str,
-            ],
-            tuple[
-                str,
-                ...,
-            ],
-        ]
-        | None
-    ) = field(
-        default=None,
-        init=False,
-        repr=False,
-    )
-
-    _resolved_canonical_view_classes_cache: (
-        dict[
-            tuple[
-                str,
-                str,
-            ],
-            Any,
-        ]
-        | None
-    ) = field(
-        default=None,
-        init=False,
-        repr=False,
-    )
-
-    _canonical_geometry_cache: (
-        dict[
-            tuple[
-                str,
-                str,
-            ],
-            CanonicalGeometryMetadata,
-        ]
-        | None
-    ) = field(
-        default=None,
-        init=False,
-        repr=False,
-    )
-
-    _geometry_attribute_aliases_cache: (
-        dict[
-            tuple[
-                str,
-                str,
-            ],
             str,
-        ]
-        | None
-    ) = field(
+        ],
+        Any,
+    ] | None = field(
+        default=None,
+        init=False,
+        repr=False,
+    )
+
+    _canonical_geometry_cache: dict[
+        tuple[
+            str,
+            str,
+        ],
+        CanonicalGeometryMetadata,
+    ] | None = field(
+        default=None,
+        init=False,
+        repr=False,
+    )
+
+    _geometry_attribute_aliases_cache: dict[
+        tuple[
+            str,
+            str,
+        ],
+        str,
+    ] | None = field(
         default=None,
         init=False,
         repr=False,
@@ -277,7 +262,10 @@ class TwwCanonicalModelAdapter:
                 key,
                 metadata,
             ) in attributes.items()
-            if key[0] == class_id
+            if key[
+                0
+            ]
+            == class_id
         }
 
     def canonical_class(
@@ -288,12 +276,17 @@ class TwwCanonicalModelAdapter:
         Return the writable canonical ORM class for one physical class identifier.
         """
 
-        canonical_class = self._resolved_automap_classes().get(
-            class_id,
+        canonical_class = (
+            self._resolved_automap_classes().get(
+                class_id,
+            )
         )
 
         if canonical_class is None:
-            raise KeyError("No canonical ORM class exists for " f"{class_id!r}.")
+            raise KeyError(
+                "No canonical ORM class exists for "
+                f"{class_id!r}."
+            )
 
         return canonical_class
 
@@ -315,20 +308,30 @@ class TwwCanonicalModelAdapter:
         if self._canonical_model_cache is not None:
             return self._canonical_model_cache
 
-        dictionary_classes = self._dictionary_classes()
+        dictionary_classes = (
+            self._dictionary_classes()
+        )
 
-        dictionary_attributes = self._dictionary_attributes()
+        dictionary_attributes = (
+            self._dictionary_attributes()
+        )
 
-        dictionary_values = self._dictionary_values()
+        dictionary_values = (
+            self._dictionary_values()
+        )
 
-        automap_classes = self._resolved_automap_classes()
+        automap_classes = (
+            self._resolved_automap_classes()
+        )
 
         reflected_classes = self._reflected_classes(
             automap_classes=automap_classes,
         )
 
-        reflected_attributes = self._reflected_attributes(
-            automap_classes=automap_classes,
+        reflected_attributes = (
+            self._reflected_attributes(
+                automap_classes=automap_classes,
+            )
         )
 
         merged_classes = self._merge_classes(
@@ -336,8 +339,10 @@ class TwwCanonicalModelAdapter:
             reflected=reflected_classes,
         )
 
-        merged_classes = self._with_geometry_classes(
-            classes=merged_classes,
+        merged_classes = (
+            self._with_geometry_classes(
+                classes=merged_classes,
+            )
         )
 
         merged_attributes = self._merge_attributes(
@@ -345,18 +350,24 @@ class TwwCanonicalModelAdapter:
             reflected=reflected_attributes,
         )
 
-        merged_attributes = self._with_geometry_attributes(
-            attributes=merged_attributes,
+        merged_attributes = (
+            self._with_geometry_attributes(
+                attributes=merged_attributes,
+            )
         )
 
-        self._canonical_foreign_keys_cache = self._reflected_foreign_keys(
-            automap_classes=automap_classes,
+        self._canonical_foreign_keys_cache = (
+            self._reflected_foreign_keys(
+                automap_classes=automap_classes,
+            )
         )
 
-        self._canonical_model_cache = CanonicalModelMetadata(
-            classes=merged_classes,
-            attributes=merged_attributes,
-            values=dictionary_values,
+        self._canonical_model_cache = (
+            CanonicalModelMetadata(
+                classes=merged_classes,
+                attributes=merged_attributes,
+                values=dictionary_values,
+            )
         )
 
         return self._canonical_model_cache
@@ -378,7 +389,9 @@ class TwwCanonicalModelAdapter:
             view.name,
         )
 
-        resolved_views = self._resolved_canonical_view_classes()
+        resolved_views = (
+            self._resolved_canonical_view_classes()
+        )
 
         view_class = resolved_views.get(
             key,
@@ -399,7 +412,7 @@ class TwwCanonicalModelAdapter:
 
         identity_attribute = getattr(
             view_class,
-            view.identity_attribute,
+            view.target_identity_attribute,
             None,
         )
 
@@ -408,16 +421,18 @@ class TwwCanonicalModelAdapter:
                 "Canonical comparison view "
                 f"{view.schema!r}.{view.name!r} does not expose "
                 "configured identity attribute "
-                f"{view.identity_attribute!r}."
+                f"{view.target_identity_attribute!r}."
             )
 
         return view_class
-
+    
     def canonical_view_rows_by_identity(
         self,
         *,
         view: CanonicalViewMapping,
-        identities: Sequence[Any,],
+        identities: Sequence[
+            Any,
+        ],
         session: Session,
     ) -> dict[
         Any,
@@ -440,11 +455,15 @@ class TwwCanonicalModelAdapter:
 
         identity_column = getattr(
             view_class,
-            view.identity_attribute,
+            view.target_identity_attribute,
         )
 
         unique_identities = tuple(
-            dict.fromkeys(identity for identity in identities if identity is not None)
+            dict.fromkeys(
+                identity
+                for identity in identities
+                if identity is not None
+            )
         )
 
         if not unique_identities:
@@ -470,7 +489,7 @@ class TwwCanonicalModelAdapter:
         for row in rows:
             identity = getattr(
                 row,
-                view.identity_attribute,
+                view.target_identity_attribute,
             )
 
             if identity in rows_by_identity:
@@ -481,7 +500,9 @@ class TwwCanonicalModelAdapter:
                     f"{identity!r}."
                 )
 
-            rows_by_identity[identity] = row
+            rows_by_identity[
+                identity
+            ] = row
 
         return rows_by_identity
 
@@ -521,7 +542,7 @@ class TwwCanonicalModelAdapter:
         self._resolved_canonical_view_classes_cache = None
         self._canonical_geometry_cache = None
         self._geometry_attribute_aliases_cache = None
-
+  
     def foreign_keys(
         self,
         class_id: str | None = None,
@@ -539,15 +560,23 @@ class TwwCanonicalModelAdapter:
 
         self.canonical_model()
 
-        foreign_keys = self._canonical_foreign_keys_cache or ()
+        foreign_keys = (
+            self._canonical_foreign_keys_cache
+            or ()
+        )
 
         return tuple(
             foreign_key
             for foreign_key in foreign_keys
-            if (class_id is None or foreign_key.class_id == class_id)
+            if (
+                class_id is None
+                or foreign_key.class_id
+                == class_id
+            )
             and (
                 referenced_class_id is None
-                or foreign_key.referenced_class_id == referenced_class_id
+                or foreign_key.referenced_class_id
+                == referenced_class_id
             )
         )
 
@@ -565,24 +594,24 @@ class TwwCanonicalModelAdapter:
             for foreign_key in self.foreign_keys(
                 class_id=class_id,
             )
-            if foreign_key.attribute_id == attribute_id
+            if foreign_key.attribute_id
+            == attribute_id
         )
 
         if not matches:
             return None
 
-        if (
-            len(
-                matches,
-            )
-            != 1
-        ):
+        if len(
+            matches,
+        ) != 1:
             raise RuntimeError(
                 "Several canonical foreign-key definitions exist for "
                 f"{class_id!r}.{attribute_id!r}: {matches!r}."
             )
 
-        return matches[0]
+        return matches[
+            0
+        ]
 
     def foreign_key_attributes_to_class(
         self,
@@ -612,16 +641,24 @@ class TwwCanonicalModelAdapter:
         attribute_id: str,
     ) -> CanonicalGeometryMetadata | None:
         """
-        Return physical metadata for one canonical geometry attribute.
+        Return physical metadata for a canonical geometry attribute.
+
+        Semantic dictionary aliases are resolved to executable physical columns.
         """
+        physical_attribute_id = (
+            self.physical_attribute_id(
+                class_id=class_id,
+                attribute_id=attribute_id,
+            )
+        )
 
         return self._canonical_geometries().get(
             (
                 class_id,
-                attribute_id,
+                physical_attribute_id,
             )
         )
-
+    
     def geometry_attribute_names(
         self,
         class_id: str,
@@ -661,7 +698,8 @@ class TwwCanonicalModelAdapter:
 
         if metadata is None:
             raise KeyError(
-                "No physical canonical geometry exists " f"for {class_id!r}.{attribute_id!r}."
+                "No physical canonical geometry exists "
+                f"for {class_id!r}.{attribute_id!r}."
             )
 
         return metadata.family
@@ -693,12 +731,34 @@ class TwwCanonicalModelAdapter:
         attribute_id: str,
     ) -> bool:
         """
-        Return whether one physical canonical attribute is a geometry.
+        Return whether one canonical attribute represents a physical geometry.
+
+        Both physical geometry column names and semantic dictionary aliases are
+        supported.
         """
+        normalized_class_id = class_id.strip()
+        normalized_attribute_id = (
+            attribute_id.strip()
+        )
+
+        if (
+            not normalized_class_id
+            or not normalized_attribute_id
+        ):
+            return False
+
+        physical_attribute_id = (
+            self.physical_attribute_id(
+                class_id=normalized_class_id,
+                attribute_id=(
+                    normalized_attribute_id
+                ),
+            )
+        )
 
         return (
-            class_id,
-            attribute_id,
+            normalized_class_id,
+            physical_attribute_id,
         ) in self._canonical_geometries()
 
     def physical_attribute_id(
@@ -712,10 +772,18 @@ class TwwCanonicalModelAdapter:
         """
 
         normalized_class_id = class_id.strip()
-        normalized_attribute_id = attribute_id.strip()
+        normalized_attribute_id = (
+            attribute_id.strip()
+        )
 
-        if not normalized_class_id or not normalized_attribute_id:
-            raise ValueError("Canonical class and attribute identifiers " "must not be empty.")
+        if (
+            not normalized_class_id
+            or not normalized_attribute_id
+        ):
+            raise ValueError(
+                "Canonical class and attribute identifiers "
+                "must not be empty."
+            )
 
         key = (
             normalized_class_id,
@@ -747,7 +815,7 @@ class TwwCanonicalModelAdapter:
                 value_id,
             )
         )
-
+    
     def values(
         self,
         class_id: str | None = None,
@@ -772,8 +840,20 @@ class TwwCanonicalModelAdapter:
                 key,
                 metadata,
             ) in values.items()
-            if (class_id is None or key[0] == class_id)
-            and (attribute_id is None or key[1] == attribute_id)
+            if (
+                class_id is None
+                or key[
+                    0
+                ]
+                == class_id
+            )
+            and (
+                attribute_id is None
+                or key[
+                    1
+                ]
+                == attribute_id
+            )
         }
 
     # ------------------------------------------------------------------
@@ -811,10 +891,18 @@ class TwwCanonicalModelAdapter:
         ``__table__`` metadata.
         """
 
-        if self._resolved_canonical_view_classes_cache is not None:
-            return self._resolved_canonical_view_classes_cache
+        if (
+            self._resolved_canonical_view_classes_cache
+            is not None
+        ):
+            return (
+                self
+                ._resolved_canonical_view_classes_cache
+            )
 
-        raw_classes = self._canonical_view_automap_classes()
+        raw_classes = (
+            self._canonical_view_automap_classes()
+        )
 
         resolved: dict[
             tuple[
@@ -890,7 +978,10 @@ class TwwCanonicalModelAdapter:
                 key,
             )
 
-            if existing is not None and existing is not mapped_class:
+            if (
+                existing is not None
+                and existing is not mapped_class
+            ):
                 raise RuntimeError(
                     "Several canonical comparison ORM classes "
                     "resolve to view "
@@ -902,9 +993,13 @@ class TwwCanonicalModelAdapter:
                 key=key,
             )
 
-            resolved[key] = mapped_class
+            resolved[
+                key
+            ] = mapped_class
 
-        self._resolved_canonical_view_classes_cache = resolved
+        self._resolved_canonical_view_classes_cache = (
+            resolved
+        )
 
         return resolved
 
@@ -935,12 +1030,16 @@ class TwwCanonicalModelAdapter:
             raw_classes,
             Mapping,
         ):
-            candidates = tuple(raw_classes.values())
+            candidates = tuple(
+                raw_classes.values()
+            )
 
         else:
             candidates = tuple(
                 candidate
-                for attribute_name in dir(raw_classes)
+                for attribute_name in dir(
+                    raw_classes
+                )
                 if not attribute_name.startswith(
                     "_",
                 )
@@ -976,19 +1075,27 @@ class TwwCanonicalModelAdapter:
                 class_id,
             )
 
-            if existing is not None and existing is not mapped_class:
+            if (
+                existing is not None
+                and existing is not mapped_class
+            ):
                 raise RuntimeError(
                     "Several canonical ORM classes resolve to "
                     f"physical class identifier {class_id!r}."
                 )
 
-            resolved[class_id] = mapped_class
+            resolved[
+                class_id
+            ] = mapped_class
 
         if self.reflected_class_ids is not None:
-            missing_class_ids = set(
-                self.reflected_class_ids,
-            ) - set(
-                resolved,
+            missing_class_ids = (
+                set(
+                    self.reflected_class_ids,
+                )
+                - set(
+                    resolved,
+                )
             )
 
             if missing_class_ids:
@@ -999,7 +1106,9 @@ class TwwCanonicalModelAdapter:
                 )
 
             resolved = {
-                class_id: resolved[class_id]
+                class_id: resolved[
+                    class_id
+                ]
                 for class_id in sorted(
                     self.reflected_class_ids,
                 )
@@ -1025,6 +1134,7 @@ class TwwCanonicalModelAdapter:
             ModelTwwOd().classes(),
         )
 
+
     def _canonical_geometries(
         self,
     ) -> dict[
@@ -1049,7 +1159,8 @@ class TwwCanonicalModelAdapter:
         if self._canonical_geometry_cache is not None:
             return self._canonical_geometry_cache
 
-        query = sql.SQL("""
+        query = sql.SQL(
+            """
             SELECT
                 f_table_name AS class_id,
                 f_geometry_column AS attribute_id,
@@ -1063,11 +1174,14 @@ class TwwCanonicalModelAdapter:
             ORDER BY
                 f_table_name,
                 f_geometry_column;
-            """)
+            """
+        )
 
         rows = self._fetchall_dict(
             query=query,
-            parameters=(self.canonical_schema,),
+            parameters=(
+                self.canonical_schema,
+            ),
         )
 
         geometries: dict[
@@ -1086,23 +1200,36 @@ class TwwCanonicalModelAdapter:
                 field_name="class_id",
             )
 
-            attribute_id = self._required_metadata_identifier(
-                row.get(
-                    "attribute_id",
-                ),
-                field_name="attribute_id",
+            attribute_id = (
+                self._required_metadata_identifier(
+                    row.get(
+                        "attribute_id",
+                    ),
+                    field_name="attribute_id",
+                )
             )
 
-            geometry_type = self._required_metadata_identifier(
-                row.get(
-                    "geometry_type",
-                ),
-                field_name="geometry_type",
-            ).upper()
+            geometry_type = (
+                self._required_metadata_identifier(
+                    row.get(
+                        "geometry_type",
+                    ),
+                    field_name="geometry_type",
+                )
+                .upper()
+            )
 
-            coordinate_dimension = int(row["coord_dimension"])
+            coordinate_dimension = int(
+                row[
+                    "coord_dimension"
+                ]
+            )
 
-            srid = int(row["srid"])
+            srid = int(
+                row[
+                    "srid"
+                ]
+            )
 
             key = (
                 class_id,
@@ -1116,20 +1243,34 @@ class TwwCanonicalModelAdapter:
                     f"{class_id!r}.{attribute_id!r}."
                 )
 
-            geometries[key] = CanonicalGeometryMetadata(
-                source_id=self._reflected_source_id("geometry:" f"{class_id}." f"{attribute_id}"),
+            geometries[
+                key
+            ] = CanonicalGeometryMetadata(
+                source_id=self._reflected_source_id(
+                    "geometry:"
+                    f"{class_id}."
+                    f"{attribute_id}"
+                ),
                 identifier=attribute_id,
                 localized=LocalizedMetadata(),
-                field_datatype=("geometry(" f"{geometry_type.lower()}" ")"),
+                field_datatype=(
+                    "geometry("
+                    f"{geometry_type.lower()}"
+                    ")"
+                ),
                 geometry_type=geometry_type,
                 family=self._geometry_family_from_type(
                     geometry_type,
                 ),
-                coordinate_dimension=(coordinate_dimension),
+                coordinate_dimension=(
+                    coordinate_dimension
+                ),
                 srid=srid,
             )
 
-        self._canonical_geometry_cache = geometries
+        self._canonical_geometry_cache = (
+            geometries
+        )
 
         return geometries
 
@@ -1149,10 +1290,14 @@ class TwwCanonicalModelAdapter:
         The composition root must supply their mapped SQLAlchemy classes.
         """
 
-        if self.canonical_view_automap_classes is not None:
+        if (
+            self.canonical_view_automap_classes
+            is not None
+        ):
             return self.canonical_view_automap_classes
-
+        
         return ModelTwwAG6496().classes()
+        
 
     def _reflected_classes(
         self,
@@ -1177,7 +1322,9 @@ class TwwCanonicalModelAdapter:
         for (
             class_id,
             mapped_class,
-        ) in sorted(automap_classes.items()):
+        ) in sorted(
+            automap_classes.items()
+        ):
             table = getattr(
                 mapped_class,
                 "__table__",
@@ -1191,7 +1338,9 @@ class TwwCanonicalModelAdapter:
                 table.name,
             )
 
-            classes[class_id] = CanonicalClassMetadata(
+            classes[
+                class_id
+            ] = CanonicalClassMetadata(
                 source_id=self._reflected_source_id(
                     f"class:{class_id}",
                 ),
@@ -1237,7 +1386,9 @@ class TwwCanonicalModelAdapter:
         for (
             class_id,
             mapped_class,
-        ) in sorted(automap_classes.items()):
+        ) in sorted(
+            automap_classes.items()
+        ):
             for (
                 attribute_id,
                 column,
@@ -1253,7 +1404,9 @@ class TwwCanonicalModelAdapter:
                     key,
                     CanonicalAttributeMetadata(
                         source_id=self._reflected_source_id(
-                            "attribute:" f"{class_id}." f"{attribute_id}",
+                            "attribute:"
+                            f"{class_id}."
+                            f"{attribute_id}",
                         ),
                         identifier=attribute_id,
                         field_datatype=(
@@ -1312,7 +1465,9 @@ class TwwCanonicalModelAdapter:
         for (
             class_id,
             mapped_class,
-        ) in sorted(automap_classes.items()):
+        ) in sorted(
+            automap_classes.items()
+        ):
             try:
                 mapper = inspect(
                     mapped_class,
@@ -1320,22 +1475,30 @@ class TwwCanonicalModelAdapter:
             except NoInspectionAvailable:
                 continue
 
-            inheritance_columns = self._inheritance_local_columns(
-                mapper,
+            inheritance_columns = (
+                self._inheritance_local_columns(
+                    mapper,
+                )
             )
 
             for relationship in mapper.relationships:
                 if self._is_inheritance_relationship(
                     mapper=mapper,
                     relationship=relationship,
-                    inheritance_columns=(inheritance_columns),
+                    inheritance_columns=(
+                        inheritance_columns
+                    ),
                 ):
                     continue
 
-                referenced_class = relationship.mapper.class_
+                referenced_class = (
+                    relationship.mapper.class_
+                )
 
-                referenced_class_id = class_id_by_mapped_class.get(
-                    referenced_class,
+                referenced_class_id = (
+                    class_id_by_mapped_class.get(
+                        referenced_class,
+                    )
                 )
 
                 if referenced_class_id is None:
@@ -1364,7 +1527,9 @@ class TwwCanonicalModelAdapter:
                     )
 
                     for foreign_key in local_column.foreign_keys:
-                        referenced_column = foreign_key.column
+                        referenced_column = (
+                            foreign_key.column
+                        )
 
                         referenced_table = getattr(
                             referenced_column,
@@ -1377,14 +1542,18 @@ class TwwCanonicalModelAdapter:
 
                         target_class_id = (
                             self._class_id_for_table(
-                                automap_classes=(automap_classes),
+                                automap_classes=(
+                                    automap_classes
+                                ),
                                 table=referenced_table,
                             )
                             or referenced_class_id
                         )
 
-                        referenced_attribute_id = self._column_attribute_name(
-                            referenced_column,
+                        referenced_attribute_id = (
+                            self._column_attribute_name(
+                                referenced_column,
+                            )
                         )
 
                         key = (
@@ -1399,13 +1568,19 @@ class TwwCanonicalModelAdapter:
                             CanonicalForeignKeyMetadata(
                                 class_id=class_id,
                                 attribute_id=attribute_id,
-                                referenced_class_id=(target_class_id),
-                                referenced_attribute_id=(referenced_attribute_id),
+                                referenced_class_id=(
+                                    target_class_id
+                                ),
+                                referenced_attribute_id=(
+                                    referenced_attribute_id
+                                ),
                             ),
                         )
 
         return tuple(
-            foreign_keys[key]
+            foreign_keys[
+                key
+            ]
             for key in sorted(
                 foreign_keys,
             )
@@ -1449,13 +1624,10 @@ class TwwCanonicalModelAdapter:
                     None,
                 )
 
-                if (
-                    not isinstance(
-                        attribute_id,
-                        str,
-                    )
-                    or not attribute_id
-                ):
+                if not isinstance(
+                    attribute_id,
+                    str,
+                ) or not attribute_id:
                     continue
 
                 columns = tuple(
@@ -1471,7 +1643,9 @@ class TwwCanonicalModelAdapter:
 
                 attributes.setdefault(
                     attribute_id,
-                    columns[0],
+                    columns[
+                        0
+                    ],
                 )
 
         table = getattr(
@@ -1494,7 +1668,9 @@ class TwwCanonicalModelAdapter:
         return tuple(
             sorted(
                 attributes.items(),
-                key=lambda item: item[0],
+                key=lambda item: item[
+                    0
+                ],
             )
         )
 
@@ -1526,8 +1702,10 @@ class TwwCanonicalModelAdapter:
 
             if (
                 candidate_table is not None
-                and candidate_table.name == table.name
-                and candidate_table.schema == table.schema
+                and candidate_table.name
+                == table.name
+                and candidate_table.schema
+                == table.schema
             ):
                 return class_id
 
@@ -1536,12 +1714,17 @@ class TwwCanonicalModelAdapter:
     def _inheritance_local_columns(
         self,
         mapper: Any,
-    ) -> frozenset[Any,]:
+    ) -> frozenset[
+        Any,
+    ]:
         """
         Return child-side columns participating in joined inheritance.
         """
 
-        if mapper.inherits is None or mapper.inherit_condition is None:
+        if (
+            mapper.inherits is None
+            or mapper.inherit_condition is None
+        ):
             return frozenset()
 
         local_table = mapper.local_table
@@ -1564,7 +1747,9 @@ class TwwCanonicalModelAdapter:
         *,
         mapper: Any,
         relationship: Any,
-        inheritance_columns: frozenset[Any,],
+        inheritance_columns: frozenset[
+            Any,
+        ],
     ) -> bool:
         """
         Return whether one ORM relationship represents joined inheritance.
@@ -1708,14 +1893,22 @@ class TwwCanonicalModelAdapter:
             )
 
             if existing_metadata is None:
-                result[key] = geometry_metadata
+                result[
+                    key
+                ] = geometry_metadata
 
                 continue
 
-            result[key] = replace(
+            result[
+                key
+            ] = replace(
                 geometry_metadata,
-                source_id=(existing_metadata.source_id),
-                localized=(existing_metadata.localized),
+                source_id=(
+                    existing_metadata.source_id
+                ),
+                localized=(
+                    existing_metadata.localized
+                ),
             )
 
         return result
@@ -1790,7 +1983,10 @@ class TwwCanonicalModelAdapter:
             )
         )
 
-        return -(checksum or 1)
+        return -(
+            checksum
+            or 1
+        )
 
     def _sqlalchemy_datatype(
         self,
@@ -1808,8 +2004,11 @@ class TwwCanonicalModelAdapter:
             .lower()
         )
 
-        if type_name == "geometry" or type_name.startswith(
-            "geometry",
+        if (
+            type_name == "geometry"
+            or type_name.startswith(
+                "geometry",
+            )
         ):
             geometry_type = getattr(
                 column.type,
@@ -1831,7 +2030,11 @@ class TwwCanonicalModelAdapter:
             if not normalized_geometry_type:
                 return "geometry"
 
-            return "geometry(" f"{normalized_geometry_type}" ")"
+            return (
+                "geometry("
+                f"{normalized_geometry_type}"
+                ")"
+            )
 
         try:
             python_type = column.type.python_type
@@ -1979,7 +2182,9 @@ class TwwCanonicalModelAdapter:
 
         return {
             str(
-                row["class_id"],
+                row[
+                    "class_id"
+                ],
             ): self._class_metadata_from_row(
                 row,
             )
@@ -2004,7 +2209,8 @@ class TwwCanonicalModelAdapter:
         rather than physical names, or omit extension-class geometries.
         """
 
-        query = sql.SQL("""
+        query = sql.SQL(
+            """
             SELECT
                 f.attribute_id AS source_id,
                 t.tablename AS class_id,
@@ -2029,7 +2235,8 @@ class TwwCanonicalModelAdapter:
             ORDER BY
                 t.tablename,
                 f.field_name;
-            """).format(
+            """
+        ).format(
             schema=sql.Identifier(
                 self.schema,
             ),
@@ -2037,7 +2244,9 @@ class TwwCanonicalModelAdapter:
 
         rows = self._fetchall_dict(
             query=query,
-            parameters=("geometry%",),
+            parameters=(
+                "geometry%",
+            ),
         )
 
         attributes: dict[
@@ -2049,9 +2258,17 @@ class TwwCanonicalModelAdapter:
         ] = {}
 
         for row in rows:
-            class_id = str(row["class_id"])
+            class_id = str(
+                row[
+                    "class_id"
+                ]
+            )
 
-            attribute_id = str(row["attribute_id"])
+            attribute_id = str(
+                row[
+                    "attribute_id"
+                ]
+            )
 
             key = (
                 class_id,
@@ -2060,10 +2277,13 @@ class TwwCanonicalModelAdapter:
 
             if key in attributes:
                 raise RuntimeError(
-                    "Several dictionary attributes resolve to " f"{class_id!r}.{attribute_id!r}."
+                    "Several dictionary attributes resolve to "
+                    f"{class_id!r}.{attribute_id!r}."
                 )
 
-            attributes[key] = self._attribute_metadata_from_row(
+            attributes[
+                key
+            ] = self._attribute_metadata_from_row(
                 row,
             )
 
@@ -2086,7 +2306,8 @@ class TwwCanonicalModelAdapter:
         canonical attributes themselves.
         """
 
-        query = sql.SQL("""
+        query = sql.SQL(
+            """
             SELECT
                 t.tablename AS class_id,
                 f.field_name AS attribute_id
@@ -2105,7 +2326,8 @@ class TwwCanonicalModelAdapter:
             ORDER BY
                 t.tablename,
                 f.field_name;
-            """).format(
+            """
+        ).format(
             schema=sql.Identifier(
                 self.schema,
             ),
@@ -2113,7 +2335,9 @@ class TwwCanonicalModelAdapter:
 
         rows = self._fetchall_dict(
             query=query,
-            parameters=("geometry%",),
+            parameters=(
+                "geometry%",
+            ),
         )
 
         result: list[
@@ -2131,11 +2355,22 @@ class TwwCanonicalModelAdapter:
         ] = set()
 
         for row in rows:
-            class_id = str(row["class_id"]).strip()
+            class_id = str(
+                row[
+                    "class_id"
+                ]
+            ).strip()
 
-            attribute_id = str(row["attribute_id"]).strip()
+            attribute_id = str(
+                row[
+                    "attribute_id"
+                ]
+            ).strip()
 
-            if not class_id or not attribute_id:
+            if (
+                not class_id
+                or not attribute_id
+            ):
                 continue
 
             key = (
@@ -2211,13 +2446,19 @@ class TwwCanonicalModelAdapter:
         return {
             (
                 str(
-                    row["class_id"],
+                    row[
+                        "class_id"
+                    ],
                 ),
                 str(
-                    row["attribute_id"],
+                    row[
+                        "attribute_id"
+                    ],
                 ),
                 str(
-                    row["value_id"],
+                    row[
+                        "value_id"
+                    ],
                 ),
             ): self._value_metadata_from_row(
                 row,
@@ -2228,12 +2469,12 @@ class TwwCanonicalModelAdapter:
     def _geometry_attribute_aliases(
         self,
     ) -> dict[
-        tuple[
+            tuple[
+                str,
+                str,
+            ],
             str,
-            str,
-        ],
-        str,
-    ]:
+        ]:
         """
         Return semantic-to-physical canonical geometry attribute aliases.
 
@@ -2245,16 +2486,23 @@ class TwwCanonicalModelAdapter:
         are rejected.
         """
 
-        if self._geometry_attribute_aliases_cache is not None:
+        if (
+            self._geometry_attribute_aliases_cache
+            is not None
+        ):
             return dict(
                 self._geometry_attribute_aliases_cache,
             )
 
-        dictionary_geometries = self._dictionary_geometry_identifiers()
+        dictionary_geometries = (
+            self._dictionary_geometry_identifiers()
+        )
 
         physical_geometries_by_class: dict[
             str,
-            list[str,],
+            list[
+                str,
+            ],
         ] = {}
 
         for (
@@ -2280,15 +2528,20 @@ class TwwCanonicalModelAdapter:
             class_id,
             dictionary_attribute_id,
         ) in dictionary_geometries:
-            physical_attribute_ids = physical_geometries_by_class.get(
-                class_id,
-                [],
+            physical_attribute_ids = (
+                physical_geometries_by_class.get(
+                    class_id,
+                    [],
+                )
             )
 
             if not physical_attribute_ids:
                 continue
 
-            if dictionary_attribute_id in physical_attribute_ids:
+            if (
+                dictionary_attribute_id
+                in physical_attribute_ids
+            ):
                 aliases[
                     (
                         class_id,
@@ -2298,14 +2551,17 @@ class TwwCanonicalModelAdapter:
 
                 continue
 
-            dictionary_stem = self._geometry_attribute_stem(
-                dictionary_attribute_id,
+            dictionary_stem = (
+                self._geometry_attribute_stem(
+                    dictionary_attribute_id,
+                )
             )
 
             matching_physical_attributes = tuple(
                 sorted(
                     physical_attribute_id
-                    for physical_attribute_id in physical_attribute_ids
+                    for physical_attribute_id
+                    in physical_attribute_ids
                     if (
                         self._geometry_attribute_stem(
                             physical_attribute_id,
@@ -2338,9 +2594,13 @@ class TwwCanonicalModelAdapter:
                     class_id,
                     dictionary_attribute_id,
                 )
-            ] = matching_physical_attributes[0]
+            ] = matching_physical_attributes[
+                0
+            ]
 
-        self._geometry_attribute_aliases_cache = aliases
+        self._geometry_attribute_aliases_cache = (
+            aliases
+        )
 
         return dict(
             aliases,
@@ -2366,9 +2626,13 @@ class TwwCanonicalModelAdapter:
         )
 
         return CanonicalAttributeMetadata(
-            source_id=row["source_id"],
+            source_id=row[
+                "source_id"
+            ],
             identifier=str(
-                row["attribute_id"],
+                row[
+                    "attribute_id"
+                ],
             ),
             field_datatype=(
                 str(
@@ -2395,9 +2659,13 @@ class TwwCanonicalModelAdapter:
         """
 
         return CanonicalClassMetadata(
-            source_id=row["source_id"],
+            source_id=row[
+                "source_id"
+            ],
             identifier=str(
-                row["class_id"],
+                row[
+                    "class_id"
+                ],
             ),
             localized=self._localized_metadata(
                 row=row,
@@ -2424,10 +2692,17 @@ class TwwCanonicalModelAdapter:
         - ``detail_geometry3d_geometry`` -> ``detail``
         """
 
-        normalized = attribute_id.strip().casefold()
+        normalized = (
+            attribute_id
+            .strip()
+            .casefold()
+        )
 
         if not normalized:
-            raise ValueError("Geometry attribute identifiers must not " "be empty.")
+            raise ValueError(
+                "Geometry attribute identifiers must not "
+                "be empty."
+            )
 
         previous = None
 
@@ -2437,17 +2712,29 @@ class TwwCanonicalModelAdapter:
             if normalized.endswith(
                 "_geometry",
             ):
-                normalized = normalized[: -len("_geometry")]
+                normalized = normalized[
+                    :-len(
+                        "_geometry"
+                    )
+                ]
 
             if normalized.endswith(
                 "3d",
             ):
-                normalized = normalized[: -len("3d")]
+                normalized = normalized[
+                    :-len(
+                        "3d"
+                    )
+                ]
 
             if normalized.endswith(
                 "2d",
             ):
-                normalized = normalized[: -len("2d")]
+                normalized = normalized[
+                    :-len(
+                        "2d"
+                    )
+                ]
 
             normalized = normalized.rstrip(
                 "_",
@@ -2455,7 +2742,8 @@ class TwwCanonicalModelAdapter:
 
         if not normalized:
             raise ValueError(
-                "Could not derive a geometry attribute " f"stem from {attribute_id!r}."
+                "Could not derive a geometry attribute "
+                f"stem from {attribute_id!r}."
             )
 
         return normalized
@@ -2471,10 +2759,18 @@ class TwwCanonicalModelAdapter:
         if field_datatype is None:
             return False
 
-        normalized = field_datatype.strip().lower()
+        normalized = (
+            field_datatype
+            .strip()
+            .lower()
+        )
 
-        return normalized == "geometry" or normalized.startswith(
-            "geometry(",
+        return (
+            normalized
+            == "geometry"
+            or normalized.startswith(
+                "geometry(",
+            )
         )
 
     def _localized_metadata(
@@ -2508,7 +2804,9 @@ class TwwCanonicalModelAdapter:
             ).strip()
 
             if normalized_value:
-                names[language.value] = normalized_value
+                names[
+                    language.value
+                ] = normalized_value
 
         return LocalizedMetadata(
             names=names,
@@ -2527,12 +2825,13 @@ class TwwCanonicalModelAdapter:
         if (
             not isinstance(
                 value,
-                str,
+               str,
             )
             or not value.strip()
         ):
             raise RuntimeError(
-                "PostGIS geometry metadata contains an " f"invalid {field_name!r}: {value!r}."
+                "PostGIS geometry metadata contains an "
+               f"invalid {field_name!r}: {value!r}."
             )
 
         return value.strip()
@@ -2549,9 +2848,13 @@ class TwwCanonicalModelAdapter:
         """
 
         return CanonicalValueMetadata(
-            source_id=row["source_id"],
+            source_id=row[
+                "source_id"
+            ],
             identifier=str(
-                row["value_id"],
+                row[
+                    "value_id"
+                ],
             ),
             localized=self._localized_metadata(
                 row=row,
@@ -2567,7 +2870,9 @@ class TwwCanonicalModelAdapter:
         self,
         *,
         query: sql.Composable,
-        parameters: Sequence[Any,] = (),
+        parameters: Sequence[
+            Any,
+        ] = (),
     ) -> list[
         dict[
             str,
@@ -2632,7 +2937,9 @@ class TwwCanonicalModelAdapter:
             )
 
         return str(
-            column[0],
+            column[
+                0
+            ],
         )
 
     def _geometry_family_from_type(
@@ -2648,7 +2955,8 @@ class TwwCanonicalModelAdapter:
         """
 
         normalized_type = (
-            geometry_type.strip()
+            geometry_type
+            .strip()
             .upper()
             .replace(
                 " ",
@@ -2668,7 +2976,11 @@ class TwwCanonicalModelAdapter:
             if normalized_type.endswith(
                 dimensional_suffix,
             ):
-                normalized_type = normalized_type[: -len(dimensional_suffix)]
+                normalized_type = normalized_type[
+                    :-len(
+                        dimensional_suffix
+                    )
+                ]
 
                 break
 
@@ -2697,7 +3009,10 @@ class TwwCanonicalModelAdapter:
         }:
             return CanonicalGeometryFamily.POLYGON
 
-        raise RuntimeError("Unsupported canonical PostGIS geometry " f"type {geometry_type!r}.")
+        raise RuntimeError(
+            "Unsupported canonical PostGIS geometry "
+            f"type {geometry_type!r}."
+        )
 
     def _canonical_foreign_key_index(
         self,
@@ -2723,7 +3038,9 @@ class TwwCanonicalModelAdapter:
                 str,
                 str,
             ],
-            set[str,],
+            set[
+                str,
+            ],
         ] = {}
 
         for foreign_key in self.foreign_keys():
@@ -2781,14 +3098,21 @@ class TwwCanonicalModelAdapter:
             == 2
         ):
             schema_name = str(
-                configured_key[0],
+                configured_key[
+                    0
+                ],
             ).strip()
 
             relation_name = str(
-                configured_key[1],
+                configured_key[
+                    1
+                ],
             ).strip()
 
-            if not schema_name or not relation_name:
+            if (
+                not schema_name
+                or not relation_name
+            ):
                 raise ValueError(
                     "Canonical comparison view mapping keys "
                     "must contain non-empty schema and relation "
@@ -2809,17 +3133,25 @@ class TwwCanonicalModelAdapter:
                 maxsplit=1,
             )
 
-            if (
-                len(
-                    configured_parts,
+            if len(
+                configured_parts,
+            ) == 2:
+                schema_name = (
+                    configured_parts[
+                        0
+                    ].strip()
                 )
-                == 2
-            ):
-                schema_name = configured_parts[0].strip()
 
-                relation_name = configured_parts[1].strip()
+                relation_name = (
+                    configured_parts[
+                        1
+                    ].strip()
+                )
 
-                if schema_name and relation_name:
+                if (
+                    schema_name
+                    and relation_name
+                ):
                     return (
                         schema_name,
                         relation_name,

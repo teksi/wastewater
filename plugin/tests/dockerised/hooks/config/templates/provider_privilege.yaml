@@ -627,3 +627,8 @@ classes:
   - id: agxx_unconnected_node_bwrel
     crud_rules:
       - privileges: [DBW_WI,DBW_GEP]
+
+  - id: agxx_reach_point
+    derive_rights_from:
+      - class: reach_point
+        local_attribute: fk_reach_point

@@ -1,6 +1,6 @@
 models:
   agxx:
-    defaults:
+    declarative_defaults:
       target_attribute: obj_id
       source_attribute: t_ili_tid
       identities:
@@ -17,6 +17,8 @@ models:
             attribute: ag96_last_modification
 
     projection_defaults:
+      source_identity_attribute: t_ili_tid
+      target_identity_attribute: obj_id
       references:
         datenbewirtschafter_wi:
           source:
@@ -37,6 +39,7 @@ models:
         gepmassnahmeref:
           source:
             class: Metainformation
+            identity_attribute: t_ili_tid
             discriminator:
               attribute: t_type
               value: gepmassnahme
@@ -49,11 +52,11 @@ models:
       GepKnoten:
         projection:
           kind: canonical_view
+          target_identity_attribute: obj_id
 
           canonical_view:
             schema: tww_app
             name: vw_agxx_gepknoten
-            identity_attribute: obj_id
 
           value_lists:
             istschnittstelle:
@@ -88,20 +91,11 @@ models:
       GepHaltung:
         projection:
           kind: canonical_view
+          target_identity_attribute: obj_id
 
           canonical_view:
             schema: tww_app
             name: vw_agxx_gephaltung
-            identity_attribute: obj_id
-
-          references:
-            startknoten:
-              source:
-                class: GepKnoten
-
-            endknoten:
-              source:
-                class: GepKnoten
 
           value_lists:
             funktionhierarchisch:
@@ -116,11 +110,11 @@ models:
       Ueberlauf_Foerderaggregat:
         projection:
           kind: canonical_view
+          target_identity_attribute: obj_id
 
           canonical_view:
             schema: tww_app
             name: vw_agxx_ueberlauf_foerderaggregat
-            identity_attribute: obj_id
 
           references:
             knotenref:
@@ -145,7 +139,7 @@ models:
             target:
               class: measure
               attribute: priority
-              value_list: tww_vl.measure_category_priority
+              value_list: tww_vl.measure_priority
               mapping_attribute: value_de
 
       Einzugsgebiet:
@@ -282,18 +276,16 @@ models:
               attribute: fk_provider
 
       Organisation:
-        source_attribute: obj_id
-
         projection:
           kind: canonical_view
-
+          source_identity_attribute: obj_id
+          target_identity_attribute: obj_id
           canonical_view:
             schema: tww_app
             name: vw_agxx_organisation
-            identity_attribute: obj_id
 
   sia405_abwasser:
-    defaults:
+    declarative_defaults:
       relations:
         fk_provider:
           target:
@@ -336,7 +328,7 @@ models:
                 fr: point_troncon_versref
 
   dss:
-    defaults:
+    declarative_defaults:
       inherit_from: sia405_abwasser
     classes:
       catchment_area:
@@ -459,5 +451,5 @@ models:
                 fr: deversement_versref
 
   vsa_kek:
-    defaults:
+    declarative_defaults:
       inherit_from: sia405_abwasser

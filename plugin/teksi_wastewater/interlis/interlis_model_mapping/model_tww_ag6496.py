@@ -6,8 +6,7 @@ from .model_base import ModelBase
 
 
 class ModelTwwAG6496(ModelBase):
-    inheritance_key = None
-
+    inheritance_key=None
     def __init__(self):
         super().__init__(config.TWW_APP_SCHEMA)
 
@@ -84,11 +83,11 @@ class ModelTwwAG6496(ModelBase):
             letzte_aenderung_gep = Column(DateTime)
             ignore_ws = Column(Boolean)
             ws_type = Column(String)
-            _mapping_wastewater_structure_obj_id = Column(String)
+            _mapping_ws_obj_id = Column(String)
+            _mapping_ne_obj_id = Column(String)
             _mapping_origin = Column(String)
-            _mapping_is_wastewater_node = Column(Boolean)
-            _mapping_is_synthetic = Column(Boolean)
             _mapping_has_unc_fallback = Column(Boolean)
+            _mapping_function_hierarchic_code = Column(Integer)
             __table_args__ = {"schema": config.TWW_APP_SCHEMA}
 
         ModelTwwAG6496.gepknoten = gepknoten
@@ -137,7 +136,7 @@ class ModelTwwAG6496(ModelBase):
             letzte_aenderung_gep = Column(DateTime)
             startknoten = Column(String)
             endknoten = Column(String)
-            _mapping_wastewater_structure_obj_id = Column(String)
+            _mapping_ws_obj_id = Column(String)
             _mapping_reach_point_from_obj_id = Column(String)
             _mapping_reach_point_to_obj_id = Column(String)
             _mapping_pipe_profile_obj_id = Column(String)

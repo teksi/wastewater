@@ -18,8 +18,8 @@ class InterlisImporterFromIntermediateSchema:
         model_classes_tww_vl,
         model_classes_tww_app=None,
         callback_progress_done=None,
-        session_interlis: Session | None = None,
-        session_tww: Session | None = None,
+        session_interlis: Session | None=None,
+        session_tww: Session | None=None,
         filter_nulls=False,
     ):
         self.model_groups = set(model_selection.groups_for_models(model))
@@ -36,12 +36,12 @@ class InterlisImporterFromIntermediateSchema:
 
         self.filter_nulls = filter_nulls
 
-        self.skip_closing_tww_session = False
+        self.skip_closing_tww_session=False
 
     def tww_import(self, skip_closing_tww_session=False):
-        previous_skip_closing = self.skip_closing_tww_session
+        previous_skip_closing=self.skip_closing_tww_session
         try:
-            self.skip_closing_tww_session = skip_closing_tww_session
+            self.skip_closing_tww_session=skip_closing_tww_session
             self._tww_import()
         except Exception as exception:
             try:
@@ -56,7 +56,7 @@ class InterlisImporterFromIntermediateSchema:
         finally:
             if self.owns_sessions:
                 self._close_owned_sessions()
-            self.skip_closing_tww_session = previous_skip_closing
+            self.skip_closing_tww_session=previous_skip_closing
 
     def _tww_import(self):
         """
@@ -106,7 +106,7 @@ class InterlisImporterFromIntermediateSchema:
             self._import_sia405_protection_tube()
 
         self.session_tww.flush()
-
+        
     def _import_sia405_abwasser_base(self):
         logger.info("\nImporting ABWASSER.organisation -> TWW.organisation")
         self._import_organisation()
@@ -404,12 +404,6 @@ class InterlisImporterFromIntermediateSchema:
             "\nImporting ABWASSER.gebaeudegruppe_entsorgungassoc -> TWW.re_building_group_disposal"
         )
         self._import_gebaeudegruppe_entsorgungassoc()
-        self._check_for_stop()
-
-        logger.info(
-            "\nImporting ABWASSER.messstelle_referenzstelleassoc -> TWW.re_measuring_point_reference_station"
-        )
-        self._import_messstelle_referenzstelleassoc()
         self._check_for_stop()
 
     def _import_vsa_kek(self):
@@ -2585,34 +2579,6 @@ class InterlisImporterFromIntermediateSchema:
             self.session_tww.add(re_building_group_disposal)
             print(".", end="")
 
-    def _import_messstelle_referenzstelleassoc(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.messstelle_referenzstelleassoc
-        ):
-            re_measuring_point_reference_station = (
-                self.session_tww.query(
-                    self.model_classes_tww_od.re_measuring_point_reference_station
-                )
-                .filter_by(
-                    fk_measuring_point=self.get_pk(row.messstelle_referenzstelleassocref__REL),
-                    fk_reference_station=self.get_pk(row.referenzstelleref__REL),
-                )
-                .first()
-            )
-            if re_measuring_point_reference_station is not None:
-                # Already existing -> do nothing
-                continue
-
-            re_measuring_point_reference_station = (
-                self.model_classes_tww_od.re_measuring_point_reference_station(
-                    fk_measuring_point=self.get_pk(row.messstelle_referenzstelleassocref__REL),
-                    fk_reference_station=self.get_pk(row.referenzstelleref__REL),
-                )
-            )
-
-            self.session_tww.add(re_measuring_point_reference_station)
-            print(".", end="")
-
     def _check_for_stop(self):
         if self.callback_progress_done:
             self.callback_progress_done()
@@ -3014,16 +2980,21 @@ class InterlisImporterFromIntermediateSchema:
         if self.session_tww is not None:
             self.session_tww.rollback()
 
+
     def _commit_owned_sessions(
         self,
     ) -> None:
         if self.session_tww is not None:
             self.session_tww.commit()
 
+
     def _close_owned_sessions(
         self,
     ) -> None:
-        if self.session_tww is not None and not self.skip_closing_tww_session:
+        if (
+            self.session_tww is not None
+            and not self.skip_closing_tww_session
+        ):
             self.session_tww.close()
 
         if self.session_interlis is not None:

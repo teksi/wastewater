@@ -6,6 +6,16 @@ from typing import Any
 
 from sqlalchemy import inspect
 from sqlalchemy.orm import Session
+from geoalchemy2.functions import (
+    ST_Equals,
+)
+from geoalchemy2.elements import (
+    WKBElement,
+)
+from sqlalchemy import select
+from sqlalchemy.sql.elements import (
+    ClauseElement,
+)
 from teksi_hooks.models.canonical_object import (
     CanonicalObject,
     CanonicalObjectIdentity,
@@ -20,18 +30,13 @@ from teksi_hooks.models.effects import (
     UpdateAttributeEffect,
 )
 
-from ...interlis import (
-    config,
-)
-from ...interlis.interlis_model_mapping.model_tww_od import (
-    ModelTwwOd,
-)
 from ..capabilities.incremental_import import (
     IncrementalEffectEvaluator,
 )
 from ..evaluators.tww_effect_evaluation_policy import (
     TwwEffectEvaluationPolicy,
 )
+
 
 
 @dataclass(
@@ -44,9 +49,8 @@ class TwwIncrementalEffectEvaluator(
     Evaluate incremental effects against current canonical TWW state.
 
     Canonical ORM discovery is performed at most once per evaluator instance.
-    Callers may inject an already prepared canonical class collection to avoid
-    reflection entirely. Otherwise, ``ModelTwwOd`` is prepared lazily on the
-    first evaluation and retained for all subsequent documents.
+    Callers inject an already prepared canonical class collection to avoid
+    reflection entirely.
 
     The evaluator determines whether each desired-state effect is already
     satisfied. Unsatisfied effects are delegated to
@@ -61,34 +65,17 @@ class TwwIncrementalEffectEvaluator(
     flush, commit, roll back or close it.
     """
 
+    canonical_classes: Mapping[
+        str,
+        type,
+    ] = field(
+        repr=False,
+    )
+
     policy: TwwEffectEvaluationPolicy = field(
         default_factory=TwwEffectEvaluationPolicy,
     )
 
-    live_schema: str = config.TWW_OD_SCHEMA
-
-    canonical_classes: (
-        Mapping[
-            str,
-            Any,
-        ]
-        | None
-    ) = field(
-        default=None,
-        repr=False,
-    )
-
-    _canonical_classes_cache: (
-        Mapping[
-            str,
-            Any,
-        ]
-        | None
-    ) = field(
-        default=None,
-        init=False,
-        repr=False,
-    )
 
     def evaluate(
         self,
@@ -110,7 +97,9 @@ class TwwIncrementalEffectEvaluator(
             CanonicalObject | None,
         ] = {}
 
-        results: list[EffectEvaluationResult,] = []
+        results: list[
+            EffectEvaluationResult,
+        ] = []
 
         for (
             effect_index,
@@ -121,15 +110,20 @@ class TwwIncrementalEffectEvaluator(
             identity_key = effect.identity.key()
 
             if identity_key not in current_objects:
-                current_objects[identity_key] = self._current_object(
+                current_objects[
+                    identity_key
+                ] = self._current_object(
                     session=session,
                     identity=effect.identity,
                 )
 
-            current_object = current_objects[identity_key]
+            current_object = current_objects[
+                identity_key
+            ]
 
             if self._is_satisfied(
                 effect=effect,
+                session=session,
                 current_object=current_object,
             ):
                 result = self._satisfied_result(
@@ -138,9 +132,11 @@ class TwwIncrementalEffectEvaluator(
                 )
 
             else:
-                policy_result = self.policy.unsatisfied_status(
-                    effect=effect,
-                    current_object=current_object,
+                policy_result = (
+                    self.policy.unsatisfied_status(
+                        effect=effect,
+                        current_object=current_object,
+                    )
                 )
 
                 result = replace(
@@ -152,7 +148,9 @@ class TwwIncrementalEffectEvaluator(
                 result,
             )
 
-            current_objects[identity_key] = self._project_effect_state(
+            current_objects[
+                identity_key
+            ] = self._project_effect_state(
                 effect=effect,
                 current_object=current_object,
                 evaluation=result,
@@ -162,22 +160,12 @@ class TwwIncrementalEffectEvaluator(
             results,
         )
 
-    def clear_cache(
-        self,
-    ) -> None:
-        """
-        Clear lazily discovered canonical ORM classes.
-
-        Explicitly injected ``canonical_classes`` remain authoritative and are
-        not modified. This method is only needed when the database schema is
-        recreated while the same evaluator instance remains alive.
-        """
-        self._canonical_classes_cache = None
 
     def _is_satisfied(
         self,
         *,
         effect: Effect,
+        session: Session,
         current_object: CanonicalObject | None,
     ) -> bool:
         """
@@ -207,6 +195,7 @@ class TwwIncrementalEffectEvaluator(
             )
 
             return self._values_equal(
+                session=session,
                 current_value=current_value,
                 desired_value=effect.value,
             )
@@ -226,14 +215,18 @@ class TwwIncrementalEffectEvaluator(
             str,
             Any,
         ] = {
-            "target_class_id": (effect.identity.class_id),
+            "target_class_id": (
+                effect.identity.class_id
+            ),
         }
 
         if isinstance(
             effect,
             UpdateAttributeEffect,
         ):
-            metadata["target_attribute_id"] = effect.attribute_id
+            metadata[
+                "target_attribute_id"
+            ] = effect.attribute_id
 
         return EffectEvaluationResult(
             effect_index=effect_index,
@@ -255,7 +248,10 @@ class TwwIncrementalEffectEvaluator(
         This lets later effects in the same document observe preceding desired
         state without flushing changes to the database.
         """
-        if evaluation.status == EffectEvaluationStatus.BLOCKED:
+        if (
+            evaluation.status
+            == EffectEvaluationStatus.BLOCKED
+        ):
             return current_object
 
         if isinstance(
@@ -289,7 +285,9 @@ class TwwIncrementalEffectEvaluator(
                 current_object.values,
             )
 
-            updated_values[effect.attribute_id] = effect.value
+            updated_values[
+                effect.attribute_id
+            ] = effect.value
 
             return CanonicalObject(
                 identity=current_object.identity,
@@ -344,18 +342,20 @@ class TwwIncrementalEffectEvaluator(
         if not rows:
             return None
 
-        if (
-            len(
-                rows,
+        if len(
+            rows,
+        ) > 1:
+            raise ValueError(
+                "Canonical identity is ambiguous: "
+                f"{identity!r}."
             )
-            > 1
-        ):
-            raise ValueError("Canonical identity is ambiguous: " f"{identity!r}.")
 
         return CanonicalObject(
             identity=identity,
             values=self._row_values(
-                rows[0],
+                rows[
+                    0
+                ],
             ),
         )
 
@@ -385,28 +385,6 @@ class TwwIncrementalEffectEvaluator(
             for attribute in mapper.column_attrs
         }
 
-    def _resolved_canonical_classes(
-        self,
-    ) -> Mapping[
-        str,
-        Any,
-    ]:
-        """
-        Return canonical live ORM classes without repeated schema reflection.
-
-        Explicitly supplied classes take precedence. Otherwise, the default
-        ``tww_od`` model is reflected once and cached for the lifetime of this
-        evaluator instance.
-        """
-        if self.canonical_classes is not None:
-            return self.canonical_classes
-
-        if self._canonical_classes_cache is None:
-            self._validate_live_schema()
-
-            self._canonical_classes_cache = ModelTwwOd().classes()
-
-        return self._canonical_classes_cache
 
     def _canonical_class(
         self,
@@ -416,9 +394,7 @@ class TwwIncrementalEffectEvaluator(
         """
         Return one canonical ORM class from the prepared collection.
         """
-        canonical_classes = self._resolved_canonical_classes()
-
-        target_class = canonical_classes.get(
+        target_class = self.canonical_classes.get(
             class_id,
         )
 
@@ -428,7 +404,8 @@ class TwwIncrementalEffectEvaluator(
                     str(
                         available_class_id,
                     )
-                    for available_class_id in canonical_classes
+                    for available_class_id
+                    in self.canonical_classes
                 )
             )
 
@@ -440,42 +417,126 @@ class TwwIncrementalEffectEvaluator(
 
         return target_class
 
-    def _validate_live_schema(
-        self,
-    ) -> None:
-        """
-        Require a non-empty configured canonical live schema.
-        """
-        if (
-            not isinstance(
-                self.live_schema,
-                str,
-            )
-            or not self.live_schema.strip()
-        ):
-            raise ValueError("live_schema must be a non-empty string.")
 
     def _values_equal(
         self,
         *,
+        session: Session,
         current_value: Any,
         desired_value: Any,
     ) -> bool:
         """
         Compare current and desired canonical values.
 
-        Native equality remains authoritative. A string fallback handles
-        compatible identifier, enum, numeric and database-wrapper values that
-        use different Python representations.
+        Database-side geometry expressions are evaluated by PostgreSQL through
+        ``ST_Equals``. Ordinary scalar values use native equality with the existing
+        string compatibility fallback.
         """
-        if current_value == desired_value:
-            return True
+        if (
+            current_value is None
+            or desired_value is None
+        ):
+            return (
+                current_value is None
+                and desired_value is None
+            )
 
-        if current_value is None or desired_value is None:
+        current_is_spatial = (
+            self._is_spatial_value(
+                current_value,
+            )
+        )
+
+        desired_is_spatial = (
+            self._is_spatial_value(
+                desired_value,
+            )
+        )
+
+        if current_is_spatial != desired_is_spatial:
+                raise TypeError(
+                    "Cannot compare a spatial value with a "
+                    "non-spatial value. Current type: "
+                    f"{type(current_value)!r}; desired type: "
+                    f"{type(desired_value)!r}."
+                )
+        if (
+            current_is_spatial
+            and desired_is_spatial
+        ):
+
+            result = session.scalar(
+                select(
+                    ST_Equals(
+                        current_value,
+                        desired_value,
+                    )
+                )
+            )
+
+            return result is True
+
+        equality_result = (
+            current_value == desired_value
+        )
+
+        if isinstance(
+            equality_result,
+            ClauseElement,
+        ):
+            # A non-geometry SQL expression cannot safely be compared in Python.
+            # Retain it as a pending update.
             return False
+
+        if equality_result:
+            return True
 
         return str(
             current_value,
         ) == str(
             desired_value,
+        )
+
+
+    def _is_spatial_value(
+        self,
+        value: Any,
+    ) -> bool:
+        return (
+            isinstance(
+                value,
+                WKBElement,
+            )
+            or self._is_geometry_expression(
+                value,
+            )
+        )
+
+
+    def _is_geometry_expression(
+        self,
+        value: Any,
+    ) -> bool:
+        """
+        Return whether one SQL expression declares a geometry result type.
+        """
+        if not isinstance(
+            value,
+            ClauseElement,
+        ):
+            return False
+
+        expression_type = getattr(
+            value,
+            "type",
+            None,
+        )
+
+        return (
+            expression_type is not None
+            and expression_type.__class__.__name__
+            in {
+                "Geometry",
+                "Geography",
+            }
         )
