@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
+from collections.abc import Mapping
 
 import yaml
 from teksi_hooks.capabilities.conditions import (
@@ -58,6 +58,9 @@ from teksi_wastewater.hooks.adapters.tww_database_connection_factory import (
 )
 from teksi_wastewater.hooks.adapters.tww_relation_lookup_adapter import (
     TwwRelationLookupAdapter,
+)
+from teksi_wastewater.hooks.adapters.tww_session_manager import (
+    TwwSessionManager,
 )
 from teksi_wastewater.hooks.services.tww_diff_job_refresh_service import (
     TwwDiffJobRefreshService,
@@ -164,7 +167,7 @@ class Hook(
             )
 
         live_schema = (
-            job.get(
+            job.metadata.get(
                 "live_schema",
             )
             or config.TWW_OD_SCHEMA
@@ -223,9 +226,11 @@ class Hook(
             validation_definition=validation_definition,
         )
 
+        session_manager = TwwSessionManager()
+
         live_relation_lookup = TwwRelationLookupAdapter(
             schema=live_schema,
-            connection_factory=connection_factory,
+            session_manager=session_manager,
         )
 
         rights_evaluator = RightsEvaluator(
@@ -255,8 +260,8 @@ class Hook(
             },
         )
 
-        change_object_provider_factory = TwwChangeObjectProviderFactory(
-            connection_factory=connection_factory,
+        change_object_provider_factory = (
+            TwwChangeObjectProviderFactory()
         )
 
         refresh_service = TwwDiffJobRefreshService(
@@ -400,10 +405,7 @@ class Hook(
         ],
         key: str,
     ) -> str:
-        metadata = job.get(
-            "metadata",
-            {},
-        )
+        metadata = job.metadata
 
         value = metadata.get(
             key,
@@ -417,7 +419,8 @@ class Hook(
             or not value.strip()
         ):
             raise ValueError(
-                f"Pending job {job.get('job_id')!r} does not " f"contain valid metadata {key!r}."
+                f"Pending job {job.job_id!r} does not contain "
+                f"valid metadata {key!r}."
             )
 
         return value.strip()
