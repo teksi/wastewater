@@ -152,58 +152,57 @@ CREATE TABLE IF NOT EXISTS tww_diff.tww_review_feature (
         CHECK (
             jsonb_typeof(validation_findings) = 'array'
         ),
-        CONSTRAINT chk_tww_review_feature_point_geometry
-CHECK
-(
-    point_geometry IS NULL
-    OR GeometryType(
-        point_geometry
-    ) IN (
-        'POINT',
-        'MULTIPOINT',
-        'POINTZ',
-        'MULTIPOINTZ'
-    )
-),
+    CONSTRAINT chk_tww_review_feature_point_geometry
+        CHECK
+        (
+            point_geometry IS NULL
+            OR GeometryType(
+                point_geometry
+            ) IN (
+                'POINT',
+                'MULTIPOINT',
+                'POINTZ',
+                'MULTIPOINTZ'
+            )
+        ),
 
-CONSTRAINT chk_tww_review_feature_line_geometry
-CHECK
-(
-    line_geometry IS NULL
-    OR GeometryType(
-        line_geometry
-    ) IN (
-        'LINESTRING',
-        'MULTILINESTRING',
-        'CIRCULARSTRING',
-        'COMPOUNDCURVE',
-        'MULTICURVE',
-        'LINESTRINGZ',
-        'MULTILINESTRINGZ',
-        'CIRCULARSTRINGZ',
-        'COMPOUNDCURVEZ',
-        'MULTICURVEZ'
-    )
-),
+    CONSTRAINT chk_tww_review_feature_line_geometry
+        CHECK
+        (
+            line_geometry IS NULL
+            OR GeometryType(
+                line_geometry
+            ) IN (
+                'LINESTRING',
+                'MULTILINESTRING',
+                'CIRCULARSTRING',
+                'COMPOUNDCURVE',
+                'MULTICURVE',
+                'LINESTRINGZ',
+                'MULTILINESTRINGZ',
+                'CIRCULARSTRINGZ',
+                'COMPOUNDCURVEZ',
+                'MULTICURVEZ'
+            )
+        ),
 
-CONSTRAINT chk_tww_review_feature_polygon_geometry
-CHECK
-(
-    polygon_geometry IS NULL
-    OR GeometryType(
-        polygon_geometry
-    ) IN (
-        'POLYGON',
-        'MULTIPOLYGON',
-        'CURVEPOLYGON',
-        'MULTISURFACE',
-        'POLYGONZ',
-        'MULTIPOLYGONZ',
-        'CURVEPOLYGONZ',
-        'MULTISURFACEZ'
-    )
-),
-
+    CONSTRAINT chk_tww_review_feature_polygon_geometry
+        CHECK
+        (
+            polygon_geometry IS NULL
+            OR GeometryType(
+                polygon_geometry
+            ) IN (
+                'POLYGON',
+                'MULTIPOLYGON',
+                'CURVEPOLYGON',
+                'MULTISURFACE',
+                'POLYGONZ',
+                'MULTIPOLYGONZ',
+                'CURVEPOLYGONZ',
+                'MULTISURFACEZ'
+            )
+        )
 );
 
 
