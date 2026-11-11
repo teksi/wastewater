@@ -322,4 +322,3 @@ class DatabaseUtils:
     def refresh_matviews():
         logger.info("Refreshing materialized views")
         DatabaseUtils.execute("SELECT tww_app.refresh_materialized_views('tww_app', NULL, True);")
-

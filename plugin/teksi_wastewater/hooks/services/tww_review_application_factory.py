@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 import logging
-from pathlib import Path
 from collections.abc import Mapping
+from pathlib import Path
 
 from teksi_hooks.models.validation import (
     ValidationDefinition,
