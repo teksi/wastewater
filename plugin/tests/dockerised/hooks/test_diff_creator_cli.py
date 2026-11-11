@@ -4,13 +4,11 @@ import shlex
 from pathlib import Path
 
 import pytest
-
 from teksi_wastewater.utils.database_utils import (
     DatabaseUtils,
 )
 
 from ..helpers import run_cli
-
 
 pytestmark = pytest.mark.no_qgis
 
@@ -18,18 +16,10 @@ DATA_DIR = Path(__file__).parent / "data"
 CONFIG_DIR = Path(__file__).parent / "config"
 
 ORGS_XTF = DATA_DIR / "test-dataset-organisations.xtf"
-BASELINE_DSS_XTF = (
-    DATA_DIR
-    / "test_baseline_import_DSS_2020_1_LV95.xtf"
-)
-BASELINE_AGXX_XTF = (
-    DATA_DIR
-    / "test_baseline_Genereller_Entwaesserungsplan_AG.xtf"
-)
+BASELINE_DSS_XTF = DATA_DIR / "test_baseline_import_DSS_2020_1_LV95.xtf"
+BASELINE_AGXX_XTF = DATA_DIR / "test_baseline_Genereller_Entwaesserungsplan_AG.xtf"
 
-DIFF_CLI_PATH = Path(
-    "/usr/src/plugin/teksi_wastewater/hooks/cli/diff_cli.py"
-)
+DIFF_CLI_PATH = Path("/usr/src/plugin/teksi_wastewater/hooks/cli/diff_cli.py")
 
 DBW_WI = "ch080qwzPR000017"
 DBW_GEP = "ch080qwzPR000020"
@@ -82,16 +72,9 @@ def create_review_job(
     """
     Create or replace one base-and-incremental review job.
     """
-    assert xtf_file.is_file(), (
-        f"Missing base INTERLIS fixture: {xtf_file}"
-    )
-    assert incremental_xtf.is_file(), (
-        "Missing incremental INTERLIS fixture: "
-        f"{incremental_xtf}"
-    )
-    assert ORGS_XTF.is_file(), (
-        f"Missing organisation fixture: {ORGS_XTF}"
-    )
+    assert xtf_file.is_file(), f"Missing base INTERLIS fixture: {xtf_file}"
+    assert incremental_xtf.is_file(), "Missing incremental INTERLIS fixture: " f"{incremental_xtf}"
+    assert ORGS_XTF.is_file(), f"Missing organisation fixture: {ORGS_XTF}"
 
     arguments = [
         "create",
@@ -165,35 +148,23 @@ def assert_baseline_imported() -> None:
     """
     Assert that the trusted baseline populated canonical and AGXX data.
     """
-    rows = DatabaseUtils.execute_fetchall(
-        """
+    rows = DatabaseUtils.execute_fetchall("""
         SELECT count(*) AS count
         FROM tww_od.wastewater_structure
-        """
-    )
-    assert rows[0]["count"] > 0, (
-        "The DSS baseline did not create wastewater structures."
-    )
+        """)
+    assert rows[0]["count"] > 0, "The DSS baseline did not create wastewater structures."
 
-    rows = DatabaseUtils.execute_fetchall(
-        """
+    rows = DatabaseUtils.execute_fetchall("""
         SELECT count(*) AS count
         FROM tww_od.reach
-        """
-    )
-    assert rows[0]["count"] > 0, (
-        "The DSS baseline did not create reaches."
-    )
+        """)
+    assert rows[0]["count"] > 0, "The DSS baseline did not create reaches."
 
-    rows = DatabaseUtils.execute_fetchall(
-        """
+    rows = DatabaseUtils.execute_fetchall("""
         SELECT count(*) AS count
         FROM tww_od.agxx_building_group
-        """
-    )
-    assert rows[0]["count"] > 0, (
-        "The AGXX baseline did not populate agxx_building_group."
-    )
+        """)
+    assert rows[0]["count"] > 0, "The AGXX baseline did not populate agxx_building_group."
 
 
 def job_row(
@@ -216,10 +187,7 @@ def job_row(
         (job_id,),
     )
 
-    assert len(rows) == 1, (
-        f"Expected one metadata row for {job_id!r}, "
-        f"found {len(rows)}."
-    )
+    assert len(rows) == 1, f"Expected one metadata row for {job_id!r}, " f"found {len(rows)}."
 
     return rows[0]
 
@@ -236,8 +204,7 @@ def assert_job_status(
     )["job_status"]
 
     assert actual_status == expected_status, (
-        f"Expected job {job_id!r} to have status "
-        f"{expected_status!r}, got {actual_status!r}."
+        f"Expected job {job_id!r} to have status " f"{expected_status!r}, got {actual_status!r}."
     )
 
 
@@ -255,13 +222,9 @@ def assert_source_metadata(
     )["metadata"]
 
     assert metadata["base_import_schema"] == "tww_app_xtf2pg"
-    assert metadata["incremental_import_schema"] == (
-        "tww_app_xtf2pg_incr"
-    )
+    assert metadata["incremental_import_schema"] == ("tww_app_xtf2pg_incr")
     assert Path(metadata["base_source_xtf"]).name == base_xtf.name
-    assert Path(metadata["incremental_source_xtf"]).name == (
-        incremental_xtf.name
-    )
+    assert Path(metadata["incremental_source_xtf"]).name == (incremental_xtf.name)
 
 
 def diff_counts(
@@ -274,8 +237,7 @@ def diff_counts(
         job_id,
     )["id"]
 
-    table_rows = DatabaseUtils.execute_fetchall(
-        """
+    table_rows = DatabaseUtils.execute_fetchall("""
         SELECT table_name
         FROM information_schema.columns
         WHERE table_schema = 'tww_diff'
@@ -283,8 +245,7 @@ def diff_counts(
         HAVING bool_or(column_name = 'job_id')
            AND bool_or(column_name = 'is_rejected')
         ORDER BY table_name
-        """
-    )
+        """)
 
     total_count = 0
     rejected_count = 0
@@ -336,9 +297,7 @@ def assert_pending_permitted_job(
     total_count, rejected_count = diff_counts(
         job_id,
     )
-    assert total_count > 0, (
-        f"Job {job_id!r} did not produce review rows."
-    )
+    assert total_count > 0, f"Job {job_id!r} did not produce review rows."
     assert rejected_count == 0, (
         f"Expected job {job_id!r} to be fully permitted, but "
         f"{rejected_count} of {total_count} rows were rejected."
@@ -357,12 +316,9 @@ def create_and_apply_phase(
     permutations belong in focused rights-evaluator tests rather than repeated
     end-to-end CLI imports.
     """
-    base_xtf = DATA_DIR / (
-        f"test_{phase_identifier}_DSS_2020_1_LV95.xtf"
-    )
+    base_xtf = DATA_DIR / (f"test_{phase_identifier}_DSS_2020_1_LV95.xtf")
     incremental_xtf = DATA_DIR / (
-        f"test_{phase_identifier}_"
-        "Genereller_Entwaesserungsplan_AG.xtf"
+        f"test_{phase_identifier}_" "Genereller_Entwaesserungsplan_AG.xtf"
     )
     job_id = f"pytest-{phase_identifier}-job-{allowed_provider}"
 

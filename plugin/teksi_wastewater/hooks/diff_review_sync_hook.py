@@ -1,8 +1,8 @@
 from __future__ import annotations
 
+from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
-from collections.abc import Mapping
 
 import yaml
 from teksi_hooks.capabilities.conditions import (
@@ -260,9 +260,7 @@ class Hook(
             },
         )
 
-        change_object_provider_factory = (
-            TwwChangeObjectProviderFactory()
-        )
+        change_object_provider_factory = TwwChangeObjectProviderFactory()
 
         refresh_service = TwwDiffJobRefreshService(
             connection_factory=connection_factory,
@@ -419,8 +417,7 @@ class Hook(
             or not value.strip()
         ):
             raise ValueError(
-                f"Pending job {job.job_id!r} does not contain "
-                f"valid metadata {key!r}."
+                f"Pending job {job.job_id!r} does not contain " f"valid metadata {key!r}."
             )
 
         return value.strip()

@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import os
-from dataclasses import fields
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any
+from collections.abc import Mapping
 from uuid import uuid4
 
 import yaml
@@ -29,74 +29,69 @@ from teksi_hooks.hook import (
 from teksi_hooks.models.oid import Oid, Standardoid
 from teksi_hooks.models.privilege import ALL_PRIVILEGES
 from teksi_hooks.models.provider import ResolvedProvider
+from teksi_hooks.models.review import ChangeCreationResult
 from teksi_hooks.parser.model_mapping_parser import ModelMappingParser
 from teksi_hooks.parser.provider_rights_parser import ProviderRightsParser
 from teksi_hooks.parser.rights_parser import RightsParser
 from teksi_hooks.parser.validation_parser import ValidationParser
 from teksi_hooks.resolver.provider_resolver import ProviderResolver
-from teksi_hooks.resolver.rights_resolver import RightsResolver
 from teksi_hooks.resolver.review_geometry_resolver import (
     ReviewGeometryResolver,
 )
-from teksi_hooks.models.review import ChangeCreationResult
-
+from teksi_hooks.resolver.rights_resolver import RightsResolver
 from teksi_wastewater.hooks.adapters.tww_canonical_model_adapter import (
     TwwCanonicalModelAdapter,
 )
+from teksi_wastewater.hooks.adapters.tww_canonical_projection_lookup_adapter import (
+    TwwCanonicalProjectionLookupAdapter,
+)
+from teksi_wastewater.hooks.adapters.tww_change_object_provider import (
+    TwwChangeObjectProviderFactory,
+)
 from teksi_wastewater.hooks.adapters.tww_database_connection_factory import (
     TwwDatabaseConnectionFactory,
+)
+from teksi_wastewater.hooks.adapters.tww_implicit_model_mapping_adapter import (
+    TwwImplicitModelMappingAdapter,
+)
+from teksi_wastewater.hooks.adapters.tww_incremental_effect_persister import (
+    TwwIncrementalEffectPersister,
+)
+from teksi_wastewater.hooks.adapters.tww_interlis_service_adapter import (
+    TwwInterlisContext,
+    TwwInterlisServiceAdapter,
 )
 from teksi_wastewater.hooks.adapters.tww_quarantine_runner import (
     TwwQuarantineRunner,
 )
 from teksi_wastewater.hooks.adapters.tww_relation_context_provider import (
-    TwwRelationContextProvider,
     MappingProjectionMode,
+    TwwRelationContextProvider,
 )
 from teksi_wastewater.hooks.adapters.tww_relation_lookup_adapter import (
     TwwRelationLookupAdapter,
 )
-from teksi_wastewater.hooks.adapters.tww_implicit_model_mapping_adapter import (
-    TwwImplicitModelMappingAdapter,
-)
-from teksi_wastewater.hooks.adapters.tww_canonical_projection_lookup_adapter import (
-    TwwCanonicalProjectionLookupAdapter,
-)
-from teksi_wastewater.hooks.adapters.tww_incremental_effect_persister import (
-    TwwIncrementalEffectPersister,
-)
 from teksi_wastewater.hooks.adapters.tww_session_manager import (
     TwwSessionManager,
-)
-from teksi_wastewater.hooks.adapters.tww_change_object_provider import (
-    TwwChangeObjectProviderFactory
 )
 from teksi_wastewater.hooks.adapters.tww_source_reference_lookup_adapter import (
     TwwSourceReferenceLookupAdapter,
 )
-from teksi_wastewater.hooks.projectors.tww_canonical_view_effect_projector import (
-    TwwCanonicalViewEffectProjector,
-)
-
-from teksi_wastewater.hooks.services.tww_change_creation_service import (
-    TwwChangeCreationService,
-)
-from teksi_wastewater.hooks.services.tww_source_runtime_context import (
-    TwwSourceRuntimeContext,
-)
-from teksi_wastewater.hooks.services.tww_diff_schema_service import (
-    DiffJobMode,
-    TwwDiffSchemaService,
-)
 from teksi_wastewater.hooks.evaluators.tww_incremental_effect_evaluator import (
     TwwIncrementalEffectEvaluator,
+)
+from teksi_wastewater.hooks.projectors.tww_canonical_view_effect_projector import (
+    TwwCanonicalViewEffectProjector,
 )
 from teksi_wastewater.hooks.projectors.tww_quarantine_effect_projector import (
     TwwQuarantineEffectProjector,
 )
-from teksi_wastewater.hooks.adapters.tww_interlis_service_adapter import (
-    TwwInterlisContext,
-    TwwInterlisServiceAdapter,
+from teksi_wastewater.hooks.services.tww_change_creation_service import (
+    TwwChangeCreationService,
+)
+from teksi_wastewater.hooks.services.tww_diff_schema_service import (
+    DiffJobMode,
+    TwwDiffSchemaService,
 )
 from teksi_wastewater.hooks.services.tww_review_application_factory import (
     create_review_application_service,
@@ -104,15 +99,16 @@ from teksi_wastewater.hooks.services.tww_review_application_factory import (
 from teksi_wastewater.hooks.services.tww_review_application_service import (
     TwwReviewApplicationService,
 )
+from teksi_wastewater.hooks.services.tww_source_runtime_context import (
+    TwwSourceRuntimeContext,
+)
 from teksi_wastewater.interlis import (
     config,
-)
-from teksi_wastewater.interlis.model_config import (
-    TwwInterlisModelSelection
 )
 from teksi_wastewater.interlis.interlis_model_mapping.model_tww import (
     ModelTwwVl,
 )
+from teksi_wastewater.interlis.model_config import TwwInterlisModelSelection
 
 
 class Hook(
@@ -153,12 +149,16 @@ class Hook(
         return before any create-only parameter such as ``xtf_input`` is read.
         """
         parameters = context.parameters
-        command = str(
-            parameters.get(
-                "command",
-                "create",
+        command = (
+            str(
+                parameters.get(
+                    "command",
+                    "create",
+                )
             )
-        ).strip().lower()
+            .strip()
+            .lower()
+        )
 
         context.logger.info(
             "Starting diff-review command %r.",
@@ -173,10 +173,7 @@ class Hook(
             self.connection_factory,
             TwwDatabaseConnectionFactory,
         ):
-            raise TypeError(
-                "The TWW diff hook requires "
-                "TwwDatabaseConnectionFactory."
-            )
+            raise TypeError("The TWW diff hook requires " "TwwDatabaseConnectionFactory.")
 
         self.job_id = self._required_job_id(
             parameters.get(
@@ -237,17 +234,16 @@ class Hook(
                     uuid4(),
                 )
 
-            raise ValueError(
-                "The diff-review command requires a non-empty job_id."
-            )
+            raise ValueError("The diff-review command requires a non-empty job_id.")
 
-        if not isinstance(
-            value,
-            str,
-        ) or not value.strip():
-            raise ValueError(
-                "job_id must be a non-empty string."
+        if (
+            not isinstance(
+                value,
+                str,
             )
+            or not value.strip()
+        ):
+            raise ValueError("job_id must be a non-empty string.")
 
         return value.strip()
 
@@ -379,18 +375,20 @@ class Hook(
             "incremental_import_schema",
         )
 
-        if isinstance(
-            incremental_schema,
-            str,
-        ) and incremental_schema.strip():
+        if (
+            isinstance(
+                incremental_schema,
+                str,
+            )
+            and incremental_schema.strip()
+        ):
             incremental_xtf = self._required_metadata_path(
                 metadata=metadata,
                 key="incremental_source_xtf",
             )
 
             context.logger.info(
-                "Persisted source metadata: incremental schema=%r, "
-                "incremental XTF=%s.",
+                "Persisted source metadata: incremental schema=%r, " "incremental XTF=%s.",
                 incremental_schema.strip(),
                 incremental_xtf,
             )
@@ -437,10 +435,7 @@ class Hook(
         )
 
         if job is None:
-            raise KeyError(
-                "Unknown diff-review job "
-                f"{self.job_id!r}."
-            )
+            raise KeyError("Unknown diff-review job " f"{self.job_id!r}.")
 
         return job
 
@@ -461,9 +456,7 @@ class Hook(
         self.validation_definition = ValidationParser().parse_file(
             self.model_config_dir / "validations.yaml",
         )
-        self.change_object_provider_factory = (
-            TwwChangeObjectProviderFactory()
-        )
+        self.change_object_provider_factory = TwwChangeObjectProviderFactory()
         self.interlis_service = TwwInterlisServiceAdapter(
             connection_factory=self.connection_factory,
         )
@@ -473,11 +466,9 @@ class Hook(
         self.canonical_model_adapter = TwwCanonicalModelAdapter(
             connection_factory=self.connection_factory,
         )
-        self.canonical_projection_lookup_adapter = (
-            TwwCanonicalProjectionLookupAdapter(
-                canonical_model_adapter=self.canonical_model_adapter,
-                value_list_classes=ModelTwwVl().classes(),
-            )
+        self.canonical_projection_lookup_adapter = TwwCanonicalProjectionLookupAdapter(
+            canonical_model_adapter=self.canonical_model_adapter,
+            value_list_classes=ModelTwwVl().classes(),
         )
 
         canonical_classes = {
@@ -489,9 +480,7 @@ class Hook(
 
         self.quarantine_runner = TwwQuarantineRunner(
             canonical_model_adapter=self.canonical_model_adapter,
-            canonical_projection_lookup=(
-                self.canonical_projection_lookup_adapter
-            ),
+            canonical_projection_lookup=(self.canonical_projection_lookup_adapter),
             incremental_effect_evaluator=(
                 TwwIncrementalEffectEvaluator(
                     canonical_classes=canonical_classes,
@@ -527,15 +516,14 @@ class Hook(
                 fallback_key,
             )
 
-        if not isinstance(
-            value,
-            str,
-        ) or not value.strip():
-            fallback_message = (
-                f" or fallback {fallback_key!r}"
-                if fallback_key is not None
-                else ""
+        if (
+            not isinstance(
+                value,
+                str,
             )
+            or not value.strip()
+        ):
+            fallback_message = f" or fallback {fallback_key!r}" if fallback_key is not None else ""
             raise RuntimeError(
                 "Diff-review job metadata does not contain "
                 f"required string {key!r}{fallback_message}."
@@ -566,10 +554,7 @@ class Hook(
         )
 
         if not path.is_file():
-            raise RuntimeError(
-                "Diff-review job metadata path "
-                f"{key!r} does not exist: {path}"
-            )
+            raise RuntimeError("Diff-review job metadata path " f"{key!r} does not exist: {path}")
 
         return path
 
@@ -589,8 +574,8 @@ class Hook(
             TwwDatabaseConnectionFactory,
         ):
             raise TypeError("The TWW diff hook requires TwwDatabaseConnectionFactory.")
-        
-        self.change_object_provider_factory =TwwChangeObjectProviderFactory()
+
+        self.change_object_provider_factory = TwwChangeObjectProviderFactory()
         self.interlis_service = TwwInterlisServiceAdapter(
             connection_factory=self.connection_factory,
         )
@@ -630,9 +615,7 @@ class Hook(
         )
 
         if xtf_file is None:
-            raise ValueError(
-                "Diff-job creation requires a base XTF."
-            )
+            raise ValueError("Diff-job creation requires a base XTF.")
 
         self.workflow_source_metadata: dict[
             str,
@@ -647,9 +630,7 @@ class Hook(
         if incremental_xtf is not None:
             self.workflow_source_metadata.update(
                 {
-                    "incremental_import_schema": (
-                        incremental_import_schema
-                    ),
+                    "incremental_import_schema": (incremental_import_schema),
                     "incremental_source_xtf": str(
                         incremental_xtf,
                     ),
@@ -667,13 +648,9 @@ class Hook(
             else None
         )
 
-        auto_apply = parameters.get(
-            "auto_apply", False
-        )
+        auto_apply = parameters.get("auto_apply", False)
 
-        supersede_existing_diff_jobs = parameters.get(
-            "supersede_existing_diff_jobs", False
-        )
+        supersede_existing_diff_jobs = parameters.get("supersede_existing_diff_jobs", False)
 
         self.provider_oid = Standardoid(parameters["provider_oid"])
         self.dataowner_oid = Standardoid(parameters["dataowner_oid"])
@@ -684,7 +661,6 @@ class Hook(
             self.model_config_dir / "validations.yaml",
         )
 
-
         provider_rights_path, rights_definition_path = self._eval_rights_profile(
             hook_config_dir,
             parameters.get(
@@ -693,7 +669,9 @@ class Hook(
             ),
         )
         self.rights_definition = RightsParser().parse_file(rights_definition_path)
-        raw_provider_rights = ProviderRightsParser(oid_type=Standardoid).parse_file(provider_rights_path)
+        raw_provider_rights = ProviderRightsParser(oid_type=Standardoid).parse_file(
+            provider_rights_path
+        )
         resolved_providers = ProviderResolver().resolve_all(providers=raw_provider_rights)
         if skip_rights_evaluation:
             resolved_providers = self._grant_all(
@@ -721,7 +699,6 @@ class Hook(
             TwwSourceRuntimeContext,
         ] = {}
 
-
         self.session_manager = TwwSessionManager()
 
         self.canonical_model_adapter = TwwCanonicalModelAdapter(
@@ -731,35 +708,23 @@ class Hook(
             str,
             TwwRelationContextProvider,
         ] = {}
-        self.canonical_projection_lookup_adapter = (
-            TwwCanonicalProjectionLookupAdapter(
-                canonical_model_adapter=(
-                    self.canonical_model_adapter
-                ),
-                value_list_classes=(
-                    ModelTwwVl().classes()
-                ),
-            )
+        self.canonical_projection_lookup_adapter = TwwCanonicalProjectionLookupAdapter(
+            canonical_model_adapter=(self.canonical_model_adapter),
+            value_list_classes=(ModelTwwVl().classes()),
         )
 
         canonical_classes = {
             class_id: (
-                self.canonical_model_adapter
-                .canonical_class(
+                self.canonical_model_adapter.canonical_class(
                     class_id,
                 )
             )
-            for class_id in (
-                self.canonical_model_adapter
-                .classes()
-            )
+            for class_id in (self.canonical_model_adapter.classes())
         }
 
         self.quarantine_runner = TwwQuarantineRunner(
             canonical_model_adapter=self.canonical_model_adapter,
-            canonical_projection_lookup=(
-                self.canonical_projection_lookup_adapter
-            ),
+            canonical_projection_lookup=(self.canonical_projection_lookup_adapter),
             incremental_effect_evaluator=(
                 TwwIncrementalEffectEvaluator(
                     canonical_classes=canonical_classes,
@@ -773,13 +738,8 @@ class Hook(
             logger=context.logger,
         )
 
-        self.review_geometry_converter = (
-            ReviewGeometryResolver(
-                families_by_attribute=(
-                    self.canonical_model_adapter
-                    .geometry_families()
-                )
-            )
+        self.review_geometry_converter = ReviewGeometryResolver(
+            families_by_attribute=(self.canonical_model_adapter.geometry_families())
         )
         relation_lookup = TwwRelationLookupAdapter(
             schema=self.live_schema,
@@ -821,9 +781,7 @@ class Hook(
         existing_result = self._existing_workflow_result(
             base_schema=import_schema,
             incremental_schema=(
-                incremental_import_schema
-                if incremental_xtf is not None
-                else None
+                incremental_import_schema if incremental_xtf is not None else None
             ),
             context=context,
         )
@@ -836,13 +794,10 @@ class Hook(
                     base_schema=import_schema,
                     incremental_xtf=incremental_xtf,
                     incremental_schema=(
-                        incremental_import_schema
-                        if incremental_xtf is not None
-                        else None
+                        incremental_import_schema if incremental_xtf is not None else None
                     ),
                     context=context,
                 )
-
 
         elif incremental_xtf is None:
             result = self._run_sub_verification(
@@ -887,15 +842,14 @@ class Hook(
 
         if result.diff_schema_result is None:
             raise RuntimeError(
-                "The reviewed import did not create a persisted "
-                "tww_diff review job."
+                "The reviewed import did not create a persisted " "tww_diff review job."
             )
 
-        job=self.diff_schema_service.review_job(
+        job = self.diff_schema_service.review_job(
             job_id=result.job_id,
             include_features=False,
         )
-        if  job.job_status =="pending":
+        if job.job_status == "pending":
             self.diff_schema_service.accept_job(
                 job_id=result.job_id,
             )
@@ -940,25 +894,14 @@ class Hook(
         Runtime mapping and relation-context services are materialized once and
         retained by source role. Projection sessions remain operation-scoped.
         """
-        canonical_metadata = (
-            self.canonical_model_adapter
-            .canonical_model()
-        )
+        canonical_metadata = self.canonical_model_adapter.canonical_model()
 
-        source_role = (
-            "incremental"
-            if is_incremental
-            else "base"
-        )
+        source_role = "incremental" if is_incremental else "base"
 
-        allow_schema_recreation = (
-            self._schema_recreation_allowed(
-                schema=schema,
-                supersede_existing_diff_jobs=(
-                    supersede_existing_diff_jobs
-                ),
-                context=context,
-            )
+        allow_schema_recreation = self._schema_recreation_allowed(
+            schema=schema,
+            supersede_existing_diff_jobs=(supersede_existing_diff_jobs),
+            context=context,
         )
 
         context.logger.info(
@@ -975,10 +918,8 @@ class Hook(
             schema,
         )
 
-        model_selection = (
-            self.interlis_service.identify_model(
-                xtf_file,
-            )
+        model_selection = self.interlis_service.identify_model(
+            xtf_file,
         )
 
         if model_selection.group in {
@@ -989,20 +930,14 @@ class Hook(
                 schema=schema,
                 import_orgs=False,
                 orgs_path=None,
-                allow_schema_recreation=(
-                    allow_schema_recreation
-                ),
+                allow_schema_recreation=(allow_schema_recreation),
             )
         else:
             import_context = TwwInterlisContext(
                 schema=schema,
-                import_orgs=(
-                    self.orgs_path is not None
-                ),
+                import_orgs=(self.orgs_path is not None),
                 orgs_path=self.orgs_path,
-                allow_schema_recreation=(
-                    allow_schema_recreation
-                ),
+                allow_schema_recreation=(allow_schema_recreation),
             )
 
         context.logger.info(
@@ -1011,13 +946,11 @@ class Hook(
             schema,
         )
 
-        
         self.quarantine_runner.import_xtf_to_quarantine(
             xtf_file=xtf_file,
             context=import_context,
             schema=schema,
         )
-
 
         context.logger.debug(
             "Import schema models: %s",
@@ -1035,170 +968,86 @@ class Hook(
         )
 
         self.quarantine_runner.validate_quarantine_or_raise(
-            model_names=(
-                model_selection.validation_models
-            ),
-            log_path=xtf_file.with_name(
-                f"{xtf_file.stem}"
-                "_validate_import_quarantine.log"
-            ),
+            model_names=(model_selection.validation_models),
+            log_path=xtf_file.with_name(f"{xtf_file.stem}" "_validate_import_quarantine.log"),
             schema=schema,
         )
 
-        source_runtime_context = (
-            self._build_source_runtime_context(
-                source_role=source_role,
-                import_schema=schema,
-                model_selection=model_selection,
-                context=context,
-            )
+        source_runtime_context = self._build_source_runtime_context(
+            source_role=source_role,
+            import_schema=schema,
+            model_selection=model_selection,
+            context=context,
         )
 
-        self.source_runtime_contexts[
-            source_role
-        ] = source_runtime_context
+        self.source_runtime_contexts[source_role] = source_runtime_context
 
-        effective_mapping = (
-            source_runtime_context.model_mapping
-        )
+        effective_mapping = source_runtime_context.model_mapping
 
-        quarantine_classes = (
-            source_runtime_context
-            .quarantine_classes
-        )
+        quarantine_classes = source_runtime_context.quarantine_classes
 
-        relation_context_provider = (
-            source_runtime_context
-            .relation_context_provider
-        )
+        relation_context_provider = source_runtime_context.relation_context_provider
 
         with self.session_manager.projection_scope() as session_context:
-            canonical_view_effect_projector = (
-                TwwCanonicalViewEffectProjector(
-                    canonical_lookup=(
-                        self
-                        .canonical_projection_lookup_adapter
-                    ),
-                    source_lookup=(
-                        TwwSourceReferenceLookupAdapter(
-                            model_classes=(
-                                quarantine_classes
-                            ),
-                        )
-                    ),
-                    session_context=session_context,
-                )
+            canonical_view_effect_projector = TwwCanonicalViewEffectProjector(
+                canonical_lookup=(self.canonical_projection_lookup_adapter),
+                source_lookup=(
+                    TwwSourceReferenceLookupAdapter(
+                        model_classes=(quarantine_classes),
+                    )
+                ),
+                session_context=session_context,
             )
 
-            effect_projector = (
-                TwwQuarantineEffectProjector(
-                    session_context=session_context,
-                    relation_context_provider=(
-                        relation_context_provider
-                    ),
-                    model_mapping=effective_mapping,
-                    canonical_view_effect_projector=(
-                        canonical_view_effect_projector
-                    ),
-                    canonical_lookup=(
-                        self
-                        .canonical_projection_lookup_adapter
-                    ),
-                    canonical_metadata=(
-                        canonical_metadata
-                    ),
-                    logger=context.logger,
-                )
+            effect_projector = TwwQuarantineEffectProjector(
+                session_context=session_context,
+                relation_context_provider=(relation_context_provider),
+                model_mapping=effective_mapping,
+                canonical_view_effect_projector=(canonical_view_effect_projector),
+                canonical_lookup=(self.canonical_projection_lookup_adapter),
+                canonical_metadata=(canonical_metadata),
+                logger=context.logger,
             )
 
             service = TwwChangeCreationService(
                 live_relation_lookup=relation_lookup,
-                review_geometry_converter=(
-                    self.review_geometry_converter
-                ),
-                quarantine_runner=(
-                    self.quarantine_runner
-                ),
+                review_geometry_converter=(self.review_geometry_converter),
+                quarantine_runner=(self.quarantine_runner),
                 canonical_metadata=canonical_metadata,
                 effect_projector=effect_projector,
                 rights_evaluator=rights_evaluator,
-                object_provider_factory=(
-                    self.change_object_provider_factory
-                ),
-                diff_schema_service=(
-                    self.diff_schema_service
-                ),
+                object_provider_factory=(self.change_object_provider_factory),
+                diff_schema_service=(self.diff_schema_service),
                 logger=context.logger,
             )
 
-            result = (
-                service.create_diff_job_from_quarantine(
-                    job_id=self.job_id,
-                    job_mode=self.job_mode,
-                    source_model=(
-                        model_selection.import_model
+            result = service.create_diff_job_from_quarantine(
+                job_id=self.job_id,
+                job_mode=self.job_mode,
+                source_model=(model_selection.import_model),
+                rights_base_context=(self.rights_base_context),
+                import_schema=schema,
+                live_schema=self.live_schema,
+                metadata={
+                    **self.workflow_source_metadata,
+                    "source_role": source_role,
+                    "source_xtf": str(
+                        xtf_file,
                     ),
-                    rights_base_context=(
-                        self.rights_base_context
+                    "source_schema": schema,
+                    "model_group": (model_selection.group),
+                    "model_language": (model_selection.language),
+                    "mapping_model_id": (model_selection.mapping_model_id),
+                    (f"{source_role}" "_import_schema"): schema,
+                    (f"{source_role}" "_source_model"): (model_selection.import_model),
+                    (f"{source_role}" "_model_group"): (model_selection.group),
+                    (f"{source_role}" "_model_language"): (model_selection.language),
+                    (f"{source_role}" "_mapping_model_id"): (model_selection.mapping_model_id),
+                    (f"{source_role}" "_source_xtf"): str(
+                        xtf_file,
                     ),
-                    import_schema=schema,
-                    live_schema=self.live_schema,
-                    metadata={
-                        **self.workflow_source_metadata,
-                        "source_role": source_role,
-                        "source_xtf": str(
-                            xtf_file,
-                        ),
-                        "source_schema": schema,
-                        "model_group": (
-                            model_selection.group
-                        ),
-                        "model_language": (
-                            model_selection.language
-                        ),
-                        "mapping_model_id": (
-                            model_selection
-                            .mapping_model_id
-                        ),
-                        (
-                            f"{source_role}"
-                            "_import_schema"
-                        ): schema,
-                        (
-                            f"{source_role}"
-                            "_source_model"
-                        ): (
-                            model_selection
-                            .import_model
-                        ),
-                        (
-                            f"{source_role}"
-                            "_model_group"
-                        ): (
-                            model_selection.group
-                        ),
-                        (
-                            f"{source_role}"
-                            "_model_language"
-                        ): (
-                            model_selection.language
-                        ),
-                        (
-                            f"{source_role}"
-                            "_mapping_model_id"
-                        ): (
-                            model_selection
-                            .mapping_model_id
-                        ),
-                        (
-                            f"{source_role}"
-                            "_source_xtf"
-                        ): str(
-                            xtf_file,
-                        ),
-                        "persist_job": final_diff_run,
-                    },
-                )
+                    "persist_job": final_diff_run,
+                },
             )
 
         context.logger.info(
@@ -1219,8 +1068,7 @@ class Hook(
                 result.job_id,
                 (
                     result.diff_schema_result.row_count
-                    if result.diff_schema_result
-                    is not None
+                    if result.diff_schema_result is not None
                     else "unknown"
                 ),
             )
@@ -1276,8 +1124,7 @@ class Hook(
 
         if not self.source_runtime_contexts:
             raise RuntimeError(
-                "No source runtime contexts could be reconstructed for "
-                "the reused review job."
+                "No source runtime contexts could be reconstructed for " "the reused review job."
             )
 
     def _ensure_source_runtime_context(
@@ -1295,17 +1142,12 @@ class Hook(
         inspected only to recover model selection information required for ORM
         class and mapping construction.
         """
-        existing_context = (
-            self.source_runtime_contexts.get(
-                source_role,
-            )
+        existing_context = self.source_runtime_contexts.get(
+            source_role,
         )
 
         if existing_context is not None:
-            if (
-                existing_context.import_schema
-                != import_schema
-            ):
+            if existing_context.import_schema != import_schema:
                 raise RuntimeError(
                     "The cached runtime context for source role "
                     f"{source_role!r} uses schema "
@@ -1324,22 +1166,17 @@ class Hook(
 
         model_selection = self.interlis_service.identify_model(xtf_file)
 
-        runtime_context = (
-            self._build_source_runtime_context(
-                source_role=source_role,
-                import_schema=import_schema,
-                model_selection=model_selection,
-                context=context,
-            )
+        runtime_context = self._build_source_runtime_context(
+            source_role=source_role,
+            import_schema=import_schema,
+            model_selection=model_selection,
+            context=context,
         )
 
-        self.source_runtime_contexts[
-            source_role
-        ] = runtime_context
+        self.source_runtime_contexts[source_role] = runtime_context
 
         context.logger.info(
-            "Reconstructed source runtime context for role %r, "
-            "schema %r and source model %r.",
+            "Reconstructed source runtime context for role %r, " "schema %r and source model %r.",
             source_role,
             import_schema,
             model_selection.import_model,
@@ -1364,60 +1201,33 @@ class Hook(
             "base",
             "incremental",
         }:
-            raise ValueError(
-                "Unsupported source runtime role "
-                f"{source_role!r}."
-            )
+            raise ValueError("Unsupported source runtime role " f"{source_role!r}.")
 
-        explicit_mapping = (
-            ModelMappingParser()
-            .parse_file(
-                self.model_config_dir
-                / "explicit_mapping.yaml",
-                model_id=(
-                    model_selection.mapping_model_id
-                ),
-            )
+        explicit_mapping = ModelMappingParser().parse_file(
+            self.model_config_dir / "explicit_mapping.yaml",
+            model_id=(model_selection.mapping_model_id),
         )
 
-        explicit_mapping_capability = (
-            ModelMappingCapability(
-                mapping=explicit_mapping,
-            )
+        explicit_mapping_capability = ModelMappingCapability(
+            mapping=explicit_mapping,
         )
 
-        quarantine_classes = (
-            self._get_quarantine_classes(
-                model_selection=model_selection,
-                schema=import_schema,
-            )
+        quarantine_classes = self._get_quarantine_classes(
+            model_selection=model_selection,
+            schema=import_schema,
         )
 
         with self.session_manager.projection_scope() as session_context:
-            implicit_mapping_capability = (
-                TwwImplicitModelMappingAdapter(
-                    quarantine_session=(
-                        session_context.quarantine
-                    ),
-                    live_session=(
-                        session_context.live
-                    ),
-                    import_schema=import_schema,
-                    language=(
-                        model_selection.language
-                    ),
-                )
+            implicit_mapping_capability = TwwImplicitModelMappingAdapter(
+                quarantine_session=(session_context.quarantine),
+                live_session=(session_context.live),
+                import_schema=import_schema,
+                language=(model_selection.language),
             )
 
-            effective_mapping = (
-                EffectiveModelMappingCapability.load(
-                    explicit_mapping=(
-                        explicit_mapping_capability
-                    ),
-                    implicit_mapping=(
-                        implicit_mapping_capability
-                    ),
-                )
+            effective_mapping = EffectiveModelMappingCapability.load(
+                explicit_mapping=(explicit_mapping_capability),
+                implicit_mapping=(implicit_mapping_capability),
             )
 
         projection_mode = (
@@ -1426,25 +1236,16 @@ class Hook(
             else MappingProjectionMode.FULL
         )
 
-        relation_context_provider = (
-            TwwRelationContextProvider(
-                quarantine_classes=(
-                    quarantine_classes
-                ),
-                model_mapping=effective_mapping,
-                canonical_model_adapter=(
-                    self.canonical_model_adapter
-                ),
-                projection_mode=projection_mode,
-                logger=context.logger,
-            )
+        relation_context_provider = TwwRelationContextProvider(
+            quarantine_classes=(quarantine_classes),
+            model_mapping=effective_mapping,
+            canonical_model_adapter=(self.canonical_model_adapter),
+            projection_mode=projection_mode,
+            logger=context.logger,
         )
 
         # Populate and retain its expensive caches.
-        relation_contexts = tuple(
-            relation_context_provider
-            .relation_contexts()
-        )
+        relation_contexts = tuple(relation_context_provider.relation_contexts())
 
         context.logger.debug(
             "Built runtime context for source role %r with "
@@ -1461,12 +1262,8 @@ class Hook(
             import_schema=import_schema,
             selection_models=model_selection,
             model_mapping=effective_mapping,
-            quarantine_classes=(
-                quarantine_classes
-            ),
-            relation_context_provider=(
-                relation_context_provider
-            ),
+            quarantine_classes=(quarantine_classes),
+            relation_context_provider=(relation_context_provider),
         )
 
     def _optional_path(
@@ -1719,11 +1516,9 @@ class Hook(
         the schema or change the status of superseded jobs.
         """
 
-        active_jobs = (
-            self.diff_schema_service.active_jobs_for_import_schema(
-                import_schema=schema,
-                exclude_job_id=self.job_id,
-            )
+        active_jobs = self.diff_schema_service.active_jobs_for_import_schema(
+            import_schema=schema,
+            exclude_job_id=self.job_id,
         )
 
         if not active_jobs:
@@ -1736,10 +1531,7 @@ class Hook(
             return True
 
         job_descriptions = ", ".join(
-            (
-                f"{job['job_id']!r} "
-                f"({job['job_type']}/{job['job_status']})"
-            )
+            (f"{job['job_id']!r} " f"({job['job_type']}/{job['job_status']})")
             for job in active_jobs
         )
 
@@ -1812,27 +1604,19 @@ class Hook(
                 "or 'accepted' for idempotent reuse."
             )
 
-        persisted_base_schema = (
-            job.metadata.get(
-                "base_import_schema",
-            )
-            or job.metadata.get(
-                "import_schema",
-            )
+        persisted_base_schema = job.metadata.get(
+            "base_import_schema",
+        ) or job.metadata.get(
+            "import_schema",
         )
 
-        persisted_incremental_schema = (
-            job.metadata.get(
-                "incremental_import_schema",
-            )
+        persisted_incremental_schema = job.metadata.get(
+            "incremental_import_schema",
         )
-        import_model = (
-            job.metadata.get(
-                "incremental_source_model",
-            )
-            or job.metadata.get(
-                "base_source_model",
-            )
+        import_model = job.metadata.get(
+            "incremental_source_model",
+        ) or job.metadata.get(
+            "base_source_model",
         )
         if persisted_base_schema != base_schema:
             raise RuntimeError(
@@ -1841,24 +1625,14 @@ class Hook(
                 f"requested {base_schema!r}."
             )
 
-        requested_has_incremental = (
-            incremental_schema is not None
-        )
+        requested_has_incremental = incremental_schema is not None
 
-        persisted_has_incremental = (
-            isinstance(
-                persisted_incremental_schema,
-                str,
-            )
-            and bool(
-                persisted_incremental_schema.strip()
-            )
-        )
+        persisted_has_incremental = isinstance(
+            persisted_incremental_schema,
+            str,
+        ) and bool(persisted_incremental_schema.strip())
 
-        if (
-            requested_has_incremental
-            != persisted_has_incremental
-        ):
+        if requested_has_incremental != persisted_has_incremental:
             raise RuntimeError(
                 f"Pending diff job {self.job_id!r} has an "
                 "incompatible workflow shape. Requested incremental "
@@ -1867,11 +1641,7 @@ class Hook(
                 f"{persisted_incremental_schema!r}."
             )
 
-        if (
-            incremental_schema is not None
-            and persisted_incremental_schema
-            != incremental_schema
-        ):
+        if incremental_schema is not None and persisted_incremental_schema != incremental_schema:
             raise RuntimeError(
                 f"Pending diff job {self.job_id!r} refers to "
                 "incremental schema "
@@ -1879,10 +1649,8 @@ class Hook(
                 f"requested {incremental_schema!r}."
             )
 
-        diff_schema_result = (
-            self.diff_schema_service.write_result_for_job(
-                job_id=self.job_id,
-            )
+        diff_schema_result = self.diff_schema_service.write_result_for_job(
+            job_id=self.job_id,
         )
 
         context.logger.info(
@@ -1914,8 +1682,6 @@ class Hook(
                 self.source_runtime_contexts,
             ),
             model_config_dir=self.model_config_dir,
-            validation_definition=(
-                self.validation_definition
-            ),
+            validation_definition=(self.validation_definition),
             logger=context.logger,
         )

@@ -11,13 +11,10 @@ from teksi_hooks.hook import (
     HookContext,
     HookMetadata,
 )
-
 from teksi_wastewater.hooks.adapters.tww_database_connection_factory import (
     TwwDatabaseConnectionFactory,
 )
-from teksi_wastewater.hooks.diff_creator_hook import (
-    Hook as DiffCreatorHook,
-)
+from teksi_wastewater.hooks.diff_creator_hook import Hook as DiffCreatorHook
 from teksi_wastewater.hooks.services.tww_diff_schema_service import (
     TwwDiffSchemaService,
 )
@@ -61,9 +58,7 @@ class Hook(
         """
         Persist one accepted review job through the shared implementation.
         """
-        context.logger.info(
-            "Starting TWW diff persistor hook."
-        )
+        context.logger.info("Starting TWW diff persistor hook.")
 
         connection_factory = context.capability(
             DatabaseConnectionFactory,
@@ -74,8 +69,7 @@ class Hook(
             TwwDatabaseConnectionFactory,
         ):
             raise TypeError(
-                "The TWW diff persistor hook requires a "
-                "TwwDatabaseConnectionFactory."
+                "The TWW diff persistor hook requires a " "TwwDatabaseConnectionFactory."
             )
 
         job_id = self._required_string(
@@ -117,8 +111,6 @@ class Hook(
             )
             or not value.strip()
         ):
-            raise ValueError(
-                f"Parameter {key!r} must be a non-empty string."
-            )
+            raise ValueError(f"Parameter {key!r} must be a non-empty string.")
 
         return value.strip()

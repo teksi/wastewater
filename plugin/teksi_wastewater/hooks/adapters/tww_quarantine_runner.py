@@ -40,7 +40,7 @@ from ..capabilities.incremental_import import (
     IncrementalEffectEvaluator,
     IncrementalEffectPersister,
 )
-from ..capabilities.tww_canonical_projection_capability import(
+from ..capabilities.tww_canonical_projection_capability import (
     TwwCanonicalProjectionLookupCapability,
 )
 from ..exceptions import (

@@ -88,7 +88,9 @@ def exported_sia405_base_abwasser(
     DatabaseUtils.execute("UPDATE tww_od.organisation SET tww_local_extension=true;")
 
     base_name = "export_minimal_dataset_sia405_base"
-    export_model = model_config.model_names_for_language(groups=("sia405_base_abwasser",), lang="de").items["sia405_base_abwasser"]
+    export_model = model_config.model_names_for_language(
+        groups=("sia405_base_abwasser",), lang="de"
+    ).items["sia405_base_abwasser"]
 
     run_cli(
         "interlis_export "
@@ -111,7 +113,9 @@ def exported_sia405_abwasser(
     imported_kek,
 ) -> Path:
     base_name = "export_minimal_dataset_sia405"
-    export_model = model_config.model_names_for_language(groups=("sia405_abwasser",), lang="de").items["sia405_abwasser"]
+    export_model = model_config.model_names_for_language(
+        groups=("sia405_abwasser",), lang="de"
+    ).items["sia405_abwasser"]
 
     run_cli(
         "interlis_export "
@@ -155,7 +159,9 @@ def exported_kek(
     imported_kek,
 ) -> Path:
     base_name = "export_minimal_dataset_kek"
-    export_model = model_config.model_names_for_language(groups=("vsa_kek",), lang="de").items["vsa_kek"]
+    export_model = model_config.model_names_for_language(groups=("vsa_kek",), lang="de").items[
+        "vsa_kek"
+    ]
 
     run_cli(
         "interlis_export "

@@ -136,7 +136,8 @@ class TestInterlis(unittest.TestCase):
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_DSS)
         models = InterlisTools.get_xtf_models(xtf_file=xtf_file_input)
         self.assertCountEqual(
-            models, [model_selection.model_names_for_language(groups=("dss"), lang="de").items["dss"]]
+            models,
+            [model_selection.model_names_for_language(groups=("dss"), lang="de").items["dss"]],
         )
 
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_SIA405_ABWASSER)
@@ -144,9 +145,9 @@ class TestInterlis(unittest.TestCase):
         self.assertCountEqual(
             models,
             [
-                model_selection.model_names_for_language(groups=("sia405_abwasser"), lang="de").items[
-                    "sia405_abwasser"
-                ]
+                model_selection.model_names_for_language(
+                    groups=("sia405_abwasser"), lang="de"
+                ).items["sia405_abwasser"]
             ],
         )
 
