@@ -74,12 +74,6 @@ class TeksiWastewaterCmd:
         )
 
         subparser.add_argument(
-            "--incremental_only",
-            help="Only import incremental data for non-VSA datamodels",
-            action="store_true",
-        )
-
-        subparser.add_argument(
             "--logs_next_to_file",
             help="Put log files next to XTF import file",
             action="store_true",
@@ -270,7 +264,6 @@ class TeksiWastewaterCmd:
             show_selection_dialog=(self.args.show_selection_dialog),
             logs_next_to_file=(self.args.logs_next_to_file),
             filter_nulls=self.args.filter_nulls,
-            incremental_only=self.args.incremental_only,
             allow_schema_recreation=self.args.allow_schema_recreation,
         )
 

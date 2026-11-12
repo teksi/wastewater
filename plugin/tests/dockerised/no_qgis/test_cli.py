@@ -118,7 +118,6 @@ def _topic_name(
 def _run_interlis_import(
     fixture_name: str,
     *,
-    incremental_only: bool = False,
 ) -> None:
     """
     Import one XTF fixture through the packaged TEKSI hooks CLI.
@@ -128,12 +127,9 @@ def _run_interlis_import(
     """
     xtf_file = _data_file(fixture_name)
 
-    incremental_arg = "--incremental_only " if incremental_only else ""
-
     run_cli(
         "interlis_import "
         f'--xtf_file "{xtf_file}" '
-        f"{incremental_arg}"
         f"{SCHEMA_RECREATION_ARG} "
         f"{DB_ARGS}"
     )

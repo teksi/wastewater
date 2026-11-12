@@ -7,7 +7,7 @@ from subprocess import run as sp_run
 
 OUTPUT_DIR = Path(__file__).parent / "output"
 OUTPUT_DIR.mkdir(exist_ok=True)
-DEFAULT_CLI_PATH = Path("/usr/src/plugin/tww_cmd.py")
+DEFAULT_CLI_PATH = Path("/usr/src/plugin/teksi_wastewater/hooks/cli/importer_exporter.py")
 
 
 def get_output_filename(name: str) -> str:

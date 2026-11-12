@@ -162,7 +162,6 @@ class TestInterlis(unittest.TestCase):
         self,
         fixture_name: str,
         *,
-        incremental_only: bool = False,
         filter_nulls: bool = True,
     ) -> Path:
         """
@@ -190,7 +189,6 @@ class TestInterlis(unittest.TestCase):
             show_selection_dialog=False,
             logs_next_to_file=True,
             filter_nulls=filter_nulls,
-            incremental_only=incremental_only,
             allow_schema_recreation=True,
         )
 
