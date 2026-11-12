@@ -10,7 +10,6 @@ from pathlib import Path
 
 import requests
 
-
 from ..utils.database_utils import DatabaseUtils
 from ..utils.integrity_checker import TWWIntegrityChecker
 from . import config, model_selection
@@ -31,6 +30,9 @@ from .model_config import (
     interlis_models,
 )
 from .utils.ili2db import InterlisTools
+from .utils.sessions import (
+    InterlisImportSessions,
+)
 from .utils.various import (
     CmdException,
     InterlisImporterExporterError,
@@ -39,9 +41,7 @@ from .utils.various import (
     logger,
     make_log_path,
 )
-from .utils.sessions import (
-    InterlisImportSessions,
-)
+
 
 @dataclass(slots=True, frozen=True)
 class ProgressScope:
@@ -87,7 +87,6 @@ class InterlisImporterExporter:
         self.srid = 2056
         self.current_progress = 0
         self.schema = None
-
 
     def _init_model_classes(self, selection_models):
         model_interlis = selection_models.primary_component.quarantine_model(self.schema)
@@ -318,10 +317,8 @@ class InterlisImporterExporter:
         tww_session = None
         try:
             # Import from the temporary ili2pg model
-            self._progress_done_in_scope(
-                progress_scope, 20, "Converting to TEKSI Wastewater..."
-            )
-            tww_session = self._import_from_intermediate_schema(selection_models,sessions)
+            self._progress_done_in_scope(progress_scope, 20, "Converting to TEKSI Wastewater...")
+            tww_session = self._import_from_intermediate_schema(selection_models, sessions)
 
             if show_selection_dialog:
                 from qgis.PyQt.QtCore import Qt
@@ -391,7 +388,7 @@ class InterlisImporterExporter:
 
     def find_import_selection_models(
         self,
-        xtf_file_input: Path| None = None,
+        xtf_file_input: Path | None = None,
         model_name: str | None = None,
     ) -> TwwInterlisModelSelection:
         if xtf_file_input is not None:
@@ -407,11 +404,7 @@ class InterlisImporterExporter:
         else:
             err_str = "Nor xtf path nor model name provided."
         if not selection:
-            raise InterlisImporterExporterError(
-                "Import selection model failed",
-                err_str,
-                None
-            )
+            raise InterlisImporterExporterError("Import selection model failed", err_str, None)
 
         logger.info(
             "Models %r were chosen for import among imported models %r.",
@@ -818,16 +811,8 @@ class InterlisImporterExporter:
             model_classes_tww_od=self.model_classes_tww_od,
             model_classes_tww_vl=self.model_classes_tww_vl,
             model_classes_tww_app=self.model_classes_tww_app,
-            session_interlis=(
-                sessions.quarantine
-                if sessions is not None
-                else None
-            ),
-            session_tww=(
-                sessions.live
-                if sessions is not None
-                else None
-            ),
+            session_interlis=(sessions.quarantine if sessions is not None else None),
+            session_tww=(sessions.live if sessions is not None else None),
             callback_progress_done=self._progress_done_intermediate_schema,
             filter_nulls=self.filter_nulls,
         )

@@ -17,7 +17,6 @@ from teksi_wastewater.utils.database_utils import DatabaseUtils
 
 from ..helpers import run_cli
 
-
 DB_HOST = "db"
 DB_NAME = "tww"
 DB_USER = "postgres"
@@ -45,17 +44,10 @@ HOOK_DATA_DIR = (
     / "data"
 )
 
-ORGANISATIONS_XTF = (
-    HOOK_DATA_DIR
-    / "test-dataset-organisations.xtf"
-)
+ORGANISATIONS_XTF = HOOK_DATA_DIR / "test-dataset-organisations.xtf"
 
 IMPORTER_CLI_PATH = Path(
-    "/usr/src/plugin/"
-    "teksi_wastewater/"
-    "hooks/"
-    "cli/"
-    "importer_exporter.py"
+    "/usr/src/plugin/" "teksi_wastewater/" "hooks/" "cli/" "importer_exporter.py"
 )
 
 DB_ARGS = (
@@ -109,9 +101,7 @@ def run(
         result.stderr,
     )
 
-    assert result.returncode == 0, (
-        f"Command failed: {cmd}"
-    )
+    assert result.returncode == 0, f"Command failed: {cmd}"
 
     return result
 
@@ -131,12 +121,7 @@ def wait_for_db() -> None:
         30,
     ):
         result = subprocess.run(
-            (
-                f"pg_isready "
-                f"-h {DB_HOST} "
-                f"-U {DB_USER} "
-                f"-d {DB_NAME}"
-            ),
+            (f"pg_isready " f"-h {DB_HOST} " f"-U {DB_USER} " f"-d {DB_NAME}"),
             shell=True,
             capture_output=True,
             text=True,
@@ -156,9 +141,7 @@ def wait_for_db() -> None:
             2,
         )
 
-    raise RuntimeError(
-        "Database not ready."
-    )
+    raise RuntimeError("Database not ready.")
 
 
 @pytest.fixture(
@@ -251,10 +234,7 @@ def imported_organisations(
     database. CI normally reaches the import path because the database starts
     from a fresh PUM installation.
     """
-    assert ORGANISATIONS_XTF.is_file(), (
-        "Missing organisation fixture: "
-        f"{ORGANISATIONS_XTF}"
-    )
+    assert ORGANISATIONS_XTF.is_file(), "Missing organisation fixture: " f"{ORGANISATIONS_XTF}"
 
     missing_before = _missing_required_organisation_oids()
 
@@ -291,10 +271,7 @@ def _missing_required_organisation_oids() -> set[str]:
     existing DatabaseUtils/psycopg parameter handling without relying on
     PostgreSQL-array adaptation.
     """
-    placeholders = ", ".join(
-        "%s"
-        for _ in REQUIRED_ORGANISATION_OIDS
-    )
+    placeholders = ", ".join("%s" for _ in REQUIRED_ORGANISATION_OIDS)
 
     required_oids = tuple(
         sorted(
@@ -320,10 +297,7 @@ def _missing_required_organisation_oids() -> set[str]:
         for row in rows
     }
 
-    return set(
-        REQUIRED_ORGANISATION_OIDS
-        - existing_oids
-    )
+    return set(REQUIRED_ORGANISATION_OIDS - existing_oids)
 
 
 def _drop_and_recreate_schema(
@@ -334,13 +308,9 @@ def _drop_and_recreate_schema(
         '""',
     )
 
-    DatabaseUtils.execute(
-        f'DROP SCHEMA IF EXISTS "{quoted_schema}" CASCADE;'
-    )
+    DatabaseUtils.execute(f'DROP SCHEMA IF EXISTS "{quoted_schema}" CASCADE;')
 
-    DatabaseUtils.execute(
-        f'CREATE SCHEMA "{quoted_schema}";'
-    )
+    DatabaseUtils.execute(f'CREATE SCHEMA "{quoted_schema}";')
 
 
 @pytest.fixture(
@@ -360,8 +330,5 @@ def interlis_context() -> TwwInterlisContext:
         logs_next_to_file=False,
         filter_nulls=True,
         import_orgs=True,
-        orgs_path=(
-            DATA_DIR
-            / "minimal-dataset-organisation-arbon-only.xtf"
-        ),
+        orgs_path=(DATA_DIR / "minimal-dataset-organisation-arbon-only.xtf"),
     )
