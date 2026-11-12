@@ -6,7 +6,6 @@ from unittest.mock import Mock
 
 import pytest
 from teksi_hooks.exceptions import DiffJobEligibilityError
-
 from teksi_wastewater.hooks.services.tww_persistence_context_factory import (
     TwwPersistenceContextFactory,
 )
@@ -44,10 +43,13 @@ def test_source_descriptor_requires_complete_role_specific_metadata() -> None:
 
 def test_absent_incremental_descriptor_is_optional() -> None:
     job = SimpleNamespace(job_id="job", metadata=_metadata("base"))
-    assert _factory()._source_descriptor(
-        job=job,
-        source_role="incremental",
-    ) is None
+    assert (
+        _factory()._source_descriptor(
+            job=job,
+            source_role="incremental",
+        )
+        is None
+    )
 
 
 def test_contexts_are_built_base_then_incremental(monkeypatch) -> None:

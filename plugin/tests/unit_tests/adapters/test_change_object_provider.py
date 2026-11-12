@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import UTC, datetime
 
-from teksi_hooks.models.canonical_object import CanonicalObject, CanonicalObjectIdentity
+from teksi_hooks.models.canonical_object import CanonicalObject
 from teksi_hooks.models.validation import Change, ChangeOperation
 from teksi_wastewater.hooks.adapters.tww_change_object_provider import (
     TwwChangeObjectProvider,
@@ -21,9 +21,12 @@ def _change(operation: ChangeOperation, *, old_values=None, new_values=None) -> 
 
 
 def test_insert_has_no_old_object() -> None:
-    assert TwwChangeObjectProvider().old_object(
-        _change(ChangeOperation.INSERT, new_values={"identifier": "new"})
-    ) is None
+    assert (
+        TwwChangeObjectProvider().old_object(
+            _change(ChangeOperation.INSERT, new_values={"identifier": "new"})
+        )
+        is None
+    )
 
 
 def test_update_builds_old_and_new_objects_from_change_state() -> None:
@@ -47,9 +50,12 @@ def test_update_builds_old_and_new_objects_from_change_state() -> None:
 
 
 def test_delete_has_no_new_object() -> None:
-    assert TwwChangeObjectProvider().new_object(
-        _change(ChangeOperation.DELETE, old_values={"identifier": "old"})
-    ) is None
+    assert (
+        TwwChangeObjectProvider().new_object(
+            _change(ChangeOperation.DELETE, old_values={"identifier": "old"})
+        )
+        is None
+    )
 
 
 def test_factory_is_stateless_and_ignores_schema_arguments() -> None:

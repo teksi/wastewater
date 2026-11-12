@@ -6,6 +6,7 @@ import pytest
 @pytest.fixture
 def no_commit_session():
     """Session double documenting that unit-tested services never own commits."""
+
     class SessionDouble:
         committed = False
         rolled_back = False

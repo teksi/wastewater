@@ -4,7 +4,6 @@ from types import SimpleNamespace
 from unittest.mock import Mock
 
 import pytest
-
 from teksi_wastewater.hooks.projectors.tww_canonical_view_effect_projector import (
     TwwCanonicalViewEffectProjector,
 )
@@ -82,6 +81,9 @@ def test_unconnected_function_family_fallback(
     expected: str,
 ) -> None:
     projector = _projector()
-    assert projector._unconnected_function_fallback(
-        source_value=source_value,
-    ) == expected
+    assert (
+        projector._unconnected_function_fallback(
+            source_value=source_value,
+        )
+        == expected
+    )

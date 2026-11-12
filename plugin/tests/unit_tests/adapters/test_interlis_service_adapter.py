@@ -145,8 +145,7 @@ def test_interlis_service_adapter_delegates_import_with_generic_context() -> Non
         xtf_file=Path(
             "/tmp/input.xtf",
         ),
-        context=InterlisContext(
-        ),
+        context=InterlisContext(),
     )
 
     assert fake.schema == "test"
@@ -204,8 +203,7 @@ def test_interlis_service_adapter_delegates_export_with_generic_context() -> Non
             "/tmp/output.xtf",
         ),
         export_models=("SIA405_ABWASSER_2020_1_LV95",),
-        context=InterlisContext(
-        ),
+        context=InterlisContext(),
     )
 
     assert fake.schema == "export_schema"
@@ -286,8 +284,7 @@ def test_interlis_service_adapter_delegates_export_without_output_file() -> None
     adapter.export_xtf(
         xtf_file=None,
         export_models=("SIA405_ABWASSER_2020_1_LV95",),
-        context=TwwInterlisContext(
-        ),
+        context=TwwInterlisContext(),
     )
 
     assert fake.schema == "export_schema"

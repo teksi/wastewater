@@ -6,7 +6,6 @@ from unittest.mock import Mock
 
 import pytest
 from teksi_hooks.exceptions import DiffJobEligibilityError, DiffJobStateError
-
 from teksi_wastewater.hooks.services.tww_review_application_service import (
     TwwReviewApplicationService,
 )
