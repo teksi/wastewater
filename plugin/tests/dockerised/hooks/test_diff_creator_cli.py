@@ -51,7 +51,6 @@ def run_diff_cli(
     run_cli(
         shlex.join(
             [
-                "diff-review",
                 *arguments,
                 *DB_ARGS,
             ]
