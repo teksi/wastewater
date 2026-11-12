@@ -6,7 +6,7 @@ requires-python = ">=3.11"
 dependencies = [
     "pyyaml",
     "teksi-hooks @ git+https://github.com/teksi/teksi_hooks.git",
-    "sqlalchemy",
+    "sqlalchemy>=2.0",
     "geoalchemy2",
     "requests",
     "pgserviceparser",

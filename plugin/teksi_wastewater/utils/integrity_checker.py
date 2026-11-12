@@ -899,7 +899,8 @@ class TWWIntegrityChecker:
         Check if MANDATORY fk_pwwf_wastewater_node is Null
         """
         check_classes = []
-        if config.MODEL_NAME_DSS in self.models:
+        check_models = model_config.interlis_models["dss"].names
+        if any(m in check_models for m in self.models):
             check_classes.extend(
                 [
                     ("log_card"),
