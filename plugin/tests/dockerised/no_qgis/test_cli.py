@@ -138,9 +138,7 @@ def exported_dss(
     imported_kek,
 ) -> Path:
     base_name = "export_minimal_dataset_dss"
-    export_model = model_selection.model_names_for_language(groups=("dss",), lang="de")[
-        "dss"
-    ]
+    export_model = model_selection.model_names_for_language(groups=("dss",), lang="de")["dss"]
 
     run_cli(
         "interlis_export "
@@ -205,9 +203,7 @@ def exported_dss_selection(
     imported_sia405_modified,
 ) -> Path:
     base_name = "export_minimal_dataset_dss_selection"
-    export_model = model_selection.model_names_for_language(groups=("dss",), lang="de")[
-        "dss"
-    ]
+    export_model = model_selection.model_names_for_language(groups=("dss",), lang="de")["dss"]
 
     run_cli(
         "interlis_export "
