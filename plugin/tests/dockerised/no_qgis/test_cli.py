@@ -30,21 +30,14 @@ OUTPUT_DIR.mkdir(
 )
 
 DB_ARGS = (
-    "--pghost db "
-    "--pgdatabase tww "
-    "--pguser postgres "
-    "--pgpass postgres "
-    "--pgport 5432"
+    "--pghost db " "--pgdatabase tww " "--pguser postgres " "--pgpass postgres " "--pgport 5432"
 )
 
 
 def _container_output_file(
     name: str,
 ) -> str:
-    return str(
-        CONTAINER_OUTPUT_DIR
-        / f"{name}.xtf"
-    )
+    return str(CONTAINER_OUTPUT_DIR / f"{name}.xtf")
 
 
 def _host_exported_file(
@@ -62,9 +55,7 @@ def _model_name(
     """
     Return the configured language-specific model name for one model group.
     """
-    return model_config.interlis_models[
-        group
-    ].lang_name(
+    return model_config.interlis_models[group].lang_name(
         lang,
     )
 
@@ -80,9 +71,7 @@ def _topic_name(
     Every model used by these fixtures currently exposes one transfer topic.
     Fail clearly if a future model definition changes that assumption.
     """
-    topics = model_config.interlis_models[
-        group
-    ].topics_by_lang(
+    topics = model_config.interlis_models[group].topics_by_lang(
         lang,
     )
 
@@ -132,9 +121,7 @@ def imported_dss(
     imported_sia405,
 ) -> None:
     run_cli(
-        "interlis_import "
-        f'--xtf_file "{DATA_DIR / "minimal-dataset-DSS.xtf"}" '
-        f"{DB_ARGS}"
+        "interlis_import " f'--xtf_file "{DATA_DIR / "minimal-dataset-DSS.xtf"}" ' f"{DB_ARGS}"
     )
 
 
@@ -157,12 +144,10 @@ def imported_kek(
 def exported_sia405_base_abwasser(
     imported_kek,
 ) -> Path:
-    DatabaseUtils.execute(
-        """
+    DatabaseUtils.execute("""
         UPDATE tww_od.organisation
         SET tww_local_extension = true;
-        """
-    )
+        """)
 
     base_name = "export_minimal_dataset_sia405_base"
     export_model = _model_name(
@@ -264,20 +249,11 @@ def exported_kek(
 def imported_sia405_modified(
     imported_kek,
 ) -> None:
-    modified_xtf = (
-        DATA_DIR
-        / "minimal-dataset-SIA405-ABWASSER-modified.xtf"
-    )
+    modified_xtf = DATA_DIR / "minimal-dataset-SIA405-ABWASSER-modified.xtf"
 
-    assert modified_xtf.is_file(), (
-        f"Missing modified SIA405 fixture: {modified_xtf}"
-    )
+    assert modified_xtf.is_file(), f"Missing modified SIA405 fixture: {modified_xtf}"
 
-    run_cli(
-        "interlis_import "
-        f'--xtf_file "{modified_xtf}" '
-        f"{DB_ARGS}"
-    )
+    run_cli("interlis_import " f'--xtf_file "{modified_xtf}" ' f"{DB_ARGS}")
 
 
 @pytest.fixture(
@@ -320,9 +296,7 @@ def test_import_orgs(
     imported_orgs,
 ) -> None:
     result = DatabaseUtils.fetchone(
-        "SELECT identifier "
-        "FROM tww_od.organisation "
-        "WHERE obj_id='ch20p3q400001497';"
+        "SELECT identifier " "FROM tww_od.organisation " "WHERE obj_id='ch20p3q400001497';"
     )
 
     assert result is not None
@@ -333,9 +307,7 @@ def test_import_sia405(
     imported_sia405,
 ) -> None:
     result = DatabaseUtils.fetchone(
-        "SELECT obj_id "
-        "FROM tww_od.reach "
-        "WHERE obj_id='ch000000RE000001';"
+        "SELECT obj_id " "FROM tww_od.reach " "WHERE obj_id='ch000000RE000001';"
     )
     assert result is not None
 
@@ -348,17 +320,13 @@ def test_import_sia405(
     assert result[0] == "rp_from_level added"
 
     result = DatabaseUtils.fetchone(
-        "SELECT bottom_level "
-        "FROM tww_od.wastewater_node "
-        "WHERE obj_id='ch000000WN000001';"
+        "SELECT bottom_level " "FROM tww_od.wastewater_node " "WHERE obj_id='ch000000WN000001';"
     )
     assert result is not None
     assert result[0] == 448.0
 
     result = DatabaseUtils.fetchone(
-        "SELECT height_width_ratio "
-        "FROM tww_od.pipe_profile "
-        "WHERE obj_id='ch000000PP000003';"
+        "SELECT height_width_ratio " "FROM tww_od.pipe_profile " "WHERE obj_id='ch000000PP000003';"
     )
     assert result is not None
     assert result[0] == Decimal(
@@ -370,16 +338,12 @@ def test_import_dss(
     imported_dss,
 ) -> None:
     result = DatabaseUtils.fetchone(
-        "SELECT obj_id "
-        "FROM tww_od.pipe_profile "
-        "WHERE obj_id='ch000000PP000001';"
+        "SELECT obj_id " "FROM tww_od.pipe_profile " "WHERE obj_id='ch000000PP000001';"
     )
     assert result is not None
 
     result = DatabaseUtils.fetchone(
-        "SELECT bottom_level "
-        "FROM tww_od.wastewater_node "
-        "WHERE obj_id='ch000000WN000001';"
+        "SELECT bottom_level " "FROM tww_od.wastewater_node " "WHERE obj_id='ch000000WN000001';"
     )
     assert result is not None
     assert result[0] == 448.0
@@ -397,9 +361,7 @@ def test_import_kek(
     assert result[0] == "fk11abk6EX000002"
 
     result = DatabaseUtils.fetchone(
-        "SELECT bottom_level "
-        "FROM tww_od.wastewater_node "
-        "WHERE obj_id='ch000000WN000001';"
+        "SELECT bottom_level " "FROM tww_od.wastewater_node " "WHERE obj_id='ch000000WN000001';"
     )
     assert result is not None
     assert result[0] == 448.0
@@ -488,13 +450,10 @@ def test_import_sia405_modified(
     imported_sia405_modified,
 ) -> None:
     result = DatabaseUtils.fetchone(
-        "SELECT obj_id "
-        "FROM tww_od.reach "
-        "WHERE obj_id='ch000000RE000001';"
+        "SELECT obj_id " "FROM tww_od.reach " "WHERE obj_id='ch000000RE000001';"
     )
     assert result is not None, (
-        "The modified SIA405 import did not retain the canonical "
-        "reach row 'ch000000RE000001'."
+        "The modified SIA405 import did not retain the canonical " "reach row 'ch000000RE000001'."
     )
 
     result = DatabaseUtils.fetchone(
@@ -506,9 +465,7 @@ def test_import_sia405_modified(
     assert result[0] == "rp_from_level modified"
 
     result = DatabaseUtils.fetchone(
-        "SELECT bottom_level "
-        "FROM tww_od.wastewater_node "
-        "WHERE obj_id='ch000000WN000001';"
+        "SELECT bottom_level " "FROM tww_od.wastewater_node " "WHERE obj_id='ch000000WN000001';"
     )
     assert result is not None
     assert result[0] == 448.0
