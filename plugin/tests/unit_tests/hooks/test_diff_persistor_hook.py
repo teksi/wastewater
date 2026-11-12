@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from unittest.mock import Mock
 
+from teksi_hooks.capabilities.connection import DatabaseConnectionFactory
+
 from teksi_wastewater.hooks import diff_persistor_hook as module
 
 

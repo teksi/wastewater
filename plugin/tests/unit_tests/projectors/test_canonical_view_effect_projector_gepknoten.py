@@ -4,6 +4,7 @@ from types import SimpleNamespace
 from unittest.mock import Mock
 
 import pytest
+
 from teksi_wastewater.hooks.projectors.tww_canonical_view_effect_projector import (
     TwwCanonicalViewEffectProjector,
 )
@@ -72,8 +73,6 @@ def test_unknown_mapping_origin_fails_closed() -> None:
         ("PAA.other", "PAA.unbekannt"),
         ("SAA", "SAA.unbekannt"),
         ("SAA.other", "SAA.unbekannt"),
-        (None, "SAA.unbekannt"),
-        ("unexpected", "SAA.unbekannt"),
     ),
 )
 def test_unconnected_function_family_fallback(
@@ -81,9 +80,14 @@ def test_unconnected_function_family_fallback(
     expected: str,
 ) -> None:
     projector = _projector()
-    assert (
-        projector._unconnected_function_fallback(
-            source_value=source_value,
-        )
-        == expected
-    )
+    assert projector._unconnected_function_fallback(
+        source_value=source_value,
+    ) == expected
+
+
+def test_unconnected_function_family_rejects_invalid_values() -> None:
+    projector = _projector()
+    with pytest.raises(ValueError):
+        projector._unconnected_function_fallback(source_value=None)
+    with pytest.raises(ValueError):
+        projector._unconnected_function_fallback(source_value="unexpected")

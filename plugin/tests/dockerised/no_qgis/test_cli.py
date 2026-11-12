@@ -2,7 +2,7 @@ from decimal import Decimal
 from pathlib import Path
 
 import pytest
-from teksi_wastewater.interlis import config, model_config
+from teksi_wastewater.interlis import config, model_config, model_selection
 from teksi_wastewater.utils.database_utils import DatabaseUtils
 
 from ..helpers import (
@@ -88,7 +88,7 @@ def exported_sia405_base_abwasser(
     DatabaseUtils.execute("UPDATE tww_od.organisation SET tww_local_extension=true;")
 
     base_name = "export_minimal_dataset_sia405_base"
-    export_model = model_config.model_names_for_language(
+    export_model = model_selection.config.model_names_for_language(
         groups=("sia405_base_abwasser",), lang="de"
     ).items["sia405_base_abwasser"]
 
@@ -102,7 +102,7 @@ def exported_sia405_base_abwasser(
 
     return _host_exported_file(
         base_name,
-        model_config.model_names_for_language(groups=("sia405_base_abwasser"), lang="de").items[
+        model_selection.config.model_names_for_language(groups=("sia405_base_abwasser"), lang="de").items[
             "sia405_base_abwasser"
         ],
     )
@@ -113,7 +113,7 @@ def exported_sia405_abwasser(
     imported_kek,
 ) -> Path:
     base_name = "export_minimal_dataset_sia405"
-    export_model = model_config.model_names_for_language(
+    export_model = model_selection.config.model_names_for_language(
         groups=("sia405_abwasser",), lang="de"
     ).items["sia405_abwasser"]
 
@@ -127,7 +127,7 @@ def exported_sia405_abwasser(
 
     return _host_exported_file(
         base_name,
-        model_config.model_names_for_language(groups=("sia405_abwasser"), lang="de").items[
+        model_selection.config.model_names_for_language(groups=("sia405_abwasser"), lang="de").items[
             "sia405_abwasser"
         ],
     )
@@ -138,7 +138,7 @@ def exported_dss(
     imported_kek,
 ) -> Path:
     base_name = "export_minimal_dataset_dss"
-    export_model = model_config.model_names_for_language(groups=("dss",), lang="de").items["dss"]
+    export_model = model_selection.config.model_names_for_language(groups=("dss",), lang="de").items["dss"]
 
     run_cli(
         "interlis_export "
@@ -150,7 +150,7 @@ def exported_dss(
 
     return _host_exported_file(
         base_name,
-        model_config.model_names_for_language(groups=("dss"), lang="de").items["dss"],
+        model_selection.config.model_names_for_language(groups=("dss"), lang="de").items["dss"],
     )
 
 
@@ -159,7 +159,7 @@ def exported_kek(
     imported_kek,
 ) -> Path:
     base_name = "export_minimal_dataset_kek"
-    export_model = model_config.model_names_for_language(groups=("vsa_kek",), lang="de").items[
+    export_model = model_selection.config.model_names_for_language(groups=("vsa_kek",), lang="de").items[
         "vsa_kek"
     ]
 
@@ -173,7 +173,7 @@ def exported_kek(
 
     return _host_exported_file(
         base_name,
-        model_config.model_names_for_language(groups=("vsa_kek"), lang="de").items["vsa_kek"],
+        model_selection.config.model_names_for_language(groups=("vsa_kek"), lang="de").items["vsa_kek"],
     )
 
 
@@ -203,7 +203,7 @@ def exported_dss_selection(
     imported_sia405_modified,
 ) -> Path:
     base_name = "export_minimal_dataset_dss_selection"
-    export_model = model_config.model_names_for_language(groups=("dss",), lang="de").items["dss"]
+    export_model = model_selection.config.model_names_for_language(groups=("dss",), lang="de").items["dss"]
 
     run_cli(
         "interlis_export "

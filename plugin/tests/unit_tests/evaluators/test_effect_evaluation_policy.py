@@ -62,7 +62,7 @@ def test_existing_agxx_helper_can_be_deleted() -> None:
     assert result.findings[0].code == "target_will_be_deleted"
 
 
-def test_update_on_missing_object_is_blocked() -> None:
+def test_update_is_remediable_for_creatable_helper() -> None:
     result = TwwEffectEvaluationPolicy().unsatisfied_status(
         effect=_effect(
             UpdateAttributeEffect,
@@ -72,5 +72,5 @@ def test_update_on_missing_object_is_blocked() -> None:
         ),
         current_object=None,
     )
-    assert result.status is EffectEvaluationStatus.BLOCKED
-    assert result.findings[0].code == "update_target_missing"
+    assert result.status is EffectEvaluationStatus.REMEDIABLE
+    assert result.findings[0].code == "attribute_will_be_updated"

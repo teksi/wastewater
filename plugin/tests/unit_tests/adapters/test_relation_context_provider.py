@@ -1,5 +1,5 @@
 from __future__ import annotations
-
+from types import SimpleNamespace
 from unittest.mock import Mock, patch
 
 from teksi_wastewater.hooks.adapters.tww_relation_context_provider import (
@@ -9,9 +9,15 @@ from teksi_wastewater.hooks.adapters.tww_relation_context_provider import (
 
 
 def _provider(classes=()):
+    model_mapping = SimpleNamespace(
+        explicit_mapping=SimpleNamespace(
+            mapping=SimpleNamespace(classes={}),
+        ),
+        implicit_mapping=None,
+    )
     return TwwRelationContextProvider(
         quarantine_classes=classes,
-        model_mapping=Mock(),
+        model_mapping=model_mapping,
         canonical_model_adapter=Mock(),
         projection_mode=MappingProjectionMode.FULL,
     )

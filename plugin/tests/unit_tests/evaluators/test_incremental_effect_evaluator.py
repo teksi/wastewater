@@ -5,6 +5,7 @@ from unittest.mock import Mock
 import pytest
 from geoalchemy2.elements import WKBElement
 from sqlalchemy import literal
+
 from teksi_wastewater.hooks.evaluators.tww_incremental_effect_evaluator import (
     TwwIncrementalEffectEvaluator,
 )

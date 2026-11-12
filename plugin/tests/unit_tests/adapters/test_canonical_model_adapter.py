@@ -179,6 +179,9 @@ class CanonicalModelCursor:
         if "dictionary_od_table" in query_text:
             return self.class_rows
 
+        if "geometry_columns" in query_text:
+            return ()
+
         raise AssertionError(f"Unexpected query: {query_text}")
 
     def _filtered_rows(

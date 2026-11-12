@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from types import SimpleNamespace
+from typing import Any
 from unittest.mock import Mock
 
 import pytest
@@ -199,7 +200,9 @@ def test_attribute_effects_add_one_exists_effect_per_target() -> None:
             ),
         },
     )
-    projector = _projector(model_mapping=_mapping(classes={"GepKnoten": class_mapping}))
+    projector = _projector(
+        model_mapping=_mapping(classes={"GepKnoten": class_mapping})
+    )
 
     effects = projector._attribute_effects(
         cursor=Mock(),
@@ -237,7 +240,9 @@ def test_attribute_effects_apply_static_value_mapping() -> None:
             ),
         },
     )
-    projector = _projector(model_mapping=_mapping(classes={"GepKnoten": class_mapping}))
+    projector = _projector(
+        model_mapping=_mapping(classes={"GepKnoten": class_mapping})
+    )
 
     effects = projector._attribute_effects(
         cursor=Mock(),
@@ -251,13 +256,17 @@ def test_attribute_effects_apply_static_value_mapping() -> None:
         schema="import_schema",
     )
 
-    update = next(effect for effect in effects if isinstance(effect, UpdateAttributeEffect))
+    update = next(
+        effect for effect in effects if isinstance(effect, UpdateAttributeEffect)
+    )
     assert update.value == 1234
 
 
 def test_attribute_effects_skip_null_source_values() -> None:
     class_mapping = _attribute_mapping()
-    projector = _projector(model_mapping=_mapping(classes={"GepKnoten": class_mapping}))
+    projector = _projector(
+        model_mapping=_mapping(classes={"GepKnoten": class_mapping})
+    )
 
     effects = projector._attribute_effects(
         cursor=Mock(),
@@ -288,7 +297,9 @@ def test_attribute_effects_project_cross_class_target() -> None:
             ),
         },
     )
-    projector = _projector(model_mapping=_mapping(classes={"GepKnoten": class_mapping}))
+    projector = _projector(
+        model_mapping=_mapping(classes={"GepKnoten": class_mapping})
+    )
 
     effects = projector._attribute_effects(
         cursor=Mock(),
@@ -302,7 +313,9 @@ def test_attribute_effects_project_cross_class_target() -> None:
         schema="import_schema",
     )
 
-    update = next(effect for effect in effects if isinstance(effect, UpdateAttributeEffect))
+    update = next(
+        effect for effect in effects if isinstance(effect, UpdateAttributeEffect)
+    )
     assert update.identity == CanonicalObjectIdentity(
         class_id="wastewater_node",
         attributes={"obj_id": "ch000000ws000005"},
@@ -322,7 +335,9 @@ def test_attribute_target_without_identity_is_rejected() -> None:
             ),
         },
     )
-    projector = _projector(model_mapping=_mapping(classes={"GepKnoten": class_mapping}))
+    projector = _projector(
+        model_mapping=_mapping(classes={"GepKnoten": class_mapping})
+    )
 
     with pytest.raises(
         ValueError,
@@ -354,7 +369,9 @@ def test_unknown_canonical_attribute_is_rejected() -> None:
             ),
         },
     )
-    projector = _projector(model_mapping=_mapping(classes={"GepKnoten": class_mapping}))
+    projector = _projector(
+        model_mapping=_mapping(classes={"GepKnoten": class_mapping})
+    )
 
     with pytest.raises(KeyError, match="Unknown canonical attribute"):
         projector._attribute_effects(
@@ -372,7 +389,9 @@ def test_unknown_canonical_attribute_is_rejected() -> None:
 
 def test_identity_rejects_missing_source_attribute() -> None:
     class_mapping = _attribute_mapping()
-    projector = _projector(model_mapping=_mapping(classes={"GepKnoten": class_mapping}))
+    projector = _projector(
+        model_mapping=_mapping(classes={"GepKnoten": class_mapping})
+    )
 
     with pytest.raises(ValueError, match="Source identity attribute"):
         projector._identity(
@@ -384,7 +403,9 @@ def test_identity_rejects_missing_source_attribute() -> None:
 def test_source_object_id_supports_mapping_and_orm_rows() -> None:
     projector = _projector(model_mapping=_mapping(classes={}))
     assert projector._source_object_id({"t_ili_tid": "source-1"}) == "source-1"
-    assert projector._source_object_id(SimpleNamespace(obj_id="source-2")) == "source-2"
+    assert projector._source_object_id(
+        SimpleNamespace(obj_id="source-2")
+    ) == "source-2"
 
 
 def test_source_object_id_rejects_missing_identity() -> None:
@@ -395,10 +416,9 @@ def test_source_object_id_rejects_missing_identity() -> None:
 
 def test_normalized_source_class_ids_preserve_order() -> None:
     projector = _projector(model_mapping=_mapping(classes={}))
-    assert projector._normalized_source_class_ids([" GepKnoten ", "OtherRelation"]) == (
-        "GepKnoten",
-        "OtherRelation",
-    )
+    assert projector._normalized_source_class_ids(
+        [" GepKnoten ", "OtherRelation"]
+    ) == ("GepKnoten", "OtherRelation")
 
 
 def test_duplicate_source_class_id_is_rejected() -> None:
