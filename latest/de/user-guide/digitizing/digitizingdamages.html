@@ -225,23 +225,17 @@ may no longer correspond to the current network data.</p>
 </ul>
 <p>Zudem wird das zugehörige Untersuchungsvideo unter „Video“ angezeigt.</p>
 <p>Bilder sind direkt mit dem Kanalschaden verknüpft. Videos sind mit der Untersuchung verknüpft, in der der Schaden protokolliert ist.</p>
-<p>The picture and video fields are calculated from active file records. They
-are display fields and should not be edited directly in the channel damage
-view.</p>
-<p>The channel damage view ignores outdated files when displaying pictures and
-videos. It also ignores outdated examinations when selecting videos.</p>
+<p>Die Felder für Bilder und Videos werden auf Basis aktiver Datei Datensätzen berechnet. Es handelt sich um Anzeigefelder die nicht direkt in der View „vw_tww_Kanalschaden“ bearbeitet werden sollten.</p>
+<p>Die „vw_tww_Kanalschaden“ ignoriert veraltete Dateien bei der Anzeige von Bildern und Videos. Zudem werden veraltete Untersuchungen bei der Auswahl von Videos ignoriert.</p>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>The current database query does not define an explicit ordering for the
-picture aggregation. If more than two pictures are attached, it is not
-guaranteed which files appear as <code class="docutils literal notranslate"><span class="pre">picture_1</span></code> and <code class="docutils literal notranslate"><span class="pre">picture_2</span></code>.</p>
+<p>Die aktuelle Datenbankabfrage legt keine explizite Reihenfolge für die Bildzusammenstellung fest. Wenn mehr als zwei Bilder angehängt sind, ist nicht gewährleistet, welche Dateien als „picture_1“ und „picture_2“ erscheinen.</p>
 </div>
 <section id="creating-a-new-file-record">
-<h3>Creating a new file record<a class="headerlink" href="#creating-a-new-file-record" title="Link to this heading"></a></h3>
-<p>Create a new record in <code class="docutils literal notranslate"><span class="pre">tww_app.vw_file</span></code> and set at least the following
-fields:</p>
+<h3>Hinzufügen eines neuen Datei Datensatzes<a class="headerlink" href="#creating-a-new-file-record" title="Link to this heading"></a></h3>
+<p>Erzeuge einen neuen Datensatz in <code class="docutils literal notranslate"><span class="pre">tww_app.vw_Datei</span></code> und erfasse mindestens diese Felder:</p>
 <dl>
-<dt><code class="docutils literal notranslate"><span class="pre">object</span></code></dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">obj_id</span></code> of the object to which the file is linked.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">Objekt</span></code></dt><dd><p>Die <code class="docutils literal notranslate"><span class="pre">Obj_ID</span></code> des Objektes das mit Datei verknüpft ist.</p>
 <p>For a damage picture, this is the <code class="docutils literal notranslate"><span class="pre">obj_id</span></code> of the channel damage. For an
 examination video, this is the <code class="docutils literal notranslate"><span class="pre">obj_id</span></code> of the examination.</p>
 </dd>
