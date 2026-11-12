@@ -127,10 +127,7 @@ def _run_interlis_import(
     xtf_file = _data_file(fixture_name)
 
     run_cli(
-        "interlis_import "
-        f'--xtf_file "{xtf_file}" '
-        f"{SCHEMA_RECREATION_ARG} "
-        f"{DB_ARGS}"
+        "interlis_import " f'--xtf_file "{xtf_file}" ' f"{SCHEMA_RECREATION_ARG} " f"{DB_ARGS}"
     )
 
 
