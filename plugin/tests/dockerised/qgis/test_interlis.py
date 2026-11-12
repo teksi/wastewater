@@ -126,7 +126,7 @@ class TestInterlis(unittest.TestCase):
         interlisImporterExporter.interlis_export(
             xtf_file_output=self._get_output_filename(export_xtf_file),
             export_models=[
-                model_selection.model_names_for_language(groups=("dss"), lang="de").items["dss"]
+                model_selection.model_names_for_language(groups=("dss",), lang="de").items["dss"]
             ],
             logs_next_to_file=True,
             user_interaction=False,
@@ -137,7 +137,7 @@ class TestInterlis(unittest.TestCase):
         models = InterlisTools.get_xtf_models(xtf_file=xtf_file_input)
         self.assertCountEqual(
             models,
-            [model_selection.model_names_for_language(groups=("dss"), lang="de").items["dss"]],
+            [model_selection.model_names_for_language(groups=("dss",), lang="de").items["dss"]],
         )
 
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_SIA405_ABWASSER)
@@ -172,7 +172,7 @@ class TestInterlis(unittest.TestCase):
                 model_selection.model_names_for_language(
                     groups=("sia405_base_abwasser"), lang="de"
                 ).items["sia405_base_abwasser"],
-                model_selection.model_names_for_language(groups=("dss"), lang="de").items["dss"],
+                model_selection.model_names_for_language(groups=("dss",), lang="de").items["dss"],
             ],
         )
 
@@ -192,7 +192,7 @@ class TestInterlis(unittest.TestCase):
         self.assertCountEqual(
             models,
             [
-                model_selection.model_names_for_language(groups=("vsa_kek"), lang="de").items[
+                model_selection.model_names_for_language(groups=("vsa_kek",), lang="de").items[
                     "vsa_kek"
                 ]
             ],

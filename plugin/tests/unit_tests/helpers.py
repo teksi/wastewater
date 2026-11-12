@@ -119,11 +119,25 @@ class FakeCursor:
         )
 
         if not self.results:
-            raise AssertionError("No fake query result remains for executed query: " f"{query!r}")
-
-        self._current_result = self.results.pop(
-            0,
-        )
+            query_text = str(query)
+            if "geometry_columns" in query_text:
+                self._current_result = FakeQueryResult(
+                    column_names=(
+                        "class_id",
+                        "attribute_id",
+                        "coord_dimension",
+                        "srid",
+                        "geometry_type",
+                    ),
+                    rows=(),
+                )
+            else:
+                raise AssertionError(
+                    "No fake query result remains for executed query: "
+                    f"{query!r}"
+                )
+        else:
+            self._current_result = self.results.pop(0)
 
         self.description = tuple(
             FakeColumn(

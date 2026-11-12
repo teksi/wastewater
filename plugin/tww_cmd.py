@@ -3,7 +3,7 @@
 import argparse
 import sys
 
-from teksi_wastewater.interlis import config, model_config
+from teksi_wastewater.interlis import config, model_config, model_selection
 from teksi_wastewater.interlis.interlis_importer_exporter import (
     InterlisImporterExporter,
     InterlisImporterExporterError,
@@ -79,7 +79,7 @@ class TeksiWastewaterCmd:
         subparser.add_argument(
             "--export_model",
             default=model_config.interlis_models["dss"].lang_name("de"),
-            choices=config.ALL_SUPPORTED_MODELS,
+            choices=model_selection.ALL_SUPPORTED_MODELS,
             help="Model to export (default:  %(default)s)",
         )
         subparser.add_argument(
