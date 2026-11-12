@@ -135,7 +135,9 @@ class TestInterlis(unittest.TestCase):
     def test_get_xtf_models(self):
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_DSS)
         models = InterlisTools.get_xtf_models(xtf_file=xtf_file_input)
-        model_selectioned = model_selection.model_names_for_language(groups=("dss",), lang="de").items["dss"]
+        model_selectioned = model_selection.model_names_for_language(
+            groups=("dss",), lang="de"
+        ).items["dss"]
         self.assertCountEqual(
             models,
             [model_selectioned],

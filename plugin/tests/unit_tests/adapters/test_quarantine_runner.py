@@ -21,6 +21,7 @@ def test_log_path_sanitizes_model_name():
     path = _runner()._validation_log_path(log_path=Path("/tmp/import.log"), model_name="A/B:C")
     assert path.name == "import_A_B_C.log"
 
+
 def test_runner_keeps_required_canonical_adapter():
     adapter = Mock()
     runner = TwwQuarantineRunner(
@@ -32,6 +33,7 @@ def test_runner_keeps_required_canonical_adapter():
         incremental_effect_persister=Mock(),
     )
     assert runner.canonical_model_adapter is adapter
+
 
 def test_validate_success_is_empty():
     runner = _runner()

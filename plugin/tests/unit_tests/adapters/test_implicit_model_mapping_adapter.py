@@ -35,9 +35,16 @@ def test_requires_borrowed_sessions():
 
 
 def test_materialized_mapping_is_cached():
-    sentinel=Mock()
-    with patch.object(TwwImplicitModelMappingAdapter,'_load_model_mapping',return_value=sentinel) as load:
-        adapter=TwwImplicitModelMappingAdapter(import_schema='q',quarantine_session=Mock(),live_session=Mock(),language=TwwLanguage.DE)
+    sentinel = Mock()
+    with patch.object(
+        TwwImplicitModelMappingAdapter, "_load_model_mapping", return_value=sentinel
+    ) as load:
+        adapter = TwwImplicitModelMappingAdapter(
+            import_schema="q",
+            quarantine_session=Mock(),
+            live_session=Mock(),
+            language=TwwLanguage.DE,
+        )
     materialized = adapter.materialize()
     assert materialized.mapping is sentinel
     assert adapter.model_mapping() is sentinel

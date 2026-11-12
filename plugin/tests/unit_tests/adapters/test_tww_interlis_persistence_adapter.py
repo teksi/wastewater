@@ -1,7 +1,10 @@
 from __future__ import annotations
 
 from unittest.mock import Mock
-from teksi_wastewater.hooks.adapters.tww_interlis_persistence_adapter import TwwInterlisPersistenceAdapter
+
+from teksi_wastewater.hooks.adapters.tww_interlis_persistence_adapter import (
+    TwwInterlisPersistenceAdapter,
+)
 
 
 def test_constructor_uses_runner_and_runtime_contexts():

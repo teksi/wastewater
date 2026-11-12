@@ -6,7 +6,6 @@ from unittest.mock import Mock
 
 import pytest
 from teksi_hooks.exceptions import DiffJobEligibilityError
-
 from teksi_wastewater.hooks.services.tww_persistence_context_factory import (
     TwwPersistenceContextFactory,
 )
@@ -44,17 +43,23 @@ def test_source_descriptor_requires_complete_role_specific_metadata() -> None:
 
 def test_absent_incremental_descriptor_is_optional() -> None:
     job = SimpleNamespace(job_id="job", metadata=_metadata("base"))
-    assert _factory()._source_descriptor(
-        job=job,
-        source_role="incremental",
-    ) is None
+    assert (
+        _factory()._source_descriptor(
+            job=job,
+            source_role="incremental",
+        )
+        is None
+    )
 
 
 def test_source_descriptors_preserve_base_incremental_order() -> None:
     factory = _factory()
     job = SimpleNamespace(job_id="job", metadata={**_metadata("base"), **_metadata("incremental")})
-    descriptors = tuple(factory._source_descriptor(job=job, source_role=role) for role in ("base", "incremental"))
+    descriptors = tuple(
+        factory._source_descriptor(job=job, source_role=role) for role in ("base", "incremental")
+    )
     assert tuple(item["source_role"] for item in descriptors) == ("base", "incremental")
+
 
 def test_context_factory_rejects_missing_sessions() -> None:
     with pytest.raises(RuntimeError, match="no quarantine session"):
