@@ -18,7 +18,6 @@ from teksi_wastewater.hooks.adapters.tww_quarantine_runner import (
 from teksi_wastewater.interlis import config
 from teksi_wastewater.utils.database_utils import DatabaseUtils
 
-
 DB_HOST = os.getenv("PGHOST", "db")
 DB_NAME = os.getenv("PGDATABASE", "tww")
 DB_USER = os.getenv("PGUSER", "postgres")
@@ -38,20 +37,11 @@ DATA_DIR = DOCKERISED_TEST_DIR / "qgis" / "data"
 # Fixtures specific to tests/dockerised/hooks.
 HOOK_DATA_DIR = Path(__file__).resolve().parent / "data"
 
-ORGANISATIONS_XTF = (
-    HOOK_DATA_DIR
-    / "test-dataset-organisations.xtf"
-)
+ORGANISATIONS_XTF = HOOK_DATA_DIR / "test-dataset-organisations.xtf"
 
 # Run the packaged hooks CLI with the same Python interpreter that runs pytest.
 # In CI, this is expected to be /tmp/teksi-hooks-venv/bin/python.
-IMPORTER_CLI_PATH = (
-    PLUGIN_ROOT
-    / "teksi_wastewater"
-    / "hooks"
-    / "cli"
-    / "importer_exporter.py"
-)
+IMPORTER_CLI_PATH = PLUGIN_ROOT / "teksi_wastewater" / "hooks" / "cli" / "importer_exporter.py"
 
 DB_ARGS = (
     "--pghost",
@@ -141,9 +131,7 @@ def run_interlis_cli(
     """
     Run the packaged hooks CLI directly with the active Python interpreter.
     """
-    assert IMPORTER_CLI_PATH.is_file(), (
-        f"Missing packaged hooks CLI: {IMPORTER_CLI_PATH}"
-    )
+    assert IMPORTER_CLI_PATH.is_file(), f"Missing packaged hooks CLI: {IMPORTER_CLI_PATH}"
 
     return run(
         (
@@ -207,8 +195,7 @@ def wait_for_db() -> None:
             )
 
     raise RuntimeError(
-        "Database did not become ready after 60 seconds. "
-        f"Command: {shlex.join(command)}"
+        "Database did not become ready after 60 seconds. " f"Command: {shlex.join(command)}"
     )
 
 
@@ -287,9 +274,7 @@ def imported_organisations(
     The fixture is idempotent for local reruns against an initialized
     database. CI normally imports the fixture after a fresh PUM installation.
     """
-    assert ORGANISATIONS_XTF.is_file(), (
-        f"Missing organisation fixture: {ORGANISATIONS_XTF}"
-    )
+    assert ORGANISATIONS_XTF.is_file(), f"Missing organisation fixture: {ORGANISATIONS_XTF}"
 
     missing_before = _missing_required_organisation_oids()
 
@@ -328,10 +313,7 @@ def _missing_required_organisation_oids() -> set:
     if not required_oids:
         return set()
 
-    placeholders = ", ".join(
-        "%s"
-        for _ in required_oids
-    )
+    placeholders = ", ".join("%s" for _ in required_oids)
 
     rows = DatabaseUtils.fetchall(
         f"""
@@ -352,9 +334,12 @@ def _missing_required_organisation_oids() -> set:
         for row in rows
     }
 
-    return set(
-        required_oids,
-    ) - existing_oids
+    return (
+        set(
+            required_oids,
+        )
+        - existing_oids
+    )
 
 
 def _drop_and_recreate_schema(
@@ -399,14 +384,9 @@ def quarantine_runner() -> TwwQuarantineRunner:
     scope="module",
 )
 def interlis_context() -> TwwInterlisContext:
-    organisations_file = (
-        DATA_DIR
-        / "minimal-dataset-organisation-arbon-only.xtf"
-    )
+    organisations_file = DATA_DIR / "minimal-dataset-organisation-arbon-only.xtf"
 
-    assert organisations_file.is_file(), (
-        f"Missing organisation fixture: {organisations_file}"
-    )
+    assert organisations_file.is_file(), f"Missing organisation fixture: {organisations_file}"
 
     return TwwInterlisContext(
         schema=config.IMPORT_SCHEMA,

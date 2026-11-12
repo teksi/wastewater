@@ -4,8 +4,8 @@ import collections
 import configparser
 import os
 import re
-from typing import Any
 from collections.abc import Mapping, Sequence
+from typing import Any
 
 from .issues import Issue, IssueLevel
 from .plugin_utils import logger

@@ -47,12 +47,8 @@ HOST_DATA_DIR = DOCKERISED_TEST_DIR / "qgis" / "data"
 HOST_OUTPUT_DIR = TEST_DIR / "output"
 
 # Paths visible inside the qgis container where the packaged CLI runs.
-CONTAINER_DATA_DIR = Path(
-    "/usr/src/plugin/tests/dockerised/qgis/data"
-)
-CONTAINER_OUTPUT_DIR = Path(
-    "/usr/src/plugin/tests/dockerised/no_qgis/output"
-)
+CONTAINER_DATA_DIR = Path("/usr/src/plugin/tests/dockerised/qgis/data")
+CONTAINER_OUTPUT_DIR = Path("/usr/src/plugin/tests/dockerised/no_qgis/output")
 
 HOST_OUTPUT_DIR.mkdir(
     parents=True,
@@ -69,9 +65,7 @@ def _data_file(
     """
     host_path = HOST_DATA_DIR / name
 
-    assert host_path.is_file(), (
-        f"Missing INTERLIS test fixture in the checkout: {host_path}"
-    )
+    assert host_path.is_file(), f"Missing INTERLIS test fixture in the checkout: {host_path}"
 
     return CONTAINER_DATA_DIR / name
 
