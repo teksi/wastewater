@@ -41,7 +41,9 @@ ORGANISATIONS_XTF = HOOK_DATA_DIR / "test-dataset-organisations.xtf"
 
 # Run the packaged hooks CLI with the same Python interpreter that runs pytest.
 # In CI, this is expected to be /tmp/teksi-hooks-venv/bin/python.
-IMPORTER_CLI_PATH = PLUGIN_ROOT / "teksi_wastewater" / "hooks" / "cli" / "importer_exporter.py"
+IMPORTER_CLI_MODULE = (
+    "teksi_wastewater.hooks.cli.importer_exporter"
+)
 
 DB_ARGS = (
     "--pghost",
@@ -81,18 +83,14 @@ def run(
     command: Sequence[str],
     *,
     expected_returncode: int = 0,
+    env: dict[str, str] | None = None,
 ) -> subprocess.CompletedProcess[str]:
-    """
-    Run a command directly in the current hooks test container.
-
-    These tests already execute inside the plugin container. They must not
-    invoke ``docker compose exec`` recursively.
-    """
     result = subprocess.run(
-        list(command),
+        list(
+            command,
+        ),
         cwd=PLUGIN_ROOT,
-        env=os.environ.copy(),
-        capture_output=True,
+        env=env or os.environ.copy capture_output=True,
         text=True,
         check=False,
     )
@@ -129,19 +127,40 @@ def run_interlis_cli(
     expected_returncode: int = 0,
 ) -> subprocess.CompletedProcess[str]:
     """
-    Run the packaged hooks CLI directly with the active Python interpreter.
+    Run the hooks CLI as an installed Python module.
+
+    Module execution preserves the package context required by absolute
+    ``teksi_wastewater`` imports.
     """
-    assert IMPORTER_CLI_PATH.is_file(), f"Missing packaged hooks CLI: {IMPORTER_CLI_PATH}"
+    environment = os.environ.copy()
+
+    plugin_path = str(
+        PLUGIN_ROOT,
+    )
+
+    existing_pythonpath = environment.get(
+        "PYTHONPATH",
+        "",
+    )
+
+    environment["PYTHONPATH"] = os.pathsep.join(
+        path
+        for path in (
+            plugin_path,
+            existing_pythonpath,
+        )
+        if path
+    )
 
     return run(
         (
             sys.executable,
-            str(
-                IMPORTER_CLI_PATH,
-            ),
+            "-m",
+            IMPORTER_CLI_MODULE,
             *arguments,
         ),
         expected_returncode=expected_returncode,
+        env=environment,
     )
 
 
