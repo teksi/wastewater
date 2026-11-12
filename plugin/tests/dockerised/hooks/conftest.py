@@ -41,9 +41,7 @@ ORGANISATIONS_XTF = HOOK_DATA_DIR / "test-dataset-organisations.xtf"
 
 # Run the packaged hooks CLI with the same Python interpreter that runs pytest.
 # In CI, this is expected to be /tmp/teksi-hooks-venv/bin/python.
-IMPORTER_CLI_MODULE = (
-    "teksi_wastewater.hooks.cli.importer_exporter"
-)
+IMPORTER_CLI_MODULE = "teksi_wastewater.hooks.cli.importer_exporter"
 
 DB_ARGS = (
     "--pghost",
