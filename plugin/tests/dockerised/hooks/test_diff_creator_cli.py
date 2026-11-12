@@ -355,7 +355,7 @@ def create_and_apply_phase(
 
 
 def test_diff_import_workflow(
-    clean_db_once,
+    imported_organisations,
 ) -> None:
     """
     Exercise trusted baseline and the three permitted review lifecycles.

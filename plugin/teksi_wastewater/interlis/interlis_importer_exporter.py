@@ -10,6 +10,7 @@ from pathlib import Path
 
 import requests
 
+
 from ..utils.database_utils import DatabaseUtils
 from ..utils.integrity_checker import TWWIntegrityChecker
 from . import config, model_selection
@@ -38,7 +39,9 @@ from .utils.various import (
     logger,
     make_log_path,
 )
-
+from .utils.sessions import (
+    InterlisImportSessions,
+)
 
 @dataclass(slots=True, frozen=True)
 class ProgressScope:
@@ -84,6 +87,7 @@ class InterlisImporterExporter:
         self.srid = 2056
         self.current_progress = 0
         self.schema = None
+
 
     def _init_model_classes(self, selection_models):
         model_interlis = selection_models.primary_component.quarantine_model(self.schema)
@@ -295,6 +299,7 @@ class InterlisImporterExporter:
         filter_nulls=True,
         srid: int = None,
         progress_scope: ProgressScope = ProgressScope(),
+        sessions: InterlisImportSessions | None = None,
     ):
 
         selection_models = self._prepare_interlis_import(
@@ -313,8 +318,10 @@ class InterlisImporterExporter:
         tww_session = None
         try:
             # Import from the temporary ili2pg model
-            self._progress_done_in_scope(progress_scope, 20, "Converting to TEKSI Wastewater...")
-            tww_session = self._import_from_intermediate_schema(selection_models)
+            self._progress_done_in_scope(
+                progress_scope, 20, "Converting to TEKSI Wastewater..."
+            )
+            tww_session = self._import_from_intermediate_schema(selection_models,sessions)
 
             if show_selection_dialog:
                 from qgis.PyQt.QtCore import Qt
@@ -384,11 +391,27 @@ class InterlisImporterExporter:
 
     def find_import_selection_models(
         self,
-        xtf_file_input: Path,
+        xtf_file_input: Path| None = None,
+        model_name: str | None = None,
     ) -> TwwInterlisModelSelection:
-        selection = self.identify_import_model(
-            xtf_file_input,
-        )
+        if xtf_file_input is not None:
+            selection = self.identify_import_model(
+                xtf_file_input,
+            )
+            err_str = f"Identification for xtf_file {xtf_file_input} failed"
+        elif model_name is not None:
+            selection = model_selection.model_selection_for_imported_models(
+                model_name,
+            )
+            err_str = f"Identification for model name {model_name} failed"
+        else:
+            err_str = "Nor xtf path nor model name provided."
+        if not selection:
+            raise InterlisImporterExporterError(
+                "Import selection model failed",
+                err_str,
+                None
+            )
 
         logger.info(
             "Models %r were chosen for import among imported models %r.",
@@ -445,15 +468,12 @@ class InterlisImporterExporter:
         self,
         xtf_file_output=None,
         logs_next_to_file=True,
-        base_log_path: Path | None = None,
     ):
         # File name without extension (used later for export)
         file_name_base, _ = os.path.splitext(xtf_file_output)
 
         # Configure logging
-        if base_log_path:
-            self.base_log_path = base_log_path
-        elif logs_next_to_file:
+        if logs_next_to_file:
             self.base_log_path = xtf_file_output
         else:
             self.base_log_path = None
@@ -477,7 +497,6 @@ class InterlisImporterExporter:
         import_orgs: bool = False,
         progress_scope: ProgressScope = ProgressScope(),
         allow_schema_recreation: bool = False,
-        base_log_path: Path | None = None,
     ):
 
         if not allow_schema_recreation:
@@ -494,7 +513,6 @@ class InterlisImporterExporter:
         _ = self._prepare_interlis_export(
             xtf_file_output=xtf_file_output,
             logs_next_to_file=logs_next_to_file,
-            base_log_path=base_log_path,
         )
         if not self.from_quarantine_only:
             self._progress_done_in_scope(progress_scope, 5, "Clearing ili schema...")
@@ -570,12 +588,10 @@ class InterlisImporterExporter:
         export_models=None,
         logs_next_to_file=True,
         progress_scope: ProgressScope = ProgressScope(),
-        base_log_path: Path | None = None,
     ):
         file_name_base = self._prepare_interlis_export(
             xtf_file_output=xtf_file_output,
             logs_next_to_file=logs_next_to_file,
-            base_log_path=base_log_path,
         )
 
         self._progress_done_in_scope(progress_scope, 0, "starting INTERLIS export")
@@ -631,7 +647,7 @@ class InterlisImporterExporter:
 
             results = exportChecker.run_integrity_checks()
             if not results.failed:
-                logger.info(f"All checks passed! ({results['stats']['ok']} OK)")
+                logger.info("All checks passed!")
             else:
                 if user_interaction:
                     from qgis.PyQt.QtWidgets import QMessageBox
@@ -783,7 +799,11 @@ class InterlisImporterExporter:
                 log_path,
             )
 
-    def _import_from_intermediate_schema(self, selection_models):
+    def _import_from_intermediate_schema(
+        self,
+        selection_models: TwwInterlisModelSelection,
+        sessions: InterlisImportSessions | None = None,
+    ):
         log_handler = logging.FileHandler(
             make_log_path(self.base_log_path, "tww2ili-import"), mode="w", encoding="utf-8"
         )
@@ -798,6 +818,16 @@ class InterlisImporterExporter:
             model_classes_tww_od=self.model_classes_tww_od,
             model_classes_tww_vl=self.model_classes_tww_vl,
             model_classes_tww_app=self.model_classes_tww_app,
+            session_interlis=(
+                sessions.quarantine
+                if sessions is not None
+                else None
+            ),
+            session_tww=(
+                sessions.live
+                if sessions is not None
+                else None
+            ),
             callback_progress_done=self._progress_done_intermediate_schema,
             filter_nulls=self.filter_nulls,
         )
