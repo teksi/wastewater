@@ -1,8 +1,11 @@
 from __future__ import annotations
 
+import os
 import shlex
 import subprocess
+import sys
 import time
+from collections.abc import Sequence
 from pathlib import Path
 
 import pytest
@@ -15,39 +18,39 @@ from teksi_wastewater.hooks.adapters.tww_quarantine_runner import (
 from teksi_wastewater.interlis import config
 from teksi_wastewater.utils.database_utils import DatabaseUtils
 
-from ..helpers import run_cli
 
-DB_HOST = "db"
-DB_NAME = "tww"
-DB_USER = "postgres"
-DB_PASSWORD = "postgres"
-DB_PORT = "5432"
+DB_HOST = os.getenv("PGHOST", "db")
+DB_NAME = os.getenv("PGDATABASE", "tww")
+DB_USER = os.getenv("PGUSER", "postgres")
+DB_PASSWORD = os.getenv("PGPASSWORD", "postgres")
+DB_PORT = os.getenv("PGPORT", "5432")
 
-TWW_TEST_LOG_DIR = Path(
-    "/tmp/tww2ili",
-)
+PLUGIN_ROOT = Path("/usr/src/plugin")
 
-# Existing QGIS-oriented test data.
-DATA_DIR = (
-    Path(
-        __file__,
-    ).parents[1]
-    / "qgis"
-    / "data"
-)
+TWW_TEST_LOG_DIR = Path("/tmp/tww2ili")
+
+DOCKERISED_TEST_DIR = Path(__file__).resolve().parents[1]
+
+# Existing QGIS-oriented test data. The hooks tests already run inside the
+# container, so these are local filesystem paths, not Docker-host paths.
+DATA_DIR = DOCKERISED_TEST_DIR / "qgis" / "data"
 
 # Fixtures specific to tests/dockerised/hooks.
-HOOK_DATA_DIR = (
-    Path(
-        __file__,
-    ).parent
-    / "data"
+HOOK_DATA_DIR = Path(__file__).resolve().parent / "data"
+
+ORGANISATIONS_XTF = (
+    HOOK_DATA_DIR
+    / "test-dataset-organisations.xtf"
 )
 
-ORGANISATIONS_XTF = HOOK_DATA_DIR / "test-dataset-organisations.xtf"
-
-IMPORTER_CLI_PATH = Path(
-    "/usr/src/plugin/" "teksi_wastewater/" "hooks/" "cli/" "importer_exporter.py"
+# Run the packaged hooks CLI with the same Python interpreter that runs pytest.
+# In CI, this is expected to be /tmp/teksi-hooks-venv/bin/python.
+IMPORTER_CLI_PATH = (
+    PLUGIN_ROOT
+    / "teksi_wastewater"
+    / "hooks"
+    / "cli"
+    / "importer_exporter.py"
 )
 
 DB_ARGS = (
@@ -85,25 +88,73 @@ def ensure_interlis_log_dir() -> None:
 
 
 def run(
-    cmd: str,
-):
+    command: Sequence[str],
+    *,
+    expected_returncode: int = 0,
+) -> subprocess.CompletedProcess[str]:
+    """
+    Run a command directly in the current hooks test container.
+
+    These tests already execute inside the plugin container. They must not
+    invoke ``docker compose exec`` recursively.
+    """
     result = subprocess.run(
-        cmd,
-        shell=True,
+        list(command),
+        cwd=PLUGIN_ROOT,
+        env=os.environ.copy(),
         capture_output=True,
         text=True,
+        check=False,
     )
 
+    print("COMMAND")
+    print(
+        shlex.join(
+            command,
+        )
+    )
+    print("STDOUT")
     print(
         result.stdout,
     )
+    print("STDERR")
     print(
         result.stderr,
     )
 
-    assert result.returncode == 0, f"Command failed: {cmd}"
+    assert result.returncode == expected_returncode, (
+        f"Command returned {result.returncode}; "
+        f"expected {expected_returncode}.\n"
+        f"Command: {shlex.join(command)}\n"
+        f"STDOUT:\n{result.stdout}\n"
+        f"STDERR:\n{result.stderr}"
+    )
 
     return result
+
+
+def run_interlis_cli(
+    arguments: Sequence[str],
+    *,
+    expected_returncode: int = 0,
+) -> subprocess.CompletedProcess[str]:
+    """
+    Run the packaged hooks CLI directly with the active Python interpreter.
+    """
+    assert IMPORTER_CLI_PATH.is_file(), (
+        f"Missing packaged hooks CLI: {IMPORTER_CLI_PATH}"
+    )
+
+    return run(
+        (
+            sys.executable,
+            str(
+                IMPORTER_CLI_PATH,
+            ),
+            *arguments,
+        ),
+        expected_returncode=expected_returncode,
+    )
 
 
 @pytest.fixture(
@@ -113,35 +164,52 @@ def run(
 def wait_for_db() -> None:
     """
     Wait until PostgreSQL accepts direct container-to-container connections.
-
-    Adapter tests run inside the QGIS container and therefore must not execute
-    Docker Compose recursively.
     """
-    for _ in range(
-        30,
+    command = (
+        "pg_isready",
+        "-h",
+        DB_HOST,
+        "-p",
+        DB_PORT,
+        "-U",
+        DB_USER,
+        "-d",
+        DB_NAME,
+    )
+
+    for attempt in range(
+        1,
+        31,
     ):
         result = subprocess.run(
-            (f"pg_isready " f"-h {DB_HOST} " f"-U {DB_USER} " f"-d {DB_NAME}"),
-            shell=True,
+            command,
             capture_output=True,
             text=True,
+            check=False,
         )
 
-        print(
-            result.stdout,
-        )
-        print(
-            result.stderr,
-        )
+        if result.stdout:
+            print(
+                result.stdout,
+            )
+
+        if result.stderr:
+            print(
+                result.stderr,
+            )
 
         if result.returncode == 0:
             return
 
-        time.sleep(
-            2,
-        )
+        if attempt < 30:
+            time.sleep(
+                2,
+            )
 
-    raise RuntimeError("Database not ready.")
+    raise RuntimeError(
+        "Database did not become ready after 60 seconds. "
+        f"Command: {shlex.join(command)}"
+    )
 
 
 @pytest.fixture(
@@ -171,24 +239,14 @@ def clean_db_once(
     """
     Reset adapter quarantine schemas once for the requesting test module.
 
-    The GitHub workflow creates and installs the complete database before
-    pytest starts:
-
-        dropdb
-        createdb
-        pum datamodel install
-
-    This fixture deliberately does not reset the live ``tww_od`` state. The
-    diff workflow is sequential, and every applied phase becomes the starting
-    state for the next phase.
+    the complete database before pytest starts. This
+    fixture deliberately preserves the live ``tww_od`` state because every
+    applied diff phase becomes the starting state for the next phase.
     """
-    _drop_and_recreate_schema(
+    schemas = [
         config.IMPORT_SCHEMA,
-    )
-
-    _drop_and_recreate_schema(
         config.EXPORT_SCHEMA,
-    )
+    ]
 
     incremental_schema = getattr(
         config,
@@ -202,18 +260,18 @@ def clean_db_once(
             str,
         )
         and incremental_schema.strip()
-        and incremental_schema
-        not in {
-            config.IMPORT_SCHEMA,
-            config.EXPORT_SCHEMA,
-        }
+        and incremental_schema not in schemas
     ):
-        _drop_and_recreate_schema(
+        schemas.append(
             incremental_schema,
         )
 
-    # No teardown follows the yield. The module keeps the database state
-    # created by the organisation bootstrap, baseline, and applied phases.
+    for schema_name in schemas:
+        _drop_and_recreate_schema(
+            schema_name,
+        )
+
+    # No teardown. The sequential workflow intentionally retains applied data.
     yield
 
 
@@ -224,34 +282,28 @@ def imported_organisations(
     clean_db_once,
 ) -> None:
     """
-    Bootstrap required organisations once for the sequential diff workflow.
+    Bootstrap organisations required by the sequential diff workflow.
 
-    The CLI runs in a separate process and commits the imported organisations
-    to the live database. This fixture has no teardown: the trusted baseline
-    and all subsequent phases intentionally build on that committed state.
-
-    The fixture is idempotent for local reruns against an already initialized
-    database. CI normally reaches the import path because the database starts
-    from a fresh PUM installation.
+    The fixture is idempotent for local reruns against an initialized
+    database. CI normally imports the fixture after a fresh PUM installation.
     """
-    assert ORGANISATIONS_XTF.is_file(), "Missing organisation fixture: " f"{ORGANISATIONS_XTF}"
+    assert ORGANISATIONS_XTF.is_file(), (
+        f"Missing organisation fixture: {ORGANISATIONS_XTF}"
+    )
 
     missing_before = _missing_required_organisation_oids()
 
     if missing_before:
-        run_cli(
-            shlex.join(
-                [
-                    "interlis_import",
-                    "--xtf_file",
-                    str(
-                        ORGANISATIONS_XTF,
-                    ),
-                    "--allow-schema-recreation",
-                    *DB_ARGS,
-                ]
-            ),
-            IMPORTER_CLI_PATH,
+        run_interlis_cli(
+            (
+                "interlis_import",
+                "--xtf_file",
+                str(
+                    ORGANISATIONS_XTF,
+                ),
+                "--allow-schema-recreation",
+                *DB_ARGS,
+            )
         )
 
     missing_after = _missing_required_organisation_oids()
@@ -263,20 +315,22 @@ def imported_organisations(
     )
 
 
-def _missing_required_organisation_oids() -> set[str]:
+def _missing_required_organisation_oids() -> set:
     """
     Return required canonical organisation OIDs absent from ``tww_od``.
-
-    The query uses one placeholder per value so it works with the project's
-    existing DatabaseUtils/psycopg parameter handling without relying on
-    PostgreSQL-array adaptation.
     """
-    placeholders = ", ".join("%s" for _ in REQUIRED_ORGANISATION_OIDS)
-
     required_oids = tuple(
         sorted(
             REQUIRED_ORGANISATION_OIDS,
         )
+    )
+
+    if not required_oids:
+        return set()
+
+    placeholders = ", ".join(
+        "%s"
+        for _ in required_oids
     )
 
     rows = DatabaseUtils.fetchall(
@@ -285,32 +339,53 @@ def _missing_required_organisation_oids() -> set[str]:
         FROM tww_od.organisation
         WHERE obj_id IN (
             {placeholders}
-        )
+        );
         """,
         required_oids,
     )
 
+    # DatabaseUtils.fetchall() returns ordinary tuple rows, not dictionaries.
     existing_oids = {
         str(
-            row["obj_id"],
+            row[0],
         )
         for row in rows
     }
 
-    return set(REQUIRED_ORGANISATION_OIDS - existing_oids)
+    return set(
+        required_oids,
+    ) - existing_oids
 
 
 def _drop_and_recreate_schema(
     schema_name: str,
 ) -> None:
-    quoted_schema = schema_name.replace(
-        '"',
-        '""',
+    """
+    Recreate one known quarantine schema using quoted SQL identifiers.
+    """
+    assert schema_name, "Schema name must not be empty."
+
+    drop_schema = DatabaseUtils.compose_sql(
+        "DROP SCHEMA IF EXISTS {} CASCADE;",
+        DatabaseUtils.wrap_identifier(
+            schema_name,
+        ),
     )
 
-    DatabaseUtils.execute(f'DROP SCHEMA IF EXISTS "{quoted_schema}" CASCADE;')
+    create_schema = DatabaseUtils.compose_sql(
+        "CREATE SCHEMA {};",
+        DatabaseUtils.wrap_identifier(
+            schema_name,
+        ),
+    )
 
-    DatabaseUtils.execute(f'CREATE SCHEMA "{quoted_schema}";')
+    DatabaseUtils.execute(
+        drop_schema,
+    )
+
+    DatabaseUtils.execute(
+        create_schema,
+    )
 
 
 @pytest.fixture(
@@ -324,11 +399,21 @@ def quarantine_runner() -> TwwQuarantineRunner:
     scope="module",
 )
 def interlis_context() -> TwwInterlisContext:
+    organisations_file = (
+        DATA_DIR
+        / "minimal-dataset-organisation-arbon-only.xtf"
+    )
+
+    assert organisations_file.is_file(), (
+        f"Missing organisation fixture: {organisations_file}"
+    )
+
     return TwwInterlisContext(
         schema=config.IMPORT_SCHEMA,
         srid=2056,
         logs_next_to_file=False,
         filter_nulls=True,
         import_orgs=True,
-        orgs_path=(DATA_DIR / "minimal-dataset-organisation-arbon-only.xtf"),
+        orgs_path=organisations_file,
+        allow_schema_recreation=True,
     )

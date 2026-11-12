@@ -39,24 +39,46 @@ KEK_EXAMINATION_ID = "fk11abk6EX000002"
 WASTEWATER_STRUCTURE_ID = "ch000000WS000001"
 
 
-def _data_file(name: str) -> Path:
-    """
-    Return a required XTF test fixture.
+TEST_DIR = Path(__file__).resolve().parent
+DOCKERISED_TEST_DIR = TEST_DIR.parent
 
-    The assertion deliberately happens before invoking the CLI so a missing
-    container mount or stale image produces a focused test failure.
-    """
-    path = DATA_DIR / name
+# Paths visible to the pytest process.
+HOST_DATA_DIR = DOCKERISED_TEST_DIR / "qgis" / "data"
+HOST_OUTPUT_DIR = TEST_DIR / "output"
 
-    assert path.is_file(), (
-        f"Missing INTERLIS test fixture: {path}. "
-        "Ensure the current plugin checkout is mounted into the qgis container."
+# Paths visible inside the qgis container where the packaged CLI runs.
+CONTAINER_DATA_DIR = Path(
+    "/usr/src/plugin/tests/dockerised/qgis/data"
+)
+CONTAINER_OUTPUT_DIR = Path(
+    "/usr/src/plugin/tests/dockerised/no_qgis/output"
+)
+
+HOST_OUTPUT_DIR.mkdir(
+    parents=True,
+    exist_ok=True,
+)
+
+
+def _data_file(
+    name: str,
+) -> Path:
+    """
+    Validate a fixture using the pytest runner's filesystem and return the
+    corresponding path visible inside the qgis container.
+    """
+    host_path = HOST_DATA_DIR / name
+
+    assert host_path.is_file(), (
+        f"Missing INTERLIS test fixture in the checkout: {host_path}"
     )
 
-    return path
+    return CONTAINER_DATA_DIR / name
 
 
-def _container_output_file(name: str) -> Path:
+def _container_output_file(
+    name: str,
+) -> Path:
     return CONTAINER_OUTPUT_DIR / f"{name}.xtf"
 
 
@@ -64,7 +86,7 @@ def _host_exported_file(
     base_name: str,
     model_name: str,
 ) -> Path:
-    return OUTPUT_DIR / f"{base_name}_{model_name}.xtf"
+    return HOST_OUTPUT_DIR / f"{base_name}_{model_name}.xtf"
 
 
 def _model_name(
