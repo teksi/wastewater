@@ -45,8 +45,7 @@ class CanonicalModelCursor:
             rows = tuple(
                 row
                 for row in self.attribute_rows
-                if "geometry"
-                not in str(row.get("field_datatype", "")).strip().lower()
+                if "geometry" not in str(row.get("field_datatype", "")).strip().lower()
             )
         elif "dictionary_od_table" in query_text:
             rows = self.class_rows
@@ -62,10 +61,7 @@ class CanonicalModelCursor:
             return
         column_names = tuple(rows[0])
         self.description = tuple(FakeColumn(name=name) for name in column_names)
-        self._rows = tuple(
-            tuple(row.get(name) for name in column_names)
-            for row in rows
-        )
+        self._rows = tuple(tuple(row.get(name) for name in column_names) for row in rows)
 
     def fetchall(self):
         return list(self._rows)
@@ -174,9 +170,7 @@ def test_loads_geometry_attributes_from_postgis_catalog() -> None:
         geometry_rows=(_geometry_row(),),
     )
     assert adapter.is_geometry_attribute("reach", "progression_geometry")
-    assert adapter.geometry_attribute_names("reach") == (
-        "progression_geometry",
-    )
+    assert adapter.geometry_attribute_names("reach") == ("progression_geometry",)
     geometry = adapter.geometry_metadata("reach", "progression_geometry")
     assert geometry is not None
     assert geometry.srid == 2056

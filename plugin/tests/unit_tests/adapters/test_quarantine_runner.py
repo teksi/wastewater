@@ -35,8 +35,11 @@ def test_runner_keeps_required_canonical_adapter() -> None:
 def test_validate_success_is_empty() -> None:
     runner = _runner()
     runner.interlis_tools.run_ilivalidator = Mock(return_value=None)
-    assert runner.validate_quarantine(
-        model_names=(),
-        log_path=Path("/tmp/x.log"),
-        schema="q",
-    ) == ()
+    assert (
+        runner.validate_quarantine(
+            model_names=(),
+            log_path=Path("/tmp/x.log"),
+            schema="q",
+        )
+        == ()
+    )

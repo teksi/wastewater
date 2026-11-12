@@ -102,9 +102,9 @@ def exported_sia405_base_abwasser(
 
     return _host_exported_file(
         base_name,
-        model_selection.model_names_for_language(
-            groups=("sia405_base_abwasser"), lang="de"
-        ).items["sia405_base_abwasser"],
+        model_selection.model_names_for_language(groups=("sia405_base_abwasser"), lang="de").items[
+            "sia405_base_abwasser"
+        ],
     )
 
 
@@ -127,9 +127,9 @@ def exported_sia405_abwasser(
 
     return _host_exported_file(
         base_name,
-        model_selection.model_names_for_language(
-            groups=("sia405_abwasser"), lang="de"
-        ).items["sia405_abwasser"],
+        model_selection.model_names_for_language(groups=("sia405_abwasser"), lang="de").items[
+            "sia405_abwasser"
+        ],
     )
 
 
@@ -138,9 +138,9 @@ def exported_dss(
     imported_kek,
 ) -> Path:
     base_name = "export_minimal_dataset_dss"
-    export_model = model_selection.model_names_for_language(
-        groups=("dss",), lang="de"
-    ).items["dss"]
+    export_model = model_selection.model_names_for_language(groups=("dss",), lang="de").items[
+        "dss"
+    ]
 
     run_cli(
         "interlis_export "
@@ -161,9 +161,9 @@ def exported_kek(
     imported_kek,
 ) -> Path:
     base_name = "export_minimal_dataset_kek"
-    export_model = model_selection.model_names_for_language(
-        groups=("vsa_kek",), lang="de"
-    ).items["vsa_kek"]
+    export_model = model_selection.model_names_for_language(groups=("vsa_kek",), lang="de").items[
+        "vsa_kek"
+    ]
 
     run_cli(
         "interlis_export "
@@ -175,9 +175,7 @@ def exported_kek(
 
     return _host_exported_file(
         base_name,
-        model_selection.model_names_for_language(groups=("vsa_kek"), lang="de").items[
-            "vsa_kek"
-        ],
+        model_selection.model_names_for_language(groups=("vsa_kek"), lang="de").items["vsa_kek"],
     )
 
 
@@ -207,9 +205,9 @@ def exported_dss_selection(
     imported_sia405_modified,
 ) -> Path:
     base_name = "export_minimal_dataset_dss_selection"
-    export_model = model_selection.model_names_for_language(
-        groups=("dss",), lang="de"
-    ).items["dss"]
+    export_model = model_selection.model_names_for_language(groups=("dss",), lang="de").items[
+        "dss"
+    ]
 
     run_cli(
         "interlis_export "
