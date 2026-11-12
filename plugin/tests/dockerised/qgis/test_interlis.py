@@ -182,7 +182,7 @@ class TestInterlis(unittest.TestCase):
             models,
             [
                 model_selection.model_names_for_language(
-                    groups=("sia405_base_abwasser"), lang="de"
+                    groups=("sia405_base_abwasser",), lang="de"
                 )["sia405_base_abwasser"]
             ],
         )

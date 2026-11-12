@@ -21,4 +21,4 @@ IMPORT_SCHEMA_INCR = "tww_app_xtf2pg_incr"
 
 DEFAULT_INTERLIS_LANGUAGE = "de"
 
-VSA_ORG_URL = "https://vsa.ch/models/organisation/" "vsa_organisationen_2020_1.xtf"
+VSA_ORG_URL = "https://vsa.ch/models/organisation/vsa_organisationen_2020_1.xtf"

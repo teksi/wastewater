@@ -279,7 +279,7 @@ def _missing_required_organisation_oids() -> set[str]:
         )
     )
 
-    rows = DatabaseUtils.execute_fetchall(
+    rows = DatabaseUtils.fetchall(
         f"""
         SELECT obj_id
         FROM tww_od.organisation
