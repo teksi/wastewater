@@ -145,9 +145,9 @@ class TestInterlis(unittest.TestCase):
         self.assertCountEqual(
             models,
             [
-                model_selection.model_names_for_language(
-                    groups=("sia405_abwasser",), lang="de"
-                )["sia405_abwasser"]
+                model_selection.model_names_for_language(groups=("sia405_abwasser",), lang="de")[
+                    "sia405_abwasser"
+                ]
             ],
         )
 
@@ -191,7 +191,5 @@ class TestInterlis(unittest.TestCase):
         models = InterlisTools.get_xtf_models(xtf_file=xtf_file_input)
         self.assertCountEqual(
             models,
-            [
-                model_selection.model_names_for_language(groups=("vsa_kek",), lang="de")["vsa_kek"]
-            ],
+            [model_selection.model_names_for_language(groups=("vsa_kek",), lang="de")["vsa_kek"]],
         )
