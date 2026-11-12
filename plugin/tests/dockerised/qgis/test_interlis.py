@@ -16,7 +16,7 @@ from teksi_wastewater.hooks.cli import helpers
 from teksi_wastewater.hooks.services.tww_trusted_import_service import (
     TwwTrustedImportService,
 )
-from teksi_wastewater.interlis import config, model_config, model_selection
+from teksi_wastewater.interlis import config, model_config
 from teksi_wastewater.interlis.utils.ili2db import InterlisTools
 from teksi_wastewater.utils.database_utils import DatabaseUtils
 
@@ -25,14 +25,10 @@ from ..helpers import (
     get_xtf_object_node_text,
 )
 
-
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
-if not any(
-    isinstance(handler, logging.StreamHandler)
-    for handler in logger.handlers
-):
+if not any(isinstance(handler, logging.StreamHandler) for handler in logger.handlers):
     handler = logging.StreamHandler(sys.stdout)
     handler.setLevel(logging.DEBUG)
     logger.addHandler(handler)
@@ -51,18 +47,10 @@ DATA_DIR = Path(__file__).resolve().parent / "data"
 OUTPUT_DIR = Path(__file__).resolve().parent / "output"
 
 MINIMAL_DATASET_DSS = "minimal-dataset-DSS.xtf"
-MINIMAL_DATASET_ORGANISATION_ARBON_ONLY = (
-    "minimal-dataset-organisation-arbon-only.xtf"
-)
-MINIMAL_DATASET_SIA405_ABWASSER = (
-    "minimal-dataset-SIA405-ABWASSER.xtf"
-)
-MINIMAL_DATASET_SIA405_ABWASSER_MODIFIED = (
-    "minimal-dataset-SIA405-ABWASSER-modified.xtf"
-)
-MINIMAL_DATASET_KEK_MANHOLE_DAMAGE = (
-    "minimal-dataset-VSA-KEK-manhole-damage.xtf"
-)
+MINIMAL_DATASET_ORGANISATION_ARBON_ONLY = "minimal-dataset-organisation-arbon-only.xtf"
+MINIMAL_DATASET_SIA405_ABWASSER = "minimal-dataset-SIA405-ABWASSER.xtf"
+MINIMAL_DATASET_SIA405_ABWASSER_MODIFIED = "minimal-dataset-SIA405-ABWASSER-modified.xtf"
+MINIMAL_DATASET_KEK_MANHOLE_DAMAGE = "minimal-dataset-VSA-KEK-manhole-damage.xtf"
 TEST_DATASET_DSS = "test-dataset-DSS.xtf"
 TEST_DATASET_ORGANISATIONS = "test-dataset-organisations.xtf"
 
@@ -304,19 +292,13 @@ class TestInterlis(unittest.TestCase):
 
         self.assertIsNotNone(
             result,
-            (
-                "Expected the database query to return one row:\n"
-                f"{query.strip()}"
-            ),
+            ("Expected the database query to return one row:\n" f"{query.strip()}"),
         )
 
         self.assertEqual(
             result[0],
             expected,
-            (
-                f"Expected {expected!r}, got {result[0]!r} for query:\n"
-                f"{query.strip()}"
-            ),
+            (f"Expected {expected!r}, got {result[0]!r} for query:\n" f"{query.strip()}"),
         )
 
     def test_dss_dataset_import_export(self) -> None:
@@ -355,10 +337,7 @@ class TestInterlis(unittest.TestCase):
 
         self.assertIsNotNone(
             exported_object,
-            (
-                "Expected wastewater structure ch080qwzVE000019 "
-                "in the exported DSS transfer."
-            ),
+            ("Expected wastewater structure ch080qwzVE000019 " "in the exported DSS transfer."),
         )
 
     def test_minimal_sequential_import_export(self) -> None:

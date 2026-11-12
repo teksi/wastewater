@@ -18,19 +18,13 @@ pytestmark = pytest.mark.no_qgis
 
 
 DATA_DIR = Path("/usr/src/plugin/tests/dockerised/qgis/data")
-CONTAINER_OUTPUT_DIR = Path(
-    "/usr/src/plugin/tests/dockerised/no_qgis/output"
-)
+CONTAINER_OUTPUT_DIR = Path("/usr/src/plugin/tests/dockerised/no_qgis/output")
 
 OUTPUT_DIR = Path(__file__).resolve().parent / "output"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 DB_ARGS = (
-    "--pghost db "
-    "--pgdatabase tww "
-    "--pguser postgres "
-    "--pgpass postgres "
-    "--pgport 5432"
+    "--pghost db " "--pgdatabase tww " "--pguser postgres " "--pgpass postgres " "--pgport 5432"
 )
 
 # These tests operate on a disposable database and intentionally reuse the
@@ -118,11 +112,7 @@ def _run_interlis_import(
     """
     xtf_file = _data_file(fixture_name)
 
-    incremental_arg = (
-        "--incremental_only "
-        if incremental_only
-        else ""
-    )
+    incremental_arg = "--incremental_only " if incremental_only else ""
 
     run_cli(
         "interlis_import "
@@ -149,11 +139,7 @@ def _run_interlis_export(
     # Prevent an output left by an earlier run from satisfying the test.
     host_output.unlink(missing_ok=True)
 
-    selected_ids_arg = (
-        f'--selected_ids "{",".join(selected_ids)}" '
-        if selected_ids
-        else ""
-    )
+    selected_ids_arg = f'--selected_ids "{",".join(selected_ids)}" ' if selected_ids else ""
 
     run_cli(
         "interlis_export "
@@ -182,8 +168,7 @@ def _fetchone(
     result = DatabaseUtils.fetchone(query)
 
     assert result is not None, (
-        "Expected the database query to return one row:\n"
-        f"{query.strip()}"
+        "Expected the database query to return one row:\n" f"{query.strip()}"
     )
 
     return result
@@ -199,8 +184,7 @@ def _assert_scalar(
     result = _fetchone(query)
 
     assert result[0] == expected, (
-        f"Expected {expected!r}, got {result[0]!r} for query:\n"
-        f"{query.strip()}"
+        f"Expected {expected!r}, got {result[0]!r} for query:\n" f"{query.strip()}"
     )
 
 
@@ -244,12 +228,10 @@ def imported_kek(
 def exported_sia405_base_abwasser(
     imported_kek,
 ) -> Path:
-    DatabaseUtils.execute(
-        """
+    DatabaseUtils.execute("""
         UPDATE tww_od.organisation
         SET tww_local_extension = true;
-        """
-    )
+        """)
 
     return _run_interlis_export(
         base_name="export_minimal_dataset_sia405_base",

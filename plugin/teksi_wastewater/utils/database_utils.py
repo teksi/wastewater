@@ -4,7 +4,8 @@ import collections
 import configparser
 import os
 import re
-from typing import Any, Mapping, Sequence
+from typing import Any
+from collections.abc import Mapping, Sequence
 
 from .issues import Issue, IssueLevel
 from .plugin_utils import logger
@@ -161,10 +162,7 @@ class DatabaseUtils:
             )
 
             rows = cursor.fetchall()
-            column_names = [
-                column[0]
-                for column in cursor.description
-            ]
+            column_names = [column[0] for column in cursor.description]
 
         return [
             dict(
