@@ -133,8 +133,7 @@ class FakeCursor:
                 )
             else:
                 raise AssertionError(
-                    "No fake query result remains for executed query: "
-                    f"{query!r}"
+                    "No fake query result remains for executed query: " f"{query!r}"
                 )
         else:
             self._current_result = self.results.pop(0)
