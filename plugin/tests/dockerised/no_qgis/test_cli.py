@@ -117,7 +117,6 @@ def _topic_name(
 
 def _run_interlis_import(
     fixture_name: str,
-    *,
 ) -> None:
     """
     Import one XTF fixture through the packaged TEKSI hooks CLI.
