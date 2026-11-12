@@ -146,7 +146,6 @@ def test_interlis_service_adapter_delegates_import_with_generic_context() -> Non
             "/tmp/input.xtf",
         ),
         context=InterlisContext(
-            schema="test",
         ),
     )
 
@@ -169,7 +168,6 @@ def test_interlis_service_adapter_delegates_import_with_tww_context() -> None:
             "/tmp/input.xtf",
         ),
         context=TwwInterlisContext(
-            schema="import_schema",
             srid=2056,
             logs_next_to_file=True,
             show_selection_dialog=True,
@@ -207,7 +205,6 @@ def test_interlis_service_adapter_delegates_export_with_generic_context() -> Non
         ),
         export_models=("SIA405_ABWASSER_2020_1_LV95",),
         context=InterlisContext(
-            schema="export_schema",
         ),
     )
 
@@ -237,7 +234,6 @@ def test_interlis_service_adapter_delegates_export_with_tww_context() -> None:
             "DSS_2020_1_LV95",
         ),
         context=TwwInterlisContext(
-            schema="export_schema",
             srid=2056,
             logs_next_to_file=True,
             labels_file=Path(
@@ -291,7 +287,6 @@ def test_interlis_service_adapter_delegates_export_without_output_file() -> None
         xtf_file=None,
         export_models=("SIA405_ABWASSER_2020_1_LV95",),
         context=TwwInterlisContext(
-            schema="export_schema",
         ),
     )
 

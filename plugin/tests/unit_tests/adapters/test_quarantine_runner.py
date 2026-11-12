@@ -119,7 +119,6 @@ def test_import_xtf_to_quarantine_delegates_to_importer() -> None:
             "/tmp/input.xtf",
         ),
         context=TwwInterlisContext(
-            schema="ignored_schema",
             srid=2056,
             logs_next_to_file=True,
             filter_nulls=True,
@@ -128,7 +127,6 @@ def test_import_xtf_to_quarantine_delegates_to_importer() -> None:
                 "/tmp/orgs.xtf",
             ),
         ),
-        schema="import_schema",
     )
 
     assert importer.schema == "import_schema"
@@ -166,7 +164,6 @@ def test_import_xtf_to_quarantine_uses_default_context() -> None:
         xtf_file=Path(
             "/tmp/input.xtf",
         ),
-        schema="import_schema",
     )
 
     assert importer.schema == "import_schema"
@@ -197,7 +194,6 @@ def test_import_quarantine_to_live_validates_then_imports() -> None:
             "/tmp/input.xtf",
         ),
         context=TwwInterlisContext(
-            schema="ignored_schema",
             srid=2056,
             logs_next_to_file=True,
             filter_nulls=True,
@@ -206,7 +202,6 @@ def test_import_quarantine_to_live_validates_then_imports() -> None:
         validation_log_path=Path(
             "/tmp/validation.log",
         ),
-        schema="import_schema",
     )
 
     assert importer.schema == "import_schema"
@@ -253,7 +248,6 @@ def test_export_live_to_quarantine_delegates_to_importer() -> None:
         ),
         export_models=("SIA405_ABWASSER_2020",),
         context=TwwInterlisContext(
-            schema="ignored_schema",
             srid=2056,
             logs_next_to_file=True,
             labels_file=Path(
@@ -266,7 +260,6 @@ def test_export_live_to_quarantine_delegates_to_importer() -> None:
             selected_ids=("ch000000ws000001",),
             import_orgs=True,
         ),
-        schema="export_schema",
     )
 
     assert importer.schema == "export_schema"
@@ -310,14 +303,12 @@ def test_export_quarantine_to_xtf_validates_then_exports() -> None:
             "VSADSSMINI_2020",
         ),
         context=TwwInterlisContext(
-            schema="ignored_schema",
             srid=2056,
             logs_next_to_file=True,
         ),
         validation_log_path=Path(
             "/tmp/export_validation.log",
         ),
-        schema="export_schema",
     )
 
     assert importer.schema == "export_schema"
@@ -363,7 +354,6 @@ def test_validate_quarantine_returns_empty_tuple_on_success(
         model_names=("SIA405_ABWASSER_2020",),
         log_path=tmp_path / "validation.log",
         srid=2056,
-        schema="import_schema",
     )
 
     assert findings == ()
@@ -409,7 +399,6 @@ def test_validate_quarantine_extracts_findings_from_log(
         model_names=("SIA405_ABWASSER_2020",),
         log_path=tmp_path / "validation.log",
         srid=2056,
-        schema="import_schema",
     )
 
     assert (
@@ -443,7 +432,6 @@ def test_validate_quarantine_falls_back_to_exception_message_when_log_is_empty(
         model_names=("SIA405_ABWASSER_2020",),
         log_path=tmp_path / "validation.log",
         srid=2056,
-        schema="import_schema",
     )
 
     assert (
@@ -477,7 +465,6 @@ def test_validate_quarantine_or_raise_raises_on_error(
             model_names=("SIA405_ABWASSER_2020",),
             log_path=tmp_path / "validation.log",
             srid=2056,
-            schema="import_schema",
         )
 
 
