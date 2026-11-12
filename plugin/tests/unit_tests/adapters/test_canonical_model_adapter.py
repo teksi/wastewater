@@ -171,7 +171,10 @@ def test_loads_geometry_attributes_from_postgis_catalog() -> None:
     )
     assert adapter.is_geometry_attribute("reach", "progression_geometry")
     assert adapter.geometry_attribute_names("reach") == ("progression_geometry",)
-    geometry = adapter.geometry_metadata("reach", "progression_geometry")
+    geometry = adapter.geometry_metadata(
+        class_id="reach",
+        attribute_id="progression_geometry",
+    )
     assert geometry is not None
     assert geometry.srid == 2056
 

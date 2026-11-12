@@ -6,6 +6,7 @@ from importlib.util import find_spec
 
 import sqlalchemy
 from sqlalchemy import ForeignKeyConstraint, inspect
+from sqlalchemy.engine import URL
 from sqlalchemy.exc import SAWarning
 from sqlalchemy.ext.automap import generate_relationship
 from sqlalchemy.orm import ColumnProperty
@@ -24,7 +25,7 @@ def create_engine(logger_name=None):
     pgconf = DatabaseUtils.get_pgconf()
     driver_name = "postgresql+psycopg" if psycopg3_available() else "postgresql+psycopg2"
 
-    database_url = sqlalchemy.URL.create(
+    database_url = URL.create(
         drivername=driver_name,
         username=pgconf["user"],
         password=pgconf["password"],
