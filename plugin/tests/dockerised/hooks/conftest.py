@@ -90,7 +90,8 @@ def run(
             command,
         ),
         cwd=PLUGIN_ROOT,
-        env=env or os.environ.copy capture_output=True,
+        env=env or os.environ.copy,
+        capture_output=True,
         text=True,
         check=False,
     )
