@@ -1,9 +1,10 @@
+from __future__ import annotations
+
 import collections
 import configparser
 import os
 import re
-from collections.abc import Sequence
-from typing import Any
+from typing import Any, Mapping, Sequence
 
 from .issues import Issue, IssueLevel
 from .plugin_utils import logger
@@ -42,16 +43,37 @@ class DatabaseUtils:
 
         def __enter__(self):
             self.connection = psycopg.connect(
-                DatabaseUtils.get_pgconf_as_psycopg_dsn(), **DEFAULTS_CONN_ARG
+                DatabaseUtils.get_pgconf_as_psycopg_dsn(),
+                **DEFAULTS_CONN_ARG,
             )
+
             if PSYCOPG_VERSION == 2:
-                self.connection.set_session(autocommit=True)
+                self.connection.set_session(
+                    autocommit=True,
+                )
 
             return self.connection
 
-        def __exit__(self, exc_type, exc_val, exc_tb):
-            self.connection.commit()
-            self.connection.close()
+        def __exit__(
+            self,
+            exc_type,
+            exc_val,
+            exc_tb,
+        ) -> bool:
+            if self.connection is None:
+                return False
+
+            try:
+                if not self.connection.autocommit:
+                    if exc_type is None:
+                        self.connection.commit()
+                    else:
+                        self.connection.rollback()
+            finally:
+                self.connection.close()
+
+            # Never suppress the original exception.
+            return False
 
     @staticmethod
     def wrap_identifier(identifier: str) -> Any:
@@ -93,29 +115,56 @@ class DatabaseUtils:
         )
 
     @staticmethod
-    def fetchone(query: str):
+    def fetchone(
+        query: str | sql.Composable,
+        params: Sequence[Any] | Mapping[str, Any] | None = None,
+    ):
         with DatabaseUtils.PsycopgConnection() as connection:
             cursor = connection.cursor()
 
-            cursor.execute(query)
+            DatabaseUtils._execute_cursor(
+                cursor,
+                query,
+                params,
+            )
+
             return cursor.fetchone()
 
     @staticmethod
-    def fetchall(query: str):
+    def fetchall(
+        query: str | sql.Composable,
+        params: Sequence[Any] | Mapping[str, Any] | None = None,
+    ):
         with DatabaseUtils.PsycopgConnection() as connection:
             cursor = connection.cursor()
 
-            cursor.execute(query)
+            DatabaseUtils._execute_cursor(
+                cursor,
+                query,
+                params,
+            )
+
             return cursor.fetchall()
 
     @staticmethod
-    def fetchall_dict(query):
+    def fetchall_dict(
+        query: str | sql.Composable,
+        params: Sequence[Any] | Mapping[str, Any] | None = None,
+    ) -> list[dict[str, Any]]:
         with DatabaseUtils.PsycopgConnection() as connection:
             cursor = connection.cursor()
-            cursor.execute(query)
-            rows = cursor.fetchall()
 
-            column_names = [column[0] for column in cursor.description]
+            DatabaseUtils._execute_cursor(
+                cursor,
+                query,
+                params,
+            )
+
+            rows = cursor.fetchall()
+            column_names = [
+                column[0]
+                for column in cursor.description
+            ]
 
         return [
             dict(
@@ -128,18 +177,32 @@ class DatabaseUtils:
         ]
 
     @staticmethod
-    def execute(query: str):
+    def execute(
+        query: str | sql.Composable,
+        params: Sequence[Any] | Mapping[str, Any] | None = None,
+    ) -> None:
         with DatabaseUtils.PsycopgConnection() as connection:
             cursor = connection.cursor()
-            cursor.execute(query)
+
+            DatabaseUtils._execute_cursor(
+                cursor,
+                query,
+                params,
+            )
 
     @staticmethod
     def get_psycopg_connection():
         connection = psycopg.connect(
-            DatabaseUtils.get_pgconf_as_psycopg_dsn(), **DEFAULTS_CONN_ARG
+            DatabaseUtils.get_pgconf_as_psycopg_dsn(),
+            **DEFAULTS_CONN_ARG,
         )
+
         if PSYCOPG_VERSION == 2:
-            connection.set_session(autocommit=True)
+            connection.set_session(
+                autocommit=True,
+            )
+
+        return connection
 
     @staticmethod
     def read_pgservice(service_name):
@@ -322,3 +385,20 @@ class DatabaseUtils:
     def refresh_matviews():
         logger.info("Refreshing materialized views")
         DatabaseUtils.execute("SELECT tww_app.refresh_materialized_views('tww_app', NULL, True);")
+
+    @staticmethod
+    def _execute_cursor(
+        cursor,
+        query: str | sql.Composable,
+        params: Sequence[Any] | Mapping[str, Any] | None = None,
+    ) -> None:
+        """
+        Execute SQL with optional parameters.
+
+        Both psycopg 3 and psycopg2 use ``%s`` placeholders for positional
+        parameters. Named parameters use ``%(name)s`` placeholders.
+        """
+        if params is None:
+            cursor.execute(query)
+        else:
+            cursor.execute(query, params)

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from decimal import Decimal
 from pathlib import Path
+from typing import Any
 
 import pytest
 from teksi_wastewater.interlis import model_config
@@ -16,28 +17,53 @@ from ..helpers import (
 pytestmark = pytest.mark.no_qgis
 
 
-DATA_DIR = Path(
-    "/usr/src/plugin/tests/dockerised/qgis/data",
-)
+DATA_DIR = Path("/usr/src/plugin/tests/dockerised/qgis/data")
 CONTAINER_OUTPUT_DIR = Path(
-    "/usr/src/plugin/tests/dockerised/no_qgis/output",
+    "/usr/src/plugin/tests/dockerised/no_qgis/output"
 )
 
-OUTPUT_DIR = Path(__file__).parent / "output"
-OUTPUT_DIR.mkdir(
-    parents=True,
-    exist_ok=True,
-)
+OUTPUT_DIR = Path(__file__).resolve().parent / "output"
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 DB_ARGS = (
-    "--pghost db " "--pgdatabase tww " "--pguser postgres " "--pgpass postgres " "--pgport 5432"
+    "--pghost db "
+    "--pgdatabase tww "
+    "--pguser postgres "
+    "--pgpass postgres "
+    "--pgport 5432"
 )
 
+# These tests operate on a disposable database and intentionally reuse the
+# quarantine schemas across a sequence of imports and exports.
+SCHEMA_RECREATION_ARG = "--allow-schema-recreation"
 
-def _container_output_file(
-    name: str,
-) -> str:
-    return str(CONTAINER_OUTPUT_DIR / f"{name}.xtf")
+ORGANISATION_ID = "ch20p3q400001497"
+REACH_ID = "ch000000RE000001"
+WASTEWATER_NODE_ID = "ch000000WN000001"
+PIPE_PROFILE_ID = "ch000000PP000003"
+KEK_EXAMINATION_ID = "fk11abk6EX000002"
+WASTEWATER_STRUCTURE_ID = "ch000000WS000001"
+
+
+def _data_file(name: str) -> Path:
+    """
+    Return a required XTF test fixture.
+
+    The assertion deliberately happens before invoking the CLI so a missing
+    container mount or stale image produces a focused test failure.
+    """
+    path = DATA_DIR / name
+
+    assert path.is_file(), (
+        f"Missing INTERLIS test fixture: {path}. "
+        "Ensure the current plugin checkout is mounted into the qgis container."
+    )
+
+    return path
+
+
+def _container_output_file(name: str) -> Path:
+    return CONTAINER_OUTPUT_DIR / f"{name}.xtf"
 
 
 def _host_exported_file(
@@ -53,11 +79,9 @@ def _model_name(
     lang: str = "de",
 ) -> str:
     """
-    Return the configured language-specific model name for one model group.
+    Return the configured language-specific model name for a model group.
     """
-    return model_config.interlis_models[group].lang_name(
-        lang,
-    )
+    return model_config.interlis_models[group].lang_name(lang)
 
 
 def _topic_name(
@@ -66,219 +90,224 @@ def _topic_name(
     lang: str = "de",
 ) -> str:
     """
-    Return the only configured topic for one model group and language.
+    Return the only configured topic for a model group and language.
 
     Every model used by these fixtures currently exposes one transfer topic.
     Fail clearly if a future model definition changes that assumption.
     """
-    topics = model_config.interlis_models[group].topics_by_lang(
-        lang,
-    )
+    topics = model_config.interlis_models[group].topics_by_lang(lang)
 
     assert len(topics) == 1, (
         "Expected exactly one topic for INTERLIS group "
-        f"{group!r} and language {lang!r}, got "
-        f"{sorted(topics)!r}."
+        f"{group!r} and language {lang!r}, got {sorted(topics)!r}."
     )
 
-    return next(
-        iter(
-            topics,
-        )
+    return next(iter(topics))
+
+
+def _run_interlis_import(
+    fixture_name: str,
+    *,
+    incremental_only: bool = False,
+) -> None:
+    """
+    Import one XTF fixture through the packaged TEKSI hooks CLI.
+
+    ``run_cli`` is expected to invoke the packaged CLI and to fail when the
+    command exits with a non-zero status.
+    """
+    xtf_file = _data_file(fixture_name)
+
+    incremental_arg = (
+        "--incremental_only "
+        if incremental_only
+        else ""
+    )
+
+    run_cli(
+        "interlis_import "
+        f'--xtf_file "{xtf_file}" '
+        f"{incremental_arg}"
+        f"{SCHEMA_RECREATION_ARG} "
+        f"{DB_ARGS}"
     )
 
 
-@pytest.fixture(
-    scope="module",
-)
+def _run_interlis_export(
+    *,
+    base_name: str,
+    model_group: str,
+    selected_ids: tuple[str, ...] = (),
+) -> Path:
+    """
+    Export one model and return the host-visible output path.
+    """
+    export_model = _model_name(model_group)
+    container_output = _container_output_file(base_name)
+    host_output = _host_exported_file(base_name, export_model)
+
+    # Prevent an output left by an earlier run from satisfying the test.
+    host_output.unlink(missing_ok=True)
+
+    selected_ids_arg = (
+        f'--selected_ids "{",".join(selected_ids)}" '
+        if selected_ids
+        else ""
+    )
+
+    run_cli(
+        "interlis_export "
+        f'--xtf_file "{container_output}" '
+        f'--export_model "{export_model}" '
+        f"{selected_ids_arg}"
+        "--logs_next_to_file "
+        f"{SCHEMA_RECREATION_ARG} "
+        f"{DB_ARGS}"
+    )
+
+    assert host_output.is_file(), (
+        "INTERLIS export command completed without creating the expected "
+        f"host-visible output file: {host_output}"
+    )
+
+    return host_output
+
+
+def _fetchone(
+    query: str,
+) -> Any:
+    """
+    Execute a query that must return one row.
+    """
+    result = DatabaseUtils.fetchone(query)
+
+    assert result is not None, (
+        "Expected the database query to return one row:\n"
+        f"{query.strip()}"
+    )
+
+    return result
+
+
+def _assert_scalar(
+    query: str,
+    expected: Any,
+) -> None:
+    """
+    Assert the first column of a required database row.
+    """
+    result = _fetchone(query)
+
+    assert result[0] == expected, (
+        f"Expected {expected!r}, got {result[0]!r} for query:\n"
+        f"{query.strip()}"
+    )
+
+
+@pytest.fixture(scope="module")
 def imported_orgs(
     clean_db_once,
 ) -> None:
-    run_cli(
-        "interlis_import "
-        f'--xtf_file "{DATA_DIR / "minimal-dataset-organisation-arbon-only.xtf"}" '
-        f"{DB_ARGS}"
+    _run_interlis_import(
+        "minimal-dataset-organisation-arbon-only.xtf",
     )
 
 
-@pytest.fixture(
-    scope="module",
-)
+@pytest.fixture(scope="module")
 def imported_sia405(
     imported_orgs,
 ) -> None:
-    run_cli(
-        "interlis_import "
-        f'--xtf_file "{DATA_DIR / "minimal-dataset-SIA405-ABWASSER.xtf"}" '
-        f"{DB_ARGS}"
+    _run_interlis_import(
+        "minimal-dataset-SIA405-ABWASSER.xtf",
     )
 
 
-@pytest.fixture(
-    scope="module",
-)
+@pytest.fixture(scope="module")
 def imported_dss(
     imported_sia405,
 ) -> None:
-    run_cli(
-        "interlis_import " f'--xtf_file "{DATA_DIR / "minimal-dataset-DSS.xtf"}" ' f"{DB_ARGS}"
+    _run_interlis_import(
+        "minimal-dataset-DSS.xtf",
     )
 
 
-@pytest.fixture(
-    scope="module",
-)
+@pytest.fixture(scope="module")
 def imported_kek(
     imported_dss,
 ) -> None:
-    run_cli(
-        "interlis_import "
-        f'--xtf_file "{DATA_DIR / "minimal-dataset-VSA-KEK-manhole-damage.xtf"}" '
-        f"{DB_ARGS}"
+    _run_interlis_import(
+        "minimal-dataset-VSA-KEK-manhole-damage.xtf",
     )
 
 
-@pytest.fixture(
-    scope="module",
-)
+@pytest.fixture(scope="module")
 def exported_sia405_base_abwasser(
     imported_kek,
 ) -> Path:
-    DatabaseUtils.execute("""
+    DatabaseUtils.execute(
+        """
         UPDATE tww_od.organisation
         SET tww_local_extension = true;
-        """)
-
-    base_name = "export_minimal_dataset_sia405_base"
-    export_model = _model_name(
-        "sia405_base_abwasser",
+        """
     )
 
-    run_cli(
-        "interlis_export "
-        f'--xtf_file "{_container_output_file(base_name)}" '
-        f'--export_model "{export_model}" '
-        "--logs_next_to_file "
-        f"{DB_ARGS}"
-    )
-
-    return _host_exported_file(
-        base_name,
-        export_model,
+    return _run_interlis_export(
+        base_name="export_minimal_dataset_sia405_base",
+        model_group="sia405_base_abwasser",
     )
 
 
-@pytest.fixture(
-    scope="module",
-)
+@pytest.fixture(scope="module")
 def exported_sia405_abwasser(
     imported_kek,
 ) -> Path:
-    base_name = "export_minimal_dataset_sia405"
-    export_model = _model_name(
-        "sia405_abwasser",
-    )
-
-    run_cli(
-        "interlis_export "
-        f'--xtf_file "{_container_output_file(base_name)}" '
-        f'--export_model "{export_model}" '
-        "--logs_next_to_file "
-        f"{DB_ARGS}"
-    )
-
-    return _host_exported_file(
-        base_name,
-        export_model,
+    return _run_interlis_export(
+        base_name="export_minimal_dataset_sia405",
+        model_group="sia405_abwasser",
     )
 
 
-@pytest.fixture(
-    scope="module",
-)
+@pytest.fixture(scope="module")
 def exported_dss(
     imported_kek,
 ) -> Path:
-    base_name = "export_minimal_dataset_dss"
-    export_model = _model_name(
-        "dss",
-    )
-
-    run_cli(
-        "interlis_export "
-        f'--xtf_file "{_container_output_file(base_name)}" '
-        f'--export_model "{export_model}" '
-        "--logs_next_to_file "
-        f"{DB_ARGS}"
-    )
-
-    return _host_exported_file(
-        base_name,
-        export_model,
+    return _run_interlis_export(
+        base_name="export_minimal_dataset_dss",
+        model_group="dss",
     )
 
 
-@pytest.fixture(
-    scope="module",
-)
+@pytest.fixture(scope="module")
 def exported_kek(
     imported_kek,
 ) -> Path:
-    base_name = "export_minimal_dataset_kek"
-    export_model = _model_name(
-        "vsa_kek",
-    )
-
-    run_cli(
-        "interlis_export "
-        f'--xtf_file "{_container_output_file(base_name)}" '
-        f'--export_model "{export_model}" '
-        "--logs_next_to_file "
-        f"{DB_ARGS}"
-    )
-
-    return _host_exported_file(
-        base_name,
-        export_model,
+    return _run_interlis_export(
+        base_name="export_minimal_dataset_kek",
+        model_group="vsa_kek",
     )
 
 
-@pytest.fixture(
-    scope="module",
-)
+@pytest.fixture(scope="module")
 def imported_sia405_modified(
     imported_kek,
 ) -> None:
-    modified_xtf = DATA_DIR / "minimal-dataset-SIA405-ABWASSER-modified.xtf"
-
-    assert modified_xtf.is_file(), f"Missing modified SIA405 fixture: {modified_xtf}"
-
-    run_cli("interlis_import " f'--xtf_file "{modified_xtf}" ' f"{DB_ARGS}")
+    _run_interlis_import(
+        "minimal-dataset-SIA405-ABWASSER-modified.xtf",
+    )
 
 
-@pytest.fixture(
-    scope="module",
-)
+@pytest.fixture(scope="module")
 def exported_dss_selection(
     imported_sia405_modified,
 ) -> Path:
-    base_name = "export_minimal_dataset_dss_selection"
-    export_model = _model_name(
-        "dss",
-    )
-
-    run_cli(
-        "interlis_export "
-        f'--xtf_file "{_container_output_file(base_name)}" '
-        f'--export_model "{export_model}" '
-        '--selected_ids "ch000000WN000002,ch000000WN000003,ch000000RE000002" '
-        "--logs_next_to_file "
-        f"{DB_ARGS}"
-    )
-
-    return _host_exported_file(
-        base_name,
-        export_model,
+    return _run_interlis_export(
+        base_name="export_minimal_dataset_dss_selection",
+        model_group="dss",
+        selected_ids=(
+            "ch000000WN000002",
+            "ch000000WN000003",
+            "ch000000RE000002",
+        ),
     )
 
 
@@ -295,76 +324,100 @@ def test_interlis_importer_exporter_importable_without_qgis() -> None:
 def test_import_orgs(
     imported_orgs,
 ) -> None:
-    result = DatabaseUtils.fetchone(
-        "SELECT identifier " "FROM tww_od.organisation " "WHERE obj_id='ch20p3q400001497';"
+    _assert_scalar(
+        f"""
+        SELECT identifier
+        FROM tww_od.organisation
+        WHERE obj_id = '{ORGANISATION_ID}';
+        """,
+        "Arbon",
     )
-
-    assert result is not None
-    assert result[0] == "Arbon"
 
 
 def test_import_sia405(
     imported_sia405,
 ) -> None:
-    result = DatabaseUtils.fetchone(
-        "SELECT obj_id " "FROM tww_od.reach " "WHERE obj_id='ch000000RE000001';"
+    _assert_scalar(
+        f"""
+        SELECT obj_id
+        FROM tww_od.reach
+        WHERE obj_id = '{REACH_ID}';
+        """,
+        REACH_ID,
     )
-    assert result is not None
 
-    result = DatabaseUtils.fetchone(
-        "SELECT remark "
-        "FROM tww_od.wastewater_networkelement "
-        "WHERE obj_id='ch000000RE000001';"
+    _assert_scalar(
+        f"""
+        SELECT remark
+        FROM tww_od.wastewater_networkelement
+        WHERE obj_id = '{REACH_ID}';
+        """,
+        "rp_from_level added",
     )
-    assert result is not None
-    assert result[0] == "rp_from_level added"
 
-    result = DatabaseUtils.fetchone(
-        "SELECT bottom_level " "FROM tww_od.wastewater_node " "WHERE obj_id='ch000000WN000001';"
+    _assert_scalar(
+        f"""
+        SELECT bottom_level
+        FROM tww_od.wastewater_node
+        WHERE obj_id = '{WASTEWATER_NODE_ID}';
+        """,
+        448.0,
     )
-    assert result is not None
-    assert result[0] == 448.0
 
-    result = DatabaseUtils.fetchone(
-        "SELECT height_width_ratio " "FROM tww_od.pipe_profile " "WHERE obj_id='ch000000PP000003';"
-    )
-    assert result is not None
-    assert result[0] == Decimal(
-        "1.12857",
+    _assert_scalar(
+        f"""
+        SELECT height_width_ratio
+        FROM tww_od.pipe_profile
+        WHERE obj_id = '{PIPE_PROFILE_ID}';
+        """,
+        Decimal("1.12857"),
     )
 
 
 def test_import_dss(
     imported_dss,
 ) -> None:
-    result = DatabaseUtils.fetchone(
-        "SELECT obj_id " "FROM tww_od.pipe_profile " "WHERE obj_id='ch000000PP000001';"
-    )
-    assert result is not None
+    dss_pipe_profile_id = "ch000000PP000001"
 
-    result = DatabaseUtils.fetchone(
-        "SELECT bottom_level " "FROM tww_od.wastewater_node " "WHERE obj_id='ch000000WN000001';"
+    _assert_scalar(
+        f"""
+        SELECT obj_id
+        FROM tww_od.pipe_profile
+        WHERE obj_id = '{dss_pipe_profile_id}';
+        """,
+        dss_pipe_profile_id,
     )
-    assert result is not None
-    assert result[0] == 448.0
+
+    _assert_scalar(
+        f"""
+        SELECT bottom_level
+        FROM tww_od.wastewater_node
+        WHERE obj_id = '{WASTEWATER_NODE_ID}';
+        """,
+        448.0,
+    )
 
 
 def test_import_kek(
     imported_kek,
 ) -> None:
-    result = DatabaseUtils.fetchone(
-        "SELECT fk_maintenance_event "
-        "FROM tww_od.re_maintenance_event_wastewater_structure "
-        "WHERE fk_wastewater_structure='ch000000WS000001';"
+    _assert_scalar(
+        f"""
+        SELECT fk_maintenance_event
+        FROM tww_od.re_maintenance_event_wastewater_structure
+        WHERE fk_wastewater_structure = '{WASTEWATER_STRUCTURE_ID}';
+        """,
+        KEK_EXAMINATION_ID,
     )
-    assert result is not None
-    assert result[0] == "fk11abk6EX000002"
 
-    result = DatabaseUtils.fetchone(
-        "SELECT bottom_level " "FROM tww_od.wastewater_node " "WHERE obj_id='ch000000WN000001';"
+    _assert_scalar(
+        f"""
+        SELECT bottom_level
+        FROM tww_od.wastewater_node
+        WHERE obj_id = '{WASTEWATER_NODE_ID}';
+        """,
+        448.0,
     )
-    assert result is not None
-    assert result[0] == 448.0
 
 
 def test_export_sia405_base_abwasser(
@@ -372,11 +425,9 @@ def test_export_sia405_base_abwasser(
 ) -> None:
     interlis_object = get_xtf_object(
         exported_sia405_base_abwasser,
-        _topic_name(
-            "sia405_base_abwasser",
-        ),
+        _topic_name("sia405_base_abwasser"),
         "Organisation",
-        "ch20p3q400001497",
+        ORGANISATION_ID,
     )
 
     assert interlis_object is not None
@@ -385,31 +436,29 @@ def test_export_sia405_base_abwasser(
 def test_export_sia405_abwasser(
     exported_sia405_abwasser,
 ) -> None:
-    topic_name = _topic_name(
-        "sia405_abwasser",
-    )
+    topic_name = _topic_name("sia405_abwasser")
 
-    interlis_object = get_xtf_object(
+    reach = get_xtf_object(
         exported_sia405_abwasser,
         topic_name,
         "Haltung",
-        "ch000000RE000001",
+        REACH_ID,
     )
-    assert interlis_object is not None
+    assert reach is not None
 
-    interlis_object = get_xtf_object(
+    pipe_profile = get_xtf_object(
         exported_sia405_abwasser,
         topic_name,
         "Rohrprofil",
-        "ch000000PP000003",
+        PIPE_PROFILE_ID,
     )
-    assert interlis_object is not None
+    assert pipe_profile is not None
 
     height_width_ratio_text = get_xtf_object_node_text(
         exported_sia405_abwasser,
         topic_name,
         "Rohrprofil",
-        "ch000000PP000003",
+        PIPE_PROFILE_ID,
         "HoehenBreitenverhaeltnis",
     )
 
@@ -419,79 +468,77 @@ def test_export_sia405_abwasser(
 def test_export_dss(
     exported_dss,
 ) -> None:
-    interlis_object = get_xtf_object(
+    pipe_profile = get_xtf_object(
         exported_dss,
-        _topic_name(
-            "dss",
-        ),
+        _topic_name("dss"),
         "Rohrprofil",
         "ch000000PP000001",
     )
 
-    assert interlis_object is not None
+    assert pipe_profile is not None
 
 
 def test_export_kek(
     exported_kek,
 ) -> None:
-    interlis_object = get_xtf_object(
+    examination = get_xtf_object(
         exported_kek,
-        _topic_name(
-            "vsa_kek",
-        ),
+        _topic_name("vsa_kek"),
         "Untersuchung",
-        "fk11abk6EX000002",
+        KEK_EXAMINATION_ID,
     )
 
-    assert interlis_object is not None
+    assert examination is not None
 
 
 def test_import_sia405_modified(
     imported_sia405_modified,
 ) -> None:
-    result = DatabaseUtils.fetchone(
-        "SELECT obj_id " "FROM tww_od.reach " "WHERE obj_id='ch000000RE000001';"
-    )
-    assert result is not None, (
-        "The modified SIA405 import did not retain the canonical " "reach row 'ch000000RE000001'."
+    _assert_scalar(
+        f"""
+        SELECT obj_id
+        FROM tww_od.reach
+        WHERE obj_id = '{REACH_ID}';
+        """,
+        REACH_ID,
     )
 
-    result = DatabaseUtils.fetchone(
-        "SELECT remark "
-        "FROM tww_od.wastewater_networkelement "
-        "WHERE obj_id='ch000000RE000001';"
+    _assert_scalar(
+        f"""
+        SELECT remark
+        FROM tww_od.wastewater_networkelement
+        WHERE obj_id = '{REACH_ID}';
+        """,
+        "rp_from_level modified",
     )
-    assert result is not None
-    assert result[0] == "rp_from_level modified"
 
-    result = DatabaseUtils.fetchone(
-        "SELECT bottom_level " "FROM tww_od.wastewater_node " "WHERE obj_id='ch000000WN000001';"
+    _assert_scalar(
+        f"""
+        SELECT bottom_level
+        FROM tww_od.wastewater_node
+        WHERE obj_id = '{WASTEWATER_NODE_ID}';
+        """,
+        448.0,
     )
-    assert result is not None
-    assert result[0] == 448.0
 
 
 def test_export_dss_selection(
     exported_dss_selection,
 ) -> None:
-    assert exported_dss_selection.exists()
+    topic_name = _topic_name("dss")
 
-    interlis_object = get_xtf_object(
+    excluded_pipe_profile = get_xtf_object(
         exported_dss_selection,
-        _topic_name(
-            "dss",
-        ),
+        topic_name,
         "Rohrprofil",
         "ch000000PP000001",
     )
-    assert interlis_object is None
+    assert excluded_pipe_profile is None
 
-    interlis_object = get_xtf_object(
+    included_pipe_profile = get_xtf_object(
         exported_dss_selection,
-        _topic_name(
-            "sia405_abwasser",
-        ),
+        topic_name,
         "Rohrprofil",
         "ch000000PP000002",
     )
-    assert interlis_object is not None
+    assert included_pipe_profile is not None
