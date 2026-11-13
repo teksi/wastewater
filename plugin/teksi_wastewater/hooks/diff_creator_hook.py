@@ -617,8 +617,8 @@ class Hook(
         self.workflow_source_metadata: dict[
             str,
             Any,
-        ]={}
-        
+        ] = {}
+
         if xtf_file is not None:
             self.workflow_source_metadata.update(
                 {

@@ -160,7 +160,6 @@ def assert_baseline_imported() -> None:
     assert rows[0]["count"] > 0, "The DSS baseline did not create reaches."
 
 
-
 def job_row(
     job_id: str,
 ) -> dict:
@@ -349,10 +348,10 @@ def create_and_apply_phase(
     )
 
 
-
 @pytest.fixture(scope="module")
 def imported_dss_baseline(imported_organisations) -> None:
     run_interlis_import(BASELINE_DSS_XTF)
+
 
 @pytest.fixture(scope="module")
 def agxx_diff_applied(imported_dss_baseline):
@@ -376,6 +375,7 @@ def agxx_diff_applied(imported_dss_baseline):
         FROM tww_od.agxx_building_group
         """)
     assert rows[0]["count"] > 0, "The AGXX baseline did not populate agxx_building_group."
+
 
 def test_diff_import_workflow(
     agxx_diff_applied,

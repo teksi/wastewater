@@ -9,11 +9,11 @@ from teksi_wastewater.interlis import model_config
 from teksi_wastewater.utils.database_utils import DatabaseUtils
 
 from ..helpers import (
+    data_file,
     get_xtf_object,
     get_xtf_object_node_text,
-    run_interlis_import,
     run_interlis_export,
-    data_file,
+    run_interlis_import,
 )
 
 pytestmark = pytest.mark.no_qgis
@@ -24,7 +24,6 @@ CONTAINER_OUTPUT_DIR = Path("/usr/src/plugin/tests/dockerised/no_qgis/output")
 
 OUTPUT_DIR = Path(__file__).resolve().parent / "output"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-
 
 
 # These tests operate on a disposable database and intentionally reuse the
@@ -54,8 +53,6 @@ HOST_OUTPUT_DIR.mkdir(
     parents=True,
     exist_ok=True,
 )
-
-
 
 
 def _topic_name(
@@ -89,13 +86,10 @@ def _run_interlis_import(
     command exits with a non-zero status.
     """
     xtf_file = data_file(
-        fixture_name,
-        host_data_dir=HOST_DATA_DIR,
-        container_data_dir=CONTAINER_DATA_DIR
+        fixture_name, host_data_dir=HOST_DATA_DIR, container_data_dir=CONTAINER_DATA_DIR
     )
 
     run_interlis_import(xtf_file)
-
 
 
 def _fetchone(

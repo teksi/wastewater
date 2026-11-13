@@ -5,7 +5,6 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from subprocess import run as sp_run
 
-
 from teksi_wastewater.interlis import model_config
 
 OUTPUT_DIR = Path(__file__).parent / "output"
@@ -15,7 +14,6 @@ SCHEMA_RECREATION_ARG = "--allow-schema-recreation"
 DB_ARGS = (
     "--pghost db " "--pgdatabase tww " "--pguser postgres " "--pgpass postgres " "--pgport 5432"
 )
-
 
 
 def get_output_filename(name: str) -> str:
@@ -188,7 +186,6 @@ def data_file(
     name: str,
     host_data_dir: Path,
     container_data_dir: Path,
-
 ) -> Path:
     """
     Validate a fixture using the pytest runner's filesystem and return the
@@ -205,11 +202,9 @@ def run_interlis_import(fixture_name: str) -> None:
     """E2E import of one XTF straight into the live schema (no diff job)."""
     xtf_file = data_file(fixture_name)
     run_cli(
-        "interlis_import "
-        f'--xtf_file "{xtf_file}" '
-        f"{SCHEMA_RECREATION_ARG} "
-        f"{DB_ARGS}"
+        "interlis_import " f'--xtf_file "{xtf_file}" ' f"{SCHEMA_RECREATION_ARG} " f"{DB_ARGS}"
     )
+
 
 def run_interlis_export(
     *,
@@ -218,13 +213,12 @@ def run_interlis_export(
     selected_ids: tuple[str, ...] = (),
     host_output_dir: Path,
     container_output_dir: Path,
-
 ) -> Path:
     """
     Export one model and return the host-visible output path.
     """
     export_model = _model_name(model_group)
-    container_output = _container_output_file(base_name,container_output_dir)
+    container_output = _container_output_file(base_name, container_output_dir)
     host_output = _host_exported_file(base_name, export_model, host_output_dir)
 
     # Prevent an output left by an earlier run from satisfying the test.
