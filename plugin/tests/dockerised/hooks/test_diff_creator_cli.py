@@ -8,7 +8,7 @@ from teksi_wastewater.utils.database_utils import (
     DatabaseUtils,
 )
 
-from ..helpers import run_cli
+from ..helpers import run_cli, run_interlis_import
 
 pytestmark = pytest.mark.no_qgis
 
@@ -159,11 +159,6 @@ def assert_baseline_imported() -> None:
         """)
     assert rows[0]["count"] > 0, "The DSS baseline did not create reaches."
 
-    rows = DatabaseUtils.execute_fetchall("""
-        SELECT count(*) AS count
-        FROM tww_od.agxx_building_group
-        """)
-    assert rows[0]["count"] > 0, "The AGXX baseline did not populate agxx_building_group."
 
 
 def job_row(
@@ -354,15 +349,17 @@ def create_and_apply_phase(
     )
 
 
-def test_diff_import_workflow(
-    imported_organisations,
-) -> None:
-    """
-    Exercise trusted baseline and the three permitted review lifecycles.
-    """
+
+@pytest.fixture(scope="module")
+def imported_dss_baseline(imported_organisations) -> None:
+    run_interlis_import(BASELINE_DSS_XTF)
+
+@pytest.fixture(scope="module")
+def agxx_diff_applied(imported_dss_baseline):
+
+    # run the diff creator CLI with incremental-only parameters
     create_review_job(
         job_id=BASELINE_JOB_ID,
-        xtf_file=BASELINE_DSS_XTF,
         provider_oid=DBW_WI,
         incremental_xtf=BASELINE_AGXX_XTF,
         skip_rights_evaluation=True,
@@ -373,8 +370,19 @@ def test_diff_import_workflow(
         BASELINE_JOB_ID,
         "applied",
     )
-    assert_baseline_imported()
 
+    rows = DatabaseUtils.execute_fetchall("""
+        SELECT count(*) AS count
+        FROM tww_od.agxx_building_group
+        """)
+    assert rows[0]["count"] > 0, "The AGXX baseline did not populate agxx_building_group."
+
+def test_diff_import_workflow(
+    agxx_diff_applied,
+) -> None:
+    """
+    Exercise trusted baseline and the three permitted review lifecycles.
+    """
     create_and_apply_phase(
         allowed_provider=DBW_WI,
         phase_identifier="phase1_dbw_wi",

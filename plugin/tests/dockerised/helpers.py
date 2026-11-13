@@ -5,9 +5,17 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from subprocess import run as sp_run
 
+
+from teksi_wastewater.interlis import model_config
+
 OUTPUT_DIR = Path(__file__).parent / "output"
 OUTPUT_DIR.mkdir(exist_ok=True)
 DEFAULT_CLI_PATH = Path("/usr/src/plugin/teksi_wastewater/hooks/cli/importer_exporter.py")
+SCHEMA_RECREATION_ARG = "--allow-schema-recreation"
+DB_ARGS = (
+    "--pghost db " "--pgdatabase tww " "--pguser postgres " "--pgpass postgres " "--pgport 5432"
+)
+
 
 
 def get_output_filename(name: str) -> str:
@@ -64,6 +72,32 @@ def get_xtf_object_node_text(
         f"/{namespace}{topicname}.{classname}[@TID='{tid}']"
         f"/{namespace}{attributename}"
     )
+
+
+def _container_output_file(
+    name: str,
+    container_output_dir: Path,
+) -> Path:
+    return container_output_dir / f"{name}.xtf"
+
+
+def _host_exported_file(
+    base_name: str,
+    model_name: str,
+    host_output_dir: Path,
+) -> Path:
+    return host_output_dir / f"{base_name}_{model_name}.xtf"
+
+
+def _model_name(
+    group: str,
+    *,
+    lang: str = "de",
+) -> str:
+    """
+    Return the configured language-specific model name for a model group.
+    """
+    return model_config.interlis_models[group].lang_name(lang)
 
 
 def run_cli(
@@ -148,3 +182,69 @@ def run_cli(
         f"STDOUT:\n{result.stdout}\n\n"
         f"STDERR:\n{result.stderr}"
     )
+
+
+def data_file(
+    name: str,
+    host_data_dir: Path,
+    container_data_dir: Path,
+
+) -> Path:
+    """
+    Validate a fixture using the pytest runner's filesystem and return the
+    corresponding path visible inside the qgis container.
+    """
+    host_path = host_data_dir / name
+
+    assert host_path.is_file(), f"Missing INTERLIS test fixture in the checkout: {host_path}"
+
+    return container_data_dir / name
+
+
+def run_interlis_import(fixture_name: str) -> None:
+    """E2E import of one XTF straight into the live schema (no diff job)."""
+    xtf_file = data_file(fixture_name)
+    run_cli(
+        "interlis_import "
+        f'--xtf_file "{xtf_file}" '
+        f"{SCHEMA_RECREATION_ARG} "
+        f"{DB_ARGS}"
+    )
+
+def run_interlis_export(
+    *,
+    base_name: str,
+    model_group: str,
+    selected_ids: tuple[str, ...] = (),
+    host_output_dir: Path,
+    container_output_dir: Path,
+
+) -> Path:
+    """
+    Export one model and return the host-visible output path.
+    """
+    export_model = _model_name(model_group)
+    container_output = _container_output_file(base_name,container_output_dir)
+    host_output = _host_exported_file(base_name, export_model, host_output_dir)
+
+    # Prevent an output left by an earlier run from satisfying the test.
+    host_output.unlink(missing_ok=True)
+
+    selected_ids_arg = f'--selected_ids "{",".join(selected_ids)}" ' if selected_ids else ""
+
+    run_cli(
+        "interlis_export "
+        f'--xtf_file "{container_output}" '
+        f'--export_model "{export_model}" '
+        f"{selected_ids_arg}"
+        "--logs_next_to_file "
+        f"{SCHEMA_RECREATION_ARG} "
+        f"{DB_ARGS}"
+    )
+
+    assert host_output.is_file(), (
+        "INTERLIS export command completed without creating the expected "
+        f"host-visible output file: {host_output}"
+    )
+
+    return host_output

@@ -11,7 +11,9 @@ from teksi_wastewater.utils.database_utils import DatabaseUtils
 from ..helpers import (
     get_xtf_object,
     get_xtf_object_node_text,
-    run_cli,
+    run_interlis_import,
+    run_interlis_export,
+    data_file,
 )
 
 pytestmark = pytest.mark.no_qgis
@@ -23,13 +25,11 @@ CONTAINER_OUTPUT_DIR = Path("/usr/src/plugin/tests/dockerised/no_qgis/output")
 OUTPUT_DIR = Path(__file__).resolve().parent / "output"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-DB_ARGS = (
-    "--pghost db " "--pgdatabase tww " "--pguser postgres " "--pgpass postgres " "--pgport 5432"
-)
+
 
 # These tests operate on a disposable database and intentionally reuse the
 # quarantine schemas across a sequence of imports and exports.
-SCHEMA_RECREATION_ARG = "--allow-schema-recreation"
+
 
 ORGANISATION_ID = "ch20p3q400001497"
 REACH_ID = "ch000000RE000001"
@@ -56,42 +56,6 @@ HOST_OUTPUT_DIR.mkdir(
 )
 
 
-def _data_file(
-    name: str,
-) -> Path:
-    """
-    Validate a fixture using the pytest runner's filesystem and return the
-    corresponding path visible inside the qgis container.
-    """
-    host_path = HOST_DATA_DIR / name
-
-    assert host_path.is_file(), f"Missing INTERLIS test fixture in the checkout: {host_path}"
-
-    return CONTAINER_DATA_DIR / name
-
-
-def _container_output_file(
-    name: str,
-) -> Path:
-    return CONTAINER_OUTPUT_DIR / f"{name}.xtf"
-
-
-def _host_exported_file(
-    base_name: str,
-    model_name: str,
-) -> Path:
-    return HOST_OUTPUT_DIR / f"{base_name}_{model_name}.xtf"
-
-
-def _model_name(
-    group: str,
-    *,
-    lang: str = "de",
-) -> str:
-    """
-    Return the configured language-specific model name for a model group.
-    """
-    return model_config.interlis_models[group].lang_name(lang)
 
 
 def _topic_name(
@@ -124,47 +88,14 @@ def _run_interlis_import(
     ``run_cli`` is expected to invoke the packaged CLI and to fail when the
     command exits with a non-zero status.
     """
-    xtf_file = _data_file(fixture_name)
-
-    run_cli(
-        "interlis_import " f'--xtf_file "{xtf_file}" ' f"{SCHEMA_RECREATION_ARG} " f"{DB_ARGS}"
+    xtf_file = data_file(
+        fixture_name,
+        host_data_dir=HOST_DATA_DIR,
+        container_data_dir=CONTAINER_DATA_DIR
     )
 
+    run_interlis_import(xtf_file)
 
-def _run_interlis_export(
-    *,
-    base_name: str,
-    model_group: str,
-    selected_ids: tuple[str, ...] = (),
-) -> Path:
-    """
-    Export one model and return the host-visible output path.
-    """
-    export_model = _model_name(model_group)
-    container_output = _container_output_file(base_name)
-    host_output = _host_exported_file(base_name, export_model)
-
-    # Prevent an output left by an earlier run from satisfying the test.
-    host_output.unlink(missing_ok=True)
-
-    selected_ids_arg = f'--selected_ids "{",".join(selected_ids)}" ' if selected_ids else ""
-
-    run_cli(
-        "interlis_export "
-        f'--xtf_file "{container_output}" '
-        f'--export_model "{export_model}" '
-        f"{selected_ids_arg}"
-        "--logs_next_to_file "
-        f"{SCHEMA_RECREATION_ARG} "
-        f"{DB_ARGS}"
-    )
-
-    assert host_output.is_file(), (
-        "INTERLIS export command completed without creating the expected "
-        f"host-visible output file: {host_output}"
-    )
-
-    return host_output
 
 
 def _fetchone(
@@ -241,9 +172,11 @@ def exported_sia405_base_abwasser(
         SET tww_local_extension = true;
         """)
 
-    return _run_interlis_export(
+    return run_interlis_export(
         base_name="export_minimal_dataset_sia405_base",
         model_group="sia405_base_abwasser",
+        host_output_dir=HOST_OUTPUT_DIR,
+        container_output_dir=CONTAINER_OUTPUT_DIR,
     )
 
 
@@ -251,9 +184,11 @@ def exported_sia405_base_abwasser(
 def exported_sia405_abwasser(
     imported_kek,
 ) -> Path:
-    return _run_interlis_export(
+    return run_interlis_export(
         base_name="export_minimal_dataset_sia405",
         model_group="sia405_abwasser",
+        host_output_dir=HOST_OUTPUT_DIR,
+        container_output_dir=CONTAINER_OUTPUT_DIR,
     )
 
 
@@ -261,9 +196,11 @@ def exported_sia405_abwasser(
 def exported_dss(
     imported_kek,
 ) -> Path:
-    return _run_interlis_export(
+    return run_interlis_export(
         base_name="export_minimal_dataset_dss",
         model_group="dss",
+        host_output_dir=HOST_OUTPUT_DIR,
+        container_output_dir=CONTAINER_OUTPUT_DIR,
     )
 
 
@@ -271,9 +208,11 @@ def exported_dss(
 def exported_kek(
     imported_kek,
 ) -> Path:
-    return _run_interlis_export(
+    return run_interlis_export(
         base_name="export_minimal_dataset_kek",
         model_group="vsa_kek",
+        host_output_dir=HOST_OUTPUT_DIR,
+        container_output_dir=CONTAINER_OUTPUT_DIR,
     )
 
 
@@ -290,7 +229,7 @@ def imported_sia405_modified(
 def exported_dss_selection(
     imported_sia405_modified,
 ) -> Path:
-    return _run_interlis_export(
+    return run_interlis_export(
         base_name="export_minimal_dataset_dss_selection",
         model_group="dss",
         selected_ids=(
@@ -298,6 +237,8 @@ def exported_dss_selection(
             "ch000000WN000003",
             "ch000000RE000002",
         ),
+        host_output_dir=HOST_OUTPUT_DIR,
+        container_output_dir=CONTAINER_OUTPUT_DIR,
     )
 
 

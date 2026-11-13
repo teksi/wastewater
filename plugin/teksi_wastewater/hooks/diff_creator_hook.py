@@ -614,19 +614,20 @@ class Hook(
             "incremental_import_schema", config.IMPORT_SCHEMA_INCR
         )
 
-        if xtf_file is None:
-            raise ValueError("Diff-job creation requires a base XTF.")
-
         self.workflow_source_metadata: dict[
             str,
             Any,
-        ] = {
-            "base_import_schema": import_schema,
-            "base_source_xtf": str(
-                xtf_file,
-            ),
-        }
-
+        ]={}
+        
+        if xtf_file is not None:
+            self.workflow_source_metadata.update(
+                {
+                    "base_import_schema": import_schema,
+                    "base_source_xtf": str(
+                        xtf_file,
+                    ),
+                }
+            )
         if incremental_xtf is not None:
             self.workflow_source_metadata.update(
                 {
