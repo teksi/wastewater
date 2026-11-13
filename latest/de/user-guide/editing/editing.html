@@ -66,7 +66,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#change-multiple-records-at-once">Mehrere Datensätze gleichzeitig ändern</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#saving-changes">Änderungen Speichern</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#changing-wastewater-structure-type-ws-type">Abwasserbauwerk Typ ändern (ws_type)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#changing-and-visualizing-a-profile-geometry">Changing and visualizing a profile_geometry</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#changing-and-visualizing-a-profile-geometry">Ändern und visualisieren einer Rohrprofil_Geometrie</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#split-a-reach-channel-into-different-reaches">Kanäle in verschiedene Haltungen unterteilen</a></li>
 </ul>
 </li>
@@ -483,26 +483,26 @@
 </div>
 </section>
 <section id="changing-and-visualizing-a-profile-geometry">
-<h2>Changing and visualizing a profile_geometry<a class="headerlink" href="#changing-and-visualizing-a-profile-geometry" title="Link to this heading"></a></h2>
-<p>Profile geometries can be defined for pipe profiles of <strong>type</strong> special, mouth or open.</p>
-<p>The detailpoints can be visualized with a sql-expression, that is already saved in the project.</p>
+<h2>Ändern und visualisieren einer Rohrprofil_Geometrie<a class="headerlink" href="#changing-and-visualizing-a-profile-geometry" title="Link to this heading"></a></h2>
+<p>Rohrprofil_Geometrien können für Rohrprofile vom <strong>Profiltyp</strong> Spezial, Maul oder offen erstellt werden.</p>
+<p>Die Detailpunkte können mit einem SQL-Ausdruck visualisert werden. Dieser SQL Ausdruck ist im Projekt bereits vorhanden.</p>
 <ul class="simple">
-<li><p>right click on any layer an choose „Execute SQL…“</p></li>
-<li><p>delete the sql-expression, that is already written in the field and choose in the rightmost tool <strong>visualize profile_geometry</strong></p></li>
+<li><p>Rechtsklick in einem Layer und wähle „SQL ausführen…“</p></li>
+<li><p>Lösche den bereits eingesetzten SQL-Ausdruck und wähle mit dem rechtesten Tool <strong>visualize profile_geometry</strong></p></li>
 </ul>
 <figure class="align-default">
 <a class="reference internal image-reference" href="../../_images/profile_geometry_stored_sql.jpg"><img alt="../../_images/profile_geometry_stored_sql.jpg" height="150" src="../../_images/profile_geometry_stored_sql.jpg" width="335" />
 </a>
 </figure>
 <ul class="simple">
-<li><p>choose Execute, Load as new layer and enable the Geometry column</p></li>
+<li><p>Wähle Ausführen, Als neuen Layer laden und aktiviere die Geometriespalte</p></li>
 </ul>
 <figure class="align-default">
 <a class="reference internal image-reference" href="../../_images/profile_geometry_load_layer.jpg"><img alt="../../_images/profile_geometry_load_layer.jpg" height="242" src="../../_images/profile_geometry_load_layer.jpg" width="336" />
 </a>
 </figure>
 <ul class="simple">
-<li><p>Load Layer creates a new point layer with the detailpoints. Zoom to the new layer</p></li>
+<li><p>Layer laden erzeugt einen neuen temporären Punktlayer mit den Detailpunkten. Zoome auf diesen neuen Layer</p></li>
 </ul>
 </section>
 <section id="split-a-reach-channel-into-different-reaches">

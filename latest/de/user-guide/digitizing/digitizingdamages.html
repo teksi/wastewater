@@ -236,63 +236,52 @@ may no longer correspond to the current network data.</p>
 <p>Erzeuge einen neuen Datensatz in <code class="docutils literal notranslate"><span class="pre">tww_app.vw_Datei</span></code> und erfasse mindestens diese Felder:</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">Objekt</span></code></dt><dd><p>Die <code class="docutils literal notranslate"><span class="pre">Obj_ID</span></code> des Objektes das mit Datei verknüpft ist.</p>
-<p>For a damage picture, this is the <code class="docutils literal notranslate"><span class="pre">obj_id</span></code> of the channel damage. For an
-examination video, this is the <code class="docutils literal notranslate"><span class="pre">obj_id</span></code> of the examination.</p>
+<p>Bei einem Schadensbild ist dies die <code class="docutils literal notranslate"><span class="pre">Obj_ID</span></code> des Kanalschadens. Bei einem Inspektionsvideo ist dies die <code class="docutils literal notranslate"><span class="pre">Obj_ID</span></code> der Untersuchung.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">kind</span></code></dt><dd><p>The file kind.</p>
-<p>Damage pictures must use <code class="docutils literal notranslate"><span class="pre">picture</span></code> with code <code class="docutils literal notranslate"><span class="pre">3772</span></code>. Examination
-videos must use one of the video kinds supported by the damage view,
-<code class="docutils literal notranslate"><span class="pre">video</span></code> with code <code class="docutils literal notranslate"><span class="pre">3775</span></code> or <code class="docutils literal notranslate"><span class="pre">digital_video</span></code> with code <code class="docutils literal notranslate"><span class="pre">9146</span></code>.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">Art</span></code></dt><dd><p>Die Art der Datei.</p>
+<p>Für Schadensbilder ist die Art <code class="docutils literal notranslate"><span class="pre">Foto</span></code> mit dem Code <code class="docutils literal notranslate"><span class="pre">3772</span></code> zu verwenden. Für Untersuchungsvideos ist einer der in der Schadensansicht unterstützten Videotypen zu nutzen: <code class="docutils literal notranslate"><span class="pre">Video</span></code> mit dem Code <code class="docutils literal notranslate"><span class="pre">3775</span></code> oder <code class="docutils literal notranslate"><span class="pre">digitales_Video</span></code> mit dem Code <code class="docutils literal notranslate"><span class="pre">9146</span></code>.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">classname</span></code></dt><dd><p>The class name of the object referenced by <code class="docutils literal notranslate"><span class="pre">object</span></code>.</p>
+<dt>Klasse</dt><dd><p>Die Klassenbezeichnung des im Feld <code class="docutils literal notranslate"><span class="pre">Objekt</span></code> verknüpften Datensatzes.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">_url</span></code></dt><dd><p>The complete path to the picture or video file.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">_url</span></code></dt><dd><p>Der vollständige Pfad zur Foto- oder Video-Datei</p>
 </dd>
 </dl>
-<p>Complete <code class="docutils literal notranslate"><span class="pre">identifier</span></code>, <code class="docutils literal notranslate"><span class="pre">dataowner</span></code>, <code class="docutils literal notranslate"><span class="pre">provider</span></code> and <code class="docutils literal notranslate"><span class="pre">remark</span></code> where
-required.</p>
+<p>Erfasse die zwingenden Felder (<code class="docutils literal notranslate"><span class="pre">Bezeichnung</span></code>, <code class="docutils literal notranslate"><span class="pre">Datenherr</span></code>, <code class="docutils literal notranslate"><span class="pre">Datenlieferant</span></code> und <code class="docutils literal notranslate"><span class="pre">Bemerkung</span></code></p>
 <div class="admonition important">
 <p class="admonition-title">Wichtig</p>
-<p>The file path entered in <code class="docutils literal notranslate"><span class="pre">_url</span></code> must start with a repository path
-configured in <code class="docutils literal notranslate"><span class="pre">tww_od.data_media</span></code>.</p>
-<p>When the file record is saved, the database selects the longest matching
-repository path. It stores the corresponding data-media object in
-<code class="docutils literal notranslate"><span class="pre">fk_data_media</span></code> and the remaining part of the URL in <code class="docutils literal notranslate"><span class="pre">path_relative</span></code>.</p>
-<p>If no matching repository is found, the file record is not inserted and
-the database raises a warning.</p>
+<p>Der Dateipfad in <code class="docutils literal notranslate"><span class="pre">_url</span></code> muss mit einem Repository-Pfad beginnen, der in <code class="docutils literal notranslate"><span class="pre">tww_od.Datenträger</span></code> konfiguriert ist.</p>
+<p>Beim Speichern des Datei-Datensatzes wählt die Datenbank den längsten übereinstimmenden Repository-Pfad aus. Sie speichert das zugehörige Datenträger-Objekt in <code class="docutils literal notranslate"><span class="pre">FS_Datentraeger</span></code> sowie den verbleibenden Teil der URL in <code class="docutils literal notranslate"><span class="pre">Relativpfad</span></code>.</p>
+<p>Wenn kein passendes Repository gefunden wird, wird der Datei-Datensatz nicht eingefügt und die Datenbank gibt eine Warnung aus.</p>
 </div>
 </section>
 <section id="outdated-files">
-<h3>Outdated files<a class="headerlink" href="#outdated-files" title="Link to this heading"></a></h3>
-<p>The file selection used by the channel damage view excludes records for which
-<code class="docutils literal notranslate"><span class="pre">tww_outdated</span></code> is <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>.</p>
-<p>However, <code class="docutils literal notranslate"><span class="pre">tww_outdated</span></code> is not exposed by the supplied definition of
-<code class="docutils literal notranslate"><span class="pre">tww_app.vw_file</span></code>. A file therefore can only be marked as outdated through
-<code class="docutils literal notranslate"><span class="pre">tww_od.file</span></code>.</p>
+<h3>Veraltete Dateien<a class="headerlink" href="#outdated-files" title="Link to this heading"></a></h3>
+<p>Die von „vw_Kanalschaden“ (channel damage view) verwendete Datei-Auswahl schließt Datensätze aus, für die „tww_outdated“ den Wert „TRUE“ aufweist.</p>
+<p>„tww_outdated“ ist jedoch in der bereitgestellten Definition von „tww_app.vw_Datei“ nicht enthalten. Eine Datei kann daher nur über „tww_od.Datei“ als veraltet markiert werden.</p>
 </section>
 <section id="refreshing-the-displayed-media">
-<h3>Refreshing the displayed media<a class="headerlink" href="#refreshing-the-displayed-media" title="Link to this heading"></a></h3>
-<p>After adding or modifying a picture or video:</p>
+<h3>Aktualisierung der angezeigten Datenträger<a class="headerlink" href="#refreshing-the-displayed-media" title="Link to this heading"></a></h3>
+<p>Nach dem Hinzufügen oder Ändern von Fotos oder Videos:</p>
 <ol class="arabic simple">
-<li><p>Save the file record.</p></li>
-<li><p>Refresh <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_damage_channel</span></code>.</p></li>
-<li><p>Verify that the file appears in <code class="docutils literal notranslate"><span class="pre">picture_1</span></code>, <code class="docutils literal notranslate"><span class="pre">picture_2</span></code> or <code class="docutils literal notranslate"><span class="pre">video</span></code>.</p></li>
-<li><p>Verify that the generated path can be opened from QGIS.</p></li>
+<li><p>Sichern des Datei Datensatzes</p></li>
+<li><p>Aktualisiere <code class="docutils literal notranslate"><span class="pre">vw_tww_Kanalschaden</span></code>.</p></li>
+<li><p>Kontrolliere dass die Dateien in <code class="docutils literal notranslate"><span class="pre">picture_1</span></code>, <code class="docutils literal notranslate"><span class="pre">picture_2</span></code> oder <code class="docutils literal notranslate"><span class="pre">video</span></code> erscheinen.</p></li>
+<li><p>Kontrolle ob der erzeugte Pfad aus QGIS geöffnet werden kann.</p></li>
 </ol>
-<p>If a picture does not appear, check that:</p>
+<p>Wenn eine Foto nicht sichtbar ist, kontrolliere:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">object</span></code> contains the channel damage’s <code class="docutils literal notranslate"><span class="pre">obj_id</span></code>;</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">kind</span></code> is <code class="docutils literal notranslate"><span class="pre">picture</span></code> with code <code class="docutils literal notranslate"><span class="pre">3772</span></code>;</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">tww_outdated</span></code> is not <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>;</p></li>
-<li><p>the URL uses a path configured in <code class="docutils literal notranslate"><span class="pre">tww_od.data_media</span></code>; and</p></li>
-<li><p>the channel damage layer has been refreshed.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Objekt</span></code> enthält die <code class="docutils literal notranslate"><span class="pre">obj_id</span></code> des Kanalschaden;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Art</span></code> ist <code class="docutils literal notranslate"><span class="pre">Foto</span></code> mit Code <code class="docutils literal notranslate"><span class="pre">3772</span></code>;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tww_outdated</span></code> ist nicht <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>;</p></li>
+<li><p>die URL benutzt einen Pfad aus <code class="docutils literal notranslate"><span class="pre">tww_od.Datentraeger</span></code>; und</p></li>
+<li><p>der Layer vw_tww_Kanalschaden wurde aktualisiert.</p></li>
 </ul>
-<p>If a video does not appear, check that:</p>
+<p>Wenn eine Video nicht sichtbar ist, kontrolliere:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">object</span></code> contains the examination’s <code class="docutils literal notranslate"><span class="pre">obj_id</span></code>;</p></li>
-<li><p>the video kind has code <code class="docutils literal notranslate"><span class="pre">3775</span></code> or <code class="docutils literal notranslate"><span class="pre">9146</span></code>;</p></li>
-<li><p>neither the file nor the examination is marked as outdated; and</p></li>
-<li><p>the examination is linked to the channel damage.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Objekt</span></code> enthält die <code class="docutils literal notranslate"><span class="pre">obj_id</span></code> der Untersuchung;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Art</span></code> ist <code class="docutils literal notranslate"><span class="pre">Video</span></code> oder <code class="docutils literal notranslate"><span class="pre">digitales_Video</span></code> mit Code <code class="docutils literal notranslate"><span class="pre">3772</span></code> oder <code class="docutils literal notranslate"><span class="pre">9146</span></code> ;</p></li>
+<li><p>weder Datei noch Untersuchung ist als veraltet markiert; und</p></li>
+<li><p>der Kanalschaden ist mit einer Untersuchung verknüpft</p></li>
 </ul>
 </section>
 </section>
