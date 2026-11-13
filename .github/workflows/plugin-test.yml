@@ -204,7 +204,7 @@ jobs:
           docker compose run --rm pum -p pg_tww -d datamodel install -p SRID 2056
 
       - name: Install hook dependencies in QGIS container
-      # this does not violate the no-QGIS-on-the-runner rule; 
+      # this does not violate the no-QGIS-on-the-runner rule;
       # the install happens inside the container, and the runner pytest still never imports QGIS
         run: |
           docker compose exec -T qgis sh -c '
