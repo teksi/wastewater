@@ -69,7 +69,6 @@ jobs:
         env:
           PYTHONPATH: >-
             ${{ github.workspace }}/plugin:
-            ${{ github.workspace }}/plugin_hooks:
             ${{ github.workspace }}
         run: |
           python -m pytest \
@@ -172,7 +171,7 @@ jobs:
 
             . /tmp/teksi-hooks-venv/bin/activate
 
-            export PYTHONPATH="/usr/src/plugin:/usr/src/plugin_hooks:/usr/src:/usr/share/qgis/python"
+            export PYTHONPATH="/usr/src/plugin:/usr/src:/usr/share/qgis/python"
 
             echo "Python executable:"
             command -v python
@@ -202,7 +201,7 @@ jobs:
 
             . /tmp/teksi-hooks-venv/bin/activate
 
-            export PYTHONPATH="/usr/src/plugin:/usr/src/plugin_hooks:/usr/src:/usr/share/qgis/python"
+            export PYTHONPATH="/usr/src/plugin:/usr/src:/usr/share/qgis/python"
 
             xvfb-run -a python -m pytest \
               /usr/src/plugin/tests/dockerised/hooks \

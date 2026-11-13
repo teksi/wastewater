@@ -113,7 +113,7 @@ jobs:
 
             . /tmp/teksi-hooks-venv/bin/activate
 
-            export PYTHONPATH="/usr/src/plugin:/usr/src/plugin_hooks:/usr/src:/usr/share/qgis/python"
+            export PYTHONPATH="/usr/src/plugin:/usr/src:/usr/share/qgis/python"
 
             xvfb-run -a python -m pytest \
               /usr/src/plugin/tests/dockerised/qgis/test_interlis.py \
@@ -134,7 +134,7 @@ jobs:
 
             . /tmp/teksi-hooks-venv/bin/activate
 
-            export PYTHONPATH="/usr/src/plugin:/usr/src/plugin_hooks:/usr/src:/usr/share/qgis/python"
+            export PYTHONPATH="/usr/src/plugin:/usr/src:/usr/share/qgis/python"
 
             xvfb-run -a python -m pytest \
               "/usr/src/plugin/tests/dockerised/qgis/test_interlis.py::TestInterlis::test_dss_dataset_import_export" \
@@ -206,13 +206,11 @@ jobs:
 
       # teksi_hooks is loaded directly from the submodule because v0.1.0 is not
       # published on PyPI yet; once pyproject.toml declares it as a dependency,
-      # /usr/src-equivalent plugin_hooks entry can be dropped here.
       - name: Run pytest (no QGIS Python library)
         run: pytest plugin/tests/dockerised/no_qgis -v -c plugin/pytest.ini -m no_qgis
         env:
           PYTHONPATH: >-
             ${{ github.workspace }}/plugin:
-            ${{ github.workspace }}/plugin_hooks:
             ${{ github.workspace }}
 
       - name: Show Docker service status
