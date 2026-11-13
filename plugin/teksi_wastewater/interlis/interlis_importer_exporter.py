@@ -1081,9 +1081,7 @@ class InterlisImporterExporter:
                         cursor.execute(f"DROP TABLE {self.schema}.{row[0]} CASCADE;")
                 else:
                     for row in rows:
-                        cursor.execute(
-                            f"TRUNCATE TABLE {self.schema}.{row[0]} CASCADE;"
-                        )
+                        cursor.execute(f"TRUNCATE TABLE {self.schema}.{row[0]} CASCADE;")
                 logger.info(f"Re-setting t_id sequence in schema {self.schema}")
                 cursor.execute(
                     f"ALTER SEQUENCE IF EXISTS {self.schema}.t_ili2db_seq RESTART WITH 1;"
