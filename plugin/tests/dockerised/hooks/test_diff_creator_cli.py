@@ -350,7 +350,7 @@ def create_and_apply_phase(
 
 @pytest.fixture(scope="module")
 def imported_dss_baseline(imported_organisations) -> None:
-    run_interlis_import(BASELINE_DSS_XTF)
+    run_interlis_import(BASELINE_DSS_XTF, host_data_dir=DATA_DIR, container_data_dir=DATA_DIR)
 
 
 @pytest.fixture(scope="module")

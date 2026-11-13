@@ -85,11 +85,8 @@ def _run_interlis_import(
     ``run_cli`` is expected to invoke the packaged CLI and to fail when the
     command exits with a non-zero status.
     """
-    xtf_file = data_file(
-        fixture_name, host_data_dir=HOST_DATA_DIR, container_data_dir=CONTAINER_DATA_DIR
-    )
 
-    run_interlis_import(xtf_file)
+    run_interlis_import(fixture_name, host_data_dir=HOST_DATA_DIR, container_data_dir=CONTAINER_DATA_DIR)
 
 
 def _fetchone(

@@ -198,9 +198,13 @@ def data_file(
     return container_data_dir / name
 
 
-def run_interlis_import(fixture_name: str) -> None:
+def run_interlis_import(
+        fixture_name: str,
+        host_data_dir: Path,
+        container_data_dir: Path,
+    ) -> None:
     """E2E import of one XTF straight into the live schema (no diff job)."""
-    xtf_file = data_file(fixture_name)
+    xtf_file = data_file(fixture_name, host_data_dir, container_data_dir)
     run_cli(
         "interlis_import " f'--xtf_file "{xtf_file}" ' f"{SCHEMA_RECREATION_ARG} " f"{DB_ARGS}"
     )
