@@ -34,19 +34,20 @@ def _database_connection_config(
 
     parameters: dict[str, object] = {}
 
-    if args.pgservice:
+    pgservice = getattr(args, "pgservice", None)
+    if pgservice:
         parameters.update(
             pgserviceparser.service_config(
-                args.pgservice,
+                pgservice,
             )
         )
 
     explicit_parameters = {
-        "host": args.pghost,
-        "port": args.pgport,
-        "dbname": args.pgdatabase,
-        "user": args.pguser,
-        "password": args.pgpass,
+        "host": getattr(args, "pghost",None),
+        "port": getattr(args, "pgport",None),
+        "dbname": getattr(args, "pgdatabase",None),
+        "user": getattr(args, "pguser",None),
+        "password": getattr(args, "pgpass",None),
     }
 
     parameters.update(

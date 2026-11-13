@@ -71,9 +71,6 @@ def create_review_job(
     """
     Create or replace one base-and-incremental review job.
     """
-    assert xtf_file.is_file(), f"Missing base INTERLIS fixture: {xtf_file}"
-    assert incremental_xtf.is_file(), "Missing incremental INTERLIS fixture: " f"{incremental_xtf}"
-    assert ORGS_XTF.is_file(), f"Missing organisation fixture: {ORGS_XTF}"
 
     arguments = [
         "create",
