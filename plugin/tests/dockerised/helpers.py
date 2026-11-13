@@ -150,8 +150,9 @@ def run_cli(
             "qgis",
             "sh",
             "-c",
-            'export PYTHONPATH="/usr/src/plugin:/usr/src:/usr/share/qgis/python" && '
-            f"{inner_command}",
+            'export PATH="/tmp/teksi-hooks-venv/bin:$PATH" '
+            '&& export PYTHONPATH="/usr/src/plugin:/usr/src:/usr/share/qgis/python" '
+            f"&& {inner_command}",
         ]
     result = sp_run(
         cmd,

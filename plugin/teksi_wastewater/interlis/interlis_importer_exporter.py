@@ -514,7 +514,8 @@ class InterlisImporterExporter:
             self._progress_done_in_scope(progress_scope, 15, "Creating ili schema...")
             create_basket_col = False
             export_models = set(export_models)
-            selection_models = self.selection_models_for_imported_models(export_models)
+
+            selection_models = model_selection.selection_models_for_imported_models(export_models)
             if "vsa_kek" in selection_models.groups:
                 create_basket_col = True
             self._create_ili_schema(export_models, create_basket_col=create_basket_col)
@@ -1200,73 +1201,3 @@ class InterlisImporterExporter:
                 ),
                 None,
             ) from exception
-
-    def selection_models_for_imported_models(
-        self,
-        imported_models: str | Iterable[str],
-    ) -> tuple[
-        str,
-        InterlisLangModel,
-        InterlisModel,
-    ]:
-        """
-        Resolve one configured semantic model from imported INTERLIS names.
-        """
-
-        if isinstance(
-            imported_models,
-            str,
-        ):
-            imported_model_names = {
-                imported_models,
-            }
-        else:
-            imported_model_names = set(
-                imported_models,
-            )
-
-        matches = [
-            (
-                group,
-                language_model,
-                model,
-            )
-            for group, model in interlis_models.items()
-            for language_model in model.models
-            if language_model.model in imported_model_names
-        ]
-
-        if not matches:
-            raise LookupError(
-                "No configured INTERLIS model matches imported models "
-                f"{sorted(imported_model_names)!r}."
-            )
-
-        matched_groups = {group for group, _, _ in matches}
-
-        if (
-            len(
-                matched_groups,
-            )
-            != 1
-        ):
-            raise LookupError(
-                "Imported models resolve to multiple semantic model "
-                f"groups: {sorted(matched_groups)!r}."
-            )
-
-        exact_matches = [match for match in matches if match[1].model in imported_model_names]
-
-        if (
-            len(
-                exact_matches,
-            )
-            != 1
-        ):
-            raise LookupError(
-                "Imported models do not resolve to exactly one configured "
-                "model and language: "
-                f"{sorted(imported_model_names)!r}."
-            )
-
-        return exact_matches[0]

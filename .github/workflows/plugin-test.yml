@@ -203,6 +203,20 @@ jobs:
           docker compose exec -T db sh -c "createdb -U postgres ${DB_NAME}"
           docker compose run --rm pum -p pg_tww -d datamodel install -p SRID 2056
 
+      - name: Install hook dependencies in QGIS container
+      # this does not violate the no-QGIS-on-the-runner rule; 
+      # the install happens inside the container, and the runner pytest still never imports QGIS
+        run: |
+          docker compose exec -T qgis sh -c '
+            set -eu
+            if [ ! -d /tmp/teksi-hooks-venv ]; then
+              python3 -m venv --system-site-packages /tmp/teksi-hooks-venv
+            fi
+            . /tmp/teksi-hooks-venv/bin/activate
+            python -m pip install --upgrade pip
+            python -m pip install -e "/usr/src[dev]"
+          '
+
       # teksi_hooks is loaded directly from the submodule because v0.1.0 is not
       # published on PyPI yet; once pyproject.toml declares it as a dependency,
       - name: Run pytest (no QGIS Python library)
