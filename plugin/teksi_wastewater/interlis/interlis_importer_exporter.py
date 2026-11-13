@@ -1202,6 +1202,7 @@ class InterlisImporterExporter:
             ) from exception
 
     def selection_models_for_imported_models(
+        self,
         imported_models: str | Iterable[str],
     ) -> tuple[
         str,

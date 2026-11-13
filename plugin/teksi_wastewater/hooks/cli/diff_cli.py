@@ -180,8 +180,8 @@ def _add_create_parser(
 
     parser.add_argument(
         "--xtf-input",
-        required=True,
         type=Path,
+        default=None,
         help=("Path to the baseline or main XTF file."),
     )
 

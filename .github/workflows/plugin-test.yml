@@ -179,8 +179,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install pytest
-          python -m pip install -r plugin/teksi_wastewater/requirements.txt
+          python -m pip install -e ".[dev]"
 
       - name: Download Interlis libs
         run: sudo ./plugin/scripts/download-interlis-libs.sh
