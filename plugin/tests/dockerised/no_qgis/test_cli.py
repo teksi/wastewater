@@ -9,7 +9,6 @@ from teksi_wastewater.interlis import model_config
 from teksi_wastewater.utils.database_utils import DatabaseUtils
 
 from ..helpers import (
-    data_file,
     get_xtf_object,
     get_xtf_object_node_text,
     run_interlis_export,
@@ -86,7 +85,9 @@ def _run_interlis_import(
     command exits with a non-zero status.
     """
 
-    run_interlis_import(fixture_name, host_data_dir=HOST_DATA_DIR, container_data_dir=CONTAINER_DATA_DIR)
+    run_interlis_import(
+        fixture_name, host_data_dir=HOST_DATA_DIR, container_data_dir=CONTAINER_DATA_DIR
+    )
 
 
 def _fetchone(
