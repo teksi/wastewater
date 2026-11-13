@@ -299,7 +299,7 @@ class TeksiWastewaterPlugin:
         # self.toolbar.addAction(self.profileAction)
         self.toolbar.addAction(self.upstreamAction)
         self.upstreamAction.setToolTip(self.tr("Upstream"))
-        
+
         self.toolbar.addAction(self.downstreamAction)
         self.toolbar.addAction(self.wizardAction)
         self.toolbar.addAction(self.refreshNetworkTopologyAction)
