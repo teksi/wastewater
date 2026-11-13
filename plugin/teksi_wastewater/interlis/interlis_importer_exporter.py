@@ -607,6 +607,7 @@ class InterlisImporterExporter:
         srid: int = None,
         include_unplaced: bool = False,
         import_orgs: bool = False,
+        allow_schema_recreation: bool = False,
     ):
         if not self.schema:
             self.schema = config.EXPORT_SCHEMA
@@ -706,7 +707,9 @@ class InterlisImporterExporter:
             labels_file,
             selected_labels_scales_indices,
             selected_ids,
+            include_unplaced,
             import_orgs,
+            allow_schema_recreation,
         )
 
     def _import_validate_xtf_file(self, xtf_file_input):

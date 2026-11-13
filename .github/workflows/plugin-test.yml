@@ -153,7 +153,7 @@ jobs:
             --tail=500 \
             db \
             qgis
-  
+
   plugin-tests-no-qgis:
     name: Run unit tests on cli
     runs-on: ubuntu-24.04
