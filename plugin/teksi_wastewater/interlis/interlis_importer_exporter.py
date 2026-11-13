@@ -1082,11 +1082,11 @@ class InterlisImporterExporter:
                 else:
                     for row in rows:
                         cursor.execute(
-                            f"TRUNCATE TABLE {config.ABWASSER_SCHEMA}.{row[0]} CASCADE;"
+                            f"TRUNCATE TABLE {self.schema}.{row[0]} CASCADE;"
                         )
-                logger.info(f"Re-setting t_id sequence in schema {config.ABWASSER_SCHEMA}")
+                logger.info(f"Re-setting t_id sequence in schema {self.schema}")
                 cursor.execute(
-                    f"ALTER SEQUENCE IF EXISTS {config.ABWASSER_SCHEMA}.t_ili2db_seq RESTART WITH 1;"
+                    f"ALTER SEQUENCE IF EXISTS {self.schema}.t_ili2db_seq RESTART WITH 1;"
                 )
 
     def _create_ili_schema(
