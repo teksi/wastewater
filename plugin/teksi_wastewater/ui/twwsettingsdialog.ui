@@ -334,43 +334,6 @@
          </item>
         </layout>
        </item>
-       <item row="7" column="0">
-        <widget class="QGroupBox" name="mGbLayout">
-         <property name="title">
-          <string>Layout</string>
-         </property>
-         <layout class="QFormLayout" name="formLayout">
-          <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-          </property>
-          <item row="0" column="0" colspan="2">
-           <widget class="QGroupBox" name="mGbOverrideDefaultProfileTemplate">
-            <property name="title">
-             <string>Override default profile template</string>
-            </property>
-            <property name="checkable">
-             <bool>true</bool>
-            </property>
-            <property name="checked">
-             <bool>false</bool>
-            </property>
-            <layout class="QHBoxLayout" name="horizontalLayout">
-             <item>
-              <widget class="QLineEdit" name="mProfileTemplateFile"/>
-             </item>
-             <item>
-              <widget class="QPushButton" name="mPbnChooseProfileTemplateFile">
-               <property name="text">
-                <string>...</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
        <item row="9" column="0" colspan="2">
         <widget class="QGroupBox" name="mGbOverrideSRID">
          <property name="title">
