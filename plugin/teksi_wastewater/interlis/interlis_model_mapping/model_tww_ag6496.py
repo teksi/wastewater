@@ -6,6 +6,8 @@ from .model_base import ModelBase
 
 
 class ModelTwwAG6496(ModelBase):
+    inheritance_key = None
+
     def __init__(self):
         super().__init__(config.TWW_APP_SCHEMA)
 
@@ -19,6 +21,7 @@ class ModelTwwAG6496(ModelBase):
             organisationtyp = Column(String)
             letzte_aenderung = Column(DateTime)
             bemerkung = Column(String)
+            _tww_obj_id = Column(String)
             __table_args__ = {"schema": config.TWW_APP_SCHEMA}
 
         ModelTwwAG6496.organisation = organisation
@@ -80,6 +83,12 @@ class ModelTwwAG6496(ModelBase):
             bemerkung_gep = Column(String)
             letzte_aenderung_gep = Column(DateTime)
             ignore_ws = Column(Boolean)
+            ws_type = Column(String)
+            _mapping_ws_obj_id = Column(String)
+            _mapping_ne_obj_id = Column(String)
+            _mapping_origin = Column(String)
+            _mapping_has_unc_fallback = Column(Boolean)
+            _mapping_function_hierarchic_code = Column(Integer)
             __table_args__ = {"schema": config.TWW_APP_SCHEMA}
 
         ModelTwwAG6496.gepknoten = gepknoten
@@ -128,6 +137,10 @@ class ModelTwwAG6496(ModelBase):
             letzte_aenderung_gep = Column(DateTime)
             startknoten = Column(String)
             endknoten = Column(String)
+            _mapping_ws_obj_id = Column(String)
+            _mapping_reach_point_from_obj_id = Column(String)
+            _mapping_reach_point_to_obj_id = Column(String)
+            _mapping_pipe_profile_obj_id = Column(String)
             __table_args__ = {"schema": config.TWW_APP_SCHEMA}
 
         ModelTwwAG6496.gephaltung = gephaltung
@@ -203,6 +216,7 @@ class ModelTwwAG6496(ModelBase):
             __tablename__ = "vw_agxx_ueberlauf_foerderaggregat"
             obj_id = Column(String, primary_key=True)
             datenbewirtschafter_gep = Column(String)
+            datenbewirtschafter_wi = Column(String)
             bemerkung_gep = Column(String)
             bemerkung_wi = Column(String)
             letzte_aenderung_gep = Column(DateTime)
@@ -211,7 +225,7 @@ class ModelTwwAG6496(ModelBase):
             bezeichnung = Column(String)
             knotenref = Column(String)
             knoten_nachref = Column(String)
-
+            ov_type = Column(String)
             __table_args__ = {"schema": config.TWW_APP_SCHEMA}
 
         ModelTwwAG6496.ueberlauf_foerderaggregat = ueberlauf_foerderaggregat

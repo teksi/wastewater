@@ -12,7 +12,8 @@ identifier_short AS kurzbezeichnung,
 'AfU Aargau' AS datenbewirtschafter_kt,
 ot.value_de  AS organisationtyp,
 last_modification  AS letzte_aenderung,
-remark AS bemerkung
+remark AS bemerkung,
+obj_id as _tww_obj_id
 FROM tww_od.organisation org
 LEFT JOIN tww_vl.organisation_organisation_type ot ON ot.code = org.organisation_type
 WHERE tww_active
@@ -188,6 +189,8 @@ WITH re_meta AS(
 			 , first_value(unc.ch_function_hierarchic) OVER w) AS ch_function_hierarchic,
 			 ws.fk_main_cover,
 			 ws.accessibility,
+	  COALESCE(first_value(ws.detail_geometry3d_geometry) OVER w
+			 , first_value(unc.detail_geometry3d_geometry) OVER w) AS detail_geometry3d_geometry,
 	  COALESCE(first_value(ws1.ag96_fk_measure) OVER w
              , first_value(re_from.ag96_fk_measure) OVER w
              , first_value(re_to.ag96_fk_measure) OVER w
@@ -207,6 +210,7 @@ WITH re_meta AS(
 				 fk_owner,
 				 fk_operator,
 				 fk_main_cover,
+	  			detail_geometry3d_geometry,
 				 accessibility
 				 FROM tww_od.wastewater_structure )  ws  ON ws.obj_id = ne.fk_wastewater_structure
       LEFT JOIN (SELECT fk_wastewater_structure,
@@ -226,6 +230,7 @@ WITH re_meta AS(
 				 fk_owner,
 				 fk_operator,
 				 ch_function_hierarchic,
+				 detail_geometry3d_geometry,
 				 ag96_fk_measure
 				 FROM tww_od.agxx_unconnected_node_bwrel) unc ON unc.obj_id=wn.obj_id
 	  LEFT JOIN tww_vl.channel_function_hierarchic vl_fct_hier_unc 	ON unc.ch_function_hierarchic = vl_fct_hier_unc.code
@@ -245,8 +250,8 @@ CREATE UNIQUE INDEX in_app_vw_agxx_knoten_bauwerksattribute_obj_id
 DROP VIEW IF EXISTS tww_app.vw_agxx_gepknoten;
 CREATE OR REPLACE VIEW tww_app.vw_agxx_gepknoten
  AS
- SELECT wn.obj_id,
-    COALESCE(wn.wwtp_number, unc.wwtp_number) AS ara_nr,
+ SELECT node.obj_id,
+    node.wwtp_number AS ara_nr,
     COALESCE(ws.year_of_construction, 1800) AS baujahr,
     COALESCE(sc.value_de, 'unbekannt'::character varying) AS baulicherzustand,
         CASE
@@ -255,8 +260,8 @@ CREATE OR REPLACE VIEW tww_app.vw_agxx_gepknoten
         END AS bauwerkstatus,
     ne_agxx.ag64_remark AS bemerkung_wi,
     COALESCE(ne.identifier, rp.identifier) AS bezeichnung,
-    COALESCE(co.level, main_co.level, unc.co_level) AS deckelkote,
-    st_force2d(COALESCE(main_ws.detail_geometry3d_geometry, unc.detail_geometry3d_geometry)) AS detailgeometrie,
+    COALESCE(co.level, main_co.level, node.co_level) AS deckelkote,
+    st_force2d(main_ws.detail_geometry3d_geometry) AS detailgeometrie,
     COALESCE(fi.value_de, 'unbekannt'::character varying) AS finanzierung,
     COALESCE(
         CASE
@@ -268,12 +273,12 @@ CREATE OR REPLACE VIEW tww_app.vw_agxx_gepknoten
     COALESCE("left"(fhi.value_de::text, 3), 'SAA'::text) AS funktionhierarchisch,
     COALESCE(isgate.value_de, 'unbekannt'::character varying) AS istschnittstelle,
     COALESCE(ws.status_survey_year, 1800) AS jahr_zustandserhebung,
-    st_force2d(COALESCE(co.situation3d_geometry, wn.situation3d_geometry)) AS lage,
+    st_force2d(COALESCE(co.situation3d_geometry, node.situation3d_geometry)) AS lage,
     COALESCE(ne_agxx_lm.ag64_last_modification, rp.last_modification) AS letzte_aenderung_wi,
     co_pa.value_de AS lagegenauigkeit,
-    wn.backflow_level_current AS maxrueckstauhoehe,
+    node.backflow_level_current AS maxrueckstauhoehe,
     COALESCE(rn.value_de, 'unbekannt'::character varying) AS sanierungsbedarf,
-    wn.bottom_level AS sohlenkote,
+    node.bottom_level AS sohlenkote,
     COALESCE(ac.value_de, 'unbekannt'::character varying) AS zugaenglichkeit,
     concat_ws(''::text, 'ch113jqg0000', "right"(COALESCE(ws.fk_operator, '00000107'::character varying)::text, 8)) AS betreiber,
     concat_ws(''::text, 'ch113jqg0000', "right"(COALESCE(ne_agxx.ag64_fk_provider, '00000107'::character varying)::text, 8)) AS datenbewirtschafter_wi,
@@ -290,50 +295,73 @@ CREATE OR REPLACE VIEW tww_app.vw_agxx_gepknoten
             WHEN ii.obj_id IS NOT NULL THEN 'infiltration_installation'::text
             WHEN wwtp.obj_id IS NOT NULL THEN 'wwtp_structure'::text
             ELSE 'unknown'::text
-        END AS ws_type
-    FROM ( SELECT wn_1.obj_id,
-            wn_1.wwtp_number,
-            wn_1.situation3d_geometry,
-            wn_1.backflow_level_current,
-            wn_1.bottom_level,
-            wns._function_hierarchic
-           FROM tww_od.wastewater_node wn_1
-             LEFT JOIN tww_od.tww_wastewater_node_symbology wns ON wns.fk_wastewater_node::text = wn_1.obj_id::text
-        UNION (
-                 SELECT un.obj_id,
-                    un.wwtp_number,
-                    un.situation3d_geometry,
-                    un.backflow_level_current,
-                    un.bottom_level,
-                    un.ch_function_hierarchic AS _function_hierarchic
-                   FROM tww_od.agxx_unconnected_node_bwrel un
-                EXCEPT
-                 SELECT un.obj_id,
-                    un.wwtp_number,
-                    un.situation3d_geometry,
-                    un.backflow_level_current,
-                    un.bottom_level,
-                    un.ch_function_hierarchic AS _function_hierarchic
-                   FROM tww_od.agxx_unconnected_node_bwrel un
-                  WHERE (un.obj_id::text IN ( SELECT wn_1.obj_id
-                           FROM tww_od.wastewater_node wn_1))
-        )) wn
-    LEFT JOIN tww_od.wastewater_networkelement ne ON wn.obj_id::text = ne.obj_id::text
-    LEFT JOIN tww_app.vw_agxx_knoten_bauwerksattribute ws ON wn.obj_id::text = ws.obj_id::text
-    LEFT JOIN tww_od.wastewater_structure main_ws ON wn.obj_id::text = main_ws.fk_main_wastewater_node::text
-    LEFT JOIN tww_od.agxx_wastewater_node wn_agxx ON wn_agxx.fk_wastewater_node::text = wn.obj_id::text
+        END AS ws_type,
+		main_ws.obj_id AS _mapping_ws_obj_id,
+		ne.obj_id AS _mapping_ne_obj_id,
+		node._mapping_origin,
+		node._has_unc_fallback AS _mapping_has_unc_fallback
+FROM (
+SELECT wn.obj_id,
+            wn.wwtp_number,
+            wn.situation3d_geometry,
+            wn.backflow_level_current,
+            wn.bottom_level,
+			CASE WHEN rp_ref.fk_wastewater_networkelement IS NULL
+			AND wn_unc.obj_id IS NOT NULL
+			THEN wn_unc.ch_function_hierarchic
+			ELSE wns._function_hierarchic
+			END AS _function_hierarchic,
+			CASE WHEN rp_ref.fk_wastewater_networkelement IS NULL
+			AND wn_unc.obj_id IS NOT NULL
+			THEN 'agxx_unconnected_node_bwrel'::text
+			ELSE 'wastewater_node'::text
+			END AS _mapping_origin,
+			NULL as co_level,
+			NULL as co_positional_accuracy,
+			wn_ws.obj_id as ws_obj_id,
+			wn_unc.obj_id IS NOT NULL as  _has_unc_fallback
+           FROM tww_od.wastewater_node wn
+           LEFT JOIN tww_od.tww_wastewater_node_symbology wns ON wns.fk_wastewater_node::text = wn.obj_id::text
+		   INNER JOIN tww_od.wastewater_networkelement wn_ne ON wn_ne.obj_id= wn.obj_id
+		   INNER JOIN tww_od.wastewater_structure wn_ws ON wn_ne.fk_wastewater_structure= wn_ws.obj_id
+		   LEFT JOIN tww_od.agxx_unconnected_node_bwrel wn_unc on wn_unc.obj_id=wn.obj_id
+		   LEFT JOIN (
+		   	SELECT DISTINCT ON (fk_wastewater_networkelement)
+		   	fk_wastewater_networkelement
+			FROM tww_od.reach_point
+			) rp_ref on rp_ref.fk_wastewater_networkelement=wn.obj_id
+
+		UNION
+			SELECT
+			rp_1.obj_id,
+            rp_unc.wwtp_number,
+            rp_1.situation3d_geometry,
+            rp_unc.backflow_level_current,
+            rp_1.level as bottom_level,
+            rp_ch.function_hierarchic,
+			'reach_point'::text AS _mapping_origin,
+			rp_unc.co_level,
+			rp_unc.co_positional_accuracy,
+			rp_ch.obj_id as ws_obj_id,
+			rp_unc.obj_id IS NOT NULL as  _has_unc_fallback
+           FROM tww_od.agxx_reach_point agxx_rp
+		   INNER JOIN tww_od.reach_point rp_1 ON agxx_rp.fk_reach_point=rp_1.obj_id
+           LEFT JOIN tww_od.agxx_unconnected_node_bwrel rp_unc ON agxx_rp.ag64_fk_wastewater_node::text = rp_unc.obj_id::text
+		   INNER JOIN tww_od.reach re_rp ON (rp_1.obj_id =re_rp.fk_reach_point_from OR rp_1.obj_id =re_rp.fk_reach_point_to)
+		   INNER JOIN tww_od.wastewater_networkelement rp_ne ON rp_ne.obj_id= re_rp.obj_id
+		   INNER JOIN tww_od.channel rp_ch ON rp_ne.fk_wastewater_structure= rp_ch.obj_id
+		   )node
+
+    LEFT JOIN tww_od.wastewater_networkelement ne ON node.obj_id::text = ne.obj_id::text
+    LEFT JOIN tww_app.vw_agxx_knoten_bauwerksattribute ws ON node.obj_id::text = ws.obj_id::text
+    LEFT JOIN tww_od.wastewater_structure main_ws ON node.obj_id::text = main_ws.fk_main_wastewater_node::text
+    LEFT JOIN tww_od.agxx_wastewater_node wn_agxx ON wn_agxx.fk_wastewater_node::text = node.obj_id::text
     LEFT JOIN tww_od.agxx_wastewater_networkelement ne_agxx ON ne_agxx.fk_wastewater_networkelement::text = ne.obj_id::text
     LEFT JOIN tww_od.agxx_last_modification ne_agxx_lm ON ne_agxx_lm.fk_element::text = ne.obj_id::text
     LEFT JOIN tww_od.agxx_wastewater_structure ws_agxx ON ws_agxx.fk_wastewater_structure::text = ws.obj_id::text
     LEFT JOIN tww_od.measuring_point meas_pt ON main_ws.obj_id::text = meas_pt.fk_wastewater_structure::text
     LEFT JOIN tww_od.wwtp_structure wwtp ON main_ws.obj_id::text = wwtp.obj_id::text
     LEFT JOIN tww_vl.wastewater_node_ag96_is_gateway isgate ON wn_agxx.ag96_is_gateway = isgate.code
-    LEFT JOIN ( SELECT agxx_unconnected_node_bwrel.obj_id,
-            agxx_unconnected_node_bwrel.co_level,
-            agxx_unconnected_node_bwrel.detail_geometry3d_geometry,
-            agxx_unconnected_node_bwrel.co_positional_accuracy,
-            agxx_unconnected_node_bwrel.wwtp_number
-           FROM tww_od.agxx_unconnected_node_bwrel) unc ON unc.obj_id::text = wn.obj_id::text
     LEFT JOIN tww_vl.wastewater_structure_status st ON st.code = ws.status
     LEFT JOIN tww_od.manhole ma ON main_ws.obj_id::text = ma.obj_id::text
     LEFT JOIN tww_vl.manhole_function ma_fu ON ma_fu.code = ma.function
@@ -349,13 +377,13 @@ CREATE OR REPLACE VIEW tww_app.vw_agxx_gepknoten
     LEFT JOIN tww_vl.wastewater_structure_structure_condition sc ON sc.code = ws.structure_condition
     LEFT JOIN tww_vl.wastewater_structure_renovation_necessity rn ON rn.code = ws.renovation_necessity
     LEFT JOIN tww_vl.wastewater_structure_financing fi ON fi.code = ws.financing
-    LEFT JOIN tww_vl.channel_function_hierarchic fhi ON fhi.code = wn._function_hierarchic
-    LEFT JOIN tww_od.agxx_cover co_agxx ON co_agxx.ag64_fk_wastewater_node::text = wn.obj_id::text
+    LEFT JOIN tww_vl.channel_function_hierarchic fhi ON fhi.code = node._function_hierarchic
+    LEFT JOIN tww_od.agxx_cover co_agxx ON co_agxx.ag64_fk_wastewater_node::text = node.obj_id::text
     LEFT JOIN tww_od.cover co ON co.obj_id::text = co_agxx.fk_cover::text
     LEFT JOIN tww_od.cover main_co ON main_co.obj_id::text = ws.fk_main_cover::text
-    LEFT JOIN tww_vl.cover_positional_accuracy co_pa ON co_pa.code = COALESCE(co.positional_accuracy::bigint, main_co.positional_accuracy::bigint, unc.co_positional_accuracy)
+    LEFT JOIN tww_vl.cover_positional_accuracy co_pa ON co_pa.code = COALESCE(co.positional_accuracy::bigint, main_co.positional_accuracy::bigint, node.co_positional_accuracy)
     LEFT JOIN tww_vl.wastewater_structure_accessibility ac ON ac.code = ws.accessibility
-    LEFT JOIN tww_od.reach_point rp ON rp.obj_id::text = wn.obj_id::text
+    LEFT JOIN tww_od.reach_point rp ON rp.obj_id::text = node.obj_id::text
 ;
 
 ------------------
@@ -412,7 +440,12 @@ CREATE OR REPLACE VIEW tww_app.vw_agxx_gephaltung
     ws_agxx.ag96_fk_measure AS gepmassnahmeref,
     concat_ws(''::text, 'ch113jqg0000', "right"(COALESCE(ne_agxx.ag96_fk_provider, '00000107'::character varying)::text, 8)) AS datenbewirtschafter_gep,
     ne_agxx.ag96_remark AS bemerkung_gep,
-    COALESCE(ne_agxx_lm.ag96_last_modification::timestamp with time zone, to_timestamp('1800-01-01'::text, 'YYYY-MM-DD'::text)) AS letzte_aenderung_gep
+    COALESCE(ne_agxx_lm.ag96_last_modification::timestamp with time zone, to_timestamp('1800-01-01'::text, 'YYYY-MM-DD'::text)) AS letzte_aenderung_gep,
+	ws.obj_id AS _mapping_ws_obj_id,
+	re.fk_reach_point_from AS _mapping_reach_point_from_obj_id,
+	re.fk_reach_point_to AS _mapping_reach_point_to_obj_id,
+	re.fk_pipe_profile AS _mapping_pipe_profile_obj_id
+
   FROM tww_od.reach re
     LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id::text = re.obj_id::text
     LEFT JOIN tww_od.reach_point rp_from ON rp_from.obj_id::text = re.fk_reach_point_from::text

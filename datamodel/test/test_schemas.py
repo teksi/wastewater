@@ -8,8 +8,8 @@ except ImportError:
 
 from .utils import DEFAULT_PG_SERVICE, DbTestBase
 
-TWW_SCHEMAS = ("tww_sys", "tww_vl", "tww_od")
-APP_SCHEMAS = ("tww_app", "tww_app_pg2ili")
+TWW_SCHEMAS = ("tww_sys", "tww_vl", "tww_od", "tww_diff")
+APP_SCHEMAS = ("tww_app", "tww_app_xtf2pg", "tww_app_pg2xtf", "tww_app_xtf2pg_incr")
 PG_SCHEMAS = ("pg_toast", "information_schema", "pg_catalog", "public")
 
 ALL_SCHEMAS = TWW_SCHEMAS + PG_SCHEMAS + APP_SCHEMAS
