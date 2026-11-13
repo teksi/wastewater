@@ -35,7 +35,7 @@ class InterlisExporterToIntermediateSchema:
         Args:
             selection:      if provided, limits the export to networkelements that are provided in the selection
         """
-        self.export_model_groups = export_model_groups
+        self.export_model_groups = set(export_model_groups)
         self.callback_progress_done = callback_progress_done
 
         # Filtering
