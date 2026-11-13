@@ -69,16 +69,16 @@ jobs:
 
       - name: Wait for DB
         run: |
-          until docker compose exec db pg_isready -U postgres; do
+          until docker compose exec -T db pg_isready -U postgres; do
             echo "Waiting for PostgreSQL..."
             sleep 2
           done
 
       - name: Initialize database
         run: |
-          docker compose exec db sh -c "dropdb -U postgres --if-exists ${DB_NAME}"
-          docker compose exec db sh -c "createdb -U postgres ${DB_NAME}"
-          docker compose run pum -p ${PGSERVICE} -d datamodel install -p SRID 2056
+          docker compose exec -T db sh -c "dropdb -U postgres --if-exists ${DB_NAME}"
+          docker compose exec -T db sh -c "createdb -U postgres ${DB_NAME}"
+          docker compose run --rm pum -p ${PGSERVICE} -d datamodel install -p SRID 2056
 
       - name: Install hook dependencies in QGIS container
         run: |
@@ -108,33 +108,58 @@ jobs:
 
       - name: Run QGIS tests (except DSS)
         run: |
-          docker compose exec qgis \
-            sh -c "xvfb-run pytest \
+          docker compose exec -T qgis sh -c '
+            set -eu
+
+            . /tmp/teksi-hooks-venv/bin/activate
+
+            export PYTHONPATH="/usr/src/plugin:/usr/src/plugin_hooks:/usr/src:/usr/share/qgis/python"
+
+            xvfb-run -a python -m pytest \
               /usr/src/plugin/tests/dockerised/qgis/test_interlis.py \
-              -k 'not test_dss_dataset_import_export' \
-              -v -c /usr/src/plugin/pytest.ini"
+              -k "not test_dss_dataset_import_export" \
+              -v -c /usr/src/plugin/pytest.ini
+          '
 
       - name: Reset database
         run: |
-          docker compose exec db sh -c "dropdb -U postgres --if-exists ${DB_NAME}"
-          docker compose exec db sh -c "createdb -U postgres ${DB_NAME}"
-          docker compose run pum -p ${PGSERVICE} -d datamodel install -p SRID 2056
+          docker compose exec -T db sh -c "dropdb -U postgres --if-exists ${DB_NAME}"
+          docker compose exec -T db sh -c "createdb -U postgres ${DB_NAME}"
+          docker compose run --rm pum -p ${PGSERVICE} -d datamodel install -p SRID 2056
 
       - name: Run QGIS DSS test
         run: |
-          docker compose exec qgis \
-            sh -c "xvfb-run pytest \
-              /usr/src/plugin/tests/dockerised/qgis/test_interlis.py::TestInterlis::test_dss_dataset_import_export \
-              -v -c /usr/src/plugin/pytest.ini"
+          docker compose exec -T qgis sh -c '
+            set -eu
 
-      - name: docker logs
-        run: docker compose logs db
+            . /tmp/teksi-hooks-venv/bin/activate
 
+            export PYTHONPATH="/usr/src/plugin:/usr/src/plugin_hooks:/usr/src:/usr/share/qgis/python"
+
+            xvfb-run -a python -m pytest \
+              "/usr/src/plugin/tests/dockerised/qgis/test_interlis.py::TestInterlis::test_dss_dataset_import_export" \
+              -v -c /usr/src/plugin/pytest.ini
+          '
+
+      - name: Show Docker service status
+        if: failure()
+        run: docker compose ps --all
+
+      - name: Docker logs
+        if: failure()
+        run: |
+          docker compose logs \
+            --no-color \
+            --tail=500 \
+            db \
+            qgis
+  
   plugin-tests-no-qgis:
     name: Run unit tests on cli
     runs-on: ubuntu-24.04
     env:
       DB_NAME: tww
+
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -144,38 +169,61 @@ jobs:
       - name: Setup env
         run: cp .env.example .env
 
-      - name: Install Python
+      - name: Set up Python
         uses: actions/setup-python@v7
         with:
           python-version: "3.11"
+          cache: pip
+          cache-dependency-path: pyproject.toml
 
       - name: Install dependencies
         run: |
-          pip install pytest
-          pip install -r plugin/teksi_wastewater/requirements.txt
+          python -m pip install --upgrade pip
+          python -m pip install pytest
+          python -m pip install -r plugin/teksi_wastewater/requirements.txt
 
       - name: Download Interlis libs
         run: sudo ./plugin/scripts/download-interlis-libs.sh
 
+      # Services are started only as containers: the pytest process itself
+      # stays on the runner so no QGIS Python library can leak into it.
+      # The tests reach the CLI through `docker compose exec` (see helpers.py).
       - name: Start services
         run: docker compose up db qgis -d
 
       - name: Wait for DB
         run: |
-          until docker compose exec db pg_isready -U postgres; do
+          until docker compose exec -T db pg_isready -U postgres; do
             echo "Waiting for PostgreSQL..."
             sleep 2
           done
 
       - name: Init DB
         run: |
-          docker compose exec db sh -c "createdb -U postgres ${DB_NAME}"
-          docker compose run pum -p pg_tww -d datamodel install -p SRID 2056
+          docker compose exec -T db sh -c "dropdb -U postgres --if-exists ${DB_NAME}"
+          docker compose exec -T db sh -c "createdb -U postgres ${DB_NAME}"
+          docker compose run --rm pum -p pg_tww -d datamodel install -p SRID 2056
 
+      # teksi_hooks is loaded directly from the submodule because v0.1.0 is not
+      # published on PyPI yet; once pyproject.toml declares it as a dependency,
+      # /usr/src-equivalent plugin_hooks entry can be dropped here.
       - name: Run pytest (no QGIS Python library)
         run: pytest plugin/tests/dockerised/no_qgis -v -c plugin/pytest.ini -m no_qgis
         env:
-          PYTHONPATH: ${{ github.workspace }}
+          PYTHONPATH: >-
+            ${{ github.workspace }}/plugin:
+            ${{ github.workspace }}/plugin_hooks:
+            ${{ github.workspace }}
+
+      - name: Show Docker service status
+        if: failure()
+        run: docker compose ps --all
 
       - name: Show logs
-        run: docker compose logs db
+        if: failure()
+        run: |
+          docker compose logs \
+            --no-color \
+            --tail=500 \
+            db \
+            qgis

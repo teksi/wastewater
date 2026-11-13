@@ -62,9 +62,9 @@ def run_diff_cli(
 def create_review_job(
     *,
     job_id: str,
-    xtf_file: Path,
     provider_oid: str,
-    incremental_xtf: Path,
+    xtf_file: Path | None = None,
+    incremental_xtf: Path | None = None,
     auto_apply: bool = False,
     skip_rights_evaluation: bool = False,
 ) -> None:
