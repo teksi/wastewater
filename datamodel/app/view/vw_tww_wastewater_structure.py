@@ -525,7 +525,7 @@ def vw_tww_wastewater_structure(
             ST_SetSRID( ST_MakePoint(
                 ST_X(ST_TRANSLATE(ST_MakePoint(ST_X(ST_EndPoint(RE.progression3d_geometry)), ST_Y(ST_EndPoint(RE.progression3d_geometry))), dx, dy )),
                 ST_Y(ST_TRANSLATE(ST_MakePoint(ST_X(ST_EndPoint(RE.progression3d_geometry)), ST_Y(ST_EndPoint(RE.progression3d_geometry))), dx, dy )),
-                ST_Z(ST_PointN(RE.progression3d_geometry, 1))), {{srid}} )
+                ST_Z(ST_PointN(RE.progression3d_geometry, -1))), {{srid}} )
           ) )
         WHERE fk_reach_point_to IN
         (
