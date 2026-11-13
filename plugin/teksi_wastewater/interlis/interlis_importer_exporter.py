@@ -514,7 +514,7 @@ class InterlisImporterExporter:
             self._progress_done_in_scope(progress_scope, 15, "Creating ili schema...")
             create_basket_col = False
             export_models = set(export_models)
-            selection_models = model_selection.selection_models_for_imported_models(export_models)
+            selection_models = self.selection_models_for_imported_models(export_models)
             if "vsa_kek" in selection_models.groups:
                 create_basket_col = True
             self._create_ili_schema(export_models, create_basket_col=create_basket_col)

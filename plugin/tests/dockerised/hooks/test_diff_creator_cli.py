@@ -78,22 +78,25 @@ def create_review_job(
         job_id,
         "--job-mode",
         "replace",
-        "--xtf-input",
-        str(xtf_file),
-        "--incremental-xtf",
-        str(incremental_xtf),
         "--provider-oid",
         provider_oid,
         "--dataowner-oid",
         DATAOWNER_OID,
-        "--orgs-path",
-        str(ORGS_XTF),
         "--rights-profile",
         "CI",
         "--hook-config-dir",
         str(CONFIG_DIR),
         "--supersede-existing-diff-jobs",
     ]
+
+    if xtf_file is not None:
+        arguments += ["--xtf-input", str(xtf_file)]
+
+    if incremental_xtf is not None:
+        arguments += ["--incremental-xtf", str(incremental_xtf)]
+
+    if ORGS_XTF is not None:
+        arguments += ["--orgs-path", str(ORGS_XTF)]
 
     if skip_rights_evaluation:
         arguments.append(

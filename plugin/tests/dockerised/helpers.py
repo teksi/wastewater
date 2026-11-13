@@ -150,9 +150,9 @@ def run_cli(
             "qgis",
             "sh",
             "-c",
-            f'export PYTHONPATH="/usr/src/plugin:/usr/src:/usr/share/qgis/python" {inner_command}',
+            'export PYTHONPATH="/usr/src/plugin:/usr/src:/usr/share/qgis/python" && '
+            f"{inner_command}",
         ]
-
     result = sp_run(
         cmd,
         capture_output=True,
