@@ -43,11 +43,11 @@ def _database_connection_config(
         )
 
     explicit_parameters = {
-        "host": getattr(args, "pghost",None),
-        "port": getattr(args, "pgport",None),
-        "dbname": getattr(args, "pgdatabase",None),
-        "user": getattr(args, "pguser",None),
-        "password": getattr(args, "pgpass",None),
+        "host": getattr(args, "pghost", None),
+        "port": getattr(args, "pgport", None),
+        "dbname": getattr(args, "pgdatabase", None),
+        "user": getattr(args, "pguser", None),
+        "password": getattr(args, "pgpass", None),
     }
 
     parameters.update(
