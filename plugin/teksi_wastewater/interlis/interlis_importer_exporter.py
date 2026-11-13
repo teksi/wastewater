@@ -4,7 +4,7 @@ import logging
 import os
 import socket
 import tempfile
-from collections.abc import Collection, Iterable
+from collections.abc import Collection
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -24,10 +24,7 @@ from .interlis_model_mapping.model_tww import ModelTwwSys, ModelTwwVl
 from .interlis_model_mapping.model_tww_ag6496 import ModelTwwAG6496
 from .interlis_model_mapping.model_tww_od import ModelTwwOd
 from .model_config import (
-    InterlisLangModel,
-    InterlisModel,
     TwwInterlisModelSelection,
-    interlis_models,
 )
 from .utils.ili2db import InterlisTools
 from .utils.sessions import (
