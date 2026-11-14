@@ -50,7 +50,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Administratorhandbuch</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../datamodel.html">Datenmodell</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Anpassung von Beschriftungen und Symbolisierung</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#relevant-fields">Relevant fields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#relevant-fields">Wesentliche Felder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#labelling">Beschriftung</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#symbology">Symbolisierung</a></li>
 </ul>
@@ -100,7 +100,7 @@
 <section id="customisation-of-labeling-and-symbology-behaviour">
 <span id="labelcustomisation"></span><h1>Anpassung von Beschriftungen und Symbolisierung<a class="headerlink" href="#customisation-of-labeling-and-symbology-behaviour" title="Link to this heading"></a></h1>
 <section id="relevant-fields">
-<h2>Relevant fields<a class="headerlink" href="#relevant-fields" title="Link to this heading"></a></h2>
+<h2>Wesentliche Felder<a class="headerlink" href="#relevant-fields" title="Link to this heading"></a></h2>
 <p>Das Symbolisierungs- und Beschriftungsverhalten von <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_wastewater_structure</span></code> hängt von den folgenden Feldern ab:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">_channel_function_hierarchic</span></code></p></li>
@@ -123,12 +123,12 @@
 <p>Die relevanten Felder werden dem primären Abwasserknoten eines Abwasserbauwerks entnommen. Die zugehörigen Kanalwerte werden durch Trigger definiert, die folgendes Priorisierungsschema verwenden</p>
 <ol class="arabic simple">
 <li><p>Einläufe, deren <code class="docutils literal notranslate"><span class="pre">tww_vl.channel_usage_current.tww_symbology_inflow_prio</span></code> = <code class="docutils literal notranslate"><span class="pre">true</span></code></p></li>
-<li><p>outgoing channels by <code class="docutils literal notranslate"><span class="pre">tww_vl.channel_function_hierarchic.tww_symbology_order</span></code></p></li>
-<li><p>incoming channels by <code class="docutils literal notranslate"><span class="pre">tww_vl.channel_function_hierarchic.tww_symbology_order</span></code></p></li>
-<li><p>outgoing channels by <code class="docutils literal notranslate"><span class="pre">tww_vl.channel_usage_current.tww_symbology_order</span></code></p></li>
-<li><p>incoming channels by <code class="docutils literal notranslate"><span class="pre">tww_vl.channel_usage_current.tww_symbology_order</span></code></p></li>
+<li><p>Ausläufe <code class="docutils literal notranslate"><span class="pre">tww_vl.channel_function_hierarchic.tww_symbology_order</span></code></p></li>
+<li><p>Einläufe <code class="docutils literal notranslate"><span class="pre">tww_vl.channel_function_hierarchic.tww_symbology_order</span></code></p></li>
+<li><p>Ausläufe  <code class="docutils literal notranslate"><span class="pre">tww_vl.channel_usage_current.tww_symbology_order</span></code></p></li>
+<li><p>Einläufe <code class="docutils literal notranslate"><span class="pre">tww_vl.channel_usage_current.tww_symbology_order</span></code></p></li>
 </ol>
-<p>By altering the corresponding field in <code class="docutils literal notranslate"><span class="pre">tww_vl</span></code>, the trigger logic’s behaviour can be influenced.</p>
+<p>Durch Ändern des entsprechenden Felds in <code class="docutils literal notranslate"><span class="pre">tww_vl</span></code> lässt sich das Verhalten der Trigger-Logik beeinflussen.</p>
 <figure class="align-default">
 <img alt="../../_images/tww_vl.channel_usage_current.png" src="../../_images/tww_vl.channel_usage_current.png" />
 </figure>

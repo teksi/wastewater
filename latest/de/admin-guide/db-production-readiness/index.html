@@ -57,9 +57,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../datamodel-tool/index.html">TEKSI Module Management Tool</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../db-update-pum/index.html">Manuelles Update des Datenmodells</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Datenbank für den Produktivbetrieb vorbereiten</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#oid-prefix-settings">OID Prefix Settings</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#obj-id-in-the-teksi-wastewater-module-tww">Obj_ID in the TEKSI Wastewater Module (TWW)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#setting-default-values">Setting Default Values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#oid-prefix-settings">OID Prefix einstellen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#obj-id-in-the-teksi-wastewater-module-tww">Obj_ID in TEKSI Abwasser Modul (TWW)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-default-values">Vorgabewerte einstellen</a></li>
 </ul>
 </li>
 </ul>
@@ -100,7 +100,7 @@
 <section id="prepare-database-for-production">
 <span id="production-readiness"></span><h1>Datenbank für den Produktivbetrieb vorbereiten<a class="headerlink" href="#prepare-database-for-production" title="Link to this heading"></a></h1>
 <section id="oid-prefix-settings">
-<h2>OID Prefix Settings<a class="headerlink" href="#oid-prefix-settings" title="Link to this heading"></a></h2>
+<h2>OID Prefix einstellen<a class="headerlink" href="#oid-prefix-settings" title="Link to this heading"></a></h2>
 <p>Um die Datenbank für den Produktivbetrieb vorzubereiten, ändern Sie das aktive Demo-Präfix (ch000000) in der Tabelle <cite>tww_sys.oid_prefixes</cite> in Ihr Projekt-Präfix. Falls erforderlich, fügen Sie Ihr Projekt-Präfix zunächst dieser Tabelle hinzu. Stellen Sie sicher, dass jeweils nur ein Präfix als aktiv markiert ist.</p>
 <figure class="align-default">
 <img alt="../../_images/tww_sys.oid_prefixes.png" src="../../_images/tww_sys.oid_prefixes.png" />
@@ -112,21 +112,21 @@
 <div class="versionadded">
 <p><span class="versionmodified added">Added in version 2026.0.</span></p>
 </div>
-<p>The OID Prefix can be set in TMMT from 2026.0.1 on</p>
+<p>Das OID Prefix kann seit der Version 2026.0.1 mit TMMT eingestellt werden.</p>
 </section>
 <section id="obj-id-in-the-teksi-wastewater-module-tww">
-<h2>Obj_ID in the TEKSI Wastewater Module (TWW)<a class="headerlink" href="#obj-id-in-the-teksi-wastewater-module-tww" title="Link to this heading"></a></h2>
+<h2>Obj_ID in TEKSI Abwasser Modul (TWW)<a class="headerlink" href="#obj-id-in-the-teksi-wastewater-module-tww" title="Link to this heading"></a></h2>
 <p>TWW erstellt Obj_IDs (die zur OID in der INTERLIS-Exportdatei werden) nach dem folgenden Muster: * Positionen 1-8: Präfix für alle neuen Datensätze in der Datenbank, definiert in tww_sys.oid_prefixes * Positionen 9, 10: Abkürzung der Klasse, definiert in tww_sys.dictionary_od_table.shortcut_en * Positionen 11-16: Sequenznummer, definiert für jede Klasse in tww_od-Sequenzen</p>
 <figure class="align-default">
 <img alt="../../_images/tww_od_sequences.png" src="../../_images/tww_od_sequences.png" />
 </figure>
-<p>These sequences store the next available sequential number for each class.</p>
+<p>Diese Sequenzen speichern die jeweils nächste verfügbare fortlaufende Nummer für jede Klasse.</p>
 <p>Was geschieht, wenn neue Daten importiert werden? * Wenn die neuen Daten dasselbe OID-Präfix verwenden wie das in der Datenbank hinterlegte OID-Präfix, müssen die Sequenzen aktualisiert werden. TWW führt dies nach dem Datenimport automatisch durch. Der Benutzer muss hierfür nichts weiter unternehmen. * Wenn die neuen Daten ein anderes OID-Präfix verwenden als das in der Datenbank hinterlegte OID-Präfix, müssen die Sequenzen nicht aktualisiert werden.</p>
 <p>Was geschieht, wenn das OID-Präfix in <cite>tww_sys.oid_prefixes</cite> geändert wird, während bereits Daten in der Datenbank vorhanden sind? * Falls die vorhandenen Daten bereits das neue OID-Präfix verwenden, müssen die Sequenzen aktualisiert werden. TWW führt dies nach dem Speichern des neuen OID-Präfixes automatisch durch. * Falls die vorhandenen Daten das neue OID-Präfix noch nicht verwenden, müssen die Sequenzen zurückgesetzt werden, damit der Zähler beim neuen Präfix wieder bei 0 beginnt. TWW führt dieses Zurücksetzen automatisch mithilfe eines Triggers durch, der bei einem UPDATE ausgelöst wird – also immer dann, wenn Sie den Status „aktiv“ eines oid_prefix-Datensatzes ändern oder das Präfix des aktiven oid_prefix-Datensatzes anpassen.</p>
 </section>
 <section id="setting-default-values">
-<h2>Setting Default Values<a class="headerlink" href="#setting-default-values" title="Link to this heading"></a></h2>
-<p>See <a class="reference internal" href="../../user-guide/How-To/index.html#settingdefaultvalues"><span class="std std-ref">Standard Werte setzen</span></a> in the User Guide - How to Chapter</p>
+<h2>Vorgabewerte einstellen<a class="headerlink" href="#setting-default-values" title="Link to this heading"></a></h2>
+<p>Siehe <a class="reference internal" href="../../user-guide/How-To/index.html#settingdefaultvalues"><span class="std std-ref">Standard Werte setzen</span></a> im Benutzerhandbuch - Kapitel How to</p>
 </section>
 </section>
 
