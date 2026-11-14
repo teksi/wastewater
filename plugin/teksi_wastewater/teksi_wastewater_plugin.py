@@ -296,10 +296,11 @@ class TeksiWastewaterPlugin:
         # Add toolbar button and menu item
         self.toolbar = QToolBar(self.tr("TEKSI Wastewater Toolbar"))
         self.toolbar.setObjectName(self.toolbar.windowTitle())
+        self.toolbar.setWhatsThis(self.tr("TEKSI Wastewater Toolbar"))
+        self.toolbar.setToolTip(self.tr("TEKSI Wastewater Toolbar"))
+
         # self.toolbar.addAction(self.profileAction)
         self.toolbar.addAction(self.upstreamAction)
-        self.upstreamAction.setToolTip(self.tr("Upstream"))
-
         self.toolbar.addAction(self.downstreamAction)
         self.toolbar.addAction(self.wizardAction)
         self.toolbar.addAction(self.refreshNetworkTopologyAction)
