@@ -12,6 +12,7 @@ project/*.qgs~
 
 plugin/teksi_wastewater/libs/
 plugin/teksi_wastewater/interlis/bin
+plugin/teksi_wastewater/interlis/utils/modelbaker/iliwrapper/bin
 plugin*.zip
 plugin*.tar.gz
 

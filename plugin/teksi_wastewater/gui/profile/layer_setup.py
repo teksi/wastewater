@@ -59,13 +59,28 @@ MANHOLE_DEFAULT_PX_WIDTH = 10
 MANHOLE_MIN_SHAFT_PX = 12.0
 MANHOLE_MAX_SHAFT_PX = 70.0
 
-# The shaft is anchored at the pipe invert (rp level) and split into two
-# exaggerated segments: invert->cover (up) and invert->floor / sump (down).
-# Same px-per-metre gain for both so their ratio stays truthful; small minimums
-# keep the cover clearly above and the floor clearly below the pipe.
+# The shaft is anchored at the pipe invert (rp level). Upwards, invert->cover is
+# an exaggerated pixel offset (a small minimum keeps the cover clearly above
+# the pipe). Downwards nothing is exaggerated: the floor is drawn at the TRUE
+# wn_bottom_level, so it is flush with the pipe when bottom_level equals the
+# reach-point level and shows a real drop / sump to scale when it does not.
 MANHOLE_VERTICAL_GAIN_PX = 6.0
 MANHOLE_MIN_COVER_PX = 10.0
-MANHOLE_MIN_SUMP_PX = 3.0
+
+# How far below the pipe invert the initial view reserves room for a true floor.
+# A sump or an in-manhole drop is 0-3 m; reserving an unbounded depth would let
+# one deep structure (the 52 m drop of a vortex shaft reached by its inflow)
+# flatten a whole path into a horizontal line — same reasoning as the cover
+# headroom in ManholeDashPlotItem.dashExtentsPx. Deeper floors run off the plot
+# edge (drawn open, without a floor line) until the user zooms out.
+MANHOLE_MAX_RESERVED_SUMP_M = 5.0
+
+# Same idea upwards: the initial view includes a manhole's TRUE cover as long as
+# it is within this height above the pipe invert, so an ordinary 1-6 m manhole
+# is shown whole, cover at its real level. A deeper shaft (the 56 m vortex
+# manhole) is not allowed to flatten the path: its walls run off the top edge,
+# drawn open and without a cover cap, until the user zooms out.
+MANHOLE_MAX_RESERVED_COVER_M = 10.0
 
 
 class ProfileLayerSetup:
@@ -94,6 +109,11 @@ class ProfileLayerSetup:
         # instead of scanning the whole temp layer once per structure.
         self._reach_vertices = []
         self._reach_vertex_buckets = {}
+        # wastewater-node obj_id -> {"entry": [...], "exit": [...]}: the
+        # reach-point levels of the selected reaches that end / start at that
+        # node (None = the reach is there but its level is NULL). Rebuilt by
+        # _reachZFeatures; feeds the manhole tooltip's Entry / Exit level.
+        self._reach_levels_by_node = {}
 
     # ------------------------------------------------------------------
     # Public API
@@ -351,9 +371,12 @@ class ProfileLayerSetup:
             bottom_missing = entry["bottom_level_missing"]
             # Pipe-invert level at this structure (rp_from/to_level), taken as the
             # nearest reach vertex Z. This is the TRUE-elevation anchor the shaft
-            # is built around: cover sits above it, floor (wn_bottom_level) below
-            # it (the sump). None when no Z reach is near → fall back to bottom.
+            # is built around: the cover sits an exaggerated offset above it,
+            # the floor at its own true wn_bottom_level. None when no Z reach
+            # is near → fall back to bottom.
             invert_level = self._adjacentReachLevel(geometry)
+            # Levels at which the selected reaches enter / leave this structure.
+            reach_levels = self._reach_levels_by_node.get(str(entry.get("wn_obj_id"))) or {}
             dashes.append(
                 {
                     "distance": float(distance_along),
@@ -368,8 +391,9 @@ class ProfileLayerSetup:
                     "dim1_mm": entry["dim1_mm"],
                     "_cover_label": entry.get("_cover_label"),
                     "_bottom_label": entry.get("_bottom_label"),
-                    "_input_label": entry.get("_input_label"),
-                    "_output_label": entry.get("_output_label"),
+                    "_reach_point_label": entry.get("_reach_point_label"),
+                    "entry_levels": list(reach_levels.get("entry", ())),
+                    "exit_levels": list(reach_levels.get("exit", ())),
                     "co_obj_id": entry.get("co_obj_id"),
                     "co_material": entry.get("co_material"),
                     "co_shape": entry.get("co_shape"),
@@ -508,8 +532,9 @@ class ProfileLayerSetup:
         QGIS renders each reach as a single invert line; to show the pipe height
         the canvas needs the invert *and* the clear height so it can draw the
         soffit above. The invert is anchored to the true level (Z); the soffit
-        is offset upward by an exaggerated pixel thickness (see reach_band_px),
-        because the real clear height is sub-pixel at network-overview zoom.
+        sits at invert + clear height on the elevation axis, but never thinner
+        than an exaggerated pixel minimum (see reach_band_px), because the real
+        clear height is sub-pixel at network-overview zoom.
         This returns, per reach, the invert vertices as (distance, invert_Z)
         plus raw clear_height in mm (None when missing — only the invert line is
         then drawn, never a fabricated height).
@@ -608,6 +633,12 @@ class ProfileLayerSetup:
             so the whole view is never streamed just to discard it here.
         """
         features = []
+        # Rebuilt alongside the features so the reach view is streamed once.
+        # Recorded BEFORE the level-less reaches are dropped below: a reach
+        # that is connected but has no level must surface as "Missing Data" in
+        # the manhole tooltip, not as "no reach connected".
+        levels_by_node = {}
+        self._reach_levels_by_node = levels_by_node
 
         for feat in _features_by_obj_id(original_layer, reach_ids):
             from_level = None
@@ -618,6 +649,8 @@ class ProfileLayerSetup:
                 to_level = feat["rp_to_level"]
             except KeyError:
                 pass
+
+            _record_reach_end_levels(levels_by_node, feat, from_level, to_level)
 
             if from_level is None or to_level is None:
                 continue
@@ -720,8 +753,13 @@ class ProfileLayerSetup:
                     "dim1_mm": _to_float(attrs.get("ma_dimension1")),
                     "_cover_label": attrs.get("_cover_label"),
                     "_bottom_label": attrs.get("_bottom_label"),
-                    "_input_label": attrs.get("_input_label"),
-                    "_output_label": attrs.get("_output_label"),
+                    # Main wastewater node: the key reach points connect to
+                    # (rp_*_fk_wastewater_networkelement), see buildManholeDashes.
+                    "wn_obj_id": attrs.get("wn_obj_id"),
+                    # '\nI=..\nO=..' — every labelled inflow/outflow of the
+                    # structure. Replaced _input_label / _output_label in
+                    # datamodel 2026.0.1; only a fallback for the tooltip.
+                    "_reach_point_label": attrs.get("_reach_point_label"),
                     # Cover attributes for the dedicated cover-cap tooltip.
                     "co_obj_id": attrs.get("co_obj_id"),
                     "co_material": attrs.get("co_material"),
@@ -981,6 +1019,31 @@ def _to_float(value):
         return None
 
 
+def _record_reach_end_levels(levels_by_node, feat, from_level, to_level):
+    """
+    Add one reach's end levels to the node -> {"entry": [...], "exit": [...]} map.
+
+    A reach ENTERS the node its downstream reach point is attached to
+    (rp_to_fk_wastewater_networkelement, at rp_to_level) and EXITS the node its
+    upstream reach point is attached to (rp_from_*). A NULL level is recorded as
+    None so the tooltip can say the data is missing rather than hide the reach.
+    """
+    for side, node_field, level in (
+        ("entry", "rp_to_fk_wastewater_networkelement", to_level),
+        ("exit", "rp_from_fk_wastewater_networkelement", from_level),
+    ):
+        try:
+            node_id = feat[node_field]
+        except KeyError:
+            continue
+        # QGIS NULL is falsy, so this skips both None and NULL node ids.
+        if not node_id:
+            continue
+        levels_by_node.setdefault(str(node_id), {"entry": [], "exit": []})[side].append(
+            _to_float(level)
+        )
+
+
 def _structure_profile_point(feat):
     """Return a point QgsGeometry for profile placement, or None."""
     geom = feat.geometry()
@@ -1036,6 +1099,10 @@ def reach_band_px(clear_height_mm):
     """
     Schematic pipe-band thickness in px from clear_height (mm).
 
+    This is only the MINIMUM thickness: once the view is zoomed in far enough
+    that the true clear height is larger on screen, the band is drawn to scale
+    instead (see TwwElevationProfileCanvas.reachBandThicknessPx).
+
     Uses the SAME vertical exaggeration as the manhole (MANHOLE_VERTICAL_GAIN_PX),
     so a pipe is always drawn smaller than the manhole it connects to — a pipe's
     clear height is physically less than the manhole's depth, so a band taller
@@ -1054,7 +1121,8 @@ def manhole_shaft_px(depth_m):
     Schematic manhole shaft height in px from the real depth (cover-bottom, m).
 
     Fallback used only when the pipe-invert level is unknown; otherwise the
-    shaft is split into cover and sump offsets around the invert (see below).
+    cover is offset from the invert (see below) and the floor is drawn at its
+    true level.
     Exaggerated and proportional so a deeper manhole looks taller at any zoom.
     """
     if depth_m is None or depth_m <= 0:
@@ -1072,16 +1140,6 @@ def manhole_cover_offset_px(cover_above_invert_m):
     return max(
         MANHOLE_MIN_COVER_PX,
         min(MANHOLE_MAX_SHAFT_PX, float(cover_above_invert_m) * MANHOLE_VERTICAL_GAIN_PX),
-    )
-
-
-def manhole_sump_offset_px(invert_above_floor_m):
-    """Exaggerated px from the pipe invert DOWN to the floor (rp - wn_bottom_level)."""
-    if invert_above_floor_m is None or invert_above_floor_m <= 0:
-        return MANHOLE_MIN_SUMP_PX
-    return max(
-        MANHOLE_MIN_SUMP_PX,
-        min(MANHOLE_MAX_SHAFT_PX, float(invert_above_floor_m) * MANHOLE_VERTICAL_GAIN_PX),
     )
 
 

@@ -85,8 +85,13 @@ class ProfileHoverManager:
     MANHOLE_BOTTOM_LEVEL = "wn_bottom_level"
     MANHOLE_COVER_LABEL = "_cover_label"
     MANHOLE_BOTTOM_LABEL = "_bottom_label"
-    MANHOLE_INPUT_LABEL = "_input_label"
-    MANHOLE_OUTPUT_LABEL = "_output_label"
+    # '\nI=..\nO=..' (I1/I2/.. when several). Datamodel 2026.0.1 merged the
+    # former _input_label / _output_label into this single column.
+    MANHOLE_REACH_POINT_LABEL = "_reach_point_label"
+    # Not view fields: reach-point levels of the selected reaches entering /
+    # leaving the structure, collected by ProfileLayerSetup.buildManholeDashes.
+    MANHOLE_ENTRY_LEVELS = "entry_levels"
+    MANHOLE_EXIT_LEVELS = "exit_levels"
     MANHOLE_DIMENSION1 = "ma_dimension1"
 
     # Canonical vw_change_points fields for the change-point tooltip.
@@ -383,8 +388,9 @@ class ProfileHoverManager:
                     "bottom_level_missing": dash.get("bottom_level_missing", False),
                     "_cover_label": dash.get("_cover_label"),
                     "_bottom_label": dash.get("_bottom_label"),
-                    "_input_label": dash.get("_input_label"),
-                    "_output_label": dash.get("_output_label"),
+                    "_reach_point_label": dash.get("_reach_point_label"),
+                    "entry_levels": dash.get("entry_levels"),
+                    "exit_levels": dash.get("exit_levels"),
                     "ma_dimension1": dash.get("dim1_mm"),
                     "ss_function": dash.get("ss_function"),
                     "_is_manhole_dash": True,
@@ -502,7 +508,11 @@ class ProfileHoverManager:
             invert_pt = self._canvas.plotPointToCanvasPointSafe(distance, invert_z)
             if invert_pt is None:
                 continue
-            band_px = reach_band_px(band.get("clear_height_mm")) or 2.0
+            clear_height_mm = band.get("clear_height_mm")
+            if hasattr(self._canvas, "reachBandThicknessPx"):
+                band_px = self._canvas.reachBandThicknessPx(clear_height_mm)[0] or 2.0
+            else:
+                band_px = reach_band_px(clear_height_mm) or 2.0
             # The band is drawn from the invert upward (soffit above = smaller y).
             top = invert_pt.y() - band_px - margin
             bottom = invert_pt.y() + margin
@@ -767,11 +777,22 @@ class ProfileHoverManager:
                 self._appendManholeLabelLine(
                     lines, "Bottom level", attrs.get(self.MANHOLE_BOTTOM_LABEL)
                 )
-                self._appendManholeLabelLine(
-                    lines, "Entry level", attrs.get(self.MANHOLE_INPUT_LABEL)
+                reach_point_label = attrs.get(self.MANHOLE_REACH_POINT_LABEL)
+                self._appendReachPointLevelLine(
+                    lines,
+                    "Entry level",
+                    attrs.get(self.MANHOLE_ENTRY_LEVELS),
+                    reach_point_label,
+                    "I",
+                    "no inflow reach",
                 )
-                self._appendManholeLabelLine(
-                    lines, "Exit level", attrs.get(self.MANHOLE_OUTPUT_LABEL)
+                self._appendReachPointLevelLine(
+                    lines,
+                    "Exit level",
+                    attrs.get(self.MANHOLE_EXIT_LEVELS),
+                    reach_point_label,
+                    "O",
+                    "no outflow reach",
                 )
 
                 cover_level = self._manholeCoverLevelValue(attrs)
@@ -1069,20 +1090,69 @@ class ProfileHoverManager:
         else:
             lines.append(f"{title}: {text}")
 
+    def _appendReachPointLevelLine(
+        self, lines, title, path_levels, reach_point_label, label_kind, none_text
+    ):
+        """
+        Append a manhole's Entry / Exit level line.
+
+        The levels of the selected reaches entering / leaving the structure
+        come first: they are the values the profile actually draws, and they
+        exist for every reach. The view's _reach_point_label is only the
+        fallback (a reach attached to a secondary node of the structure, or an
+        inflow that is not on the path) — it is generated solely for channels
+        flagged tww_use_in_labels, so on its own it would report real levels
+        of e.g. secondary-network reaches as missing.
+
+        "No reach on this side" (the first manhole of a path has no inflow) is
+        a different statement from "the level is missing" and is not red.
+
+        :param path_levels: floats (None = reach present, level NULL), or empty.
+        :param label_kind: 'I' (inflows) or 'O' (outflows).
+        """
+        if path_levels:
+            entries = [
+                (str(i + 1), None if level is None else f"{level:.2f}")
+                for i, level in enumerate(path_levels)
+            ]
+        else:
+            # The label function writes '?' for a NULL reach-point level.
+            entries = [
+                (idx or str(i + 1), None if value == "?" else value)
+                for i, (kind, idx, value) in enumerate(
+                    self._parseLevelLabel(reach_point_label)
+                )
+                if kind == label_kind
+            ]
+
+        if not entries:
+            lines.append(f"{title}: \u2013 ({none_text})")
+            return
+
+        texts = [
+            (idx, value if value is not None else self.MISSING_DATA_HTML)
+            for idx, value in entries
+        ]
+        if len(texts) == 1:
+            lines.append(f"{title}: {texts[0][1]}")
+        else:
+            lines.append(f"{title}: " + "; ".join(f"{idx}: {text}" for idx, text in texts))
+
     # ------------------------------------------------------------------
     # Formatting helpers
     # ------------------------------------------------------------------
 
     def _parseLevelLabel(self, label):
         """
-        Parse a DB level label into a list of (index, value) tuples.
+        Parse a DB level label into a list of (kind, index, value) tuples.
 
         The DB stores pre-formatted strings like '\\nC=3401.00' or
-        '\\nI1=2736.50\\nI2=2736.50'. We strip the letter prefix and keep
-        only the numeric value; a trailing digit on the prefix (I1, I2, …)
-        is captured as the index.
+        '\\nI1=2736.50\\nI2=2736.50\\nO=2736.40'. The letter prefix is the
+        kind (C cover, B bottom, I inflow, O outflow); a trailing digit on the
+        prefix (I1, I2, …) is captured as the index.
         """
-        if label is None:
+        # "not label" also catches QGIS NULL, which str() would turn into "NULL".
+        if not label:
             return []
         entries = []
         for raw in str(label).replace("\r", "\n").split("\n"):
@@ -1096,9 +1166,9 @@ class ProfileHoverManager:
                 cut = len(prefix)
                 while cut > 0 and prefix[cut - 1].isdigit():
                     cut -= 1
-                entries.append((prefix[cut:], value))
+                entries.append((prefix[:cut].upper(), prefix[cut:], value))
             else:
-                entries.append(("", token))
+                entries.append(("", "", token))
         return entries
 
     def _formatLevelLabel(self, label):
@@ -1111,9 +1181,9 @@ class ProfileHoverManager:
         if not entries:
             return None
         if len(entries) == 1:
-            return entries[0][1]
+            return entries[0][2]
         parts = []
-        for i, (idx, value) in enumerate(entries):
+        for i, (_kind, idx, value) in enumerate(entries):
             parts.append(f"{idx or (i + 1)}: {value}")
         return "; ".join(parts)
 
