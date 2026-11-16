@@ -90,7 +90,5 @@ class TwwChangeObjectProviderFactory(ChangeObjectProviderFactory):
         factory protocol for future implementations. The current provider
         obtains proposed values directly from Change.new_values.
         """
-        del import_schema
-        del canonical_metadata
 
         return TwwChangeObjectProvider()

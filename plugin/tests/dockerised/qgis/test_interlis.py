@@ -23,6 +23,7 @@ from teksi_wastewater.utils.database_utils import DatabaseUtils
 from ..helpers import (
     get_xtf_object,
     get_xtf_object_node_text,
+    run_interlis_export,
 )
 
 logger = logging.getLogger()
@@ -240,44 +241,29 @@ class TestInterlis(unittest.TestCase):
         selected_ids: tuple[str, ...] = (),
     ) -> Path:
         """
-        Export an XTF through the same hooks adapter used by the CLI.
+        Export one model through the shared CLI test helper.
+
+        The exporter appends the concrete INTERLIS model name to the requested
+        base filename. The shared helper calculates and validates the actual
+        model-specific output path.
         """
-        output_file = self._output_file(
+        requested_output = Path(
             output_name,
         )
 
-        context = TwwInterlisContext(
-            schema=config.EXPORT_SCHEMA,
-            srid=2056,
-            logs_next_to_file=True,
-            labels_file=None,
-            selected_label_scale_indices=(),
+        if requested_output.suffix.lower() != ".xtf":
+            raise ValueError(
+                "QGIS INTERLIS export test output must use the "
+                f"'.xtf' suffix, got {output_name!r}."
+            )
+
+        return run_interlis_export(
+            base_name=requested_output.stem,
+            model_group=model_group,
             selected_ids=selected_ids,
-            limit_to_selection=bool(
-                selected_ids,
-            ),
-            allow_schema_recreation=True,
+            host_output_dir=OUTPUT_DIR,
+            container_output_dir=OUTPUT_DIR,
         )
-
-        self.interlis_service.export_xtf(
-            xtf_file=output_file,
-            export_models=(
-                self._model_name(
-                    model_group,
-                ),
-            ),
-            context=context,
-        )
-
-        self.assertTrue(
-            output_file.is_file(),
-            (
-                "INTERLIS export completed without creating the expected "
-                f"output file: {output_file}"
-            ),
-        )
-
-        return output_file
 
     def _assert_scalar(
         self,
