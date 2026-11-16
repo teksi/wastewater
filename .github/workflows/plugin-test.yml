@@ -35,6 +35,8 @@ jobs:
       DB_NAME: tww
       QGIS_TEST_VERSION: ${{ matrix.qgis_version }}
       COMPOSE_PROFILES: qgis
+      COMPOSE_PROJECT_NAME: >-
+        wastewater-plugin-${{ github.run_id }}-${{ github.run_attempt }}-${{ strategy.job-index }}
 
     steps:
       - name: Checkout
@@ -154,11 +156,20 @@ jobs:
             db \
             qgis
 
+      - name: Stop services
+        if: always()
+        run: |
+          docker compose down \
+            --volumes \
+            --remove-orphans
+
   plugin-tests-no-qgis:
     name: Run unit tests on cli
     runs-on: ubuntu-24.04
     env:
       DB_NAME: tww
+      COMPOSE_PROJECT_NAME: >-
+        wastewater-noqgis-${{ github.run_id }}-${{ github.run_attempt }}
 
     steps:
       - name: Checkout
@@ -238,3 +249,10 @@ jobs:
             --tail=500 \
             db \
             qgis
+
+      - name: Stop services
+        if: always()
+        run: |
+          docker compose down \
+            --volumes \
+            --remove-orphans

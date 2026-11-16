@@ -16,7 +16,7 @@ class InterlisExporterToIntermediateSchemaError(Exception):
 class InterlisExporterToIntermediateSchema:
     def __init__(
         self,
-        export_model_groups,
+        model_selection: model_config.TwwInterlisModelSelection,
         model_classes_interlis,
         model_classes_tww_od,
         model_classes_tww_vl,
@@ -35,7 +35,7 @@ class InterlisExporterToIntermediateSchema:
         Args:
             selection:      if provided, limits the export to networkelements that are provided in the selection
         """
-        self.export_model_groups = set(export_model_groups)
+        self.model_selection = model_selection
         self.callback_progress_done = callback_progress_done
 
         # Filtering
@@ -100,26 +100,26 @@ class InterlisExporterToIntermediateSchema:
 
         self._set_tid_iterator()
 
-        if not {"ag64", "ag96"} & self.export_model_groups:
+        if not {"ag64", "ag96"} & self.model_selection.groups:
             self.current_basket = self.basket_topic_sia405_administration
             self._export_sia405_abwasser_base()
 
-            if self.export_model_groups != {"sia405_base_abwasser"}:
+            if self.model_selection.groups != {"sia405_base_abwasser"}:
                 self._export_sia405_abwasser()
 
-                if "dss" in self.export_model_groups:
+                if "dss" in self.model_selection.groups:
                     self.current_basket = self.basket_topic_dss
                     self._export_dss()
 
-                if "kek" in self.export_model_groups:
+                if "kek" in self.model_selection.groups:
                     self.current_basket = self.basket_topic_kek
                     self._export_vsa_kek()
 
-        elif "ag64" in self.export_model_groups:
+        elif "ag64" in self.model_selection.groups:
             self.current_basket = self.basket_topic_ag64
             self._export_ag64()
 
-        elif "ag96" in self.export_model_groups:
+        elif "ag96" in self.model_selection.groups:
             self.current_basket = self.basket_topic_ag96
             self._export_ag96()
 
@@ -129,74 +129,89 @@ class InterlisExporterToIntermediateSchema:
             logger.info(f"Exporting label positions from {self.labels_file}")
             self._export_label_positions()
 
-    def _create_basket(self):
+    def _create_basket(
+        self,
+    ) -> None:
         dataset = self.model_classes_interlis.t_ili2db_dataset(
             t_id=1,
             datasetname="teksi-wastewater-export",
         )
-        self.abwasser_session.add(dataset)
+        self.abwasser_session.add(
+            dataset,
+        )
 
-        self.basket_topic_sia405_administration = self.model_classes_interlis.t_ili2db_basket(
-            t_id=2,
-            dataset=dataset.t_id,
-            topic=next(
-                iter(model_config.topics_for_group(group="sia405_base_abwasser", lang="de"))
+        basket_definitions = (
+            (
+                "sia405_base_abwasser",
+                2,
+                "basket_topic_sia405_administration",
             ),
-            t_ili_tid=None,
-            attachmentkey=dataset.datasetname,
-            domains="",
+            (
+                "sia405_abwasser",
+                3,
+                "basket_topic_sia405_abwasser",
+            ),
+            (
+                "dss",
+                4,
+                "basket_topic_dss",
+            ),
+            (
+                "vsa_kek",
+                5,
+                "basket_topic_kek",
+            ),
+            (
+                "ag64",
+                6,
+                "basket_topic_ag64",
+            ),
+            (
+                "ag96",
+                7,
+                "basket_topic_ag96",
+            ),
         )
-        self.abwasser_session.add(self.basket_topic_sia405_administration)
 
-        self.basket_topic_sia405_abwasser = self.model_classes_interlis.t_ili2db_basket(
-            t_id=3,
-            dataset=dataset.t_id,
-            topic=next(iter(model_config.topics_for_group(group="sia405_abwasser", lang="de"))),
-            t_ili_tid=None,
-            attachmentkey=dataset.datasetname,
-            domains="",
+        selected_groups = set(
+            self.model_selection.groups,
         )
-        self.abwasser_session.add(self.basket_topic_sia405_abwasser)
 
-        self.basket_topic_dss = self.model_classes_interlis.t_ili2db_basket(
-            t_id=4,
-            dataset=dataset.t_id,
-            topic=next(iter(model_config.topics_for_group(group="dss", lang="de"))),
-            t_ili_tid=None,
-            attachmentkey=dataset.datasetname,
-            domains="",
-        )
-        self.abwasser_session.add(self.basket_topic_dss)
+        for (
+            group,
+            basket_id,
+            attribute_name,
+        ) in basket_definitions:
+            if group not in selected_groups:
+                setattr(
+                    self,
+                    attribute_name,
+                    None,
+                )
+                continue
 
-        self.basket_topic_kek = self.model_classes_interlis.t_ili2db_basket(
-            t_id=5,
-            dataset=dataset.t_id,
-            topic=next(iter(model_config.topics_for_group(group="vsa_kek", lang="de"))),
-            t_ili_tid=None,
-            attachmentkey=dataset.datasetname,
-            domains="",
-        )
-        self.abwasser_session.add(self.basket_topic_kek)
+            component = self.model_selection.component(
+                group,
+            )
 
-        self.basket_topic_ag64 = self.model_classes_interlis.t_ili2db_basket(
-            t_id=6,
-            dataset=dataset.t_id,
-            topic=next(iter(model_config.topics_for_group(group="ag64", lang="de"))),
-            t_ili_tid=None,
-            attachmentkey=dataset.datasetname,
-            domains="",
-        )
-        self.abwasser_session.add(self.basket_topic_ag64)
+            basket = self.model_classes_interlis.t_ili2db_basket(
+                t_id=basket_id,
+                dataset=dataset.t_id,
+                topic=component.require_single_topic(),
+                t_ili_tid=None,
+                attachmentkey=dataset.datasetname,
+                domains="",
+            )
 
-        self.basket_topic_ag96 = self.model_classes_interlis.t_ili2db_basket(
-            t_id=7,
-            dataset=dataset.t_id,
-            topic=next(iter(model_config.topics_for_group(group="ag96", lang="de"))),
-            t_ili_tid=None,
-            attachmentkey=dataset.datasetname,
-            domains="",
-        )
-        self.abwasser_session.add(self.basket_topic_ag96)
+            self.abwasser_session.add(
+                basket,
+            )
+
+            setattr(
+                self,
+                attribute_name,
+                basket,
+            )
 
         self.abwasser_session.flush()
 
@@ -236,7 +251,7 @@ class InterlisExporterToIntermediateSchema:
         self._export_reach_point()
         self._check_for_stop()
 
-        if "dss" in self.export_model_groups:
+        if "dss" in self.model_selection.groups:
             logger.info(
                 "Exporting TWW.wastewater_node for VSA-DSS 2020 -> ABWASSER.abwasserknoten"
             )
@@ -528,11 +543,12 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_organisation(self):
         query = self.tww_session.query(self.model_classes_tww_od.organisation)
-        # only export my local extension organisations if called by SIA405 Base
-        if "sia405_base_abwasser" in self.export_model_groups:
+        # only export my local extension organisations if called by SIA405 Based
+
+        if self.model_selection.mapping_model_id == "sia405_base_abwasser":
             query = query.filter(
                 self.model_classes_tww_od.organisation.tww_local_extension.is_(True)
-            ).all()
+            )
         for row in query:
             organisation = self.model_classes_interlis.organisation(
                 # FIELDS TO MAP TO ABWASSER.organisation
@@ -3185,7 +3201,7 @@ class InterlisExporterToIntermediateSchema:
             "massnahmeref": self.get_tid(row.fk_measure__REL),
         }
 
-        if "kek" in self.export_model_groups:
+        if "kek" in self.model_selection.groups:
             query = self.tww_session.query(
                 self.model_classes_tww_od.re_maintenance_event_wastewater_structure
             ).where(
@@ -3321,11 +3337,11 @@ class InterlisExporterToIntermediateSchema:
         for row in self.abwasser_session.query(self.model_classes_interlis.abwasserbauwerk):
             tid_for_obj_id["vw_tww_wastewater_structure"][row.t_ili_tid] = row.t_id
 
-        if {"dss", "ag96"} & self.export_model_groups:
+        if {"dss", "ag96"} & self.model_selection.groups:
             for row in self.abwasser_session.query(self.model_classes_interlis.einzugsgebiet):
                 tid_for_obj_id["vw_tww_catchment_area"][row.t_ili_tid] = row.t_id
 
-        if "ag96" in self.export_model_groups:
+        if "ag96" in self.model_selection.groups:
             tid_for_obj_id.update(
                 {
                     "building_group": {},
@@ -3404,7 +3420,7 @@ class InterlisExporterToIntermediateSchema:
                     else:
                         logger.debug(f"Debug Plantyp not adapted '{plantyp}'")
 
-                if not {"ag64", "ag96"} & self.export_model_groups:
+                if not {"ag64", "ag96"} & self.model_selection.groups:
                     if layer_name == "vw_tww_reach":
                         ili_label = self.model_classes_interlis.haltung_text(
                             **self._textpos_common(
@@ -3451,7 +3467,7 @@ class InterlisExporterToIntermediateSchema:
                             f"Label for {layer_name} `{obj_id}` exists, but that object is not part of the subset export"
                         )
                         continue
-                elif "ag64" in self.export_model_groups:
+                elif "ag64" in self.model_selection.groups:
                     if layer_name == "vw_tww_reach":
                         ili_label = self.model_classes_interlis.haltung_text(
                             **self._textpos_common(

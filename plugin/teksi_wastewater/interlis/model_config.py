@@ -194,6 +194,40 @@ class TwwInterlisModelComponent:
     model_name: str
     configuration: InterlisModel
 
+    @property
+    def topics(
+        self,
+    ) -> frozenset[str]:
+        """
+        Return topics for this component's resolved language.
+        """
+        return self.configuration.topics_by_lang(
+            self.language,
+        )
+
+    def require_single_topic(
+        self,
+    ) -> str:
+        """
+        Return the component's only topic.
+
+        Raise if the model variant defines zero or multiple topics.
+        """
+        topics = self.topics
+
+        if len(topics) != 1:
+            raise ValueError(
+                f"Expected exactly one topic for model group "
+                f"{self.group!r} in language {self.language!r}, "
+                f"got {sorted(topics)!r}."
+            )
+
+        return next(
+            iter(
+                topics,
+            )
+        )
+
     def quarantine_model(
         self,
         schema: str,
@@ -213,6 +247,7 @@ class TwwInterlisModelComponent:
         """
 
         return self.configuration.live_model(schema)
+
 
 
 @dataclass(
@@ -522,6 +557,25 @@ class TwwInterlisModelSelection:
         return tuple(
             component for component in self.components if component.group in selected_levels
         )
+
+    def component(
+        self,
+        group: str,
+    ) -> TwwInterlisModelComponent:
+        """
+        Return the selected component for one semantic model group.
+        """
+        try:
+            return next(
+                component
+                for component in self.components
+                if component.group == group
+            )
+        except StopIteration as exception:
+            raise KeyError(
+                f"Model group {group!r} is not part of selection "
+                f"{self.groups!r}."
+            ) from exception
 
 
 interlis_models: dict[
