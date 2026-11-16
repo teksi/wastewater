@@ -249,7 +249,6 @@ class TwwInterlisModelComponent:
         return self.configuration.live_model(schema)
 
 
-
 @dataclass(
     slots=True,
     frozen=True,
@@ -566,15 +565,10 @@ class TwwInterlisModelSelection:
         Return the selected component for one semantic model group.
         """
         try:
-            return next(
-                component
-                for component in self.components
-                if component.group == group
-            )
+            return next(component for component in self.components if component.group == group)
         except StopIteration as exception:
             raise KeyError(
-                f"Model group {group!r} is not part of selection "
-                f"{self.groups!r}."
+                f"Model group {group!r} is not part of selection " f"{self.groups!r}."
             ) from exception
 
 

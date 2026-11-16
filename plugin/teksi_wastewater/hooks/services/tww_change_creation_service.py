@@ -387,7 +387,7 @@ class TwwChangeCreationService:
         else:
 
             if self.diff_schema_service.has_prepared_source(job_id):
-            
+
                 prepared_source = self.diff_schema_service.prepared_source(
                     job_id=job_id,
                 )
@@ -430,9 +430,7 @@ class TwwChangeCreationService:
                 base_created_models = tuple(
                     workflow_metadata.get(
                         "base_created_models",
-                        (
-                            base_source_model,
-                        ),
+                        (base_source_model,),
                     )
                 )
 
@@ -441,28 +439,14 @@ class TwwChangeCreationService:
                     "source_role": "base",
                     "import_schema": base_import_schema,
                     "live_schema": live_schema,
-                    "mapping_model_id": (
-                        base_mapping_model_id
-                    ),
+                    "mapping_model_id": (base_mapping_model_id),
                     "model_group": base_model_group,
-                    "model_language": (
-                        base_model_language
-                    ),
-                    "base_source_model": (
-                        base_source_model
-                    ),
-                    "base_import_schema": (
-                        base_import_schema
-                    ),
-                    "base_mapping_model_id": (
-                        base_mapping_model_id
-                    ),
-                    "base_model_group": (
-                        base_model_group
-                    ),
-                    "base_model_language": (
-                        base_model_language
-                    ),
+                    "model_language": (base_model_language),
+                    "base_source_model": (base_source_model),
+                    "base_import_schema": (base_import_schema),
+                    "base_mapping_model_id": (base_mapping_model_id),
+                    "base_model_group": (base_model_group),
+                    "base_model_language": (base_model_language),
                     "base_created_models": list(
                         base_created_models,
                     ),
@@ -492,7 +476,7 @@ class TwwChangeCreationService:
                 schema=import_schema,
                 source_model=source_model,
             )
-            
+
             base_metadata = dict(
                 prepared_source.metadata,
             )

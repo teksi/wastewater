@@ -245,10 +245,7 @@ class TwwCanonicalViewEffectProjector(
 
     session_context: TwwSessionContext
 
-    prepared_comparison_document: (
-        EffectDocument
-        | None
-    ) = field(
+    prepared_comparison_document: EffectDocument | None = field(
         default=None,
         repr=False,
     )
@@ -280,14 +277,10 @@ class TwwCanonicalViewEffectProjector(
             source_rows,
         )
 
-        previous_prepared_comparison_document = (
-            self.prepared_comparison_document
-        )
+        previous_prepared_comparison_document = self.prepared_comparison_document
 
         if comparison_document is not None:
-            self.prepared_comparison_document = (
-                comparison_document
-            )
+            self.prepared_comparison_document = comparison_document
 
         try:
             if not source_rows:
@@ -333,9 +326,7 @@ class TwwCanonicalViewEffectProjector(
             )
 
         finally:
-            self.prepared_comparison_document = (
-                previous_prepared_comparison_document
-            )
+            self.prepared_comparison_document = previous_prepared_comparison_document
 
     def _projection_context(
         self,
