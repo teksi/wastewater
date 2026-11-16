@@ -491,11 +491,6 @@ class TwwChangeCreationService:
             source_document = self.effect_projector.effect_document_from_quarantine(
                 schema=import_schema,
                 source_model=source_model,
-                comparison_document=(
-                    prepared_source.effect_document
-                    if prepared_source is not None
-                    else None
-                ),
             )
             
             base_metadata = dict(
