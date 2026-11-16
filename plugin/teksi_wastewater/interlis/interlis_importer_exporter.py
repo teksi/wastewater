@@ -973,7 +973,7 @@ class InterlisImporterExporter:
         self._init_model_classes(selection_models)
 
         twwInterlisExporter = InterlisExporterToIntermediateSchema(
-            export_model_groups=selection_models.groups,
+            model_selection=selection_models,
             model_classes_interlis=self.model_classes_interlis,
             model_classes_tww_od=self.model_classes_tww_od,
             model_classes_tww_vl=self.model_classes_tww_vl,

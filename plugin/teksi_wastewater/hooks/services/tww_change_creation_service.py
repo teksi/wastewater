@@ -27,6 +27,7 @@ from teksi_hooks.models.canonical_object import (
 from teksi_hooks.models.effects import (
     Effect,
     EffectDocument,
+    EffectSource,
     EnforceExistsEffect,
     EnforceNotExistsEffect,
     UpdateAttributeEffect,
@@ -323,16 +324,15 @@ class TwwChangeCreationService:
         if self.effect_projector is None:
             raise RuntimeError("TwwChangeCreationService has no effect projector.")
 
-        source_document = self.effect_projector.effect_document_from_quarantine(
-            schema=import_schema,
-            source_model=source_model,
-        )
-
         created_models_tuple = tuple(
             created_models,
         )
 
         if source_role == "base":
+            source_document = self.effect_projector.effect_document_from_quarantine(
+                schema=import_schema,
+                source_model=source_model,
+            )
             effect_document = source_document
 
             base_source_model = source_model
@@ -385,10 +385,119 @@ class TwwChangeCreationService:
                 }
             )
         else:
-            prepared_source = self.diff_schema_service.prepared_source(
-                job_id=job_id,
-            )
 
+            if self.diff_schema_service.has_prepared_source(job_id):
+            
+                prepared_source = self.diff_schema_service.prepared_source(
+                    job_id=job_id,
+                )
+            else:
+                base_source_model = str(
+                    workflow_metadata.get(
+                        "base_source_model",
+                        "DSS_2020_1_LV95",
+                    )
+                ).strip()
+
+                base_import_schema = str(
+                    workflow_metadata.get(
+                        "base_import_schema",
+                        config.IMPORT_SCHEMA,
+                    )
+                ).strip()
+
+                base_mapping_model_id = str(
+                    workflow_metadata.get(
+                        "base_mapping_model_id",
+                        "dss",
+                    )
+                ).strip()
+
+                base_model_group = str(
+                    workflow_metadata.get(
+                        "base_model_group",
+                        "dss",
+                    )
+                ).strip()
+
+                base_model_language = str(
+                    workflow_metadata.get(
+                        "base_model_language",
+                        "de",
+                    )
+                ).strip()
+
+                base_created_models = tuple(
+                    workflow_metadata.get(
+                        "base_created_models",
+                        (
+                            base_source_model,
+                        ),
+                    )
+                )
+
+                fallback_metadata = {
+                    **workflow_metadata,
+                    "source_role": "base",
+                    "import_schema": base_import_schema,
+                    "live_schema": live_schema,
+                    "mapping_model_id": (
+                        base_mapping_model_id
+                    ),
+                    "model_group": base_model_group,
+                    "model_language": (
+                        base_model_language
+                    ),
+                    "base_source_model": (
+                        base_source_model
+                    ),
+                    "base_import_schema": (
+                        base_import_schema
+                    ),
+                    "base_mapping_model_id": (
+                        base_mapping_model_id
+                    ),
+                    "base_model_group": (
+                        base_model_group
+                    ),
+                    "base_model_language": (
+                        base_model_language
+                    ),
+                    "base_created_models": list(
+                        base_created_models,
+                    ),
+                    "prepared_source_fallback": True,
+                }
+
+                prepared_source = PreparedSource(
+                    source_model=base_source_model,
+                    created_models=base_created_models,
+                    effect_document=EffectDocument(
+                        source=EffectSource(
+                            model=base_source_model,
+                            class_id="live",
+                            object_id=live_schema,
+                        ),
+                        effects=(),
+                    ),
+                    metadata=fallback_metadata,
+                )
+
+                self.diff_schema_service.prepare_source(
+                    job_id=job_id,
+                    source=prepared_source,
+                )
+
+            source_document = self.effect_projector.effect_document_from_quarantine(
+                schema=import_schema,
+                source_model=source_model,
+                comparison_document=(
+                    prepared_source.effect_document
+                    if prepared_source is not None
+                    else None
+                ),
+            )
+            
             base_metadata = dict(
                 prepared_source.metadata,
             )

@@ -2324,9 +2324,46 @@ class TwwDiffSchemaService(
     ) -> None:
         """
         Stage one prepared source in memory.
-        """
 
-        self._prepared_sources[job_id] = source
+        Preparing the same workflow again replaces its previously staged source.
+        """
+        if (
+            not isinstance(
+                job_id,
+                str,
+            )
+            or not job_id.strip()
+        ):
+            raise ValueError(
+                "job_id must be a non-empty string."
+            )
+
+        self._prepared_sources[
+            job_id.strip()
+        ] = source
+
+
+    def has_prepared_source(
+        self,
+        job_id: str,
+    ) -> bool:
+        """
+        Return whether one workflow has a staged prepared source.
+        """
+        if (
+            not isinstance(
+                job_id,
+                str,
+            )
+            or not job_id.strip()
+        ):
+            return False
+
+        return (
+            job_id.strip()
+            in self._prepared_sources
+        )
+
 
     def prepared_source(
         self,
@@ -2336,13 +2373,30 @@ class TwwDiffSchemaService(
         """
         Return the prepared source for one diff workflow.
         """
+        if (
+            not isinstance(
+                job_id,
+                str,
+            )
+            or not job_id.strip()
+        ):
+            raise ValueError(
+                "job_id must be a non-empty string."
+            )
+
+        normalized_job_id = job_id.strip()
 
         try:
-            return self._prepared_sources[job_id]
+            return self._prepared_sources[
+                normalized_job_id
+            ]
+
         except KeyError as exception:
             raise KeyError(
-                "No prepared source exists for diff workflow " f"{job_id!r}."
+                "No prepared source exists for diff workflow "
+                f"{normalized_job_id!r}."
             ) from exception
+
 
     def clear_prepared_source(
         self,
@@ -2351,9 +2405,19 @@ class TwwDiffSchemaService(
     ) -> None:
         """
         Remove the prepared source for a completed diff workflow.
+
+        Clearing a source that is already absent is intentionally idempotent.
         """
+        if (
+            not isinstance(
+                job_id,
+                str,
+            )
+            or not job_id.strip()
+        ):
+            return
 
         self._prepared_sources.pop(
-            job_id,
+            job_id.strip(),
             None,
         )

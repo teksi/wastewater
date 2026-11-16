@@ -182,7 +182,11 @@ def _add_create_parser(
         "--xtf-input",
         type=Path,
         default=None,
-        help=("Path to the baseline or main XTF file."),
+        help=(
+            "Optional baseline XTF. When omitted together with an "
+            "incremental XTF, the existing populated base quarantine "
+            "schema is prepared as the DSS source."
+        ),
     )
 
     parser.add_argument(

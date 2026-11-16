@@ -245,6 +245,14 @@ class TwwCanonicalViewEffectProjector(
 
     session_context: TwwSessionContext
 
+    prepared_comparison_document: (
+        EffectDocument
+        | None
+    ) = field(
+        default=None,
+        repr=False,
+    )
+
     def project_effects(
         self,
         *,
@@ -253,6 +261,7 @@ class TwwCanonicalViewEffectProjector(
         source_rows: Sequence[Any,],
         relation_context: RelationContext,
         projection: CanonicalViewProjectionMapping,
+        comparison_document: EffectDocument | None = None,
     ) -> EffectProjectionResult:
         """
         Project one complete source class against current canonical state.
@@ -260,55 +269,73 @@ class TwwCanonicalViewEffectProjector(
         All shared database lookups are performed in batches before
         individual source rows are projected. Returned documents preserve
         source-row order.
-        """
 
+        Live canonical rows remain authoritative. A prepared comparison
+        document is used only by the provider comparison helpers when the
+        canonical comparison view has no row for a newly prepared object.
+        """
         del relation_context
 
         source_rows = tuple(
             source_rows,
         )
 
-        if not source_rows:
-            return EffectProjectionResult(
-                documents=(),
-                source_objects=(),
+        previous_prepared_comparison_document = (
+            self.prepared_comparison_document
+        )
+
+        if comparison_document is not None:
+            self.prepared_comparison_document = (
+                comparison_document
             )
 
-        self._assert_unique_source_identities(
-            source_class_id=source_class_id,
-            source_rows=source_rows,
-        )
+        try:
+            if not source_rows:
+                return EffectProjectionResult(
+                    documents=(),
+                    source_objects=(),
+                )
 
-        context = self._projection_context(
-            source_rows=source_rows,
-            projection=projection,
-        )
-
-        documents = tuple(
-            self._project_source_row(
-                source_model=source_model,
+            self._assert_unique_source_identities(
                 source_class_id=source_class_id,
-                source_row=source_row,
-                current_row=context.canonical_row(
-                    self._source_object_id(
-                        source_row,
-                    )
-                ),
-                context=context,
+                source_rows=source_rows,
             )
-            for source_row in source_rows
-        )
 
-        self._assert_complete_projection(
-            source_class_id=source_class_id,
-            source_rows=source_rows,
-            documents=documents,
-        )
+            context = self._projection_context(
+                source_rows=source_rows,
+                projection=projection,
+            )
 
-        return EffectProjectionResult(
-            documents=documents,
-            source_objects=source_rows,
-        )
+            documents = tuple(
+                self._project_source_row(
+                    source_model=source_model,
+                    source_class_id=source_class_id,
+                    source_row=source_row,
+                    current_row=context.canonical_row(
+                        self._source_object_id(
+                            source_row,
+                        )
+                    ),
+                    context=context,
+                )
+                for source_row in source_rows
+            )
+
+            self._assert_complete_projection(
+                source_class_id=source_class_id,
+                source_rows=source_rows,
+                documents=documents,
+            )
+
+            return EffectProjectionResult(
+                documents=documents,
+                source_objects=source_rows,
+            )
+
+        finally:
+            self.prepared_comparison_document = (
+                previous_prepared_comparison_document
+            )
 
     def _projection_context(
         self,
@@ -1529,9 +1556,11 @@ class TwwCanonicalViewEffectProjector(
         if canonical_provider_oid is None:
             return
 
-        current_provider_oid = self._row_value(
-            current_row,
-            "datenbewirtschafter_wi",
+        current_provider_oid = self._comparison_value(
+            current_row=current_row,
+            current_attribute="datenbewirtschafter_wi",
+            identity=identity,
+            prepared_attribute="ag64_fk_provider",
         )
 
         self._append_update_if_changed(
@@ -1711,9 +1740,11 @@ class TwwCanonicalViewEffectProjector(
         if canonical_provider_oid is None:
             return
 
-        current_provider_oid = self._row_value(
-            current_row,
-            "datenbewirtschafter_gep",
+        current_provider_oid = self._comparison_value(
+            current_row=current_row,
+            current_attribute="datenbewirtschafter_gep",
+            identity=identity,
+            prepared_attribute="ag96_fk_provider",
         )
 
         self._append_update_if_changed(
@@ -2961,6 +2992,61 @@ class TwwCanonicalViewEffectProjector(
         raise ValueError(
             message,
         ) from exception
+
+    def _comparison_value(
+        self,
+        *,
+        current_row: Any | None,
+        current_attribute: str,
+        identity: CanonicalObjectIdentity,
+        prepared_attribute: str,
+    ) -> Any:
+        """
+        Return a live comparison value with prepared effects as fallback.
+
+        Live comparison rows remain authoritative. Prepared effects are read
+        only when the canonical comparison view has no row for the object.
+        """
+        if current_row is not None:
+            return self._row_value(
+                current_row,
+                current_attribute,
+            )
+
+        return self._prepared_comparison_value(
+            identity=identity,
+            attribute_id=prepared_attribute,
+        )
+
+    def _prepared_comparison_value(
+        self,
+        *,
+        identity: CanonicalObjectIdentity,
+        attribute_id: str,
+    ) -> Any:
+        """
+        Return the last prepared update value for one canonical attribute.
+        """
+        document = self.prepared_comparison_document
+
+        if document is None:
+            return None
+
+        identity_key = identity.key()
+        value = None
+
+        for effect in document.effects:
+            if (
+                isinstance(
+                    effect,
+                    UpdateAttributeEffect,
+                )
+                and effect.identity.key() == identity_key
+                and effect.attribute_id == attribute_id
+            ):
+                value = effect.value
+
+        return value
 
     def _row_value(
         self,
