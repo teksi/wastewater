@@ -2334,14 +2334,9 @@ class TwwDiffSchemaService(
             )
             or not job_id.strip()
         ):
-            raise ValueError(
-                "job_id must be a non-empty string."
-            )
+            raise ValueError("job_id must be a non-empty string.")
 
-        self._prepared_sources[
-            job_id.strip()
-        ] = source
-
+        self._prepared_sources[job_id.strip()] = source
 
     def has_prepared_source(
         self,
@@ -2359,11 +2354,7 @@ class TwwDiffSchemaService(
         ):
             return False
 
-        return (
-            job_id.strip()
-            in self._prepared_sources
-        )
-
+        return job_id.strip() in self._prepared_sources
 
     def prepared_source(
         self,
@@ -2380,23 +2371,17 @@ class TwwDiffSchemaService(
             )
             or not job_id.strip()
         ):
-            raise ValueError(
-                "job_id must be a non-empty string."
-            )
+            raise ValueError("job_id must be a non-empty string.")
 
         normalized_job_id = job_id.strip()
 
         try:
-            return self._prepared_sources[
-                normalized_job_id
-            ]
+            return self._prepared_sources[normalized_job_id]
 
         except KeyError as exception:
             raise KeyError(
-                "No prepared source exists for diff workflow "
-                f"{normalized_job_id!r}."
+                "No prepared source exists for diff workflow " f"{normalized_job_id!r}."
             ) from exception
-
 
     def clear_prepared_source(
         self,

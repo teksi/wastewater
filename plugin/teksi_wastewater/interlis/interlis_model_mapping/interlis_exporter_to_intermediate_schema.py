@@ -100,7 +100,7 @@ class InterlisExporterToIntermediateSchema:
 
         self._set_tid_iterator()
 
-        if self.model_selection.group not in {"ag64", "ag96"} :
+        if self.model_selection.group not in {"ag64", "ag96"}:
             self.current_basket = self.basket_topic_sia405_administration
             self._export_sia405_abwasser_base()
 
