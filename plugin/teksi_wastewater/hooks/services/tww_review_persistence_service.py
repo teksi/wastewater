@@ -129,7 +129,24 @@ class TwwReviewPersistenceService:
             job_id=job_id,
             source_contexts=source_contexts,
         )
+        available_runtime_roles = set(
+            self.persistence_adapter.source_runtime_contexts
+        )
+        ordered_source_contexts = tuple(
+            source_context
+            for source_context in ordered_source_contexts
+            if source_context.source_role in available_runtime_roles
+        )
 
+        if not ordered_source_contexts:
+            raise DiffJobEligibilityError(
+                job_id=job_id,
+                reason=(
+                    "none of the retained persistence source contexts has a "
+                    "matching INTERLIS runtime context."
+                ),
+            )
+        
         self._assert_application_eligibility(
             job=job,
             live_schema=live_schema,

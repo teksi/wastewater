@@ -27,11 +27,11 @@ from ..helpers import (
 )
 
 logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
 if not any(isinstance(handler, logging.StreamHandler) for handler in logger.handlers):
     handler = logging.StreamHandler(sys.stdout)
-    handler.setLevel(logging.DEBUG)
+    handler.setLevel(logging.INFO)
     logger.addHandler(handler)
 
 
@@ -257,13 +257,17 @@ class TestInterlis(unittest.TestCase):
                 f"'.xtf' suffix, got {output_name!r}."
             )
 
-        return run_interlis_export(
+        output = run_interlis_export(
             base_name=requested_output.stem,
             model_group=model_group,
             selected_ids=selected_ids,
             host_output_dir=OUTPUT_DIR,
             container_output_dir=OUTPUT_DIR,
         )
+
+        assert os.path.exists(output)
+
+        return output
 
     def _assert_scalar(
         self,
