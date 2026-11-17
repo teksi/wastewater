@@ -19,6 +19,7 @@
 """
 
 import codecs
+import shlex
 import subprocess
 from datetime import datetime, timedelta
 
@@ -588,8 +589,8 @@ class TwwSwmm:
         command = [self.bin_file, self.input_file, self.rpt_file]
         self.feedback_push("info", "command: " + " ".join(map(str, command)))
         proc = subprocess.run(
-            command,
-            shell=True,
+            shlex.split(command),
+            shell=False,
             stdout=subprocess.PIPE,
             stdin=subprocess.PIPE,
             stderr=subprocess.STDOUT,
