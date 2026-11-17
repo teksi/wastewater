@@ -72,7 +72,6 @@ class TwwPersistencePhaseResult:
     interlis_persistence: TwwInterlisPersistenceResult
 
 
-
 @dataclass(
     slots=True,
 )
@@ -138,8 +137,8 @@ class TwwReviewPersistenceService:
         )
 
         counts = self.diff_schema_service.job_counts(job_id=job_id)
-        validation_finding_row_count = (
-            self.diff_schema_service.validation_finding_row_count(job_id=job_id)
+        validation_finding_row_count = self.diff_schema_service.validation_finding_row_count(
+            job_id=job_id
         )
         self._assert_review_counts(
             job_id=job_id,
@@ -147,10 +146,7 @@ class TwwReviewPersistenceService:
             validation_finding_row_count=validation_finding_row_count,
         )
 
-        if any(
-            context.source_role == "incremental"
-            for context in ordered_contexts
-        ):
+        if any(context.source_role == "incremental" for context in ordered_contexts):
             self.persistence_adapter.assert_incremental_ready()
 
         self.diff_schema_service.acquire_job_for_application(job_id=job_id)
@@ -219,8 +215,7 @@ class TwwReviewPersistenceService:
                     )
                 )
                 self.logger.info(
-                    "Persisted source phase %r for diff job %r from "
-                    "quarantine schema %r.",
+                    "Persisted source phase %r for diff job %r from " "quarantine schema %r.",
                     source_context.source_role,
                     job_id,
                     source_context.import_schema,
@@ -244,9 +239,7 @@ class TwwReviewPersistenceService:
                     if active_source_context is not None
                     else None
                 ),
-                completed_source_roles=tuple(
-                    result.source_role for result in phase_results
-                ),
+                completed_source_roles=tuple(result.source_role for result in phase_results),
                 prepared_import_schemas=tuple(prepared_import_schemas),
                 backups=tuple(backups),
             )
@@ -259,8 +252,7 @@ class TwwReviewPersistenceService:
 
         final_phase_result = phase_results[-1]
         self.logger.info(
-            "Applied diff review job %r through source phases %r with %s "
-            "review features.",
+            "Applied diff review job %r through source phases %r with %s " "review features.",
             job_id,
             tuple(result.source_role for result in phase_results),
             counts.total_count,
@@ -323,9 +315,7 @@ class TwwReviewPersistenceService:
                 f"{job.job_id!r}."
             )
 
-        known_import_schemas = {
-            context.import_schema for context in source_contexts
-        }
+        known_import_schemas = {context.import_schema for context in source_contexts}
         unexpected_backup_schemas = {
             backup.import_schema
             for backup in recovery_state.backups
@@ -352,8 +342,7 @@ class TwwReviewPersistenceService:
         for restoration_error in restoration_errors:
             if hasattr(original_exception, "add_note"):
                 original_exception.add_note(
-                    "Quarantine backup restoration or cleanup also failed: "
-                    f"{restoration_error}"
+                    "Quarantine backup restoration or cleanup also failed: " f"{restoration_error}"
                 )
 
         self._mark_failed(
@@ -416,8 +405,7 @@ class TwwReviewPersistenceService:
                 raise DiffJobEligibilityError(
                     job_id=job_id,
                     reason=(
-                        "several persistence contexts exist for source role "
-                        f"{source_role!r}."
+                        "several persistence contexts exist for source role " f"{source_role!r}."
                     ),
                 )
             contexts_by_role[source_role] = source_context
@@ -429,9 +417,7 @@ class TwwReviewPersistenceService:
             )
 
         return tuple(
-            contexts_by_role[role]
-            for role in _SUPPORTED_SOURCE_ROLES
-            if role in contexts_by_role
+            contexts_by_role[role] for role in _SUPPORTED_SOURCE_ROLES if role in contexts_by_role
         )
 
     def _assert_application_eligibility(
@@ -472,10 +458,7 @@ class TwwReviewPersistenceService:
             ):
                 raise DiffJobEligibilityError(
                     job_id=job.job_id,
-                    reason=(
-                        "a retained source context contains incomplete source "
-                        "metadata."
-                    ),
+                    reason=("a retained source context contains incomplete source " "metadata."),
                 )
 
     def _assert_review_counts(
@@ -495,9 +478,7 @@ class TwwReviewPersistenceService:
                 ),
             )
 
-        operation_count = (
-            counts.created_count + counts.altered_count + counts.deleted_count
-        )
+        operation_count = counts.created_count + counts.altered_count + counts.deleted_count
         if operation_count != counts.total_count:
             raise DiffJobEligibilityError(
                 job_id=job_id,
@@ -629,8 +610,7 @@ class TwwReviewPersistenceService:
         except Exception as exception:
             restoration_errors.append(exception)
             self.logger.exception(
-                "Could not clear quarantine backup metadata for failed diff "
-                "review job %r.",
+                "Could not clear quarantine backup metadata for failed diff " "review job %r.",
                 job_id,
             )
 
@@ -792,8 +772,7 @@ class TwwReviewPersistenceService:
                 )
             except Exception:
                 self.logger.exception(
-                    "Could not delete unused quarantine backup %s for diff "
-                    "review job %r.",
+                    "Could not delete unused quarantine backup %s for diff " "review job %r.",
                     backup.backup_path,
                     job_id,
                 )
@@ -814,8 +793,7 @@ class TwwReviewPersistenceService:
             except Exception:
                 cleanup_succeeded = False
                 self.logger.exception(
-                    "Could not delete quarantine backup %s for applied diff "
-                    "review job %r.",
+                    "Could not delete quarantine backup %s for applied diff " "review job %r.",
                     backup.backup_path,
                     job_id,
                 )
