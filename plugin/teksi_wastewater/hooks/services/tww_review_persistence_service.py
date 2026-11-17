@@ -160,7 +160,7 @@ class TwwReviewPersistenceService:
         try:
             backups = self._create_backups(
                 job_id=job_id,
-                source_contexts=ordered_contexts,
+                source_contexts=ordered_source_contexts,
             )
             self.diff_schema_service.set_backup_path(
                 job_id=job_id,
@@ -168,7 +168,7 @@ class TwwReviewPersistenceService:
                 backup_path=self._backup_manifest(backups),
             )
 
-            for source_context in ordered_contexts:
+            for source_context in ordered_source_contexts:
                 active_source_context = source_context
                 active_phase = f"prepare_{source_context.source_role}"
 

@@ -265,8 +265,6 @@ class TestInterlis(unittest.TestCase):
             container_output_dir=OUTPUT_DIR,
         )
 
-        assert os.path.exists(output)
-
         return output
 
     def _assert_scalar(

@@ -444,7 +444,7 @@ class InterlisImporterExporter:
             allow_schema_recreation=allow_schema_recreation,
         )
 
-        self.interlis_export_from_quarantine_to_xtf(
+        return self.interlis_export_from_quarantine_to_xtf(
             xtf_file_output=xtf_file_output,
             export_models=export_models,
             logs_next_to_file=logs_next_to_file,
@@ -586,10 +586,11 @@ class InterlisImporterExporter:
         )
 
         self._progress_done_in_scope(progress_scope, 0, "starting INTERLIS export")
-        self._export_xtf_files(file_name_base, export_models)
+        output_file_name = self._export_xtf_files(file_name_base, export_models)
 
         self._progress_done_in_scope(progress_scope, 100, "INTERLIS export finished.")
         logger.info("INTERLIS export finished.")
+        return output_file_name
 
     def interlis_export(
         self,
@@ -696,7 +697,7 @@ class InterlisImporterExporter:
                         "\n".join(issue.message for issue in results.failed_checks),
                         None,
                     )
-        self.execute_export(
+        return self.execute_export(
             xtf_file_output,
             export_models,
             logs_next_to_file,
@@ -1005,9 +1006,10 @@ class InterlisImporterExporter:
         progress_step = int(progress_step)
 
         xtf_export_errors = []
+        export_model_names = []
         for index, export_model_name in enumerate(export_models):
             export_file_name = f"{file_name_base}_{export_model_name}.xtf"
-
+            export_model_names.append(export_file_name)
             # Export from ili2pg model to file
             self._progress_done_in_scope(
                 progress_scope, self.current_progress, f"Saving XTF for '{export_model_name}'..."
@@ -1058,6 +1060,8 @@ class InterlisImporterExporter:
         # In case some export had an error raise the first one
         if xtf_export_errors:
             raise xtf_export_errors[0]
+
+        return export_model_names
 
     def _clear_ili_schema(self, recreate_tables=False):
         logger.info("CONNECTING TO DATABASE...")

@@ -363,13 +363,15 @@ class TeksiWastewaterCmd:
         xtf_file = Path(
             self.args.xtf_file,
         )
+        xtf_outputs=[]
 
         try:
-            service.export_xtf(
+            outputs=service.export_xtf(
                 xtf_file=xtf_file,
                 export_models=(self.args.export_model,),
                 context=context,
             )
+            xtf_outputs.append(outputs)
         except InterlisImporterExporterError as exception:
             self._print_interlis_error(
                 operation="Export",
@@ -378,7 +380,7 @@ class TeksiWastewaterCmd:
 
             raise
 
-        print(f"\nData successfully exported to {xtf_file}")
+        print(f"\nData successfully exported to {xtf_outputs}")
 
     def _print_interlis_error(
         self,

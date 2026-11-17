@@ -169,7 +169,7 @@ class TwwInterlisServiceAdapter(InterlisService):
             context,
             TwwInterlisContext,
         ):
-            self._importer_exporter.interlis_export(
+            return self._importer_exporter.interlis_export(
                 xtf_file_output=xtf_file,
                 export_models=list(
                     export_models,
@@ -189,7 +189,7 @@ class TwwInterlisServiceAdapter(InterlisService):
             )
             return
 
-        self._importer_exporter.interlis_export(
+        return self._importer_exporter.interlis_export(
             xtf_file_output=xtf_file,
             export_models=list(
                 export_models,
