@@ -100,11 +100,12 @@ class InterlisExporterToIntermediateSchema:
 
         self._set_tid_iterator()
 
+        logger.info(f"Exporting model selection group {self.model_selection.group}")
         if self.model_selection.group not in {"ag64", "ag96"}:
             self.current_basket = self.basket_topic_sia405_administration
             self._export_sia405_abwasser_base()
 
-            if self.model_selection.groups != {"sia405_base_abwasser"}:
+            if self.model_selection.group != "sia405_base_abwasser":
                 self._export_sia405_abwasser()
 
                 if "dss" in self.model_selection.groups:
