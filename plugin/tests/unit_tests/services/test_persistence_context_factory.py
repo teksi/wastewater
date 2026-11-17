@@ -5,7 +5,6 @@ from types import SimpleNamespace
 from unittest.mock import Mock
 
 import pytest
-from teksi_hooks.exceptions import DiffJobEligibilityError
 from teksi_wastewater.hooks.services.tww_persistence_context_factory import (
     TwwPersistenceContextFactory,
 )
@@ -38,6 +37,7 @@ def test_absent_incremental_descriptor_is_optional() -> None:
         )
         is None
     )
+
 
 def test_context_factory_rejects_missing_sessions() -> None:
     with pytest.raises(RuntimeError, match="no quarantine session"):

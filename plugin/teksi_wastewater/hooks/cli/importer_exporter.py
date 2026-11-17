@@ -363,10 +363,10 @@ class TeksiWastewaterCmd:
         xtf_file = Path(
             self.args.xtf_file,
         )
-        xtf_outputs=[]
+        xtf_outputs = []
 
         try:
-            outputs=service.export_xtf(
+            outputs = service.export_xtf(
                 xtf_file=xtf_file,
                 export_models=(self.args.export_model,),
                 context=context,
