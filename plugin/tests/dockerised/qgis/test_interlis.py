@@ -416,6 +416,15 @@ class TestInterlis(unittest.TestCase):
             "rp_from_level modified",
         )
 
+        self._assert_scalar(
+            """
+            SELECT obj_id
+            FROM tww_od.pipe_profile
+            WHERE obj_id = 'ch000000PP000001';
+            """,
+            "ch000000PP000001",
+        )
+
         export_xtf_file = self._export_xtf(
             "export_minimal_dss_selection.xtf",
             model_group="dss",
