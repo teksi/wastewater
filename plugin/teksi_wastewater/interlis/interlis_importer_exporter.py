@@ -586,11 +586,11 @@ class InterlisImporterExporter:
         )
 
         self._progress_done_in_scope(progress_scope, 0, "starting INTERLIS export")
-        output_file_name = self._export_xtf_files(file_name_base, export_models)
+        output_file_names = self._export_xtf_files(file_name_base, export_models)
 
         self._progress_done_in_scope(progress_scope, 100, "INTERLIS export finished.")
         logger.info("INTERLIS export finished.")
-        return output_file_name
+        return output_file_names
 
     def interlis_export(
         self,
@@ -1002,6 +1002,15 @@ class InterlisImporterExporter:
     def _export_xtf_files(
         self, file_name_base, export_models, progress_scope: ProgressScope = ProgressScope()
     ):
+
+        export_models = tuple(export_models)
+
+        if not export_models:
+            raise InterlisImporterExporterError(
+                error="Could not export XTF",
+                additional_text="No INTERLIS export model was supplied.",
+                log_path=None,
+            )
         progress_step = (100 - self.current_progress) / (2 * len(export_models))
         progress_step = int(progress_step)
 
@@ -1024,16 +1033,43 @@ class InterlisImporterExporter:
                     export_model_name=export_model_name,
                     srid=self.srid,
                 )
-            except CmdException:
-                xtf_export_errors.append(
-                    InterlisImporterExporterError(
-                        error=f"Could not export the model '{export_model_name}' from ili2pg schema",
-                        additional_text="Open the logs for more details on the error.",
-                        log_path=log_path,
+            except CmdException as exception:
+                try:
+                    with open(
+                        log_path,
+                        encoding="utf-8",
+                        errors="replace",
+                    ) as log_file:
+                        log_content = log_file.read()
+                except OSError as log_exception:
+                    log_content = (
+                        "The ili2pg export log could not be read.\n"
+                        f"Log path: {log_path}\n"
+                        f"Log error: {log_exception!r}"
                     )
-                )
-                continue
 
+                export_error = InterlisImporterExporterError(
+                    error=(
+                        f"Could not export the model {export_model_name!r} "
+                        f"from ili2pg schema {self.schema!r}."
+                    ),
+                    additional_text=(
+                        f"{exception}\n\n"
+                        "===== ili2pg export log start =====\n"
+                        f"{log_content}\n"
+                        "===== ili2pg export log end ====="
+                    ),
+                    log_path=log_path,
+                )
+
+                print(
+                    f"{export_error.error}\n"
+                    f"{export_error.additional_text}\n"
+                    f"Log file: {export_error.log_path}"
+                )
+
+                raise export_error from exception
+            
             self._progress_done_in_scope(
                 progress_scope,
                 self.current_progress + progress_step,

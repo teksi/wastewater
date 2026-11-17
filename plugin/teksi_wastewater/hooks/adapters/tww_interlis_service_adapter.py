@@ -187,7 +187,6 @@ class TwwInterlisServiceAdapter(InterlisService):
                 import_orgs=context.import_orgs,
                 allow_schema_recreation=context.allow_schema_recreation,
             )
-            return
 
         return self._importer_exporter.interlis_export(
             xtf_file_output=xtf_file,
