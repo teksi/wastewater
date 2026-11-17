@@ -1069,7 +1069,7 @@ class InterlisImporterExporter:
                 )
 
                 raise export_error from exception
-            
+
             self._progress_done_in_scope(
                 progress_scope,
                 self.current_progress + progress_step,
