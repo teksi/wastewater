@@ -125,30 +125,15 @@ class TwwReviewPersistenceService:
         state required by :meth:`recover_job` after that scope has exited.
         """
         job_id = job.job_id
-        ordered_contexts = self._ordered_source_contexts(
+        ordered_source_contexts = self._ordered_source_contexts(
             job_id=job_id,
             source_contexts=source_contexts,
         )
-        available_runtime_roles = set(self.persistence_adapter.source_runtime_contexts)
-        ordered_source_contexts = tuple(
-            source_context
-            for source_context in ordered_source_contexts
-            if source_context.source_role in available_runtime_roles
-        )
-
-        if not ordered_source_contexts:
-            raise DiffJobEligibilityError(
-                job_id=job_id,
-                reason=(
-                    "none of the retained persistence source contexts has a "
-                    "matching INTERLIS runtime context."
-                ),
-            )
 
         self._assert_application_eligibility(
             job=job,
             live_schema=live_schema,
-            source_contexts=ordered_contexts,
+            source_contexts=ordered_source_contexts,
         )
 
         counts = self.diff_schema_service.job_counts(job_id=job_id)
@@ -161,7 +146,7 @@ class TwwReviewPersistenceService:
             validation_finding_row_count=validation_finding_row_count,
         )
 
-        if any(context.source_role == "incremental" for context in ordered_contexts):
+        if any(context.source_role == "incremental" for context in ordered_source_contexts):
             self.persistence_adapter.assert_incremental_ready()
 
         self.diff_schema_service.acquire_job_for_application(job_id=job_id)

@@ -201,6 +201,12 @@ class TwwPersistenceContextFactory:
 
         metadata = job.metadata
 
+        source_xtf = metadata.get(f"{source_role}_source_xtf")
+        import_schema = metadata.get(f"{source_role}_import_schema")
+
+        if not source_xtf or not import_schema:
+            return None
+
         values: dict[
             str,
             Any,
