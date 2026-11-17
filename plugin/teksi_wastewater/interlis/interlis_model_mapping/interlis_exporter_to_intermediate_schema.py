@@ -112,7 +112,7 @@ class InterlisExporterToIntermediateSchema:
                     self.current_basket = self.basket_topic_dss
                     self._export_dss()
 
-                if "kek" in self.model_selection.groups:
+                if "vsa_kek" in self.model_selection.groups:
                     self.current_basket = self.basket_topic_kek
                     self._export_vsa_kek()
 
@@ -3202,7 +3202,7 @@ class InterlisExporterToIntermediateSchema:
             "massnahmeref": self.get_tid(row.fk_measure__REL),
         }
 
-        if "kek" in self.model_selection.groups:
+        if "vsa_kek" in self.model_selection.groups:
             query = self.tww_session.query(
                 self.model_classes_tww_od.re_maintenance_event_wastewater_structure
             ).where(
