@@ -29,6 +29,7 @@ class TWWIntegrityChecker:
 
     def run_integrity_checks(self) -> list[Issue]:
         checks = [
+            ("class_counts", self._check_class_counts),
             ("subclass_counts", self._check_subclass_counts),
             ("identifier_null", self._check_identifier_null),
             ("fk_owner_null", self._check_fk_owner_null),
@@ -94,6 +95,91 @@ class TWWIntegrityChecker:
             "failed": len(self.failed_checks),
             "total": len(self.check_result.issues),
         }
+
+    def _check_class_counts(self) -> tuple[bool, str, int]:
+        """
+        Log the number of rows in every base table in the TWW object-data schema.
+
+        This is a diagnostic check. Empty classes are valid and therefore do not
+        make the integrity check fail.
+        """
+        schema_name = config.TWW_OD_SCHEMA
+
+        self.add_issue(
+            f"INTEGRITY CHECK available class data in schema {schema_name}...",
+            level=IssueLevel.INFO,
+        )
+        self.add_issue(
+            "CONNECTING TO DATABASE...",
+            level=IssueLevel.INFO,
+        )
+
+        with DatabaseUtils.PsycopgConnection() as connection:
+            cursor = connection.cursor()
+
+            cursor.execute(
+                """
+                SELECT table_name
+                FROM information_schema.tables
+                WHERE table_schema = %s
+                  AND table_type = 'BASE TABLE'
+                  AND table_name not LIKE 'tww_%'
+                ORDER BY table_name;
+                """,
+                (schema_name,),
+            )
+
+            table_names = [
+                row[0]
+                for row in cursor.fetchall()
+            ]
+
+            nonempty_class_count = 0
+            empty_class_count = 0
+            total_object_count = 0
+
+            for table_name in table_names:
+                query = DatabaseUtils.compose_sql(
+                    """
+                    SELECT COUNT(*)
+                    FROM {schema_name}.{table_name}
+                    """,
+                    schema_name=DatabaseUtils.wrap_identifier(
+                        schema_name,
+                    ),
+                    table_name=DatabaseUtils.wrap_identifier(
+                        table_name,
+                    ),
+                )
+
+                cursor.execute(query)
+                result = cursor.fetchone()
+                object_count = int(result[0]) if result else 0
+
+                total_object_count += object_count
+
+                if object_count:
+                    nonempty_class_count += 1
+                else:
+                    empty_class_count += 1
+
+                self.add_issue(
+                    f"Number of {table_name} datasets: {object_count}",
+                    level=IssueLevel.INFO,
+                )
+
+        self.add_issue(
+            (
+                f"CLASS COUNT SUMMARY for schema {schema_name}: "
+                f"{len(table_names)} tables, "
+                f"{nonempty_class_count} nonempty, "
+                f"{empty_class_count} empty, "
+                f"{total_object_count} total rows."
+            ),
+            level=IssueLevel.INFO,
+        )
+
+        return False, "", 0
 
     def _check_subclass_counts(self, raise_err=False):
         failed = False
