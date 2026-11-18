@@ -129,10 +129,7 @@ class TWWIntegrityChecker:
                 (schema_name,),
             )
 
-            table_names = [
-                row[0]
-                for row in cursor.fetchall()
-            ]
+            table_names = [row[0] for row in cursor.fetchall()]
 
             nonempty_class_count = 0
             empty_class_count = 0
