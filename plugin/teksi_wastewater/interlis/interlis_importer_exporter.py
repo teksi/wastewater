@@ -512,12 +512,9 @@ class InterlisImporterExporter:
             export_models = set(export_models)
 
             selection_models = model_selection.model_selection_for_imported_models(export_models)
-            create_basket_col = (
-                selection_models.group == "vsa_kek"
-            )
+            create_basket_col = selection_models.group == "vsa_kek"
             logger.info(
-                "Resolved export models %r to primary group %r, "
-                "groups %r, basket_enabled=%r.",
+                "Resolved export models %r to primary group %r, " "groups %r, basket_enabled=%r.",
                 tuple(sorted(export_models)),
                 selection_models.group,
                 selection_models.groups,
