@@ -84,13 +84,13 @@ class InterlisImporterFromIntermediateSchema:
 
         if not {"ag64", "ag96"} & self.model_groups:
             self._import_sia405_abwasser_base()
-            if {"dss", "kek", "sia405_abwasser"} & self.model_groups:
+            if {"dss", "vsa_kek", "sia405_abwasser"} & self.model_groups:
                 self._import_sia405_abwasser()
 
         if "dss" in self.model_groups:
             self._import_dss()
 
-        if "kek" in self.model_groups:
+        if "vsa_kek" in self.model_groups:
             self._import_vsa_kek()
 
         if "ag96" in self.model_groups:
