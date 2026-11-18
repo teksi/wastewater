@@ -509,12 +509,20 @@ class InterlisImporterExporter:
             self._clear_ili_schema(recreate_tables=True)
 
             self._progress_done_in_scope(progress_scope, 15, "Creating ili schema...")
-            create_basket_col = False
             export_models = set(export_models)
 
             selection_models = model_selection.model_selection_for_imported_models(export_models)
-            if "vsa_kek" in selection_models.groups:
-                create_basket_col = True
+            create_basket_col = (
+                selection_models.group == "vsa_kek"
+            )
+            logger.info(
+                "Resolved export models %r to primary group %r, "
+                "groups %r, basket_enabled=%r.",
+                tuple(sorted(export_models)),
+                selection_models.group,
+                selection_models.groups,
+                create_basket_col,
+            )
             self._create_ili_schema(export_models, create_basket_col=create_basket_col)
 
             # Export the labels file
