@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
     slots=True,
     frozen=True,
 )
-class InterlisImportSessions:
+class ImporterExporterSessions:
     """
     Caller-owned sessions used by an INTERLIS quarantine-to-live import.
 
