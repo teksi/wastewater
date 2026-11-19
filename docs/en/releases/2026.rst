@@ -88,7 +88,7 @@ Main features
    .. figure:: ../user-guide/digitizing/images/vw_tww_channel_damage.png
 
  - `The 'Refresh network topology' is only visible in Admin mode <../user-guide/network-following/index.html>`_ as the query can take quite long for big networks.
- - `Improve identifier synchronization for wastewater structures <https://teksi.github.io/wastewater/latest/de/user-guide/editing/editing.html#synchronize-identifiers-of-manholes>`_
+ - `Improve identifier synchronization for wastewater structures <../user-guide/editing/editing.html#synchronize-identifiers-of-manholes>`_
  - `Use wastewater node identifiers in reach wizard identifier creation <../user-guide/digitizing/digitizingchannels.rst#digitizing>`_
  - network plan: possibility to label the reaches with I1, I2, ..., A1, A2 (reach point labels)
 
