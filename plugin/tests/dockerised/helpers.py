@@ -50,35 +50,81 @@ def topic_name(
     return f"{model_name}.{topic_name}"
 
 
-def get_xtf_object(xtf_file, topicname, classname, tid):
-    # from xml file
+def get_xtf_object(
+    xtf_file: str | Path,
+    topic_name: str,
+    class_name: str,
+    tid: str,
+):
     tree = ET.parse(xtf_file)
 
     root = tree.getroot()
-    for elem in root.iter():
-        if "." in elem.tag:
-            print(elem.tag)
 
-    def get_namespace(element):
-        m = re.match(r"\{.*\}", element.tag)
-        return m.group(0) if m else ""
-
-    namespace = get_namespace(root)
-
-    interlis_objects = root.findall(
-        "./{0}DATASECTION/{0}{1}/{0}{1}.{2}".format(namespace, topicname, classname)
+    namespace = (
+        root.tag.partition("}")[0] + "}"
+        if root.tag.startswith("{")
+        else ""
     )
+
+    data_section = root.find(
+        f"{namespace}DATASECTION"
+    )
+
+    if data_section is None:
+        raise AssertionError(
+            f"XTF file {xtf_file!s} has no DATASECTION."
+        )
+
+    expected_basket_tag = (
+        f"{namespace}{topic_name}"
+    )
+    expected_object_tag = (
+        f"{namespace}{topic_name}.{class_name}"
+    )
+
+    basket = next(
+        (
+            element
+            for element in data_section
+            if element.tag == expected_basket_tag
+        ),
+        None,
+    )
+
+    if basket is None:
+        available_baskets = tuple(
+            element.tag.removeprefix(namespace)
+            for element in data_section
+        )
+
+        print(
+            f"Basket {topic_name!r} not found. "
+            f"Available baskets: {available_baskets!r}"
+        )
+        return None
+
+    matching_objects = [
+        element
+        for element in basket
+        if element.tag == expected_object_tag
+    ]
+
     print(
-        f"{classname} TIDs:",
-        [obj.attrib.get("TID") for obj in interlis_objects],
+        f"{class_name} TIDs:",
+        [
+            element.attrib.get("TID")
+            for element in matching_objects
+        ],
     )
-    for interlis_object in interlis_objects:
-        xml_tid = interlis_object.attrib.get("TID", None)
 
-        if xml_tid == tid:
-            return interlis_object
-
-    return None
+    return next(
+        (
+            element
+            for element in matching_objects
+            if element.attrib.get("TID") == tid
+        ),
+        None,
+    )
 
 
 def get_xtf_object_node_text(
