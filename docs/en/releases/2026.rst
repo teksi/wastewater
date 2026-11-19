@@ -26,10 +26,10 @@ For more details see https://github.com/teksi/wastewater/releases/tag/2026.1.1
 
 Main features
 ----------------
-- Version of TEKSI wastewater module for QGIS 3.44 LTR and initialized and upgrade via the PostgreSQL Update Manager (PUM) and the TEKSI Module Management Tool (TMMT).
+ - Version of TEKSI wastewater module for QGIS 3.44 LTR and initialized and upgrade via the PostgreSQL Update Manager (PUM) and the TEKSI Module Management Tool (TMMT).
     - Latest version of TEKSI wastewater module for QGIS 3.xx
     - The next version will be based on QGIS 4
-- Check the `installation guide <../installation-guide/index.html>`__ for more information on how to install TEKSI wastewater module (TWW) via TMMT.
+ - Check the `installation guide <../installation-guide/index.html>`__ for more information on how to install TEKSI wastewater module (TWW) via TMMT.
 
 
 Documentation
@@ -74,8 +74,8 @@ For more details see https://github.com/teksi/wastewater/releases/tag/2026.1.0
 Main features
 ----------------
 
-- Version of TEKSI wastewater module for QGIS 3.40 LTR and initialized and upgrade via the PostgreSQL Update Manager (PUM) and the TEKSI Module Management Tool (TMMT).
-- Check the `installation guide <../installation-guide/index.html>`__ for more information on how to install TEKSI wastewater module (TWW) via TMMT.
+ - Version of TEKSI wastewater module for QGIS 3.40 LTR and initialized and upgrade via the PostgreSQL Update Manager (PUM) and the TEKSI Module Management Tool (TMMT).
+ - Check the `installation guide <../installation-guide/index.html>`__ for more information on how to install TEKSI wastewater module (TWW) via TMMT.
 
 
  - `The 'Extend selection tool' allows users to expand a selection made on the vw_tww_reach layer to related objects <../user-guide/editing/editing.html#id1>`_
@@ -164,23 +164,23 @@ Adaptions to project file
  The following new views have been integrated in this release:
 
 
-* `tww_app.vw_tww_wastewater_node` (in addition to `tww_app.vw_wastewater_node`)
-* `tww_od.tww_reach_point_labels`
-* `tww_od.tww_wastewater_structure_labels`
-* `tww_od.tww_wastewater_node_symbology`
-* new layer `tww_od.profile_geometry`
-* Added layer `vw_tww_damage`
-* tww_app.vw_tww_damage_channel
+ * `tww_app.vw_tww_wastewater_node` (in addition to `tww_app.vw_wastewater_node`)
+ * `tww_od.tww_reach_point_labels`
+ * `tww_od.tww_wastewater_structure_labels`
+ * `tww_od.tww_wastewater_node_symbology`
+ * new layer `tww_od.profile_geometry`
+ * Added layer `vw_tww_damage`
+ * tww_app.vw_tww_damage_channel
 
-Please export and use the corresponding :literal:`* \ .qml` files to integrate them into your existing TWW 2025 project files
+ Please export and use the corresponding :literal:`* \ .qml` files to integrate them into your existing TWW 2025 project files
 
 
-Make sure you edit the layer_id in the qgs file to match with what is expected e.g.
+ Make sure you edit the layer_id in the qgs file to match with what is expected e.g.
 
   .. figure:: images/vw_tww_wastewater_node_properties.png
 
 
-The following views have been adapted and need an adaption of existing TWW 2025 project files:
+ The following views have been adapted and need an adaption of existing TWW 2025 project files:
 
  - Better configuration in `vw_tww_catchment_area_totals` (point-layer)
  - Hint about necessary logcards in `vw_catchment_area`, tab fk_logcard
