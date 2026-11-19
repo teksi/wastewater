@@ -60,69 +60,36 @@ def get_xtf_object(
 
     root = tree.getroot()
 
-    namespace = (
-        root.tag.partition("}")[0] + "}"
-        if root.tag.startswith("{")
-        else ""
-    )
+    namespace = root.tag.partition("}")[0] + "}" if root.tag.startswith("{") else ""
 
-    data_section = root.find(
-        f"{namespace}DATASECTION"
-    )
+    data_section = root.find(f"{namespace}DATASECTION")
 
     if data_section is None:
-        raise AssertionError(
-            f"XTF file {xtf_file!s} has no DATASECTION."
-        )
+        raise AssertionError(f"XTF file {xtf_file!s} has no DATASECTION.")
 
-    expected_basket_tag = (
-        f"{namespace}{topic_name}"
-    )
-    expected_object_tag = (
-        f"{namespace}{topic_name}.{class_name}"
-    )
+    expected_basket_tag = f"{namespace}{topic_name}"
+    expected_object_tag = f"{namespace}{topic_name}.{class_name}"
 
     basket = next(
-        (
-            element
-            for element in data_section
-            if element.tag == expected_basket_tag
-        ),
+        (element for element in data_section if element.tag == expected_basket_tag),
         None,
     )
 
     if basket is None:
-        available_baskets = tuple(
-            element.tag.removeprefix(namespace)
-            for element in data_section
-        )
+        available_baskets = tuple(element.tag.removeprefix(namespace) for element in data_section)
 
-        print(
-            f"Basket {topic_name!r} not found. "
-            f"Available baskets: {available_baskets!r}"
-        )
+        print(f"Basket {topic_name!r} not found. " f"Available baskets: {available_baskets!r}")
         return None
 
-    matching_objects = [
-        element
-        for element in basket
-        if element.tag == expected_object_tag
-    ]
+    matching_objects = [element for element in basket if element.tag == expected_object_tag]
 
     print(
         f"{class_name} TIDs:",
-        [
-            element.attrib.get("TID")
-            for element in matching_objects
-        ],
+        [element.attrib.get("TID") for element in matching_objects],
     )
 
     return next(
-        (
-            element
-            for element in matching_objects
-            if element.attrib.get("TID") == tid
-        ),
+        (element for element in matching_objects if element.attrib.get("TID") == tid),
         None,
     )
 
