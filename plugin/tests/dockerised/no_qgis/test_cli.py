@@ -5,7 +5,6 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-from teksi_wastewater.interlis import model_config
 from teksi_wastewater.utils.database_utils import DatabaseUtils
 
 from .. import helpers
@@ -47,8 +46,6 @@ HOST_OUTPUT_DIR.mkdir(
     parents=True,
     exist_ok=True,
 )
-
-
 
 
 def _run_interlis_import(
