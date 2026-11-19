@@ -581,48 +581,6 @@ class InterlisImporterExporter:
                 basket_enabled=create_basket_col,
                 sessions=sessions,
             )
-            # temporary check to fix basket management
-            if create_basket_col:
-                query_text = f"""
-                            SELECT
-                                t_id,
-                                topic,
-                                dataset,
-                                attachmentkey
-                            FROM
-                                {self.schema}.t_ili2db_basket
-                            ORDER BY
-                                t_id
-                            """
-                if sessions is not None:
-                    basket_rows = sessions.quarantine.execute(text(query_text)).all()
-                else:
-                    with DatabaseUtils.PsycopgConnection() as connection:
-                        cursor = connection.cursor()
-                        cursor.execute(query_text)
-                        basket_rows = cursor.fetchall()
-
-                logger.info(
-                    "Intermediate export baskets for models %r: %r",
-                    tuple(sorted(export_models)),
-                    tuple(basket_rows),
-                )
-
-                expected_model_prefixes = tuple(
-                    f"{export_model}." for export_model in export_models
-                )
-
-                if not any(str(row[1]).startswith(expected_model_prefixes) for row in basket_rows):
-                    raise InterlisImporterExporterError(
-                        "Missing export basket",
-                        (
-                            "No intermediate export basket matches the "
-                            f"requested models {tuple(sorted(export_models))!r}. "
-                            f"Available basket rows: {tuple(basket_rows)!r}."
-                        ),
-                        None,
-                    )
-
             tempdir.cleanup()  # Cleanup
             self._progress_done_in_scope(
                 progress_scope, 100, "Converted from TEKSI Wastewater to intermediate schema"

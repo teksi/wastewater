@@ -208,20 +208,25 @@ class InterlisExporterToIntermediateSchema:
             component = self.model_selection.component(
                 group,
             )
+            topic_name = component.require_single_topic()
+            qualified_topic = (
+                f"{component.model_name}.{topic_name}"
+            )
 
-            basket = self.model_classes_interlis.t_ili2db_basket(
-                t_id=basket_id,
-                dataset=dataset.t_id,
-                topic=component.require_single_topic(),
-                t_ili_tid=None,
-                attachmentkey=dataset.datasetname,
-                domains="",
+            basket = (
+                self.model_classes_interlis.t_ili2db_basket(
+                    t_id=basket_id,
+                    dataset=dataset.t_id,
+                    topic=qualified_topic,
+                    t_ili_tid=None,
+                    attachmentkey=dataset.datasetname,
+                    domains="",
+                )
             )
 
             self.abwasser_session.add(
                 basket,
             )
-
             setattr(
                 self,
                 attribute_name,
