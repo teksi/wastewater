@@ -7,9 +7,9 @@ import tempfile
 from collections.abc import Collection
 from dataclasses import dataclass
 from pathlib import Path
-from sqlalchemy import text
 
 import requests
+from sqlalchemy import text
 
 from ..utils.database_utils import DatabaseUtils
 from ..utils.integrity_checker import TWWIntegrityChecker
@@ -167,7 +167,7 @@ class InterlisImporterExporter:
             logs_next_to_file=logs_next_to_file,
             filter_nulls=filter_nulls,
             srid=srid,
-            sessions = sessions,
+            sessions=sessions,
             progress_scope=ProgressScope(
                 start=35,
                 end=100,
@@ -448,7 +448,7 @@ class InterlisImporterExporter:
                 end=65,
             ),
             allow_schema_recreation=allow_schema_recreation,
-            sessions = sessions, # alter once session can be handled by hook
+            sessions=sessions,  # alter once session can be handled by hook
         )
 
         return self.interlis_export_from_quarantine_to_xtf(
@@ -497,9 +497,7 @@ class InterlisImporterExporter:
         sessions: ImporterExporterSessions | None = None,
     ):
 
-        selected_labels_scales_indices = (
-            selected_labels_scales_indices or ()
-        )
+        selected_labels_scales_indices = selected_labels_scales_indices or ()
         if not allow_schema_recreation:
             raise InterlisImporterExporterError(
                 "Schema recreation not authorized",
@@ -585,7 +583,7 @@ class InterlisImporterExporter:
             )
             # temporary check to fix basket management
             if create_basket_col:
-                query_text =f"""
+                query_text = f"""
                             SELECT
                                 t_id,
                                 topic,
@@ -597,9 +595,7 @@ class InterlisImporterExporter:
                                 t_id
                             """
                 if sessions is not None:
-                    basket_rows = sessions.quarantine.execute(
-                        text(query_text)
-                    ).all()
+                    basket_rows = sessions.quarantine.execute(text(query_text)).all()
                 else:
                     with DatabaseUtils.PsycopgConnection() as connection:
                         cursor = connection.cursor()
@@ -613,16 +609,10 @@ class InterlisImporterExporter:
                 )
 
                 expected_model_prefixes = tuple(
-                    f"{export_model}."
-                    for export_model in export_models
+                    f"{export_model}." for export_model in export_models
                 )
 
-                if not any(
-                    str(row[1]).startswith(
-                        expected_model_prefixes
-                    )
-                    for row in basket_rows
-                ):
+                if not any(str(row[1]).startswith(expected_model_prefixes) for row in basket_rows):
                     raise InterlisImporterExporterError(
                         "Missing export basket",
                         (
@@ -632,7 +622,7 @@ class InterlisImporterExporter:
                         ),
                         None,
                     )
-                
+
             tempdir.cleanup()  # Cleanup
             self._progress_done_in_scope(
                 progress_scope, 100, "Converted from TEKSI Wastewater to intermediate schema"

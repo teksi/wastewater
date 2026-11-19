@@ -100,7 +100,7 @@ class InterlisExporterToIntermediateSchema:
         except Exception:
             if self.owns_sessions:
                 self.abwasser_session.rollback()
-                raise 
+                raise
         finally:
             if self.owns_sessions:
                 self.close_sessions()
