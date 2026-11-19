@@ -25,9 +25,7 @@ def topic_name(
     *,
     lang: str = "de",
 ) -> str:
-    configured_model = model_config.interlis_models[
-        group
-    ]
+    configured_model = model_config.interlis_models[group]
 
     model_name = configured_model.lang_name(
         lang,
@@ -50,6 +48,7 @@ def topic_name(
     )
 
     return f"{model_name}.{topic_name}"
+
 
 def get_xtf_object(xtf_file, topicname, classname, tid):
     # from xml file
@@ -277,5 +276,5 @@ def run_interlis_export(
         "INTERLIS export command completed without creating the expected "
         f"host-visible output file: {host_output}"
     )
-    
+
     return host_output

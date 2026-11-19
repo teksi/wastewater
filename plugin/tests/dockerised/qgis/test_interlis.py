@@ -132,7 +132,6 @@ class TestInterlis(unittest.TestCase):
             lang,
         )
 
-
     def _import_xtf(
         self,
         fixture_name: str,
