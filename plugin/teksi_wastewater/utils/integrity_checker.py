@@ -27,7 +27,7 @@ class TWWIntegrityChecker:
         else:
             self.logger.warning(message)
 
-    def run_integrity_checks(self, raise_err: bool=False) -> list[Issue]:
+    def run_integrity_checks(self, raise_err: bool = False) -> list[Issue]:
         checks = [
             ("class_counts", self._check_class_counts),
             ("subclass_counts", self._check_subclass_counts),
@@ -58,11 +58,13 @@ class TWWIntegrityChecker:
                     f"{check_name}: {error_message}",
                     IssueLevel.ERROR,
                 )
-                        # logger.debug(f"check_subclass_counts_failed: {check_subclass_counts_failed} last")
+                # logger.debug(f"check_subclass_counts_failed: {check_subclass_counts_failed} last")
                 if raise_err:
                     from ..interlis.utils.various import InterlisImporterExporterError
 
-                    raise InterlisImporterExporterError(f"Error on Check {check_name}: ", error_message, None)
+                    raise InterlisImporterExporterError(
+                        f"Error on Check {check_name}: ", error_message, None
+                    )
 
         return self.check_result
 
