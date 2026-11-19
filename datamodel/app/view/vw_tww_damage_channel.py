@@ -65,7 +65,18 @@ def vw_tww_damage_channel(
         ),
         damage_pictures AS(
             SELECT dc.obj_id,
-            array_agg(COALESCE(dm.path || fi.path_relative, fi.path_relative)) AS pics
+            array_agg(
+                COALESCE(    
+                    regexp_replace(
+                        dm.path, '[\\/]+$', '') ||
+                        '/' || 
+                        regexp_replace(COALESCE(fi.path_relative::text, ''), '[\\/]+$', '')||
+                        '/' ||
+                        fi.identifier,
+                        fi.path_relative::text
+                    )
+           ) 
+           AS pics
            FROM tww_od.file fi
              JOIN tww_od.damage_channel dc ON fi.object = dc.obj_id::text
              JOIN tww_od.damage dg ON dg.obj_id::text = dc.obj_id::text
@@ -76,15 +87,26 @@ def vw_tww_damage_channel(
           GROUP BY dc.obj_id
         ),
         examination_videos AS(
-        SELECT dc.obj_id, FIRST_value(COALESCE(dm.path || fi.path_relative, fi.path_relative)) over w as video
-        FROM tww_od.file fi
-        INNER JOIN tww_od.examination ex ON fi.object = ex.obj_id
-        INNER JOIN tww_od.maintenance_event me on me.obj_id = ex.obj_id
-        RIGHT JOIN tww_od.damage dg on dg.fk_examination = ex.obj_id
-        INNER JOIN tww_od.damage_channel dc ON dg.obj_id = dc.obj_id
-        LEFT JOIN tww_od.data_media dm ON dm.obj_id = fi.fk_data_media
-        WHERE fi.tww_outdated IS NOT True AND ex.tww_outdated IS NOT True AND fi.kind IN (3775, 9146)
-        WINDOW W as (PARTITION BY ex.fk_reach_point ORDER BY me.time_point DESC)
+            SELECT dc.obj_id,
+            FIRST_value(
+                COALESCE(    
+                    regexp_replace(
+                        dm.path, '[\\/]+$', '') ||
+                        '/' || 
+                        regexp_replace(COALESCE(fi.path_relative::text, ''), '[\\/]+$', '')||
+                        '/' ||
+                        fi.identifier,
+                        fi.path_relative::text
+                    )
+            ) over w as video
+            FROM tww_od.file fi
+            INNER JOIN tww_od.examination ex ON fi.object = ex.obj_id
+            INNER JOIN tww_od.maintenance_event me on me.obj_id = ex.obj_id
+            RIGHT JOIN tww_od.damage dg on dg.fk_examination = ex.obj_id
+            INNER JOIN tww_od.damage_channel dc ON dg.obj_id = dc.obj_id
+            LEFT JOIN tww_od.data_media dm ON dm.obj_id = fi.fk_data_media
+            WHERE fi.tww_outdated IS NOT True AND ex.tww_outdated IS NOT True AND fi.kind IN (3775, 9146)
+            WINDOW W as (PARTITION BY ex.fk_reach_point ORDER BY me.time_point DESC)
         )
         SELECT
         {dg_cols_base}
