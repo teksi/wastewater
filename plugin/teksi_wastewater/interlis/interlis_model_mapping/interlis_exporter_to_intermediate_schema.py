@@ -3316,7 +3316,7 @@ class InterlisExporterToIntermediateSchema:
                 f"Exporting more than 999999 labels will generate invalid OIDs. Currently exporting {t_id} label of type '{t_type}'."
             )
 
-        return {
+        textpos = {
             "t_id": t_id,
             "t_type": t_type,
             "t_ili_tid": f"{oid_prefix}{shortcut_en}{t_id:06d}",
@@ -3339,9 +3339,18 @@ class InterlisExporterToIntermediateSchema:
             "textinhalt": row["properties"]["LabelText"],
             "bemerkung": None,
         }
+        if self.current_basket:
+            textpos["t_basket"] = self.current_basket.t_id
+
+        return textpos
 
     def _export_label_positions(self):
         logger.info(f"Exporting label positions from {self.labels_file}")
+
+        # SIA405 / DSS / KEK text classes belong to the SIA405_Abwasser topic
+        # (None when baskets are disabled). AG-64 / AG-96 keep their own basket.
+        if not self.is_ag_xx_model:
+            self.current_basket = self.basket_topic_sia405_abwasser
 
         # get oid prefix
         self.oid_prefix = self.get_oid_prefix(self.model_classes_tww_sys.oid_prefixes)
