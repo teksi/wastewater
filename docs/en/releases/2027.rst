@@ -1,6 +1,6 @@
 .. _2027:
 
-Here you can find information about the future 2027.x release of TEKSI wastewater
+Here you can find information about the 2027.x releases of TEKSI wastewater. For future release check the `TEKSI Roadmap <https://github.com/teksi/Home/wiki/TEKSI-modules-releases-and-roadmap>`__
 
 
 2027.0.1 Tech Preview
