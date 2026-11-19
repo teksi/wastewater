@@ -7,6 +7,7 @@ import tempfile
 from collections.abc import Collection
 from dataclasses import dataclass
 from pathlib import Path
+from sqlalchemy import text
 
 import requests
 
@@ -28,7 +29,7 @@ from .model_config import (
 )
 from .utils.ili2db import InterlisTools
 from .utils.sessions import (
-    InterlisImportSessions,
+    ImporterExporterSessions,
 )
 from .utils.various import (
     CmdException,
@@ -142,6 +143,7 @@ class InterlisImporterExporter:
         import_orgs: bool = False,
         user_interaction: bool = False,
         allow_schema_recreation: bool = False,
+        sessions: ImporterExporterSessions | None = None,
     ):
         if not self.schema:
             self.schema = config.IMPORT_SCHEMA
@@ -165,6 +167,7 @@ class InterlisImporterExporter:
             logs_next_to_file=logs_next_to_file,
             filter_nulls=filter_nulls,
             srid=srid,
+            sessions = sessions,
             progress_scope=ProgressScope(
                 start=35,
                 end=100,
@@ -295,7 +298,7 @@ class InterlisImporterExporter:
         filter_nulls=True,
         srid: int = None,
         progress_scope: ProgressScope = ProgressScope(),
-        sessions: InterlisImportSessions | None = None,
+        sessions: ImporterExporterSessions | None = None,
     ):
 
         selection_models = self._prepare_interlis_import(
@@ -333,8 +336,9 @@ class InterlisImporterExporter:
                     raise InterlisImporterExporterStopped()
                 QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
             else:
-                self._progress_done_in_scope(progress_scope, 80, "Commit session...")
-                tww_session.commit()
+                if sessions is None:
+                    self._progress_done_in_scope(progress_scope, 80, "Commit session...")
+                    tww_session.commit()
 
             # Update the sequence values
             self._progress_done_in_scope(progress_scope, 85, "Update sequence values...")
@@ -362,7 +366,8 @@ class InterlisImporterExporter:
         except Exception:
             # Make sure to re-enable triggers in case an exception occourred
             try:
-                tww_session.rollback()
+                if sessions is None and tww_session is not None:
+                    tww_session.rollback()
                 self._import_enable_symbology_and_modification_triggers()
             except Exception as enable_trigger_exception:
                 logger.error(
@@ -372,7 +377,7 @@ class InterlisImporterExporter:
             # Raise the original exception for further error handling
             raise
         finally:
-            if tww_session is not None:
+            if sessions is None and tww_session is not None:
                 try:
                     tww_session.close()
                 except Exception as close_exception:
@@ -424,6 +429,7 @@ class InterlisImporterExporter:
         include_unplaced: bool = False,
         import_orgs: bool = False,
         allow_schema_recreation: bool = False,
+        sessions: ImporterExporterSessions | None = None,
     ):
 
         self.interlis_export_live_to_quarantine(
@@ -442,6 +448,7 @@ class InterlisImporterExporter:
                 end=65,
             ),
             allow_schema_recreation=allow_schema_recreation,
+            sessions = sessions, # alter once session can be handled by hook
         )
 
         return self.interlis_export_from_quarantine_to_xtf(
@@ -481,14 +488,18 @@ class InterlisImporterExporter:
         limit_to_selection=False,
         export_orientation=90.0,
         labels_file=None,
-        selected_labels_scales_indices=[],
+        selected_labels_scales_indices=None,
         selected_ids=None,
         include_unplaced: bool = False,
         import_orgs: bool = False,
         progress_scope: ProgressScope = ProgressScope(),
         allow_schema_recreation: bool = False,
+        sessions: ImporterExporterSessions | None = None,
     ):
 
+        selected_labels_scales_indices = (
+            selected_labels_scales_indices or ()
+        )
         if not allow_schema_recreation:
             raise InterlisImporterExporterError(
                 "Schema recreation not authorized",
@@ -570,7 +581,58 @@ class InterlisImporterExporter:
                 export_orientation=export_orientation,
                 labels_file_path=labels_file,
                 basket_enabled=create_basket_col,
+                sessions=sessions,
             )
+            # temporary check to fix basket management
+            if create_basket_col:
+                query_text =f"""
+                            SELECT
+                                t_id,
+                                topic,
+                                dataset,
+                                attachmentkey
+                            FROM
+                                {self.schema}.t_ili2db_basket
+                            ORDER BY
+                                t_id
+                            """
+                if sessions is not None:
+                    basket_rows = sessions.quarantine.execute(
+                        text(query_text)
+                    ).all()
+                else:
+                    with DatabaseUtils.PsycopgConnection() as connection:
+                        cursor = connection.cursor()
+                        cursor.execute(query_text)
+                        basket_rows = cursor.fetchall()
+
+                logger.info(
+                    "Intermediate export baskets for models %r: %r",
+                    tuple(sorted(export_models)),
+                    tuple(basket_rows),
+                )
+
+                expected_model_prefixes = tuple(
+                    f"{export_model}."
+                    for export_model in export_models
+                )
+
+                if not any(
+                    str(row[1]).startswith(
+                        expected_model_prefixes
+                    )
+                    for row in basket_rows
+                ):
+                    raise InterlisImporterExporterError(
+                        "Missing export basket",
+                        (
+                            "No intermediate export basket matches the "
+                            f"requested models {tuple(sorted(export_models))!r}. "
+                            f"Available basket rows: {tuple(basket_rows)!r}."
+                        ),
+                        None,
+                    )
+                
             tempdir.cleanup()  # Cleanup
             self._progress_done_in_scope(
                 progress_scope, 100, "Converted from TEKSI Wastewater to intermediate schema"
@@ -802,7 +864,7 @@ class InterlisImporterExporter:
     def _import_from_intermediate_schema(
         self,
         selection_models: TwwInterlisModelSelection,
-        sessions: InterlisImportSessions | None = None,
+        sessions: ImporterExporterSessions | None = None,
     ):
         log_handler = logging.FileHandler(
             make_log_path(self.base_log_path, "tww2ili-import"), mode="w", encoding="utf-8"
@@ -969,6 +1031,7 @@ class InterlisImporterExporter:
         export_orientation=90.0,
         labels_file_path=None,
         basket_enabled=False,
+        sessions: ImporterExporterSessions | None = None,
     ):
         log_handler = logging.FileHandler(
             make_log_path(file_name, "tww2ili-export"), mode="w", encoding="utf-8"
@@ -990,6 +1053,8 @@ class InterlisImporterExporter:
             labels_file=labels_file_path,
             basket_enabled=basket_enabled,
             callback_progress_done=self._progress_done_intermediate_schema,
+            session_interlis=(sessions.quarantine if sessions is not None else None),
+            session_tww=(sessions.live if sessions is not None else None),
         )
 
         with LoggingHandlerContext(log_handler):

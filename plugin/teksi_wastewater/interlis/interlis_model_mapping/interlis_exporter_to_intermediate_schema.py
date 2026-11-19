@@ -28,13 +28,20 @@ class InterlisExporterToIntermediateSchema:
         basket_enabled=False,
         callback_progress_done=None,
         use_vsacode=True,
+        session_interlis: Session | None = None,
+        session_tww: Session | None = None,
     ):
         """
         Export data from the TWW model into the ili2pg model.
 
-        Args:
-            selection:      if provided, limits the export to networkelements that are provided in the selection
+        Supplied sessions are borrowed and remain owned by the caller.
+        When no sessions are supplied, this exporter creates and manages them.
         """
+        if (session_interlis is None) != (session_tww is None):
+            raise ValueError(
+                "session_interlis and session_tww must either both "
+                "be supplied or both be omitted."
+            )
         self.model_selection = model_selection
         self.callback_progress_done = callback_progress_done
 
@@ -57,9 +64,10 @@ class InterlisExporterToIntermediateSchema:
         self.model_classes_tww_sys = model_classes_tww_sys
         self.model_classes_tww_app = model_classes_tww_app
         self.labels_orientation_offset = labels_orientation_offset
+        self.owns_sessions = session_interlis is None
 
-        self.tww_session = None
-        self.abwasser_session = None
+        self.tww_session = session_tww
+        self.abwasser_session = session_interlis
         self.tid_maker = utils.ili2db.TidMaker(id_attribute="obj_id")
 
         self.current_basket = None
@@ -72,12 +80,13 @@ class InterlisExporterToIntermediateSchema:
 
     def tww_export(self):
         # Logging disabled (very slow)
-        self.tww_session = Session(
-            utils.tww_sqlalchemy.create_engine(), autocommit=False, autoflush=False
-        )
-        self.abwasser_session = Session(
-            utils.tww_sqlalchemy.create_engine(), autocommit=False, autoflush=False
-        )
+        if self.owns_sessions:
+            self.tww_session = Session(
+                utils.tww_sqlalchemy.create_engine(), autocommit=False, autoflush=False
+            )
+            self.abwasser_session = Session(
+                utils.tww_sqlalchemy.create_engine(), autocommit=False, autoflush=False
+            )
 
         # write self.subset_ids to logger.info
         if self.filtered:
@@ -85,11 +94,16 @@ class InterlisExporterToIntermediateSchema:
 
         try:
             self._export()
-            self.abwasser_session.commit()
-            self.close_sessions()
-        except Exception as exception:
-            self.close_sessions()
-            raise exception
+            if self.owns_sessions:
+                self.abwasser_session.commit()
+                self.close_sessions()
+        except Exception:
+            if self.owns_sessions:
+                self.abwasser_session.rollback()
+                raise 
+        finally:
+            if self.owns_sessions:
+                self.close_sessions()
 
     def _export(self):
         # Allow to insert rows with cyclic dependencies at once
