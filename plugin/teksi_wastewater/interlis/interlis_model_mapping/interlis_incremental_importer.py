@@ -8,11 +8,11 @@ from dataclasses import (
     dataclass,
     field,
 )
+
 from geoalchemy2 import Geometry
 from geoalchemy2.elements import WKBElement
 from sqlalchemy import LargeBinary, func, inspect, literal
 from sqlalchemy.orm import Session
-
 from teksi_hooks.capabilities.effects import (
     QuarantineEffectProjectorCapability,
 )
@@ -544,11 +544,7 @@ class InterlisIncrementalImporter:
                     "PostGIS-native persistence using %s.",
                     attribute_name,
                     type(instance).__name__,
-                    (
-                        "ST_GeomFromEWKB"
-                        if geometry_value.extended
-                        else "ST_GeomFromWKB"
-                    ),
+                    ("ST_GeomFromEWKB" if geometry_value.extended else "ST_GeomFromWKB"),
                 )
 
     def _reset_results(

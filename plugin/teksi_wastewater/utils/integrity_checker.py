@@ -285,7 +285,9 @@ class TWWIntegrityChecker:
                 cursor.execute(f"SELECT obj_id FROM {schema_name}.{child_name};")
                 child_rows = cursor.fetchall()
                 child_ids = {row[0] for row in child_rows}
-                self.add_issue(f"Number of {child_name} datasets: {len(child_rows)}", level="debug")
+                self.add_issue(
+                    f"Number of {child_name} datasets: {len(child_rows)}", level="debug"
+                )
 
                 missing_in_subclass -= child_ids
 
