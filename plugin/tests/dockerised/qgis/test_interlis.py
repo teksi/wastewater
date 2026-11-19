@@ -12,7 +12,7 @@ from teksi_wastewater.hooks.adapters.tww_interlis_service_adapter import (
     TwwInterlisContext,
     TwwInterlisServiceAdapter,
 )
-from teksi_wastewater.hooks.cli import helpers
+from teksi_wastewater.hooks.cli import helpers as cli_helpers
 from teksi_wastewater.hooks.services.tww_trusted_import_service import (
     TwwTrustedImportService,
 )
@@ -83,7 +83,7 @@ class TestInterlis(unittest.TestCase):
             pgport=PG_PORT,
         )
 
-        cls.connection_factory = helpers.database_connection_factory(
+        cls.connection_factory = cli_helpers.database_connection_factory(
             cls.connection_args,
         )
 

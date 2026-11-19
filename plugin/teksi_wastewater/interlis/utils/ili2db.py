@@ -135,6 +135,7 @@ class InterlisTools:
                     "--disableValidation",
                     "--skipReferenceErrors",
                     "--createTidCol",
+                    "--exportTid",
                     "--noSmartMapping",
                     "--defaultSrsCode",
                     f"{srid}",
