@@ -386,6 +386,12 @@ class InterlisImporterToIntermediateSchema:
         self._import_gebaeudegruppe_entsorgungassoc()
         self._check_for_stop()
 
+        logger.info(
+            "\nImporting ABWASSER.messstelle_referenzstelleassoc -> TWW.re_measuring_point_reference_station"
+        )
+        self._import_messstelle_referenzstelleassoc()
+        self._check_for_stop()
+
     def _import_vsa_kek(self):
         logger.info("\nImporting ABWASSER.untersuchung -> TWW.examination")
         self._import_untersuchung()
@@ -2556,6 +2562,34 @@ class InterlisImporterToIntermediateSchema:
             )
 
             self.session_tww.add(re_building_group_disposal)
+            print(".", end="")
+
+    def _import_messstelle_referenzstelleassoc(self):
+        for row in self.session_interlis.query(
+            self.model_classes_interlis.messstelle_referenzstelleassoc
+        ):
+            re_measuring_point_reference_station = (
+                self.session_tww.query(
+                    self.model_classes_tww_od.re_measuring_point_reference_station
+                )
+                .filter_by(
+                    fk_measuring_point=self.get_pk(row.messstelle_referenzstelleassocref__REL),
+                    fk_reference_station=self.get_pk(row.referenzstelleref__REL),
+                )
+                .first()
+            )
+            if re_measuring_point_reference_station is not None:
+                # Already existing -> do nothing
+                continue
+
+            re_measuring_point_reference_station = (
+                self.model_classes_tww_od.re_measuring_point_reference_station(
+                    fk_measuring_point=self.get_pk(row.messstelle_referenzstelleassocref__REL),
+                    fk_reference_station=self.get_pk(row.referenzstelleref__REL),
+                )
+            )
+
+            self.session_tww.add(re_measuring_point_reference_station)
             print(".", end="")
 
     def _check_for_stop(self):

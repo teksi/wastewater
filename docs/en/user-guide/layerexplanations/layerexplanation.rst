@@ -101,6 +101,12 @@ Change Points ``tww_app.vw_change_points``
 
 A view to visualize the points (wastewater_nodes between to reaches of the same channel), where material or clear_heigth or slope changes.
 
+Profile Geometry ``tww_od.profile_geometry``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. versionadded:: 2026.0.1
+
+To define the detailpoints of a 'special' or 'mouth' or 'open' pipe_profile, you need the profile_geometry-table.
+
 
 Layergroup Configuration
 -------------------------

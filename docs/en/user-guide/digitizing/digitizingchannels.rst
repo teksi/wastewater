@@ -40,7 +40,9 @@ Digitizing
 
 * Control the snapping to wastewater nodes or other reaches in the fields **rp_from/to_fk_wastewater_networkelement**
 
-.. note:: If you do not enter an `identifier` (reach-identifier) in the General tab, TWW will enter the `obj_id` also as identifier (you can change later). As default, the `identifier` of the reach is also the `ws_identifier` of the channel. As default, the reachpoint-identifier is set to the reachpoint-obj_id.
+.. versionadded:: 2026.0.1
+
+.. note:: If you do not enter an `identifier` (reach-identifier) in the General tab, TWW will combine the wastewater_node-identifier of the connected nodes (from_node-tonode). If there is no connected node, TWW will use the reachpoint-identifier(s). If you change later the node-identifier or if you connect the reach to another node, the reach-identifier will not change automatic. As default, the `obj_id` of the channel is also the `ws_identifier` of the channel. As default, the reachpoint-identifier is set to the reachpoint-obj_id.
 
 .. note:: See :ref:`reach_geometrysync` for automatic reachpoint levels when snapping to wastewater nodes with level.
 

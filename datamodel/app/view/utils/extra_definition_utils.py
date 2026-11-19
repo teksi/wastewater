@@ -72,11 +72,12 @@ def insert_extra(connection: psycopg.Connection, extra_definition: dict = {}):
             CASE WHEN {condition} THEN
                 {insert_sql}
             ELSE NULL;
-            END;
+            END CASE;
             """
             sql_parts.append(wrapped_sql)
         else:
             sql_parts.append(insert_sql)
+    if sql_parts:
         return "\n     ".join(sql_parts)
     return ""
 
@@ -113,10 +114,11 @@ def update_extra(connection: psycopg.Connection, extra_definition: dict = {}):
             CASE WHEN {condition} THEN
                 {update_sql}
             ELSE NULL;
-            END;
+            END CASE;
             """
             sql_parts.append(wrapped_sql)
         else:
             sql_parts.append(update_sql)
+    if sql_parts:
         return "\n     ".join(sql_parts)
     return ""

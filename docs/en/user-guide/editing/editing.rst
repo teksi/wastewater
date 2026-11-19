@@ -342,6 +342,36 @@ In the vw_tww_wastewater_structure form, you can change the subclass of the wast
 .. note:: You can not change a point - wastewater structure (e.g. manhole) to a line wastewater structure (channel) or vice versa.
 
 
+.. _visualize_profile_geometry:
+
+.. versionadded:: 2026.0.1
+
+Changing and visualizing a profile_geometry
+-------------------------------------------
+
+Profile geometries can be defined for pipe profiles of **type** special, mouth or open.
+
+The detailpoints can be visualized with a sql-expression, that is already saved in the project.
+
+- right click on any layer an choose "Execute SQL..."
+
+- delete the sql-expression, that is already written in the field and choose in the rightmost tool **visualize profile_geometry**
+
+.. figure:: images/profile_geometry_stored_sql.jpg
+   :scale: 50 %
+
+
+- choose Execute, Load as new layer and enable the Geometry column
+
+.. figure:: images/profile_geometry_load_layer.jpg
+   :scale: 50 %
+
+
+- Load Layer creates a new point layer with the detailpoints. Zoom to the new layer
+
+
+
+
 Split a reach (channel) into different reaches
 -----------------------------------------------
 
