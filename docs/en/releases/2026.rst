@@ -103,9 +103,9 @@ Main features
 Documentation
 --------------
  - `New chapter What happens if I change dataowner or provider fields <../user-guide/layerexplanations/twwproject.html#when-tww-automatically-updates-the-fields-dataowner-and-provider>`_
- 
+
  user-guide/layerexplanations/twwproject.html#when-tww-automatically-updates-the-fields-dataowner-and-provider
- 
+
  - `New chapter Common editing mistakes <../user-guide/How-To/index.rst#common-mistakes>`_
  - `Add chapter Obj_ID <../admin-guide/db-production-readiness/index.rst>`_
  - `Document labeling and symbology flags <../admin-guide/db-label-customisation/index.rst#customisation-of-labeling-and-symbology-behaviour>`_
