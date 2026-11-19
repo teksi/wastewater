@@ -35,7 +35,7 @@ from ...interlis.model_config import (
 from ...interlis.utils.ili2db import (
     InterlisTools,
 )
-from ...interlis.utils.sessions import InterlisImportSessions
+from ...interlis.utils.sessions import ImporterExporterSessions
 from ..capabilities.incremental_import import (
     IncrementalEffectEvaluator,
     IncrementalEffectPersister,
@@ -426,7 +426,7 @@ class TwwQuarantineRunner:
         )
         base_context = session_context.for_base_source()
 
-        import_sessions = InterlisImportSessions(
+        import_sessions = ImporterExporterSessions(
             quarantine=base_context.quarantine,
             live=base_context.live,
         )
