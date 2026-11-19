@@ -68,7 +68,7 @@ For Wastewater structure / Cover / Wastewater nodes, they are kept in sync:
 
     INSERT
 		if only main is provided, all 3 get the same value
-	
+
     UPDATE
 		if they were the same and the main changes => all changes
 
