@@ -49,25 +49,6 @@ HOST_OUTPUT_DIR.mkdir(
 )
 
 
-def _topic_name(
-    group: str,
-    *,
-    lang: str = "de",
-) -> str:
-    """
-    Return the only configured topic for a model group and language.
-
-    Every model used by these fixtures currently exposes one transfer topic.
-    Fail clearly if a future model definition changes that assumption.
-    """
-    topics = model_config.interlis_models[group].topics_by_lang(lang)
-
-    assert len(topics) == 1, (
-        "Expected exactly one topic for INTERLIS group "
-        f"{group!r} and language {lang!r}, got {sorted(topics)!r}."
-    )
-
-    return next(iter(topics))
 
 
 def _run_interlis_import(
@@ -343,7 +324,7 @@ def test_export_sia405_base_abwasser(
 ) -> None:
     interlis_object = helpers.get_xtf_object(
         exported_sia405_base_abwasser,
-        _topic_name("sia405_base_abwasser"),
+        helpers.topic_name("sia405_base_abwasser"),
         "Organisation",
         ORGANISATION_ID,
     )
@@ -354,7 +335,7 @@ def test_export_sia405_base_abwasser(
 def test_export_sia405_abwasser(
     exported_sia405_abwasser,
 ) -> None:
-    topic_name = _topic_name("sia405_abwasser")
+    topic_name = helpers.topic_name("sia405_abwasser")
 
     reach = helpers.get_xtf_object(
         exported_sia405_abwasser,
@@ -388,7 +369,7 @@ def test_export_dss(
 ) -> None:
     pipe_profile = helpers.get_xtf_object(
         exported_dss,
-        _topic_name("dss"),
+        helpers.topic_name("dss"),
         "Rohrprofil",
         "ch000000PP000001",
     )
@@ -401,7 +382,7 @@ def test_export_kek(
 ) -> None:
     examination = helpers.get_xtf_object(
         exported_kek,
-        _topic_name("vsa_kek"),
+        helpers.topic_name("vsa_kek"),
         "Untersuchung",
         KEK_EXAMINATION_ID,
     )
@@ -443,7 +424,7 @@ def test_import_sia405_modified(
 def test_export_dss_selection(
     exported_dss_selection,
 ) -> None:
-    topic_name = _topic_name("dss")
+    topic_name = helpers.topic_name("dss")
 
     excluded_pipe_profile = helpers.get_xtf_object(
         exported_dss_selection,
