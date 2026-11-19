@@ -3605,8 +3605,8 @@ class InterlisExporterToIntermediateSchema:
                             )
                             continue
 
-                    self.abwasser_session.add(ili_label)
-                    print(".", end="")
+                self.abwasser_session.add(ili_label)
+                print(".", end="")
                 logger.info("done")
                 self.abwasser_session.flush()
 
