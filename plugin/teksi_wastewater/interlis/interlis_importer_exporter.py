@@ -348,7 +348,7 @@ class InterlisImporterExporter:
 
             # Validate subclasses after import
             integrityChecker = TWWIntegrityChecker(logger=logger)
-            _ = integrityChecker._check_subclass_counts(raise_err=True)
+            _ = integrityChecker.run_integrity_checks(raise_err=True)
 
             # Update organisations
             self._progress_done_in_scope(progress_scope, 95, "Set organisations filter...")

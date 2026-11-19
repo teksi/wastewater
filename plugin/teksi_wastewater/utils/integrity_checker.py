@@ -27,7 +27,7 @@ class TWWIntegrityChecker:
         else:
             self.logger.warning(message)
 
-    def run_integrity_checks(self) -> list[Issue]:
+    def run_integrity_checks(self, raise_err: bool=False) -> list[Issue]:
         checks = [
             ("class_counts", self._check_class_counts),
             ("subclass_counts", self._check_subclass_counts),
@@ -58,6 +58,11 @@ class TWWIntegrityChecker:
                     f"{check_name}: {error_message}",
                     IssueLevel.ERROR,
                 )
+                        # logger.debug(f"check_subclass_counts_failed: {check_subclass_counts_failed} last")
+                if raise_err:
+                    from ..interlis.utils.various import InterlisImporterExporterError
+
+                    raise InterlisImporterExporterError(f"Error on Check {check_name}: ", error_message, None)
 
         return self.check_result
 
@@ -123,7 +128,6 @@ class TWWIntegrityChecker:
                 FROM information_schema.tables
                 WHERE table_schema = %s
                   AND table_type = 'BASE TABLE'
-                  AND table_name not LIKE 'tww_%'
                 ORDER BY table_name;
                 """,
                 (schema_name,),
@@ -178,7 +182,7 @@ class TWWIntegrityChecker:
 
         return False, "", 0
 
-    def _check_subclass_counts(self, raise_err=False):
+    def _check_subclass_counts(self):
         failed = False
         error_messages = []
         total_issue_count = 0
@@ -254,11 +258,7 @@ class TWWIntegrityChecker:
                 error_messages.append(msg)
             total_issue_count += count
         error_message = "; ".join(error_messages) if error_messages else ""
-        # logger.debug(f"check_subclass_counts_failed: {check_subclass_counts_failed} last")
-        if raise_err and failed:
-            from ..interlis.utils.various import InterlisImporterExporterError
 
-            raise InterlisImporterExporterError("Subclass Count error", error_message, None)
         return (failed, error_message, total_issue_count)
 
     def _check_subclass_count(self, schema_name, parent_name, child_list) -> tuple[bool, str, int]:
