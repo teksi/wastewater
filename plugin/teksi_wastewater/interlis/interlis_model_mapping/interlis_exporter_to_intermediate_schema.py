@@ -3607,8 +3607,8 @@ class InterlisExporterToIntermediateSchema:
 
                 self.abwasser_session.add(ili_label)
                 print(".", end="")
-                logger.info("done")
-                self.abwasser_session.flush()
+            logger.info("done")
+            self.abwasser_session.flush()
 
         else:
             logger.warning("No labels found - check if labels in tww-layers are activated!")
