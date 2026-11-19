@@ -20,9 +20,41 @@ def get_output_filename(name: str) -> str:
     return str(OUTPUT_DIR / name)
 
 
+def topic_name(
+    group: str,
+    *,
+    lang: str = "de",
+) -> str:
+    configured_model = model_config.interlis_models[
+        group
+    ]
+
+    model_name = configured_model.lang_name(
+        lang,
+    )
+    topics = configured_model.topics_by_lang(
+        lang,
+    )
+
+    if len(topics) != 1:
+        raise AssertionError(
+            "Expected exactly one topic for INTERLIS group "
+            f"{group!r} and language {lang!r}, got "
+            f"{sorted(topics)!r}."
+        )
+
+    topic_name = next(
+        iter(
+            topics,
+        )
+    )
+
+    return f"{model_name}.{topic_name}"
+
 def get_xtf_object(xtf_file, topicname, classname, tid):
     # from xml file
     tree = ET.parse(xtf_file)
+
     root = tree.getroot()
     for elem in root.iter():
         if "." in elem.tag:
@@ -245,5 +277,5 @@ def run_interlis_export(
         "INTERLIS export command completed without creating the expected "
         f"host-visible output file: {host_output}"
     )
-
+    
     return host_output

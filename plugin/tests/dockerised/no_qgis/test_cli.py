@@ -8,12 +8,7 @@ import pytest
 from teksi_wastewater.interlis import model_config
 from teksi_wastewater.utils.database_utils import DatabaseUtils
 
-from ..helpers import (
-    get_xtf_object,
-    get_xtf_object_node_text,
-    run_interlis_export,
-    run_interlis_import,
-)
+from .. import helpers
 
 pytestmark = pytest.mark.no_qgis
 
@@ -85,7 +80,7 @@ def _run_interlis_import(
     command exits with a non-zero status.
     """
 
-    run_interlis_import(
+    helpers.run_interlis_import(
         fixture_name, host_data_dir=HOST_DATA_DIR, container_data_dir=CONTAINER_DATA_DIR
     )
 
@@ -164,7 +159,7 @@ def exported_sia405_base_abwasser(
         SET tww_local_extension = true;
         """)
 
-    return run_interlis_export(
+    return helpers.run_interlis_export(
         base_name="export_minimal_dataset_sia405_base",
         model_group="sia405_base_abwasser",
         host_output_dir=HOST_OUTPUT_DIR,
@@ -176,7 +171,7 @@ def exported_sia405_base_abwasser(
 def exported_sia405_abwasser(
     imported_kek,
 ) -> Path:
-    return run_interlis_export(
+    return helpers.run_interlis_export(
         base_name="export_minimal_dataset_sia405",
         model_group="sia405_abwasser",
         host_output_dir=HOST_OUTPUT_DIR,
@@ -188,7 +183,7 @@ def exported_sia405_abwasser(
 def exported_dss(
     imported_kek,
 ) -> Path:
-    return run_interlis_export(
+    return helpers.run_interlis_export(
         base_name="export_minimal_dataset_dss",
         model_group="dss",
         host_output_dir=HOST_OUTPUT_DIR,
@@ -200,7 +195,7 @@ def exported_dss(
 def exported_kek(
     imported_kek,
 ) -> Path:
-    return run_interlis_export(
+    return helpers.run_interlis_export(
         base_name="export_minimal_dataset_kek",
         model_group="vsa_kek",
         host_output_dir=HOST_OUTPUT_DIR,
@@ -221,7 +216,7 @@ def imported_sia405_modified(
 def exported_dss_selection(
     imported_sia405_modified,
 ) -> Path:
-    return run_interlis_export(
+    return helpers.run_interlis_export(
         base_name="export_minimal_dataset_dss_selection",
         model_group="dss",
         selected_ids=(
@@ -346,7 +341,7 @@ def test_import_kek(
 def test_export_sia405_base_abwasser(
     exported_sia405_base_abwasser,
 ) -> None:
-    interlis_object = get_xtf_object(
+    interlis_object = helpers.get_xtf_object(
         exported_sia405_base_abwasser,
         _topic_name("sia405_base_abwasser"),
         "Organisation",
@@ -361,7 +356,7 @@ def test_export_sia405_abwasser(
 ) -> None:
     topic_name = _topic_name("sia405_abwasser")
 
-    reach = get_xtf_object(
+    reach = helpers.get_xtf_object(
         exported_sia405_abwasser,
         topic_name,
         "Haltung",
@@ -369,7 +364,7 @@ def test_export_sia405_abwasser(
     )
     assert reach is not None
 
-    pipe_profile = get_xtf_object(
+    pipe_profile = helpers.get_xtf_object(
         exported_sia405_abwasser,
         topic_name,
         "Rohrprofil",
@@ -377,7 +372,7 @@ def test_export_sia405_abwasser(
     )
     assert pipe_profile is not None
 
-    height_width_ratio_text = get_xtf_object_node_text(
+    height_width_ratio_text = helpers.get_xtf_object_node_text(
         exported_sia405_abwasser,
         topic_name,
         "Rohrprofil",
@@ -391,7 +386,7 @@ def test_export_sia405_abwasser(
 def test_export_dss(
     exported_dss,
 ) -> None:
-    pipe_profile = get_xtf_object(
+    pipe_profile = helpers.get_xtf_object(
         exported_dss,
         _topic_name("dss"),
         "Rohrprofil",
@@ -404,7 +399,7 @@ def test_export_dss(
 def test_export_kek(
     exported_kek,
 ) -> None:
-    examination = get_xtf_object(
+    examination = helpers.get_xtf_object(
         exported_kek,
         _topic_name("vsa_kek"),
         "Untersuchung",
@@ -450,7 +445,7 @@ def test_export_dss_selection(
 ) -> None:
     topic_name = _topic_name("dss")
 
-    excluded_pipe_profile = get_xtf_object(
+    excluded_pipe_profile = helpers.get_xtf_object(
         exported_dss_selection,
         topic_name,
         "Rohrprofil",
@@ -458,7 +453,7 @@ def test_export_dss_selection(
     )
     assert excluded_pipe_profile is None
 
-    included_pipe_profile = get_xtf_object(
+    included_pipe_profile = helpers.get_xtf_object(
         exported_dss_selection,
         topic_name,
         "Rohrprofil",

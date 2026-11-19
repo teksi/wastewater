@@ -20,11 +20,7 @@ from teksi_wastewater.interlis import config, model_config
 from teksi_wastewater.interlis.utils.ili2db import InterlisTools
 from teksi_wastewater.utils.database_utils import DatabaseUtils
 
-from ..helpers import (
-    get_xtf_object,
-    get_xtf_object_node_text,
-    run_interlis_export,
-)
+from .. import helpers
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -136,28 +132,6 @@ class TestInterlis(unittest.TestCase):
             lang,
         )
 
-    @staticmethod
-    def _topic_name(
-        group: str,
-        *,
-        lang: str = "de",
-    ) -> str:
-        topics = model_config.interlis_models[group].topics_by_lang(
-            lang,
-        )
-
-        if len(topics) != 1:
-            raise AssertionError(
-                "Expected exactly one topic for INTERLIS group "
-                f"{group!r} and language {lang!r}, got "
-                f"{sorted(topics)!r}."
-            )
-
-        return next(
-            iter(
-                topics,
-            )
-        )
 
     def _import_xtf(
         self,
@@ -257,7 +231,7 @@ class TestInterlis(unittest.TestCase):
                 f"'.xtf' suffix, got {output_name!r}."
             )
 
-        output = run_interlis_export(
+        output = helpers.run_interlis_export(
             base_name=requested_output.stem,
             model_group=model_group,
             selected_ids=selected_ids,
@@ -310,11 +284,11 @@ class TestInterlis(unittest.TestCase):
             model_group="dss",
         )
 
-        topic_name = self._topic_name(
+        topic_name = helpers.topic_name(
             "dss",
         )
 
-        exported_object = get_xtf_object(
+        exported_object = helpers.get_xtf_object(
             export_xtf_file,
             topic_name,
             "Abwasserbauwerk",
@@ -375,9 +349,9 @@ class TestInterlis(unittest.TestCase):
             model_group="vsa_kek",
         )
 
-        exported_examination = get_xtf_object(
+        exported_examination = helpers.get_xtf_object(
             export_xtf_file,
-            self._topic_name(
+            helpers.topic_name(
                 "vsa_kek",
             ),
             "Untersuchung",
@@ -435,11 +409,11 @@ class TestInterlis(unittest.TestCase):
             ),
         )
 
-        topic_name = self._topic_name(
+        topic_name = helpers.topic_name(
             "dss",
         )
 
-        excluded_pipe_profile = get_xtf_object(
+        excluded_pipe_profile = helpers.get_xtf_object(
             export_xtf_file,
             topic_name,
             "Rohrprofil",
@@ -449,7 +423,7 @@ class TestInterlis(unittest.TestCase):
             excluded_pipe_profile,
         )
 
-        included_pipe_profile = get_xtf_object(
+        included_pipe_profile = helpers.get_xtf_object(
             export_xtf_file,
             topic_name,
             "Rohrprofil",
@@ -472,9 +446,9 @@ class TestInterlis(unittest.TestCase):
             model_group="sia405_abwasser",
         )
 
-        height_width_ratio = get_xtf_object_node_text(
+        height_width_ratio = helpers.get_xtf_object_node_text(
             export_xtf_file,
-            self._topic_name(
+            helpers.topic_name(
                 "sia405_abwasser",
             ),
             "Rohrprofil",
