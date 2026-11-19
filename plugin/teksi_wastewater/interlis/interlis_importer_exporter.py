@@ -9,7 +9,6 @@ from dataclasses import dataclass
 from pathlib import Path
 
 import requests
-from sqlalchemy import text
 
 from ..utils.database_utils import DatabaseUtils
 from ..utils.integrity_checker import TWWIntegrityChecker
