@@ -460,8 +460,7 @@ class TWWIntegrityChecker:
         }
 
         missing_count = sum(
-            class_missing_count
-            for class_missing_count, _ in missing_by_class.values()
+            class_missing_count for class_missing_count, _ in missing_by_class.values()
         )
 
         if not missing_count:
@@ -483,10 +482,7 @@ class TWWIntegrityChecker:
                 object_ids,
             ),
         ) in missing_by_class.items():
-            displayed_ids = tuple(
-                str(object_id)
-                for object_id in object_ids[:20]
-            )
+            displayed_ids = tuple(str(object_id) for object_id in object_ids[:20])
             hidden_count = max(
                 0,
                 len(object_ids) - len(displayed_ids),
@@ -497,26 +493,17 @@ class TWWIntegrityChecker:
             )
 
             if hidden_count:
-                ids_text += (
-                    f", ... and {hidden_count} more"
-                )
+                ids_text += f", ... and {hidden_count} more"
 
             details.append(
                 f"tww_od.{class_name}: "
-                f"{class_missing_count} missing"
-                + (
-                    f" ({ids_text})"
-                    if ids_text
-                    else ""
-                )
+                f"{class_missing_count} missing" + (f" ({ids_text})" if ids_text else "")
             )
 
         error_message = (
             f"Missing {value_name!r} in {missing_count} rows "
             f"across {len(missing_by_class)} of "
-            f"{len(results)} checked tables: "
-            + "; ".join(details)
-            + "."
+            f"{len(results)} checked tables: " + "; ".join(details) + "."
         )
 
         if self.limit_to_selection:
