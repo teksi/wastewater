@@ -147,13 +147,13 @@ def assert_baseline_imported() -> None:
     """
     Assert that the trusted baseline populated canonical and AGXX data.
     """
-    rows = DatabaseUtils.execute_fetchall("""
+    rows = DatabaseUtils.fetchall("""
         SELECT count(*) AS count
         FROM tww_od.wastewater_structure
         """)
     assert rows[0]["count"] > 0, "The DSS baseline did not create wastewater structures."
 
-    rows = DatabaseUtils.execute_fetchall("""
+    rows = DatabaseUtils.fetchall("""
         SELECT count(*) AS count
         FROM tww_od.reach
         """)
@@ -166,7 +166,7 @@ def job_row(
     """
     Return the authoritative metadata row for one review job.
     """
-    rows = DatabaseUtils.execute_fetchall(
+    rows = DatabaseUtils.fetchall(
         """
         SELECT
             id,
@@ -230,7 +230,7 @@ def diff_counts(
         job_id,
     )["id"]
 
-    table_rows = DatabaseUtils.execute_fetchall("""
+    table_rows = DatabaseUtils.fetchall("""
         SELECT table_name
         FROM information_schema.columns
         WHERE table_schema = 'tww_diff'
@@ -253,7 +253,7 @@ def diff_counts(
             )
             + '"'
         )
-        counts = DatabaseUtils.execute_fetchall(
+        counts = DatabaseUtils.fetchall(
             f"""
             SELECT
                 count(*) AS total_count,
@@ -370,7 +370,7 @@ def agxx_diff_applied(imported_dss_baseline):
         "applied",
     )
 
-    rows = DatabaseUtils.execute_fetchall("""
+    rows = DatabaseUtils.fetchall("""
         SELECT count(*) AS count
         FROM tww_od.agxx_building_group
         """)

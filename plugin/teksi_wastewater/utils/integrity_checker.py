@@ -24,6 +24,8 @@ class TWWIntegrityChecker:
             self.logger.error(message)
         elif level == IssueLevel.INFO:
             self.logger.info(message)
+        elif level == IssueLevel.DEBUG:
+            self.logger.debug(message)
         else:
             self.logger.warning(message)
 
@@ -111,15 +113,6 @@ class TWWIntegrityChecker:
         make the integrity check fail.
         """
         schema_name = config.TWW_OD_SCHEMA
-
-        self.add_issue(
-            f"INTEGRITY CHECK available class data in schema {schema_name}...",
-            level=IssueLevel.INFO,
-        )
-        self.add_issue(
-            "CONNECTING TO DATABASE...",
-            level=IssueLevel.INFO,
-        )
 
         with DatabaseUtils.PsycopgConnection() as connection:
             cursor = connection.cursor()
@@ -424,11 +417,6 @@ class TWWIntegrityChecker:
                 f"{', '.join(f'tww_od.{name}' for name in empty_classes)}."
             )
 
-            self.add_issue(
-                error_message,
-                level=IssueLevel.ERROR,
-            )
-
             return True, error_message, len(empty_classes)
 
         self.add_issue(
@@ -448,44 +436,96 @@ class TWWIntegrityChecker:
         check_val: Any = None,
     ) -> tuple[bool, str, int]:
         """
-        Check if attribute value_name fulfils condition.
-        check_classes: List of class names that are to be checked
-        value_name: name of the value to be checked
-        check_null: bool whether to check for IS NULL
-        check_val: value to be checked. Defaults to ''
-        limit_to_selection: bool whether a selection limit is active
-        Returns: (failed, error_message, issue_count)
+        Check mandatory values across the supplied classes.
+
+        A value is considered missing when it is NULL or equals check_val.
+        Returns (failed, error_message, missing_row_count).
         """
         results = self._check_conditions(
             check_classes=check_classes,
             value_name=value_name,
             check_val=check_val,
         )
-        missing_count = 0
-        error_message = ""
-        for _class, (class_count, obj_ids_without_val) in results.items():
-            self.add_issue(
-                f"table name: {_class}, value name: {value_name}, class count: {class_count}",
-                level="info",
+
+        missing_by_class = {
+            class_name: (
+                missing_count,
+                tuple(obj_ids or ()),
             )
-            if class_count > 0:
-                error_message += (
-                    f"{class_count} rows in class '{_class}' "
-                    f"without {value_name}: {','.join(obj_ids_without_val)}\n"
+            for class_name, (
+                missing_count,
+                obj_ids,
+            ) in results.items()
+            if missing_count > 0
+        }
+
+        missing_count = sum(
+            class_missing_count
+            for class_missing_count, _ in missing_by_class.values()
+        )
+
+        if not missing_count:
+            self.add_issue(
+                (
+                    f"Mandatory-value check passed for {value_name!r}: "
+                    f"{len(results)} tables checked."
+                ),
+                level=IssueLevel.INFO,
+            )
+            return False, "", 0
+
+        details = []
+
+        for (
+            class_name,
+            (
+                class_missing_count,
+                object_ids,
+            ),
+        ) in missing_by_class.items():
+            displayed_ids = tuple(
+                str(object_id)
+                for object_id in object_ids[:20]
+            )
+            hidden_count = max(
+                0,
+                len(object_ids) - len(displayed_ids),
+            )
+
+            ids_text = ", ".join(
+                displayed_ids,
+            )
+
+            if hidden_count:
+                ids_text += (
+                    f", ... and {hidden_count} more"
                 )
-                missing_count += class_count
-        if missing_count > 0:
-            errormsg = f"Missing {value_name} in schema tww_od: {missing_count}"
-            if self.limit_to_selection:
-                self.add_issue(
-                    f"Overall Subclass Count: {errormsg}. The problem might lie outside the selection"
+
+            details.append(
+                f"tww_od.{class_name}: "
+                f"{class_missing_count} missing"
+                + (
+                    f" ({ids_text})"
+                    if ids_text
+                    else ""
                 )
-            else:
-                self.add_issue(f"INTEGRITY CHECK missing {value_name}: {errormsg}", level="error")
-            return (True, error_message, missing_count)
-        else:
-            self.add_issue(f"OK: all {value_name} set!", level="info")
-            return (False, "", 0)
+            )
+
+        error_message = (
+            f"Missing {value_name!r} in {missing_count} rows "
+            f"across {len(missing_by_class)} of "
+            f"{len(results)} checked tables: "
+            + "; ".join(details)
+            + "."
+        )
+
+        if self.limit_to_selection:
+            error_message += (
+                " A selection is active, so affected objects may "
+                "partly lie outside the selected export."
+            )
+
+        return True, error_message, missing_count
 
     def _check_identifier_null(self):
         """
