@@ -66,16 +66,16 @@ def vw_tww_damage_channel(
         damage_pictures AS(
             SELECT dc.obj_id,
             array_agg(
-                COALESCE(    
+                COALESCE(
                     regexp_replace(
                         dm.path, '[\\/]+$', '') ||
-                        '/' || 
+                        '/' ||
                         regexp_replace(COALESCE(fi.path_relative::text, ''), '[\\/]+$', '')||
                         '/' ||
                         fi.identifier,
                         fi.path_relative::text
                     )
-           ) 
+           )
            AS pics
            FROM tww_od.file fi
              JOIN tww_od.damage_channel dc ON fi.object = dc.obj_id::text
@@ -89,10 +89,10 @@ def vw_tww_damage_channel(
         examination_videos AS(
             SELECT dc.obj_id,
             FIRST_value(
-                COALESCE(    
+                COALESCE(
                     regexp_replace(
                         dm.path, '[\\/]+$', '') ||
-                        '/' || 
+                        '/' ||
                         regexp_replace(COALESCE(fi.path_relative::text, ''), '[\\/]+$', '')||
                         '/' ||
                         fi.identifier,
