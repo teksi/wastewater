@@ -276,7 +276,7 @@ class TWWIntegrityChecker:
             cursor.execute(f"SELECT obj_id FROM {schema_name}.{parent_name};")
             parent_rows = cursor.fetchall()
             parent_ids = {row[0] for row in parent_rows}
-            self.add_issue(f"Number of {parent_name} datasets: {len(parent_ids)}", level="info")
+            self.add_issue(f"Number of {parent_name} datasets: {len(parent_ids)}", level="debug")
 
             missing_in_subclass = set(parent_ids)
             missing_in_superclass = {}  # Maps subclass name to orphaned IDs
@@ -285,7 +285,7 @@ class TWWIntegrityChecker:
                 cursor.execute(f"SELECT obj_id FROM {schema_name}.{child_name};")
                 child_rows = cursor.fetchall()
                 child_ids = {row[0] for row in child_rows}
-                self.add_issue(f"Number of {child_name} datasets: {len(child_rows)}", level="info")
+                self.add_issue(f"Number of {child_name} datasets: {len(child_rows)}", level="debug")
 
                 missing_in_subclass -= child_ids
 
@@ -395,33 +395,49 @@ class TWWIntegrityChecker:
         check_true: bool = False,
     ) -> tuple[bool, str, int]:
         """
-        Check if attribute value_name fulfils condition.
-        check_classes: List of class names that are to be checked
-        value_name: name of the value to be checked
-        check_null: bool whether to check for IS NULL
-        check_val: value to be checked. Defaults to ''
-        Returns: (failed, error_message, issue_count)
+        Check that each class has at least one row matching the export condition.
+
+        Returns:
+            (failed, error_message, empty_class_count)
         """
         results = self._check_conditions(
-            check_classes, value_name, check_val, check_null, check_true
+            check_classes=check_classes,
+            value_name=value_name,
+            check_val=check_val,
+            check_null=check_null,
+            check_true=check_true,
         )
-        error_message = ""
-        empty_class_count = 0
-        for _class, (class_count, _) in results.items():
-            self.add_issue(
-                f"table name: {_class}, value name: {value_name}, class count: {class_count}",
-                level="info",
+
+        empty_classes = tuple(
+            class_name
+            for class_name, (matching_count, _) in results.items()
+            if matching_count == 0
+        )
+
+        if empty_classes:
+            error_message = (
+                f"No exportable rows matching {value_name!r} were "
+                f"found in {len(empty_classes)} of "
+                f"{len(results)} checked tables: "
+                f"{', '.join(f'tww_od.{name}' for name in empty_classes)}."
             )
-            if class_count == 0:
-                error_message += (
-                    f"No exportable entries found in table tww_od.{_class} on {value_name} check"
-                )
-                empty_class_count += 1
-        if empty_class_count > 0:
-            return (True, error_message, empty_class_count)
-        else:
-            self.add_issue(f"OK: all {value_name} set!", level="info")
-            return (False, "", 0)
+
+            self.add_issue(
+                error_message,
+                level=IssueLevel.ERROR,
+            )
+
+            return True, error_message, len(empty_classes)
+
+        self.add_issue(
+            (
+                f"Export availability check passed for {value_name!r}: "
+                f"{len(results)} tables checked."
+            ),
+            level=IssueLevel.INFO,
+        )
+
+        return False, "", 0
 
     def _check_value_condition(
         self,

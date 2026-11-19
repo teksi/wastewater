@@ -8,8 +8,11 @@ from dataclasses import (
     dataclass,
     field,
 )
-
+from geoalchemy2 import Geometry
+from geoalchemy2.elements import WKBElement
+from sqlalchemy import LargeBinary, func, inspect, literal
 from sqlalchemy.orm import Session
+
 from teksi_hooks.capabilities.effects import (
     QuarantineEffectProjectorCapability,
 )
@@ -209,7 +212,7 @@ class InterlisIncrementalImporter:
         self._raise_if_blocked()
 
         self._persist_pending_effects()
-
+        self._prepare_geometries_for_flush()
         self._require_live_session().flush()
 
     def _source_class_ids(
@@ -448,6 +451,105 @@ class InterlisIncrementalImporter:
                 document=document,
                 evaluations=evaluations,
             )
+
+    def _prepare_geometries_for_flush(
+        self,
+    ) -> None:
+        """
+        Replace staged GeoAlchemy WKB values with PostGIS SQL expressions.
+
+        GeoAlchemy's default bind processing converts WKBElement values through
+        Shapely before sending them to PostgreSQL. Shapely cannot deserialize
+        nonlinear PostGIS geometry types such as MultiSurface, CurvePolygon,
+        CompoundCurve and MultiCurve.
+
+        Geometry values are therefore passed to PostGIS as opaque WKB or EWKB.
+        PostgreSQL remains responsible for validating geometry type, dimensions
+        and SRID against the target column.
+        """
+        live_session = self._require_live_session()
+
+        pending_objects = tuple(
+            {
+                id(instance): instance
+                for instance in (
+                    *live_session.new,
+                    *live_session.dirty,
+                )
+            }.values()
+        )
+
+        for instance in pending_objects:
+            mapper = inspect(
+                type(instance),
+            )
+
+            for column_property in mapper.column_attrs:
+                if len(column_property.columns) != 1:
+                    continue
+
+                column = column_property.columns[0]
+
+                if not isinstance(
+                    column.type,
+                    Geometry,
+                ):
+                    continue
+
+                attribute_name = column_property.key
+                geometry_value = getattr(
+                    instance,
+                    attribute_name,
+                )
+
+                if not isinstance(
+                    geometry_value,
+                    WKBElement,
+                ):
+                    continue
+
+                binary_value = literal(
+                    bytes(
+                        geometry_value.data,
+                    ),
+                    type_=LargeBinary(),
+                )
+
+                if geometry_value.extended:
+                    database_value = func.ST_GeomFromEWKB(
+                        binary_value,
+                    )
+                else:
+                    database_value = func.ST_GeomFromWKB(
+                        binary_value,
+                    )
+
+                    if geometry_value.srid not in {
+                        None,
+                        -1,
+                    }:
+                        database_value = func.ST_SetSRID(
+                            database_value,
+                            geometry_value.srid,
+                        )
+
+                setattr(
+                    instance,
+                    attribute_name,
+                    database_value,
+                )
+
+                logger.debug(
+                    "Prepared geometry attribute %r on %s for "
+                    "PostGIS-native persistence using %s.",
+                    attribute_name,
+                    type(instance).__name__,
+                    (
+                        "ST_GeomFromEWKB"
+                        if geometry_value.extended
+                        else "ST_GeomFromWKB"
+                    ),
+                )
 
     def _reset_results(
         self,
