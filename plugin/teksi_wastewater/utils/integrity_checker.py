@@ -21,9 +21,7 @@ class TWWIntegrityChecker:
         try:
             normalized_level = level if isinstance(level, IssueLevel) else IssueLevel(level)
         except Exception as exception:
-            raise ValueError(
-                f"Unsupported issue level: {level!r}."
-            ) from exception
+            raise ValueError(f"Unsupported issue level: {level!r}.") from exception
         self.check_result.add(message, level)
 
         log_method = {
@@ -34,7 +32,7 @@ class TWWIntegrityChecker:
         }[normalized_level]
 
         log_method(message)
-        
+
     def run_integrity_checks(self, raise_err: bool = False) -> list[Issue]:
         checks = [
             ("class_counts", self._check_class_counts),
