@@ -1,38 +1,180 @@
 {% extends "!layout.html" %}
 
 {% block extrahead %}
+  {{ super() }}
+
   <style>
     .version-selector {
       position: fixed;
       top: 10px;
-      right: 10px;
+      right: 20px;
+      z-index: 1000;
+
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      padding: 6px 10px;
+      border: 1px solid #d9d9d9;
+      border-radius: 4px;
+
       background: white;
-      padding: 5px;
+      color: #404040;
+
+      font-size: 14px;
+      line-height: 1.5;
+
+      box-shadow: 0 1px 4px rgb(0 0 0 / 15%);
+    }
+
+    .version-selector label {
+      margin: 0;
+      font-weight: 600;
+    }
+
+    .version-selector select {
+      min-width: 120px;
+      margin: 0;
+      padding: 3px 24px 3px 6px;
+
+      border: 1px solid #b3b3b3;
+      border-radius: 3px;
+
+      background-color: white;
+      color: #404040;
+    }
+
+    @media screen and (max-width: 768px) {
+      .version-selector {
+        position: static;
+        margin: 10px;
+      }
     }
   </style>
 {% endblock %}
 
 {% block body %}
   <div class="version-selector">
-    <select onchange="location = this.value;">
+    <label for="version-select">Version</label>
+
+    <select
+      id="version-select"
+      aria-label="Documentation version"
+      disabled
+    >
+      <option>Loading…</option>
+    </select>
   </div>
 
   <script>
-  fetch("/versions.json")
-    .then(r => r.json())
-    .then(versions => {
+    document.addEventListener("DOMContentLoaded", function () {
       const select = document.getElementById("version-select");
 
-      versions.forEach(v => {
-        const opt = document.createElement("option");
-        opt.value = "/" + v + "/";
-        opt.text = v;
+      if (!select) {
+        return;
+      }
 
-        if (window.location.pathname.includes("/" + v + "/")) {
-          opt.selected = true;
+      /*
+       * Examples:
+       *
+       * /wastewater/latest/en/user-guide/page.html
+       * /wastewater/2026.0.1/en/user-guide/page.html
+       *
+       * VERSION_PATTERN finds either "latest" or a version such as
+       * "2026.0.1". Everything before it is the GitHub Pages project path.
+       */
+      const VERSION_PATTERN = /\/(latest|\d{4}\.\d+\.\d+)(?=\/|$)/;
+      const currentPath = window.location.pathname;
+      const versionMatch = currentPath.match(VERSION_PATTERN);
+
+      if (!versionMatch) {
+        console.warn(
+          "Could not determine the documentation version from:",
+          currentPath
+        );
+        select.innerHTML = "<option>Unknown version</option>";
+        return;
+      }
+
+      const currentVersion = versionMatch[1];
+      const versionPosition = versionMatch.index;
+      const versionEnd = versionPosition + versionMatch[0].length;
+
+      /*
+       * projectRoot:
+       *   /wastewater
+       *
+       * pathAfterVersion:
+       *   /en/user-guide/page.html
+       */
+      const projectRoot = currentPath.substring(0, versionPosition);
+      const pathAfterVersion = currentPath.substring(versionEnd);
+
+      fetch(projectRoot + "/versions.json", {
+        cache: "no-cache"
+      })
+        .then(function (response) {
+          if (!response.ok) {
+            throw new Error(
+              "Could not load versions.json: HTTP " + response.status
+            );
+          }
+
+          return response.json();
+        })
+        .then(function (versions) {
+          if (!Array.isArray(versions)) {
+            throw new Error("versions.json does not contain an array");
+          }
+
+          select.innerHTML = "";
+
+          versions.forEach(function (version) {
+            const option = document.createElement("option");
+
+            /*
+             * Keep the current language and page when changing version.
+             *
+             * For example:
+             * /wastewater/latest/de/user-guide/install.html
+             *
+             * becomes:
+             * /wastewater/2026.0.1/de/user-guide/install.html
+             */
+            option.value =
+              projectRoot +
+              "/" +
+              version +
+              pathAfterVersion +
+              window.location.search +
+              window.location.hash;
+
+            option.textContent =
+              version === "latest" ? "latest" : version;
+
+            option.selected = version === currentVersion;
+
+            select.appendChild(option);
+          });
+
+          select.disabled = false;
+        })
+        .catch(function (error) {
+          console.error(error);
+
+          select.innerHTML = "";
+
+          const option = document.createElement("option");
+          option.textContent = currentVersion;
+          option.selected = true;
+
+          select.appendChild(option);
+        });
+
+      select.addEventListener("change", function () {
+        if (select.value) {
+          window.location.assign(select.value);
         }
-
-        select.appendChild(opt);
       });
     });
   </script>
