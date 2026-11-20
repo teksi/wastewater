@@ -107,10 +107,10 @@ Documentation
 
  user-guide/layerexplanations/twwproject.html#when-tww-automatically-updates-the-fields-dataowner-and-provider
 
- - `New chapter Common editing mistakes <../user-guide/How-To/index.rst#common-mistakes>`_
- - `Add chapter Obj_ID <../admin-guide/db-production-readiness/index.rst>`_
- - `Document labeling and symbology flags <../admin-guide/db-label-customisation/index.rst#customisation-of-labeling-and-symbology-behaviour>`_
- - `Correction about organisation table in configuration-layergroup <../user-guide/layerexplanations/layerexplanation.rst#layergroup-configuration>`_
+ - `New chapter Common editing mistakes <../user-guide/How-To/index.html#common-mistakes>`_
+ - `Add chapter Obj_ID <../admin-guide/db-production-readiness/index.html>`_
+ - `Document labeling and symbology flags <../admin-guide/db-label-customisation/index.html#customisation-of-labeling-and-symbology-behaviour>`_
+ - `Correction about organisation table in configuration-layergroup <../user-guide/layerexplanations/layerexplanation.html#layergroup-configuration>`_
  - Fix installation documentation
  - Versionized docs
  - Adapt links and make these relative where possible
