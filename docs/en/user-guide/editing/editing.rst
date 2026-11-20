@@ -13,11 +13,15 @@ Demo project
 * Open the demo project by going to the main menu and press **Project** --> **Open**  or by pressing ``CTRL``
   + ``O`` at the same time.
 
+.. versionchanged:: 2027.0
+
 .. figure:: images/tww_demoproject.png
    :scale: 50 %
 
 
 * You should now have the demo project loaded
+
+.. versionchanged:: 2027.0
 
 .. figure:: images/tww_demoproject_overview.png
 
