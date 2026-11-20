@@ -142,17 +142,14 @@
 <h1>2026.1.0<a class="headerlink" href="#id3" title="Link to this heading"></a></h1>
 <section id="main-features">
 <h2>Caratteristiche principali<a class="headerlink" href="#main-features" title="Link to this heading"></a></h2>
-<ul class="simple">
-<li><dl class="simple">
-<dt>Version of TEKSI wastewater module for QGIS 3.44 LTR and initialized and upgrade via the PostgreSQL Update Manager (PUM) and the TEKSI Module Management Tool (TMMT).</dt><dd><ul>
-<li><p>Latest version of TEKSI wastewater module for QGIS 3.xx</p></li>
-<li><p>The next version will be based on QGIS 4</p></li>
-</ul>
-</dd>
-</dl>
-</li>
+<blockquote>
+<div><ul class="simple">
+<li><p>Version of TEKSI wastewater module for QGIS 3.44 LTR and initialized and upgrade via the PostgreSQL Update Manager (PUM) and the TEKSI Module Management Tool (TMMT).
+- Latest version of TEKSI wastewater module for QGIS 3.xx
+- The next version will be based on QGIS 4</p></li>
 <li><p>Check the <a class="reference external" href="../installation-guide/index.html">installation guide</a> for more information on how to install TEKSI wastewater module (TWW) via TMMT.</p></li>
 </ul>
+</div></blockquote>
 </section>
 <section id="documentation">
 <h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading"></a></h2>
@@ -207,43 +204,22 @@
 <h1>2026.0.1<a class="headerlink" href="#id6" title="Link to this heading"></a></h1>
 <section id="id7">
 <h2>Caratteristiche principali<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
-<ul class="simple">
-<li><p>Version of TEKSI wastewater module for QGIS 3.40 LTR and initialized and upgrade via the PostgreSQL Update Manager (PUM) and the TEKSI Module Management Tool (TMMT).</p></li>
-<li><p>Check the <a class="reference external" href="../installation-guide/index.html">installation guide</a> for more information on how to install TEKSI wastewater module (TWW) via TMMT.</p></li>
-</ul>
 <blockquote>
 <div><ul class="simple">
+<li><p>Version of TEKSI wastewater module for QGIS 3.40 LTR and initialized and upgrade via the PostgreSQL Update Manager (PUM) and the TEKSI Module Management Tool (TMMT).</p></li>
+<li><p>Check the <a class="reference external" href="../installation-guide/index.html">installation guide</a> for more information on how to install TEKSI wastewater module (TWW) via TMMT.</p></li>
 <li><p><a class="reference external" href="../user-guide/editing/editing.html#id1">The “Extend selection tool” allows users to expand a selection made on the vw_tww_reach layer to related objects</a></p></li>
 </ul>
-<blockquote>
-<div><figure class="align-default">
+</div></blockquote>
+<figure class="align-default">
 <img alt="../_images/selection_extender_2.png" src="../_images/selection_extender_2.png" />
 </figure>
-</div></blockquote>
-<ul>
-<li><p>New visualisation of <a class="reference external" href="../user-guide/digitizing/digitizingdamages.html">channel damages</a></p>
 <figure class="align-default">
 <img alt="../_images/vw_tww_channel_damage.png" src="../_images/vw_tww_channel_damage.png" />
 </figure>
-</li>
-<li><p><a class="reference external" href="../user-guide/network-following/index.html">The “Refresh network topology” is only visible in Admin mode</a> as the query can take quite long for big networks.</p></li>
-<li><p><a class="reference external" href="../user-guide/editing/editing.rst#synchronize-identifiers-of-manholes">Improve identifier synchronization for wastewater structures</a></p></li>
-<li><p><a class="reference external" href="../user-guide/digitizing/digitizingchannels.rst#digitizing">Use wastewater node identifiers in reach wizard identifier creation</a></p></li>
-<li><p>network plan: possibility to label the reaches with I1, I2, …, A1, A2 (reach point labels)</p></li>
-</ul>
-<blockquote>
-<div><figure class="align-default">
+<figure class="align-default">
 <img alt="../_images/network_plan_reachpoint_labels.jpg" src="../_images/network_plan_reachpoint_labels.jpg" />
 </figure>
-</div></blockquote>
-<ul class="simple">
-<li><p>configuration in the project-file for <a class="reference external" href="../user-guide/layerexplanations/layerexplanation.rst#layergroup-wastewater-structures">profile-geometries</a> , including a project-saved execute sql to <a class="reference external" href="../user-guide/editing/editing.rst#changing-and-visualizing-a-profile_geometry">visualize profile-geometries</a></p></li>
-<li><p>control length of identifiers while editing with enforced constraints in the attribute form</p></li>
-<li><p><a class="reference external" href="../admin-guide/db-production-readiness/index.rst">The OID Prefix can be set in TMMT from 2026.0.1 on</a></p></li>
-<li><p>create _CH copies of translation files ( “*.qm” )</p></li>
-<li><p>Import VSA organisation from internet if not present</p></li>
-</ul>
-</div></blockquote>
 </section>
 <section id="id8">
 <h2>Documentation<a class="headerlink" href="#id8" title="Link to this heading"></a></h2>
@@ -286,7 +262,6 @@
 <li><p>Fix reach point label generation</p></li>
 <li><p>Provide / fix translations for the plugin</p></li>
 <li><p>Update wastewater node cache after updating wastewater_structure</p></li>
-<li></li>
 </ul>
 </div></blockquote>
 </section>
@@ -318,9 +293,7 @@
 </section>
 <section id="id12">
 <h2>Adaptions to project file<a class="headerlink" href="#id12" title="Link to this heading"></a></h2>
-<blockquote>
-<div><p>The following new views have been integrated in this release:</p>
-</div></blockquote>
+<p>The following new views have been integrated in this release:</p>
 <ul class="simple">
 <li><p><cite>tww_app.vw_tww_wastewater_node</cite> (in addition to <cite>tww_app.vw_wastewater_node</cite>)</p></li>
 <li><p><cite>tww_od.tww_reach_point_labels</cite></p></li>
@@ -328,15 +301,13 @@
 <li><p><cite>tww_od.tww_wastewater_node_symbology</cite></p></li>
 <li><p>new layer <cite>tww_od.profile_geometry</cite></p></li>
 <li><p>Added layer <cite>vw_tww_damage</cite></p></li>
-<li><p>tww_app.vw_tww_damage_channel</p></li>
+<li><p><cite>tww_app.vw_tww_damage_channel</cite></p></li>
 </ul>
 <p>Please export and use the corresponding <code class="docutils literal notranslate"><span class="pre">*</span> <span class="pre">.qml</span></code> files to integrate them into your existing TWW 2025 project files</p>
 <p>Make sure you edit the layer_id in the qgs file to match with what is expected e.g.</p>
-<blockquote>
-<div><figure class="align-default">
+<figure class="align-default">
 <img alt="../_images/vw_tww_wastewater_node_properties.png" src="../_images/vw_tww_wastewater_node_properties.png" />
 </figure>
-</div></blockquote>
 <p>The following views have been adapted and need an adaption of existing TWW 2025 project files:</p>
 <blockquote>
 <div><ul class="simple">
@@ -345,31 +316,25 @@
 <li><p>Added info whether ws has log card to main view</p></li>
 <li><p><cite>vw_tww_reach</cite>: labeldefinition for <cite>rp_from_label</cite> and <cite>rp_to_label</cite> renamed and with the replace-function so it will work with the variables for translation</p></li>
 <li><p><cite>vw_tww_wastewater_structure</cite>: Symbology: replaced some <cite>not «tww_is_primary» ` with `(not «tww_is_primary» or «tww_is_primary» is NULL)</cite></p></li>
-<li><p><cite>vw_tww_wastewater_structure</cite>: Attributs Form: <cite>wn_elevation_accuracy</cite> also with option reuse last entered value (similar as <cite>co_position_accuracy</cite>)</p></li>
-<li><p><cite>vw_tww_wastewater_structure</cite>: Attributs Form: <cite>_input_label</cite>, <cite>_output_label</cite> replaced with <cite>_reach_point_label</cite></p></li>
-<li><p>New Project variable <cite>tww_language</cite>: values should be <cite>_en</cite>, _de` or <cite>_fr</cite></p></li>
+<li><p><cite>vw_tww_wastewater_structure</cite>: Attributes Form: <cite>wn_elevation_accuracy</cite> also with option reuse last entered value (similar as <cite>co_position_accuracy</cite>)</p></li>
+<li><p><cite>vw_tww_wastewater_structure</cite>: Attributes Form: <cite>_input_label</cite>, <cite>_output_label</cite> replaced with <cite>_reach_point_label</cite></p></li>
+<li><p>New Project variable <cite>tww_language</cite>: values should be <cite>_en</cite>, <cite>_de</cite> or <cite>_fr</cite></p></li>
 <li><p>vw_tww_reach labeldefinition: changed «material_abbr_en» to <cite>case when &#64;tww_language = “_de” then «material_abbr_de» when &#64;tww_language = “_fr” then «material_abbr_fr» else «material_abbr_en» end</cite></p></li>
 <li><p>new relation <cite>pipe_profile.obj_id</cite> to <cite>profile_geometry.fk_pipeprofile</cite></p></li>
 <li><p><cite>profile_geometry</cite> Attribute form</p></li>
 <li><p><cite>pipe_profile</cite> Attribute form (profile_geometry subtable only for profile_type special, mouth, open)</p></li>
 <li><p>added a project-stored SQL «visualize profile_geometry»</p></li>
-<li><p><cite>vw_tww_additional_ws</cite>: field wn_fk_wastewater_structure` no more in view</p></li>
-<li><p>all identifier-fields: new enforced constraints <cite>length(«identifier» )&lt;=nn or «identifier» is NULL</cite> (otherwise you loose all entries, if the identifier is to long)</p></li>
-</ul>
-<blockquote>
-<div><ul class="simple">
-<li><p><cite>vw_tww_wastewater_structure</cite>: tww_is_primary, tww_has_log_card, _owner_organisation_type` is not editable, owner_organisation_type` configured as value relation</p></li>
-</ul>
-</div></blockquote>
-<ul class="simple">
+<li><p><cite>vw_tww_additional_ws</cite>: field <code class="docutils literal notranslate"><span class="pre">wn_fk_wastewater_structure</span></code> no more in view</p></li>
+<li><p>all identifier-fields: new enforced constraints <cite>length(«identifier» )&lt;=nn or «identifier» is NULL</cite> (otherwise you lose all entries, if the identifier is too long)</p></li>
+<li><p><cite>vw_tww_wastewater_structure</cite>: tww_is_primary, tww_has_log_card, <cite>_owner_organisation_type</cite> is not editable, <cite>owner_organisation_type</cite> configured as value relation</p></li>
 <li><p><cite>vw_tww_additional_wws</cite>: <cite>reach_point_label</cite>, <cite>tww_is_primary</cite>, <cite>_channel_usage_current</cite>, <cite>_channel_function_hierarchic</cite>, <cite>_owner_organisation_type</cite> is not editable. <cite>_channel_usage_current</cite>, <cite>_channel_function_hierarchic</cite>, <cite>owner_organisation_type</cite> configured as value relation</p></li>
 <li><p><cite>vw_wastewater_structure</cite> : <cite>tww_is_primary</cite>, <cite>_channel_usage_current</cite>, <cite>_channel_function_hierarchic</cite>, <cite>_owner_organisation_type</cite> is not editable. <cite>_channel_usage_current</cite>, <cite>_channel_function_hierarchic</cite>, <cite>owner_organisation_type</cite> configured as value relation</p></li>
 <li><p><cite>vw_tww_reach</cite>: <cite>owner_organisation_type</cite> is not editable. <cite>owner_organisation_type</cite> configured as value relation</p></li>
 <li><p><cite>vw_tww_overflow</cite>: <cite>_channel_usage_current</cite>, <cite>_channel_function_hierarchic</cite> is not editable. <cite>_channel_usage_current</cite>, <cite>_channel_function_hierarchic</cite> configured as value relation</p></li>
 <li><p>all fields with value relation: «order by» set to value</p></li>
 </ul>
-<p>For Reference see <a class="reference external" href="https://github.com/teksi/wastewater/issues/995#issuecomment-4803889291">https://github.com/teksi/wastewater/issues/995#issuecomment-4803889291</a></p>
 </div></blockquote>
+<p>For Reference see <a class="reference external" href="https://github.com/teksi/wastewater/issues/995#issuecomment-4803889291">https://github.com/teksi/wastewater/issues/995#issuecomment-4803889291</a></p>
 </section>
 </section>
 
