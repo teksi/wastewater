@@ -1,9 +1,16 @@
 UPDATE tww_vl.discharge_point_relevance_import_rel_agxx
 SET value_de=replace(value_de,'.','_');
 
-ALTER TABLE IF EXISTS tww_od.agxx_unconnected_node_bwrel
-ADD COLUMN IF NOT EXISTS ag96_is_gateway bigint,
-ADD CONSTRAINT agxx_unc_fkey_vl_wastewater_node_ag96_is_gateway FOREIGN KEY (ag96_is_gateway) REFERENCES tww_vl.wastewater_node_ag96_is_gateway MATCH SIMPLE ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+ALTER TABLE tww_od.agxx_reach_point 
+DROP COLUMN ag64_fk_wastewater_node
+, ADD COLUMN co_level numeric(7,3)
+, ADD COLUMN co_positional_accuracy bigint
+, ADD COLUMN wwtp_number integer
+, ADD COLUMN backflow_level_current decimal(7,3) 
+;
+
+DROP TABLE tww_od.agxx_unconnected_node_bwrel;
 
 
 INSERT INTO tww_vl.wastewater_node_ag64_function (code,vsacode,value_de,active) VALUES

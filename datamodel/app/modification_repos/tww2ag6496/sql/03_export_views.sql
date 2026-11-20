@@ -152,47 +152,35 @@ WITH re_meta AS(
 	SELECT DISTINCT ON (wn.obj_id) wn.obj_id AS obj_id,
 	  COALESCE(first_value(ws.year_of_construction) OVER w
              , first_value(re_from.year_of_construction) OVER w
-             , first_value(re_to.year_of_construction) OVER w
-			 , first_value(unc.year_of_construction) OVER w) AS year_of_construction,
+             , first_value(re_to.year_of_construction) OVER w) AS year_of_construction,
 	  COALESCE( first_value(ws.structure_condition) OVER w
 		      , first_value(re_from.structure_condition) OVER w
-              , first_value(re_to.structure_condition) OVER w
-			  , first_value(unc.structure_condition) OVER w) AS structure_condition,
+              , first_value(re_to.structure_condition) OVER w) AS structure_condition,
 	  COALESCE( first_value(ws.status) OVER w
 		      , first_value(re_from.status) OVER w
-              , first_value(re_to.status) OVER w
-			  , first_value(unc.status) OVER w) AS status,
+              , first_value(re_to.status) OVER w) AS status,
       COALESCE(first_value(ws.financing) OVER w
              , first_value(re_from.financing) OVER w
-             , first_value(re_to.financing) OVER w
-			 , first_value(unc.financing) OVER w) AS financing,
+             , first_value(re_to.financing) OVER w) AS financing,
 	  COALESCE(first_value(ws.status_survey_year) OVER w
              , first_value(re_from.status_survey_year) OVER w
-             , first_value(re_to.status_survey_year) OVER w
-			 , first_value(unc.status_survey_year) OVER w) AS status_survey_year,
+             , first_value(re_to.status_survey_year) OVER w) AS status_survey_year,
       COALESCE(first_value(ws.renovation_necessity) OVER w
 		      , first_value(re_from.renovation_necessity) OVER w
-              , first_value(re_to.renovation_necessity) OVER w
-			  , first_value(unc.renovation_necessity) OVER w) AS renovation_necessity,
+              , first_value(re_to.renovation_necessity) OVER w) AS renovation_necessity,
 	  COALESCE(first_value(ws.fk_owner) OVER w
              , first_value(re_from.fk_owner) OVER w
-             , first_value(re_to.fk_owner) OVER w
-			 , first_value(unc.fk_owner) OVER w) AS fk_owner,
+             , first_value(re_to.fk_owner) OVER w) AS fk_owner,
 	  COALESCE(first_value(ws.fk_operator) OVER w
              , first_value(re_from.fk_operator) OVER w
-             , first_value(re_to.fk_operator) OVER w
-			 , first_value(unc.fk_operator) OVER w) AS fk_operator,
+             , first_value(re_to.fk_operator) OVER w) AS fk_operator,
 	  COALESCE( first_value(re_from.ch_function_hierarchic) OVER w
-             , first_value(re_to.ch_function_hierarchic) OVER w
-			 , first_value(unc.ch_function_hierarchic) OVER w) AS ch_function_hierarchic,
+             , first_value(re_to.ch_function_hierarchic) OVER w) AS ch_function_hierarchic,
 			 ws.fk_main_cover,
 			 ws.accessibility,
-	  COALESCE(first_value(ws.detail_geometry3d_geometry) OVER w
-			 , first_value(unc.detail_geometry3d_geometry) OVER w) AS detail_geometry3d_geometry,
 	  COALESCE(first_value(ws1.ag96_fk_measure) OVER w
              , first_value(re_from.ag96_fk_measure) OVER w
-             , first_value(re_to.ag96_fk_measure) OVER w
-			 , first_value(unc.ag96_fk_measure) OVER w) AS ag96_fk_measure
+             , first_value(re_to.ag96_fk_measure) OVER w) AS ag96_fk_measure
 
     FROM
       tww_od.wastewater_node wn
@@ -218,24 +206,10 @@ WITH re_meta AS(
 				 FROM tww_od.reach_point)               rp      ON wn.obj_id = rp.fk_wastewater_networkelement
 	  LEFT JOIN re_meta AS re_from ON re_from.fk_reach_point_from = rp.obj_id
 	  LEFT JOIN re_meta AS re_to ON re_to.fk_reach_point_to = rp.obj_id
-	  LEFT JOIN (SELECT obj_id,
-				 year_of_construction,
-				 structure_condition,
-				 financing,
-				 status,
-				 status_survey_year,
-				 renovation_necessity,
-				 fk_owner,
-				 fk_operator,
-				 ch_function_hierarchic,
-				 detail_geometry3d_geometry,
-				 ag96_fk_measure
-				 FROM tww_od.agxx_unconnected_node_bwrel) unc ON unc.obj_id=wn.obj_id
-	  LEFT JOIN tww_vl.channel_function_hierarchic vl_fct_hier_unc 	ON unc.ch_function_hierarchic = vl_fct_hier_unc.code
+
 	  WINDOW w AS ( PARTITION BY wn.obj_id
                     ORDER BY re_from.tww_symbology_order ASC NULLS LAST
                            , re_to.tww_symbology_order ASC NULLS LAST
-                          , vl_fct_hier_unc.tww_symbology_order ASC NULLS LAST
                     ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
 
 WITH DATA;
@@ -297,47 +271,34 @@ CREATE OR REPLACE VIEW tww_app.vw_agxx_gepknoten
     main_ws.obj_id AS _mapping_ws_obj_id,
     ne.obj_id AS _mapping_ne_obj_id,
     node._mapping_origin,
-    node._has_unc_fallback AS _mapping_has_unc_fallback,
     node._function_hierarchic AS _mapping_function_hierarchic_code
    FROM ( SELECT wn.obj_id,
             wn.wwtp_number,
             wn.situation3d_geometry,
             wn.backflow_level_current,
             wn.bottom_level,
-                CASE
-                    WHEN rp_ref.fk_wastewater_networkelement IS NULL AND wn_unc.obj_id IS NOT NULL THEN wn_unc.ch_function_hierarchic
-                    ELSE wns._function_hierarchic::bigint
-                END AS _function_hierarchic,
-                CASE
-                    WHEN rp_ref.fk_wastewater_networkelement IS NULL AND wn_unc.obj_id IS NOT NULL THEN 'agxx_unconnected_node_bwrel'::text
-                    ELSE 'wastewater_node'::text
-                END AS _mapping_origin,
+			wns._function_hierarchic,
+			'wastewater_node' AS _mapping_origin,
             NULL::numeric AS co_level,
             NULL::bigint AS co_positional_accuracy,
-            wn_ws.obj_id AS ws_obj_id,
-            wn_unc.obj_id IS NOT NULL AS _has_unc_fallback
+            wn_ws.obj_id AS ws_obj_id
            FROM tww_od.wastewater_node wn
              LEFT JOIN tww_od.tww_wastewater_node_symbology wns ON wns.fk_wastewater_node::text = wn.obj_id::text
              JOIN tww_od.wastewater_networkelement wn_ne ON wn_ne.obj_id::text = wn.obj_id::text
              JOIN tww_od.wastewater_structure wn_ws ON wn_ne.fk_wastewater_structure::text = wn_ws.obj_id::text
-             LEFT JOIN tww_od.agxx_unconnected_node_bwrel wn_unc ON wn_unc.obj_id::text = wn.obj_id::text
-             LEFT JOIN ( SELECT DISTINCT ON (reach_point.fk_wastewater_networkelement) reach_point.fk_wastewater_networkelement
-                   FROM tww_od.reach_point) rp_ref ON rp_ref.fk_wastewater_networkelement::text = wn.obj_id::text
-        UNION
+        UNION ALL
          SELECT rp_1.obj_id,
-            rp_unc.wwtp_number,
+            agxx_rp.wwtp_number,
             rp_1.situation3d_geometry,
-            rp_unc.backflow_level_current,
+            agxx_rp.backflow_level_current,
             rp_1.level AS bottom_level,
-            rp_ch.function_hierarchic,
+            rp_ch.function_hierarchic as _function_hierarchic,
             'reach_point'::text AS _mapping_origin,
-            rp_unc.co_level,
-            rp_unc.co_positional_accuracy,
-            rp_ch.obj_id AS ws_obj_id,
-            rp_unc.obj_id IS NOT NULL AS _has_unc_fallback
+            agxx_rp.co_level,
+            agxx_rp.co_positional_accuracy,
+            rp_ch.obj_id AS ws_obj_id
            FROM tww_od.agxx_reach_point agxx_rp
              JOIN tww_od.reach_point rp_1 ON agxx_rp.fk_reach_point::text = rp_1.obj_id::text
-             LEFT JOIN tww_od.agxx_unconnected_node_bwrel rp_unc ON agxx_rp.ag64_fk_wastewater_node::text = rp_unc.obj_id::text
              JOIN tww_od.reach re_rp ON rp_1.obj_id::text = re_rp.fk_reach_point_from::text OR rp_1.obj_id::text = re_rp.fk_reach_point_to::text
              JOIN tww_od.wastewater_networkelement rp_ne ON rp_ne.obj_id::text = re_rp.obj_id::text
              JOIN tww_od.channel rp_ch ON rp_ne.fk_wastewater_structure::text = rp_ch.obj_id::text) node
@@ -423,8 +384,8 @@ CREATE OR REPLACE VIEW tww_app.vw_agxx_gephaltung
     concat_ws(''::text, 'ch113jqg0000', "right"(COALESCE(ws.fk_operator, '00000107'::character varying)::text, 8)) AS betreiber,
     concat_ws(''::text, 'ch113jqg0000', "right"(COALESCE(ne_agxx.ag64_fk_provider, '00000107'::character varying)::text, 8)) AS datenbewirtschafter_wi,
     concat_ws(''::text, 'ch113jqg0000', "right"(COALESCE(ws.fk_owner, '00000107'::character varying)::text, 8)) AS eigentuemer,
-    COALESCE(agxx_rp_to.ag64_fk_wastewater_node, rp_agxx_t.ag64_fk_wastewater_node, rp_to.fk_wastewater_networkelement, rp_to.obj_id::character varying) AS endknoten,
-    COALESCE(agxx_rp_from.ag64_fk_wastewater_node, rp_agxx_f.ag64_fk_wastewater_node, rp_from.fk_wastewater_networkelement, rp_from.obj_id::character varying) AS startknoten,
+    COALESCE(agxx_rp_to.fk_reach_point, rp_agxx_t.fk_reach_point, rp_to.fk_wastewater_networkelement, rp_to.obj_id::character varying) AS endknoten,
+    COALESCE(agxx_rp_from.fk_reach_point, rp_agxx_f.fk_reach_point, rp_from.fk_wastewater_networkelement, rp_from.obj_id::character varying) AS startknoten,
     ws_agxx.ag96_fk_measure AS gepmassnahmeref,
     concat_ws(''::text, 'ch113jqg0000', "right"(COALESCE(ne_agxx.ag96_fk_provider, '00000107'::character varying)::text, 8)) AS datenbewirtschafter_gep,
     ne_agxx.ag96_remark AS bemerkung_gep,

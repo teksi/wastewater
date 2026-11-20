@@ -8,9 +8,6 @@ from collections.abc import (
 from dataclasses import dataclass, field
 from typing import Any
 
-from geoalchemy2.functions import (
-    ST_Force3D,
-)
 from teksi_hooks.capabilities.effects import (
     CanonicalViewEffectProjector,
 )
@@ -23,7 +20,6 @@ from teksi_hooks.models.effects import (
     EffectProjectionResult,
     EffectSource,
     EnforceExistsEffect,
-    EnforceNotExistsEffect,
     UpdateAttributeEffect,
 )
 from teksi_hooks.models.mapping import (
@@ -842,24 +838,16 @@ class TwwCanonicalViewEffectProjector(
         source_row: Any,
         current_row: Any | None,
         context: TwwProjectionContext,
-    ) -> tuple[
-        Effect,
-        ...,
-    ]:
+    ) -> tuple[Effect, ...]:
         """
-        Project one GepKnoten according to its effective canonical origin.
+        Project one GepKnoten according to its canonical origin.
 
-        The comparison view distinguishes three storage paths:
-
-        - ``wastewater_node`` for the regular canonical hierarchy;
-        - ``agxx_unconnected_node_bwrel`` for an existing wastewater node
-          whose AGXX channel attributes are stored in the fallback table;
-        - ``reach_point`` for a reach point represented through the fallback
-          and an ``agxx_reach_point`` link.
-
-        A missing comparison row is the bootstrap case for a reach point whose
-        AGXX helper rows do not exist yet. The evaluator verifies that the
-        canonical reach point already exists before the helper rows are staged.
+        GepKnoten rows are represented either by a canonical wastewater node
+        or by a canonical reach point with an ``agxx_reach_point`` extension.
+        The former unconnected-node fallback table is no longer part of the
+        canonical model. A missing comparison row is therefore the bootstrap
+        case for an existing reach point whose AGXX extension row has not yet
+        been created.
         """
         if current_row is None:
             return self._project_new_reach_point_gepknoten(
@@ -874,13 +862,6 @@ class TwwCanonicalViewEffectProjector(
 
         if mapping_origin == "wastewater_node":
             return self._project_connected_gepknoten(
-                source_row=source_row,
-                current_row=current_row,
-                context=context,
-            )
-
-        if mapping_origin == "agxx_unconnected_node_bwrel":
-            return self._project_unconnected_wastewater_node(
                 source_row=source_row,
                 current_row=current_row,
                 context=context,
@@ -1015,226 +996,70 @@ class TwwCanonicalViewEffectProjector(
             effects,
         )
 
-    def _project_unconnected_wastewater_node(
-        self,
-        *,
-        source_row: Any,
-        current_row: Any,
-        context: TwwProjectionContext,
-    ) -> tuple[
-        Effect,
-        ...,
-    ]:
-        """
-        Project AGXX fallback attributes for an existing wastewater node.
-
-        The fallback supplements the real wastewater node with AGXX channel
-        attributes. It does not require an ``agxx_reach_point`` mapping.
-        """
-        effects: list[Effect,] = []
-
-        source_object_id = self._source_object_id(
-            source_row,
-        )
-
-        effects.append(
-            EnforceExistsEffect(
-                identity=CanonicalObjectIdentity(
-                    class_id="wastewater_node",
-                    attributes={
-                        "obj_id": source_object_id,
-                    },
-                )
-            )
-        )
-
-        fallback_identity = CanonicalObjectIdentity(
-            class_id="agxx_unconnected_node_bwrel",
-            attributes={
-                "obj_id": source_object_id,
-            },
-        )
-
-        fallback_effects_start = len(
-            effects,
-        )
-
-        self._append_unconnected_node_values(
-            effects=effects,
-            source_row=source_row,
-            current_row=current_row,
-            context=context,
-            identity=fallback_identity,
-            function_source="fallback",
-        )
-
-        self._prepend_exists_if_updates_added(
-            effects=effects,
-            identity=fallback_identity,
-            effects_start_index=fallback_effects_start,
-        )
-
-        return tuple(
-            effects,
-        )
-
     def _project_reach_point_gepknoten(
         self,
         *,
         source_row: Any,
         current_row: Any | None,
         context: TwwProjectionContext,
-    ) -> tuple[
-        Effect,
-        ...,
-    ]:
-        """
-        Project a reach point through the AGXX fallback representation.
-
-        The channel hierarchy exposed by the comparison view is copied to the
-        fallback. The helper mapping is created or updated idempotently.
-        """
-        effects: list[Effect,] = []
-
-        source_object_id = self._source_object_id(
-            source_row,
-        )
+    ) -> tuple[Effect, ...]:
+        """Project AGXX scalar values for a canonical reach point."""
+        effects: list[Effect] = []
+        source_object_id = self._source_object_id(source_row)
 
         effects.append(
             EnforceExistsEffect(
                 identity=CanonicalObjectIdentity(
                     class_id="reach_point",
-                    attributes={
-                        "obj_id": source_object_id,
-                    },
+                    attributes={"obj_id": source_object_id},
                 )
             )
         )
 
-        fallback_identity = CanonicalObjectIdentity(
-            class_id="agxx_unconnected_node_bwrel",
-            attributes={
-                "obj_id": source_object_id,
-            },
-        )
-
-        fallback_effects_start = len(
-            effects,
-        )
-
-        self._append_unconnected_node_values(
+        self._append_reach_point_extension_values(
             effects=effects,
             source_row=source_row,
             current_row=current_row,
             context=context,
-            identity=fallback_identity,
-            function_source="channel",
-        )
-
-        self._prepend_exists_if_updates_added(
-            effects=effects,
-            identity=fallback_identity,
-            effects_start_index=fallback_effects_start,
-        )
-
-        self._append_reach_point_mapping(
-            effects=effects,
             source_object_id=source_object_id,
         )
 
-        return tuple(
-            effects,
-        )
+        return tuple(effects)
 
     def _project_new_reach_point_gepknoten(
         self,
         *,
         source_row: Any,
         context: TwwProjectionContext,
-    ) -> tuple[
-        Effect,
-        ...,
-    ]:
-        """
-        Bootstrap AGXX helper rows for a canonical reach point.
-
-        The export comparison view intentionally contains only existing AGXX
-        candidates. A missing comparison row therefore requires validation of
-        the protected reach point followed by creation of the fallback and its
-        ``agxx_reach_point`` link. Without a comparison row no channel code is
-        available, so the family-specific ``*.unbekannt`` value is used.
-        """
-        effects: list[Effect,] = []
-
-        source_object_id = self._source_object_id(
-            source_row,
-        )
-
-        reach_point_identity = CanonicalObjectIdentity(
-            class_id="reach_point",
-            attributes={
-                "obj_id": source_object_id,
-            },
-        )
-
-        fallback_identity = CanonicalObjectIdentity(
-            class_id="agxx_unconnected_node_bwrel",
-            attributes={
-                "obj_id": source_object_id,
-            },
-        )
-
-        effects.append(
-            EnforceExistsEffect(
-                identity=reach_point_identity,
-            )
-        )
-
-        fallback_effects_start = len(
-            effects,
-        )
-
-        self._append_unconnected_node_values(
-            effects=effects,
+    ) -> tuple[Effect, ...]:
+        """Bootstrap the AGXX extension for an existing reach point."""
+        return self._project_reach_point_gepknoten(
             source_row=source_row,
             current_row=None,
             context=context,
-            identity=fallback_identity,
-            function_source="fallback",
         )
 
-        self._prepend_exists_if_updates_added(
-            effects=effects,
-            identity=fallback_identity,
-            effects_start_index=fallback_effects_start,
-        )
-
-        self._append_reach_point_mapping(
-            effects=effects,
-            source_object_id=source_object_id,
-        )
-
-        return tuple(
-            effects,
-        )
-
-    def _append_unconnected_node_values(
+    def _append_reach_point_extension_values(
         self,
         *,
-        effects: MutableSequence[Effect,],
+        effects: MutableSequence[Effect],
         source_row: Any,
         current_row: Any | None,
         context: TwwProjectionContext,
-        identity: CanonicalObjectIdentity,
-        function_source: str,
+        source_object_id: str,
     ) -> None:
         """
-        Append values physically stored on an unconnected-node fallback.
+        Project values stored by ``agxx_reach_point``.
 
-        ``function_source`` is ``fallback`` for an existing wastewater-node
-        fallback or a newly bootstrapped helper, and ``channel`` for a mapped
-        reach point whose connected channel supplies the hierarchy.
+        Geometry and bottom level remain authoritative on ``reach_point``. The
+        channel remains authoritative for the hierarchical function.
         """
+        identity = CanonicalObjectIdentity(
+            class_id="agxx_reach_point",
+            attributes={"fk_reach_point": source_object_id},
+        )
+        effects_start = len(effects)
+
         self._append_source_update_if_changed(
             effects=effects,
             source_row=source_row,
@@ -1243,25 +1068,6 @@ class TwwCanonicalViewEffectProjector(
             identity=identity,
             target_attribute="co_level",
         )
-
-        bottom_level = getattr(
-            source_row,
-            "sohlenkote",
-            None,
-        )
-
-        if bottom_level is None:
-            bottom_level = 0
-
-        self._append_unconnected_geometry_update(
-            effects=effects,
-            source_row=source_row,
-            source_attribute="detailgeometrie",
-            target_attribute="detail_geometry3d_geometry",
-            identity=identity,
-            z_value=bottom_level,
-        )
-
         self._append_mapped_update_if_changed(
             effects=effects,
             source_row=source_row,
@@ -1271,16 +1077,14 @@ class TwwCanonicalViewEffectProjector(
             target_attribute="co_positional_accuracy",
             context=context,
         )
-
-        self._append_unconnected_geometry_update(
+        self._append_source_update_if_changed(
             effects=effects,
             source_row=source_row,
-            source_attribute="lage",
-            target_attribute="situation3d_geometry",
+            current_row=current_row,
+            source_attribute="ara_nr",
             identity=identity,
-            z_value=bottom_level,
+            target_attribute="wwtp_number",
         )
-
         self._append_source_update_if_changed(
             effects=effects,
             source_row=source_row,
@@ -1290,173 +1094,10 @@ class TwwCanonicalViewEffectProjector(
             target_attribute="backflow_level_current",
         )
 
-        self._append_source_update_if_changed(
+        self._prepend_exists_if_updates_added(
             effects=effects,
-            source_row=source_row,
-            current_row=current_row,
-            source_attribute="sohlenkote",
             identity=identity,
-            target_attribute="bottom_level",
-        )
-
-        self._append_unconnected_function_update(
-            effects=effects,
-            source_row=source_row,
-            current_row=current_row,
-            context=context,
-            identity=identity,
-            function_source=function_source,
-        )
-
-        self._append_unconnected_measure_update(
-            effects=effects,
-            source_row=source_row,
-            current_row=current_row,
-            identity=identity,
-        )
-
-    def _append_unconnected_function_update(
-        self,
-        *,
-        effects: MutableSequence[Effect,],
-        source_row: Any,
-        current_row: Any | None,
-        context: TwwProjectionContext,
-        identity: CanonicalObjectIdentity,
-        function_source: str,
-    ) -> None:
-        """
-        Project the hierarchical function stored on the fallback row.
-
-        Reach-point mappings copy the canonical function code of the connected
-        channel. Other fallback cases use the family-specific unknown value.
-        """
-        if function_source == "channel":
-            desired_value = self._row_value(
-                current_row,
-                "_mapping_function_hierarchic_code",
-            )
-
-            if desired_value is None:
-                desired_value = self._unconnected_function_code(
-                    source_row=source_row,
-                    context=context,
-                )
-
-        elif function_source == "fallback":
-            current_presentation_value = self._row_value(
-                current_row,
-                "funktionhierarchisch",
-            )
-
-            source_value = getattr(
-                source_row,
-                "funktionhierarchisch",
-                None,
-            )
-
-            if source_value is None:
-                return
-
-            if self._values_equal(
-                current_value=(current_presentation_value),
-                desired_value=source_value,
-            ):
-                return
-
-            desired_value = self._unconnected_function_code(
-                source_row=source_row,
-                context=context,
-            )
-
-        else:
-            raise ValueError(
-                "Unsupported unconnected-node function " f"source {function_source!r}."
-            )
-
-        effects.append(
-            UpdateAttributeEffect(
-                identity=identity,
-                attribute_id=("ch_function_hierarchic"),
-                value=desired_value,
-            )
-        )
-
-    def _unconnected_function_code(
-        self,
-        *,
-        source_row: Any,
-        context: TwwProjectionContext,
-    ) -> Any:
-        """
-        Return the canonical family-specific unknown function code.
-        """
-        source_value = getattr(
-            source_row,
-            "funktionhierarchisch",
-            None,
-        )
-
-        fallback_value = self._unconnected_function_fallback(
-            source_value=source_value,
-        )
-
-        candidates = context.value_candidates(
-            "funktionhierarchisch",
-            fallback_value,
-        )
-
-        if (
-            len(
-                candidates,
-            )
-            != 1
-        ):
-            raise ValueError(
-                "Unconnected GepKnoten function fallback "
-                f"{fallback_value!r} for source object "
-                f"{self._source_object_id(source_row)!r} "
-                f"returned {len(candidates)} candidates; "
-                "exactly one is required."
-            )
-
-        candidate = candidates[0]
-
-        if candidate.target_class_id is not None or candidate.target_attribute_id is not None:
-            raise ValueError(
-                "Unconnected GepKnoten function fallback "
-                f"{fallback_value!r} returned target metadata "
-                "instead of an ordinary canonical code."
-            )
-
-        return candidate.value
-
-    def _unconnected_function_fallback(
-        self,
-        *,
-        source_value: Any,
-    ) -> str:
-        """
-        Return the family-specific unknown channel-function label.
-        """
-        if not isinstance(
-            source_value,
-            str,
-        ):
-            raise ValueError(
-                "Cannot derive an unconnected GepKnoten function family " f"from {source_value!r}."
-            )
-
-        normalized = source_value.strip()
-
-        if normalized == "PAA" or normalized.startswith("PAA."):
-            return "PAA.unbekannt"
-
-        if normalized == "SAA" or normalized.startswith("SAA."):
-            return "SAA.unbekannt"
-
-        raise ValueError(
-            "Unsupported GepKnoten function family " f"{source_value!r}. Expected PAA or SAA."
+            effects_start_index=effects_start,
         )
 
     def _append_agxx_wi_metadata_updates(
@@ -1560,146 +1201,6 @@ class TwwCanonicalViewEffectProjector(
             target_attribute="ag64_fk_provider",
             desired_value=canonical_provider_oid,
             current_value=current_provider_oid,
-        )
-
-    def _append_unconnected_geometry_update(
-        self,
-        *,
-        effects: MutableSequence[Effect,],
-        source_row: Any,
-        source_attribute: str,
-        target_attribute: str,
-        identity: CanonicalObjectIdentity,
-        z_value: Any | None = None,
-    ) -> None:
-        """
-        Append one three-dimensional unconnected-node geometry update.
-
-        Null source geometries are neutral and therefore produce no effect.
-
-        Geometry conversion is delegated to ``_append_force_3d_update()``, which
-        represents the conversion as a PostGIS ``ST_Force3D`` expression. The
-        effect persister is responsible for executing that expression when the
-        canonical update is applied.
-        """
-        if not hasattr(
-            source_row,
-            source_attribute,
-        ):
-            raise ValueError(
-                "Projection source row does not expose "
-                f"geometry attribute {source_attribute!r}."
-            )
-
-        source_geometry = getattr(
-            source_row,
-            source_attribute,
-        )
-
-        if source_geometry is None:
-            return
-
-        self._append_force_3d_update(
-            effects=effects,
-            source_row=source_row,
-            source_attribute=source_attribute,
-            target_attribute=target_attribute,
-            identity=identity,
-            z_value=z_value,
-        )
-
-    def _append_unconnected_measure_update(
-        self,
-        *,
-        effects: MutableSequence[Effect,],
-        source_row: Any,
-        current_row: Any | None,
-        identity: CanonicalObjectIdentity,
-    ) -> None:
-        """
-        Project the AG96 measure reference onto an unconnected node.
-        """
-        if not hasattr(
-            source_row,
-            "gepmassnahmeref",
-        ):
-            return
-
-        desired_measure_id = getattr(
-            source_row,
-            "gepmassnahmeref",
-        )
-
-        if desired_measure_id is None:
-            return
-
-        current_measure_id = self._row_value(
-            current_row,
-            "gepmassnahmeref",
-        )
-
-        self._append_update_if_changed(
-            effects=effects,
-            identity=identity,
-            target_attribute="ag96_fk_measure",
-            desired_value=desired_measure_id,
-            current_value=current_measure_id,
-        )
-
-    def _append_force_3d_update(
-        self,
-        *,
-        effects: MutableSequence[Effect,],
-        source_row: Any,
-        source_attribute: str,
-        target_attribute: str,
-        identity: CanonicalObjectIdentity,
-        z_value: Any | None = None,
-    ) -> None:
-        """
-        Append one geometry update using PostGIS ``ST_Force3D``.
-
-        Existing Z coordinates are preserved. Two-dimensional coordinates receive
-        the supplied Z value. When no Z value is supplied, PostGIS uses its
-        default value.
-
-        Geometry conversion is intentionally represented as a SQLAlchemy
-        expression so no Shapely dependency or client-side geometry conversion is
-        required.
-        """
-        if not hasattr(
-            source_row,
-            source_attribute,
-        ):
-            raise ValueError(
-                "Projection source row does not expose "
-                f"geometry attribute {source_attribute!r}."
-            )
-
-        source_geometry = getattr(
-            source_row,
-            source_attribute,
-        )
-
-        if source_geometry is None:
-            return
-
-        if z_value is None:
-            desired_geometry = ST_Force3D(
-                source_geometry,
-            )
-        else:
-            desired_geometry = ST_Force3D(
-                source_geometry,
-                z_value,
-            )
-
-        effects.append(
-            UpdateAttributeEffect(
-                identity=identity,
-                attribute_id=target_attribute,
-                value=desired_geometry,
-            )
         )
 
     def _append_agxx_gepprovider_update(
@@ -1812,40 +1313,6 @@ class TwwCanonicalViewEffectProjector(
             target_attribute="ag96_fk_measure",
             desired_value=desired_measure_id,
             current_value=current_measure_id,
-        )
-
-        self._prepend_exists_if_updates_added(
-            effects=effects,
-            identity=identity,
-            effects_start_index=effects_start,
-        )
-
-    def _append_reach_point_mapping(
-        self,
-        *,
-        effects: MutableSequence[Effect,],
-        source_object_id: str,
-    ) -> None:
-        """
-        Link one canonical reach point to its unconnected-node fallback.
-        """
-        identity = CanonicalObjectIdentity(
-            class_id="agxx_reach_point",
-            attributes={
-                "fk_reach_point": (source_object_id),
-            },
-        )
-
-        effects_start = len(
-            effects,
-        )
-
-        effects.append(
-            UpdateAttributeEffect(
-                identity=identity,
-                attribute_id=("ag64_fk_wastewater_node"),
-                value=source_object_id,
-            )
         )
 
         self._prepend_exists_if_updates_added(
@@ -2541,41 +2008,6 @@ class TwwCanonicalViewEffectProjector(
             f"declares type {source_type!r}, which requires "
             f"canonical subtype {expected_subtype!r}, but the "
             f"existing canonical subtype is {current_subtype!r}."
-        )
-
-    def _remove_stale_unconnected_fallback(
-        self,
-        *,
-        effects: MutableSequence[Effect,],
-        source_row: Any,
-        current_row: Any,
-    ) -> None:
-        """
-        Remove an obsolete unconnected fallback for a connected node.
-        """
-        has_unconnected_fallback = bool(
-            self._row_value(
-                current_row,
-                "_mapping_has_unc_fallback",
-            )
-        )
-
-        if not has_unconnected_fallback:
-            return
-
-        effects.append(
-            EnforceNotExistsEffect(
-                identity=CanonicalObjectIdentity(
-                    class_id=("agxx_unconnected_node_bwrel"),
-                    attributes={
-                        "obj_id": (
-                            self._source_object_id(
-                                source_row,
-                            )
-                        ),
-                    },
-                )
-            )
         )
 
     def _resolved_reference(

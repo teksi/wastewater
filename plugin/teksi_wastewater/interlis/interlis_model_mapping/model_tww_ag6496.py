@@ -87,7 +87,6 @@ class ModelTwwAG6496(ModelBase):
             _mapping_ws_obj_id = Column(String)
             _mapping_ne_obj_id = Column(String)
             _mapping_origin = Column(String)
-            _mapping_has_unc_fallback = Column(Boolean)
             _mapping_function_hierarchic_code = Column(Integer)
             __table_args__ = {"schema": config.TWW_APP_SCHEMA}
 
