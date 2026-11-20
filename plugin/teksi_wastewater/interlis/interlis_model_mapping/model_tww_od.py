@@ -348,7 +348,7 @@ class ModelTwwOd(ModelBase):
         self.re_building_group_disposal = re_building_group_disposal
 
         class re_measuring_point_reference_station(self.Base):
-            __tablename__ = "re_maintenance_event_wastewater_structure"
+            __tablename__ = "re_measuring_point_reference_station"
             __table_args__ = {"schema": config.TWW_OD_SCHEMA}
 
         self.re_measuring_point_reference_station = re_measuring_point_reference_station
