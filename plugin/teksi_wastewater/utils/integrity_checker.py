@@ -16,21 +16,25 @@ class TWWIntegrityChecker:
     def add_issue(
         self,
         message: str,
-        level: IssueLevel = IssueLevel.WARNING,
+        level: IssueLevel | str = IssueLevel.WARNING,
     ):
+        try:
+            normalized_level = level if isinstance(level, IssueLevel) else IssueLevel(level)
+        except Exception as exception:
+            raise ValueError(
+                f"Unsupported issue level: {level!r}."
+            ) from exception
         self.check_result.add(message, level)
 
-        if level == IssueLevel.ERROR:
-            self.logger.error(message)
-        elif level == IssueLevel.INFO:
-            self.logger.info(message)
-        elif level == IssueLevel.DEBUG:
-            self.logger.debug(message)
-        elif level == IssueLevel.WARNING:
-            self.logger.warning(message)
-        else:
-            raise ValueError("Could not map issue level {level} to IssueLevel entries")
+        log_method = {
+            IssueLevel.DEBUG: self.logger.debug,
+            IssueLevel.INFO: self.logger.info,
+            IssueLevel.WARNING: self.logger.warning,
+            IssueLevel.ERROR: self.logger.error,
+        }[normalized_level]
 
+        log_method(message)
+        
     def run_integrity_checks(self, raise_err: bool = False) -> list[Issue]:
         checks = [
             ("class_counts", self._check_class_counts),
