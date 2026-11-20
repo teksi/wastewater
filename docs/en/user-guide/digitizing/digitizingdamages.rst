@@ -15,6 +15,11 @@ This view calculates the damage geometry from:
 
 When a damage is digitized manually, the point geometry selected in QGIS is discarded when the feature is saved. The geometry is then recalculated from the examination and the recorded channel distance.
 
+Details can also be viewed in the attribute form:
+
+.. figure:: images/vw_tww_channel_damage_form.png
+
+
 Prerequisites
 -------------
 
