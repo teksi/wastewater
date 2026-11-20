@@ -380,7 +380,7 @@ class InterlisImporterExporter:
                 # QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
                 # )
                 mb.setWindowTitle("Stop exporting")
-                mb.setIcon(QMessageBox.Warning)
+                mb.setIcon(QMessageBox.warning)
                 mb.setText(
                     "Stop exporting: Some export checks failed - check the logs for details. (if you have a selection you can still try (click Cancel) "
                 )
