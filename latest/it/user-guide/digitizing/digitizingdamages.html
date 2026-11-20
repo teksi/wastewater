@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>digitizing channel damages &mdash; Documentazione TWW latest </title>
+  <title>Digitizing channel damages &mdash; Documentazione TWW latest </title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
 
@@ -56,7 +56,7 @@
 <li class="toctree-l3"><a class="reference internal" href="digitizingchannels.html">Digitizing Channels</a></li>
 <li class="toctree-l3"><a class="reference internal" href="deletingobjects.html">Deleting objects</a></li>
 <li class="toctree-l3"><a class="reference internal" href="digitizingcatchments.html">Digitizing Catchment Areas</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">digitizing channel damages</a><ul>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Digitizing channel damages</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#how-the-damage-position-is-calculated">How the damage position is calculated</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#creating-a-channel-damage">Creating a channel damage</a></li>
@@ -97,7 +97,7 @@
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">User Guide</a></li>
           <li class="breadcrumb-item"><a href="index.html">Digitizing in TWW</a></li>
-      <li class="breadcrumb-item active">digitizing channel damages</li>
+      <li class="breadcrumb-item active">Digitizing channel damages</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/user-guide/digitizing/digitizingdamages.rst.txt" rel="nofollow"> Visualizza sorgente pagina</a>
       </li>
@@ -110,21 +110,23 @@
   <blockquote>
 <div></div></blockquote>
 <section id="digitizing-channel-damages">
-<h1>digitizing channel damages<a class="headerlink" href="#digitizing-channel-damages" title="Link to this heading"></a></h1>
+<h1>Digitizing channel damages<a class="headerlink" href="#digitizing-channel-damages" title="Link to this heading"></a></h1>
 <p>Channel damages are managed through the view
 <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_damage_channel</span></code>.</p>
-<blockquote>
-<div><figure class="align-default">
-<img alt="images/vw_tww_channel_damage.png" src="images/vw_tww_channel_damage.png" />
+<figure class="align-default">
+<img alt="../../_images/vw_tww_channel_damage.png" src="../../_images/vw_tww_channel_damage.png" />
 </figure>
-</div></blockquote>
 <p>This view calculates the damage geometry from:</p>
 <ul class="simple">
 <li><p>the geometry of the channel referenced by the examination;</p></li>
 <li><p>the recorded channel distance; and</p></li>
 <li><p>the direction travelled by the examination camera.</p></li>
 </ul>
-<p>When a damage is digitised manually, the point geometry selected in QGIS is discarded when the feature is saved. The geometry is then recalculated from the examination and the recorded channel distance.</p>
+<p>When a damage is digitized manually, the point geometry selected in QGIS is discarded when the feature is saved. The geometry is then recalculated from the examination and the recorded channel distance.</p>
+<p>Details can also be viewed in the attribute form:</p>
+<figure class="align-default">
+<img alt="../../_images/vw_tww_channel_damage_form.png" src="../../_images/vw_tww_channel_damage_form.png" />
+</figure>
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h2>
 <p>To create a georeferenced channel damage, a corresponding examination must

@@ -1,11 +1,11 @@
-digitizing channel damages
+Digitizing channel damages
 ==========================
 
 Channel damages are managed through the view
 ``tww_app.vw_tww_damage_channel``.
 
 
-   .. figure:: /images/vw_tww_channel_damage.png
+.. figure:: images/vw_tww_channel_damage.png
 
 This view calculates the damage geometry from:
 
@@ -13,7 +13,12 @@ This view calculates the damage geometry from:
 * the recorded channel distance; and
 * the direction travelled by the examination camera.
 
-When a damage is digitised manually, the point geometry selected in QGIS is discarded when the feature is saved. The geometry is then recalculated from the examination and the recorded channel distance.
+When a damage is digitized manually, the point geometry selected in QGIS is discarded when the feature is saved. The geometry is then recalculated from the examination and the recorded channel distance.
+
+Details can also be viewed in the attribute form:
+
+.. figure:: images/vw_tww_channel_damage_form.png
+
 
 Prerequisites
 -------------

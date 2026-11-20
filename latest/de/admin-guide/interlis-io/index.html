@@ -224,6 +224,16 @@ Linux : use the package manager</p>
 <p class="admonition-title">Bemerkung</p>
 <p>Wählen Sie entweder Werkplan 1:500 oder Werkplan 1:250. Letzterer ermöglicht eine genauere Platzierung der Beschriftungen im Maßstab 1:500. Die Auswahl beider Maßstäbe im gleichen Export führt zu doppelten Beschriftungspositionen – vermeiden Sie dies! In der exportierten XTF-Datei lassen sich die Beschriftungen für 1:250 und 1:500 nicht mehr unterscheiden, da beide den Plantyp „Werkplan“ erhalten (derzeit unterstützt VSA-DSS / SIA405 Abwasser 2020.x nur einen Maßstab – dies kann sich in einer zukünftigen Version ändern).</p>
 </div>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2027.0.</span></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Bemerkung</p>
+<p>Labels are only created on export, when the corresponding layer of the _Text class has a label definition turned on. If you do not get the expected Abwasserbauwerk_Text, Haltung_Text or Einzugsgebiet_Text data sets check your layer settings and the export logs.</p>
+</div>
+<figure class="align-default">
+<img alt="../../_images/label_export_layer_label_must_be_selected_or_exist.png" src="../../_images/label_export_layer_label_must_be_selected_or_exist.png" />
+</figure>
 </section>
 <section id="file-name-and-location">
 <h3>Dateiname und Speicherort<a class="headerlink" href="#file-name-and-location" title="Link to this heading"></a></h3>

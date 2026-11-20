@@ -51,7 +51,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../digitizing/index.html">Digitalisieren in TWW</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">Bearbeiten in TWW</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Bearbeiten von bestehenden Daten</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#demo-project-chapter-pictures-not-adjusted-to-tww">Demo Projekt (Kapitel / Bilder nicht an TWW angepasst)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#demo-project">Demo project</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#layers">Layer</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#changing-attributes-of-point-elements-manholes-special-structures">Attribute der Punktelemente ändern (Normschächte / Spezialbauwerke)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#synchronize-identifiers-of-manholes">Synchronisieren von Schachtbezeichnungen</a></li>
@@ -121,27 +121,27 @@
 <section id="editing-of-existing-data">
 <span id="editing-data"></span><h1>Bearbeiten von bestehenden Daten<a class="headerlink" href="#editing-of-existing-data" title="Link to this heading"></a></h1>
 <p>Eine Anleitung zum Bearbeiten von vorhandenen Daten in TWW.</p>
-<section id="demo-project-chapter-pictures-not-adjusted-to-tww">
-<h2>Demo Projekt (Kapitel / Bilder nicht an TWW angepasst)<a class="headerlink" href="#demo-project-chapter-pictures-not-adjusted-to-tww" title="Link to this heading"></a></h2>
+<section id="demo-project">
+<h2>Demo project<a class="headerlink" href="#demo-project" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>Gehen Sie sicher, dass sie das Demoprojekt mit pgAdminIII (siehe <a class="reference internal" href="../../installation-guide/database-initialization.html#database-initialization"><span class="std std-ref">Initialisierung der Datenbank</span></a> Kapitel) importiert haben</p></li>
+<li><p>Make sure you have imported the demo project with TMMT (see the <a class="reference internal" href="../../installation-guide/database-initialization.html#database-initialization"><span class="std std-ref">Initialisierung der Datenbank</span></a> chapter)</p></li>
 <li><p>Öffnen sie das Demoprojekt indem Sie ins Hauptmenu gehen und dann <strong>Project</strong> –&gt; <strong>Open</strong> drücken oder indem sie „STRG“ + „O“ gemeinsam drücken.</p></li>
 </ul>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Geändert in Version 2027.0.</span></p>
+</div>
 <figure class="align-default">
-<a class="reference internal image-reference" href="../../_images/tww_demoproject_old_selection_.jpg"><img alt="../../_images/tww_demoproject_old_selection_.jpg" height="450" src="../../_images/tww_demoproject_old_selection_.jpg" width="800" />
+<a class="reference internal image-reference" href="../../_images/tww_demoproject.png"><img alt="../../_images/tww_demoproject.png" height="520" src="../../_images/tww_demoproject.png" width="674" />
 </a>
-</figure>
-<ul class="simple">
-<li><p>In der Datenbank anmelden</p></li>
-</ul>
-<figure class="align-default">
-<img alt="../../_images/tww_demoproject_old_login.jpg" src="../../_images/tww_demoproject_old_login.jpg" />
 </figure>
 <ul class="simple">
 <li><p>Sie sollten nun das Demoprojekt geladen haben</p></li>
 </ul>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Geändert in Version 2027.0.</span></p>
+</div>
 <figure class="align-default">
-<img alt="../../_images/tww_demoproject_old_overview.jpg" src="../../_images/tww_demoproject_old_overview.jpg" />
+<img alt="../../_images/tww_demoproject_overview.png" src="../../_images/tww_demoproject_overview.png" />
 </figure>
 <ul class="simple">
 <li><p>Das Projekt besteht aus verschiedenen Layern. Je nach Aufgaben wählen Sie die Layer, um Objekte zu bearbeiten oder hinzuzufügen.</p></li>
@@ -194,10 +194,15 @@
 <div class="versionadded">
 <p><span class="versionmodified added">Added in version 2026.0.</span></p>
 </div>
-<p>Diese Funktion passt die Synchronisierung von Bezeichnungen an und folgt dabei dem Grundsatz, dass Identifikatoren niemals NULL sind.</p>
+<p>This feature adapts the synchronization of identifiers, following the idea that identifiers should never be null.</p>
 <p>Für Abwasserbauwerke / Deckel / Abwasserknoten werden sie synchronisiert:</p>
 <blockquote>
-<div><p>insert: wenn nur die Bezeichnung des Abwasserbauwerks gesetzt wird, werden alle 3 Bezeichnungen auf die des Abwasserbauwerks gesetzt Update: Wenn alle denselben Wert hatten, werden alle drei überschrieben</p>
+<div><dl class="simple">
+<dt>Erstellen</dt><dd><p>if only main is provided, all 3 get the same value</p>
+</dd>
+<dt>Update</dt><dd><p>if they were the same and the main changes =&gt; all changes</p>
+</dd>
+</dl>
 </div></blockquote>
 <p>Implementiertes Verhalten für Deckel:</p>
 <blockquote>
@@ -212,7 +217,7 @@
 </dd>
 </dl>
 </div></blockquote>
-<p>Allgemein wird kein Deckel erstellt, wenn keine Deckeldaten eingefügt werden.</p>
+<p>Plus in general, if there is no cover data, no cover is created.</p>
 </section>
 <section id="changing-attributes-of-linear-elements-channels">
 <h2>Attribute der Linienelemente ändern (Kanäle)<a class="headerlink" href="#changing-attributes-of-linear-elements-channels" title="Link to this heading"></a></h2>
