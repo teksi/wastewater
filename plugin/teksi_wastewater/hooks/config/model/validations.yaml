@@ -265,7 +265,7 @@ classes:
 
   - id: file
     object_validation_rules:
-        unique_identifier_combo: 
+        unique_identifier_combo:
         rules:
           - id: is_unique
             parameters:
