@@ -290,7 +290,7 @@ class TestInterlis(unittest.TestCase):
         exported_object = helpers.get_xtf_object(
             export_xtf_file,
             topic_name,
-            "Abwasserbauwerk",
+            "Versickerungsanlage",
             "ch080qwzVE000019",
         )
 
