@@ -72,6 +72,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#validation-pre-processing">Validation pre-processing</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#validation-post-processing-ilivalidator">Validation Post-processing ilivalidator</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#error-logs">Error logs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#visualize-iliverrors-xtflog-with-qgis-xtflog-checker-plugin">Visualize IliVErrors xtflog with QGIS XTFLog-Checker Plugin</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#export-extra-organisations">Export extra organisations</a></li>
 </ul>
 </li>
@@ -287,8 +288,8 @@ If the export is not successfull you will get either error messages during the e
 <section id="error-logs">
 <h3>Error logs<a class="headerlink" href="#error-logs" title="Link to this heading"></a></h3>
 <p>You can check the protocol window and the text logs for further details.</p>
-<table class="docutils align-default" id="id4">
-<caption><span class="caption-text">There are four different log files:</span><a class="headerlink" href="#id4" title="Link to this table"></a></caption>
+<table class="docutils align-default" id="id8">
+<caption><span class="caption-text">There are four different log files:</span><a class="headerlink" href="#id8" title="Link to this table"></a></caption>
 <colgroup>
 <col style="width: 25.0%" />
 <col style="width: 50.0%" />
@@ -319,6 +320,30 @@ If the export is not successfull you will get either error messages during the e
 </tr>
 </tbody>
 </table>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2027.0: </span>* - INTERLIS validation IliVErrors xtflog
+  - Validation of the created xtf file(s) with ilivalidator
+  - <code class="docutils literal notranslate"><span class="pre">*.ilivalidator-MODELNAME.log.xtf</span></code></p>
+</div>
+</section>
+<section id="visualize-iliverrors-xtflog-with-qgis-xtflog-checker-plugin">
+<h3>Visualize IliVErrors xtflog with QGIS XTFLog-Checker Plugin<a class="headerlink" href="#visualize-iliverrors-xtflog-with-qgis-xtflog-checker-plugin" title="Link to this heading"></a></h3>
+<figure class="align-default">
+<img alt="../../_images/ilivalidation_failed_xtferrorlog.png" src="../../_images/ilivalidation_failed_xtferrorlog.png" />
+</figure>
+<p>Displaying with <a class="reference external" href="https://github.com/GeoWerkstatt/qgis-xtf-log-checker/">QGIS XTFLog-Checker Plugin</a> (Release 1.4.0 or later)</p>
+<figure class="align-default">
+<img alt="../../_images/displaying_xtflogchecker_errors_with_plugin.png" src="../../_images/displaying_xtflogchecker_errors_with_plugin.png" />
+</figure>
+<p>Opening the object on vw_tww_wastewater_structure or vw_tww_reach allows easy correction of the cover diameter:</p>
+<figure class="align-default">
+<img alt="../../_images/view_and_correct_with_qgisxtflogchecker_plugin.png" src="../../_images/view_and_correct_with_qgisxtflogchecker_plugin.png" />
+</figure>
+<p>Comparison of error log formats (left <a href="#id3"><span class="problematic" id="id4">*</span></a>.log / right <a href="#id5"><span class="problematic" id="id6">*</span></a>.xtf ilivalidator error log model)</p>
+<figure class="align-default">
+<img alt="../../_images/comparison_errorlogs_format_log_xtflog.png" src="../../_images/comparison_errorlogs_format_log_xtflog.png" />
+</figure>
+<p>For more information about xtf error log see the <a class="reference external" href="https://github.com/claeis/ilivalidator/blob/master/docs/ilivalidator.rst">Ilivalidator documentation</a></p>
 </section>
 <section id="export-extra-organisations">
 <h3>Export extra organisations<a class="headerlink" href="#export-extra-organisations" title="Link to this heading"></a></h3>
@@ -333,7 +358,7 @@ If the export is not successfull you will get either error messages during the e
 </section>
 </section>
 <section id="interlis-import">
-<span id="id3"></span><h2>INTERLIS Import<a class="headerlink" href="#interlis-import" title="Link to this heading"></a></h2>
+<span id="id7"></span><h2>INTERLIS Import<a class="headerlink" href="#interlis-import" title="Link to this heading"></a></h2>
 <figure class="align-default">
 <img alt="../../_images/tww_interlis_import_button.png" src="../../_images/tww_interlis_import_button.png" />
 </figure>
