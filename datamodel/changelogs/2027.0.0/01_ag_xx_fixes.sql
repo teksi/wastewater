@@ -2,12 +2,12 @@ UPDATE tww_vl.discharge_point_relevance_import_rel_agxx
 SET value_de=replace(value_de,'.','_');
 
 
-ALTER TABLE tww_od.agxx_reach_point 
+ALTER TABLE tww_od.agxx_reach_point
 DROP COLUMN ag64_fk_wastewater_node
 , ADD COLUMN co_level numeric(7,3)
 , ADD COLUMN co_positional_accuracy bigint
 , ADD COLUMN wwtp_number integer
-, ADD COLUMN backflow_level_current decimal(7,3) 
+, ADD COLUMN backflow_level_current decimal(7,3)
 ;
 
 DROP TABLE tww_od.agxx_unconnected_node_bwrel;
