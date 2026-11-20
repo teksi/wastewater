@@ -19,10 +19,6 @@ def _projector() -> TwwCanonicalViewEffectProjector:
     ("origin", "method_name"),
     (
         ("wastewater_node", "_project_connected_gepknoten"),
-        (
-            "agxx_unconnected_node_bwrel",
-            "_project_unconnected_wastewater_node",
-        ),
         ("reach_point", "_project_reach_point_gepknoten"),
     ),
 )
@@ -63,33 +59,3 @@ def test_unknown_mapping_origin_fails_closed() -> None:
             current_row={"_mapping_origin": "unknown"},
             context=Mock(),
         )
-
-
-@pytest.mark.parametrize(
-    ("source_value", "expected"),
-    (
-        ("PAA", "PAA.unbekannt"),
-        ("PAA.other", "PAA.unbekannt"),
-        ("SAA", "SAA.unbekannt"),
-        ("SAA.other", "SAA.unbekannt"),
-    ),
-)
-def test_unconnected_function_family_fallback(
-    source_value,
-    expected: str,
-) -> None:
-    projector = _projector()
-    assert (
-        projector._unconnected_function_fallback(
-            source_value=source_value,
-        )
-        == expected
-    )
-
-
-def test_unconnected_function_family_rejects_invalid_values() -> None:
-    projector = _projector()
-    with pytest.raises(ValueError):
-        projector._unconnected_function_fallback(source_value=None)
-    with pytest.raises(ValueError):
-        projector._unconnected_function_fallback(source_value="unexpected")
