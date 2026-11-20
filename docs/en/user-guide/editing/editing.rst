@@ -5,23 +5,21 @@ Editing of existing data
 
 This represents a guide on how to edit existing data in TWW.
 
-Demo project (chapter / pictures not adjusted to TWW)
------------------------------------------------------
+Demo project 
+------------
 
-* Make sure you have imported the demo project with pgAdmin (see the :ref:`database-initialization` chapter)
+* Make sure you have imported the demo project with TMMT (see the :ref:`database-initialization` chapter)
+
 * Open the demo project by going to the main menu and press **Project** --> **Open**  or by pressing ``CTRL``
   + ``O`` at the same time.
 
-.. figure:: images/tww_demoproject_old_selection_.jpg
+.. figure:: images/tww_demoproject.png
    :scale: 50 %
 
-* Login to the database
-
-.. figure:: images/tww_demoproject_old_login.jpg
 
 * You should now have the demo project loaded
 
-.. figure:: images/tww_demoproject_old_overview.jpg
+.. figure:: images/tww_demoproject_overview.png
 
 * The project consists of different layers. Depending on your task what to edit or add you choose the layer.
 
