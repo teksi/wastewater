@@ -74,32 +74,32 @@ For more details see https://github.com/teksi/wastewater/releases/tag/2026.1.0
 Main features
 ----------------
 
- - Version of TEKSI wastewater module for QGIS 3.40 LTR and initialized and upgrade via the PostgreSQL Update Manager (PUM) and the TEKSI Module Management Tool (TMMT).
- - Check the `installation guide <../installation-guide/index.html>`__ for more information on how to install TEKSI wastewater module (TWW) via TMMT.
+ * Version of TEKSI wastewater module for QGIS 3.40 LTR and initialized and upgrade via the PostgreSQL Update Manager (PUM) and the TEKSI Module Management Tool (TMMT).
+ * Check the `installation guide <../installation-guide/index.html>`__ for more information on how to install TEKSI wastewater module (TWW) via TMMT.
 
- - `The 'Extend selection tool' allows users to expand a selection made on the vw_tww_reach layer to related objects <../user-guide/editing/editing.html#id1>`_
+ * `The 'Extend selection tool' allows users to expand a selection made on the vw_tww_reach layer to related objects <../user-guide/editing/editing.html#id1>`_
 
-.. figure:: ../user-guide/editing/images/selection_extender_2.png
-
-
- - `New visualisation of channel damages <../user-guide/digitizing/digitizingdamages.html>`_
-
-.. figure:: ../user-guide/digitizing/images/vw_tww_channel_damage.png
+ .. figure:: ../user-guide/editing/images/selection_extender_2.png
 
 
- - `The 'Refresh network topology' is only visible in Admin mode <../user-guide/network-following/index.html>`_ as the query can take quite long for big networks.
- - `Improve identifier synchronization for wastewater structures <../user-guide/editing/editing.html#synchronize-identifiers-of-manholes>`_
- - `Use wastewater node identifiers in reach wizard identifier creation <../user-guide/digitizing/digitizingchannels.html#digitizing>`_
- - network plan: possibility to label the reaches with I1, I2, ..., A1, A2 (reach point labels)
+ * `New visualisation of channel damages <../user-guide/digitizing/digitizingdamages.html>`_
 
-.. figure:: ../user-guide/editing/images/network_plan_reachpoint_labels.jpg
+ .. figure:: ../user-guide/digitizing/images/vw_tww_channel_damage.png
 
 
- - configuration in the project-file for `profile-geometries <../user-guide/layerexplanations/layerexplanation.html#layergroup-wastewater-structures>`_ , including a project-saved execute sql to `visualize profile-geometries <../user-guide/editing/editing.html#changing-and-visualizing-a-profile_geometry>`_
- - control length of identifiers while editing with enforced constraints in the attribute form
- - `The OID Prefix can be set in TMMT from 2026.0.1 on <../admin-guide/db-production-readiness/index.html>`_
- - create _CH copies of translation files ( '\*.qm' )
- - Import VSA organisation from internet if not present
+ * `The 'Refresh network topology' is only visible in Admin mode <../user-guide/network-following/index.html>`_ as the query can take quite long for big networks.
+ * `Improve identifier synchronization for wastewater structures <../user-guide/editing/editing.html#synchronize-identifiers-of-manholes>`_
+ * `Use wastewater node identifiers in reach wizard identifier creation <../user-guide/digitizing/digitizingchannels.html#digitizing>`_
+ * network plan: possibility to label the reaches with I1, I2, ..., A1, A2 (reach point labels)
+
+ .. figure:: ../user-guide/editing/images/network_plan_reachpoint_labels.jpg
+
+
+ * configuration in the project-file for `profile-geometries <../user-guide/layerexplanations/layerexplanation.html#layergroup-wastewater-structures>`_ , including a project-saved execute sql to `visualize profile-geometries <../user-guide/editing/editing.html#changing-and-visualizing-a-profile_geometry>`_
+ * control length of identifiers while editing with enforced constraints in the attribute form
+ * `The OID Prefix can be set in TMMT from 2026.0.1 on <../admin-guide/db-production-readiness/index.html>`_
+ * create _CH copies of translation files ( '\*.qm' )
+ * Import VSA organisation from internet if not present
 
 Documentation
 --------------
