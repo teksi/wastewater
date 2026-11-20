@@ -3,7 +3,7 @@
 Here you can find information about the 2026.x releases of TEKSI wastewater. For future release check the `TEKSI Roadmap <https://github.com/teksi/Home/wiki/TEKSI-modules-releases-and-roadmap>`__
 
 
-2026.1.1 Fix Minor Release
+2026.1.1 Bugfix Release
 ===========================
 
 Bug fixes and performance improvements
