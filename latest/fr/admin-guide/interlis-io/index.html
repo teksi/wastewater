@@ -88,6 +88,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#translating-an-interlis-transfer-file-into-another-language">Translating an INTERLIS transfer file into another language</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../db-customization/index.html">Personnalisation du modèle de données</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../datamodel-tool/index.html">TEKSI Module Management Tool</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../db-update-pum/index.html">Manual update of the datamodel</a></li>
@@ -482,6 +483,47 @@ You can see, if there is already a dataset with the same obj_id in the state att
 <p><a class="reference external" href="https://vsa.ch/Mediathek/gep-datachecker-jahresgebuehr/?media_filter_two=lizenzen-software">Information about access and licensing you can get here</a></p>
 </section>
 </section>
+</section>
+<section id="translating-an-interlis-transfer-file-into-another-language">
+<h1>Translating an INTERLIS transfer file into another language<a class="headerlink" href="#translating-an-interlis-transfer-file-into-another-language" title="Lien vers cette rubrique"></a></h1>
+<p>So far, TEKSI Wastewater only is able to import INTERLIS data in german. For any non-german speaking user, this means that any incoming INTERLIS delivery has to be translated into german before starting the import.</p>
+<p>The following description relies heavily on <a class="reference external" href="https://www.sjib.ch/wie-uebersetze-ich-eine-interlis-transferdatei-in-eine-andere-sprache/">sjib’s blog post in 2022</a>, where the process was described in german:</p>
+<p>Download and install a <a class="reference external" href="https://www.interlis.ch/downloads/ili2db">current ili2pg version</a>, version 4.9.0 or newer. The following example uses a small Windows batch file. Its header defines the database, password, PostgreSQL installation path, local INTERLIS model directory, port, host, and user:</p>
+<div class="highlight-batch notranslate"><div class="highlight"><pre><span></span><span class="k">set</span> <span class="nv">db</span><span class="p">=</span>dss_translate
+<span class="k">set</span> <span class="nv">pwd</span><span class="p">=</span>mypassword
+<span class="k">set</span> <span class="nv">PATH</span><span class="p">=</span><span class="nv">%PATH%</span>;C:/Program Files/PostgreSQL/18/bin
+<span class="k">set</span> <span class="nv">port</span><span class="p">=</span>5432
+<span class="k">set</span> <span class="nv">host</span><span class="p">=</span>localhost
+<span class="k">set</span> <span class="nv">user</span><span class="p">=</span>postgres
+<span class="k">set</span> <span class="nv">dbschema</span><span class="p">=</span>sdee_traduction_f_d
+
+<span class="k">set</span> <span class="nv">ili2pg_path</span><span class="p">=</span>C:/Daten/ili2pg-4.9.0/ili2pg-4.9.0.jar
+<span class="k">set</span> <span class="nv">xtf_path</span><span class="p">=</span><span class="nv">%userprofile%</span>/Downloads/
+<span class="k">set</span> <span class="nv">xtf_filename</span><span class="p">=</span>SDEE_2020_1_LV95.xtf
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For the process to work correctly, the model directory must contain all INTERLIS model files in both German and French.</p>
+</div>
+<p>The following sections describe the required steps.</p>
+<p>This example uses <code class="docutils literal notranslate"><span class="pre">SDEE_2020_1_LV95</span></code> and its corresponding French model, <code class="docutils literal notranslate"><span class="pre">DSS_2020_1_LV95</span></code>.</p>
+<div class="highlight-batch notranslate"><div class="highlight"><pre><span></span>java -jar <span class="nv">%ili2pg_path%</span> ––schemaimport ––importTid ––sqlEnableNull ––createEnumTabs ––createBasketCol  ––createFk ––noSmartMapping ––defaultSrsAuth EPSG ––defaultSrsCode 2056 ––dbhost <span class="nv">%host%</span> ––dbport <span class="nv">%port%</span> ––dbdatabase <span class="nv">%db%</span> ––dbschema <span class="nv">%dbschema%</span> ––dbusr <span class="nv">%user%</span> ––dbpwd <span class="nv">%pwd%</span> ––log <span class="nv">%xtf_path%%dbschema%</span>_schemaimport.log ––trace ––models SDEE_2020_1_LV95; DSS_2020_1_LV95;
+</pre></div>
+</div>
+<p>Normally, only one model version is passed to the <code class="docutils literal notranslate"><span class="pre">–models</span></code> parameter. For a translation, both language versions are required: <code class="docutils literal notranslate"><span class="pre">–models</span> <span class="pre">SDEE_2020_1_LV95;</span> <span class="pre">DSS_2020_1_LV95;</span></code></p>
+<div class="highlight-batch notranslate"><div class="highlight"><pre><span></span>java -jar <span class="nv">%ili2pg_path%</span> ––disableValidation ––import ––deleteData ––modeldir <span class="nv">%ilimodelpath%</span> ––trace ––sqlEnableNull ––createEnumTabs ––createBasketCol ––createFk ––defaultSrsCode 2056 ––noSmartMapping ––dbhost <span class="nv">%host%</span> ––dbport <span class="nv">%port%</span> ––dbdatabase <span class="nv">%db%</span> ––dbschema <span class="nv">%dbschema%</span> ––dbusr <span class="nv">%user%</span> ––dbpwd <span class="nv">%pwd%</span> ––log <span class="nv">%xtf_path%%dbschema%</span>_import.log <span class="nv">%xtf_path%%xtf_filename%</span>
+</pre></div>
+</div>
+<p>The data is now stored in French in the PostgreSQL schema.</p>
+<p>The target language is selected with the following parameters: <code class="docutils literal notranslate"><span class="pre">--export</span> <span class="pre">––models</span> <span class="pre">DSS_2020_1_LV95</span> <span class="pre">––exportModels</span> <span class="pre">DSS_2020_1_LV95</span></code>.
+The basket name can be found in the original transfer dataset.</p>
+<div class="highlight-batch notranslate"><div class="highlight"><pre><span></span><span class="k">set</span> <span class="nv">xtf_filename</span><span class="p">=</span>DSS_2020_1_LV95.xtf
+<span class="k">set</span> <span class="nv">baskets</span><span class="p">=</span>BASKET_1
+java -jar <span class="nv">%ili2pg_path%</span> ––export ––models DSS_2020_1_LV95 ––exportModels DSS_2020_1_LV95 ––baskets <span class="nv">%baskets%</span> ––skipReferenceErrors ––sqlEnableNull ––createEnumTabs ––createFk ––noSmartMapping ––defaultSrsAuth EPSG ––defaultSrsCode 2056 ––dbhost <span class="nv">%host%</span> ––dbport <span class="nv">%port%</span> ––dbdatabase <span class="nv">%db%</span> ––dbschema <span class="nv">%dbschema%</span> ––dbusr <span class="nv">%user%</span> ––dbpwd <span class="nv">%pwd%</span> ––log <span class="nv">%xtf_path%%dbschema%</span>_export.log ––trace <span class="nv">%xtf_path%%xtf_filename%</span>.xtf
+</pre></div>
+</div>
+<p>The generated transfer dataset now contains the data in German, except for free-text attributes such as names, labels, or comments.</p>
 </section>
 
 
