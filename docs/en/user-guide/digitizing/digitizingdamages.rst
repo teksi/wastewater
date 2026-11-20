@@ -1,4 +1,4 @@
-digitizing channel damages
+Digitizing channel damages
 ==========================
 
 Channel damages are managed through the view
@@ -13,7 +13,7 @@ This view calculates the damage geometry from:
 * the recorded channel distance; and
 * the direction travelled by the examination camera.
 
-When a damage is digitised manually, the point geometry selected in QGIS is discarded when the feature is saved. The geometry is then recalculated from the examination and the recorded channel distance.
+When a damage is digitized manually, the point geometry selected in QGIS is discarded when the feature is saved. The geometry is then recalculated from the examination and the recorded channel distance.
 
 Prerequisites
 -------------
