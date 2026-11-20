@@ -5,7 +5,7 @@ Editing of existing data
 
 This represents a guide on how to edit existing data in TWW.
 
-Demo project 
+Demo project
 ------------
 
 * Make sure you have imported the demo project with TMMT (see the :ref:`database-initialization` chapter)
