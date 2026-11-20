@@ -48,11 +48,18 @@ See the current `TMMT Documentation for a step by step help <https://github.com/
 
 After you have setup successfully the database with or without demodata, you can check the schemata via pgAdmin
 
-There will be 6 `schemas <../user-guide/layerexplanations/namingconventions.html#schemas-in-the-tww-database>`_ in the database
+There will be 7 `schemas <../user-guide/layerexplanations/namingconventions.html#schemas-in-the-tww-database>`_ in the database
 
 + public
 + tww_app
-+ tww_app_pg2ili
++ tww_app_xtf2pg
++ tww_app_pg2xtf
 + tww_od
 + tww_sys
 + tww_vl
+
+.. versionremoved:: 2025.0
+    ``pg2ili_abwasser`` was replaced by ``tww_app_pg2ili``
+
+.. versionremoved:: 2027.0
+    ``tww_app_pg2ili`` was replaced by ``tww_app_pg2xtf`` and ``tww_app_xtf2pg``

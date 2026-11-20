@@ -1,0 +1,23 @@
+# Rights profiles used by the TEKSI Wastewater hook workflow.
+#
+# Paths are resolved relative to this file unless the implementation
+# explicitly supports absolute paths.
+
+default:
+  description: Default TEKSI Wastewater provider rights profile.
+  provider_rights: templates/provider_rights.yaml
+  rights_definition: templates/privilege_tree.yaml
+
+# Example profile for one hosted entity/provider.
+#
+# community_a:
+#   description: Rights profile for Community A imports.
+#   provider_rights: profiles/community_a/provider_rights.yaml
+#   rights_definition: profiles/community_a/provider_privilege.yaml
+
+# Example profile for another hosted entity/provider.
+#
+# association_b:
+#   description: Rights profile for Association B imports.
+#   provider_rights: profiles/association_b/provider_rights.yaml
+#   rights_definition: profiles/association_b/provider_privilege.yaml

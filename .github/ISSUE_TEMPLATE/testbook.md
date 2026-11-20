@@ -58,5 +58,8 @@ To start : copy the issue and name it with the correct release candidate and you
 | Extension AG64| Import of SIA405 Abwasser dataset / testdata set | |
 | Extension AG64| Export of SIA405 Abwasser dataset / testdata set | |
 | -------  | ------- | ---------------------------  |
+| Sequential import| Import of DSSdataset / testdata set | |
+| Sequential import| Import of AG-96 dataset / testdata set | |
+| -------  | ------- | ---------------------------  |
 
 If you have more test please add them below, so we can integrate them in the template.

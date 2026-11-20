@@ -1,0 +1,45 @@
+from __future__ import annotations
+
+from pathlib import Path
+from unittest.mock import Mock
+
+from teksi_wastewater.hooks.adapters.tww_quarantine_runner import (
+    TwwQuarantineRunner,
+)
+
+
+def _runner() -> TwwQuarantineRunner:
+    return TwwQuarantineRunner(
+        canonical_model_adapter=Mock(),
+        importer_exporter=Mock(),
+        interlis_tools=Mock(),
+        canonical_projection_lookup=Mock(),
+        incremental_effect_evaluator=Mock(),
+        incremental_effect_persister=Mock(),
+    )
+
+
+def test_runner_keeps_required_canonical_adapter() -> None:
+    adapter = Mock()
+    runner = TwwQuarantineRunner(
+        canonical_model_adapter=adapter,
+        importer_exporter=Mock(),
+        interlis_tools=Mock(),
+        canonical_projection_lookup=Mock(),
+        incremental_effect_evaluator=Mock(),
+        incremental_effect_persister=Mock(),
+    )
+    assert runner.canonical_model_adapter is adapter
+
+
+def test_validate_success_is_empty() -> None:
+    runner = _runner()
+    runner.interlis_tools.run_ilivalidator = Mock(return_value=None)
+    assert (
+        runner.validate_quarantine(
+            model_names=(),
+            log_path=Path("/tmp/x.log"),
+            schema="q",
+        )
+        == ()
+    )

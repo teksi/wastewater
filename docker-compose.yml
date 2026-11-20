@@ -27,11 +27,14 @@ services:
       - db
 
   qgis:
+    image: teksi-wastewater-qgis:${QGIS_TEST_VERSION:-3.44-noble}
     build:
       context: .
       dockerfile: plugin/.docker/Dockerfile
       args:
         QGIS_TEST_VERSION: ${QGIS_TEST_VERSION:-3.44-noble}
+    environment:
+      ILI_CACHE: /usr/src/.ilicache
     tty: true
     platform: linux/amd64
     volumes:
@@ -40,7 +43,6 @@ services:
       - db
     profiles:
       - qgis
-
   schemaspy:
     image: schemaspy/schemaspy
     volumes:
