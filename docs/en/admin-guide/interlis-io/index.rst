@@ -113,7 +113,7 @@ The export tools is capable of exporting label positions for different scales. Y
 
 .. note::
    Labels are only created on export, when the corresponding layer of the *_Text class has a label definition turned on. If you do not get the expected Abwasserbauwerk_Text, Haltung_Text or Einzugsgebiet_Text data sets check your layer settings and the export logs.
-   
+
 .. figure::  images/label_export_layer_label_must_be_selected_or_exist.png
 
 File name and location
