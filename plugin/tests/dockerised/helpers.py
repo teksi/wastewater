@@ -219,12 +219,8 @@ def run_cli(
         stdout_lines = result.stdout.splitlines()
         stderr_lines = result.stderr.splitlines()
 
-        stdout_tail = "\n".join(
-            stdout_lines[-250:]
-        )
-        stderr_tail = "\n".join(
-            stderr_lines[-250:]
-        )
+        stdout_tail = "\n".join(stdout_lines[-250:])
+        stderr_tail = "\n".join(stderr_lines[-250:])
 
         failure_message = (
             f"CLI command failed with exit code "

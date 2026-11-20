@@ -29,8 +29,8 @@ class TWWIntegrityChecker:
         elif level == IssueLevel.WARNING:
             self.logger.warning(message)
         else:
-            raise ValueError("Could not map issue level {level} to IssueLevel entries")  
-        
+            raise ValueError("Could not map issue level {level} to IssueLevel entries")
+
     def run_integrity_checks(self, raise_err: bool = False) -> list[Issue]:
         checks = [
             ("class_counts", self._check_class_counts),

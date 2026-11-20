@@ -10,7 +10,6 @@ from teksi_wastewater.utils.database_utils import (
 
 from ..helpers import run_cli, run_interlis_import
 
-
 pytestmark = pytest.mark.no_qgis
 
 
@@ -18,18 +17,10 @@ DATA_DIR = Path(__file__).parent / "data"
 CONFIG_DIR = Path(__file__).parent / "config"
 
 ORGS_XTF = DATA_DIR / "test-dataset-organisations.xtf"
-BASELINE_DSS_XTF = (
-    DATA_DIR
-    / "test_baseline_import_DSS_2020_1_LV95.xtf"
-)
-BASELINE_AGXX_XTF = (
-    DATA_DIR
-    / "test_baseline_Genereller_Entwaesserungsplan_AG.xtf"
-)
+BASELINE_DSS_XTF = DATA_DIR / "test_baseline_import_DSS_2020_1_LV95.xtf"
+BASELINE_AGXX_XTF = DATA_DIR / "test_baseline_Genereller_Entwaesserungsplan_AG.xtf"
 
-DIFF_CLI_PATH = Path(
-    "/usr/src/plugin/teksi_wastewater/hooks/cli/diff_cli.py"
-)
+DIFF_CLI_PATH = Path("/usr/src/plugin/teksi_wastewater/hooks/cli/diff_cli.py")
 
 DBW_WI = "ch080qwzPR000017"
 DBW_GEP = "ch080qwzPR000020"
@@ -166,27 +157,19 @@ def assert_baseline_imported() -> None:
     """
     Assert that the trusted baseline populated canonical data.
     """
-    rows = DatabaseUtils.fetchall(
-        """
+    rows = DatabaseUtils.fetchall("""
         SELECT count(*)
         FROM tww_od.wastewater_structure
-        """
-    )
+        """)
 
-    assert rows[0][0] > 0, (
-        "The DSS baseline did not create wastewater structures."
-    )
+    assert rows[0][0] > 0, "The DSS baseline did not create wastewater structures."
 
-    rows = DatabaseUtils.fetchall(
-        """
+    rows = DatabaseUtils.fetchall("""
         SELECT count(*)
         FROM tww_od.reach
-        """
-    )
+        """)
 
-    assert rows[0][0] > 0, (
-        "The DSS baseline did not create reaches."
-    )
+    assert rows[0][0] > 0, "The DSS baseline did not create reaches."
 
 
 def job_row(
@@ -216,15 +199,10 @@ def job_row(
         WHERE
             job_id = %s
         """,
-        (
-            job_id,
-        ),
+        (job_id,),
     )
 
-    assert len(rows) == 1, (
-        f"Expected one metadata row for {job_id!r}, "
-        f"found {len(rows)}."
-    )
+    assert len(rows) == 1, f"Expected one metadata row for {job_id!r}, " f"found {len(rows)}."
 
     return rows[0]
 
@@ -242,8 +220,7 @@ def assert_job_status(
     actual_status = row[2]
 
     assert actual_status == expected_status, (
-        f"Expected job {job_id!r} to have status "
-        f"{expected_status!r}, got {actual_status!r}."
+        f"Expected job {job_id!r} to have status " f"{expected_status!r}, got {actual_status!r}."
     )
 
 
@@ -261,18 +238,10 @@ def assert_source_metadata(
     )
     metadata = row[4]
 
-    assert metadata["base_import_schema"] == (
-        "tww_app_xtf2pg"
-    )
-    assert metadata["incremental_import_schema"] == (
-        "tww_app_xtf2pg_incr"
-    )
-    assert Path(
-        metadata["base_source_xtf"]
-    ).name == base_xtf.name
-    assert Path(
-        metadata["incremental_source_xtf"]
-    ).name == incremental_xtf.name
+    assert metadata["base_import_schema"] == ("tww_app_xtf2pg")
+    assert metadata["incremental_import_schema"] == ("tww_app_xtf2pg_incr")
+    assert Path(metadata["base_source_xtf"]).name == base_xtf.name
+    assert Path(metadata["incremental_source_xtf"]).name == incremental_xtf.name
 
 
 def diff_counts(
@@ -286,8 +255,7 @@ def diff_counts(
     )
     job_db_id = row[0]
 
-    table_rows = DatabaseUtils.fetchall(
-        """
+    table_rows = DatabaseUtils.fetchall("""
         SELECT
             table_name
         FROM
@@ -301,8 +269,7 @@ def diff_counts(
             AND bool_or(column_name = 'is_rejected')
         ORDER BY
             table_name
-        """
-    )
+        """)
 
     total_count = 0
     rejected_count = 0
@@ -331,9 +298,7 @@ def diff_counts(
             WHERE
                 job_id = %s
             """,
-            (
-                job_db_id,
-            ),
+            (job_db_id,),
         )[0]
 
         total_count += counts[0]
@@ -359,21 +324,17 @@ def assert_pending_permitted_job(
     validation_success = row[3]
 
     assert job_status == "pending", (
-        f"Expected job {job_id!r} to be pending, "
-        f"got {job_status!r}."
+        f"Expected job {job_id!r} to be pending, " f"got {job_status!r}."
     )
     assert validation_success is True, (
-        f"Expected validation to succeed for job {job_id!r}, "
-        f"got {validation_success!r}."
+        f"Expected validation to succeed for job {job_id!r}, " f"got {validation_success!r}."
     )
 
     total_count, rejected_count = diff_counts(
         job_id,
     )
 
-    assert total_count > 0, (
-        f"Job {job_id!r} did not produce review rows."
-    )
+    assert total_count > 0, f"Job {job_id!r} did not produce review rows."
     assert rejected_count == 0, (
         f"Expected job {job_id!r} to be fully permitted, "
         f"but {rejected_count} of {total_count} rows were "
@@ -393,20 +354,11 @@ def create_and_apply_phase(
     Provider-right permutations belong in focused rights-evaluator
     tests rather than repeated end-to-end CLI imports.
     """
-    base_xtf = (
-        DATA_DIR
-        / f"test_{phase_identifier}_DSS_2020_1_LV95.xtf"
+    base_xtf = DATA_DIR / f"test_{phase_identifier}_DSS_2020_1_LV95.xtf"
+    incremental_xtf = DATA_DIR / (
+        f"test_{phase_identifier}_" "Genereller_Entwaesserungsplan_AG.xtf"
     )
-    incremental_xtf = (
-        DATA_DIR
-        / (
-            f"test_{phase_identifier}_"
-            "Genereller_Entwaesserungsplan_AG.xtf"
-        )
-    )
-    job_id = (
-        f"pytest-{phase_identifier}-job-{allowed_provider}"
-    )
+    job_id = f"pytest-{phase_identifier}-job-{allowed_provider}"
 
     create_review_job(
         job_id=job_id,
@@ -485,17 +437,12 @@ def agxx_diff_applied(
         "applied",
     )
 
-    rows = DatabaseUtils.fetchall(
-        """
+    rows = DatabaseUtils.fetchall("""
         SELECT count(*)
         FROM tww_od.agxx_building_group
-        """
-    )
+        """)
 
-    assert rows[0][0] > 0, (
-        "The AGXX baseline did not populate "
-        "agxx_building_group."
-    )
+    assert rows[0][0] > 0, "The AGXX baseline did not populate " "agxx_building_group."
 
 
 def test_diff_import_workflow(
