@@ -174,7 +174,7 @@ def job_row(
             job_status,
             validation_success,
             metadata
-        FROM tww_diff.metadata
+        FROM tww_diff.tww_metadata
         WHERE job_id = %s
         """,
         (job_id,),
