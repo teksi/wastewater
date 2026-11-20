@@ -10,16 +10,26 @@ from teksi_wastewater.utils.database_utils import (
 
 from ..helpers import run_cli, run_interlis_import
 
+
 pytestmark = pytest.mark.no_qgis
+
 
 DATA_DIR = Path(__file__).parent / "data"
 CONFIG_DIR = Path(__file__).parent / "config"
 
 ORGS_XTF = DATA_DIR / "test-dataset-organisations.xtf"
-BASELINE_DSS_XTF = DATA_DIR / "test_baseline_import_DSS_2020_1_LV95.xtf"
-BASELINE_AGXX_XTF = DATA_DIR / "test_baseline_Genereller_Entwaesserungsplan_AG.xtf"
+BASELINE_DSS_XTF = (
+    DATA_DIR
+    / "test_baseline_import_DSS_2020_1_LV95.xtf"
+)
+BASELINE_AGXX_XTF = (
+    DATA_DIR
+    / "test_baseline_Genereller_Entwaesserungsplan_AG.xtf"
+)
 
-DIFF_CLI_PATH = Path("/usr/src/plugin/teksi_wastewater/hooks/cli/diff_cli.py")
+DIFF_CLI_PATH = Path(
+    "/usr/src/plugin/teksi_wastewater/hooks/cli/diff_cli.py"
+)
 
 DBW_WI = "ch080qwzPR000017"
 DBW_GEP = "ch080qwzPR000020"
@@ -69,9 +79,10 @@ def create_review_job(
     skip_rights_evaluation: bool = False,
 ) -> None:
     """
-    Create or replace one base-and-incremental review job.
-    """
+    Create or replace one review job.
 
+    A job may contain a base source, an incremental source, or both.
+    """
     arguments = [
         "create",
         "--job-id",
@@ -90,13 +101,21 @@ def create_review_job(
     ]
 
     if xtf_file is not None:
-        arguments += ["--xtf-input", str(xtf_file)]
+        arguments += [
+            "--xtf-input",
+            str(xtf_file),
+        ]
 
     if incremental_xtf is not None:
-        arguments += ["--incremental-xtf", str(incremental_xtf)]
+        arguments += [
+            "--incremental-xtf",
+            str(incremental_xtf),
+        ]
 
-    if ORGS_XTF is not None:
-        arguments += ["--orgs-path", str(ORGS_XTF)]
+    arguments += [
+        "--orgs-path",
+        str(ORGS_XTF),
+    ]
 
     if skip_rights_evaluation:
         arguments.append(
@@ -145,26 +164,44 @@ def persist_job(
 
 def assert_baseline_imported() -> None:
     """
-    Assert that the trusted baseline populated canonical and AGXX data.
+    Assert that the trusted baseline populated canonical data.
     """
-    rows = DatabaseUtils.fetchall("""
-        SELECT count(*) AS count
+    rows = DatabaseUtils.fetchall(
+        """
+        SELECT count(*)
         FROM tww_od.wastewater_structure
-        """)
-    assert rows[0]["count"] > 0, "The DSS baseline did not create wastewater structures."
+        """
+    )
 
-    rows = DatabaseUtils.fetchall("""
-        SELECT count(*) AS count
+    assert rows[0][0] > 0, (
+        "The DSS baseline did not create wastewater structures."
+    )
+
+    rows = DatabaseUtils.fetchall(
+        """
+        SELECT count(*)
         FROM tww_od.reach
-        """)
-    assert rows[0]["count"] > 0, "The DSS baseline did not create reaches."
+        """
+    )
+
+    assert rows[0][0] > 0, (
+        "The DSS baseline did not create reaches."
+    )
 
 
 def job_row(
     job_id: str,
-) -> dict:
+) -> tuple:
     """
     Return the authoritative metadata row for one review job.
+
+    Column positions:
+
+    0: id
+    1: job_id
+    2: job_status
+    3: validation_success
+    4: metadata
     """
     rows = DatabaseUtils.fetchall(
         """
@@ -174,13 +211,20 @@ def job_row(
             job_status,
             validation_success,
             metadata
-        FROM tww_diff.tww_metadata
-        WHERE job_id = %s
+        FROM
+            tww_diff.tww_metadata
+        WHERE
+            job_id = %s
         """,
-        (job_id,),
+        (
+            job_id,
+        ),
     )
 
-    assert len(rows) == 1, f"Expected one metadata row for {job_id!r}, " f"found {len(rows)}."
+    assert len(rows) == 1, (
+        f"Expected one metadata row for {job_id!r}, "
+        f"found {len(rows)}."
+    )
 
     return rows[0]
 
@@ -192,12 +236,14 @@ def assert_job_status(
     """
     Assert one review job's authoritative lifecycle status.
     """
-    actual_status = job_row(
+    row = job_row(
         job_id,
-    )["job_status"]
+    )
+    actual_status = row[2]
 
     assert actual_status == expected_status, (
-        f"Expected job {job_id!r} to have status " f"{expected_status!r}, got {actual_status!r}."
+        f"Expected job {job_id!r} to have status "
+        f"{expected_status!r}, got {actual_status!r}."
     )
 
 
@@ -210,14 +256,23 @@ def assert_source_metadata(
     """
     Assert that base and incremental source metadata remain distinct.
     """
-    metadata = job_row(
+    row = job_row(
         job_id,
-    )["metadata"]
+    )
+    metadata = row[4]
 
-    assert metadata["base_import_schema"] == "tww_app_xtf2pg"
-    assert metadata["incremental_import_schema"] == ("tww_app_xtf2pg_incr")
-    assert Path(metadata["base_source_xtf"]).name == base_xtf.name
-    assert Path(metadata["incremental_source_xtf"]).name == (incremental_xtf.name)
+    assert metadata["base_import_schema"] == (
+        "tww_app_xtf2pg"
+    )
+    assert metadata["incremental_import_schema"] == (
+        "tww_app_xtf2pg_incr"
+    )
+    assert Path(
+        metadata["base_source_xtf"]
+    ).name == base_xtf.name
+    assert Path(
+        metadata["incremental_source_xtf"]
+    ).name == incremental_xtf.name
 
 
 def diff_counts(
@@ -226,25 +281,35 @@ def diff_counts(
     """
     Return total and rejected review-row counts for one job.
     """
-    job_db_id = job_row(
+    row = job_row(
         job_id,
-    )["id"]
+    )
+    job_db_id = row[0]
 
-    table_rows = DatabaseUtils.fetchall("""
-        SELECT table_name
-        FROM information_schema.columns
-        WHERE table_schema = 'tww_diff'
-        GROUP BY table_name
-        HAVING bool_or(column_name = 'job_id')
-           AND bool_or(column_name = 'is_rejected')
-        ORDER BY table_name
-        """)
+    table_rows = DatabaseUtils.fetchall(
+        """
+        SELECT
+            table_name
+        FROM
+            information_schema.columns
+        WHERE
+            table_schema = 'tww_diff'
+        GROUP BY
+            table_name
+        HAVING
+            bool_or(column_name = 'job_id')
+            AND bool_or(column_name = 'is_rejected')
+        ORDER BY
+            table_name
+        """
+    )
 
     total_count = 0
     rejected_count = 0
 
     for table_row in table_rows:
-        table_name = table_row["table_name"]
+        table_name = table_row[0]
+
         quoted_table_name = (
             '"'
             + table_name.replace(
@@ -253,6 +318,7 @@ def diff_counts(
             )
             + '"'
         )
+
         counts = DatabaseUtils.fetchall(
             f"""
             SELECT
@@ -260,14 +326,18 @@ def diff_counts(
                 count(*) FILTER (
                     WHERE is_rejected
                 ) AS rejected_count
-            FROM tww_diff.{quoted_table_name}
-            WHERE job_id = %s
+            FROM
+                tww_diff.{quoted_table_name}
+            WHERE
+                job_id = %s
             """,
-            (job_db_id,),
+            (
+                job_db_id,
+            ),
         )[0]
 
-        total_count += counts["total_count"]
-        rejected_count += counts["rejected_count"]
+        total_count += counts[0]
+        rejected_count += counts[1]
 
     return (
         total_count,
@@ -281,19 +351,33 @@ def assert_pending_permitted_job(
     """
     Assert that one pending review job contains permitted changes.
     """
-    job = job_row(
+    row = job_row(
         job_id,
     )
-    assert job["job_status"] == "pending"
-    assert job["validation_success"] is True
+
+    job_status = row[2]
+    validation_success = row[3]
+
+    assert job_status == "pending", (
+        f"Expected job {job_id!r} to be pending, "
+        f"got {job_status!r}."
+    )
+    assert validation_success is True, (
+        f"Expected validation to succeed for job {job_id!r}, "
+        f"got {validation_success!r}."
+    )
 
     total_count, rejected_count = diff_counts(
         job_id,
     )
-    assert total_count > 0, f"Job {job_id!r} did not produce review rows."
+
+    assert total_count > 0, (
+        f"Job {job_id!r} did not produce review rows."
+    )
     assert rejected_count == 0, (
-        f"Expected job {job_id!r} to be fully permitted, but "
-        f"{rejected_count} of {total_count} rows were rejected."
+        f"Expected job {job_id!r} to be fully permitted, "
+        f"but {rejected_count} of {total_count} rows were "
+        "rejected."
     )
 
 
@@ -305,15 +389,24 @@ def create_and_apply_phase(
     """
     Create, accept and persist one permitted phase job.
 
-    Each expensive XTF pair is imported and projected only once. Provider-right
-    permutations belong in focused rights-evaluator tests rather than repeated
-    end-to-end CLI imports.
+    Each expensive XTF pair is imported and projected only once.
+    Provider-right permutations belong in focused rights-evaluator
+    tests rather than repeated end-to-end CLI imports.
     """
-    base_xtf = DATA_DIR / (f"test_{phase_identifier}_DSS_2020_1_LV95.xtf")
-    incremental_xtf = DATA_DIR / (
-        f"test_{phase_identifier}_" "Genereller_Entwaesserungsplan_AG.xtf"
+    base_xtf = (
+        DATA_DIR
+        / f"test_{phase_identifier}_DSS_2020_1_LV95.xtf"
     )
-    job_id = f"pytest-{phase_identifier}-job-{allowed_provider}"
+    incremental_xtf = (
+        DATA_DIR
+        / (
+            f"test_{phase_identifier}_"
+            "Genereller_Entwaesserungsplan_AG.xtf"
+        )
+    )
+    job_id = (
+        f"pytest-{phase_identifier}-job-{allowed_provider}"
+    )
 
     create_review_job(
         job_id=job_id,
@@ -348,15 +441,37 @@ def create_and_apply_phase(
     )
 
 
-@pytest.fixture(scope="module")
-def imported_dss_baseline(imported_organisations) -> None:
-    run_interlis_import(BASELINE_DSS_XTF, host_data_dir=DATA_DIR, container_data_dir=DATA_DIR)
+@pytest.fixture(
+    scope="module",
+)
+def imported_dss_baseline(
+    imported_organisations,
+) -> None:
+    """
+    Import the trusted DSS baseline before incremental review application.
+    """
+    del imported_organisations
+
+    run_interlis_import(
+        BASELINE_DSS_XTF,
+        host_data_dir=DATA_DIR,
+        container_data_dir=DATA_DIR,
+    )
+
+    assert_baseline_imported()
 
 
-@pytest.fixture(scope="module")
-def agxx_diff_applied(imported_dss_baseline):
+@pytest.fixture(
+    scope="module",
+)
+def agxx_diff_applied(
+    imported_dss_baseline,
+) -> None:
+    """
+    Apply an incremental-only AGXX review job against the live DSS baseline.
+    """
+    del imported_dss_baseline
 
-    # run the diff creator CLI with incremental-only parameters
     create_review_job(
         job_id=BASELINE_JOB_ID,
         provider_oid=DBW_WI,
@@ -370,19 +485,27 @@ def agxx_diff_applied(imported_dss_baseline):
         "applied",
     )
 
-    rows = DatabaseUtils.fetchall("""
-        SELECT count(*) AS count
+    rows = DatabaseUtils.fetchall(
+        """
+        SELECT count(*)
         FROM tww_od.agxx_building_group
-        """)
-    assert rows[0]["count"] > 0, "The AGXX baseline did not populate agxx_building_group."
+        """
+    )
+
+    assert rows[0][0] > 0, (
+        "The AGXX baseline did not populate "
+        "agxx_building_group."
+    )
 
 
 def test_diff_import_workflow(
     agxx_diff_applied,
 ) -> None:
     """
-    Exercise trusted baseline and the three permitted review lifecycles.
+    Exercise trusted baseline and three permitted review lifecycles.
     """
+    del agxx_diff_applied
+
     create_and_apply_phase(
         allowed_provider=DBW_WI,
         phase_identifier="phase1_dbw_wi",

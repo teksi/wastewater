@@ -1,5 +1,6 @@
 import re
 import shlex
+import sys
 import time
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -213,18 +214,46 @@ def run_cli(
     print(f"CLI duration: {duration:.1f}s")
     print("COMMAND")
     print(rendered_command)
+
+    if result.returncode != 0:
+        stdout_lines = result.stdout.splitlines()
+        stderr_lines = result.stderr.splitlines()
+
+        stdout_tail = "\n".join(
+            stdout_lines[-250:]
+        )
+        stderr_tail = "\n".join(
+            stderr_lines[-250:]
+        )
+
+        failure_message = (
+            f"CLI command failed with exit code "
+            f"{result.returncode}.\n"
+            f"Command: {rendered_command}\n\n"
+            f"STDOUT: {len(stdout_lines)} lines total; "
+            f"showing the last "
+            f"{min(250, len(stdout_lines))} lines:\n"
+            f"{stdout_tail}\n\n"
+            f"STDERR: {len(stderr_lines)} lines total; "
+            f"showing the last "
+            f"{min(250, len(stderr_lines))} lines:\n"
+            f"{stderr_tail}"
+        )
+
+        print(
+            failure_message,
+            file=sys.stderr,
+            flush=True,
+        )
+
+        raise AssertionError(
+            failure_message,
+        )
+
     print("STDOUT")
     print(result.stdout)
     print("STDERR")
     print(result.stderr)
-
-    assert result.returncode == 0, (
-        f"CLI command failed with exit code "
-        f"{result.returncode}.\n"
-        f"Command: {rendered_command}\n\n"
-        f"STDOUT:\n{result.stdout}\n\n"
-        f"STDERR:\n{result.stderr}"
-    )
 
 
 def data_file(
