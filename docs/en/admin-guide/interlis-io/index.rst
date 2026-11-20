@@ -109,6 +109,13 @@ The export tools is capable of exporting label positions for different scales. Y
 .. note::
    Only choose either Werkplan 1:500 or Werkplan 1:250. The latter may give you a more accurarte placement while printing labels in the scale 1:500. Choosing both scales will give you duplicate label positions - so avoid this! You will not be able to distinguish anymore which are the labels for 1:250 and 1:500 in the exported xtf file as both will get the plantype = "Werkplan" (currently VSA-DSS / SIA405 Abwasser 2020.x only supports one scale - this might change in a future release).
 
+.. versionadded:: 2027.0
+
+.. note::
+   Labels are only created on export, when the corresponding layer of the _Text class has a label definition turned on. If you do not get the expected Abwasserbauwerk_Text, Haltung_Text or Einzugsgebiet_Text data sets check your layer settings and the export logs.
+
+.. figure::  images/label_export_layer_label_must_be_selected_or_exist.png
+
 File name and location
 ----------------------
 
