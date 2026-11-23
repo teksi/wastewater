@@ -109,6 +109,13 @@ The export tools is capable of exporting label positions for different scales. Y
 .. note::
    Only choose either Werkplan 1:500 or Werkplan 1:250. The latter may give you a more accurarte placement while printing labels in the scale 1:500. Choosing both scales will give you duplicate label positions - so avoid this! You will not be able to distinguish anymore which are the labels for 1:250 and 1:500 in the exported xtf file as both will get the plantype = "Werkplan" (currently VSA-DSS / SIA405 Abwasser 2020.x only supports one scale - this might change in a future release).
 
+.. versionadded:: 2027.0
+
+.. note::
+   Labels are only created on export, when the corresponding layer of the _Text class has a label definition turned on. If you do not get the expected Abwasserbauwerk_Text, Haltung_Text or Einzugsgebiet_Text data sets check your layer settings and the export logs.
+
+.. figure::  images/label_export_layer_label_must_be_selected_or_exist.png
+
 File name and location
 ----------------------
 
@@ -184,6 +191,30 @@ You can check the protocol window and the text logs for further details.
      - Validation of the created xtf file(s) with ilivalidator
      - ``*.ilivalidator-MODELNAME.log``
 
+.. versionadded:: 2027.0
+   * - INTERLIS validation IliVErrors xtflog
+     - Validation of the created xtf file(s) with ilivalidator
+     - ``*.ilivalidator-MODELNAME.log.xtf``
+
+Visualize IliVErrors xtflog with QGIS XTFLog-Checker Plugin
+----------------------------------------------------------------
+
+.. figure:: images/ilivalidation_failed_xtferrorlog.png
+
+Displaying with `QGIS XTFLog-Checker Plugin <https://github.com/GeoWerkstatt/qgis-xtf-log-checker/>`_ (Release 1.4.0 or later)
+
+.. figure:: images/displaying_xtflogchecker_errors_with_plugin.png
+
+Opening the object on vw_tww_wastewater_structure or vw_tww_reach allows easy correction of the cover diameter:
+
+.. figure:: images/view_and_correct_with_qgisxtflogchecker_plugin.png
+
+
+Comparison of error log formats (left *.log / right *.xtf ilivalidator error log model)
+
+.. figure:: images/comparison_errorlogs_format_log_xtflog.png
+
+For more information about xtf error log see the `Ilivalidator documentation <https://github.com/claeis/ilivalidator/blob/master/docs/ilivalidator.rst>`_
 
 Export extra organisations
 --------------------------
