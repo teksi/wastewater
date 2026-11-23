@@ -1,21 +1,21 @@
 defaults:
-  excluded_classes:
-    - agxx_wastewater_networkelement
-    - agxx_last_modification
-    - agxx_wastewater_node
-    - agxx_wastewater_structure
-    - agxx_reach
-    - agxx_reach_point
-    - agxx_overflow
-    - agxx_building_group
-    - agxx_catchment_area_totals
-    - agxx_infiltration_zone
-
   mandatory:
+    attributes:
       - obj_id
       - identifier
       - fk_provider
       - fk_dataowner
+    excluded_classes:
+      - agxx_wastewater_networkelement
+      - agxx_last_modification
+      - agxx_wastewater_node
+      - agxx_wastewater_structure
+      - agxx_reach
+      - agxx_reach_point
+      - agxx_overflow
+      - agxx_building_group
+      - agxx_catchment_area_totals
+      - agxx_infiltration_zone
   validation_rules:
     last_modification:
       rules:
@@ -35,6 +35,17 @@ defaults:
           level: error
           operations:
             - insert
+    excluded_classes:
+      - agxx_wastewater_networkelement
+      - agxx_last_modification
+      - agxx_wastewater_node
+      - agxx_wastewater_structure
+      - agxx_reach
+      - agxx_reach_point
+      - agxx_overflow
+      - agxx_building_group
+      - agxx_catchment_area_totals
+      - agxx_infiltration_zone
   object_validation_rules:
     unique_identifier_combo:
       rules:
@@ -44,6 +55,18 @@ defaults:
               - identifier
               - fk_dataowner
           level: error
+    excluded_classes:
+      - file
+      - agxx_wastewater_networkelement
+      - agxx_last_modification
+      - agxx_wastewater_node
+      - agxx_wastewater_structure
+      - agxx_reach
+      - agxx_reach_point
+      - agxx_overflow
+      - agxx_building_group
+      - agxx_catchment_area_totals
+      - agxx_infiltration_zone
 
 
 
@@ -276,7 +299,6 @@ classes:
   - id: damage_manhole
 
   - id: file
-    object_validation_rules: {}
 
   - id: data_media
 
@@ -299,10 +321,6 @@ classes:
   - id: agxx_wastewater_networkelement
     mandatory:
       - fk_wastewater_networkelement
-    validation_rules: {}
-
-    object_validation_rules: {}
-
   - id: agxx_last_modification
     mandatory:
       - fk_element
