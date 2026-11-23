@@ -14,6 +14,11 @@ privileges:
       de: Fachingenieur Betrieb und Unterhalt
       fr: Ingénieur de maintenance
 
+  SysAdmin:
+    labels:
+      de: Systemadministrator
+      fr: Administrateur du système
+
 settings:
   allow_transitive_transitions: true
 
@@ -28,6 +33,10 @@ defaults:
       update: [DBW_GEP]
 
 classes:
+
+  - id: organisation
+    crud_rules:
+      - privileges: [SysAdmin]
   - id: wastewater_networkelement
     rights_from_subclass: false
     create_rules:
@@ -623,10 +632,6 @@ classes:
     derive_rights_from:
       - class: infiltration_zone
         local_attribute: fk_infiltration_zone
-
-  - id: agxx_unconnected_node_bwrel
-    crud_rules:
-      - privileges: [DBW_WI,DBW_GEP]
 
   - id: agxx_reach_point
     derive_rights_from:

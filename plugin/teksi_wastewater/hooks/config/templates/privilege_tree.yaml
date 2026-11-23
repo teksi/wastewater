@@ -14,6 +14,11 @@ privileges:
       de: Fachingenieur Betrieb und Unterhalt
       fr: Ingénieur de maintenance
 
+  SysAdmin:
+    labels:
+      de: Systemadministrator
+      fr: Administrateur du système
+
 settings:
   allow_transitive_transitions: true
 
@@ -630,3 +635,7 @@ classes:
     derive_rights_from:
       - class: reach_point
         local_attribute: fk_reach_point
+
+  - id: organisation
+    crud_rules:
+      - privileges: [SysAdmin]
