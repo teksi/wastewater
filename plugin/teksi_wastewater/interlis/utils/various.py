@@ -32,7 +32,6 @@ def execute_subprocess(command, check=True, output_content=False):
         proc = subprocess.run(
             shlex.split(command),
             check=True,
-            shell=False,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
         )
