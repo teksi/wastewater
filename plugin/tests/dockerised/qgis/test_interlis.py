@@ -272,7 +272,7 @@ class TestInterlis(unittest.TestCase):
         self._assert_scalar(
             """
             SELECT urgency_figure
-            FROM tww_od.discharge_point
+            FROM tww_od.wastewater_structure
             WHERE obj_id = 'ch080qwzVE000019';
             """,
             50,
