@@ -109,6 +109,13 @@ The export tools is capable of exporting label positions for different scales. Y
 .. note::
    Only choose either Werkplan 1:500 or Werkplan 1:250. The latter may give you a more accurarte placement while printing labels in the scale 1:500. Choosing both scales will give you duplicate label positions - so avoid this! You will not be able to distinguish anymore which are the labels for 1:250 and 1:500 in the exported xtf file as both will get the plantype = "Werkplan" (currently VSA-DSS / SIA405 Abwasser 2020.x only supports one scale - this might change in a future release).
 
+.. versionadded:: 2027.0
+
+.. note::
+   Labels are only created on export, when the corresponding layer of the _Text class has a label definition turned on. If you do not get the expected Abwasserbauwerk_Text, Haltung_Text or Einzugsgebiet_Text data sets check your layer settings and the export logs.
+
+.. figure::  images/label_export_layer_label_must_be_selected_or_exist.png
+
 File name and location
 ----------------------
 
@@ -184,6 +191,30 @@ You can check the protocol window and the text logs for further details.
      - Validation of the created xtf file(s) with ilivalidator
      - ``*.ilivalidator-MODELNAME.log``
 
+.. versionadded:: 2027.0
+   * - INTERLIS validation IliVErrors xtflog
+     - Validation of the created xtf file(s) with ilivalidator
+     - ``*.ilivalidator-MODELNAME.log.xtf``
+
+Visualize IliVErrors xtflog with QGIS XTFLog-Checker Plugin
+----------------------------------------------------------------
+
+.. figure:: images/ilivalidation_failed_xtferrorlog.png
+
+Displaying with `QGIS XTFLog-Checker Plugin <https://github.com/GeoWerkstatt/qgis-xtf-log-checker/>`_ (Release 1.4.0 or later)
+
+.. figure:: images/displaying_xtflogchecker_errors_with_plugin.png
+
+Opening the object on vw_tww_wastewater_structure or vw_tww_reach allows easy correction of the cover diameter:
+
+.. figure:: images/view_and_correct_with_qgisxtflogchecker_plugin.png
+
+
+Comparison of error log formats (left *.log / right *.xtf ilivalidator error log model)
+
+.. figure:: images/comparison_errorlogs_format_log_xtflog.png
+
+For more information about xtf error log see the `Ilivalidator documentation <https://github.com/claeis/ilivalidator/blob/master/docs/ilivalidator.rst>`_
 
 Export extra organisations
 --------------------------
@@ -380,3 +411,73 @@ Quality control with VSA online checker (Fachprüfung mit VSA Checker (online))
 
 
 `Information about access and licensing you can get here <https://vsa.ch/Mediathek/gep-datachecker-jahresgebuehr/?media_filter_two=lizenzen-software>`_
+
+Translating an INTERLIS transfer file into another language
+================================================================
+
+Motivation
+----------
+
+So far, TEKSI Wastewater only is able to import INTERLIS data in german. For any non-german speaking user, this means that any incoming INTERLIS delivery has to be translated into german before starting the import.
+
+The following description relies heavily on `sjib's blog post in 2022 <https://www.sjib.ch/wie-uebersetze-ich-eine-interlis-transferdatei-in-eine-andere-sprache/>`_, where the process was described in german:
+
+Step by step
+------------
+
+Download and install a `current ili2pg version <https://www.interlis.ch/downloads/ili2db>`_, version 4.9.0 or newer. The following example uses a small Windows batch file. Its header defines the database, password, PostgreSQL installation path, local INTERLIS model directory, port, host, and user:
+
+.. code-block:: batch
+
+   set db=dss_translate
+   set pwd=mypassword
+   set PATH=%PATH%;C:/Program Files/PostgreSQL/18/bin
+   set port=5432
+   set host=localhost
+   set user=postgres
+   set dbschema=sdee_traduction_f_d
+
+   set ili2pg_path=C:/Daten/ili2pg-4.9.0/ili2pg-4.9.0.jar
+   set xtf_path=%userprofile%/Downloads/
+   set xtf_filename=SDEE_2020_1_LV95.xtf
+
+.. note::
+
+   For the process to work correctly, the model directory must contain all INTERLIS model files in both German and French.
+
+The following sections describe the required steps.
+
+1. Create the empty schema
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This example uses ``SDEE_2020_1_LV95`` and its corresponding French model, ``DSS_2020_1_LV95``.
+
+.. code-block:: batch
+
+   java -jar %ili2pg_path% ––schemaimport ––importTid ––sqlEnableNull ––createEnumTabs ––createBasketCol  ––createFk ––noSmartMapping ––defaultSrsAuth EPSG ––defaultSrsCode 2056 ––dbhost %host% ––dbport %port% ––dbdatabase %db% ––dbschema %dbschema% ––dbusr %user% ––dbpwd %pwd% ––log %xtf_path%%dbschema%_schemaimport.log ––trace ––models SDEE_2020_1_LV95; DSS_2020_1_LV95;
+
+Normally, only one model version is passed to the ``–models`` parameter. For a translation, both language versions are required: ``–models SDEE_2020_1_LV95; DSS_2020_1_LV95;``
+
+
+2. Import the French transfer dataset into the schema
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: batch
+
+   java -jar %ili2pg_path% ––disableValidation ––import ––deleteData ––modeldir %ilimodelpath% ––trace ––sqlEnableNull ––createEnumTabs ––createBasketCol ––createFk ––defaultSrsCode 2056 ––noSmartMapping ––dbhost %host% ––dbport %port% ––dbdatabase %db% ––dbschema %dbschema% ––dbusr %user% ––dbpwd %pwd% ––log %xtf_path%%dbschema%_import.log %xtf_path%%xtf_filename%
+
+The data is now stored in French in the PostgreSQL schema.
+
+3. Export the data and translate it into German
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The target language is selected with the following parameters: ``--export ––models DSS_2020_1_LV95 ––exportModels DSS_2020_1_LV95``.
+The basket name can be found in the original transfer dataset.
+
+.. code-block:: batch
+
+   set xtf_filename=DSS_2020_1_LV95.xtf
+   set baskets=BASKET_1
+   java -jar %ili2pg_path% ––export ––models DSS_2020_1_LV95 ––exportModels DSS_2020_1_LV95 ––baskets %baskets% ––skipReferenceErrors ––sqlEnableNull ––createEnumTabs ––createFk ––noSmartMapping ––defaultSrsAuth EPSG ––defaultSrsCode 2056 ––dbhost %host% ––dbport %port% ––dbdatabase %db% ––dbschema %dbschema% ––dbusr %user% ––dbpwd %pwd% ––log %xtf_path%%dbschema%_export.log ––trace %xtf_path%%xtf_filename%.xtf
+
+The generated transfer dataset now contains the data in German, except for free-text attributes such as names, labels, or comments.

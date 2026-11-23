@@ -2523,6 +2523,7 @@ class InterlisExporterToIntermediateSchema:
             stammkarte = self.model_classes_interlis.stammkarte(
                 **self.vsa_base_common(row, "stammkarte"),
                 # --- log_card ---
+                hauptbauwerkref=self.get_tid(row.fk_main_structure__REL),
                 steuerung_fernwirkung=self.get_vl(row.control_remote_control__REL),
                 informationsquelle=self.get_vl(row.information_source__REL),
                 sachbearbeiter=row.person_in_charge,
