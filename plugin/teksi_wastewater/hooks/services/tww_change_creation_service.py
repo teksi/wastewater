@@ -249,43 +249,6 @@ class TwwChangeCreationService:
         ) = None,
     ) -> ChangeCreationResult:
         """
-        Process one populated quarantine source.
-
-        This public workflow method owns the projection-session scope. The
-        sessions are read-only from the change-creation workflow's perspective
-        and are closed when the scope exits.
-        """
-
-        return self._create_diff_job_from_quarantine(
-            job_id=job_id,
-            job_mode=job_mode,
-            source_model=source_model,
-            rights_base_context=rights_base_context,
-            created_models=created_models,
-            import_schema=import_schema,
-            live_schema=live_schema,
-            metadata=metadata,
-        )
-
-    def _create_diff_job_from_quarantine(
-        self,
-        *,
-        job_id: str,
-        job_mode: DiffJobMode,
-        source_model: str,
-        rights_base_context: RightsEvaluationBaseContext,
-        created_models: Sequence[str,] = (),
-        import_schema: str = config.IMPORT_SCHEMA,
-        live_schema: str = config.TWW_OD_SCHEMA,
-        metadata: (
-            Mapping[
-                str,
-                Any,
-            ]
-            | None
-        ) = None,
-    ) -> ChangeCreationResult:
-        """
         Process one populated quarantine source using borrowed sessions.
 
         The caller owns session transaction handling and closure. This method and
