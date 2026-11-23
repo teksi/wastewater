@@ -272,7 +272,7 @@ class TestInterlis(unittest.TestCase):
         self._assert_scalar(
             """
             SELECT urgency_figure
-            FROM tww_od.wastewater_structure
+            FROM tww_od.discharge_point
             WHERE obj_id = 'ch080qwzVE000019';
             """,
             50,
@@ -290,13 +290,13 @@ class TestInterlis(unittest.TestCase):
         exported_object = helpers.get_xtf_object(
             export_xtf_file,
             topic_name,
-            "Versickerungsanlage",
+            "Einleitstelle",
             "ch080qwzVE000019",
         )
 
         self.assertIsNotNone(
             exported_object,
-            ("Expected wastewater structure ch080qwzVE000019 " "in the exported DSS transfer."),
+            ("Expected discharge point ch080qwzVE000019 " "in the exported DSS transfer."),
         )
 
     def test_minimal_sequential_import_export(self) -> None:

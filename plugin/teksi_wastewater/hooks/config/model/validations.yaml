@@ -1,4 +1,16 @@
 defaults:
+  excluded_classes:
+    - agxx_wastewater_networkelement
+    - agxx_last_modification
+    - agxx_wastewater_node
+    - agxx_wastewater_structure
+    - agxx_reach
+    - agxx_reach_point
+    - agxx_overflow
+    - agxx_building_group
+    - agxx_catchment_area_totals
+    - agxx_infiltration_zone
+
   mandatory:
       - obj_id
       - identifier
@@ -264,8 +276,7 @@ classes:
   - id: damage_manhole
 
   - id: file
-    object_validation_rules:
-      rules: {}
+    object_validation_rules: {}
 
   - id: data_media
 
@@ -288,11 +299,9 @@ classes:
   - id: agxx_wastewater_networkelement
     mandatory:
       - fk_wastewater_networkelement
-    validation_rules:
-      rules: {}
+    validation_rules: {}
 
-    object_validation_rules:
-      rules: {}
+    object_validation_rules: {}
 
   - id: agxx_last_modification
     mandatory:
@@ -308,85 +317,42 @@ classes:
             level: info
 
 
-    object_validation_rules:
-      rules: {}
 
 
   - id: agxx_wastewater_node
     mandatory:
       - fk_wastewater_node
-    validation_rules:
-      rules: {}
-
-    object_validation_rules:
-      rules: {}
 
 
   - id: agxx_wastewater_structure
     mandatory:
       - fk_wastewater_structure
-    validation_rules:
-      rules: {}
-
-    object_validation_rules:
-      rules: {}
 
 
   - id: agxx_reach
     mandatory:
       - fk_reach
-    validation_rules:
-      rules: {}
-
-    object_validation_rules:
-      rules: {}
 
 
   - id: agxx_reach_point
     mandatory:
       - fk_reach_point
-    validation_rules:
-      rules: {}
-
-    object_validation_rules:
-      rules: {}
 
 
   - id: agxx_overflow
     mandatory:
       - fk_overflow
-    validation_rules:
-      rules: {}
-
-    object_validation_rules:
-      rules: {}
 
 
   - id: agxx_building_group
     mandatory:
       - fk_building_group
-    validation_rules:
-      rules: {}
-
-    object_validation_rules:
-      rules: {}
-
 
   - id: agxx_catchment_area_totals
     mandatory:
       - fk_catchment_area_totals
-    validation_rules:
-      rules: {}
-
-    object_validation_rules:
-      rules: {}
-
 
   - id: agxx_infiltration_zone
     mandatory:
       - fk_infiltration_zone
-    validation_rules:
-      rules: {}
 
-    object_validation_rules:
-      rules: {}
