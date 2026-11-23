@@ -112,7 +112,7 @@ class SwmmImportResultsAlgorithm(TwwAlgorithm):
         )
 
         description = self.tr(
-            "Import Max/Full Flow in tww_od.reach.dss2020_hydraulic_load_current"
+            "Import Max/Full Flow in tww_od.reach.hydraulic_load_current"
         )
         self.addParameter(
             QgsProcessingParameterBoolean(

@@ -77015,7 +77015,6 @@ def my_form_open(dialog, layer, feature):
         <field editable="1" name="clear_height"></field>
         <field editable="1" name="coefficient_of_friction"></field>
         <field editable="0" name="connection_type"></field>
-        <field editable="1" name="dss2020_hydraulic_load_current"></field>
         <field editable="1" name="elevation_determination"></field>
         <field editable="1" name="fk_dataowner"></field>
         <field editable="1" name="fk_pipe_profile"></field>
@@ -77131,7 +77130,6 @@ def my_form_open(dialog, layer, feature):
         <field labelOnTop="0" name="clear_height"></field>
         <field labelOnTop="0" name="coefficient_of_friction"></field>
         <field labelOnTop="0" name="connection_type"></field>
-        <field labelOnTop="0" name="dss2020_hydraulic_load_current"></field>
         <field labelOnTop="0" name="elevation_determination"></field>
         <field labelOnTop="0" name="fk_dataowner"></field>
         <field labelOnTop="0" name="fk_pipe_profile"></field>
@@ -77247,7 +77245,6 @@ def my_form_open(dialog, layer, feature):
         <field name="clear_height" reuseLastValue="1"></field>
         <field name="coefficient_of_friction" reuseLastValue="0"></field>
         <field name="connection_type" reuseLastValue="0"></field>
-        <field name="dss2020_hydraulic_load_current" reuseLastValue="0"></field>
         <field name="elevation_determination" reuseLastValue="0"></field>
         <field name="fk_dataowner" reuseLastValue="0"></field>
         <field name="fk_pipe_profile" reuseLastValue="1"></field>
@@ -165562,7 +165559,6 @@ def my_form_open(dialog, layer, feature):
               <field editable="1" name="ch_usage_planned"></field>
               <field editable="1" name="clear_height"></field>
               <field editable="1" name="coefficient_of_friction"></field>
-              <field editable="1" name="dss2020_hydraulic_load_current"></field>
               <field editable="1" name="elevation_determination"></field>
               <field editable="1" name="fk_dataowner"></field>
               <field editable="1" name="fk_pipe_profile"></field>
@@ -165671,7 +165667,6 @@ def my_form_open(dialog, layer, feature):
               <field labelOnTop="0" name="ch_usage_planned"></field>
               <field labelOnTop="0" name="clear_height"></field>
               <field labelOnTop="0" name="coefficient_of_friction"></field>
-              <field labelOnTop="0" name="dss2020_hydraulic_load_current"></field>
               <field labelOnTop="0" name="elevation_determination"></field>
               <field labelOnTop="0" name="fk_dataowner"></field>
               <field labelOnTop="0" name="fk_pipe_profile"></field>
@@ -165780,7 +165775,6 @@ def my_form_open(dialog, layer, feature):
               <field name="ch_usage_planned" reuseLastValue="0"></field>
               <field name="clear_height" reuseLastValue="1"></field>
               <field name="coefficient_of_friction" reuseLastValue="0"></field>
-              <field name="dss2020_hydraulic_load_current" reuseLastValue="0"></field>
               <field name="elevation_determination" reuseLastValue="0"></field>
               <field name="fk_dataowner" reuseLastValue="0"></field>
               <field name="fk_pipe_profile" reuseLastValue="1"></field>
@@ -171232,7 +171226,6 @@ def my_form_open(dialog, layer, feature):
               <field editable="1" name="ch_usage_planned"></field>
               <field editable="1" name="clear_height"></field>
               <field editable="1" name="coefficient_of_friction"></field>
-              <field editable="1" name="dss2020_hydraulic_load_current"></field>
               <field editable="1" name="elevation_determination"></field>
               <field editable="1" name="fk_dataowner"></field>
               <field editable="1" name="fk_pipe_profile"></field>
@@ -171332,7 +171325,6 @@ def my_form_open(dialog, layer, feature):
               <field labelOnTop="0" name="ch_usage_planned"></field>
               <field labelOnTop="0" name="clear_height"></field>
               <field labelOnTop="0" name="coefficient_of_friction"></field>
-              <field labelOnTop="0" name="dss2020_hydraulic_load_current"></field>
               <field labelOnTop="0" name="elevation_determination"></field>
               <field labelOnTop="0" name="fk_dataowner"></field>
               <field labelOnTop="0" name="fk_pipe_profile"></field>
@@ -171432,7 +171424,6 @@ def my_form_open(dialog, layer, feature):
               <field name="ch_usage_planned" reuseLastValue="0"></field>
               <field name="clear_height" reuseLastValue="1"></field>
               <field name="coefficient_of_friction" reuseLastValue="0"></field>
-              <field name="dss2020_hydraulic_load_current" reuseLastValue="0"></field>
               <field name="elevation_determination" reuseLastValue="0"></field>
               <field name="fk_dataowner" reuseLastValue="0"></field>
               <field name="fk_pipe_profile" reuseLastValue="1"></field>
@@ -177193,7 +177184,6 @@ def my_form_open(dialog, layer, feature):
         <field editable="1" name="ch_usage_planned"></field>
         <field editable="1" name="clear_height"></field>
         <field editable="1" name="coefficient_of_friction"></field>
-        <field editable="1" name="dss2020_hydraulic_load_current"></field>
         <field editable="1" name="elevation_determination"></field>
         <field editable="1" name="fk_dataowner"></field>
         <field editable="1" name="fk_pipe_profile"></field>
@@ -177308,7 +177298,6 @@ def my_form_open(dialog, layer, feature):
         <field labelOnTop="0" name="ch_usage_planned"></field>
         <field labelOnTop="0" name="clear_height"></field>
         <field labelOnTop="0" name="coefficient_of_friction"></field>
-        <field labelOnTop="0" name="dss2020_hydraulic_load_current"></field>
         <field labelOnTop="0" name="elevation_determination"></field>
         <field labelOnTop="0" name="fk_dataowner"></field>
         <field labelOnTop="0" name="fk_pipe_profile"></field>
@@ -177423,7 +177412,6 @@ def my_form_open(dialog, layer, feature):
         <field name="ch_usage_planned" reuseLastValue="0"></field>
         <field name="clear_height" reuseLastValue="1"></field>
         <field name="coefficient_of_friction" reuseLastValue="0"></field>
-        <field name="dss2020_hydraulic_load_current" reuseLastValue="0"></field>
         <field name="elevation_determination" reuseLastValue="0"></field>
         <field name="fk_dataowner" reuseLastValue="0"></field>
         <field name="fk_pipe_profile" reuseLastValue="1"></field>
