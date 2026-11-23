@@ -36,4 +36,3 @@ Currently you can take a look at its pre-release here:
 https://github.com/teksi/wastewater/releases/tag/2027.0.0rc1
 
 Official release will be available here https://github.com/teksi/wastewater/releases/tag/2027.0.0
-
