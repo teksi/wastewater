@@ -6,8 +6,8 @@ Here you can find information about the future 2027.x releases of TEKSI wastewat
 =====================
 
 .. warning::
-   This is a tech preview of the TEKSI wastewater module for QGIS 4.4 LTR. 
-   It is not yet a stable release and is intended for testing and feedback purposes only. 
+   This is a tech preview of the TEKSI wastewater module for QGIS 4.4 LTR.
+   It is not yet a stable release and is intended for testing and feedback purposes only.
    Please report any issues you encounter to the TEKSI development team.
 
 
