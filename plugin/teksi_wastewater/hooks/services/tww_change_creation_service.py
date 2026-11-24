@@ -1244,29 +1244,25 @@ class TwwChangeCreationService:
     def _log_rights_coverage(
         self,
         *,
-        changes: Sequence[Change,],
+        changes: Sequence[Change],
     ) -> None:
         """
-        Log rights coverage for canonical classes contained in changes.
+        Log effective-rights coverage for classes in projected changes.
 
-        Rights definitions are resolved through the same capability API used by
-        runtime rights evaluation. This avoids relying on the internal nesting of
-        the effective rights document.
+        INFO reports a compact per-class summary.
+        WARNING identifies changed classes without effective rights.
+        DEBUG includes resolved definitions and unused rights configuration.
 
-        This method is temporary diagnostic logging and may be reduced to DEBUG
-        level after rights-model coverage has been verified.
+        This method is temporary diagnostic logging and may be reduced to
+        DEBUG after rights-model coverage has been verified.
         """
-
-        if not self.logger.isEnabledFor(
-            logging.INFO,
-        ):
+        if not self.logger.isEnabledFor(logging.INFO):
             return
 
         if self.rights_evaluator is None:
             self.logger.warning(
-                "Cannot inspect rights coverage because no rights " "evaluator is configured."
+                "Rights coverage unavailable: no rights evaluator is configured."
             )
-
             return
 
         rights_capability = getattr(
@@ -1274,17 +1270,12 @@ class TwwChangeCreationService:
             "rights",
             None,
         )
-
         if rights_capability is None:
             self.logger.warning(
-                "Cannot inspect rights coverage because the rights "
-                "evaluator exposes no 'rights' capability. "
-                "Evaluator type: %r.",
-                type(
-                    self.rights_evaluator,
-                ),
+                "Rights coverage unavailable: evaluator %s exposes no "
+                "'rights' capability.",
+                type(self.rights_evaluator).__qualname__,
             )
-
             return
 
         class_definition = getattr(
@@ -1292,137 +1283,136 @@ class TwwChangeCreationService:
             "class_definition",
             None,
         )
-
-        if not callable(
-            class_definition,
-        ):
+        if not callable(class_definition):
             self.logger.warning(
-                "Cannot inspect rights coverage because the rights "
-                "capability exposes no callable 'class_definition'. "
-                "Capability type: %r.",
-                type(
-                    rights_capability,
-                ),
+                "Rights coverage unavailable: capability %s exposes no "
+                "callable 'class_definition'.",
+                type(rights_capability).__qualname__,
             )
-
             return
 
-        changed_class_ids = {change.table_name for change in changes}
+        changes_by_class: dict[str, list[Change]] = {}
+        for change in changes:
+            changes_by_class.setdefault(
+                change.table_name,
+                [],
+            ).append(change)
 
-        definitions_by_class: dict[
-            str,
-            Any,
-        ] = {}
+        definitions_by_class: dict[str, Any] = {}
+        missing_class_ids: set[str] = set()
 
-        missing_class_ids: set[str,] = set()
-
-        for class_id in changed_class_ids:
+        for class_id in sorted(changes_by_class):
             try:
                 definitions_by_class[class_id] = class_definition(
                     class_id,
                 )
-
             except KeyError:
-                missing_class_ids.add(
+                missing_class_ids.add(class_id)
+
+        changed_class_count = len(changes_by_class)
+        configured_class_count = len(definitions_by_class)
+        missing_class_count = len(missing_class_ids)
+
+        self.logger.info(
+            "Rights coverage: %d changes across %d canonical classes; "
+            "%d classes configured, %d missing.",
+            len(changes),
+            changed_class_count,
+            configured_class_count,
+            missing_class_count,
+        )
+
+        for class_id, class_changes in sorted(
+            changes_by_class.items(),
+        ):
+            operation_counts: dict[str, int] = {}
+            for change in class_changes:
+                operation = change.operation.value
+                operation_counts[operation] = (
+                    operation_counts.get(operation, 0) + 1
+                )
+
+            operation_summary = ", ".join(
+                f"{operation}={count}"
+                for operation, count in sorted(
+                    operation_counts.items(),
+                )
+            )
+
+            if class_id in missing_class_ids:
+                self.logger.warning(
+                    "Rights coverage missing: class=%r, changes=%d, "
+                    "operations={%s}.",
                     class_id,
+                    len(class_changes),
+                    operation_summary,
+                )
+            else:
+                self.logger.info(
+                    "Rights coverage configured: class=%r, changes=%d, "
+                    "operations={%s}.",
+                    class_id,
+                    len(class_changes),
+                    operation_summary,
                 )
 
-        configured_class_ids = changed_class_ids - missing_class_ids
-
-        self.logger.info(
-            "Canonical classes contained in projected changes: %r.",
-            tuple(
-                sorted(
-                    changed_class_ids,
+                self.logger.debug(
+                    "Resolved rights definition: class=%r, definition=%r.",
+                    class_id,
+                    definitions_by_class[class_id],
                 )
-            ),
-        )
-
-        self.logger.info(
-            "Canonical change classes with effective rights: %r.",
-            tuple(
-                sorted(
-                    configured_class_ids,
-                )
-            ),
-        )
 
         if missing_class_ids:
+            self.logger.warning(
+                "Effective rights do not cover %d of %d changed classes: %s.",
+                missing_class_count,
+                changed_class_count,
+                ", ".join(sorted(missing_class_ids)),
+            )
+        else:
             self.logger.info(
-                "Canonical change classes missing from effective " "rights: %r.",
-                tuple(
-                    sorted(
-                        missing_class_ids,
-                    )
-                ),
+                "Effective rights cover all %d canonical classes in the "
+                "projected change set.",
+                changed_class_count,
             )
 
-        for class_id in sorted(
-            changed_class_ids,
-        ):
-            class_changes = tuple(change for change in changes if change.table_name == class_id)
+        if not self.logger.isEnabledFor(logging.DEBUG):
+            return
 
-            operations = tuple(sorted({change.operation.value for change in class_changes}))
-
-            definition = definitions_by_class.get(
-                class_id,
+        rights_document = getattr(
+            rights_capability,
+            "rights",
+            None,
+        )
+        rights_classes = getattr(
+            rights_document,
+            "classes",
+            None,
+        )
+        if rights_classes is None:
+            self.logger.debug(
+                "Effective rights document exposes no class collection."
             )
+            return
 
-            self.logger.info(
-                "Rights coverage for canonical class %r: "
-                "configured=%s, change_count=%s, operations=%r, "
-                "definition=%r.",
-                class_id,
-                definition is not None,
-                len(
-                    class_changes,
-                ),
-                operations,
-                definition,
-            )
+        configured_document_class_ids = set(rights_classes)
+        changed_class_ids = set(changes_by_class)
+        unused_configured_class_ids = (
+            configured_document_class_ids - changed_class_ids
+        )
 
-        if not missing_class_ids:
-            self.logger.info(
-                "Effective rights cover all canonical classes "
-                "contained in the projected changes."
-            )
+        self.logger.debug(
+            "Effective rights document contains %d canonical classes: %s.",
+            len(configured_document_class_ids),
+            ", ".join(
+                sorted(configured_document_class_ids)
+            ),
+        )
 
-        if self.logger.isEnabledFor(
-            logging.INFO,
-        ):
-            rights_document = getattr(
-                rights_capability,
-                "rights",
-                None,
-            )
-
-            rights_classes = getattr(
-                rights_document,
-                "classes",
-                None,
-            )
-
-            if rights_classes is not None:
-                configured_document_class_ids = set(
-                    rights_classes,
-                )
-
-                unused_configured_class_ids = configured_document_class_ids - changed_class_ids
-
-                self.logger.info(
-                    "All canonical classes configured in the " "effective rights document: %r.",
-                    tuple(
-                        sorted(
-                            configured_document_class_ids,
-                        )
-                    ),
-                )
-
-                self.logger.info(
-                    "Configured rights classes not present in this " "change set: %r.",
-                    tuple(
-                        sorted(
-                            unused_configured_class_ids,
-                        )
-                    ),
-                )
+        self.logger.debug(
+        "Configured rights unused by this change set: %d classes: %s.",
+        len(unused_configured_class_ids),
+        ", ".join(
+            sorted(unused_configured_class_ids)
+        ),
+    )

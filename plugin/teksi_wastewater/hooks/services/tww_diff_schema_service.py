@@ -282,12 +282,32 @@ class TwwDiffSchemaService(
 
             connection.commit()
 
-        return DiffSchemaWriteResult(
+        result = DiffSchemaWriteResult(
             job_db_id=job_db_id,
             job_id=job_id,
-            row_counts_by_class=(row_counts_by_class),
-            rejected_counts_by_class=(rejected_counts_by_class),
+            row_counts_by_class=row_counts_by_class,
+            rejected_counts_by_class=rejected_counts_by_class,
         )
+
+        logger.info(
+            "Persisted diff review job %r: %d rows across %d classes.",
+            result.job_id,
+            sum(result.row_counts_by_class.values()),
+            len(result.row_counts_by_class),
+        )
+
+        for class_id, rejected_count in sorted(
+            result.rejected_counts_by_class.items(),
+        ):
+            logger.warning(
+                "Diff review job %r rejected %d of %d rows for class %r.",
+                result.job_id,
+                rejected_count,
+                result.row_counts_by_class[class_id],
+                class_id,
+            )
+
+        return result
 
     def write_result_for_job(
         self,
