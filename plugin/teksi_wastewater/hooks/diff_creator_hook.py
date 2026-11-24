@@ -1072,8 +1072,8 @@ class Hook(
                 result.job_id,
                 result.job_db_id,
                 sum(result.row_counts_by_class.values()),
-                metadata.get("base_import_schema"),
-                metadata.get("incremental_import_schema"),
+                self.workflow_source_metadata.get("base_import_schema"),
+                self.workflow_source_metadata.get("incremental_import_schema"),
             )
 
         return result
