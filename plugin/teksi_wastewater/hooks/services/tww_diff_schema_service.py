@@ -1204,6 +1204,7 @@ class TwwDiffSchemaService(
             GROUP BY table_name
             HAVING bool_or(column_name = 'job_id')
             AND bool_or(column_name = 'is_rejected')
+            AND table_name NOT LIKE 'tww_%'
             ORDER BY table_name
             """)
 
