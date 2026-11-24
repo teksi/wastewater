@@ -1064,7 +1064,7 @@ class Hook(
         )
 
         if final_diff_run:
-            self.logger.info(
+            context.logger.info(
                 "Created tww_diff review job %r: "
                 "job_db_id=%d, rows=%d, "
                 "base_import_schema=%r, "
