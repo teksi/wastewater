@@ -1064,14 +1064,15 @@ class Hook(
         )
 
         if final_diff_run:
+            diff_schema_result = result.diff_schema_result
             context.logger.info(
                 "Created tww_diff review job %r: "
                 "job_db_id=%d, rows=%d, "
                 "base_import_schema=%r, "
                 "incremental_import_schema=%r.",
-                result.job_id,
-                result.job_db_id,
-                sum(result.row_counts_by_class.values()),
+                diff_schema_result.job_id,
+                diff_schema_result.job_db_id,
+                sum(diff_schema_result.row_counts_by_class.values()),
                 self.workflow_source_metadata.get("base_import_schema"),
                 self.workflow_source_metadata.get("incremental_import_schema"),
             )
