@@ -186,11 +186,13 @@ class TwwDiffSchemaService(
             str,
             Sequence[ReviewFeature],
         ],
-        metadata: Mapping[
-            str,
-            Any,
-        ]
-        | None = None,
+        metadata: (
+            Mapping[
+                str,
+                Any,
+            ]
+            | None
+        ) = None,
         validation_success: bool = False,
         job_status: str = "pending",
     ) -> DiffSchemaWriteResult:
@@ -227,9 +229,7 @@ class TwwDiffSchemaService(
                     job_id=job_id,
                 )
             else:
-                raise NotImplementedError(
-                    "Diff-job refresh is not implemented."
-                )
+                raise NotImplementedError("Diff-job refresh is not implemented.")
 
             job_db_id = self._insert_metadata(
                 cursor=cursor,
@@ -275,28 +275,19 @@ class TwwDiffSchemaService(
                     ):
                         class_rejected_count += 1
 
-                row_counts_by_class[
-                    class_id
-                ] = class_row_count
+                row_counts_by_class[class_id] = class_row_count
 
                 if class_rejected_count:
-                    rejected_counts_by_class[
-                        class_id
-                    ] = class_rejected_count
+                    rejected_counts_by_class[class_id] = class_rejected_count
 
             connection.commit()
 
         return DiffSchemaWriteResult(
             job_db_id=job_db_id,
             job_id=job_id,
-            row_counts_by_class=(
-                row_counts_by_class
-            ),
-            rejected_counts_by_class=(
-                rejected_counts_by_class
-            ),
+            row_counts_by_class=(row_counts_by_class),
+            rejected_counts_by_class=(rejected_counts_by_class),
         )
-
 
     def write_result_for_job(
         self,
@@ -329,12 +320,8 @@ class TwwDiffSchemaService(
         return DiffSchemaWriteResult(
             job_db_id=job.job_db_id,
             job_id=job.job_id,
-            row_counts_by_class=(
-                row_counts_by_class
-            ),
-            rejected_counts_by_class=(
-                rejected_counts_by_class
-            ),
+            row_counts_by_class=(row_counts_by_class),
+            rejected_counts_by_class=(rejected_counts_by_class),
         )
 
     def review_job(
@@ -1137,7 +1124,6 @@ class TwwDiffSchemaService(
 
         return rejected_count
 
-
     def _feature_is_rejected(
         self,
         feature: ReviewFeature,
@@ -1190,8 +1176,7 @@ class TwwDiffSchemaService(
         containing both ``job_id`` and ``is_rejected`` participate. Tables
         without rows for the requested job are omitted.
         """
-        cursor.execute(
-            """
+        cursor.execute("""
             SELECT
                 table_name
             FROM information_schema.columns
@@ -1200,13 +1185,9 @@ class TwwDiffSchemaService(
             HAVING bool_or(column_name = 'job_id')
             AND bool_or(column_name = 'is_rejected')
             ORDER BY table_name
-            """
-        )
+            """)
 
-        table_names = tuple(
-            row[0]
-            for row in cursor.fetchall()
-        )
+        table_names = tuple(row[0] for row in cursor.fetchall())
 
         row_counts_by_class: dict[
             str,
@@ -1218,10 +1199,8 @@ class TwwDiffSchemaService(
         ] = {}
 
         for table_name in table_names:
-            quoted_table_name = (
-                self._quote_identifier(
-                    table_name,
-                )
+            quoted_table_name = self._quote_identifier(
+                table_name,
             )
 
             cursor.execute(
@@ -1234,9 +1213,7 @@ class TwwDiffSchemaService(
                 FROM tww_diff.{quoted_table_name}
                 WHERE job_id = %s
                 """,
-                (
-                    job_db_id,
-                ),
+                (job_db_id,),
             )
 
             result = cursor.fetchone()
@@ -1254,21 +1231,15 @@ class TwwDiffSchemaService(
             if class_row_count == 0:
                 continue
 
-            row_counts_by_class[
-                table_name
-            ] = class_row_count
+            row_counts_by_class[table_name] = class_row_count
 
             if class_rejected_count:
-                rejected_counts_by_class[
-                    table_name
-                ] = class_rejected_count
+                rejected_counts_by_class[table_name] = class_rejected_count
 
         return (
             row_counts_by_class,
             rejected_counts_by_class,
         )
-
-
 
     def _job_import_schemas(
         self,
