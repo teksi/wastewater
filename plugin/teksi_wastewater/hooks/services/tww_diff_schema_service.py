@@ -1136,7 +1136,6 @@ class TwwDiffSchemaService(
 
         return rejected_count
 
-
     def review_counts_by_class(
         self,
         *,
@@ -1249,7 +1248,6 @@ class TwwDiffSchemaService(
             row_counts_by_class,
             rejected_counts_by_class,
         )
-
 
     def _feature_is_rejected(
         self,

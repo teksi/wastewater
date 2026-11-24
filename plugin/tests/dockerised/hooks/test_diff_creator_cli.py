@@ -4,15 +4,14 @@ import shlex
 from pathlib import Path
 
 import pytest
-from teksi_wastewater.utils.database_utils import (
-    DatabaseUtils,
+from teksi_wastewater.hooks.adapters.tww_database_connection_factory import (
+    TwwDatabaseConnectionFactory,
 )
 from teksi_wastewater.hooks.services.tww_diff_schema_service import (
     TwwDiffSchemaService,
 )
-
-from teksi_wastewater.hooks.adapters.tww_database_connection_factory import (
-    TwwDatabaseConnectionFactory,
+from teksi_wastewater.utils.database_utils import (
+    DatabaseUtils,
 )
 
 from ..helpers import run_cli, run_interlis_import
@@ -48,6 +47,7 @@ DB_ARGS = (
     "--pgport",
     "5432",
 )
+
 
 @pytest.fixture(
     scope="module",
@@ -295,6 +295,7 @@ def diff_counts(
         ),
     )
 
+
 def assert_pending_permitted_job(
     diff_schema_service: TwwDiffSchemaService,
     job_id: str,
@@ -310,13 +311,11 @@ def assert_pending_permitted_job(
     validation_success = row[3]
 
     assert job_status == "pending", (
-        f"Expected job {job_id!r} to be pending, "
-        f"got {job_status!r}."
+        f"Expected job {job_id!r} to be pending, " f"got {job_status!r}."
     )
 
     assert validation_success is True, (
-        f"Expected validation to succeed for job "
-        f"{job_id!r}, got {validation_success!r}."
+        f"Expected validation to succeed for job " f"{job_id!r}, got {validation_success!r}."
     )
 
     (
@@ -327,9 +326,7 @@ def assert_pending_permitted_job(
         job_id,
     )
 
-    assert total_count > 0, (
-        f"Job {job_id!r} did not produce review rows."
-    )
+    assert total_count > 0, f"Job {job_id!r} did not produce review rows."
 
     assert rejected_count == 0, (
         f"Expected job {job_id!r} to be fully "
@@ -351,18 +348,11 @@ def create_and_apply_phase(
     Provider-right permutations belong in focused rights-evaluator tests
     rather than repeated end-to-end CLI imports.
     """
-    base_xtf = (
-        DATA_DIR
-        / f"test_{phase_identifier}_DSS_2020_1_LV95.xtf"
-    )
+    base_xtf = DATA_DIR / f"test_{phase_identifier}_DSS_2020_1_LV95.xtf"
     incremental_xtf = DATA_DIR / (
-        f"test_{phase_identifier}_"
-        "Genereller_Entwaesserungsplan_AG.xtf"
+        f"test_{phase_identifier}_" "Genereller_Entwaesserungsplan_AG.xtf"
     )
-    job_id = (
-        f"pytest-{phase_identifier}-job-"
-        f"{allowed_provider}"
-    )
+    job_id = f"pytest-{phase_identifier}-job-" f"{allowed_provider}"
 
     create_review_job(
         job_id=job_id,
@@ -399,6 +389,7 @@ def create_and_apply_phase(
         job_id,
         "applied",
     )
+
 
 @pytest.fixture(
     scope="module",
