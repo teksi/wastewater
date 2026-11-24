@@ -124,7 +124,7 @@
 <section id="demo-project">
 <h2>Demoprojekt<a class="headerlink" href="#demo-project" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>Make sure you have imported the demo project with TMMT (see the <a class="reference internal" href="../../installation-guide/database-initialization.html#database-initialization"><span class="std std-ref">Initialisierung der Datenbank</span></a> chapter)</p></li>
+<li><p>Gehen Sie sicher, dass sie das Demoprojekt mit TMMT (siehe <a class="reference internal" href="../../installation-guide/database-initialization.html#database-initialization"><span class="std std-ref">Initialisierung der Datenbank</span></a> Kapitel) importiert haben</p></li>
 <li><p>Öffnen sie das Demoprojekt indem Sie ins Hauptmenu gehen und dann <strong>Project</strong> –&gt; <strong>Open</strong> drücken oder indem sie „STRG“ + „O“ gemeinsam drücken.</p></li>
 </ul>
 <div class="versionchanged">
@@ -194,13 +194,13 @@
 <div class="versionadded">
 <p><span class="versionmodified added">Added in version 2026.0.</span></p>
 </div>
-<p>This feature adapts the synchronization of identifiers, following the idea that identifiers should never be null.</p>
+<p>Diese Funktion passt die Synchronisierung von Bezeichnungen an und folgt dabei dem Grundsatz, dass Identifikatoren niemals NULL sind.</p>
 <p>Für Abwasserbauwerke / Deckel / Abwasserknoten werden sie synchronisiert:</p>
 <blockquote>
 <div><dl class="simple">
-<dt>Erstellen</dt><dd><p>if only main is provided, all 3 get the same value</p>
+<dt>Erstellen</dt><dd><p>wenn nur die Abwasserbauwerkbezeichnung erfasst wurden, erhalten alle 3 (Deckel, Knoten, Bauwerk) die gleiche Bezeichnung</p>
 </dd>
-<dt>Update</dt><dd><p>if they were the same and the main changes =&gt; all changes</p>
+<dt>Update</dt><dd><p>wenn die Bezeichnungen gleich waren und die Bauwerkbezeichnung ändert =&gt; die Knoten- und Deckelbezeichnung ändert auch</p>
 </dd>
 </dl>
 </div></blockquote>
@@ -217,7 +217,7 @@
 </dd>
 </dl>
 </div></blockquote>
-<p>Plus in general, if there is no cover data, no cover is created.</p>
+<p>Allgemein wird kein Deckel erstellt, wenn keine Deckeldaten eingefügt werden.</p>
 </section>
 <section id="changing-attributes-of-linear-elements-channels">
 <h2>Attribute der Linienelemente ändern (Kanäle)<a class="headerlink" href="#changing-attributes-of-linear-elements-channels" title="Link to this heading"></a></h2>

@@ -53,7 +53,7 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">2026.1.1 Bugfix Release</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#bug-fixes-and-performance-improvements">Fehlerbehebungen und Leistungsverbesserungen</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#adaptions-to-project-file">Änderungen an der Projektdatei</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ci-improvements">CI improvements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ci-improvements">CI Verbesserungen</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#minor-release">2026.1.0 Minor Release</a><ul>
@@ -69,7 +69,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#id5">Dokumentation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id6">Fehlerbehebungen und Leistungsverbesserungen</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id7">Verbesserungen an der Erweiterung</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id8">CI improvements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">CI Verbesserungen</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id9">Änderungen an der Projektdatei</a></li>
 </ul>
 </li>
@@ -109,7 +109,7 @@
              
   <blockquote>
 <div></div></blockquote>
-<p id="id1">Here you can find information about the 2026.x releases of TEKSI wastewater. For future release check the <a class="reference external" href="https://github.com/teksi/Home/wiki/TEKSI-modules-releases-and-roadmap">TEKSI Roadmap</a></p>
+<p id="id1">Hier sind Informationen zum 2026.X Release von TEKSI Abwasser. Für weitere Release siehe die <a class="reference external" href="https://github.com/teksi/Home/wiki/TEKSI-modules-releases-and-roadmap">TEKSI Roadmap</a></p>
 <section id="bugfix-release">
 <h1>2026.1.1 Bugfix Release<a class="headerlink" href="#bugfix-release" title="Link to this heading"></a></h1>
 <section id="bug-fixes-and-performance-improvements">
@@ -124,12 +124,12 @@
 <h2>Änderungen an der Projektdatei<a class="headerlink" href="#adaptions-to-project-file" title="Link to this heading"></a></h2>
 <blockquote>
 <div><ul class="simple">
-<li><p>Reactivate labels on the .qgs project</p></li>
+<li><p>Beschriftungen im .qgs Projekt einschalten</p></li>
 </ul>
 </div></blockquote>
 </section>
 <section id="ci-improvements">
-<h2>CI improvements<a class="headerlink" href="#ci-improvements" title="Link to this heading"></a></h2>
+<h2>CI Verbesserungen<a class="headerlink" href="#ci-improvements" title="Link to this heading"></a></h2>
 <blockquote>
 <div><ul class="simple">
 <li><p>Upgrade CI to ubuntu 26.04</p></li>
@@ -175,8 +175,8 @@
 <li><p>Korrektur eines Fehlers bei Überläufen die nicht verschoben werden konnten</p></li>
 <li><p>Korrigiere fehlerhafte Berechnung der Schachttiefe beim Update von Abwasserknoten oder Deckel</p></li>
 <li><p>Neu mit Feldern vonKote und nachKote in tww_app.mvw_tww_Kanal</p></li>
-<li><p>labels-export-prevent-crash-if-no-labels</p></li>
-<li><p>Check tww_app.vw_tww_wastewater_node existence</p></li>
+<li><p>Kein Absturz beim Export wenn keine Beschriftungen vorhanden</p></li>
+<li><p>Test ob Layer vw_tww_Abwasserknoten im Projekt vorhanden ist</p></li>
 <li><p>add integrity checks to manual validity checks</p></li>
 <li><p>Beim XTF Import eine neue Option um den Auswahldialog nicht anzuzeigen</p></li>
 </ul>
@@ -215,23 +215,23 @@
 <img alt="../_images/selection_extender_2.png" src="../_images/selection_extender_2.png" />
 </figure>
 <ul class="simple">
-<li><p><a class="reference external" href="../user-guide/digitizing/digitizingdamages.html">New visualisation of channel damages</a></p></li>
+<li><p><a class="reference external" href="../user-guide/digitizing/digitizingdamages.html">Darstellung von Kanalschäden</a></p></li>
 </ul>
 <figure class="align-default">
 <img alt="../_images/vw_tww_channel_damage.png" src="../_images/vw_tww_channel_damage.png" />
 </figure>
 <ul class="simple">
 <li><p><a class="reference external" href="../user-guide/network-following/index.html">Die ‚Netzwerk Topologie aktualisieren‘ (SQL-Knopf) ist nur im Admin mode</a>  sichtbar, weil die Abfrage in grossen Netzen sehr lange dauern kann.</p></li>
-<li><p><a class="reference external" href="../user-guide/editing/editing.html#synchronize-identifiers-of-manholes">Improve identifier synchronization for wastewater structures</a></p></li>
-<li><p><a class="reference external" href="../user-guide/digitizing/digitizingchannels.html#digitizing">Use wastewater node identifiers in reach wizard identifier creation</a></p></li>
+<li><p><a class="reference external" href="../user-guide/editing/editing.html#synchronize-identifiers-of-manholes">Verbesserung der Bezeichnung-Synchronisation für Abwasserbauwerke</a></p></li>
+<li><p><a class="reference external" href="../user-guide/digitizing/digitizingchannels.html#digitizing">Benutze Abwasserknotenbezeichnungen für die Haltungsbezeichnungen bei neuen Haltungen</a></p></li>
 <li><p>Werkplan: Haltungen können jetzt mit E1, E2, …, A1, A2 beschriftet werden (Haltungspunkt-Beschriftungen)</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../_images/network_plan_reachpoint_labels.jpg" src="../_images/network_plan_reachpoint_labels.jpg" />
 </figure>
 <ul class="simple">
-<li><p>configuration in the project-file for <a class="reference external" href="../user-guide/layerexplanations/layerexplanation.html#layergroup-wastewater-structures">profile-geometries</a> , including a project-saved execute sql to <a class="reference external" href="../user-guide/editing/editing.html#changing-and-visualizing-a-profile_geometry">visualize profile-geometries</a></p></li>
-<li><p>Kontrolle der Länge von Bezeichnungen werden dem Erfassen mit zwingenden Restriktionen (constraints) im Attributformular</p></li>
+<li><p>Konfiguration im TWW-Projekt für <a class="reference external" href="../user-guide/layerexplanations/layerexplanation.html#layergroup-wastewater-structures">Rohrprofil-Geometrien</a> , inklusive einem im Projekt gespeicherten SQL um  diese Rohrprofil-Geometrien zu visualisieren <a class="reference external" href="../user-guide/editing/editing.html#changing-and-visualizing-a-profile_geometry">visualize profile-geometries</a></p></li>
+<li><p>Kontrolle der Länge von Bezeichnungen während dem Erfassen mit zwingenden Restriktionen (constraints) im Attributformular</p></li>
 <li><p><a class="reference external" href="../admin-guide/db-production-readiness/index.html">Das OID Prefix kann in TMMT gesetzt werden ab Version 2026.0.1</a></p></li>
 <li><p>erzeugt _CH Kopien der Übersetzungsfiles ( ‚*.qm‘ )</p></li>
 <li><p>Import der VSA Organisationen aus dem Internet falls diese noch nicht vorhanden sind</p></li>
@@ -242,20 +242,20 @@
 <h2>Dokumentation<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
 <blockquote>
 <div><ul class="simple">
-<li><p><a class="reference external" href="../user-guide/layerexplanations/twwproject.html#when-tww-automatically-updates-the-fields-dataowner-and-provider">New chapter What happens if I change dataowner or provider fields</a></p></li>
+<li><p><a class="reference external" href="../user-guide/layerexplanations/twwproject.html#when-tww-automatically-updates-the-fields-dataowner-and-provider">Neues Kapitel  Was passiert wenn Datenherr oder Datenlieferant geändert werden</a></p></li>
 </ul>
 <p>user-guide/layerexplanations/twwproject.html#when-tww-automatically-updates-the-fields-dataowner-and-provider</p>
 <ul class="simple">
-<li><p><a class="reference external" href="../user-guide/How-To/index.html#common-mistakes">New chapter Common editing mistakes</a></p></li>
-<li><p><a class="reference external" href="../admin-guide/db-production-readiness/index.html">Add chapter Obj_ID</a></p></li>
-<li><p><a class="reference external" href="../admin-guide/db-label-customisation/index.html#customisation-of-labeling-and-symbology-behaviour">Document labeling and symbology flags</a></p></li>
-<li><p><a class="reference external" href="../user-guide/layerexplanations/layerexplanation.html#layergroup-configuration">Correction about organisation table in configuration-layergroup</a></p></li>
+<li><p><a class="reference external" href="../user-guide/How-To/index.html#common-mistakes">Neues Kapitel Häufige Fehler</a></p></li>
+<li><p><a class="reference external" href="../admin-guide/db-production-readiness/index.html">Neues Kapitel  Datenbank für den Produktivbetrieb vorbereiten</a></p></li>
+<li><p><a class="reference external" href="../admin-guide/db-label-customisation/index.html#customisation-of-labeling-and-symbology-behaviour">Neues Kapitel Anpassung von Beschriftung und Symbolisierung</a></p></li>
+<li><p><a class="reference external" href="../user-guide/layerexplanations/layerexplanation.html#layergroup-configuration">Anpassung betreffend Organisation-Tabelle Layergruppe Konfiguration</a></p></li>
 <li><p>Doku: Korrekturen in Kapitel Installation</p></li>
 <li><p>Doku: Versionshinweise</p></li>
 <li><p>Links anpassen und – wo möglich – relativ gestalten</p></li>
 <li><p>Versions Notizen 2025.0 eingefügt (inkl. Video)</p></li>
 <li><p>Versions Notizen 2026.0 eingefügt</p></li>
-<li><p>Add docs for <a class="reference external" href="../user-guide/digitizing/digitizingdamages.html">digitizing channel damages</a></p></li>
+<li><p>Dokumentation für <a class="reference external" href="../user-guide/digitizing/digitizingdamages.html">Digitalisierung Kanalschäden</a></p></li>
 <li><p>Update copyright year</p></li>
 </ul>
 </div></blockquote>
@@ -297,7 +297,7 @@
 </div></blockquote>
 </section>
 <section id="id8">
-<h2>CI improvements<a class="headerlink" href="#id8" title="Link to this heading"></a></h2>
+<h2>CI Verbesserungen<a class="headerlink" href="#id8" title="Link to this heading"></a></h2>
 <blockquote>
 <div><ul class="simple">
 <li><p>Separate pum from db images in compose</p></li>
@@ -322,11 +322,11 @@
 <li><p><cite>tww_od.tww_wastewater_node_symbology</cite></p></li>
 <li><p>Neuer Layer im Projekt <cite>tww_od.profile_geometry</cite></p></li>
 <li><p>Neuer Layer im Projekt <cite>vw_tww_damage</cite></p></li>
-<li><p>tww_app.vw_tww_damage_channel</p></li>
+<li><p>tww_app.vw_tww_damage_channel (vw_tww_Kanalschaden)</p></li>
 </ul>
-<p>Please export and use the corresponding <code class="docutils literal notranslate"><span class="pre">*</span> <span class="pre">.qml</span></code> files to integrate them into your existing TWW 2025 project files</p>
+<p>Bitte exportieren Sie die entsprechenden <code class="docutils literal notranslate"><span class="pre">*</span> <span class="pre">.qml</span></code>-Dateien und verwenden Sie diese, um sie in Ihre bestehenden TWW 2025-Projektdateien zu integrieren.</p>
 </div></blockquote>
-<p>Make sure you edit the layer_id in the qgs file to match with what is expected e.g.</p>
+<p>Stellen Sie sicher, dass Sie die <cite>layer_id</cite> in der <cite>qgs</cite>-Datei so anpassen, dass sie den Anforderungen entspricht, z. B.:</p>
 <figure class="align-default" id="id10">
 <img alt="../_images/vw_tww_wastewater_node_properties.png" src="../_images/vw_tww_wastewater_node_properties.png" />
 <figcaption>
@@ -338,17 +338,17 @@
 <li><p>Info ob das Abwasserbauwerk eine Stammkarte hat, im Hauptlayer hinzugefügt</p></li>
 <li><p><cite>vw_tww_Haltung</cite>: Beschriftungen für <cite>rp_from_label</cite> und <cite>rp_to_label</cite> umbenannt und mit replace-Funktion, so dass die definierten Variablen für die Übersetzung verwendet werden</p></li>
 <li><p><cite>vw_tww_Abwasserbauwerk</cite>: Symbolisierung: Ersatz von <cite>not „tww_is_primary“ ` mit `(not „tww_is_primary“ or „tww_is_primary“ is NULL)</cite></p></li>
-<li><p><cite>vw_tww_wastewater_structure</cite>: Attributes Form: <cite>wn_elevation_accuracy</cite> also with option reuse last entered value (similar as <cite>co_position_accuracy</cite>)</p></li>
-<li><p><cite>vw_tww_wastewater_structure</cite>: Attributes Form: <cite>_input_label</cite>, <cite>_output_label</cite> replaced with <cite>_reach_point_label</cite></p></li>
-<li><p>New Project variable <cite>tww_language</cite>: values should be <cite>_en</cite>, <cite>_de</cite> or <cite>_fr</cite></p></li>
+<li><p><cite>vw_tww_Abwasserbauwerk</cite>: Attributformular: <cite>AK_Hoehengenauigkeit</cite> auch mit der Option Zuletzt eingegebenen Wert wiederverwenden  (analog wie bei <cite>DE_Lagegenauigkeit</cite>)</p></li>
+<li><p><cite>vw_tww_Abwasserbauwerk</cite>: Attributformular: <cite>_input_label</cite>, <cite>_output_label</cite> ersetzt mit <cite>_reach_point_label</cite></p></li>
+<li><p>Neue Projektvariable <cite>tww_language</cite>: folgende Werte sind zulässig  <cite>_en</cite>, _de` oder <cite>_fr</cite></p></li>
 <li><p>vw_tww_Haltung Beschriftungsdefinition: statt „material_abbr_en“ neu <cite>case when &#64;tww_language = ‚_de‘ then „material_abbr_de“ when &#64;tww_language = ‚_fr‘ then „material_abbr_fr“ else „material_abbr_en“ end</cite></p></li>
 <li><p>Neue Beziehung <cite>pipe_profile.obj_id</cite> to <cite>profile_geometry.fk_pipeprofile</cite></p></li>
 <li><p><cite>profile_geometry</cite> (Rohrprofil_Geometrie) Attributformular konfiguriert</p></li>
 <li><p><cite>Rohrprofil</cite> Attributformular (Rohrprofil_Geometrie Subtabelle nur für die Profiltypen Spezialprofil, Maulprofil, offenes_Profil)</p></li>
 <li><p>Neu ein SQL  „visualize profile_geometry“ für den Aufruf aus SQL ausführen</p></li>
-<li><p><cite>vw_tww_additional_ws</cite>: field <code class="docutils literal notranslate"><span class="pre">wn_fk_wastewater_structure</span></code> no more in view</p></li>
-<li><p>all identifier-fields: new enforced constraints <cite>length(„identifier“ )&lt;=nn or „identifier“ is NULL</cite> (otherwise you lose all entries, if the identifier is too long)</p></li>
-<li><p><cite>vw_tww_wastewater_structure</cite>: tww_is_primary, tww_has_log_card, <cite>_owner_organisation_type</cite> is not editable, <cite>owner_organisation_type</cite> configured as value relation</p></li>
+<li><p><cite>vw_tww_weitere_Abwasserbauwerke</cite>: Feld <code class="docutils literal notranslate"><span class="pre">wn_fk_wastewater_structure</span></code> gibt es nicht mehr in der View</p></li>
+<li><p>Alle Bezeichnungsfelder: Neu mit erzwungener Restriktion <cite>length(„identifier“ )&lt;=nn or „identifier“ is NULL</cite> (sonst verliert man alle Änderungen, wenn die Bezeichnung zu lang ist)</p></li>
+<li><p><cite>vw_tww_Abwasserbauwerk</cite>: tww_is_primary, tww_has_log_card,  <cite>_owner_organisation_type</cite> sind nicht editierbar,  <cite>owner_organisation_type</cite> konfiguriert als Wertbeziehung</p></li>
 <li><p><cite>vw_tww_weitere Abwasserbauwerke</cite>: <cite>reach_point_label</cite>, <cite>tww_is_primary</cite>, <cite>_channel_usage_current</cite>, <cite>_channel_function_hierarchic</cite>, <cite>_owner_organisation_type</cite> sind nicht editierbar. <cite>_channel_usage_current</cite>, <cite>_channel_function_hierarchic</cite>, <cite>owner_organisation_type</cite> konfiguriert als Wertbeziehung</p></li>
 <li><p><cite>vw_Abwasserbauwerk</cite> : <cite>tww_is_primary</cite>, <cite>_channel_usage_current</cite>, <cite>_channel_function_hierarchic</cite>, <cite>_owner_organisation_type</cite> sind nicht editierbar. <cite>_channel_usage_current</cite>, <cite>_channel_function_hierarchic</cite>, <cite>owner_organisation_type</cite> konfiguriert als Wertbeziehung</p></li>
 <li><p><cite>vw_tww_Haltung</cite>: <cite>owner_organisation_type</cite> sind nicht editierbar. <cite>owner_organisation_type</cite> konfiguriert als Wertbeziehung</p></li>

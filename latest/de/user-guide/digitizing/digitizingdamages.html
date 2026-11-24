@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Digitizing channel damages &mdash; TWW latest Dokumentation</title>
+  <title>Digitalisierung Kanalschäden &mdash; TWW latest Dokumentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
 
@@ -56,7 +56,7 @@
 <li class="toctree-l3"><a class="reference internal" href="digitizingchannels.html">Kanäle Digitalisieren</a></li>
 <li class="toctree-l3"><a class="reference internal" href="deletingobjects.html">Objekte löschen</a></li>
 <li class="toctree-l3"><a class="reference internal" href="digitizingcatchments.html">Digitalisierung der Einzugsgebiete</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Digitizing channel damages</a><ul>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Digitalisierung Kanalschäden</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#prerequisites">Voraussetzungen</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#how-the-damage-position-is-calculated">Wie die Schadensposition berechnet wird</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#creating-a-channel-damage">Kanalschaden erzeugen</a></li>
@@ -97,7 +97,7 @@
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Benutzerhandbuch</a></li>
           <li class="breadcrumb-item"><a href="index.html">Digitalisieren in TWW</a></li>
-      <li class="breadcrumb-item active">Digitizing channel damages</li>
+      <li class="breadcrumb-item active">Digitalisierung Kanalschäden</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/user-guide/digitizing/digitizingdamages.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
       </li>
@@ -110,7 +110,7 @@
   <blockquote>
 <div></div></blockquote>
 <section id="digitizing-channel-damages">
-<h1>Digitizing channel damages<a class="headerlink" href="#digitizing-channel-damages" title="Link to this heading"></a></h1>
+<h1>Digitalisierung Kanalschäden<a class="headerlink" href="#digitizing-channel-damages" title="Link to this heading"></a></h1>
 <p>Kanalschäden werden in der View <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_damage_channel</span></code> verwaltet.</p>
 <figure class="align-default">
 <img alt="../../_images/vw_tww_channel_damage.png" src="../../_images/vw_tww_channel_damage.png" />
@@ -121,8 +121,8 @@
 <li><p>Der erfassten Kanal-Distanz; und</p></li>
 <li><p>Der Richtung der Kamerabefahrung.</p></li>
 </ul>
-<p>When a damage is digitized manually, the point geometry selected in QGIS is discarded when the feature is saved. The geometry is then recalculated from the examination and the recorded channel distance.</p>
-<p>Details can also be viewed in the attribute form:</p>
+<p>Wenn ein Schaden manuell digitalisiert wird,  wird die Punktgeometrie in QGIS beim Speichern ignoriert. Die Geometrie wird aus der Untersuchung und der Kanal-Distanz des Schadens berechnet.</p>
+<p>Details können im Attributformular eingesehen werden:</p>
 <figure class="align-default">
 <img alt="../../_images/vw_tww_channel_damage_form.png" src="../../_images/vw_tww_channel_damage_form.png" />
 </figure>
@@ -138,10 +138,7 @@
 <div class="admonition warning">
 <p class="admonition-title">Warnung</p>
 <p><code class="docutils literal notranslate"><span class="pre">mvw_tww_Kanal</span></code> ist eine materialisierte View und kann deshalb Daten enthalten, die nicht aktuell sind</p>
-<p>If a channel was recently created, modified, reconnected or assigned to
-different reaches, refresh the materialized view before digitizing
-damages. Otherwise, the channel may be missing or its geometry and topology
-may no longer correspond to the current network data.</p>
+<p>Falls ein Kanal vor Kurzem erstellt, geändert, neu verknüpft oder dem andere Haltungen zugeordnet wurden, aktualisieren Sie die materialisierte View, bevor Sie Schäden digitalisieren. Andernfalls könnte der Kanal fehlen oder seine Geometrie und Topologie entsprechen möglicherweise nicht mehr den aktuellen Netzdaten.</p>
 </div>
 </section>
 <section id="how-the-damage-position-is-calculated">
