@@ -1064,14 +1064,16 @@ class Hook(
         )
 
         if final_diff_run:
-            context.logger.info(
-                "Created tww_diff review job %r with %s rows.",
+            self.logger.info(
+                "Created tww_diff review job %r: "
+                "job_db_id=%d, rows=%d, "
+                "base_import_schema=%r, "
+                "incremental_import_schema=%r.",
                 result.job_id,
-                (
-                    result.diff_schema_result.row_count
-                    if result.diff_schema_result is not None
-                    else "unknown"
-                ),
+                result.job_db_id,
+                sum(result.row_counts_by_class.values()),
+                metadata.get("base_import_schema"),
+                metadata.get("incremental_import_schema"),
             )
 
         return result
