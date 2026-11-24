@@ -186,21 +186,30 @@ class TwwDiffSchemaService(
             str,
             Sequence[ReviewFeature],
         ],
-        metadata: (
-            Mapping[
-                str,
-                Any,
-            ]
-            | None
-        ) = None,
+        metadata: Mapping[
+            str,
+            Any,
+        ]
+        | None = None,
         validation_success: bool = False,
         job_status: str = "pending",
     ) -> DiffSchemaWriteResult:
         """
-        Write review features into tww_diff.
-        """
+        Write review features into ``tww_diff``.
 
+        The returned result contains total and rejected row counts grouped by
+        canonical class. Classes without persisted review features are omitted.
+        """
         metadata = metadata or {}
+
+        row_counts_by_class: dict[
+            str,
+            int,
+        ] = {}
+        rejected_counts_by_class: dict[
+            str,
+            int,
+        ] = {}
 
         with self.connection_factory.connection(
             autocommit=False,
@@ -218,7 +227,9 @@ class TwwDiffSchemaService(
                     job_id=job_id,
                 )
             else:
-                raise NotImplementedError("Diff-job refresh is not implemented.")
+                raise NotImplementedError(
+                    "Diff-job refresh is not implemented."
+                )
 
             job_db_id = self._insert_metadata(
                 cursor=cursor,
@@ -228,9 +239,13 @@ class TwwDiffSchemaService(
                 job_status=job_status,
             )
 
-            row_count = 0
+            for (
+                class_id,
+                features,
+            ) in features_by_class.items():
+                if not features:
+                    continue
 
-            for class_id, features in features_by_class.items():
                 table_columns = self._table_columns(
                     cursor=cursor,
                     table_name=class_id,
@@ -241,6 +256,9 @@ class TwwDiffSchemaService(
                     table_columns=table_columns,
                 )
 
+                class_row_count = 0
+                class_rejected_count = 0
+
                 for feature in features:
                     self._insert_feature(
                         cursor=cursor,
@@ -250,15 +268,35 @@ class TwwDiffSchemaService(
                         table_columns=table_columns,
                     )
 
-                    row_count += 1
+                    class_row_count += 1
+
+                    if self._feature_is_rejected(
+                        feature,
+                    ):
+                        class_rejected_count += 1
+
+                row_counts_by_class[
+                    class_id
+                ] = class_row_count
+
+                if class_rejected_count:
+                    rejected_counts_by_class[
+                        class_id
+                    ] = class_rejected_count
 
             connection.commit()
 
         return DiffSchemaWriteResult(
             job_db_id=job_db_id,
             job_id=job_id,
-            row_count=row_count,
+            row_counts_by_class=(
+                row_counts_by_class
+            ),
+            rejected_counts_by_class=(
+                rejected_counts_by_class
+            ),
         )
+
 
     def write_result_for_job(
         self,
@@ -270,17 +308,32 @@ class TwwDiffSchemaService(
 
         This method does not write or modify the job.
         """
-
         job = self.require_review_job(
             job_id=job_id,
             include_features=False,
         )
 
+        with self.connection_factory.connection(
+            autocommit=True,
+        ) as connection:
+            cursor = connection.cursor()
+
+            (
+                row_counts_by_class,
+                rejected_counts_by_class,
+            ) = self._review_counts_by_class(
+                cursor=cursor,
+                job_db_id=job.job_db_id,
+            )
+
         return DiffSchemaWriteResult(
             job_db_id=job.job_db_id,
             job_id=job.job_id,
-            row_count=self.review_feature_count(
-                job_id=job_id,
+            row_counts_by_class=(
+                row_counts_by_class
+            ),
+            rejected_counts_by_class=(
+                rejected_counts_by_class
             ),
         )
 
@@ -1083,6 +1136,139 @@ class TwwDiffSchemaService(
                 )
 
         return rejected_count
+
+
+    def _feature_is_rejected(
+        self,
+        feature: ReviewFeature,
+    ) -> bool:
+        """
+        Return whether one review feature is marked as rejected.
+
+        Rejection is review metadata stored in the feature's attribute mapping,
+        not a dedicated ``ReviewFeature`` field.
+        """
+        value = feature.attributes.get(
+            "is_rejected",
+            False,
+        )
+
+        if isinstance(
+            value,
+            bool,
+        ):
+            return value
+
+        raise TypeError(
+            "Review feature attribute 'is_rejected' "
+            "must be a Boolean when present. "
+            f"Class: {feature.class_id!r}; "
+            f"object: {feature.object_id!r}; "
+            f"value: {value!r}; "
+            f"type: {type(value)!r}."
+        )
+
+    def _review_counts_by_class(
+        self,
+        *,
+        cursor,
+        job_db_id: int,
+    ) -> tuple[
+        dict[
+            str,
+            int,
+        ],
+        dict[
+            str,
+            int,
+        ],
+    ]:
+        """
+        Return persisted review-row counts grouped by canonical class.
+
+        Review tables are discovered from the ``tww_diff`` schema. Only tables
+        containing both ``job_id`` and ``is_rejected`` participate. Tables
+        without rows for the requested job are omitted.
+        """
+        cursor.execute(
+            """
+            SELECT
+                table_name
+            FROM information_schema.columns
+            WHERE table_schema = 'tww_diff'
+            GROUP BY table_name
+            HAVING bool_or(column_name = 'job_id')
+            AND bool_or(column_name = 'is_rejected')
+            ORDER BY table_name
+            """
+        )
+
+        table_names = tuple(
+            row[0]
+            for row in cursor.fetchall()
+        )
+
+        row_counts_by_class: dict[
+            str,
+            int,
+        ] = {}
+        rejected_counts_by_class: dict[
+            str,
+            int,
+        ] = {}
+
+        for table_name in table_names:
+            quoted_table_name = (
+                self._quote_identifier(
+                    table_name,
+                )
+            )
+
+            cursor.execute(
+                f"""
+                SELECT
+                    count(*) AS row_count,
+                    count(*) FILTER (
+                        WHERE is_rejected IS TRUE
+                    ) AS rejected_count
+                FROM tww_diff.{quoted_table_name}
+                WHERE job_id = %s
+                """,
+                (
+                    job_db_id,
+                ),
+            )
+
+            result = cursor.fetchone()
+
+            if result is None:
+                continue
+
+            class_row_count = int(
+                result[0],
+            )
+            class_rejected_count = int(
+                result[1],
+            )
+
+            if class_row_count == 0:
+                continue
+
+            row_counts_by_class[
+                table_name
+            ] = class_row_count
+
+            if class_rejected_count:
+                rejected_counts_by_class[
+                    table_name
+                ] = class_rejected_count
+
+        return (
+            row_counts_by_class,
+            rejected_counts_by_class,
+        )
+
+
 
     def _job_import_schemas(
         self,
