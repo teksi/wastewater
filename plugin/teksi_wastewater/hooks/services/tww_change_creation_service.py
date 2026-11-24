@@ -1260,9 +1260,7 @@ class TwwChangeCreationService:
             return
 
         if self.rights_evaluator is None:
-            self.logger.warning(
-                "Rights coverage unavailable: no rights evaluator is configured."
-            )
+            self.logger.warning("Rights coverage unavailable: no rights evaluator is configured.")
             return
 
         rights_capability = getattr(
@@ -1272,8 +1270,7 @@ class TwwChangeCreationService:
         )
         if rights_capability is None:
             self.logger.warning(
-                "Rights coverage unavailable: evaluator %s exposes no "
-                "'rights' capability.",
+                "Rights coverage unavailable: evaluator %s exposes no " "'rights' capability.",
                 type(self.rights_evaluator).__qualname__,
             )
             return
@@ -1328,9 +1325,7 @@ class TwwChangeCreationService:
             operation_counts: dict[str, int] = {}
             for change in class_changes:
                 operation = change.operation.value
-                operation_counts[operation] = (
-                    operation_counts.get(operation, 0) + 1
-                )
+                operation_counts[operation] = operation_counts.get(operation, 0) + 1
 
             operation_summary = ", ".join(
                 f"{operation}={count}"
@@ -1341,16 +1336,14 @@ class TwwChangeCreationService:
 
             if class_id in missing_class_ids:
                 self.logger.warning(
-                    "Rights coverage missing: class=%r, changes=%d, "
-                    "operations={%s}.",
+                    "Rights coverage missing: class=%r, changes=%d, " "operations={%s}.",
                     class_id,
                     len(class_changes),
                     operation_summary,
                 )
             else:
                 self.logger.info(
-                    "Rights coverage configured: class=%r, changes=%d, "
-                    "operations={%s}.",
+                    "Rights coverage configured: class=%r, changes=%d, " "operations={%s}.",
                     class_id,
                     len(class_changes),
                     operation_summary,
@@ -1371,8 +1364,7 @@ class TwwChangeCreationService:
             )
         else:
             self.logger.info(
-                "Effective rights cover all %d canonical classes in the "
-                "projected change set.",
+                "Effective rights cover all %d canonical classes in the " "projected change set.",
                 changed_class_count,
             )
 
@@ -1390,29 +1382,21 @@ class TwwChangeCreationService:
             None,
         )
         if rights_classes is None:
-            self.logger.debug(
-                "Effective rights document exposes no class collection."
-            )
+            self.logger.debug("Effective rights document exposes no class collection.")
             return
 
         configured_document_class_ids = set(rights_classes)
         changed_class_ids = set(changes_by_class)
-        unused_configured_class_ids = (
-            configured_document_class_ids - changed_class_ids
-        )
+        unused_configured_class_ids = configured_document_class_ids - changed_class_ids
 
         self.logger.debug(
             "Effective rights document contains %d canonical classes: %s.",
             len(configured_document_class_ids),
-            ", ".join(
-                sorted(configured_document_class_ids)
-            ),
+            ", ".join(sorted(configured_document_class_ids)),
         )
 
         self.logger.debug(
-        "Configured rights unused by this change set: %d classes: %s.",
-        len(unused_configured_class_ids),
-        ", ".join(
-            sorted(unused_configured_class_ids)
-        ),
-    )
+            "Configured rights unused by this change set: %d classes: %s.",
+            len(unused_configured_class_ids),
+            ", ".join(sorted(unused_configured_class_ids)),
+        )
