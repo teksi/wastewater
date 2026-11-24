@@ -7,6 +7,13 @@ import pytest
 from teksi_wastewater.utils.database_utils import (
     DatabaseUtils,
 )
+from teksi_wastewater.hooks.services.tww_diff_schema_service import (
+    TwwDiffSchemaService,
+)
+
+from teksi_wastewater.hooks.adapters.tww_database_connection_factory import (
+    TwwDatabaseConnectionFactory,
+)
 
 from ..helpers import run_cli, run_interlis_import
 
@@ -41,6 +48,16 @@ DB_ARGS = (
     "--pgport",
     "5432",
 )
+
+@pytest.fixture(
+    scope="module",
+)
+def diff_schema_service(
+    tww_connection_factory: TwwDatabaseConnectionFactory,
+) -> TwwDiffSchemaService:
+    return TwwDiffSchemaService(
+        connection_factory=tww_connection_factory,
+    )
 
 
 def run_diff_cli(
@@ -245,72 +262,41 @@ def assert_source_metadata(
 
 
 def diff_counts(
+    diff_schema_service: TwwDiffSchemaService,
     job_id: str,
-) -> tuple[int, int]:
+) -> tuple[
+    int,
+    int,
+]:
     """
     Return total and rejected review-row counts for one job.
+
+    Counting is delegated to ``TwwDiffSchemaService`` so PostgreSQL table
+    inheritance and concrete review-table discovery are handled consistently
+    with production code.
     """
-    row = job_row(
+    job_db_id = job_row(
         job_id,
+    )[0]
+
+    (
+        row_counts_by_class,
+        rejected_counts_by_class,
+    ) = diff_schema_service.review_counts_by_class(
+        job_db_id=job_db_id,
     )
-    job_db_id = row[0]
-
-    table_rows = DatabaseUtils.fetchall("""
-        SELECT
-            table_name
-        FROM
-            information_schema.columns
-        WHERE
-            table_schema = 'tww_diff'
-        GROUP BY
-            table_name
-        HAVING
-            bool_or(column_name = 'job_id')
-            AND bool_or(column_name = 'is_rejected')
-        ORDER BY
-            table_name
-        """)
-
-    total_count = 0
-    rejected_count = 0
-
-    for table_row in table_rows:
-        table_name = table_row[0]
-
-        quoted_table_name = (
-            '"'
-            + table_name.replace(
-                '"',
-                '""',
-            )
-            + '"'
-        )
-
-        counts = DatabaseUtils.fetchall(
-            f"""
-            SELECT
-                count(*) AS total_count,
-                count(*) FILTER (
-                    WHERE is_rejected
-                ) AS rejected_count
-            FROM
-                tww_diff.{quoted_table_name}
-            WHERE
-                job_id = %s
-            """,
-            (job_db_id,),
-        )[0]
-
-        total_count += counts[0]
-        rejected_count += counts[1]
 
     return (
-        total_count,
-        rejected_count,
+        sum(
+            row_counts_by_class.values(),
+        ),
+        sum(
+            rejected_counts_by_class.values(),
+        ),
     )
 
-
 def assert_pending_permitted_job(
+    diff_schema_service: TwwDiffSchemaService,
     job_id: str,
 ) -> None:
     """
@@ -324,26 +310,37 @@ def assert_pending_permitted_job(
     validation_success = row[3]
 
     assert job_status == "pending", (
-        f"Expected job {job_id!r} to be pending, " f"got {job_status!r}."
-    )
-    assert validation_success is True, (
-        f"Expected validation to succeed for job {job_id!r}, " f"got {validation_success!r}."
+        f"Expected job {job_id!r} to be pending, "
+        f"got {job_status!r}."
     )
 
-    total_count, rejected_count = diff_counts(
+    assert validation_success is True, (
+        f"Expected validation to succeed for job "
+        f"{job_id!r}, got {validation_success!r}."
+    )
+
+    (
+        total_count,
+        rejected_count,
+    ) = diff_counts(
+        diff_schema_service,
         job_id,
     )
 
-    assert total_count > 0, f"Job {job_id!r} did not produce review rows."
+    assert total_count > 0, (
+        f"Job {job_id!r} did not produce review rows."
+    )
+
     assert rejected_count == 0, (
-        f"Expected job {job_id!r} to be fully permitted, "
-        f"but {rejected_count} of {total_count} rows were "
-        "rejected."
+        f"Expected job {job_id!r} to be fully "
+        f"permitted, but {rejected_count} of "
+        f"{total_count} rows were rejected."
     )
 
 
 def create_and_apply_phase(
     *,
+    diff_schema_service: TwwDiffSchemaService,
     allowed_provider: str,
     phase_identifier: str,
 ) -> None:
@@ -351,14 +348,21 @@ def create_and_apply_phase(
     Create, accept and persist one permitted phase job.
 
     Each expensive XTF pair is imported and projected only once.
-    Provider-right permutations belong in focused rights-evaluator
-    tests rather than repeated end-to-end CLI imports.
+    Provider-right permutations belong in focused rights-evaluator tests
+    rather than repeated end-to-end CLI imports.
     """
-    base_xtf = DATA_DIR / f"test_{phase_identifier}_DSS_2020_1_LV95.xtf"
-    incremental_xtf = DATA_DIR / (
-        f"test_{phase_identifier}_" "Genereller_Entwaesserungsplan_AG.xtf"
+    base_xtf = (
+        DATA_DIR
+        / f"test_{phase_identifier}_DSS_2020_1_LV95.xtf"
     )
-    job_id = f"pytest-{phase_identifier}-job-{allowed_provider}"
+    incremental_xtf = DATA_DIR / (
+        f"test_{phase_identifier}_"
+        "Genereller_Entwaesserungsplan_AG.xtf"
+    )
+    job_id = (
+        f"pytest-{phase_identifier}-job-"
+        f"{allowed_provider}"
+    )
 
     create_review_job(
         job_id=job_id,
@@ -368,8 +372,10 @@ def create_and_apply_phase(
     )
 
     assert_pending_permitted_job(
+        diff_schema_service,
         job_id,
     )
+
     assert_source_metadata(
         job_id,
         base_xtf=base_xtf,
@@ -379,6 +385,7 @@ def create_and_apply_phase(
     accept_job(
         job_id,
     )
+
     assert_job_status(
         job_id,
         "accepted",
@@ -387,11 +394,11 @@ def create_and_apply_phase(
     persist_job(
         job_id,
     )
+
     assert_job_status(
         job_id,
         "applied",
     )
-
 
 @pytest.fixture(
     scope="module",
@@ -447,6 +454,7 @@ def agxx_diff_applied(
 
 def test_diff_import_workflow(
     agxx_diff_applied,
+    diff_schema_service: TwwDiffSchemaService,
 ) -> None:
     """
     Exercise trusted baseline and three permitted review lifecycles.
@@ -454,14 +462,17 @@ def test_diff_import_workflow(
     del agxx_diff_applied
 
     create_and_apply_phase(
+        diff_schema_service=diff_schema_service,
         allowed_provider=DBW_WI,
         phase_identifier="phase1_dbw_wi",
     )
     create_and_apply_phase(
+        diff_schema_service=diff_schema_service,
         allowed_provider=DBW_GEP,
         phase_identifier="phase2_dbw_gep",
     )
     create_and_apply_phase(
+        diff_schema_service=diff_schema_service,
         allowed_provider=FI_BU,
         phase_identifier="phase3_fi_bu",
     )

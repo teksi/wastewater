@@ -324,18 +324,10 @@ class TwwDiffSchemaService(
             include_features=False,
         )
 
-        with self.connection_factory.connection(
-            autocommit=True,
-        ) as connection:
-            cursor = connection.cursor()
-
-            (
-                row_counts_by_class,
-                rejected_counts_by_class,
-            ) = self._review_counts_by_class(
-                cursor=cursor,
-                job_db_id=job.job_db_id,
-            )
+        (
+            row_counts_by_class,
+            rejected_counts_by_class,
+        ) = self._review_counts_by_class(job_db_id=job.job_db_id)
 
         return DiffSchemaWriteResult(
             job_db_id=job.job_db_id,
@@ -1144,35 +1136,31 @@ class TwwDiffSchemaService(
 
         return rejected_count
 
-    def _feature_is_rejected(
+
+    def review_counts_by_class(
         self,
-        feature: ReviewFeature,
-    ) -> bool:
-        """
-        Return whether one review feature is marked as rejected.
+        *,
+        job_db_id: int,
+    ) -> tuple[
+        dict[
+            str,
+            int,
+        ],
+        dict[
+            str,
+            int,
+        ],
+    ]:
 
-        Rejection is review metadata stored in the feature's attribute mapping,
-        not a dedicated ``ReviewFeature`` field.
-        """
-        value = feature.attributes.get(
-            "is_rejected",
-            False,
-        )
+        with self.connection_factory.connection(
+            autocommit=True,
+        ) as connection:
+            cursor = connection.cursor()
 
-        if isinstance(
-            value,
-            bool,
-        ):
-            return value
-
-        raise TypeError(
-            "Review feature attribute 'is_rejected' "
-            "must be a Boolean when present. "
-            f"Class: {feature.class_id!r}; "
-            f"object: {feature.object_id!r}; "
-            f"value: {value!r}; "
-            f"type: {type(value)!r}."
-        )
+            return self._review_counts_by_class(
+                cursor=cursor,
+                job_db_id=job_db_id,
+            )
 
     def _review_counts_by_class(
         self,
@@ -1260,6 +1248,37 @@ class TwwDiffSchemaService(
         return (
             row_counts_by_class,
             rejected_counts_by_class,
+        )
+
+
+    def _feature_is_rejected(
+        self,
+        feature: ReviewFeature,
+    ) -> bool:
+        """
+        Return whether one review feature is marked as rejected.
+
+        Rejection is review metadata stored in the feature's attribute mapping,
+        not a dedicated ``ReviewFeature`` field.
+        """
+        value = feature.attributes.get(
+            "is_rejected",
+            False,
+        )
+
+        if isinstance(
+            value,
+            bool,
+        ):
+            return value
+
+        raise TypeError(
+            "Review feature attribute 'is_rejected' "
+            "must be a Boolean when present. "
+            f"Class: {feature.class_id!r}; "
+            f"object: {feature.object_id!r}; "
+            f"value: {value!r}; "
+            f"type: {type(value)!r}."
         )
 
     def _job_import_schemas(
