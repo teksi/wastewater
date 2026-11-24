@@ -52,10 +52,8 @@ DB_ARGS = (
 @pytest.fixture(
     scope="module",
 )
-def connection_factory(
-) -> TwwDiffSchemaService:
-    return TwwDatabaseConnectionFactory(
-    )
+def connection_factory() -> TwwDiffSchemaService:
+    return TwwDatabaseConnectionFactory()
 
 
 @pytest.fixture(
