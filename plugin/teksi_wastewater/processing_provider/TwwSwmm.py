@@ -589,7 +589,6 @@ class TwwSwmm:
         self.feedback_push("info", "command: " + " ".join(map(str, command)))
         proc = subprocess.run(
             command,
-            shell=True,
             stdout=subprocess.PIPE,
             stdin=subprocess.PIPE,
             stderr=subprocess.STDOUT,
