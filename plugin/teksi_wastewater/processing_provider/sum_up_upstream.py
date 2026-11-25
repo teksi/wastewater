@@ -110,7 +110,9 @@ class SumUpUpstreamAlgorithm(TwwAlgorithm):
             )
         )
 
-        self.addParameter(QgsProcessingParameterFeatureSink(self.OUTPUT, self.tr("Summed up")))
+        self.addParameter(
+            QgsProcessingParameterFeatureSink(self.OUTPUT, self.tr("Summed up"))
+        )
 
         description = self.tr("Create a layer with nodes in loops")
         self.addAdvancedParameter(
@@ -188,7 +190,9 @@ class SumUpUpstreamAlgorithm(TwwAlgorithm):
         )
 
     def addAdvancedParameter(self, parameter):
-        parameter.setFlags(parameter.flags() | QgsProcessingParameterDefinition.FlagAdvanced)
+        parameter.setFlags(
+            parameter.flags() | QgsProcessingParameterDefinition.FlagAdvanced
+        )
         self.addParameter(parameter)
 
     def processAlgorithm(
@@ -203,13 +207,25 @@ class SumUpUpstreamAlgorithm(TwwAlgorithm):
         wastewater_node_layer = self.parameterAsVectorLayer(
             parameters, self.WASTEWATER_NODE_LAYER, context
         )
-        value_expression = self.parameterAsExpression(parameters, self.VALUE_EXPRESSION, context)
-        reach_pk_name = self.parameterAsFields(parameters, self.REACH_PK_NAME, context)[0]
+        value_expression = self.parameterAsExpression(
+            parameters, self.VALUE_EXPRESSION, context
+        )
+        reach_pk_name = self.parameterAsFields(parameters, self.REACH_PK_NAME, context)[
+            0
+        ]
         node_pk_name = self.parameterAsFields(parameters, self.NODE_PK_NAME, context)[0]
-        node_from_fk_name = self.parameterAsFields(parameters, self.NODE_FROM_FK_NAME, context)[0]
-        node_to_fk_name = self.parameterAsFields(parameters, self.NODE_TO_FK_NAME, context)[0]
-        branch_behavior = self.parameterAsEnum(parameters, self.BRANCH_BEHAVIOR, context)
-        create_loop_layer = self.parameterAsBool(parameters, self.CREATE_LOOP_LAYER, context)
+        node_from_fk_name = self.parameterAsFields(
+            parameters, self.NODE_FROM_FK_NAME, context
+        )[0]
+        node_to_fk_name = self.parameterAsFields(
+            parameters, self.NODE_TO_FK_NAME, context
+        )[0]
+        branch_behavior = self.parameterAsEnum(
+            parameters, self.BRANCH_BEHAVIOR, context
+        )
+        create_loop_layer = self.parameterAsBool(
+            parameters, self.CREATE_LOOP_LAYER, context
+        )
 
         if branch_behavior == 0:
             aggregate_method = self.aggregate_method_min
@@ -288,7 +304,7 @@ class SumUpUpstreamAlgorithm(TwwAlgorithm):
 
             processed_nodes = []
             times = []
-            if from_node_id in reaches_by_from_node.keys():
+            if from_node_id in reaches_by_from_node:
                 for reach in reaches_by_from_node[from_node_id]:
                     times.append(
                         self.calculate_branch(

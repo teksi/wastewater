@@ -333,4 +333,6 @@ class ModelTwwOd(ModelBase):
             __tablename__ = "re_measuring_point_reference_station"
             __table_args__ = {"schema": config.TWW_OD_SCHEMA}
 
-        ModelTwwOd.re_measuring_point_reference_station = re_measuring_point_reference_station
+        ModelTwwOd.re_measuring_point_reference_station = (
+            re_measuring_point_reference_station
+        )

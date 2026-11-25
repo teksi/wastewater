@@ -21,7 +21,6 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "..", ".."))
 
 
 class InterlisImportSelectionDialog(QDialog):
-
     class Columns(IntEnum):
         NAME = 0
         STATE = 1
@@ -35,18 +34,25 @@ class InterlisImportSelectionDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         loadUi(
-            os.path.join(os.path.dirname(__file__), "interlis_import_selection_dialog.ui"), self
+            os.path.join(
+                os.path.dirname(__file__), "interlis_import_selection_dialog.ui"
+            ),
+            self,
         )
 
         self.accepted.connect(self.commit_session)
         self.rejected.connect(self.rollback_session)
 
-        self.treeWidget.header().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
+        self.treeWidget.header().setSectionResizeMode(
+            QHeaderView.ResizeMode.ResizeToContents
+        )
         self.treeWidget.header().setSectionResizeMode(
             self.Columns.NAME, QHeaderView.ResizeMode.Stretch
         )
 
-        self.debugTreeWidget.header().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
+        self.debugTreeWidget.header().setSectionResizeMode(
+            QHeaderView.ResizeMode.ResizeToContents
+        )
         self.debugTreeWidget.header().setSectionResizeMode(
             self.ColumnsDebug.KEY, QHeaderView.ResizeMode.Interactive
         )
@@ -61,7 +67,9 @@ class InterlisImportSelectionDialog(QDialog):
         """
         self.session = session
 
-        self.category_items = defaultdict(QTreeWidgetItem)  # keys are instances' classes
+        self.category_items = defaultdict(
+            QTreeWidgetItem
+        )  # keys are instances' classes
         self.editors = {}
 
         self.debugGroupBox.setChecked(False)
@@ -90,9 +98,12 @@ class InterlisImportSelectionDialog(QDialog):
 
             if cls not in self.category_items:
                 self.category_items[cls].setText(self.Columns.NAME, cls.__name__)
-                self.category_items[cls].setCheckState(self.Columns.NAME, Qt.CheckState.Checked)
+                self.category_items[cls].setCheckState(
+                    self.Columns.NAME, Qt.CheckState.Checked
+                )
                 self.category_items[cls].setFont(
-                    self.Columns.NAME, QFont(QFont().defaultFamily(), weight=QFont.Weight.Bold)
+                    self.Columns.NAME,
+                    QFont(QFont().defaultFamily(), weight=QFont.Weight.Bold),
                 )
                 self.treeWidget.addTopLevelItem(self.category_items[cls])
 
@@ -205,7 +216,6 @@ class InterlisImportSelectionDialog(QDialog):
                 treeWidgetItemAttribute.setText(self.ColumnsDebug.VALUE, f"{val}")
 
             if editor.status == Editor.MODIFIED:
-
                 history = get_history(editor.obj, attribute.key)
 
                 value_old = None
@@ -216,13 +226,19 @@ class InterlisImportSelectionDialog(QDialog):
                     value_old = history.deleted[0]
 
                 if value_old is not None:
-                    treeWidgetItemAttribute.setText(self.ColumnsDebug.VALUE_OLD, f"{value_old}")
+                    treeWidgetItemAttribute.setText(
+                        self.ColumnsDebug.VALUE_OLD, f"{value_old}"
+                    )
 
                 if val != value_old:
                     brush = QBrush(QColor("orange"))
                     treeWidgetItemAttribute.setBackground(self.ColumnsDebug.KEY, brush)
-                    treeWidgetItemAttribute.setBackground(self.ColumnsDebug.VALUE, brush)
-                    treeWidgetItemAttribute.setBackground(self.ColumnsDebug.VALUE_OLD, brush)
+                    treeWidgetItemAttribute.setBackground(
+                        self.ColumnsDebug.VALUE, brush
+                    )
+                    treeWidgetItemAttribute.setBackground(
+                        self.ColumnsDebug.VALUE_OLD, brush
+                    )
 
             treeWidgetItemAttributes.addChild(treeWidgetItemAttribute)
 
@@ -248,8 +264,12 @@ class InterlisImportSelectionDialog(QDialog):
                 sqlAlchemyStates.append(f"{status_name}")
 
         treeWidgetItemSqlAlchemyState = QTreeWidgetItem()
-        treeWidgetItemSqlAlchemyState.setText(self.ColumnsDebug.KEY, "Sql Alchemy status")
-        treeWidgetItemSqlAlchemyState.setText(self.ColumnsDebug.VALUE, ", ".join(sqlAlchemyStates))
+        treeWidgetItemSqlAlchemyState.setText(
+            self.ColumnsDebug.KEY, "Sql Alchemy status"
+        )
+        treeWidgetItemSqlAlchemyState.setText(
+            self.ColumnsDebug.VALUE, ", ".join(sqlAlchemyStates)
+        )
         treeWidgetItemDebug.addChild(treeWidgetItemSqlAlchemyState)
 
         treeWidgetItemEditorObject = QTreeWidgetItem()
@@ -267,9 +287,13 @@ class InterlisImportSelectionDialog(QDialog):
         elif editor.validity == Editor.WARNING:
             self.validityLabel.setStyleSheet("background-color: orange; padding: 15px;")
         elif editor.validity == Editor.VALID:
-            self.validityLabel.setStyleSheet("background-color: lightgreen; padding: 15px;")
+            self.validityLabel.setStyleSheet(
+                "background-color: lightgreen; padding: 15px;"
+            )
         else:
-            self.validityLabel.setStyleSheet("background-color: lightgray; padding: 15px;")
+            self.validityLabel.setStyleSheet(
+                "background-color: lightgray; padding: 15px;"
+            )
 
         # Update the actual widget
         editor.update_widget()
@@ -301,7 +325,9 @@ class InterlisImportSelectionDialog(QDialog):
             self.session.close()
 
         if iface:
-            iface.messageBar().pushMessage("Error", "Import was canceled", level=Qgis.Warning)
+            iface.messageBar().pushMessage(
+                "Error", "Import was canceled", level=Qgis.Warning
+            )
 
     def get_obj_from_listitem(self, listitem):
         for obj, editor in self.editors.items():

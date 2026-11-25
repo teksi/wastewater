@@ -8,7 +8,6 @@ DOCK_WIDGET_UI = get_ui_class("twwselectionextenderwidget.ui")
 
 
 class TwwSelectionExtenderWidget(QDockWidget, DOCK_WIDGET_UI):
-
     def __init__(self, iface, parent=None):
         super().__init__(parent)
         self.iface = iface
@@ -59,7 +58,9 @@ class TwwSelectionExtenderWidget(QDockWidget, DOCK_WIDGET_UI):
             )
             return
 
-        self.controller.extend_selection(mode=self._get_mode(), status=self._get_status())
+        self.controller.extend_selection(
+            mode=self._get_mode(), status=self._get_status()
+        )
 
     def _on_reset_clicked(self):
         if self.controller is None:

@@ -35,12 +35,18 @@ class TestOnDelete(unittest.TestCase, DbTestBase):
         row = self.select("vw_tww_wastewater_structure", obj_id)
         row = self.select("vw_cover", row["co_obj_id"])
 
-        self.delete("wastewater_structure", row["fk_wastewater_structure"], schema="tww_od")
+        self.delete(
+            "wastewater_structure", row["fk_wastewater_structure"], schema="tww_od"
+        )
 
         # Just to be sure the structure really was deleted
-        self.assertIsNone(self.select("manhole", row["fk_wastewater_structure"], schema="tww_od"))
         self.assertIsNone(
-            self.select("wastewater_structure", row["fk_wastewater_structure"], schema="tww_od")
+            self.select("manhole", row["fk_wastewater_structure"], schema="tww_od")
+        )
+        self.assertIsNone(
+            self.select(
+                "wastewater_structure", row["fk_wastewater_structure"], schema="tww_od"
+            )
         )
         # The cover should be delted as well. If not, the foreign key constraint action does not work properly
         self.assertIsNone(self.select("vw_cover", obj_id))
@@ -76,8 +82,12 @@ class TestOnDelete(unittest.TestCase, DbTestBase):
         ch012345demoRE00 = self.insert_check("reach", row, schema="tww_od")
 
         self.assertIsNotNone(self.select("reach", ch012345demoRE00, schema="tww_od"))
-        self.assertIsNotNone(self.select("reach_point", ch012345demoRP00, schema="tww_od"))
-        self.assertIsNotNone(self.select("reach_point", ch012345demoRP01, schema="tww_od"))
+        self.assertIsNotNone(
+            self.select("reach_point", ch012345demoRP00, schema="tww_od")
+        )
+        self.assertIsNotNone(
+            self.select("reach_point", ch012345demoRP01, schema="tww_od")
+        )
         self.assertIsNotNone(
             self.select("wastewater_networkelement", ch012345demoWN00, schema="tww_od")
         )
@@ -128,8 +138,12 @@ class TestOnDelete(unittest.TestCase, DbTestBase):
         ch012345demoRE00 = self.insert_check("reach", row, schema="tww_od")
 
         self.assertIsNotNone(self.select("vw_tww_reach", ch012345demoRE00))
-        self.assertIsNotNone(self.select("reach_point", ch012345demoRP00, schema="tww_od"))
-        self.assertIsNotNone(self.select("reach_point", ch012345demoRP01, schema="tww_od"))
+        self.assertIsNotNone(
+            self.select("reach_point", ch012345demoRP00, schema="tww_od")
+        )
+        self.assertIsNotNone(
+            self.select("reach_point", ch012345demoRP01, schema="tww_od")
+        )
         self.assertIsNotNone(
             self.select("wastewater_networkelement", ch012345demoWN00, schema="tww_od")
         )
@@ -226,9 +240,13 @@ class TestOnDelete(unittest.TestCase, DbTestBase):
 
         self.assertEqual(ch012345demoCH00_obj_id, ws001_obj_id)
         self.delete("reach", ch012345demoRE00, schema="tww_od")
-        self.assertIsNotNone(self.select("channel", ch012345demoCH00_obj_id, schema="tww_od"))
+        self.assertIsNotNone(
+            self.select("channel", ch012345demoCH00_obj_id, schema="tww_od")
+        )
         self.delete("reach", re011_obj_id, schema="tww_od")
-        self.assertIsNone(self.select("channel", ch012345demoCH00_obj_id, schema="tww_od"))
+        self.assertIsNone(
+            self.select("channel", ch012345demoCH00_obj_id, schema="tww_od")
+        )
 
 
 if __name__ == "__main__":

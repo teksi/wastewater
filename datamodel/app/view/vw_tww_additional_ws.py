@@ -18,7 +18,9 @@ from .utils.extra_definition_utils import (
 
 
 def vw_tww_additional_ws(
-    connection: psycopg.Connection, srid: psycopg.sql.Literal, extra_definition: dict = None
+    connection: psycopg.Connection,
+    srid: psycopg.sql.Literal,
+    extra_definition: dict = None,
 ):
     """
     Creates additional_wastewater_structure view
@@ -187,7 +189,9 @@ def vw_tww_additional_ws(
             if not extra_definition
             else extra_cols(connection=connection, extra_definition=extra_definition)
         ),
-        extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
+        extra_joins=extra_joins(
+            connection=connection, extra_definition=extra_definition
+        ),
     )
 
     view_sql = psycopg.sql.SQL(view_sql).format(srid=psycopg.sql.Literal(srid))
@@ -326,10 +330,14 @@ def vw_tww_additional_ws(
                 "fk_wastewater_structure": "NEW.obj_id",
             },
         ),
-        insert_extra=insert_extra(connection=connection, extra_definition=extra_definition),
+        insert_extra=insert_extra(
+            connection=connection, extra_definition=extra_definition
+        ),
     )
 
-    trigger_insert_sql = psycopg.sql.SQL(trigger_insert_sql).format(srid=psycopg.sql.Literal(srid))
+    trigger_insert_sql = psycopg.sql.SQL(trigger_insert_sql).format(
+        srid=psycopg.sql.Literal(srid)
+    )
     cursor.execute(trigger_insert_sql)
 
     update_trigger_sql = """
@@ -559,10 +567,14 @@ def vw_tww_additional_ws(
                 "fk_wastewater_structure": "NEW.obj_id",
             },
         ),
-        update_extra=update_extra(connection=connection, extra_definition=extra_definition),
+        update_extra=update_extra(
+            connection=connection, extra_definition=extra_definition
+        ),
     )
 
-    update_trigger_sql = psycopg.sql.SQL(update_trigger_sql).format(srid=psycopg.sql.Literal(srid))
+    update_trigger_sql = psycopg.sql.SQL(update_trigger_sql).format(
+        srid=psycopg.sql.Literal(srid)
+    )
 
     cursor.execute(update_trigger_sql)
 
@@ -594,7 +606,9 @@ def vw_tww_additional_ws(
 if __name__ == "__main__":
     # create the top-level parser
     parser = argparse.ArgumentParser()
-    parser.add_argument("-s", "--srid", help="EPSG code for SRID", default=2056, type=int)
+    parser.add_argument(
+        "-s", "--srid", help="EPSG code for SRID", default=2056, type=int
+    )
     parser.add_argument("-p", "--pg_service", help="the PostgreSQL service name")
     parser.add_argument(
         "-e",
@@ -609,4 +623,6 @@ if __name__ == "__main__":
         with open(args.extra_definition) as f:
             extra_definition = safe_load(f)
     with psycopg.connect(f"service={pg_service}") as conn:
-        vw_tww_additional_ws(connection=conn, srid=srid, extra_definition=extra_definition)
+        vw_tww_additional_ws(
+            connection=conn, srid=srid, extra_definition=extra_definition
+        )

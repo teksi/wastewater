@@ -76,7 +76,9 @@ class TwwRubberBand3D(QgsRubberBand):
         assert isinstance(point, QgsPoint)
         QgsRubberBand.addPoint(self, QgsPointXY(point.x(), point.y()))
         # Workaround crash with QGIS 3.10.2 (https://github.com/qgis/QGIS/issues/34557)
-        new_point = QgsPoint(point.x(), point.y(), point.z(), point.m(), point.wkbType())
+        new_point = QgsPoint(
+            point.x(), point.y(), point.z(), point.m(), point.wkbType()
+        )
         self.points.append(new_point)
 
     def reset3D(self):
@@ -105,7 +107,9 @@ class TwwMapToolAddFeature(QgsMapToolAdvancedDigitizing):
     """
 
     def __init__(self, iface: QgisInterface, layer):
-        QgsMapToolAdvancedDigitizing.__init__(self, iface.mapCanvas(), iface.cadDockWidget())
+        QgsMapToolAdvancedDigitizing.__init__(
+            self, iface.mapCanvas(), iface.cadDockWidget()
+        )
         self.iface = iface
         self.canvas = iface.mapCanvas()
         self.layer = layer
@@ -300,7 +304,9 @@ class TwwMapToolAddReach(TwwMapToolAddFeature):
 
         # if no match, snap to all layers (according to map settings) and try to grab Z
         match = (
-            self.iface.mapCanvas().snappingUtils().snapToMap(QgsPointXY(event.originalMapPoint()))
+            self.iface.mapCanvas()
+            .snappingUtils()
+            .snapToMap(QgsPointXY(event.originalMapPoint()))
         )
         if match.isValid() and match.hasVertex():
             if match.layer():
@@ -377,7 +383,9 @@ class TwwMapToolAddReach(TwwMapToolAddFeature):
                 "to": self.last_snapping_match,
             }
             for dest, match in list(snapping_results.items()):
-                level_field_index = self.layer.fields().indexFromName(f"rp_{dest}_level")
+                level_field_index = self.layer.fields().indexFromName(
+                    f"rp_{dest}_level"
+                )
                 pt_idx = 0 if dest == "from" else -1
                 if match.isValid() and match.layer() in (
                     self.node_layer,
@@ -439,7 +447,9 @@ class TwwMapToolRectangularGeometryBase(QgsMapToolAdvancedDigitizing):
     geometryDigitized = pyqtSignal()
 
     def __init__(self, iface, layer, ws_oid):
-        QgsMapToolAdvancedDigitizing.__init__(self, iface.mapCanvas(), iface.cadDockWidget())
+        QgsMapToolAdvancedDigitizing.__init__(
+            self, iface.mapCanvas(), iface.cadDockWidget()
+        )
 
         self.iface = iface
         self.canvas = iface.mapCanvas()
@@ -451,7 +461,9 @@ class TwwMapToolRectangularGeometryBase(QgsMapToolAdvancedDigitizing):
 
         ws_feature = next(self.ws_geom_layer.getFeatures(request), None)
         if not ws_feature:
-            raise RuntimeError(self.tr(f"Wastewater structure could not be found. OID: {ws_oid} "))
+            raise RuntimeError(
+                self.tr(f"Wastewater structure could not be found. OID: {ws_oid} ")
+            )
 
         geom = ws_feature.geometry()
         if not (geom is None or geom.isNull()) and not self.validateReplacement():
@@ -488,14 +500,18 @@ class TwwMapToolRectangularGeometryBase(QgsMapToolAdvancedDigitizing):
         reply = QMessageBox.question(
             self.iface.mainWindow(),
             self.tr("Replace geometry"),
-            self.tr("A detailed geometry already exists.\n\n" "Do you want to replace it?"),
+            self.tr(
+                "A detailed geometry already exists.\n\nDo you want to replace it?"
+            ),
             QMessageBox.Yes | QMessageBox.No,
         )
 
         return reply == QMessageBox.Yes
 
     def createRectangle(self, lp1, lp2, width):
-        length = math.sqrt(math.pow(lp1.x() - lp2.x(), 2) + math.pow(lp1.y() - lp2.y(), 2))
+        length = math.sqrt(
+            math.pow(lp1.x() - lp2.x(), 2) + math.pow(lp1.y() - lp2.y(), 2)
+        )
 
         if length == 0:
             return None
@@ -561,7 +577,6 @@ class TwwMapToolRectangularGeometryBase(QgsMapToolAdvancedDigitizing):
         self.snapping_configs = []
 
         for layer in layers:
-
             config = QgsSnappingConfig()
             config.setEnabled(True)
             config.setMode(QgsSnappingConfig.AdvancedConfiguration)
@@ -583,7 +598,6 @@ class TwwMapToolRectangularGeometryBase(QgsMapToolAdvancedDigitizing):
     def snap(self, event):
 
         for config in self.snapping_configs:
-
             self.snapping_utils.setConfig(config)
 
             match = self.snapping_utils.snapToMap(QgsPointXY(event.originalMapPoint()))
@@ -591,7 +605,9 @@ class TwwMapToolRectangularGeometryBase(QgsMapToolAdvancedDigitizing):
             if match.isValid():
                 return QgsPointXY(match.point()), match
 
-        match = self.canvas.snappingUtils().snapToMap(QgsPointXY(event.originalMapPoint()))
+        match = self.canvas.snappingUtils().snapToMap(
+            QgsPointXY(event.originalMapPoint())
+        )
 
         if match.isValid():
             return QgsPointXY(match.point()), match
@@ -601,7 +617,6 @@ class TwwMapToolRectangularGeometryBase(QgsMapToolAdvancedDigitizing):
     def updateSnapMarker(self, match):
 
         if not match.isValid():
-
             if self.snapping_marker is not None:
                 self.canvas.scene().removeItem(self.snapping_marker)
                 self.snapping_marker = None
@@ -609,7 +624,6 @@ class TwwMapToolRectangularGeometryBase(QgsMapToolAdvancedDigitizing):
             return
 
         if self.snapping_marker is None:
-
             self.snapping_marker = QgsVertexMarker(self.canvas)
             self.snapping_marker.setPenWidth(3)
             self.snapping_marker.setColor(QColor(Qt.magenta))
@@ -683,13 +697,17 @@ class TwwMapToolDigitizeDrainageChannel(TwwMapToolRectangularGeometryBase):
         assert self.node_layer is not None
         self.ws_layer = TwwLayerManager.layer("vw_tww_wastewater_structure")
         if not self.ws_layer:
-            self.ws_layer = TwwLayerManager.layer("vw_tww_additional_wastewater_structure")
+            self.ws_layer = TwwLayerManager.layer(
+                "vw_tww_additional_wastewater_structure"
+            )
         assert self.ws_layer is not None
         request = QgsFeatureRequest().setFilterExpression(f"obj_id = '{ws_oid}'")
 
         ws_feature = next(self.ws_layer.getFeatures(request), None)
         if not ws_feature:
-            raise RuntimeError(self.tr(f"Wastewater structure could not be found. OID: {ws_oid} "))
+            raise RuntimeError(
+                self.tr(f"Wastewater structure could not be found. OID: {ws_oid} ")
+            )
         wn_oid = ws_feature["wn_obj_id"]
         request = QgsFeatureRequest().setFilterExpression(f"obj_id = '{wn_oid}'")
 
@@ -705,7 +723,10 @@ class TwwMapToolDigitizeDrainageChannel(TwwMapToolRectangularGeometryBase):
             QMessageBox.warning(
                 self.iface.mainWindow(),
                 self.tr("Drainage channel"),
-                self.tr("The selected wastewater structure " "has no associated wastewater node."),
+                self.tr(
+                    "The selected wastewater structure "
+                    "has no associated wastewater node."
+                ),
             )
             return
 
@@ -722,7 +743,7 @@ class TwwMapToolDigitizeDrainageChannel(TwwMapToolRectangularGeometryBase):
         msgtitle = self.tr("Digitize Drainage Channel")
 
         msg = self.tr(
-            "Click channel endpoint. " "Hold CTRL for custom width. " "Right click to abort."
+            "Click channel endpoint. Hold CTRL for custom width. Right click to abort."
         )
 
         self.messageBarItem = self.iface.messageBar().createMessage(
@@ -743,7 +764,6 @@ class TwwMapToolDigitizeDrainageChannel(TwwMapToolRectangularGeometryBase):
         width = 0.10
 
         if QApplication.keyboardModifiers() & Qt.ControlModifier:
-
             custom_width = self.askWidth("0.20")
 
             if custom_width is None:
@@ -758,7 +778,6 @@ class TwwMapToolDigitizeDrainageChannel(TwwMapToolRectangularGeometryBase):
         )
 
         if self.geometry:
-
             self.geometryDigitized.emit()
 
             self.deactivate()
@@ -816,7 +835,6 @@ class TwwMapToolDigitizeRectangularGeometry(TwwMapToolRectangularGeometryBase):
         self.rubberband.addPoint(point)
 
         if self.firstPoint is None:
-
             self.firstPoint = point
 
             return
@@ -833,7 +851,6 @@ class TwwMapToolDigitizeRectangularGeometry(TwwMapToolRectangularGeometryBase):
         )
 
         if self.geometry:
-
             self.geometryDigitized.emit()
 
             self.deactivate()

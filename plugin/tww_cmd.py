@@ -25,7 +25,9 @@ class TeksiWastewaterCmd:
             help="SRID for import/export",
         )
 
-        subparsers = self.parser.add_subparsers(dest="subparser_name", help="sub-command --help")
+        subparsers = self.parser.add_subparsers(
+            dest="subparser_name", help="sub-command --help"
+        )
 
         self._add_subparser_interlis_import(subparsers=subparsers)
         self._add_subparser_interlis_export(subparsers=subparsers)
@@ -84,7 +86,9 @@ class TeksiWastewaterCmd:
             help="Put log files next to XTF output file",
             action="store_true",
         )
-        subparser.add_argument("--labels_file", help="json file containing labeling candidates")
+        subparser.add_argument(
+            "--labels_file", help="json file containing labeling candidates"
+        )
         subparser.add_argument(
             "--label_scale_pipeline_registry_1_1000",
             help="Export labels in scale 1:1'000, can be combined with other scales (Leitungskataster/Cadastre des conduites souterraines)",
@@ -187,7 +191,9 @@ class TeksiWastewaterCmd:
         except InterlisImporterExporterError as exception:
             print(f"Import error: {exception.error}", file=sys.stderr)
             if exception.additional_text:
-                print(f"Additional details: {exception.additional_text}", file=sys.stderr)
+                print(
+                    f"Additional details: {exception.additional_text}", file=sys.stderr
+                )
             if exception.log_path:
                 print(f"Log file: {exception.log_path}", file=sys.stderr)
         except Exception as exception:
@@ -227,7 +233,9 @@ class TeksiWastewaterCmd:
         except InterlisImporterExporterError as exception:
             print(f"Export error: {exception.error}", file=sys.stderr)
             if exception.additional_text:
-                print(f"Additional details: {exception.additional_text}", file=sys.stderr)
+                print(
+                    f"Additional details: {exception.additional_text}", file=sys.stderr
+                )
             if exception.log_path:
                 print(f"Log file: {exception.log_path}", file=sys.stderr)
         except Exception as exception:

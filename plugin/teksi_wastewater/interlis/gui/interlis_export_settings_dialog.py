@@ -14,7 +14,12 @@ from ..processing_algs.extractlabels_interlis import ExtractlabelsInterlisAlgori
 class InterlisExportSettingsDialog(QDialog):
     def __init__(self, parent):
         super().__init__(parent)
-        loadUi(os.path.join(os.path.dirname(__file__), "interlis_export_settings_dialog.ui"), self)
+        loadUi(
+            os.path.join(
+                os.path.dirname(__file__), "interlis_export_settings_dialog.ui"
+            ),
+            self,
+        )
 
         self.finished.connect(self.on_finish)
 
@@ -30,7 +35,8 @@ class InterlisExportSettingsDialog(QDialog):
             [config.MODEL_NAME_VSA_KEK, config.MODEL_NAME_SIA405_ABWASSER],
         )
         self.export_model_selection_comboBox.addItem(
-            config.MODEL_NAME_SIA405_BASE_ABWASSER, [config.MODEL_NAME_SIA405_BASE_ABWASSER]
+            config.MODEL_NAME_SIA405_BASE_ABWASSER,
+            [config.MODEL_NAME_SIA405_BASE_ABWASSER],
         )
 
         ag6496extension = QSettings().value("/TWW/AGxxExtensions", False)
@@ -56,7 +62,9 @@ class InterlisExportSettingsDialog(QDialog):
 
         structures_layer = TwwLayerManager.layer("vw_tww_wastewater_structure")
         reaches_layer = TwwLayerManager.layer("vw_tww_reach")
-        self.structures = structures_layer.selectedFeatures() if structures_layer else []
+        self.structures = (
+            structures_layer.selectedFeatures() if structures_layer else []
+        )
         self.reaches = reaches_layer.selectedFeatures() if reaches_layer else []
 
         self.limit_checkbox.setText(
@@ -70,12 +78,18 @@ class InterlisExportSettingsDialog(QDialog):
         )
 
         # Populate the labels list (restoring checked states of scales)
-        selected_scales = QgsSettings().value("tww_plugin/last_selected_scales", "").split(",")
+        selected_scales = (
+            QgsSettings().value("tww_plugin/last_selected_scales", "").split(",")
+        )
         qgis_version_ok = Qgis.QGIS_VERSION_INT >= 32602
         self.labels_groupbox.setEnabled(qgis_version_ok)
         self.labels_qgis_warning_label.setVisible(not qgis_version_ok)
         self.scale_checkboxes = OrderedDict()
-        for scale_key, scale_disp, scale_val in ExtractlabelsInterlisAlgorithm.AVAILABLE_SCALES:
+        for (
+            scale_key,
+            scale_disp,
+            scale_val,
+        ) in ExtractlabelsInterlisAlgorithm.AVAILABLE_SCALES:
             checkbox = QCheckBox(f"{scale_disp} [1:{scale_val}]")
             checkbox.setChecked(qgis_version_ok and scale_key in selected_scales)
             self.scale_checkboxes[scale_key] = checkbox
@@ -91,7 +105,9 @@ class InterlisExportSettingsDialog(QDialog):
             for key, checkbox in self.scale_checkboxes.items():
                 if checkbox.isChecked():
                     selected_scales.append(key)
-            QgsSettings().setValue("tww_plugin/last_selected_scales", ",".join(selected_scales))
+            QgsSettings().setValue(
+                "tww_plugin/last_selected_scales", ",".join(selected_scales)
+            )
 
     @property
     def logs_next_to_file(self):

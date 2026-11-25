@@ -149,9 +149,12 @@ def vw_tww_damage_channel(
         extra_cols_base=(
             ""
             if not extra_definition
-            else "," + extra_cols(connection=connection, extra_definition=extra_definition_base)
+            else ","
+            + extra_cols(connection=connection, extra_definition=extra_definition_base)
         ),
-        extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
+        extra_joins=extra_joins(
+            connection=connection, extra_definition=extra_definition
+        ),
     )
 
     cursor.execute(view_sql)
@@ -192,7 +195,9 @@ def vw_tww_damage_channel(
             indent=2,
             skip_columns=[],
         ),
-        insert_extra=insert_extra(connection=connection, extra_definition=extra_definition),
+        insert_extra=insert_extra(
+            connection=connection, extra_definition=extra_definition
+        ),
     )
 
     cursor.execute(trigger_insert_sql)
@@ -235,7 +240,9 @@ def vw_tww_damage_channel(
             skip_columns=[],
             update_values={},
         ),
-        update_extra=update_extra(connection=connection, extra_definition=extra_definition),
+        update_extra=update_extra(
+            connection=connection, extra_definition=extra_definition
+        ),
     )
 
     cursor.execute(update_trigger_sql)

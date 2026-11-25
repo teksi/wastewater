@@ -71,7 +71,9 @@ class SwmmExecuteAlgorithm(TwwAlgorithm):
         # The parameters
         description = self.tr("INP File")
         self.addParameter(
-            QgsProcessingParameterFile(self.INP_FILE, description=description, extension="inp")
+            QgsProcessingParameterFile(
+                self.INP_FILE, description=description, extension="inp"
+            )
         )
 
         description = self.tr("RPT File")
@@ -94,17 +96,25 @@ class SwmmExecuteAlgorithm(TwwAlgorithm):
             # raise GeoAlgorithmExecutionException(
             # 'Swmm command line toom is not configured.\n\
             # Please configure it before running Swmm algorithms.')
-            raise QgsProcessingException(self.tr("Swmm command line tool is not configured.\n\
-                    Please configure it before running Swmm algorithms."))
+            raise QgsProcessingException(
+                self.tr(
+                    "Swmm command line tool is not configured.\n\
+                    Please configure it before running Swmm algorithms."
+                )
+            )
 
-        with TwwSwmm(None, None, None, inp_file, None, rpt_file, swmm_cli, feedback) as qs:
+        with TwwSwmm(
+            None, None, None, inp_file, None, rpt_file, swmm_cli, feedback
+        ) as qs:
             prompt = qs.execute_swmm()
 
         feedback.pushInfo(prompt)
 
         if re.search("There are errors", prompt):
             feedback.reportError(prompt)
-            feedback.reportError("There were errors, run the file in SWMM GUI for more details")
+            feedback.reportError(
+                "There were errors, run the file in SWMM GUI for more details"
+            )
 
         feedback.setProgress(100)
 

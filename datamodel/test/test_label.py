@@ -26,12 +26,12 @@ class TestViews(unittest.TestCase, DbTestBase):
                 "identifier": manhole,
                 "ws_type": "manhole",
                 "situation3d_geometry": self.execute(
-                    "ST_SetSRID(ST_GeomFromText('POINT({x} {y})'), 2056)".format(
-                        x=coords[0], y=coords[1]
-                    )
+                    f"ST_SetSRID(ST_GeomFromText('POINT({coords[0]} {coords[1]})'), 2056)"
                 ),
             }
-            manholes[manhole]["obj_id"] = self.insert("vw_tww_wastewater_structure", row)
+            manholes[manhole]["obj_id"] = self.insert(
+                "vw_tww_wastewater_structure", row
+            )
             manholes[manhole]["wn_obj_id"] = self.select(
                 "vw_tww_wastewater_structure", manholes[manhole]["obj_id"]
             )["wn_obj_id"]
@@ -72,7 +72,9 @@ class TestViews(unittest.TestCase, DbTestBase):
                 }
                 obj_id = self.insert("vw_tww_reach", row)
                 self.connect_reach(
-                    obj_id, from_id=start_point["wn_obj_id"], to_id=end_point["wn_obj_id"]
+                    obj_id,
+                    from_id=start_point["wn_obj_id"],
+                    to_id=end_point["wn_obj_id"],
                 )
 
     def connect_reach(self, reach_id, from_id=None, to_id=None):
@@ -131,11 +133,23 @@ class TestViews(unittest.TestCase, DbTestBase):
         self.insert_manholes(manholes)
         reaches = {
             "input": [
-                {"mh_id": "N", "rp_to_level": 1011, "mid_point": [2600000.5, 1199999.5]},
-                {"mh_id": "S", "rp_to_level": 1012, "mid_point": [2600000.5, 1200000.5]},
+                {
+                    "mh_id": "N",
+                    "rp_to_level": 1011,
+                    "mid_point": [2600000.5, 1199999.5],
+                },
+                {
+                    "mh_id": "S",
+                    "rp_to_level": 1012,
+                    "mid_point": [2600000.5, 1200000.5],
+                },
             ],
             "output": [
-                {"mh_id": "W", "rp_from_level": 1010, "mid_point": [2599999.5, 1200000]},
+                {
+                    "mh_id": "W",
+                    "rp_from_level": 1010,
+                    "mid_point": [2599999.5, 1200000],
+                },
             ],
         }
         self.insert_reaches(reaches, manholes)

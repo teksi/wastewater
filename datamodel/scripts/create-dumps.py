@@ -48,7 +48,9 @@ def create_dumps(**args):
     return files
 
 
-def create_plain_structure_only(database: str, version: str, extension_suffix: str = None):
+def create_plain_structure_only(
+    database: str, version: str, extension_suffix: str = None
+):
     """
     Create a plain SQL dump of data structure
     of all schemas and the content of pum_sys.inf
@@ -112,7 +114,9 @@ def create_plain_value_list(database: str, version: str, extension_suffix: str =
     """
     print("::group::value lists dump")
     dump = f"tww_{version}_structure_with_value_lists{extension_suffix}.sql"
-    structure_dump_file = f"datamodel/artifacts/tww_{version}_structure{extension_suffix}.sql"
+    structure_dump_file = (
+        f"datamodel/artifacts/tww_{version}_structure{extension_suffix}.sql"
+    )
     print(f"Creating dump {dump}")
     dump_file = f"datamodel/artifacts/{dump}"
 
@@ -182,7 +186,9 @@ def get_parser():
     """
     _parser = argparse.ArgumentParser("create-dumps.py")
     _parser.add_argument("--version", "-v", help="Sets the version", default="dev")
-    _parser.add_argument("--database", "-d", help="Sets the database name", default="tww")
+    _parser.add_argument(
+        "--database", "-d", help="Sets the database name", default="tww"
+    )
     _parser.add_argument(
         "--extension_name", "-x", help="Name of the database extension (optional)"
     )

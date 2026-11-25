@@ -27,7 +27,7 @@ def get_xtf_object(xtf_file, topicname, classname, tid):
     namespace = get_namespace(root)
 
     interlis_objects = root.findall(
-        "./{0}DATASECTION/{0}{1}/{0}{1}.{2}".format(namespace, topicname, classname)
+        f"./{namespace}DATASECTION/{namespace}{topicname}/{namespace}{topicname}.{classname}"
     )
     print(
         f"{classname} TIDs:",

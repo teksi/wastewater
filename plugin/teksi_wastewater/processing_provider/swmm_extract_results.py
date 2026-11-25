@@ -63,7 +63,9 @@ class SwmmExtractResultsAlgorithm(TwwAlgorithm):
         """)
 
     def helpUrl(self):
-        return "https://teksi.github.io/wastewater/latest/en/tww_swmm/Process-Results.html"
+        return (
+            "https://teksi.github.io/wastewater/latest/en/tww_swmm/Process-Results.html"
+        )
 
     def initAlgorithm(self, config=None):
         """Here we define the inputs and output of the algorithm, along
@@ -79,11 +81,15 @@ class SwmmExtractResultsAlgorithm(TwwAlgorithm):
         )
 
         self.addParameter(
-            QgsProcessingParameterFeatureSink(self.NODE_SUMMARY, self.tr("Node summary"))
+            QgsProcessingParameterFeatureSink(
+                self.NODE_SUMMARY, self.tr("Node summary")
+            )
         )
 
         self.addParameter(
-            QgsProcessingParameterFeatureSink(self.LINK_SUMMARY, self.tr("Link summary"))
+            QgsProcessingParameterFeatureSink(
+                self.LINK_SUMMARY, self.tr("Link summary")
+            )
         )
 
     def processAlgorithm(
@@ -107,9 +113,13 @@ class SwmmExtractResultsAlgorithm(TwwAlgorithm):
         fields.append(QgsField("time_max_day", QVariant.Int))
         fields.append(QgsField("time_max_time", QVariant.String))
         fields.append(QgsField("reported_max_depth", QVariant.Double))
-        sink_node, dest_id = self.parameterAsSink(parameters, self.NODE_SUMMARY, context, fields)
+        sink_node, dest_id = self.parameterAsSink(
+            parameters, self.NODE_SUMMARY, context, fields
+        )
         if sink_node is None:
-            raise QgsProcessingException(self.invalidSinkError(parameters, self.NODE_SUMMARY))
+            raise QgsProcessingException(
+                self.invalidSinkError(parameters, self.NODE_SUMMARY)
+            )
 
         # Get node summary from output file
         qs = TwwSwmm(None, None, None, None, None, rpt_file, None, feedback)
@@ -136,9 +146,13 @@ class SwmmExtractResultsAlgorithm(TwwAlgorithm):
         fields.append(QgsField("maximum_velocity", QVariant.Double))
         fields.append(QgsField("max_over_full_flow", QVariant.Double))
         fields.append(QgsField("max_over_full_depth", QVariant.Double))
-        sink_link, dest_id = self.parameterAsSink(parameters, self.LINK_SUMMARY, context, fields)
+        sink_link, dest_id = self.parameterAsSink(
+            parameters, self.LINK_SUMMARY, context, fields
+        )
         if sink_link is None:
-            raise QgsProcessingException(self.invalidSinkError(parameters, self.LINK_SUMMARY))
+            raise QgsProcessingException(
+                self.invalidSinkError(parameters, self.LINK_SUMMARY)
+            )
 
         # Get link summary from output file
         link_summary = qs.extract_link_flow_summary()

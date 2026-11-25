@@ -13,9 +13,9 @@ class DbTestBase:
         cur = cls.conn.cursor()
         cur.execute(f"SELECT COUNT(*) FROM {schema}.{table}")
         count = cur.fetchone()[0]
-        assert (
-            count == expected
-        ), f"Relation {schema}.{table} : expected {expected} rows, got {count} rows"
+        assert count == expected, (
+            f"Relation {schema}.{table} : expected {expected} rows, got {count} rows"
+        )
 
     @classmethod
     def geom_from_text(cls, wkt: str) -> str:
@@ -61,18 +61,21 @@ class DbTestBase:
         cols = ", ".join(row.keys())
         values = ", ".join([f"%({key})s" for key in row.keys()])
         print(53453)
-        print(f"INSERT INTO {schema}.{table} ({cols}) VALUES ({values}) RETURNING obj_id")
+        print(
+            f"INSERT INTO {schema}.{table} ({cols}) VALUES ({values}) RETURNING obj_id"
+        )
         print("-----")
         print(row)
         cur.execute(
-            f"INSERT INTO {schema}.{table} ({cols}) VALUES ({values}) RETURNING obj_id", row
+            f"INSERT INTO {schema}.{table} ({cols}) VALUES ({values}) RETURNING obj_id",
+            row,
         )
         return cur.fetchone()[0]
 
     @classmethod
     def update(cls, table, row, obj_id, schema="tww_app"):
         cur = cls.conn.cursor()
-        cols = ",".join(["{key}=%({key})s".format(key=key) for key in row.keys()])
+        cols = ",".join([f"{key}=%({key})s" for key in row.keys()])
         row["obj_id"] = obj_id
         cur.execute(f"UPDATE {schema}.{table} SET {cols} WHERE obj_id=%(obj_id)s", row)
 
@@ -110,10 +113,10 @@ class DbTestBase:
             self.assertEqual(
                 str(result[key]),
                 str(value),
-                """
+                f"""
              ========================================================
 
-             Data: {expected}
+             Data: {expected!r}
 
              ========================================================
 
@@ -121,21 +124,11 @@ class DbTestBase:
              Table: "{table}"
              Schema: "{schema}"
              Field: "{key}"
-               expected: {expected_value} ({expected_type})
-               result: {result_value} ({result_type})
+               expected: {value} ({type(value)})
+               result: {result[key]} ({type(result[key])})
 
              ========================================================
-            """.format(
-                    expected=repr(expected),
-                    test_name=test_name,
-                    table=table,
-                    schema=schema,
-                    key=key,
-                    expected_value=value,
-                    result_value=result[key],
-                    expected_type=type(value),
-                    result_type=type(result[key]),
-                ),
+            """,
             )
 
     @classmethod

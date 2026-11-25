@@ -62,7 +62,11 @@ def get_parser():
         "--latest_stable_release", "-r", help="Sets the latest latest_stable_release"
     )
     _parser.add_argument(
-        "--changed_files", "-f", nargs="*", required=True, help="Sets the list of changed files"
+        "--changed_files",
+        "-f",
+        nargs="*",
+        required=True,
+        help="Sets the list of changed files",
     )
     return _parser
 
@@ -72,5 +76,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     files = compare_versions(
-        latest_stable_release=args.latest_stable_release, changed_files=args.changed_files
+        latest_stable_release=args.latest_stable_release,
+        changed_files=args.changed_files,
     )

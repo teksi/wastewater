@@ -146,7 +146,9 @@ def mvw_tww_channel(
     cursor.execute(extras_sql)
 
 
-def vw_tww_channel_maintenance(connection: psycopg.Connection, extra_definition: dict = None):
+def vw_tww_channel_maintenance(
+    connection: psycopg.Connection, extra_definition: dict = None
+):
     """
     Creates vw_tww_channel_maintenance view
     :param connection: Psycopg connection
@@ -221,7 +223,9 @@ def vw_tww_channel_maintenance(connection: psycopg.Connection, extra_definition:
             if not extra_definition
             else extra_cols(connection=connection, extra_definition=extra_definition)
         ),
-        extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
+        extra_joins=extra_joins(
+            connection=connection, extra_definition=extra_definition
+        ),
     )
 
     cursor.execute(view_sql)
@@ -264,12 +268,16 @@ def vw_tww_channel_maintenance(connection: psycopg.Connection, extra_definition:
             remove_pkey=True,
             indent=6,
         ),
-        update_extra=update_extra(connection=connection, extra_definition=extra_definition),
+        update_extra=update_extra(
+            connection=connection, extra_definition=extra_definition
+        ),
     )
     cursor.execute(trigger_update_sql)
 
 
-def vw_tww_ws_maintenance(connection: psycopg.Connection, extra_definition: dict = None):
+def vw_tww_ws_maintenance(
+    connection: psycopg.Connection, extra_definition: dict = None
+):
     """
     Creates vw_tww_ws_maintenance view
     :param connection: Psycopg connection
@@ -354,7 +362,9 @@ def vw_tww_ws_maintenance(connection: psycopg.Connection, extra_definition: dict
             if not extra_definition
             else extra_cols(connection=connection, extra_definition=extra_definition)
         ),
-        extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
+        extra_joins=extra_joins(
+            connection=connection, extra_definition=extra_definition
+        ),
     )
 
     cursor.execute(view_sql)
@@ -397,7 +407,9 @@ def vw_tww_ws_maintenance(connection: psycopg.Connection, extra_definition: dict
             remove_pkey=True,
             indent=6,
         ),
-        update_extra=update_extra(connection=connection, extra_definition=extra_definition),
+        update_extra=update_extra(
+            connection=connection, extra_definition=extra_definition
+        ),
     )
     cursor.execute(trigger_update_sql)
 

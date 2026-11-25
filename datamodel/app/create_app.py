@@ -63,7 +63,9 @@ class Hook(HookBase):
             self.parameters = self.load_yaml(modification_yaml)
             self.base_dir = modification_yaml.parent
         else:
-            self.parameters = self.load_yaml(self.cwd / "app_modification.template.yaml")
+            self.parameters = self.load_yaml(
+                self.cwd / "app_modification.template.yaml"
+            )
             self.base_dir = self.cwd
             if "modification_repositories" in self.parameters:
                 for entry in self.parameters["modification_repositories"]:
@@ -118,12 +120,14 @@ class Hook(HookBase):
         self.simple_joins_yaml = self.parameters.get("simple_joins_yaml", {})
         self.multiple_inherintances = self.parameters.get("multiple_inherintances", {})
 
-        self.single_inherintances = self.load_yaml(self.cwd / "single_inherintances.yaml")
+        self.single_inherintances = self.load_yaml(
+            self.cwd / "single_inherintances.yaml"
+        )
 
         if self.app_modifications:
             for modification in self.app_modifications:
                 logger.debug(f"""*****
-Running modification {modification.get('id')}
+Running modification {modification.get("id")}
 ****
                 """)
                 self.load_modification(
@@ -152,7 +156,9 @@ Running modification {modification.get('id')}
         for key in self.multiple_inherintances:
             MultipleInheritance(
                 connection=self._connection,
-                definition=self.load_yaml(self.resolve_path(self.multiple_inherintances[key])),
+                definition=self.load_yaml(
+                    self.resolve_path(self.multiple_inherintances[key])
+                ),
                 drop=True,
                 variables=variables_pirogue,
             ).create(commit=False)
@@ -191,7 +197,9 @@ Running modification {modification.get('id')}
             connection=self._connection,
             srid=SRID,
             extra_definition=(
-                self.load_yaml(self.extra_definitions["vw_tww_infiltration_installation"])
+                self.load_yaml(
+                    self.extra_definitions["vw_tww_infiltration_installation"]
+                )
                 if self.extra_definitions.get("vw_tww_infiltration_installation")
                 else {}
             ),
@@ -363,7 +371,9 @@ Running modification {modification.get('id')}
                         f"altered {key} simpleJoin definition to {self.simple_joins_yaml[key]}"
                     )
 
-            for key, value in modification_config.get("multiple_inherintances", {}).items():
+            for key, value in modification_config.get(
+                "multiple_inherintances", {}
+            ).items():
                 self.multiple_inherintances[key] = curr_dir / value
                 logger.debug(
                     f"altered {key} multipleInheritance definition to {self.multiple_inherintances[key]}"
@@ -449,8 +459,12 @@ Running modification {modification.get('id')}
                     else:  # avoid injection
                         raise ValueError(f"Value '{value}' is not float or int.")
                 elif var_type == "identifier":  # Table/Column names
-                    if not re.match(r"^[a-zA-Z_][a-zA-Z0-9_]*$", value):  # avoid injection
-                        raise ValueError(f"Identifier '{value}' contains invalid characters.")
+                    if not re.match(
+                        r"^[a-zA-Z_][a-zA-Z0-9_]*$", value
+                    ):  # avoid injection
+                        raise ValueError(
+                            f"Identifier '{value}' contains invalid characters."
+                        )
                     formatted_vars[key] = psycopg.sql.Identifier(value)
                 elif var_type == "literal":  # String/Number literals
                     formatted_vars[key] = psycopg.sql.Literal(value)
@@ -506,7 +520,9 @@ if __name__ == "__main__":
         default="en",
         choices=["en", "fr", "de", "it", "ro"],
     )
-    parser.add_argument("-m", "--modification_yaml", help="path to modification yaml", type=Path)
+    parser.add_argument(
+        "-m", "--modification_yaml", help="path to modification yaml", type=Path
+    )
     args = parser.parse_args()
 
     with psycopg.connect(service=args.pg_service) as connection:

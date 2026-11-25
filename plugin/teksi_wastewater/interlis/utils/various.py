@@ -26,7 +26,9 @@ class InterlisImporterExporterError(Exception):
 
 
 def execute_subprocess(command, check=True, output_content=False):
-    command_masked_pwd = re.sub(r"(--dbpwd)\s\"[\w\.*#?!@$%^&-]+\"", r'\1 "[PASSWORD]"', command)
+    command_masked_pwd = re.sub(
+        r"(--dbpwd)\s\"[\w\.*#?!@$%^&-]+\"", r'\1 "[PASSWORD]"', command
+    )
     logger.info(f"EXECUTING: {command_masked_pwd}")
     try:
         proc = subprocess.run(
@@ -37,7 +39,9 @@ def execute_subprocess(command, check=True, output_content=False):
         )
     except subprocess.CalledProcessError as e:
         if check:
-            logger.exception(e.output.decode("windows-1252" if os.name == "nt" else "utf-8"))
+            logger.exception(
+                e.output.decode("windows-1252" if os.name == "nt" else "utf-8")
+            )
             raise CmdException("Command errored ! See logs for more info.")
         return e.output if output_content else e.returncode
     return proc.stdout.decode().strip() if output_content else proc.returncode
@@ -66,9 +70,10 @@ def get_pgconf_as_ili_args() -> list[str]:
         dbparams_path = os.path.join(tempfile.gettempdir(), str(uuid.uuid4()))
         os.makedirs(dbparams_path, exist_ok=True)
         with open(os.path.join(dbparams_path, "dbparams.txt"), "w") as f:
-            for param in dbparams:
-                f.write(param + "\n")
-        args.extend(["--dbparams", '"' + os.path.join(dbparams_path, "dbparams.txt") + '"'])
+            f.writelines(param + "\n" for param in dbparams)
+        args.extend(
+            ["--dbparams", '"' + os.path.join(dbparams_path, "dbparams.txt") + '"']
+        )
     if not pgconf["user"]:
         # only import now to facilitate imports without QGIS
         from qgis.core import QgsExpression

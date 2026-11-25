@@ -70,7 +70,9 @@ class SwmmImportResultsAlgorithm(TwwAlgorithm):
 
         # The parameters
         description = self.tr("SWMM report file (.rpt)")
-        self.addParameter(QgsProcessingParameterFile(self.RPT_FILE, description=description))
+        self.addParameter(
+            QgsProcessingParameterFile(self.RPT_FILE, description=description)
+        )
 
         description = self.tr("Database")
         self.addParameter(
@@ -111,7 +113,9 @@ class SwmmImportResultsAlgorithm(TwwAlgorithm):
             )
         )
 
-        description = self.tr("Import Max/Full Flow in tww_od.reach.hydraulic_load_current")
+        description = self.tr(
+            "Import Max/Full Flow in tww_od.reach.hydraulic_load_current"
+        )
         self.addParameter(
             QgsProcessingParameterBoolean(
                 self.POPULATE_HYDRAULIC_LOAD,
@@ -131,9 +135,15 @@ class SwmmImportResultsAlgorithm(TwwAlgorithm):
         # init params
         rpt_file = self.parameterAsFileOutput(parameters, self.RPT_FILE, context)
         database = self.parameterAsString(parameters, self.DATABASE, context)
-        sim_description = self.parameterAsString(parameters, self.SIM_DESCRIPTION, context)
-        import_summary = self.parameterAsBoolean(parameters, self.IMPORT_SUMMARY, context)
-        import_full_result = self.parameterAsBoolean(parameters, self.IMPORT_FULL_RESULTS, context)
+        sim_description = self.parameterAsString(
+            parameters, self.SIM_DESCRIPTION, context
+        )
+        import_summary = self.parameterAsBoolean(
+            parameters, self.IMPORT_SUMMARY, context
+        )
+        import_full_result = self.parameterAsBoolean(
+            parameters, self.IMPORT_FULL_RESULTS, context
+        )
         import_backflow_level = self.parameterAsBoolean(
             parameters, self.POPULATE_BACKFLOW_LEVEL, context
         )
@@ -142,7 +152,9 @@ class SwmmImportResultsAlgorithm(TwwAlgorithm):
         )
 
         # Get node summary from output file
-        with TwwSwmm(sim_description, database, None, None, None, rpt_file, None, feedback) as qs:
+        with TwwSwmm(
+            sim_description, database, None, None, None, rpt_file, None, feedback
+        ) as qs:
             if import_summary:
                 qs.import_summary(sim_description)
             if import_full_result:

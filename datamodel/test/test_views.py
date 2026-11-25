@@ -94,9 +94,7 @@ class TestViews(unittest.TestCase, DbTestBase):
 
         cur = self.cursor(row_factory=psycopg.rows.dict_row)
         cur.execute(
-            "SELECT * FROM tww_od.wastewater_networkelement NE LEFT JOIN tww_od.wastewater_node NO ON NO.obj_id = NE.obj_id WHERE fk_wastewater_structure='{obj_id}' ".format(
-                obj_id=obj_id
-            )
+            f"SELECT * FROM tww_od.wastewater_networkelement NE LEFT JOIN tww_od.wastewater_node NO ON NO.obj_id = NE.obj_id WHERE fk_wastewater_structure='{obj_id}' "
         )
         row = cur.fetchone()
 
@@ -244,9 +242,7 @@ class TestViews(unittest.TestCase, DbTestBase):
         cur = self.cursor(row_factory=psycopg.rows.dict_row)
 
         cur.execute(
-            "SELECT * FROM tww_od.wastewater_networkelement NE LEFT JOIN tww_od.wastewater_node NO ON NO.obj_id = NE.obj_id WHERE fk_wastewater_structure='{obj_id}' ".format(
-                obj_id=obj_id
-            )
+            f"SELECT * FROM tww_od.wastewater_networkelement NE LEFT JOIN tww_od.wastewater_node NO ON NO.obj_id = NE.obj_id WHERE fk_wastewater_structure='{obj_id}' "
         )
         row = cur.fetchone()
 

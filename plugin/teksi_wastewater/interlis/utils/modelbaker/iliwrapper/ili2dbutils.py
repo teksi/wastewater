@@ -35,9 +35,7 @@ def get_ili2db_bin(tool, db_ili_version, stdout, stderr):
     if tool not in DbIliMode or tool == DbIliMode.ili:
         raise RuntimeError(f"Tool {tool} not found")
 
-    tool |= (
-        DbIliMode.ili
-    )  # Regardless of the incoming form (i.e., pg or ili2pg), we need its corresponding ili tool
+    tool |= DbIliMode.ili  # Regardless of the incoming form (i.e., pg or ili2pg), we need its corresponding ili tool
     tool_name = tool.name  # in fact, we need the name of the ili tool
 
     ili_tool_version = get_tool_version(tool, db_ili_version)
@@ -64,7 +62,7 @@ def get_ili2db_bin(tool, db_ili_version, stdout, stderr):
             dir_path,
             "bin",
             ili2db_dir,
-            "{tool}-{version}/{tool}.jar".format(tool=tool_name, version=ili_tool_version),
+            f"{tool_name}-{ili_tool_version}/{tool_name}.jar",
         )
 
     if not os.path.isfile(ili2db_file):
@@ -86,12 +84,7 @@ def get_ili2db_bin(tool, db_ili_version, stdout, stderr):
             )
         except NetworkError as e:
             stderr.emit(
-                'Could not download {tool_name}\n\n  Error: {error}\n\nFile "{file}" not found. Please download and extract <a href="{ili2db_url}">{tool_name}</a>'.format(
-                    tool_name=tool_name,
-                    ili2db_url=ili_tool_url,
-                    error=e.msg,
-                    file=ili2db_file,
-                )
+                f'Could not download {tool_name}\n\n  Error: {e.msg}\n\nFile "{ili2db_file}" not found. Please download and extract <a href="{ili_tool_url}">{tool_name}</a>'
             )
             return None
 
@@ -104,9 +97,7 @@ def get_ili2db_bin(tool, db_ili_version, stdout, stderr):
 
         if not os.path.isfile(ili2db_file):
             stderr.emit(
-                'File "{file}" not found. Please download and extract <a href="{ili2db_url}">{tool_name}</a>.'.format(
-                    tool_name=tool_name, file=ili2db_file, ili2db_url=ili_tool_url
-                )
+                f'File "{ili2db_file}" not found. Please download and extract <a href="{ili_tool_url}">{tool_name}</a>.'
             )
             return None
 
@@ -190,9 +181,13 @@ def get_java_path(base_configuration):
             for path in paths:
                 # Include double check as java can be found on different paths
                 # /usr/lib/jvm/java8oracle/bin/java
-                java_paths += [os.path.join(path.replace('"', "").replace("'", ""), "bin", "java")]
+                java_paths += [
+                    os.path.join(path.replace('"', "").replace("'", ""), "bin", "java")
+                ]
                 # C:\ProgramData\Oracle\Java\javapath\java
-                java_paths += [os.path.join(path.replace('"', "").replace("'", ""), "java")]
+                java_paths += [
+                    os.path.join(path.replace('"', "").replace("'", ""), "java")
+                ]
 
         if platform.system() == "Windows":
             java_path = which("java.exe")
@@ -291,7 +286,9 @@ def is_version_valid(
         return False
 
     current_version_splitted = current_version.split(".")
-    if len(current_version_splitted) < 4:  # We could need 4 places for our custom plugin versions
+    if (
+        len(current_version_splitted) < 4
+    ):  # We could need 4 places for our custom plugin versions
         current_version_splitted = current_version_splitted + ["0", "0", "0", "0"]
         current_version_splitted = current_version_splitted[:4]
 
@@ -312,7 +309,9 @@ def is_version_valid(
         for i in range(len(current_version_splitted)):
             if int(current_version_splitted[i]) < int(min_required_version_splitted[i]):
                 return False
-            elif int(current_version_splitted[i]) > int(min_required_version_splitted[i]):
+            elif int(current_version_splitted[i]) > int(
+                min_required_version_splitted[i]
+            ):
                 return True
 
     return True
@@ -347,13 +346,6 @@ class JavaNotFoundError(FileNotFoundError):
     @property
     def error_string(self):
         if self.java_version:
-            return 'Wrong java version found. Model Baker requires at least java version 8. Please <a href="{}">install Java</a> and or <a href="{}">configure a custom java path</a>.<br/><br/>Java Version:<br/>{}'.format(
-                JavaNotFoundError.JAVA_DOWNLOAD_URL,
-                JavaNotFoundError.PLUGIN_CONFIGURATION_URL,
-                self.html_java_version,
-            )
+            return f'Wrong java version found. Model Baker requires at least java version 8. Please <a href="{JavaNotFoundError.JAVA_DOWNLOAD_URL}">install Java</a> and or <a href="{JavaNotFoundError.PLUGIN_CONFIGURATION_URL}">configure a custom java path</a>.<br/><br/>Java Version:<br/>{self.html_java_version}'
         else:
-            return 'Java 8 could not be found. Please <a href="{}">install Java</a> and or <a href="{}">configure a custom java path</a>.'.format(
-                JavaNotFoundError.JAVA_DOWNLOAD_URL,
-                JavaNotFoundError.PLUGIN_CONFIGURATION_URL,
-            )
+            return f'Java 8 could not be found. Please <a href="{JavaNotFoundError.JAVA_DOWNLOAD_URL}">install Java</a> and or <a href="{JavaNotFoundError.PLUGIN_CONFIGURATION_URL}">configure a custom java path</a>.'

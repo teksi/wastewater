@@ -4,7 +4,9 @@ from pirogue.utils import insert_command, select_columns, table_parts, update_co
 
 
 def extra_cols(
-    connection: psycopg.Connection, extra_definition: dict = {}, skip_prefix: bool = False
+    connection: psycopg.Connection,
+    extra_definition: dict = {},
+    skip_prefix: bool = False,
 ):
     if extra_definition:
         str = ", " + "\n    ,".join(

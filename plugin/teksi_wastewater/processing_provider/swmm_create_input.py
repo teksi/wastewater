@@ -125,7 +125,9 @@ class SwmmCreateInputAlgorithm(TwwAlgorithm):
         # init params
         database = self.parameterAsString(parameters, self.DATABASE, context)
         state = self.parameterAsString(parameters, self.STATE, context)
-        template_inp_file = self.parameterAsFile(parameters, self.TEMPLATE_INP_FILE, context)
+        template_inp_file = self.parameterAsFile(
+            parameters, self.TEMPLATE_INP_FILE, context
+        )
         inp_file = self.parameterAsFileOutput(parameters, self.INP_FILE, context)
         state = self.stateOptions[int(state)]
         if state not in ["current", "planned"]:

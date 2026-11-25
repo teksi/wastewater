@@ -102,7 +102,9 @@ class ModelInterlisAG96(ModelBase):
             __tablename__ = "bautenausserhalbbaugebiet_text"
             __table_args__ = {"schema": config.ABWASSER_SCHEMA}
 
-        ModelInterlisAG96.bautenausserhalbbaugebiet_text = bautenausserhalbbaugebiet_text
+        ModelInterlisAG96.bautenausserhalbbaugebiet_text = (
+            bautenausserhalbbaugebiet_text
+        )
 
         class einzugsgebiet_text(sia405_textpos):
             __tablename__ = "einzugsgebiet_text"

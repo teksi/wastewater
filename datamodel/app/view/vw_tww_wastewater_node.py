@@ -18,7 +18,9 @@ from .utils.extra_definition_utils import (
 
 
 def vw_tww_wastewater_node(
-    connection: psycopg.Connection, srid: psycopg.sql.Literal, extra_definition: dict = None
+    connection: psycopg.Connection,
+    srid: psycopg.sql.Literal,
+    extra_definition: dict = None,
 ):
     """
     Creates tww_wastewater_node view
@@ -69,7 +71,9 @@ def vw_tww_wastewater_node(
             table_alias="ne",
             remove_pkey=True,
         ),
-        extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
+        extra_joins=extra_joins(
+            connection=connection, extra_definition=extra_definition
+        ),
     )
 
     cursor.execute(view_sql)
@@ -104,7 +108,9 @@ def vw_tww_wastewater_node(
             table_alias="wn",
             pkey="obj_id",
         ),
-        insert_extra=insert_extra(connection=connection, extra_definition=extra_definition),
+        insert_extra=insert_extra(
+            connection=connection, extra_definition=extra_definition
+        ),
     )
 
     cursor.execute(trigger_insert_sql)
@@ -197,7 +203,9 @@ def vw_tww_wastewater_node(
             table_name="wastewater_networkelement",
             table_alias="ne",
         ),
-        update_extra=update_extra(connection=connection, extra_definition=extra_definition),
+        update_extra=update_extra(
+            connection=connection, extra_definition=extra_definition
+        ),
     )
 
     cursor.execute(update_trigger_sql)
@@ -239,7 +247,9 @@ if __name__ == "__main__":
     args = parser.parse_args()
     srid = args.srid or os.getenv("SRID")
     pg_service = args.pg_service or os.getenv("PGSERVICE")
-    extra_definition = safe_load(open(args.extra_definition)) if args.extra_definition else {}
+    extra_definition = (
+        safe_load(open(args.extra_definition)) if args.extra_definition else {}
+    )
     with psycopg.connect(f"service={pg_service}") as conn:
         vw_tww_wastewater_node(
             connection=conn,

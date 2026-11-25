@@ -19,7 +19,9 @@ from .utils.extra_definition_utils import (
 
 
 def vw_tww_log_card(
-    connection: psycopg.Connection, srid: psycopg.sql.Literal, extra_definition: dict = None
+    connection: psycopg.Connection,
+    srid: psycopg.sql.Literal,
+    extra_definition: dict = None,
 ):
     """
     Creates tww_log_card view
@@ -71,9 +73,12 @@ def vw_tww_log_card(
         extra_cols=(
             ""
             if not extra_definition
-            else ", " + extra_cols(connection=connection, extra_definition=extra_definition)
+            else ", "
+            + extra_cols(connection=connection, extra_definition=extra_definition)
         ),
-        extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
+        extra_joins=extra_joins(
+            connection=connection, extra_definition=extra_definition
+        ),
     )
 
     view_sql = psycopg.sql.SQL(view_sql).format(srid=psycopg.sql.Literal(srid))
@@ -106,7 +111,9 @@ def vw_tww_log_card(
             remove_pkey=False,
             indent=2,
         ),
-        insert_extra=insert_extra(connection=connection, extra_definition=extra_definition),
+        insert_extra=insert_extra(
+            connection=connection, extra_definition=extra_definition
+        ),
     )
 
     trigger_insert_sql = psycopg.sql.SQL(trigger_insert_sql)
@@ -144,7 +151,9 @@ def vw_tww_log_card(
             remove_pkey=False,
             indent=6,
         ),
-        update_extra=update_extra(connection=connection, extra_definition=extra_definition),
+        update_extra=update_extra(
+            connection=connection, extra_definition=extra_definition
+        ),
     )
 
     update_trigger_sql = psycopg.sql.SQL(update_trigger_sql)

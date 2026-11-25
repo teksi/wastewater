@@ -76,7 +76,9 @@ class Editor:
             self._tree_widget_item = QTreeWidgetItem()
             self._tree_widget_item.setCheckState(
                 self.main_dialog.Columns.NAME,
-                Qt.CheckState.Checked if self.initially_checked() else Qt.CheckState.Unchecked,
+                Qt.CheckState.Checked
+                if self.initially_checked()
+                else Qt.CheckState.Unchecked,
             )
 
         disp_id = str(
@@ -115,7 +117,9 @@ class Editor:
                 pass
 
             self._widget = BaseWidget()
-            loadUi(os.path.join(os.path.dirname(__file__), self.widget_name), self._widget)
+            loadUi(
+                os.path.join(os.path.dirname(__file__), self.widget_name), self._widget
+            )
             self.init_widget()
         return self._widget
 

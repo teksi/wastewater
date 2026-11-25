@@ -49,9 +49,14 @@ class TestNetwork(unittest.TestCase, DbTestBase):
         """
         Helper function that makes a manhole, returns (obj_id, wn_obj_id)
         """
-        manhole = {"identifier": identifier, "situation3d_geometry": self.make_point_2d(x, y)}
+        manhole = {
+            "identifier": identifier,
+            "situation3d_geometry": self.make_point_2d(x, y),
+        }
         manhole_id = self.insert("vw_tww_wastewater_structure", manhole)
-        manhole_wn_id = self.select("vw_tww_wastewater_structure", manhole_id)["wn_obj_id"]
+        manhole_wn_id = self.select("vw_tww_wastewater_structure", manhole_id)[
+            "wn_obj_id"
+        ]
         return manhole_id, manhole_wn_id
 
     def connect_reach(self, reach_id, from_id=None, to_id=None):

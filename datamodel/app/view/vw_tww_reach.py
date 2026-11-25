@@ -150,7 +150,9 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
             indent=4,
             skip_columns=["situation3d_geometry"],
         ),
-        extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
+        extra_joins=extra_joins(
+            connection=connection, extra_definition=extra_definition
+        ),
     )
 
     cursor.execute(view_sql)
@@ -264,7 +266,9 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
                 "fk_reach_point_to": "NEW.rp_to_obj_id",
             },
         ),
-        insert_extra=insert_extra(connection=connection, extra_definition=extra_definition),
+        insert_extra=insert_extra(
+            connection=connection, extra_definition=extra_definition
+        ),
     )
     cursor.execute(trigger_insert_sql)
 
@@ -346,7 +350,9 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
             prefix="rp_from_",
             remove_pkey=True,
             indent=6,
-            update_values={"situation3d_geometry": "ST_StartPoint(NEW.progression3d_geometry)"},
+            update_values={
+                "situation3d_geometry": "ST_StartPoint(NEW.progression3d_geometry)"
+            },
         ),
         rp_to=update_command(
             connection=connection,
@@ -355,7 +361,9 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
             prefix="rp_to_",
             remove_pkey=True,
             indent=6,
-            update_values={"situation3d_geometry": "ST_EndPoint(NEW.progression3d_geometry)"},
+            update_values={
+                "situation3d_geometry": "ST_EndPoint(NEW.progression3d_geometry)"
+            },
         ),
         ch=update_command(
             connection=connection,
@@ -400,7 +408,9 @@ def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
             indent=6,
             skip_columns=["fk_reach_point_to", "fk_reach_point_from"],
         ),
-        update_extra=update_extra(connection=connection, extra_definition=extra_definition),
+        update_extra=update_extra(
+            connection=connection, extra_definition=extra_definition
+        ),
     )
     cursor.execute(trigger_update_sql)
 
