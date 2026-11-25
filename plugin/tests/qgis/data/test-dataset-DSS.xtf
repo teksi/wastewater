@@ -106035,6 +106035,7 @@
 				<Steuerung_Fernwirkung>keine_Steuerung</Steuerung_Fernwirkung>
 				<PAA_KnotenRef REF="ch080qwzAK000037"/>
 				<!-- <HauptbauwerkRef REF="ch080qwzAK001117"/> -->
+				<HauptbauwerkRef REF="ch080qwzSK000004"/>
 				<BueroRef REF="ch080qwzPR000020"/>
 				<Naechstes_SBWRef REF="ch080qwzSK000001"/>
 				<StandortgemeindeRef REF="ch080qwzGE000002"/>

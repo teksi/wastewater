@@ -5,23 +5,25 @@ Editing of existing data
 
 This represents a guide on how to edit existing data in TWW.
 
-Demo project (chapter / pictures not adjusted to TWW)
------------------------------------------------------
+Demo project
+------------
 
-* Make sure you have imported the demo project with pgAdmin (see the :ref:`database-initialization` chapter)
+* Make sure you have imported the demo project with TMMT (see the :ref:`database-initialization` chapter)
+
 * Open the demo project by going to the main menu and press **Project** --> **Open**  or by pressing ``CTRL``
   + ``O`` at the same time.
 
-.. figure:: images/tww_demoproject_old_selection_.jpg
+.. versionchanged:: 2027.0
+
+.. figure:: images/tww_demoproject.png
    :scale: 50 %
 
-* Login to the database
-
-.. figure:: images/tww_demoproject_old_login.jpg
 
 * You should now have the demo project loaded
 
-.. figure:: images/tww_demoproject_old_overview.jpg
+.. versionchanged:: 2027.0
+
+.. figure:: images/tww_demoproject_overview.png
 
 * The project consists of different layers. Depending on your task what to edit or add you choose the layer.
 
@@ -62,12 +64,15 @@ Synchronize Identifiers of Manholes
 
 .. versionadded:: 2026.0
 
-This feature adapts the synchronization of identifiers, following the idea that identifiers are not null.
+This feature adapts the synchronization of identifiers, following the idea that identifiers should never be null.
 
 For Wastewater structure / Cover / Wastewater nodes, they are kept in sync:
 
-    insert: if only main is provided, all 3 get the same value
-    update: if they were the same and the main changes => all changes
+    INSERT
+		if only main is provided, all 3 get the same value
+
+    UPDATE
+		if they were the same and the main changes => all changes
 
 Implemented behavior for covers:
 
@@ -82,7 +87,7 @@ Implemented behavior for covers:
             if cover with same identifier doesn't exist, then it's created
             if cover with same identifier already exist with identifier, no creation + notification
 
-Plus in general, if there is no cover data, no cover is created
+Plus in general, if there is no cover data, no cover is created.
 
 
 Changing attributes of linear elements (channels)

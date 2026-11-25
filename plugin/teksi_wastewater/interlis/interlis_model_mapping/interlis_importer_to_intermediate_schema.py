@@ -1957,6 +1957,7 @@ class InterlisImporterToIntermediateSchema:
                 ),
                 person_in_charge=row.sachbearbeiter,
                 remark=row.bemerkung,
+                fk_main_structure=self.get_pk(row.hauptbauwerkref__REL),
                 fk_pwwf_wastewater_node=self.get_pk(row.paa_knotenref__REL),
                 fk_agency=row.bueroref,
                 fk_location_municipality=row.standortgemeinderef,
