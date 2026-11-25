@@ -126,7 +126,7 @@ class SnapReachAlgorithm(TwwAlgorithm):
                 feedback.setProgress(current_feature * 100.0 / feature_count)
 
             self.processFeatures(reaches, reach_layer, wastewater_node_layer, distance)
-        except:
+        except Exception:
             reach_layer.destroyEditCommand()
             raise
         reach_layer.endEditCommand()
