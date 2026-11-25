@@ -753,7 +753,7 @@ class TeksiWastewaterPlugin:
                 self.iface.messageBar().pushMessage(
                     "Error",
                     "Could not load Interlis exporter due to unmet dependencies.",
-                    showMore=f"Error details:\n{str(e)}",
+                    showMore=f"Error details:\n{e!s}",
                     level=Qgis.Critical,
                 )
                 self.logger.error(str(e))
@@ -763,7 +763,7 @@ class TeksiWastewaterPlugin:
                 self.iface.messageBar().pushMessage(
                     "Error",
                     "Could not load Interlis exporter due to missing Java.",
-                    showMore=f"Error details:\n{str(e)}",
+                    showMore=f"Error details:\n{e!s}",
                     level=Qgis.Critical,
                 )
                 self.logger.error(str(e))
@@ -805,7 +805,7 @@ class TeksiWastewaterPlugin:
                 self.iface.messageBar().pushMessage(
                     "Error",
                     "Could not load Interlis importer due to unmet dependencies.",
-                    showMore=f"Error details:\n{str(e)}",
+                    showMore=f"Error details:\n{e!s}",
                     level=Qgis.Critical,
                 )
                 self.logger.error(str(e))
@@ -815,7 +815,7 @@ class TeksiWastewaterPlugin:
                 self.iface.messageBar().pushMessage(
                     "Error",
                     "Could not load Interlis importer due to missing Java.",
-                    showMore=f"Error details:\n{str(e)}",
+                    showMore=f"Error details:\n{e!s}",
                     level=Qgis.Critical,
                 )
                 self.logger.error(str(e))

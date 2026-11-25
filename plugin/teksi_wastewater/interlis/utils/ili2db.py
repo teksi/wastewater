@@ -161,7 +161,9 @@ class InterlisTools:
 
         namespace = get_namespace(root)
 
-        model_elements = root.findall("./{0}HEADERSECTION/{0}MODELS/{0}MODEL".format(namespace))
+        model_elements = root.findall(
+            f"./{namespace}HEADERSECTION/{namespace}MODELS/{namespace}MODEL"
+        )
 
         if not model_elements:
             raise InterlisToolsException(f"Couldn't find any model into '{xtf_file}'")

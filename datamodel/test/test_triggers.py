@@ -43,9 +43,9 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         self.update_check("structure_part", row, obj_id, schema="tww_od")
 
         row = self.select("structure_part", obj_id, schema="tww_od")
-        assert (
-            last_mod != row["last_modification"]
-        ), "Last modification not set on update (still {})".format(row["last_modification"])
+        assert last_mod != row["last_modification"], (
+            "Last modification not set on update (still {})".format(row["last_modification"])
+        )
 
         last_mod = row["last_modification"]
 
@@ -54,10 +54,10 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         self.update_check("cover", row, obj_id, schema="tww_od")
 
         row = self.select("structure_part", obj_id, schema="tww_od")
-        assert (
-            last_mod != row["last_modification"]
-        ), "Last modification not set on update of child table (still {})".format(
-            row["last_modification"]
+        assert last_mod != row["last_modification"], (
+            "Last modification not set on update of child table (still {})".format(
+                row["last_modification"]
+            )
         )
 
     def test_identifier(self):
@@ -82,7 +82,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
             print(r)
 
         identifier = row["identifier"]
-        assert identifier, f"Identifier not set on insert: {repr(identifier)}"
+        assert identifier, f"Identifier not set on insert: {identifier!r}"
 
     def test_labels(self):
         strct_id = None
@@ -90,10 +90,8 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         def check_values(expected_values_for_field):
             row = self.select("vw_tww_wastewater_structure", strct_id)
             for field, expected_value in expected_values_for_field.items():
-                assert (
-                    row[field] == expected_value
-                ), "Field {} is incorrect: {} instead of {}".format(
-                    field, repr(row[field]), repr(expected_value)
+                assert row[field] == expected_value, (
+                    f"Field {field} is incorrect: {row[field]!r} instead of {expected_value!r}"
                 )
 
         # Test label generation on insert
@@ -254,15 +252,13 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         def check_values(table, obj_id, expected_values_for_field):
             row = self.select(table, obj_id)
             for field, expected_value in expected_values_for_field.items():
-                assert (
-                    field in row
-                ), "Field {} not present in results ! Available fields are {}".format(
-                    field, ", ".join(row.keys())
+                assert field in row, (
+                    "Field {} not present in results ! Available fields are {}".format(
+                        field, ", ".join(row.keys())
+                    )
                 )
-                assert (
-                    row[field] == expected_value
-                ), "Field {} is incorrect: {} instead of {}".format(
-                    field, repr(row[field]), repr(expected_value)
+                assert row[field] == expected_value, (
+                    f"Field {field} is incorrect: {row[field]!r} instead of {expected_value!r}"
                 )
 
         strct_from_id = self.insert(

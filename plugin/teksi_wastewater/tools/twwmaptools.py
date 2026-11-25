@@ -687,8 +687,9 @@ class TwwMapToolConnectNetworkElements(QgsMapTool):
                         "name": QCoreApplication.translate(
                             "TwwMapToolConnectNetworkElements", "Reach Point From"
                         ),
-                        "filter": lambda source, target: target.layer()
-                        != TwwLayerManager.layer("vw_tww_reach"),
+                        "filter": lambda source, target: (
+                            target.layer() != TwwLayerManager.layer("vw_tww_reach")
+                        ),
                         "is_checked": lambda source, target: is_closer_to_start_of_edge(
                             source, target
                         ),
@@ -698,8 +699,8 @@ class TwwMapToolConnectNetworkElements(QgsMapTool):
                         "name": QCoreApplication.translate(
                             "TwwMapToolConnectNetworkElements", "Reach Point To"
                         ),
-                        "is_checked": lambda source, target: not is_closer_to_start_of_edge(
-                            source, target
+                        "is_checked": lambda source, target: (
+                            not is_closer_to_start_of_edge(source, target)
                         ),
                     },
                 ],

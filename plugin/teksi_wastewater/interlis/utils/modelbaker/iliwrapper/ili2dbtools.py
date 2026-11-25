@@ -42,16 +42,10 @@ def get_tool_version(tool, db_ili_version):
 
 def get_tool_url(tool, db_ili_version):
     if tool == DbIliMode.ili2gpkg:
-        return "https://downloads.interlis.ch/ili2gpkg/ili2gpkg-{version}.zip".format(
-            version=get_tool_version(tool, db_ili_version)
-        )
+        return f"https://downloads.interlis.ch/ili2gpkg/ili2gpkg-{get_tool_version(tool, db_ili_version)}.zip"
     elif tool == DbIliMode.ili2pg:
-        return "https://downloads.interlis.ch/ili2pg/ili2pg-{version}.zip".format(
-            version=get_tool_version(tool, db_ili_version)
-        )
+        return f"https://downloads.interlis.ch/ili2pg/ili2pg-{get_tool_version(tool, db_ili_version)}.zip"
     elif tool == DbIliMode.ili2mssql:
-        return "https://downloads.interlis.ch/ili2mssql/ili2mssql-{version}.zip".format(
-            version=get_tool_version(tool, db_ili_version)
-        )
+        return f"https://downloads.interlis.ch/ili2mssql/ili2mssql-{get_tool_version(tool, db_ili_version)}.zip"
 
     return ""

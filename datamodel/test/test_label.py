@@ -26,9 +26,7 @@ class TestViews(unittest.TestCase, DbTestBase):
                 "identifier": manhole,
                 "ws_type": "manhole",
                 "situation3d_geometry": self.execute(
-                    "ST_SetSRID(ST_GeomFromText('POINT({x} {y})'), 2056)".format(
-                        x=coords[0], y=coords[1]
-                    )
+                    f"ST_SetSRID(ST_GeomFromText('POINT({coords[0]} {coords[1]})'), 2056)"
                 ),
             }
             manholes[manhole]["obj_id"] = self.insert("vw_tww_wastewater_structure", row)

@@ -66,8 +66,7 @@ def get_pgconf_as_ili_args() -> list[str]:
         dbparams_path = os.path.join(tempfile.gettempdir(), str(uuid.uuid4()))
         os.makedirs(dbparams_path, exist_ok=True)
         with open(os.path.join(dbparams_path, "dbparams.txt"), "w") as f:
-            for param in dbparams:
-                f.write(param + "\n")
+            f.writelines(param + "\n" for param in dbparams)
         args.extend(["--dbparams", '"' + os.path.join(dbparams_path, "dbparams.txt") + '"'])
     if not pgconf["user"]:
         # only import now to facilitate imports without QGIS

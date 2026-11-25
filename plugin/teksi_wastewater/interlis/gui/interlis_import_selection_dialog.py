@@ -21,7 +21,6 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "..", ".."))
 
 
 class InterlisImportSelectionDialog(QDialog):
-
     class Columns(IntEnum):
         NAME = 0
         STATE = 1
@@ -205,7 +204,6 @@ class InterlisImportSelectionDialog(QDialog):
                 treeWidgetItemAttribute.setText(self.ColumnsDebug.VALUE, f"{val}")
 
             if editor.status == Editor.MODIFIED:
-
                 history = get_history(editor.obj, attribute.key)
 
                 value_old = None

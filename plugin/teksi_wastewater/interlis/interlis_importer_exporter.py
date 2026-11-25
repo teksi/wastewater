@@ -41,7 +41,6 @@ from .utils.various import (
 
 
 class InterlisImporterExporter:
-
     def __init__(self, progress_done_callback=None):
         self.progress_done_callback = progress_done_callback
         self.interlisTools = InterlisTools()

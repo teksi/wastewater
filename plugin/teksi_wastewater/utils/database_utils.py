@@ -34,7 +34,6 @@ class DatabaseConfig:
 
 
 class DatabaseUtils:
-
     databaseConfig = DatabaseConfig()
 
     class PsycopgConnection:
@@ -547,7 +546,6 @@ class TWWIntegrityChecker:
             condition_parts = []
             params = []
             if check_str:
-
                 condition_parts.append(
                     DatabaseUtils.compose_sql(
                         "{column_name} = %s",

@@ -64,7 +64,7 @@ def get_ili2db_bin(tool, db_ili_version, stdout, stderr):
             dir_path,
             "bin",
             ili2db_dir,
-            "{tool}-{version}/{tool}.jar".format(tool=tool_name, version=ili_tool_version),
+            f"{tool_name}-{ili_tool_version}/{tool_name}.jar",
         )
 
     if not os.path.isfile(ili2db_file):
@@ -86,12 +86,7 @@ def get_ili2db_bin(tool, db_ili_version, stdout, stderr):
             )
         except NetworkError as e:
             stderr.emit(
-                'Could not download {tool_name}\n\n  Error: {error}\n\nFile "{file}" not found. Please download and extract <a href="{ili2db_url}">{tool_name}</a>'.format(
-                    tool_name=tool_name,
-                    ili2db_url=ili_tool_url,
-                    error=e.msg,
-                    file=ili2db_file,
-                )
+                f'Could not download {tool_name}\n\n  Error: {e.msg}\n\nFile "{ili2db_file}" not found. Please download and extract <a href="{ili_tool_url}">{tool_name}</a>'
             )
             return None
 
@@ -104,9 +99,7 @@ def get_ili2db_bin(tool, db_ili_version, stdout, stderr):
 
         if not os.path.isfile(ili2db_file):
             stderr.emit(
-                'File "{file}" not found. Please download and extract <a href="{ili2db_url}">{tool_name}</a>.'.format(
-                    tool_name=tool_name, file=ili2db_file, ili2db_url=ili_tool_url
-                )
+                f'File "{ili2db_file}" not found. Please download and extract <a href="{ili_tool_url}">{tool_name}</a>.'
             )
             return None
 
@@ -347,13 +340,6 @@ class JavaNotFoundError(FileNotFoundError):
     @property
     def error_string(self):
         if self.java_version:
-            return 'Wrong java version found. Model Baker requires at least java version 8. Please <a href="{}">install Java</a> and or <a href="{}">configure a custom java path</a>.<br/><br/>Java Version:<br/>{}'.format(
-                JavaNotFoundError.JAVA_DOWNLOAD_URL,
-                JavaNotFoundError.PLUGIN_CONFIGURATION_URL,
-                self.html_java_version,
-            )
+            return f'Wrong java version found. Model Baker requires at least java version 8. Please <a href="{JavaNotFoundError.JAVA_DOWNLOAD_URL}">install Java</a> and or <a href="{JavaNotFoundError.PLUGIN_CONFIGURATION_URL}">configure a custom java path</a>.<br/><br/>Java Version:<br/>{self.html_java_version}'
         else:
-            return 'Java 8 could not be found. Please <a href="{}">install Java</a> and or <a href="{}">configure a custom java path</a>.'.format(
-                JavaNotFoundError.JAVA_DOWNLOAD_URL,
-                JavaNotFoundError.PLUGIN_CONFIGURATION_URL,
-            )
+            return f'Java 8 could not be found. Please <a href="{JavaNotFoundError.JAVA_DOWNLOAD_URL}">install Java</a> and or <a href="{JavaNotFoundError.PLUGIN_CONFIGURATION_URL}">configure a custom java path</a>.'

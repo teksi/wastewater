@@ -488,7 +488,7 @@ class TwwMapToolRectangularGeometryBase(QgsMapToolAdvancedDigitizing):
         reply = QMessageBox.question(
             self.iface.mainWindow(),
             self.tr("Replace geometry"),
-            self.tr("A detailed geometry already exists.\n\n" "Do you want to replace it?"),
+            self.tr("A detailed geometry already exists.\n\nDo you want to replace it?"),
             QMessageBox.Yes | QMessageBox.No,
         )
 
@@ -561,7 +561,6 @@ class TwwMapToolRectangularGeometryBase(QgsMapToolAdvancedDigitizing):
         self.snapping_configs = []
 
         for layer in layers:
-
             config = QgsSnappingConfig()
             config.setEnabled(True)
             config.setMode(QgsSnappingConfig.AdvancedConfiguration)
@@ -583,7 +582,6 @@ class TwwMapToolRectangularGeometryBase(QgsMapToolAdvancedDigitizing):
     def snap(self, event):
 
         for config in self.snapping_configs:
-
             self.snapping_utils.setConfig(config)
 
             match = self.snapping_utils.snapToMap(QgsPointXY(event.originalMapPoint()))
@@ -601,7 +599,6 @@ class TwwMapToolRectangularGeometryBase(QgsMapToolAdvancedDigitizing):
     def updateSnapMarker(self, match):
 
         if not match.isValid():
-
             if self.snapping_marker is not None:
                 self.canvas.scene().removeItem(self.snapping_marker)
                 self.snapping_marker = None
@@ -609,7 +606,6 @@ class TwwMapToolRectangularGeometryBase(QgsMapToolAdvancedDigitizing):
             return
 
         if self.snapping_marker is None:
-
             self.snapping_marker = QgsVertexMarker(self.canvas)
             self.snapping_marker.setPenWidth(3)
             self.snapping_marker.setColor(QColor(Qt.magenta))
@@ -705,7 +701,7 @@ class TwwMapToolDigitizeDrainageChannel(TwwMapToolRectangularGeometryBase):
             QMessageBox.warning(
                 self.iface.mainWindow(),
                 self.tr("Drainage channel"),
-                self.tr("The selected wastewater structure " "has no associated wastewater node."),
+                self.tr("The selected wastewater structure has no associated wastewater node."),
             )
             return
 
@@ -721,9 +717,7 @@ class TwwMapToolDigitizeDrainageChannel(TwwMapToolRectangularGeometryBase):
 
         msgtitle = self.tr("Digitize Drainage Channel")
 
-        msg = self.tr(
-            "Click channel endpoint. " "Hold CTRL for custom width. " "Right click to abort."
-        )
+        msg = self.tr("Click channel endpoint. Hold CTRL for custom width. Right click to abort.")
 
         self.messageBarItem = self.iface.messageBar().createMessage(
             msgtitle,
@@ -743,7 +737,6 @@ class TwwMapToolDigitizeDrainageChannel(TwwMapToolRectangularGeometryBase):
         width = 0.10
 
         if QApplication.keyboardModifiers() & Qt.ControlModifier:
-
             custom_width = self.askWidth("0.20")
 
             if custom_width is None:
@@ -758,7 +751,6 @@ class TwwMapToolDigitizeDrainageChannel(TwwMapToolRectangularGeometryBase):
         )
 
         if self.geometry:
-
             self.geometryDigitized.emit()
 
             self.deactivate()
@@ -816,7 +808,6 @@ class TwwMapToolDigitizeRectangularGeometry(TwwMapToolRectangularGeometryBase):
         self.rubberband.addPoint(point)
 
         if self.firstPoint is None:
-
             self.firstPoint = point
 
             return
@@ -833,7 +824,6 @@ class TwwMapToolDigitizeRectangularGeometry(TwwMapToolRectangularGeometryBase):
         )
 
         if self.geometry:
-
             self.geometryDigitized.emit()
 
             self.deactivate()

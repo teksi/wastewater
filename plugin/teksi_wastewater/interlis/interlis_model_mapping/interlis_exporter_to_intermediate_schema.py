@@ -1731,12 +1731,14 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-            elektromechanischeausruestung = self.model_classes_interlis.elektromechanischeausruestung(
-                **self.structure_part_common(row, "elektromechanischeausruestung"),
-                # --- electromechanical_equipment ---
-                bruttokosten=row.gross_costs,
-                art=self.get_vl(row.kind__REL),
-                ersatzjahr=row.year_of_replacement,
+            elektromechanischeausruestung = (
+                self.model_classes_interlis.elektromechanischeausruestung(
+                    **self.structure_part_common(row, "elektromechanischeausruestung"),
+                    # --- electromechanical_equipment ---
+                    bruttokosten=row.gross_costs,
+                    art=self.get_vl(row.kind__REL),
+                    ersatzjahr=row.year_of_replacement,
+                )
             )
             self.abwasser_session.add(elektromechanischeausruestung)
             print(".", end="")
@@ -2837,7 +2839,6 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-
             # Before exporting the relation object, check that it use one subclass of maintenance_event
             # supported by DSS
             maintenance_event_obj_id = row.fk_maintenance_event
@@ -2865,14 +2866,16 @@ class InterlisExporterToIntermediateSchema:
             if not dss_supported:
                 continue
 
-            erhaltungsereignis_abwasserbauwerkassoc = self.model_classes_interlis.erhaltungsereignis_abwasserbauwerkassoc(
-                # FIELDS TO MAP TO ABWASSER.erhaltungsereignis_abwasserbauwerkassoc
-                # this class does not inherit vsa_base_common
-                # --- erhaltungsereignis_abwasserbauwerkassoc ---
-                abwasserbauwerkref=self.get_tid(row.fk_wastewater_structure__REL),
-                erhaltungsereignis_abwasserbauwerkassocref=self.get_tid(
-                    row.fk_maintenance_event__REL
-                ),
+            erhaltungsereignis_abwasserbauwerkassoc = (
+                self.model_classes_interlis.erhaltungsereignis_abwasserbauwerkassoc(
+                    # FIELDS TO MAP TO ABWASSER.erhaltungsereignis_abwasserbauwerkassoc
+                    # this class does not inherit vsa_base_common
+                    # --- erhaltungsereignis_abwasserbauwerkassoc ---
+                    abwasserbauwerkref=self.get_tid(row.fk_wastewater_structure__REL),
+                    erhaltungsereignis_abwasserbauwerkassocref=self.get_tid(
+                        row.fk_maintenance_event__REL
+                    ),
+                )
             )
             self.abwasser_session.add(erhaltungsereignis_abwasserbauwerkassoc)
             print(".", end="")
@@ -2892,15 +2895,17 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-            gebaeudegruppe_entsorgungassoc = self.model_classes_interlis.gebaeudegruppe_entsorgungassoc(
-                # FIELDS TO MAP TO ABWASSER.gebaeudegruppe_entsorgungassoc
-                # --- baseclass ---
-                # --- sia405_baseclass ---
-                # this class does not inherit vsa_base_common
-                # **self.vsa_base_common(row, "gebaeudegruppe_entsorgungassoc"),
-                # --- gebaeudegruppe_entsorgungassoc ---
-                entsorgungref=self.get_tid(row.fk_disposal__REL),
-                gebaeudegruppe_entsorgungassocref=self.get_tid(row.fk_building_group__REL),
+            gebaeudegruppe_entsorgungassoc = (
+                self.model_classes_interlis.gebaeudegruppe_entsorgungassoc(
+                    # FIELDS TO MAP TO ABWASSER.gebaeudegruppe_entsorgungassoc
+                    # --- baseclass ---
+                    # --- sia405_baseclass ---
+                    # this class does not inherit vsa_base_common
+                    # **self.vsa_base_common(row, "gebaeudegruppe_entsorgungassoc"),
+                    # --- gebaeudegruppe_entsorgungassoc ---
+                    entsorgungref=self.get_tid(row.fk_disposal__REL),
+                    gebaeudegruppe_entsorgungassocref=self.get_tid(row.fk_building_group__REL),
+                )
             )
             self.abwasser_session.add(gebaeudegruppe_entsorgungassoc)
             print(".", end="")
@@ -2922,15 +2927,17 @@ class InterlisExporterToIntermediateSchema:
         # )
         # logger.info(f"Selection query: {query.statement}")
         for row in query:
-            messstelle_referenzstelleassoc = self.model_classes_interlis.messstelle_referenzstelleassoc(
-                # FIELDS TO MAP TO ABWASSER.messstelle_referenzstelleassoc
-                # --- baseclass ---
-                # --- sia405_baseclass ---
-                # this class does not inherit vsa_base_common
-                # **self.vsa_base_common(row, "messstelle_referenzstelleassoc"),
-                # --- messstelle_referenzstelleassoc ---
-                referenzstelleref=self.get_tid(row.fk_reference_station__REL),
-                messstelle_referenzstelleassocref=self.get_tid(row.fk_measuring_point__REL),
+            messstelle_referenzstelleassoc = (
+                self.model_classes_interlis.messstelle_referenzstelleassoc(
+                    # FIELDS TO MAP TO ABWASSER.messstelle_referenzstelleassoc
+                    # --- baseclass ---
+                    # --- sia405_baseclass ---
+                    # this class does not inherit vsa_base_common
+                    # **self.vsa_base_common(row, "messstelle_referenzstelleassoc"),
+                    # --- messstelle_referenzstelleassoc ---
+                    referenzstelleref=self.get_tid(row.fk_reference_station__REL),
+                    messstelle_referenzstelleassocref=self.get_tid(row.fk_measuring_point__REL),
+                )
             )
             self.abwasser_session.add(messstelle_referenzstelleassoc)
             print(".", end="")
@@ -3053,7 +3060,7 @@ class InterlisExporterToIntermediateSchema:
             # logger.info(f"check_fk_in_subsetid -  Subset ID's '{self.subset}'")
             logger.info(f"check_fk_in_subsetid -  Subset ID's '{self.subset_ids}'")
             # get the value of the fk_ attribute as str out of the relation to be able to check whether it is in the subset
-            fremdschluesselstr = getattr(relation, "obj_id")
+            fremdschluesselstr = relation.obj_id
             logger.info(f"check_fk_in_subsetid -  fremdschluesselstr '{fremdschluesselstr}'")
 
             # if fremdschluesselstr in self.subset:
@@ -3398,7 +3405,6 @@ class InterlisExporterToIntermediateSchema:
         labels_count = len(labels["features"])
         logger.debug(f"{labels_count} labels generated")
         if labels_count > 0:
-
             geojson_crs_def = labels["crs"]
 
             for label in labels["features"]:
@@ -3566,33 +3572,11 @@ class InterlisExporterToIntermediateSchema:
                                 bautenausserhalbbaugebietref=t_id,
                             )
 
-                        elif layer_name == "measure_line":
-                            ili_label = self.model_classes_interlis.gepmassnahme_text(
-                                **self._textpos_common(
-                                    label,
-                                    "gepmassnahme_text",
-                                    geojson_crs_def,
-                                    "MX",
-                                    self.oid_prefix,
-                                    plantyp,
-                                ),
-                                gepmassnahmeref=t_id,
-                            )
-
-                        elif layer_name == "measure_point":
-                            ili_label = self.model_classes_interlis.gepmassnahme_text(
-                                **self._textpos_common(
-                                    label,
-                                    "gepmassnahme_text",
-                                    geojson_crs_def,
-                                    "MX",
-                                    self.oid_prefix,
-                                    plantyp,
-                                ),
-                                gepmassnahmeref=t_id,
-                            )
-
-                        elif layer_name == "measure_polygon":
+                        elif (
+                            layer_name == "measure_line"
+                            or layer_name == "measure_point"
+                            or layer_name == "measure_polygon"
+                        ):
                             ili_label = self.model_classes_interlis.gepmassnahme_text(
                                 **self._textpos_common(
                                     label,

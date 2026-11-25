@@ -94,8 +94,12 @@ class SwmmExecuteAlgorithm(TwwAlgorithm):
             # raise GeoAlgorithmExecutionException(
             # 'Swmm command line toom is not configured.\n\
             # Please configure it before running Swmm algorithms.')
-            raise QgsProcessingException(self.tr("Swmm command line tool is not configured.\n\
-                    Please configure it before running Swmm algorithms."))
+            raise QgsProcessingException(
+                self.tr(
+                    "Swmm command line tool is not configured.\n\
+                    Please configure it before running Swmm algorithms."
+                )
+            )
 
         with TwwSwmm(None, None, None, inp_file, None, rpt_file, swmm_cli, feedback) as qs:
             prompt = qs.execute_swmm()
