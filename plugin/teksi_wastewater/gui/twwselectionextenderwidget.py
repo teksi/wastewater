@@ -8,7 +8,6 @@ DOCK_WIDGET_UI = get_ui_class("twwselectionextenderwidget.ui")
 
 
 class TwwSelectionExtenderWidget(QDockWidget, DOCK_WIDGET_UI):
-
     def __init__(self, iface, parent=None):
         super().__init__(parent)
         self.iface = iface

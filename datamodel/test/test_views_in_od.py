@@ -9,7 +9,6 @@ from .utils import DEFAULT_PG_SERVICE
 
 
 class TestOdViews(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         pgservice = os.environ.get("PGSERVICE") or DEFAULT_PG_SERVICE

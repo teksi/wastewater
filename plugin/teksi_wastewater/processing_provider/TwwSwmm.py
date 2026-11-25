@@ -155,12 +155,10 @@ class TwwSwmm:
                 self.feedback.reportError(message)
             else:
                 self.feedback.pushInfo(message)
-        return
 
     def feedback_set_progress(self, progress):
         if self.feedback is not None:
             self.feedback.setProgress(progress)
-        return
 
     def get_swmm_table(self, table_name, state, selected_structures, hierarchy):
         """
@@ -187,15 +185,17 @@ class TwwSwmm:
         elif state == "current":
             where_clauses.append("state = 'current'")
         if selected_structures:
-            where_clauses.append("""
+            where_clauses.append(
+                """
                 obj_id in ('{ids}')
-                """.format(ids="','".join(selected_structures)))
+                """.format(ids="','".join(selected_structures))
+            )
         if hierarchy:
             where_clauses.append(f"""hierarchy = '{hierarchy}'""")
 
-        sql = """
+        sql = f"""
         select * from tww_app.swmm_vw_{table_name}
-        """.format(table_name=table_name)
+        """
         # Add the filters to the sql
         if len(where_clauses) > 0:
             sql = """
@@ -248,7 +248,7 @@ class TwwSwmm:
                     fields += field + "\t"
 
             # Create input paragraph
-            tbl = "[" + table_name + "]\n" ";;" + fields + "\n"
+            tbl = "[" + table_name + "]\n;;" + fields + "\n"
             for feature in data:
                 for i, v in enumerate(feature):
                     # Write description
@@ -291,9 +291,7 @@ class TwwSwmm:
             # The balise options is not found
             self.feedback_push(
                 "info",
-                "There is no {parameter_name} in the template file".format(
-                    parameter_name=parameter_name
-                ),
+                f"There is no {parameter_name} in the template file",
             )
             return ""
         else:
@@ -434,7 +432,6 @@ class TwwSwmm:
             # ----
             f.write(self.swmm_table("TAGS", state, selected_ws_re))
         f.close()
-        return
 
     def extract_time_series_indexes(self):
         """
@@ -655,7 +652,7 @@ class TwwSwmm:
                     m_counter += 1
                     time = self.convert_to_datetime(m["date"] + " " + m["time"]).isoformat()
                     for k in m.keys():
-                        if k in SWMM_RESULTS_PARAMETERS.keys():
+                        if k in SWMM_RESULTS_PARAMETERS:
                             if SWMM_RESULTS_PARAMETERS[k]["recorded"]:
                                 ms_obj_id = self.create_measurement_series(
                                     mp_obj_id,
@@ -669,7 +666,6 @@ class TwwSwmm:
                                     time,
                                     m[k],
                                 )
-        return
 
     def get_full_results(self, start_index, end_index, swmm_type):
         """
@@ -740,8 +736,6 @@ class TwwSwmm:
             "link",
         )
 
-        return
-
     def convert_max_over_full_flow(self, link_summary):
         """
         Convert max_over_full_flow in percent
@@ -768,8 +762,6 @@ class TwwSwmm:
         print("2")
         self.populate_attribute(node_summary, "wastewater_node", "backflow_level", "maximum_hgl")
 
-        return
-
     def import_hydraulic_load(self):
         """
         Import the hydraulic load from an SWMM report file
@@ -783,8 +775,6 @@ class TwwSwmm:
             "hydraulic_load_current",
             "max_over_full_flow",
         )
-
-        return
 
     def record_summary(
         self, data, simulation_start_date, sim_description, measuring_duration, obj_type
@@ -820,7 +810,7 @@ class TwwSwmm:
                     minutes=int(ws["time_max_time"].split(":")[1]),
                 )
                 for k in ws.keys():
-                    if k in SWMM_SUMMARY_PARAMETERS.keys():
+                    if k in SWMM_SUMMARY_PARAMETERS:
                         if SWMM_SUMMARY_PARAMETERS[k]["recorded"]:
                             ms_obj_id = self.create_measurement_series(
                                 mp_obj_id, k, SWMM_SUMMARY_PARAMETERS[k]["dimension"]
@@ -833,7 +823,6 @@ class TwwSwmm:
                                 time,
                                 ws[k],
                             )
-        return
 
     def populate_attribute(self, data, table_name, attribute_name, swmm_attribute):
         """
@@ -854,17 +843,12 @@ class TwwSwmm:
             counter += 1
             bf_level = ws[swmm_attribute]
             obj_id = ws["id"]
-            sql = """
+            sql = f"""
             UPDATE tww_od.{table_name}
             SET {attribute_name} = {bf_level}
             WHERE obj_id = '{obj_id}'
             RETURNING obj_id;
-            """.format(
-                table_name=table_name,
-                attribute_name=attribute_name,
-                bf_level=bf_level,
-                obj_id=obj_id,
-            )
+            """
             try:
                 cur.execute(sql)
             except psycopg.ProgrammingError:
@@ -875,9 +859,7 @@ class TwwSwmm:
             if res is None:
                 self.feedback_push(
                     "info",
-                    """{obj_id} in the output file has no correspondance in tww_od.{table_name}.""".format(
-                        obj_id=obj_id, table_name=table_name
-                    ),
+                    f"""{obj_id} in the output file has no correspondance in tww_od.{table_name}.""",
                 )
             self.feedback_set_progress(counter / ndata)
         self.con.commit()
@@ -901,20 +883,20 @@ class TwwSwmm:
         cur = self.con.cursor()
 
         # Test if the measuring point exists
-        sql = """
+        sql = f"""
         SELECT mp.obj_id
         FROM tww_od.measuring_point mp
         JOIN tww_od.wastewater_structure ws on mp.fk_wastewater_structure = ws.obj_id
         WHERE ws.fk_main_wastewater_node = '{node_obj_id}'
         AND mp.remark = '{sim_description}'
-        """.format(sim_description=sim_description, node_obj_id=node_obj_id)
+        """
         cur.execute(sql)
         res = cur.fetchone()
 
         if res is None:
             # Measuring point doesnt exists, must be created
             # 4594 = technical purpose [TO VALIDATE]
-            sql = """
+            sql = f"""
             INSERT INTO tww_od.measuring_point
             (damming_device, identifier, kind,
             purpose, remark, fk_wastewater_structure)
@@ -923,11 +905,7 @@ class TwwSwmm:
             FROM tww_od.wastewater_structure ws
             WHERE fk_main_wastewater_node = '{node_obj_id}'
             RETURNING obj_id
-            """.format(
-                MEASURING_POINT_KIND=MEASURING_POINT_KIND,
-                node_obj_id=node_obj_id,
-                sim_description=sim_description,
-            )
+            """
             try:
                 cur.execute(sql)
             except psycopg.ProgrammingError:
@@ -962,21 +940,21 @@ class TwwSwmm:
         cur = self.con.cursor()
 
         # Test if the measuring point exists
-        sql = """
+        sql = f"""
         SELECT mp.obj_id
         FROM tww_od.measuring_point mp
         JOIN tww_od.wastewater_networkelement ne ON
         ne.fk_wastewater_structure = mp.fk_wastewater_structure
         WHERE ne.obj_id = '{reach_obj_id}'
         AND mp.remark = '{sim_description}'
-        """.format(sim_description=sim_description, reach_obj_id=reach_obj_id)
+        """
         cur.execute(sql)
         res = cur.fetchone()
 
         if res is None:
             # Measuring point doesnt exists, must be created
             # 4594 = technical purpose [TO VALIDATE]
-            sql = """
+            sql = f"""
             INSERT INTO tww_od.measuring_point
             (damming_device, identifier, kind, purpose, remark,
             fk_wastewater_structure)
@@ -985,11 +963,7 @@ class TwwSwmm:
             FROM tww_od.wastewater_networkelement ne
             WHERE ne.obj_id = '{reach_obj_id}'
             RETURNING obj_id
-            """.format(
-                MEASURING_POINT_KIND=MEASURING_POINT_KIND,
-                sim_description=sim_description,
-                reach_obj_id=reach_obj_id,
-            )
+            """
             try:
                 cur.execute(sql)
             except psycopg.ProgrammingError:
@@ -1019,24 +993,24 @@ class TwwSwmm:
         cur = self.con.cursor()
 
         # Test if the measuring device exists
-        sql = """
+        sql = f"""
         SELECT md.obj_id
         FROM tww_od.measuring_device md
         WHERE md.fk_measuring_point = '{mp_obj_id}'
         AND remark = '{MEASURING_DEVICE_REMARK}'
-        """.format(MEASURING_DEVICE_REMARK=MEASURING_DEVICE_REMARK, mp_obj_id=mp_obj_id)
+        """
         cur.execute(sql)
         res = cur.fetchone()
 
         if res is None:
             # Measuring device doesnt exists, must be created
-            sql = """
+            sql = f"""
             INSERT INTO tww_od.measuring_device
             (kind, remark, fk_measuring_point)
             VALUES
             (5702, '{MEASURING_DEVICE_REMARK}','{mp_obj_id}')
             RETURNING obj_id
-            """.format(MEASURING_DEVICE_REMARK=MEASURING_DEVICE_REMARK, mp_obj_id=mp_obj_id)
+            """
             try:
                 cur.execute(sql)
             except psycopg.ProgrammingError:
@@ -1072,11 +1046,11 @@ class TwwSwmm:
         cur = self.con.cursor()
 
         # Test if the measurement serie exists
-        sql = """
+        sql = f"""
         SELECT obj_id FROM tww_od.measurement_series
         WHERE remark = '{parameter_name}'
         AND fk_measuring_point = '{mp_obj_id}'
-        """.format(parameter_name=parameter_name, mp_obj_id=mp_obj_id)
+        """
         cur.execute(sql)
         res = cur.fetchone()
 
@@ -1085,18 +1059,14 @@ class TwwSwmm:
             # 3217 = other [TO VALIDATE]
             # No dimension, else we would need to create four measurements
             # series l/s m/s m - [TO VALIDATE]
-            sql = """
+            sql = f"""
             INSERT INTO tww_od.measurement_series
             (identifier, dimension, kind, remark, fk_measuring_point)
             VALUES
             (null, '{parameter_dimension}', 3217,
             '{parameter_name}', '{mp_obj_id}')
             RETURNING obj_id
-            """.format(
-                parameter_dimension=parameter_dimension,
-                parameter_name=parameter_name,
-                mp_obj_id=mp_obj_id,
-            )
+            """
 
             try:
                 cur.execute(sql)
@@ -1133,12 +1103,12 @@ class TwwSwmm:
         cur = self.con.cursor()
 
         # Test if the measurement result exists (same measurement serie, same time, same type)
-        sql = """
+        sql = f"""
         SELECT obj_id FROM tww_od.measurement_result
         WHERE fk_measurement_series = '{ms_obj_id}'
         AND time = '{time}'
         AND measurement_type = {measurement_type}
-        """.format(ms_obj_id=ms_obj_id, time=time, measurement_type=measurement_type)
+        """
         try:
             cur.execute(sql)
         except psycopg.ProgrammingError:
@@ -1150,20 +1120,14 @@ class TwwSwmm:
         if res is None:
             # Measurement result doesnt exists, must be created
 
-            sql = """
+            sql = f"""
             INSERT INTO tww_od.measurement_result
             (identifier, measurement_type, measuring_duration,
             time, value, fk_measurement_series)
             VALUES
             (null, {measurement_type}, {measuring_duration}, '{time}', {value}, '{ms_obj_id}')
             RETURNING obj_id
-            """.format(
-                measurement_type=measurement_type,
-                measuring_duration=measuring_duration,
-                time=time,
-                value=value,
-                ms_obj_id=ms_obj_id,
-            )
+            """
 
             try:
                 cur.execute(sql)
@@ -1176,12 +1140,12 @@ class TwwSwmm:
         else:
             mr_obj_id = res[0]
             # Measurement result exists, must be updated
-            sql = """
+            sql = f"""
             UPDATE tww_od.measurement_result
             SET measuring_duration={measuring_duration}, value={value}
             WHERE obj_id = '{mr_obj_id}'
             RETURNING obj_id
-            """.format(measuring_duration=measuring_duration, value=value, mr_obj_id=mr_obj_id)
+            """
             try:
                 cur.execute(sql)
             except psycopg.ProgrammingError:
@@ -1209,7 +1173,7 @@ class TwwSwmm:
         except psycopg.ProgrammingError:
             self.feedback_push("error", f"Error while excecuting: {sql}")
             self.feedback_push("error", (str(psycopg.ProgrammingError)))
-            return None
+            return
         self.con.commit()
         del cur
         return
@@ -1230,7 +1194,7 @@ class TwwSwmm:
         except psycopg.ProgrammingError:
             self.feedback_push("error", f"Error while excecuting: {sql}")
             self.feedback_push("error", (str(psycopg.ProgrammingError)))
-            return None
+            return
         self.con.commit()
         del cur
         return
@@ -1254,7 +1218,7 @@ class TwwSwmm:
         except psycopg.ProgrammingError:
             self.feedback_push("error", f"Error while excecuting: {sql}")
             self.feedback_push("error", (str(psycopg.ProgrammingError)))
-            return None
+            return
         self.con.commit()
         del cur
         return
@@ -1278,7 +1242,7 @@ class TwwSwmm:
         except psycopg.ProgrammingError:
             self.feedback_push("error", f"Error while excecuting: {sql}")
             self.feedback_push("error", (str(psycopg.ProgrammingError)))
-            return None
+            return
         self.con.commit()
         del cur
         return

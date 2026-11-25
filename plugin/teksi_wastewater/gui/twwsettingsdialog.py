@@ -28,6 +28,7 @@ from qgis.core import QgsProject
 from qgis.PyQt.QtCore import QSettings, pyqtSlot
 from qgis.PyQt.QtGui import QColor
 from qgis.PyQt.QtWidgets import QDialog, QFileDialog
+
 from teksi_wastewater.utils.database_utils import DatabaseUtils
 from teksi_wastewater.utils.twwlayermanager import TwwLayerManager
 

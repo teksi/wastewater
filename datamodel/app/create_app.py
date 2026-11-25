@@ -123,7 +123,7 @@ class Hook(HookBase):
         if self.app_modifications:
             for modification in self.app_modifications:
                 logger.debug(f"""*****
-Running modification {modification.get('id')}
+Running modification {modification.get("id")}
 ****
                 """)
                 self.load_modification(

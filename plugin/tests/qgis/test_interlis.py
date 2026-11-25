@@ -62,7 +62,7 @@ class TestInterlis(unittest.TestCase):
         namespace = get_namespace(root)
 
         interlis_objects = root.findall(
-            "./{0}DATASECTION/{0}{1}/{0}{1}.{2}".format(namespace, topicname, classname)
+            f"./{namespace}DATASECTION/{namespace}{topicname}/{namespace}{topicname}.{classname}"
         )
 
         for interlis_object in interlis_objects:

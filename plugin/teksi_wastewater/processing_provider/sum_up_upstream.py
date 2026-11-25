@@ -288,7 +288,7 @@ class SumUpUpstreamAlgorithm(TwwAlgorithm):
 
             processed_nodes = []
             times = []
-            if from_node_id in reaches_by_from_node.keys():
+            if from_node_id in reaches_by_from_node:
                 for reach in reaches_by_from_node[from_node_id]:
                     times.append(
                         self.calculate_branch(

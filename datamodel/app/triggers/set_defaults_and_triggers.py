@@ -71,7 +71,7 @@ def set_defaults_and_triggers(
         if found and entry[0] != "agxx_unconnected_node_bwrel":
             query = create_oid_default(entry[0])
             SqlContent(query).execute(connection)
-        if entry[0] in SingleInheritances.keys():  # Find Subclasses
+        if entry[0] in SingleInheritances:  # Find Subclasses
             cursor = SqlContent(f"""select 1 from information_schema.columns
                 WHERE table_schema = 'tww_od'
                 AND table_name = '{SingleInheritances[entry[0]]}'
