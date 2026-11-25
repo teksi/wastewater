@@ -49,7 +49,7 @@ repos:
           - pyi
       - id: ruff-format
         args:
-          - --line-length=88
+          - --line-length=99
           - --target-version=py310
         types_or:
           - python
