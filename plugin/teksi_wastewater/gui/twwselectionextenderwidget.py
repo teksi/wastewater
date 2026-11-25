@@ -58,9 +58,7 @@ class TwwSelectionExtenderWidget(QDockWidget, DOCK_WIDGET_UI):
             )
             return
 
-        self.controller.extend_selection(
-            mode=self._get_mode(), status=self._get_status()
-        )
+        self.controller.extend_selection(mode=self._get_mode(), status=self._get_status())
 
     def _on_reset_clicked(self):
         if self.controller is None:

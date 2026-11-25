@@ -237,9 +237,7 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
         reach_feats = reach_view_layer.getFeatures()
         structure_feats = structure_view_layer.getFeatures()
 
-        rowid_to_obj_id = {
-            "vw_tww_reach": {f.id(): f.attribute("obj_id") for f in reach_feats}
-        }
+        rowid_to_obj_id = {"vw_tww_reach": {f.id(): f.attribute("obj_id") for f in reach_feats}}
 
         # AG-64 and AG-96 need to map the wastewater structure label to the wastewater node
         if use_wastewater_node:
@@ -261,47 +259,27 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
         if catchment_layer:
             catchment_feats = catchment_layer.getFeatures()
             rowid_to_obj_id.update(
-                {
-                    "vw_tww_catchment_area": {
-                        f.id(): f.attribute("obj_id") for f in catchment_feats
-                    }
-                }
+                {"vw_tww_catchment_area": {f.id(): f.attribute("obj_id") for f in catchment_feats}}
             )
         if building_group_layer:
             building_group_feats = building_group_layer.getFeatures()
             rowid_to_obj_id.update(
-                {
-                    "building_group": {
-                        f.id(): f.attribute("obj_id") for f in building_group_feats
-                    }
-                }
+                {"building_group": {f.id(): f.attribute("obj_id") for f in building_group_feats}}
             )
         if measure_point_layer:
             measure_point_feats = measure_point_layer.getFeatures()
             rowid_to_obj_id.update(
-                {
-                    "measure_point": {
-                        f.id(): f.attribute("obj_id") for f in measure_point_feats
-                    }
-                }
+                {"measure_point": {f.id(): f.attribute("obj_id") for f in measure_point_feats}}
             )
         if measure_line_layer:
             measure_line_feats = measure_line_layer.getFeatures()
             rowid_to_obj_id.update(
-                {
-                    "measure_line": {
-                        f.id(): f.attribute("obj_id") for f in measure_line_feats
-                    }
-                }
+                {"measure_line": {f.id(): f.attribute("obj_id") for f in measure_line_feats}}
             )
         if measure_polygon_layer:
             measure_polygon_feats = measure_polygon_layer.getFeatures()
             rowid_to_obj_id.update(
-                {
-                    "measure_polygon": {
-                        f.id(): f.attribute("obj_id") for f in measure_polygon_feats
-                    }
-                }
+                {"measure_polygon": {f.id(): f.attribute("obj_id") for f in measure_polygon_feats}}
             )
 
         annotated_paths = []
@@ -315,9 +293,7 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
             )
 
             # Extract the labels
-            feedback.pushInfo(
-                f"Extracting labels for scale {scale_display} [1:{scale_value}]"
-            )
+            feedback.pushInfo(f"Extracting labels for scale {scale_display} [1:{scale_value}]")
             processing.run(
                 "native:extractlabels",
                 {
@@ -362,9 +338,7 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
             if building_group_layer:
                 lyr_name_to_key.update(
                     {
-                        TwwLayerManager.layer(
-                            "building_group"
-                        ).name(): "building_group",
+                        TwwLayerManager.layer("building_group").name(): "building_group",
                     }
                 )
             if measure_point_layer:
@@ -382,9 +356,7 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
             if measure_polygon_layer:
                 lyr_name_to_key.update(
                     {
-                        TwwLayerManager.layer(
-                            "measure_polygon"
-                        ).name(): "measure_polygon",
+                        TwwLayerManager.layer("measure_polygon").name(): "measure_polygon",
                     }
                 )
             feedback.pushInfo(f"used layers: {lyr_name_to_key}")
@@ -409,9 +381,7 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
         # time.sleep(60)
 
         # Merge all scales to one geojson
-        feedback.pushInfo(
-            f"Merging all labels ({annotated_paths}) to {labels_file_path}"
-        )
+        feedback.pushInfo(f"Merging all labels ({annotated_paths}) to {labels_file_path}")
         processing.run(
             "native:mergevectorlayers",
             {

@@ -113,9 +113,7 @@ NON_PHYSICAL_REM = "Non-physical point which materializes swmm simulations"
 
 
 class TwwSwmm:
-    def __init__(
-        self, title, service, state, inpfile, inptemplate, rptfile, binfile, feedback
-    ):
+    def __init__(self, title, service, state, inpfile, inptemplate, rptfile, binfile, feedback):
         """
         Initiate TwwSwmm
 
@@ -215,9 +213,7 @@ class TwwSwmm:
 
         return data, attributes
 
-    def swmm_table(
-        self, table_name, hierarchy=None, state=None, selected_structures=[]
-    ):
+    def swmm_table(self, table_name, hierarchy=None, state=None, selected_structures=[]):
         """
         Write swmm objects extracted from TWW in swmm input file. Selects according
         to the state planned or current. If the object is a teksi wastewater structure
@@ -244,9 +240,7 @@ class TwwSwmm:
         ]
         # Create commented line which contains the field names
         fields = ""
-        data, attributes = self.get_swmm_table(
-            table_name, state, selected_structures, hierarchy
-        )
+        data, attributes = self.get_swmm_table(table_name, state, selected_structures, hierarchy)
         if data is not None:
             for i, field in enumerate(attributes):
                 # Does not write values stored in columns descriptions, tags and geom
@@ -351,17 +345,13 @@ class TwwSwmm:
             f.write(self.swmm_table("RAINGAGES", hierarchy, state, selected_structures))
             f.write(self.swmm_table("SYMBOLS", hierarchy, state, selected_structures))
             self.feedback_set_progress(10)
-            f.write(
-                self.swmm_table("SUBCATCHMENTS", hierarchy, state, selected_structures)
-            )
+            f.write(self.swmm_table("SUBCATCHMENTS", hierarchy, state, selected_structures))
             self.feedback_set_progress(15)
             f.write(self.swmm_table("SUBAREAS", hierarchy, state, selected_structures))
             self.feedback_set_progress(20)
             f.write(self.swmm_table("AQUIFERS"))
             self.feedback_set_progress(25)
-            f.write(
-                self.swmm_table("INFILTRATION", hierarchy, state, selected_structures)
-            )
+            f.write(self.swmm_table("INFILTRATION", hierarchy, state, selected_structures))
             self.feedback_set_progress(30)
             f.write(self.swmm_table("POLYGONS"))
 
@@ -629,12 +619,8 @@ class TwwSwmm:
 
         """
 
-        simulation_start_date = self.convert_to_datetime(
-            self.get_analysis_option("Starting Date")
-        )
-        simulation_end_date = self.convert_to_datetime(
-            self.get_analysis_option("Ending Date")
-        )
+        simulation_start_date = self.convert_to_datetime(self.get_analysis_option("Starting Date"))
+        simulation_end_date = self.convert_to_datetime(self.get_analysis_option("Ending Date"))
         simulation_duration = simulation_end_date - simulation_start_date
         measuring_duration = simulation_duration.total_seconds()
 
@@ -664,9 +650,7 @@ class TwwSwmm:
                 m_counter = 0
                 for m in measurement_data:
                     m_counter += 1
-                    time = self.convert_to_datetime(
-                        m["date"] + " " + m["time"]
-                    ).isoformat()
+                    time = self.convert_to_datetime(m["date"] + " " + m["time"]).isoformat()
                     for k in m.keys():
                         if k in SWMM_RESULTS_PARAMETERS:
                             if SWMM_RESULTS_PARAMETERS[k]["recorded"]:
@@ -729,12 +713,8 @@ class TwwSwmm:
         sim_description (string): Title of the simulation
 
         """
-        simulation_start_date = self.convert_to_datetime(
-            self.get_analysis_option("Starting Date")
-        )
-        simulation_end_date = self.convert_to_datetime(
-            self.get_analysis_option("Ending Date")
-        )
+        simulation_start_date = self.convert_to_datetime(self.get_analysis_option("Starting Date"))
+        simulation_end_date = self.convert_to_datetime(self.get_analysis_option("Ending Date"))
         simulation_duration = simulation_end_date - simulation_start_date
         measuring_duration = simulation_duration.total_seconds()
         self.feedback_push("info", "Import nodes summary")
@@ -780,9 +760,7 @@ class TwwSwmm:
         print("1")
         node_summary = self.extract_node_depth_summary()
         print("2")
-        self.populate_attribute(
-            node_summary, "wastewater_node", "backflow_level", "maximum_hgl"
-        )
+        self.populate_attribute(node_summary, "wastewater_node", "backflow_level", "maximum_hgl")
 
     def import_hydraulic_load(self):
         """

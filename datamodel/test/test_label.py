@@ -29,9 +29,7 @@ class TestViews(unittest.TestCase, DbTestBase):
                     f"ST_SetSRID(ST_GeomFromText('POINT({coords[0]} {coords[1]})'), 2056)"
                 ),
             }
-            manholes[manhole]["obj_id"] = self.insert(
-                "vw_tww_wastewater_structure", row
-            )
+            manholes[manhole]["obj_id"] = self.insert("vw_tww_wastewater_structure", row)
             manholes[manhole]["wn_obj_id"] = self.select(
                 "vw_tww_wastewater_structure", manholes[manhole]["obj_id"]
             )["wn_obj_id"]

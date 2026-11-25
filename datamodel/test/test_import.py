@@ -478,9 +478,9 @@ class TestImport(unittest.TestCase, DbTestBase):
         # it should be in the live table tww_od.reach and tww_od.reach_point
         cur = self.cursor()
         cur.execute(
-            psycopg.sql.SQL(
-                "SELECT * FROM {schema}.wastewater_structure LIMIT 1"
-            ).format(schema=psycopg.sql.Identifier("tww_od"))
+            psycopg.sql.SQL("SELECT * FROM {schema}.wastewater_structure LIMIT 1").format(
+                schema=psycopg.sql.Identifier("tww_od")
+            )
         )
         row = cur.fetchone()
         self.assertIsNotNone(row)

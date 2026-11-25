@@ -118,9 +118,7 @@ class DatabaseUtils:
             PG_CONFIG_PATH = os.environ.get("PGSERVICEFILE")
             logger.debug(f"PGSERVICEFILE:  {PG_CONFIG_PATH}")
         elif os.environ.get("PGSYSCONFDIR"):
-            PG_CONFIG_PATH = os.path.join(
-                os.environ.get("PGSYSCONFDIR"), "pg_service.conf"
-            )
+            PG_CONFIG_PATH = os.path.join(os.environ.get("PGSYSCONFDIR"), "pg_service.conf")
             logger.debug(f"PGSYSCONFDIR:  {PG_CONFIG_PATH}")
         else:
             if os.name == "nt":  # Windows
@@ -147,9 +145,7 @@ class DatabaseUtils:
         """
 
         if DatabaseUtils.databaseConfig.PGSERVICE:
-            pgconf = DatabaseUtils.read_pgservice(
-                DatabaseUtils.databaseConfig.PGSERVICE
-            )
+            pgconf = DatabaseUtils.read_pgservice(DatabaseUtils.databaseConfig.PGSERVICE)
         else:
             pgconf = {}
 
@@ -191,9 +187,7 @@ class DatabaseUtils:
     @staticmethod
     def check_symbology_triggers_enabled():
         logger.info("Check symbology triggers enabled")
-        row = DatabaseUtils.fetchone(
-            "SELECT tww_app.check_symbology_triggers_enabled();"
-        )
+        row = DatabaseUtils.fetchone("SELECT tww_app.check_symbology_triggers_enabled();")
         return row[0]
 
     @staticmethod
@@ -201,18 +195,10 @@ class DatabaseUtils:
         with DatabaseUtils.PsycopgConnection() as connection:
             cursor = connection.cursor()
 
-            logger.info(
-                "update_wastewater_node symbology for all datasets - please be patient"
-            )
-            cursor.execute(
-                "SELECT tww_app.update_wastewater_node_symbology(NULL, True);"
-            )
-            logger.info(
-                "update_wastewater_structure label for all datasets - please be patient"
-            )
-            cursor.execute(
-                "SELECT tww_app.update_wastewater_structure_label(NULL, True);"
-            )
+            logger.info("update_wastewater_node symbology for all datasets - please be patient")
+            cursor.execute("SELECT tww_app.update_wastewater_node_symbology(NULL, True);")
+            logger.info("update_wastewater_structure label for all datasets - please be patient")
+            cursor.execute("SELECT tww_app.update_wastewater_structure_label(NULL, True);")
 
     @staticmethod
     def disable_modification_triggers():
@@ -234,9 +220,7 @@ class DatabaseUtils:
     def check_oid_prefix() -> list[Issue]:
         """Check whether the oid_prefix is set up for production"""
         logger.info("Checking setup of oid prefix")
-        prefixes = DatabaseUtils.fetchall(
-            "SELECT prefix FROM tww_sys.oid_prefixes WHERE active;"
-        )
+        prefixes = DatabaseUtils.fetchall("SELECT prefix FROM tww_sys.oid_prefixes WHERE active;")
 
         issues = []
         if len(prefixes) > 1:
@@ -293,9 +277,7 @@ class DatabaseUtils:
         return msg_list
 
     @staticmethod
-    def get_validity_check_issues(
-        include_ili: bool = False, logger=None
-    ) -> list[Issue]:
+    def get_validity_check_issues(include_ili: bool = False, logger=None) -> list[Issue]:
         messages = []
         messages = DatabaseUtils.check_oid_prefix()
         messages.extend(DatabaseUtils.check_fk_defaults())
@@ -325,9 +307,7 @@ class DatabaseUtils:
     @staticmethod
     def refresh_matviews():
         logger.info("Refreshing materialized views")
-        DatabaseUtils.execute(
-            "SELECT tww_app.refresh_materialized_views('tww_app', NULL, True);"
-        )
+        DatabaseUtils.execute("SELECT tww_app.refresh_materialized_views('tww_app', NULL, True);")
 
 
 class TWWIntegrityChecker:
@@ -479,21 +459,15 @@ class TWWIntegrityChecker:
         if raise_err and failed:
             from ..interlis.utils.various import InterlisImporterExporterError
 
-            raise InterlisImporterExporterError(
-                "Subclass Count error", error_message, None
-            )
+            raise InterlisImporterExporterError("Subclass Count error", error_message, None)
         return (failed, error_message, total_issue_count)
 
-    def _check_subclass_count(
-        self, schema_name, parent_name, child_list
-    ) -> tuple[bool, str, int]:
+    def _check_subclass_count(self, schema_name, parent_name, child_list) -> tuple[bool, str, int]:
         """
         Returns: (failed, error message, parent_count)
         """
         errormsg = ""
-        self.add_issue(
-            f"INTEGRITY CHECK {parent_name} subclass data...", level=IssueLevel.INFO
-        )
+        self.add_issue(f"INTEGRITY CHECK {parent_name} subclass data...", level=IssueLevel.INFO)
         self.add_issue("CONNECTING TO DATABASE...", level=IssueLevel.INFO)
 
         with DatabaseUtils.PsycopgConnection() as connection:
@@ -542,9 +516,7 @@ class TWWIntegrityChecker:
                         f"Overall Subclass Count: {errormsg}. The problem might lie outside the selection"
                     )
                 else:
-                    self.add_issue(
-                        f"Subclass Count error: {errormsg}", level=IssueLevel.ERROR
-                    )
+                    self.add_issue(f"Subclass Count error: {errormsg}", level=IssueLevel.ERROR)
                 # Return statement added
                 return (
                     True,
@@ -653,7 +625,9 @@ class TWWIntegrityChecker:
                 level=IssueLevel.INFO,
             )
             if class_count == 0:
-                error_message += f"No exportable entries found in table tww_od.{_class} on {value_name} check"
+                error_message += (
+                    f"No exportable entries found in table tww_od.{_class} on {value_name} check"
+                )
                 empty_class_count += 1
         if empty_class_count > 0:
             return (True, error_message, empty_class_count)

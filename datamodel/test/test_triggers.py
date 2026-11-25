@@ -44,9 +44,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
 
         row = self.select("structure_part", obj_id, schema="tww_od")
         assert last_mod != row["last_modification"], (
-            "Last modification not set on update (still {})".format(
-                row["last_modification"]
-            )
+            "Last modification not set on update (still {})".format(row["last_modification"])
         )
 
         last_mod = row["last_modification"]

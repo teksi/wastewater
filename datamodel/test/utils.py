@@ -61,9 +61,7 @@ class DbTestBase:
         cols = ", ".join(row.keys())
         values = ", ".join([f"%({key})s" for key in row.keys()])
         print(53453)
-        print(
-            f"INSERT INTO {schema}.{table} ({cols}) VALUES ({values}) RETURNING obj_id"
-        )
+        print(f"INSERT INTO {schema}.{table} ({cols}) VALUES ({values}) RETURNING obj_id")
         print("-----")
         print(row)
         cur.execute(

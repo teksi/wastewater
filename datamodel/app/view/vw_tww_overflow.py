@@ -102,9 +102,7 @@ def vw_tww_overflow(connection: psycopg.Connection, extra_definition: dict = Non
             indent=4,
             prefix="pu_",
         ),
-        extra_joins=extra_joins(
-            connection=connection, extra_definition=extra_definition
-        ),
+        extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
     )
     cursor.execute(view_sql)
 
@@ -182,9 +180,7 @@ def vw_tww_overflow(connection: psycopg.Connection, extra_definition: dict = Non
             indent=6,
             remap_columns={"obj_id": "obj_id"},
         ),
-        insert_extra=insert_extra(
-            connection=connection, extra_definition=extra_definition
-        ),
+        insert_extra=insert_extra(connection=connection, extra_definition=extra_definition),
     )
 
     cursor.execute(trigger_insert_sql)
@@ -280,9 +276,7 @@ def vw_tww_overflow(connection: psycopg.Connection, extra_definition: dict = Non
             skip_columns=[],
             remap_columns={"obj_id": "obj_id"},
         ),
-        update_extra=update_extra(
-            connection=connection, extra_definition=extra_definition
-        ),
+        update_extra=update_extra(connection=connection, extra_definition=extra_definition),
     )
 
     cursor.execute(update_trigger_sql)

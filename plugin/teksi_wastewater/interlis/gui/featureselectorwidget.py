@@ -190,21 +190,15 @@ class FeatureSelectorWidget(QWidget):
         self.highlight = QgsHighlight(self.canvas, geom, self.layer)
 
         settings = QSettings()
-        color = QColor(
-            settings.value("/Map/highlight/color", Qgis.DEFAULT_HIGHLIGHT_COLOR.name())
-        )
+        color = QColor(settings.value("/Map/highlight/color", Qgis.DEFAULT_HIGHLIGHT_COLOR.name()))
         alpha = int(
-            settings.value(
-                "/Map/highlight/colorAlpha", Qgis.DEFAULT_HIGHLIGHT_COLOR.alpha()
-            )
+            settings.value("/Map/highlight/colorAlpha", Qgis.DEFAULT_HIGHLIGHT_COLOR.alpha())
         )
         buffer = 2 * float(
             settings.value("/Map/highlight/buffer", Qgis.DEFAULT_HIGHLIGHT_BUFFER_MM)
         )
         min_width = 2 * float(
-            settings.value(
-                "/Map/highlight/min_width", Qgis.DEFAULT_HIGHLIGHT_MIN_WIDTH_MM
-            )
+            settings.value("/Map/highlight/min_width", Qgis.DEFAULT_HIGHLIGHT_MIN_WIDTH_MM)
         )
 
         self.highlight.setColor(color)  # sets also fill with default alpha

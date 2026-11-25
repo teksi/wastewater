@@ -209,9 +209,7 @@ def vw_tww_wastewater_structure(
             prefix="wn_",
             remap_columns={},
         ),
-        extra_joins=extra_joins(
-            connection=connection, extra_definition=extra_definition
-        ),
+        extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
     )
     view_sql = psycopg.sql.SQL(view_sql).format(srid=psycopg.sql.Literal(srid))
 
@@ -381,14 +379,10 @@ def vw_tww_wastewater_structure(
             },
             returning="obj_id INTO NEW.co_obj_id",
         ),
-        insert_extra=insert_extra(
-            connection=connection, extra_definition=extra_definition
-        ),
+        insert_extra=insert_extra(connection=connection, extra_definition=extra_definition),
     )
 
-    trigger_insert_sql = psycopg.sql.SQL(trigger_insert_sql).format(
-        srid=psycopg.sql.Literal(srid)
-    )
+    trigger_insert_sql = psycopg.sql.SQL(trigger_insert_sql).format(srid=psycopg.sql.Literal(srid))
 
     cursor.execute(trigger_insert_sql)
 
@@ -668,9 +662,7 @@ def vw_tww_wastewater_structure(
                 "fk_wastewater_structure": "NEW.obj_id",
             },
         ),
-        update_extra=update_extra(
-            connection=connection, extra_definition=extra_definition
-        ),
+        update_extra=update_extra(connection=connection, extra_definition=extra_definition),
         insert_vw_cover=insert_command(
             connection=connection,
             table_schema="tww_app",
@@ -694,9 +686,7 @@ def vw_tww_wastewater_structure(
         ),
     )
 
-    update_trigger_sql = psycopg.sql.SQL(update_trigger_sql).format(
-        srid=psycopg.sql.Literal(srid)
-    )
+    update_trigger_sql = psycopg.sql.SQL(update_trigger_sql).format(srid=psycopg.sql.Literal(srid))
 
     cursor.execute(update_trigger_sql)
 

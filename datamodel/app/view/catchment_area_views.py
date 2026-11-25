@@ -17,9 +17,7 @@ from .utils.extra_definition_utils import (
 )
 
 
-def vw_tww_catchment_area(
-    connection: psycopg.Connection, extra_definition: dict = None
-):
+def vw_tww_catchment_area(connection: psycopg.Connection, extra_definition: dict = None):
     """
     Creates tww_catchment_area view
     :param connection: psycopg Connection
@@ -65,9 +63,7 @@ def vw_tww_catchment_area(
             if not extra_definition
             else extra_cols(connection=connection, extra_definition=extra_definition)
         ),
-        extra_joins=extra_joins(
-            connection=connection, extra_definition=extra_definition
-        ),
+        extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
     )
 
     cursor.execute(view_sql)
@@ -100,9 +96,7 @@ def vw_tww_catchment_area(
             indent=2,
             skip_columns=[],
         ),
-        insert_extra=insert_extra(
-            connection=connection, extra_definition=extra_definition
-        ),
+        insert_extra=insert_extra(connection=connection, extra_definition=extra_definition),
     )
 
     cursor.execute(trigger_insert_sql)
@@ -135,9 +129,7 @@ def vw_tww_catchment_area(
             skip_columns=[],
             update_values={},
         ),
-        update_extra=update_extra(
-            connection=connection, extra_definition=extra_definition
-        ),
+        update_extra=update_extra(connection=connection, extra_definition=extra_definition),
     )
 
     cursor.execute(update_trigger_sql)
@@ -166,9 +158,7 @@ def vw_tww_catchment_area(
     cursor.execute(extras)
 
 
-def vw_tww_catchment_area_totals(
-    connection: psycopg.Connection, extra_definition: dict = None
-):
+def vw_tww_catchment_area_totals(connection: psycopg.Connection, extra_definition: dict = None):
     """
     Creates tww_catchment_area view
     :param connection: psycopg Connection
@@ -317,9 +307,7 @@ WITH DATA;
             if not extra_definition
             else extra_cols(connection=connection, extra_definition=extra_definition)
         ),
-        extra_joins=extra_joins(
-            connection=connection, extra_definition=extra_definition
-        ),
+        extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
     )
 
     cursor.execute(view_sql)
@@ -430,9 +418,7 @@ WITH DATA;
             remove_pkey=False,
             indent=6,
         ),
-        insert_extra=insert_extra(
-            connection=connection, extra_definition=extra_definition
-        ),
+        insert_extra=insert_extra(connection=connection, extra_definition=extra_definition),
     )
 
     cursor.execute(trigger_insert_sql)
@@ -551,9 +537,7 @@ WITH DATA;
                 "fk_provider": "NEW.fk_provider",
             },
         ),
-        update_extra=update_extra(
-            connection=connection, extra_definition=extra_definition
-        ),
+        update_extra=update_extra(connection=connection, extra_definition=extra_definition),
     )
 
     cursor.execute(update_trigger_sql)
@@ -613,6 +597,4 @@ if __name__ == "__main__":
     pg_service = args.pg_service or os.getenv("PGSERVICE")
     with psycopg.connect(f"service={pg_service}") as conn:
         vw_tww_catchment_area(connection=conn, extra_definition=extra_definition_ca)
-        vw_tww_catchment_area_totals(
-            connection=conn, extra_definition=extra_definition_cat
-        )
+        vw_tww_catchment_area_totals(connection=conn, extra_definition=extra_definition_cat)

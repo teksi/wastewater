@@ -200,9 +200,7 @@ class InterlisImporterExporter:
             self._import_set_od_sequences()
 
             # Update main_cover and main_wastewater_node
-            self._progress_done(
-                95, "Update main cover and refresh materialized views..."
-            )
+            self._progress_done(95, "Update main cover and refresh materialized views...")
             self._import_update_main_cover_and_refresh_mat_views()
 
             # Validate subclasses after import
@@ -331,9 +329,7 @@ class InterlisImporterExporter:
             models=export_models, limit_to_selection=limit_to_selection, logger=logger
         )
         if export_models[0] == "SIA405_Base_Abwasser_1_LV95":
-            failed, errormsg, _ = (
-                exportChecker._check_organisation_tww_local_extension_count()
-            )
+            failed, errormsg, _ = exportChecker._check_organisation_tww_local_extension_count()
             if failed:
                 logger.info(
                     "INTERLIS export has been stopped as there have been no organisations for exporting!"
@@ -347,9 +343,7 @@ class InterlisImporterExporter:
                 )
             else:
                 logger.info("INTERLIS export continued as organisations are available!")
-                logger.info(
-                    f"Debug.print export_model '{export_models[0]}, case False'"
-                )
+                logger.info(f"Debug.print export_model '{export_models[0]}, case False'")
         else:
             logger.info(f"Debug.print export_model '{export_models[0]}'")
 
@@ -425,9 +419,7 @@ class InterlisImporterExporter:
             else:
                 msg = "\n".join(issue.message for issue in results.failed_checks)
                 logger.error(f"Failed checks:{msg}")
-                logger.info(
-                    f" {results.stats['failed']} failed, {results.stats['ok']} passed"
-                )
+                logger.info(f" {results.stats['failed']} failed, {results.stats['ok']} passed")
                 logger.info(
                     "INTERLIS export has been stopped due to failing export checks - see logs for details."
                 )
@@ -493,9 +485,7 @@ class InterlisImporterExporter:
         )
 
         with LoggingHandlerContext(log_handler):
-            interlisImporterToIntermediateSchema.tww_import(
-                skip_closing_tww_session=True
-            )
+            interlisImporterToIntermediateSchema.tww_import(skip_closing_tww_session=True)
 
         return interlisImporterToIntermediateSchema.session_tww
 
@@ -512,9 +502,7 @@ class InterlisImporterExporter:
             cursor = connection.cursor()
 
             logger.info("Update wastewater structure fk_main_cover")
-            cursor.execute(
-                "SELECT tww_app.wastewater_structure_update_fk_main_cover('', True);"
-            )
+            cursor.execute("SELECT tww_app.wastewater_structure_update_fk_main_cover('', True);")
 
             logger.info("Update wastewater structure fk_main_wastewater_node")
             cursor.execute(
@@ -684,12 +672,8 @@ class InterlisImporterExporter:
             export_file_name = f"{file_name_base}_{export_model_name}.xtf"
 
             # Export from ili2pg model to file
-            self._progress_done(
-                self.current_progress, f"Saving XTF for '{export_model_name}'..."
-            )
-            log_path = make_log_path(
-                self.base_log_path, f"ili2pg-export-{export_model_name}"
-            )
+            self._progress_done(self.current_progress, f"Saving XTF for '{export_model_name}'...")
+            log_path = make_log_path(self.base_log_path, f"ili2pg-export-{export_model_name}")
             try:
                 self.interlisTools.export_xtf_data(
                     schema=config.ABWASSER_SCHEMA,
@@ -713,13 +697,9 @@ class InterlisImporterExporter:
                 self.current_progress + progress_step,
                 f"Validating XTF for '{export_model_name}'...",
             )
-            log_path = make_log_path(
-                self.base_log_path, f"ilivalidator-{export_model_name}"
-            )
+            log_path = make_log_path(self.base_log_path, f"ilivalidator-{export_model_name}")
 
-            xtflog_path = make_xtflog_path(
-                self.base_log_path, f"ilivalidator-{export_model_name}"
-            )
+            xtflog_path = make_xtflog_path(self.base_log_path, f"ilivalidator-{export_model_name}")
 
             try:
                 self.interlisTools.validate_xtf_data(
@@ -761,21 +741,15 @@ class InterlisImporterExporter:
                 logger.info(f"Truncating all tables in schema {config.ABWASSER_SCHEMA}")
                 rows = cursor.fetchall()
                 if recreate_tables:
-                    logger.info(
-                        f"Deleting all tables in schema {config.ABWASSER_SCHEMA} "
-                    )
+                    logger.info(f"Deleting all tables in schema {config.ABWASSER_SCHEMA} ")
                     for row in rows:
-                        cursor.execute(
-                            f"DROP TABLE {config.ABWASSER_SCHEMA}.{row[0]} CASCADE;"
-                        )
+                        cursor.execute(f"DROP TABLE {config.ABWASSER_SCHEMA}.{row[0]} CASCADE;")
                 else:
                     for row in rows:
                         cursor.execute(
                             f"TRUNCATE TABLE {config.ABWASSER_SCHEMA}.{row[0]} CASCADE;"
                         )
-                logger.info(
-                    f"Re-setting t_id sequence in schema {config.ABWASSER_SCHEMA}"
-                )
+                logger.info(f"Re-setting t_id sequence in schema {config.ABWASSER_SCHEMA}")
                 cursor.execute(
                     f"ALTER SEQUENCE IF EXISTS {config.ABWASSER_SCHEMA}.t_ili2db_seq RESTART WITH 1;"
                 )

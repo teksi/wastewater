@@ -53,14 +53,10 @@ class TwwProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
         QDockWidget.__init__(self, parent)
         self.setupUi(self)
 
-        self.selectCurrentPathAction = QAction(
-            self.tr("Select current path"), self.selectButton
-        )
+        self.selectCurrentPathAction = QAction(self.tr("Select current path"), self.selectButton)
         self.selectCurrentPathAction.triggered.connect(self.onSelectCurrentPathAction)
         self.selectButton.setDefaultAction(self.selectCurrentPathAction)
-        self.configureSelectionAction = QAction(
-            self.tr("Configure Select"), self.selectButton
-        )
+        self.configureSelectionAction = QAction(self.tr("Configure Select"), self.selectButton)
         self.configureSelectionAction.triggered.connect(self.onConfigureSelectAction)
         self.selectButton.addAction(self.configureSelectionAction)
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
@@ -83,9 +79,7 @@ class TwwProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
 
         self.printButton.clicked.connect(self.onPrintButtonClicked)
 
-        self.mSliderVerticalExaggeration.valueChanged.connect(
-            self.onVerticalExaggerationChanged
-        )
+        self.mSliderVerticalExaggeration.valueChanged.connect(self.onVerticalExaggerationChanged)
 
     def closeEvent(self, event):
         self.closed.emit()
@@ -111,9 +105,7 @@ class TwwProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
             QMessageBox.critical(
                 self,
                 self.tr("Print function not available"),
-                self.tr(
-                    "Print function not available because of missing dependeny QtWebKit"
-                ),
+                self.tr("Print function not available because of missing dependeny QtWebKit"),
             )
             return
 
@@ -126,24 +118,16 @@ class TwwProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
         dlg.setLayout(QGridLayout())
 
         ww_current_checkbox = QCheckBox(self.tr("Wastewater current"))
-        status, _ = QgsProject.instance().readBoolEntry(
-            "Tww", "FollowWastewaterCurrent", True
-        )
+        status, _ = QgsProject.instance().readBoolEntry("Tww", "FollowWastewaterCurrent", True)
         ww_current_checkbox.setChecked(status)
         ww_planned_checkbox = QCheckBox(self.tr("Wastewater planned"))
-        status, _ = QgsProject.instance().readBoolEntry(
-            "Tww", "FollowWastewaterPlanned", True
-        )
+        status, _ = QgsProject.instance().readBoolEntry("Tww", "FollowWastewaterPlanned", True)
         ww_planned_checkbox.setChecked(status)
         rw_current_checkbox = QCheckBox(self.tr("Rainwater current"))
-        status, _ = QgsProject.instance().readBoolEntry(
-            "Tww", "FollowRainwaterCurrent", True
-        )
+        status, _ = QgsProject.instance().readBoolEntry("Tww", "FollowRainwaterCurrent", True)
         rw_current_checkbox.setChecked(status)
         rw_planned_checkbox = QCheckBox(self.tr("Rainwater planned"))
-        status, _ = QgsProject.instance().readBoolEntry(
-            "Tww", "FollowRainwaterPlanned", True
-        )
+        status, _ = QgsProject.instance().readBoolEntry("Tww", "FollowRainwaterPlanned", True)
         rw_planned_checkbox.setChecked(status)
         btn_box = QDialogButtonBox(
             QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel
@@ -185,9 +169,7 @@ class TwwProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
             if item["objType"] == "wastewater_node":
                 wastewater_nodes.append(item["objId"])
 
-        tww_wastewater_structures_layer = TwwLayerManager.layer(
-            "vw_tww_wastewater_structure"
-        )
+        tww_wastewater_structures_layer = TwwLayerManager.layer("vw_tww_wastewater_structure")
         wastewater_nodes_layer = TwwLayerManager.layer("vw_tww_wastewater_node")
         tww_reach_layer = TwwLayerManager.layer("vw_tww_reach")
         catchment_areas_layer = TwwLayerManager.layer("vw_tww_catchment_area")
@@ -198,27 +180,19 @@ class TwwProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
         if catchment_areas_layer:
             request = QgsFeatureRequest()
             filters = list()
-            if QgsProject.instance().readBoolEntry(
-                "Tww", "FollowWastewaterCurrent", True
-            )[0]:
+            if QgsProject.instance().readBoolEntry("Tww", "FollowWastewaterCurrent", True)[0]:
                 filters.append(
                     f"fk_wastewater_networkelement_ww_current IN ({wastewater_node_list})"
                 )
-            if QgsProject.instance().readBoolEntry(
-                "Tww", "FollowWastewaterPlanned", True
-            )[0]:
+            if QgsProject.instance().readBoolEntry("Tww", "FollowWastewaterPlanned", True)[0]:
                 filters.append(
                     f"fk_wastewater_networkelement_ww_planned IN ({wastewater_node_list})"
                 )
-            if QgsProject.instance().readBoolEntry(
-                "Tww", "FollowRainwaterCurrent", True
-            )[0]:
+            if QgsProject.instance().readBoolEntry("Tww", "FollowRainwaterCurrent", True)[0]:
                 filters.append(
                     f"fk_wastewater_networkelement_rw_current IN ({wastewater_node_list})"
                 )
-            if QgsProject.instance().readBoolEntry(
-                "Tww", "FollowRainwaterPlanned", True
-            )[0]:
+            if QgsProject.instance().readBoolEntry("Tww", "FollowRainwaterPlanned", True)[0]:
                 filters.append(
                     f"fk_wastewater_networkelement_rw_planned IN ({wastewater_node_list})"
                 )

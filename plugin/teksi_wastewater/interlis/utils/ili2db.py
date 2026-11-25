@@ -183,17 +183,13 @@ class TidMaker:
 
     def __init__(self, id_attribute="id"):
         self._id_attr = id_attribute
-        self._autoincrementer = collections.defaultdict(
-            lambda: len(self._autoincrementer)
-        )
+        self._autoincrementer = collections.defaultdict(lambda: len(self._autoincrementer))
 
     def tid_for_row(self, row, for_class=None):
         # tid are globally unique, while ids are only guaranteed unique per table,
         # so include the base table in the key
         # this finds the base class (the first parent class before sqlalchemy.ext.automap.Base)
-        class_for_id = row.__class__.__mro__[
-            row.__class__.__mro__.index(AutomapBase) - 2
-        ]
+        class_for_id = row.__class__.__mro__[row.__class__.__mro__.index(AutomapBase) - 2]
         key = (class_for_id, getattr(row, self._id_attr), for_class)
         # was_created = key not in self._autoincrementer  # just for debugging
         tid = self._autoincrementer[key]

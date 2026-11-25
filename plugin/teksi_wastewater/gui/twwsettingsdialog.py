@@ -90,9 +90,7 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
             QColor(self.settings.value("/TWW/HighlightColor", "#40FF40"))
         )
 
-        self.mPbnChooseProfileTemplateFile.clicked.connect(
-            self.onChooseProfileTemplateFileClicked
-        )
+        self.mPbnChooseProfileTemplateFile.clicked.connect(self.onChooseProfileTemplateFileClicked)
         self.mPbnChooseLogFile.clicked.connect(self.onChooseLogFileClicked)
 
         self.accepted.connect(self.onAccept)
@@ -167,20 +165,12 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
 
         pg_layer = TwwLayerManager.layer("vw_tww_wastewater_structure")
         if pg_layer:
-            DatabaseUtils.databaseConfig.PGSERVICE = (
-                pg_layer.dataProvider().uri().service()
-            )
+            DatabaseUtils.databaseConfig.PGSERVICE = pg_layer.dataProvider().uri().service()
             DatabaseUtils.databaseConfig.PGHOST = pg_layer.dataProvider().uri().host()
             DatabaseUtils.databaseConfig.PGPORT = pg_layer.dataProvider().uri().port()
-            DatabaseUtils.databaseConfig.PGDATABASE = (
-                pg_layer.dataProvider().uri().database()
-            )
-            DatabaseUtils.databaseConfig.PGUSER = (
-                pg_layer.dataProvider().uri().username()
-            )
-            DatabaseUtils.databaseConfig.PGPASS = (
-                pg_layer.dataProvider().uri().password()
-            )
+            DatabaseUtils.databaseConfig.PGDATABASE = pg_layer.dataProvider().uri().database()
+            DatabaseUtils.databaseConfig.PGUSER = pg_layer.dataProvider().uri().username()
+            DatabaseUtils.databaseConfig.PGPASS = pg_layer.dataProvider().uri().password()
             return True
         else:
             return False
@@ -235,13 +225,8 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
     def onAccept(self):
         twwlogger = logging.getLogger("tww")
         # General settings
-        if (
-            self.mGbOverrideDefaultProfileTemplate.isChecked()
-            and self.mProfileTemplateFile.text()
-        ):
-            self.settings.setValue(
-                "/TWW/SvgProfilePath", self.mProfileTemplateFile.text()
-            )
+        if self.mGbOverrideDefaultProfileTemplate.isChecked() and self.mProfileTemplateFile.text():
+            self.settings.setValue("/TWW/SvgProfilePath", self.mProfileTemplateFile.text())
         else:
             self.settings.remove("/TWW/SvgProfilePath")
 
@@ -251,9 +236,7 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
         self.settings.setValue("/TWW/OrgExportMode", self.mCbOrgExportMode.isChecked())
 
         # AG-xx extensions
-        self.settings.setValue(
-            "/TWW/AGxxExtensions", self.mCbAg6496Extension.isChecked()
-        )
+        self.settings.setValue("/TWW/AGxxExtensions", self.mCbAg6496Extension.isChecked())
         if self.mCbAg6496Extension.isChecked():
             self.execAG64LastModificationCombobox()
 
@@ -293,12 +276,8 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
             self.settings.setValue("/TWW/LogLevel", "Error")
 
         # Save colors
-        self.settings.setValue(
-            "/TWW/HelperLineColor", self.mHelperLineColorButton.color().name()
-        )
-        self.settings.setValue(
-            "/TWW/HighlightColor", self.mHighlightColorButton.color().name()
-        )
+        self.settings.setValue("/TWW/HelperLineColor", self.mHelperLineColorButton.color().name())
+        self.settings.setValue("/TWW/HighlightColor", self.mHighlightColorButton.color().name())
         self.settings.setValue(
             "/TWW/CurrentProfileColor", self.mCurrentProfileColorButton.color().name()
         )

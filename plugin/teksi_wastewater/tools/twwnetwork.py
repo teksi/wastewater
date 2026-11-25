@@ -94,9 +94,7 @@ class TwwGraphManager(QObject):
             try:
                 vertex = feat.geometry().asPoint()
             except ValueError:
-                raise ValueError(
-                    f"No Point Geometry found for Node {obj_id} (Type: {obj_type})"
-                )
+                raise ValueError(f"No Point Geometry found for Node {obj_id} (Type: {obj_type})")
 
             self.graph.add_node(fid, point=vertex, objType=obj_type, objId=obj_id)
 
@@ -244,9 +242,7 @@ class TwwGraphManager(QObject):
 
         try:
             path = nx.algorithms.dijkstra_path(self.graph, start_point, end_point)
-            edges = [
-                (u, v, self.graph.edges[u, v]) for (u, v) in zip(path[0:], path[1:])
-            ]
+            edges = [(u, v, self.graph.edges[u, v]) for (u, v) in zip(path[0:], path[1:])]
 
             p = (path, edges)
 
@@ -282,9 +278,7 @@ class TwwGraphManager(QObject):
 
         # Returns pred, weight
         pred, _ = nx.bellman_ford_predecessor_and_distance(my_graph, node)
-        edges = [
-            (v[0], u, my_graph.edges[v[0], u]) for (u, v) in list(pred.items()) if v
-        ]
+        edges = [(v[0], u, my_graph.edges[v[0], u]) for (u, v) in list(pred.items()) if v]
         nodes = [
             my_graph.nodes[n]
             for n in set(list(pred.keys()) + [v[0] for v in list(pred.values()) if v])
@@ -300,9 +294,7 @@ class TwwGraphManager(QObject):
         :return:       A list of polylines
         """
         cache = self.getFeaturesById(self.edge_layer, edges)
-        polylines = [
-            feat.geometry().asPolyline() for feat in list(cache.asDict().values())
-        ]
+        polylines = [feat.geometry().asPolyline() for feat in list(cache.asDict().values())]
         return polylines
 
     # pylint: disable=no-self-use

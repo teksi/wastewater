@@ -23,9 +23,7 @@ OUTPUT_DIR.mkdir(
     exist_ok=True,
 )
 
-DB_ARGS = (
-    "--pghost db --pgdatabase tww --pguser postgres --pgpass postgres --pgport 5432"
-)
+DB_ARGS = "--pghost db --pgdatabase tww --pguser postgres --pgpass postgres --pgport 5432"
 
 
 def _container_output_file(
@@ -56,11 +54,7 @@ def imported_orgs(
 def imported_sia405(
     imported_orgs,
 ) -> None:
-    run_cli(
-        "interlis_import "
-        f"--xtf_file {DATA_DIR}/minimal-dataset-SIA405-ABWASSER.xtf "
-        f"{DB_ARGS}"
-    )
+    run_cli(f"interlis_import --xtf_file {DATA_DIR}/minimal-dataset-SIA405-ABWASSER.xtf {DB_ARGS}")
 
 
 @pytest.fixture(scope="module")
@@ -225,25 +219,19 @@ def test_import_sia405(
     assert result
 
     result = DatabaseUtils.fetchone(
-        "SELECT remark "
-        "FROM tww_od.wastewater_networkelement "
-        "WHERE obj_id='ch000000RE000001';"
+        "SELECT remark FROM tww_od.wastewater_networkelement WHERE obj_id='ch000000RE000001';"
     )
     assert result is not None
     assert result[0] == "rp_from_level added"
 
     result = DatabaseUtils.fetchone(
-        "SELECT bottom_level "
-        "FROM tww_od.wastewater_node "
-        "WHERE obj_id='ch000000WN000001';"
+        "SELECT bottom_level FROM tww_od.wastewater_node WHERE obj_id='ch000000WN000001';"
     )
     assert result is not None
     assert result[0] == 448.0
 
     result = DatabaseUtils.fetchone(
-        "SELECT height_width_ratio "
-        "FROM tww_od.pipe_profile "
-        "WHERE obj_id='ch000000PP000003';"
+        "SELECT height_width_ratio FROM tww_od.pipe_profile WHERE obj_id='ch000000PP000003';"
     )
     assert result is not None
     assert result[0] == Decimal("1.12857")
@@ -258,9 +246,7 @@ def test_import_dss(
     assert result
 
     result = DatabaseUtils.fetchone(
-        "SELECT bottom_level "
-        "FROM tww_od.wastewater_node "
-        "WHERE obj_id='ch000000WN000001';"
+        "SELECT bottom_level FROM tww_od.wastewater_node WHERE obj_id='ch000000WN000001';"
     )
     assert result is not None
     assert result[0] == 448.0
@@ -278,9 +264,7 @@ def test_import_kek(
     assert result[0] == "fk11abk6EX000002"
 
     result = DatabaseUtils.fetchone(
-        "SELECT bottom_level "
-        "FROM tww_od.wastewater_node "
-        "WHERE obj_id='ch000000WN000001';"
+        "SELECT bottom_level FROM tww_od.wastewater_node WHERE obj_id='ch000000WN000001';"
     )
     assert result is not None
     assert result[0] == 448.0
@@ -364,17 +348,13 @@ def test_import_sia405_modified(
     assert result
 
     result = DatabaseUtils.fetchone(
-        "SELECT remark "
-        "FROM tww_od.wastewater_networkelement "
-        "WHERE obj_id='ch000000RE000001';"
+        "SELECT remark FROM tww_od.wastewater_networkelement WHERE obj_id='ch000000RE000001';"
     )
     assert result is not None
     assert result[0] == "rp_from_level modified"
 
     result = DatabaseUtils.fetchone(
-        "SELECT bottom_level "
-        "FROM tww_od.wastewater_node "
-        "WHERE obj_id='ch000000WN000001';"
+        "SELECT bottom_level FROM tww_od.wastewater_node WHERE obj_id='ch000000WN000001';"
     )
     assert result is not None
     assert result[0] == 448.0

@@ -13,9 +13,7 @@ def create_engine(logger_name=None):
     if logger_name:
         handler = logging.FileHandler(f"tww_export.{logger_name}.log", mode="w")
         handler.setLevel(logging.DEBUG)
-        logging.getLogger(f"sqlalchemy.engine.base.Engine.{logger_name}").addHandler(
-            handler
-        )
+        logging.getLogger(f"sqlalchemy.engine.base.Engine.{logger_name}").addHandler(handler)
         logging_args = {"logging_name": logger_name, "echo": True}
 
     pgconf = DatabaseUtils.get_pgconf()

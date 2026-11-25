@@ -168,9 +168,7 @@ def vw_tww_infiltration_installation(
             if not extra_definition
             else extra_cols(connection=connection, extra_definition=extra_definition)
         ),
-        extra_joins=extra_joins(
-            connection=connection, extra_definition=extra_definition
-        ),
+        extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
     )
 
     view_sql = psycopg.sql.SQL(view_sql).format(srid=psycopg.sql.Literal(srid))
@@ -318,14 +316,10 @@ def vw_tww_infiltration_installation(
                 "fk_wastewater_structure": "NEW.obj_id",
             },
         ),
-        insert_extra=insert_extra(
-            connection=connection, extra_definition=extra_definition
-        ),
+        insert_extra=insert_extra(connection=connection, extra_definition=extra_definition),
     )
 
-    trigger_insert_sql = psycopg.sql.SQL(trigger_insert_sql).format(
-        srid=psycopg.sql.Literal(srid)
-    )
+    trigger_insert_sql = psycopg.sql.SQL(trigger_insert_sql).format(srid=psycopg.sql.Literal(srid))
     cursor.execute(trigger_insert_sql)
 
     update_trigger_sql = """
@@ -534,14 +528,10 @@ def vw_tww_infiltration_installation(
             },
             returning="obj_id INTO OLD.co_obj_id",
         ),
-        update_extra=update_extra(
-            connection=connection, extra_definition=extra_definition
-        ),
+        update_extra=update_extra(connection=connection, extra_definition=extra_definition),
     )
 
-    update_trigger_sql = psycopg.sql.SQL(update_trigger_sql).format(
-        srid=psycopg.sql.Literal(srid)
-    )
+    update_trigger_sql = psycopg.sql.SQL(update_trigger_sql).format(srid=psycopg.sql.Literal(srid))
     cursor.execute(update_trigger_sql)
 
     trigger_delete_sql = """
@@ -587,9 +577,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     pg_service = args.pg_service or os.getenv("PGSERVICE")
     srid = psycopg.sql.Literal(args.srid)
-    extra_definition = (
-        safe_load(open(args.extra_definition)) if args.extra_definition else {}
-    )
+    extra_definition = safe_load(open(args.extra_definition)) if args.extra_definition else {}
     with psycopg.connect(f"service={pg_service}") as conn:
         vw_tww_infiltration_installation(
             connection=conn, srid=srid, extra_definition=extra_definition

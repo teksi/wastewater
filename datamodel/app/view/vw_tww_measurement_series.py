@@ -17,9 +17,7 @@ from .utils.extra_definition_utils import (
 )
 
 
-def vw_tww_measurement_series(
-    connection: psycopg.Connection, extra_definition: dict = None
-):
+def vw_tww_measurement_series(connection: psycopg.Connection, extra_definition: dict = None):
     """
     Creates tww_measurement_series view
     :param connection: psycopg Connection
@@ -58,9 +56,7 @@ def vw_tww_measurement_series(
             if not extra_definition
             else extra_cols(connection=connection, extra_definition=extra_definition)
         ),
-        extra_joins=extra_joins(
-            connection=connection, extra_definition=extra_definition
-        ),
+        extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
     )
 
     cursor.execute(view_sql)
@@ -93,9 +89,7 @@ def vw_tww_measurement_series(
             indent=2,
             skip_columns=[],
         ),
-        insert_extra=insert_extra(
-            connection=connection, extra_definition=extra_definition
-        ),
+        insert_extra=insert_extra(connection=connection, extra_definition=extra_definition),
     )
 
     cursor.execute(trigger_insert_sql)
@@ -128,9 +122,7 @@ def vw_tww_measurement_series(
             skip_columns=[],
             update_values={},
         ),
-        update_extra=update_extra(
-            connection=connection, extra_definition=extra_definition
-        ),
+        update_extra=update_extra(connection=connection, extra_definition=extra_definition),
     )
 
     cursor.execute(update_trigger_sql)
@@ -176,6 +168,4 @@ if __name__ == "__main__":
             extra_definition = safe_load(f)
     pg_service = args.pg_service or os.getenv("PGSERVICE")
     with psycopg.connect(f"service={pg_service}") as connection:
-        vw_tww_measurement_series(
-            connection=connection, extra_definition=extra_definition
-        )
+        vw_tww_measurement_series(connection=connection, extra_definition=extra_definition)

@@ -87,9 +87,7 @@ class SwmmSetFrictionAlgorithm(TwwAlgorithm):
 
         # init params
         database = self.parameterAsString(parameters, self.DATABASE, context)
-        overwrite_values = self.parameterAsBoolean(
-            parameters, self.OVERWRITE_VALUES, context
-        )
+        overwrite_values = self.parameterAsBoolean(parameters, self.OVERWRITE_VALUES, context)
         # Connect to TWW database and perform translation
         with TwwSwmm(None, database, None, None, None, None, None, feedback) as qs:
             qs.disable_reach_trigger()

@@ -17,9 +17,7 @@ from .utils.extra_definition_utils import (
 )
 
 
-def vw_wastewater_structure(
-    connection: psycopg.Connection, extra_definition: dict = None
-):
+def vw_wastewater_structure(connection: psycopg.Connection, extra_definition: dict = None):
     """
     Creates tww_wastewater_structure view
     :param connection: a psycopg connection object
@@ -65,9 +63,7 @@ def vw_wastewater_structure(
             indent=4,
             skip_columns=[],
         ),
-        extra_joins=extra_joins(
-            connection=connection, extra_definition=extra_definition
-        ),
+        extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
     )
     cursor.execute(view_sql)
 
@@ -97,9 +93,7 @@ def vw_wastewater_structure(
             remove_pkey=False,
             indent=2,
         ),
-        insert_extra=insert_extra(
-            connection=connection, extra_definition=extra_definition
-        ),
+        insert_extra=insert_extra(connection=connection, extra_definition=extra_definition),
     )
     cursor.execute(trigger_insert_sql)
 
@@ -135,9 +129,7 @@ def vw_wastewater_structure(
             ],
             update_values={},
         ),
-        update_extra=update_extra(
-            connection=connection, extra_definition=extra_definition
-        ),
+        update_extra=update_extra(connection=connection, extra_definition=extra_definition),
     )
     cursor.execute(update_trigger_sql)
 
@@ -180,6 +172,4 @@ if __name__ == "__main__":
         with open(args.extra_definition) as f:
             extra_definition = safe_load(f)
     with psycopg.connect(f"service={pg_service}") as conn:
-        vw_wastewater_structure(
-            pg_service=pg_service, extra_definition=extra_definition
-        )
+        vw_wastewater_structure(pg_service=pg_service, extra_definition=extra_definition)

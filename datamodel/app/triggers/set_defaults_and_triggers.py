@@ -84,9 +84,7 @@ def set_defaults_and_triggers(
                     )
                     SqlContent(query).execute(connection)
                 else:
-                    raise Exception(
-                        f"Must be owner of tww_od.{entry[0]} to create triggers"
-                    )
+                    raise Exception(f"Must be owner of tww_od.{entry[0]} to create triggers")
         else:
             cursor = SqlContent(f"""select 1 from information_schema.columns
                 WHERE table_schema = 'tww_od'
@@ -98,6 +96,4 @@ def set_defaults_and_triggers(
                     query = create_last_modification_trigger(entry[0])
                     SqlContent(query).execute(connection)
                 else:
-                    raise Exception(
-                        f"Must be owner of tww_od.{entry[0]} to create triggers"
-                    )
+                    raise Exception(f"Must be owner of tww_od.{entry[0]} to create triggers")

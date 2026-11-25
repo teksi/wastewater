@@ -50,15 +50,11 @@ class TwwSelectionExtender(QObject):
             return
 
         # Collect node obj_ids from selected reaches
-        node_obj_ids = self._collect_node_obj_ids_from_reaches(
-            reach_layer, selected_reach_fids
-        )
+        node_obj_ids = self._collect_node_obj_ids_from_reaches(reach_layer, selected_reach_fids)
 
         # Select nodes
         if node_layer and node_obj_ids:
-            node_target_fids = self._find_fids_by_obj_id(
-                node_layer, "obj_id", node_obj_ids
-            )
+            node_target_fids = self._find_fids_by_obj_id(node_layer, "obj_id", node_obj_ids)
             self._apply_selection(node_layer, node_target_fids, mode)
 
         # Select structures linked to nodes
@@ -71,9 +67,7 @@ class TwwSelectionExtender(QObject):
         # Select catchments linked to nodes
         catch_target_fids = set()
         if catchment_layer and node_obj_ids:
-            catch_target_fids = self._find_catchment_fids(
-                catchment_layer, node_obj_ids, status
-            )
+            catch_target_fids = self._find_catchment_fids(catchment_layer, node_obj_ids, status)
             self._apply_selection(catchment_layer, catch_target_fids, mode)
 
         # Select corresponding reaches
@@ -118,9 +112,7 @@ class TwwSelectionExtender(QObject):
         req = QgsFeatureRequest().setFilterExpression(expr)
         return {f.id() for f in layer.getFeatures(req)}
 
-    def _find_catchment_fids(
-        self, layer, node_obj_ids: set[str], status: str
-    ) -> set[int]:
+    def _find_catchment_fids(self, layer, node_obj_ids: set[str], status: str) -> set[int]:
         if not node_obj_ids:
             return set()
 

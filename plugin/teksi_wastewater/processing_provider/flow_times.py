@@ -107,9 +107,7 @@ class FlowTimesAlgorithm(TwwAlgorithm):
             )
         )
 
-        self.addParameter(
-            QgsProcessingParameterFeatureSink(self.OUTPUT, self.tr("Flow times"))
-        )
+        self.addParameter(QgsProcessingParameterFeatureSink(self.OUTPUT, self.tr("Flow times")))
 
     def processAlgorithm(
         self, parameters, context: QgsProcessingContext, feedback: QgsProcessingFeedback
@@ -121,15 +119,9 @@ class FlowTimesAlgorithm(TwwAlgorithm):
 
         # init params
         reach_layer = self.parameterAsVectorLayer(parameters, self.REACH_LAYER, context)
-        flow_layer = self.parameterAsVectorLayer(
-            parameters, self.FLOWTIMES_LAYER, context
-        )
-        fk_reach_field = self.parameterAsFields(
-            parameters, self.FK_REACH_FIELD, context
-        )[0]
-        flow_time_field = self.parameterAsFields(
-            parameters, self.FLOWTIMES_FIELD, context
-        )[0]
+        flow_layer = self.parameterAsVectorLayer(parameters, self.FLOWTIMES_LAYER, context)
+        fk_reach_field = self.parameterAsFields(parameters, self.FK_REACH_FIELD, context)[0]
+        flow_time_field = self.parameterAsFields(parameters, self.FLOWTIMES_FIELD, context)[0]
 
         # create feature sink
         fields = QgsFields()
@@ -149,9 +141,7 @@ class FlowTimesAlgorithm(TwwAlgorithm):
         iterator = reach_layer.getSelectedFeatures()
         feature_count = reach_layer.selectedFeatureCount()
         if feature_count != 1:
-            raise QgsProcessingException(
-                self.invalidSourceError(parameters, self.REACH_LAYER)
-            )
+            raise QgsProcessingException(self.invalidSourceError(parameters, self.REACH_LAYER))
         reach_feature = QgsFeature()
         iterator.nextFeature(reach_feature)
         assert reach_feature.isValid()

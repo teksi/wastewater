@@ -110,9 +110,7 @@ class InterlisImporterToIntermediateSchema:
         self._import_spezialbauwerk()
         self._check_for_stop()
 
-        logger.info(
-            "\nImporting ABWASSER.versickerungsanlage -> TWW.infiltration_installation"
-        )
+        logger.info("\nImporting ABWASSER.versickerungsanlage -> TWW.infiltration_installation")
         self._import_versickerungsanlage()
         self._check_for_stop()
 
@@ -145,9 +143,7 @@ class InterlisImporterToIntermediateSchema:
         self._import_haltungspunkt()
         self._check_for_stop()
 
-        logger.info(
-            "\nImporting ABWASSER.trockenwetterfallrohr -> TWW.dryweather_downspout"
-        )
+        logger.info("\nImporting ABWASSER.trockenwetterfallrohr -> TWW.dryweather_downspout")
         self._import_trockenwetterfallrohr()
         self._check_for_stop()
 
@@ -188,9 +184,7 @@ class InterlisImporterToIntermediateSchema:
         self._import_araenergienutzung()
         self._check_for_stop()
 
-        logger.info(
-            "\nImporting ABWASSER.abwasserbehandlung -> TWW.waste_water_treatment"
-        )
+        logger.info("\nImporting ABWASSER.abwasserbehandlung -> TWW.waste_water_treatment")
         self._import_abwasserbehandlung()
         self._check_for_stop()
 
@@ -210,9 +204,7 @@ class InterlisImporterToIntermediateSchema:
         self._import_abflusslose_toilette()
         self._check_for_stop()
 
-        logger.info(
-            "\nImporting ABWASSER.absperr_drosselorgan -> TWW.throttle_shut_off_unit"
-        )
+        logger.info("\nImporting ABWASSER.absperr_drosselorgan -> TWW.throttle_shut_off_unit")
         self._import_absperr_drosselorgan()
         self._check_for_stop()
 
@@ -224,9 +216,7 @@ class InterlisImporterToIntermediateSchema:
         self._import_beckenreinigung()
         self._check_for_stop()
 
-        logger.info(
-            "\nImporting ABWASSER.biol_oekol_gesamtbeurteilung -> TWW.bio_ecol_assessment"
-        )
+        logger.info("\nImporting ABWASSER.biol_oekol_gesamtbeurteilung -> TWW.bio_ecol_assessment")
         self._import_biol_oekol_gesamtbeurteilung()
         self._check_for_stop()
 
@@ -250,9 +240,7 @@ class InterlisImporterToIntermediateSchema:
         self._import_einzugsgebiet()
         self._check_for_stop()
 
-        logger.info(
-            "\nImporting ABWASSER.elektrischeeinrichtung -> TWW.electric_equipment"
-        )
+        logger.info("\nImporting ABWASSER.elektrischeeinrichtung -> TWW.electric_equipment")
         self._import_elektrischeeinrichtung()
         self._check_for_stop()
 
@@ -286,15 +274,11 @@ class InterlisImporterToIntermediateSchema:
         self._import_gebaeudegruppe()
         self._check_for_stop()
 
-        logger.info(
-            "\nImporting ABWASSER.gebaeudegruppe_baugwr -> TWW.building_group_baugwr"
-        )
+        logger.info("\nImporting ABWASSER.gebaeudegruppe_baugwr -> TWW.building_group_baugwr")
         self._import_gebaeudegruppe_baugwr()
         self._check_for_stop()
 
-        logger.info(
-            "\nImporting ABWASSER.gesamteinzugsgebiet -> TWW.catchment_area_totals"
-        )
+        logger.info("\nImporting ABWASSER.gesamteinzugsgebiet -> TWW.catchment_area_totals")
         self._import_gesamteinzugsgebiet()
         self._check_for_stop()
 
@@ -330,9 +314,7 @@ class InterlisImporterToIntermediateSchema:
         self._import_massnahme()
         self._check_for_stop()
 
-        logger.info(
-            "\nImporting ABWASSER.mechanischevorreinigung -> TWW.mechanical_pretreatment"
-        )
+        logger.info("\nImporting ABWASSER.mechanischevorreinigung -> TWW.mechanical_pretreatment")
         self._import_mechanischevorreinigung()
         self._check_for_stop()
 
@@ -368,9 +350,7 @@ class InterlisImporterToIntermediateSchema:
         self._import_rohrprofil_geometrie()
         self._check_for_stop()
 
-        logger.info(
-            "\nImporting ABWASSER.rueckstausicherung -> TWW.backflow_prevention"
-        )
+        logger.info("\nImporting ABWASSER.rueckstausicherung -> TWW.backflow_prevention")
         self._import_rueckstausicherung()
         self._check_for_stop()
 
@@ -390,9 +370,7 @@ class InterlisImporterToIntermediateSchema:
         self._import_unterhalt()
         self._check_for_stop()
 
-        logger.info(
-            "\nImporting ABWASSER.versickerungsbereich -> TWW.infiltration_zone"
-        )
+        logger.info("\nImporting ABWASSER.versickerungsbereich -> TWW.infiltration_zone")
         self._import_versickerungsbereich()
         self._check_for_stop()
 
@@ -448,11 +426,7 @@ class InterlisImporterToIntermediateSchema:
         """
         # TODO : memoize (and get the whole table at once) to improve N+1 performance issue
         # TODO : return "other" (or other applicable value) rather than None, or even throwing an exception, would probably be better
-        instance = (
-            self.session_tww.query(vl_table)
-            .filter(vl_table.value_de == value_de)
-            .first()
-        )
+        instance = self.session_tww.query(vl_table).filter(vl_table.value_de == value_de).first()
         if instance is None:
             logger.warning(
                 f'Could not find value `{value_de}` in value list "{vl_table.__table__.schema}.{vl_table.__name__}". Setting to None instead.'
@@ -509,9 +483,7 @@ class InterlisImporterToIntermediateSchema:
                 return None
             else:
                 # Levelattribute and geometry attribute provided - 3D coordinate can be created as expected
-                geom = self.session_tww.scalar(
-                    ST_Force3D(geometryattribute, levelattribute)
-                )
+                geom = self.session_tww.scalar(ST_Force3D(geometryattribute, levelattribute))
                 logger.debug(
                     f" debug: situation3d_geometry created with geometry (x,y) and level (z): {geom}."
                 )
@@ -704,9 +676,7 @@ class InterlisImporterToIntermediateSchema:
             "identifier": row.bezeichnung,
             "remark": row.bemerkung,
             "sewer_infiltration_water_production": row.fremdwasseranfall,
-            "fk_wastewater_networkelement": self.get_pk(
-                row.abwassernetzelementref__REL
-            ),
+            "fk_wastewater_networkelement": self.get_pk(row.abwassernetzelementref__REL),
         }
 
     def surface_runoff_parameters_common(self, row):
@@ -746,9 +716,7 @@ class InterlisImporterToIntermediateSchema:
                 self.model_classes_tww_vl.overflow_adjustability, row.verstellbarkeit
             ),
             "brand": row.fabrikat,
-            "control": self.get_vl_code(
-                self.model_classes_tww_vl.overflow_control, row.steuerung
-            ),
+            "control": self.get_vl_code(self.model_classes_tww_vl.overflow_control, row.steuerung),
             "discharge_point": row.einleitstelle,
             "function": self.get_vl_code(
                 self.model_classes_tww_vl.overflow_function, row.funktion
@@ -767,9 +735,7 @@ class InterlisImporterToIntermediateSchema:
         }
 
     def _import_organisation(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.organisation
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.organisation):
             organisation = self.create_or_update(
                 self.model_classes_tww_od.organisation,
                 obj_id=row.t_ili_tid,
@@ -825,9 +791,7 @@ class InterlisImporterToIntermediateSchema:
                 jetting_interval=row.spuelintervall,
                 pipe_length=row.rohrlaenge,
                 # new attribute seepage Release 2020
-                seepage=self.get_vl_code(
-                    self.model_classes_tww_od.channel_seepage, row.sickerung
-                ),
+                seepage=self.get_vl_code(self.model_classes_tww_od.channel_seepage, row.sickerung),
                 usage_current=self.get_vl_code(
                     self.model_classes_tww_od.channel_usage_current, row.nutzungsart_ist
                 ),
@@ -877,9 +841,7 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_einleitstelle(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.einleitstelle
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.einleitstelle):
             discharge_point = self.create_or_update(
                 self.model_classes_tww_od.discharge_point,
                 **self.base_common(row),
@@ -907,9 +869,7 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_spezialbauwerk(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.spezialbauwerk
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.spezialbauwerk):
             special_structure = self.create_or_update(
                 self.model_classes_tww_od.special_structure,
                 **self.base_common(row),
@@ -949,9 +909,7 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_versickerungsanlage(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.versickerungsanlage
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.versickerungsanlage):
             infiltration_installation = self.create_or_update(
                 self.model_classes_tww_od.infiltration_installation,
                 **self.base_common(row),
@@ -1037,9 +995,7 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_araenergienutzung(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.araenergienutzung
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.araenergienutzung):
             wwtp_energy_use = self.create_or_update(
                 self.model_classes_tww_od.wwtp_energy_use,
                 **self.base_common(row),
@@ -1049,17 +1005,13 @@ class InterlisImporterToIntermediateSchema:
                 identifier=row.bezeichnung,
                 remark=row.bemerkung,
                 turbining=row.turbinierung,
-                fk_waste_water_treatment_plant=self.get_pk(
-                    row.abwasserreinigungsanlageref__REL
-                ),
+                fk_waste_water_treatment_plant=self.get_pk(row.abwasserreinigungsanlageref__REL),
             )
             self.session_tww.add(wwtp_energy_use)
             print(".", end="")
 
     def _import_abwasserbehandlung(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.abwasserbehandlung
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.abwasserbehandlung):
             waste_water_treatment = self.create_or_update(
                 self.model_classes_tww_od.waste_water_treatment,
                 **self.base_common(row),
@@ -1069,17 +1021,13 @@ class InterlisImporterToIntermediateSchema:
                     self.model_classes_tww_vl.waste_water_treatment_kind, row.art
                 ),
                 remark=row.bemerkung,
-                fk_waste_water_treatment_plant=self.get_pk(
-                    row.abwasserreinigungsanlageref__REL
-                ),
+                fk_waste_water_treatment_plant=self.get_pk(row.abwasserreinigungsanlageref__REL),
             )
             self.session_tww.add(waste_water_treatment)
             print(".", end="")
 
     def _import_schlammbehandlung(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.schlammbehandlung
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.schlammbehandlung):
             sludge_treatment = self.create_or_update(
                 self.model_classes_tww_od.sludge_treatment,
                 **self.base_common(row),
@@ -1101,9 +1049,7 @@ class InterlisImporterToIntermediateSchema:
                 ),
                 stacking_of_dehydrated_sludge=row.entwaessertklaerschlammstapelung,
                 stacking_of_liquid_sludge=row.fluessigklaerschlammstapelung,
-                fk_waste_water_treatment_plant=self.get_pk(
-                    row.abwasserreinigungsanlageref__REL
-                ),
+                fk_waste_water_treatment_plant=self.get_pk(row.abwasserreinigungsanlageref__REL),
             )
             self.session_tww.add(sludge_treatment)
             print(".", end="")
@@ -1116,20 +1062,14 @@ class InterlisImporterToIntermediateSchema:
                 # --- wastewater_structure ---
                 **self.wastewater_structure_common(row),
                 # --- wwtp_structure ---
-                kind=self.get_vl_code(
-                    self.model_classes_tww_vl.wwtp_structure_kind, row.art
-                ),
-                fk_waste_water_treatment_plant=self.get_pk(
-                    row.abwasserreinigungsanlageref__REL
-                ),
+                kind=self.get_vl_code(self.model_classes_tww_vl.wwtp_structure_kind, row.art),
+                fk_waste_water_treatment_plant=self.get_pk(row.abwasserreinigungsanlageref__REL),
             )
             self.session_tww.add(wwtp_structure)
             print(".", end="")
 
     def _import_steuerungszentrale(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.steuerungszentrale
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.steuerungszentrale):
             control_center = self.create_or_update(
                 self.model_classes_tww_od.control_center,
                 **self.base_common(row),
@@ -1141,25 +1081,19 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_abflusslose_toilette(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.abflusslose_toilette
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.abflusslose_toilette):
             drainless_toilet = self.create_or_update(
                 self.model_classes_tww_od.drainless_toilet,
                 **self.base_common(row),
                 **self.wastewater_structure_common(row),
                 # --- drainless_toilet ---
-                kind=self.get_vl_code(
-                    self.model_classes_tww_vl.drainless_toilet_kind, row.art
-                ),
+                kind=self.get_vl_code(self.model_classes_tww_vl.drainless_toilet_kind, row.art),
             )
             self.session_tww.add(drainless_toilet)
             print(".", end="")
 
     def _import_absperr_drosselorgan(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.absperr_drosselorgan
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.absperr_drosselorgan):
             throttle_shut_off_unit = self.create_or_update(
                 self.model_classes_tww_od.throttle_shut_off_unit,
                 **self.base_common(row),
@@ -1200,9 +1134,7 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_beckenentleerung(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.beckenentleerung
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.beckenentleerung):
             tank_emptying = self.create_or_update(
                 self.model_classes_tww_od.tank_emptying,
                 **self.base_common(row),
@@ -1210,9 +1142,7 @@ class InterlisImporterToIntermediateSchema:
                 # --- tank_emptying ---
                 flow=row.leistung,
                 gross_costs=row.bruttokosten,
-                kind=self.get_vl_code(
-                    self.model_classes_tww_vl.tank_emptying_kind, row.art
-                ),
+                kind=self.get_vl_code(self.model_classes_tww_vl.tank_emptying_kind, row.art),
                 year_of_replacement=row.ersatzjahr,
                 fk_throttle_shut_off_unit=self.get_pk(row.absperr_drosselorganref__REL),
                 fk_overflow=self.get_pk(row.ueberlaufref__REL),
@@ -1221,18 +1151,14 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_beckenreinigung(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.beckenreinigung
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.beckenreinigung):
             tank_cleaning = self.create_or_update(
                 self.model_classes_tww_od.tank_cleaning,
                 **self.base_common(row),
                 **self.structure_part_common(row),
                 # --- tank_cleaning ---
                 gross_costs=row.bruttokosten,
-                kind=self.get_vl_code(
-                    self.model_classes_tww_vl.tank_cleaning_kind, row.art
-                ),
+                kind=self.get_vl_code(self.model_classes_tww_vl.tank_cleaning_kind, row.art),
                 year_of_replacement=row.ersatzjahr,
             )
             self.session_tww.add(tank_cleaning)
@@ -1309,9 +1235,7 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_ezg_parameter_allg(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.ezg_parameter_allg
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.ezg_parameter_allg):
             param_ca_general = self.create_or_update(
                 self.model_classes_tww_od.param_ca_general,
                 **self.base_common(row),
@@ -1327,9 +1251,7 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_ezg_parameter_mouse1(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.ezg_parameter_mouse1
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.ezg_parameter_mouse1):
             param_ca_mouse1 = self.create_or_update(
                 self.model_classes_tww_od.param_ca_mouse1,
                 **self.base_common(row),
@@ -1346,9 +1268,7 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_einzelflaeche(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.einzelflaeche
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.einzelflaeche):
             individual_surface = self.create_or_update(
                 self.model_classes_tww_od.individual_surface,
                 **self.base_common(row),
@@ -1368,9 +1288,7 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_einzugsgebiet(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.einzugsgebiet
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.einzugsgebiet):
             catchment_area = self.create_or_update(
                 self.model_classes_tww_od.catchment_area,
                 **self.base_common(row),
@@ -1448,18 +1366,14 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_elektrischeeinrichtung(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.elektrischeeinrichtung
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.elektrischeeinrichtung):
             electric_equipment = self.create_or_update(
                 self.model_classes_tww_od.electric_equipment,
                 **self.base_common(row),
                 **self.structure_part_common(row),
                 # --- electric_equipment ---
                 gross_costs=row.bruttokosten,
-                kind=self.get_vl_code(
-                    self.model_classes_tww_vl.electric_equipment_kind, row.art
-                ),
+                kind=self.get_vl_code(self.model_classes_tww_vl.electric_equipment_kind, row.art),
                 year_of_replacement=row.ersatzjahr,
             )
             self.session_tww.add(electric_equipment)
@@ -1500,9 +1414,7 @@ class InterlisImporterToIntermediateSchema:
                     row.entsorgungsort_geplant,
                 ),
                 volume_pit_without_drain=row.volumenabflusslosegrube,
-                fk_infiltration_installation=self.get_pk(
-                    row.versickerungsanlageref__REL
-                ),
+                fk_infiltration_installation=self.get_pk(row.versickerungsanlageref__REL),
                 fk_discharge_point=self.get_pk(row.einleitstelleref__REL),
                 fk_wastewater_structure=self.get_pk(row.abwasserbauwerkref__REL),
             )
@@ -1510,26 +1422,20 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_entwaesserungssystem(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.entwaesserungssystem
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.entwaesserungssystem):
             drainage_system = self.create_or_update(
                 self.model_classes_tww_od.drainage_system,
                 **self.base_common(row),
                 **self.zone_common(row),
                 # --- drainage_system ---
-                kind=self.get_vl_code(
-                    self.model_classes_tww_vl.drainage_system_kind, row.art
-                ),
+                kind=self.get_vl_code(self.model_classes_tww_vl.drainage_system_kind, row.art),
                 perimeter_geometry=row.perimeter,
             )
             self.session_tww.add(drainage_system)
             print(".", end="")
 
     def _import_feststoffrueckhalt(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.feststoffrueckhalt
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.feststoffrueckhalt):
             solids_retention = self.create_or_update(
                 self.model_classes_tww_od.solids_retention,
                 **self.base_common(row),
@@ -1538,18 +1444,14 @@ class InterlisImporterToIntermediateSchema:
                 dimensioning_value=row.dimensionierungswert,
                 gross_costs=row.bruttokosten,
                 overflow_level=row.anspringkote,
-                kind=self.get_vl_code(
-                    self.model_classes_tww_vl.solids_retention_kind, row.art
-                ),
+                kind=self.get_vl_code(self.model_classes_tww_vl.solids_retention_kind, row.art),
                 year_of_replacement=row.ersatzjahr,
             )
             self.session_tww.add(solids_retention)
             print(".", end="")
 
     def _import_foerderaggregat(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.foerderaggregat
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.foerderaggregat):
             pump = self.create_or_update(
                 self.model_classes_tww_od.pump,
                 **self.base_common(row),
@@ -1591,9 +1493,7 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_gebaeudegruppe(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.gebaeudegruppe
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.gebaeudegruppe):
             building_group = self.create_or_update(
                 self.model_classes_tww_od.building_group,
                 **self.base_common(row),
@@ -1662,9 +1562,7 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_gebaeudegruppe_baugwr(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.gebaeudegruppe_baugwr
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.gebaeudegruppe_baugwr):
             building_group_baugwr = self.create_or_update(
                 self.model_classes_tww_od.building_group_baugwr,
                 **self.base_common(row),
@@ -1676,9 +1574,7 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_gesamteinzugsgebiet(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.gesamteinzugsgebiet
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.gesamteinzugsgebiet):
             catchment_area_totals = self.create_or_update(
                 self.model_classes_tww_od.catchment_area_totals,
                 **self.base_common(row),
@@ -1717,9 +1613,7 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_hydr_geomrelation(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.hydr_geomrelation
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.hydr_geomrelation):
             hydr_geom_relation = self.create_or_update(
                 self.model_classes_tww_od.hydr_geom_relation,
                 **self.base_common(row),
@@ -1733,9 +1627,7 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_hydr_geometrie(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.hydr_geometrie
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.hydr_geometrie):
             hydr_geometry = self.create_or_update(
                 self.model_classes_tww_od.hydr_geometry,
                 **self.base_common(row),
@@ -1752,9 +1644,7 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_hydr_kennwerte(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.hydr_kennwerte
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.hydr_kennwerte):
             hydraulic_char_data = self.create_or_update(
                 self.model_classes_tww_od.hydraulic_char_data,
                 **self.base_common(row),
@@ -1816,9 +1706,7 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_landwirtschaftsbetrieb(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.landwirtschaftsbetrieb
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.landwirtschaftsbetrieb):
             farm = self.create_or_update(
                 self.model_classes_tww_od.farm,
                 **self.base_common(row),
@@ -1896,9 +1784,7 @@ class InterlisImporterToIntermediateSchema:
                     self.model_classes_tww_vl.measure_priority, row.prioritaet
                 ),
                 remark=row.bemerkung,
-                status=self.get_vl_code(
-                    self.model_classes_tww_vl.measure_status, row.astatus
-                ),
+                status=self.get_vl_code(self.model_classes_tww_vl.measure_status, row.astatus),
                 symbolpos_geometry=row.symbolpos,
                 total_cost=row.gesamtkosten,
                 year_implementation_effective=row.jahr_umsetzung_effektiv,
@@ -1936,9 +1822,7 @@ class InterlisImporterToIntermediateSchema:
                 serial_number=row.seriennummer,
                 brand=row.fabrikat,
                 identifier=row.bezeichnung,
-                kind=self.get_vl_code(
-                    self.model_classes_tww_vl.measuring_device_kind, row.art
-                ),
+                kind=self.get_vl_code(self.model_classes_tww_vl.measuring_device_kind, row.art),
                 remark=row.bemerkung,
                 fk_measuring_point=self.get_pk(row.messstelleref__REL),
             )
@@ -1953,22 +1837,16 @@ class InterlisImporterToIntermediateSchema:
                 # --- measurement_series ---
                 dimension=row.dimension,
                 identifier=row.bezeichnung,
-                kind=self.get_vl_code(
-                    self.model_classes_tww_vl.measurement_series_kind, row.art
-                ),
+                kind=self.get_vl_code(self.model_classes_tww_vl.measurement_series_kind, row.art),
                 remark=row.bemerkung,
                 fk_measuring_point=self.get_pk(row.messstelleref__REL),
-                fk_wastewater_networkelement=self.get_pk(
-                    row.abwassernetzelementref__REL
-                ),
+                fk_wastewater_networkelement=self.get_pk(row.abwassernetzelementref__REL),
             )
             self.session_tww.add(measurement_series)
             print(".", end="")
 
     def _import_messresultat(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.messresultat
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.messresultat):
             measurement_result = self.create_or_update(
                 self.model_classes_tww_od.measurement_result,
                 **self.base_common(row),
@@ -2011,9 +1889,7 @@ class InterlisImporterToIntermediateSchema:
                 kind=row.art,
                 situation_geometry=row.lage,
                 fk_operator=row.betreiberref,
-                fk_waste_water_treatment_plant=self.get_pk(
-                    row.abwasserreinigungsanlageref__REL
-                ),
+                fk_waste_water_treatment_plant=self.get_pk(row.abwasserreinigungsanlageref__REL),
                 fk_wastewater_structure=self.get_pk(row.abwasserbauwerkref__REL),
             )
             self.session_tww.add(measuring_point)
@@ -2053,30 +1929,22 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_retentionskoerper(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.retentionskoerper
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.retentionskoerper):
             retention_body = self.create_or_update(
                 self.model_classes_tww_od.retention_body,
                 **self.base_common(row),
                 # --- retention_body ---
                 identifier=row.bezeichnung,
-                kind=self.get_vl_code(
-                    self.model_classes_tww_vl.retention_body_kind, row.art
-                ),
+                kind=self.get_vl_code(self.model_classes_tww_vl.retention_body_kind, row.art),
                 remark=row.bemerkung,
                 volume=row.retention_volumen,
-                fk_infiltration_installation=self.get_pk(
-                    row.versickerungsanlageref__REL
-                ),
+                fk_infiltration_installation=self.get_pk(row.versickerungsanlageref__REL),
             )
             self.session_tww.add(retention_body)
             print(".", end="")
 
     def _import_rohrprofil_geometrie(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.rohrprofil_geometrie
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.rohrprofil_geometrie):
             profile_geometry = self.create_or_update(
                 self.model_classes_tww_od.profile_geometry,
                 **self.base_common(row),
@@ -2090,18 +1958,14 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_rueckstausicherung(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.rueckstausicherung
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.rueckstausicherung):
             backflow_prevention = self.create_or_update(
                 self.model_classes_tww_od.backflow_prevention,
                 **self.base_common(row),
                 **self.structure_part_common(row),
                 # --- backflow_prevention ---
                 gross_costs=row.bruttokosten,
-                kind=self.get_vl_code(
-                    self.model_classes_tww_vl.backflow_prevention_kind, row.art
-                ),
+                kind=self.get_vl_code(self.model_classes_tww_vl.backflow_prevention_kind, row.art),
                 year_of_replacement=row.ersatzjahr,
                 fk_throttle_shut_off_unit=self.get_pk(row.absperr_drosselorganref__REL),
                 fk_pump=self.get_pk(row.foerderaggregatref__REL),
@@ -2178,17 +2042,13 @@ class InterlisImporterToIntermediateSchema:
                 **self.base_common(row),
                 **self.maintenance_event_common(row),
                 # --- maintenance ---
-                kind=self.get_vl_code(
-                    self.model_classes_tww_vl.maintenance_kind, row.art
-                ),
+                kind=self.get_vl_code(self.model_classes_tww_vl.maintenance_kind, row.art),
             )
             self.session_tww.add(maintenance)
             print(".", end="")
 
     def _import_versickerungsbereich(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.versickerungsbereich
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.versickerungsbereich):
             infiltration_zone = self.create_or_update(
                 self.model_classes_tww_od.infiltration_zone,
                 **self.base_common(row),
@@ -2220,9 +2080,7 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_haltungspunkt(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.haltungspunkt
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.haltungspunkt):
             reach_point = self.create_or_update(
                 self.model_classes_tww_od.reach_point,
                 **self.base_common(row),
@@ -2231,9 +2089,7 @@ class InterlisImporterToIntermediateSchema:
                     self.model_classes_tww_od.reach_point_elevation_accuracy,
                     row.hoehengenauigkeit,
                 ),
-                fk_wastewater_networkelement=self.get_pk(
-                    row.abwassernetzelementref__REL
-                ),
+                fk_wastewater_networkelement=self.get_pk(row.abwassernetzelementref__REL),
                 identifier=row.bezeichnung,
                 level=row.kote,
                 outlet_shape=self.get_vl_code(
@@ -2274,9 +2130,7 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_abwasserknoten(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.abwasserknoten
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.abwasserknoten):
             wastewater_node = self.create_or_update(
                 self.model_classes_tww_od.wastewater_node,
                 **self.base_common(row),
@@ -2310,9 +2164,7 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_abwasserknoten_dss(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.abwasserknoten
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.abwasserknoten):
             wastewater_node = self.create_or_update(
                 self.model_classes_tww_od.wastewater_node,
                 **self.base_common(row),
@@ -2379,9 +2231,7 @@ class InterlisImporterToIntermediateSchema:
                     self.model_classes_tww_vl.reach_leak_protection, row.leckschutz
                 ),
                 length_effective=row.laengeeffektiv,
-                material=self.get_vl_code(
-                    self.model_classes_tww_vl.reach_material, row.material
-                ),
+                material=self.get_vl_code(self.model_classes_tww_vl.reach_material, row.material),
                 progression3d_geometry=self.session_tww.scalar(ST_Force3D(row.verlauf)),
                 reliner_material=self.get_vl_code(
                     self.model_classes_tww_od.reach_reliner_material,
@@ -2403,9 +2253,7 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_trockenwetterfallrohr(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.trockenwetterfallrohr
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.trockenwetterfallrohr):
             dryweather_downspout = self.create_or_update(
                 self.model_classes_tww_od.dryweather_downspout,
                 **self.base_common(row),
@@ -2418,26 +2266,20 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_einstiegshilfe(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.einstiegshilfe
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.einstiegshilfe):
             access_aid = self.create_or_update(
                 self.model_classes_tww_od.access_aid,
                 **self.base_common(row),
                 # --- structure_part ---
                 **self.structure_part_common(row),
                 # --- access_aid ---
-                kind=self.get_vl_code(
-                    self.model_classes_tww_vl.access_aid_kind, row.art
-                ),
+                kind=self.get_vl_code(self.model_classes_tww_vl.access_aid_kind, row.art),
             )
             self.session_tww.add(access_aid)
             print(".", end="")
 
     def _import_trockenwetterrinne(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.trockenwetterrinne
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.trockenwetterrinne):
             dryweather_flume = self.create_or_update(
                 self.model_classes_tww_od.dryweather_flume,
                 **self.base_common(row),
@@ -2470,9 +2312,7 @@ class InterlisImporterToIntermediateSchema:
                     self.model_classes_tww_vl.cover_fastening, row.verschluss
                 ),
                 level=row.kote,
-                material=self.get_vl_code(
-                    self.model_classes_tww_vl.cover_material, row.material
-                ),
+                material=self.get_vl_code(self.model_classes_tww_vl.cover_material, row.material),
                 positional_accuracy=self.get_vl_code(
                     self.model_classes_tww_od.cover_positional_accuracy,
                     row.lagegenauigkeit,
@@ -2483,9 +2323,7 @@ class InterlisImporterToIntermediateSchema:
                 sludge_bucket=self.get_vl_code(
                     self.model_classes_tww_od.cover_sludge_bucket, row.schlammeimer
                 ),
-                venting=self.get_vl_code(
-                    self.model_classes_tww_vl.cover_venting, row.entlueftung
-                ),
+                venting=self.get_vl_code(self.model_classes_tww_vl.cover_venting, row.entlueftung),
             )
             self.session_tww.add(cover)
             print(".", end="")
@@ -2504,9 +2342,7 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_spuelstutzen(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.spuelstutzen
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.spuelstutzen):
             flushing_nozzle = self.create_or_update(
                 self.model_classes_tww_od.flushing_nozzle,
                 **self.base_common(row),
@@ -2518,9 +2354,7 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_abwasserbauwerk_symbol(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.abwasserbauwerk_symbol
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.abwasserbauwerk_symbol):
             wastewater_structure_symbol = self.create_or_update(
                 self.model_classes_tww_od.wastewater_structure_symbol,
                 # --- wastewater_structure_symbol ---
@@ -2539,9 +2373,7 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_untersuchung(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.untersuchung
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.untersuchung):
             examination = self.create_or_update(
                 self.model_classes_tww_od.examination,
                 **self.base_common(row),
@@ -2616,9 +2448,7 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_normschachtschaden(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.normschachtschaden
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.normschachtschaden):
             damage_manhole = self.create_or_update(
                 self.model_classes_tww_od.damage_manhole,
                 **self.base_common(row),
@@ -2659,9 +2489,7 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_kanalschaden(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.kanalschaden
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.kanalschaden):
             # Note : in TWW, some attributes are on the base damage class,
             # while they are on the normschachtschaden/kanalschaden subclasses
             # in the ili2pg mode.
@@ -2697,17 +2525,13 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_datentraeger(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.datentraeger
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.datentraeger):
             data_media = self.create_or_update(
                 self.model_classes_tww_od.data_media,
                 **self.base_common(row),
                 # --- data_media ---
                 identifier=row.bezeichnung,
-                kind=self.get_vl_code(
-                    self.model_classes_tww_vl.data_media_kind, row.art
-                ),
+                kind=self.get_vl_code(self.model_classes_tww_vl.data_media_kind, row.art),
                 location=row.standort,
                 path=row.pfad,
                 remark=row.bemerkung,
@@ -2727,9 +2551,7 @@ class InterlisImporterToIntermediateSchema:
                 object=row.objekt,
                 path_relative=row.relativpfad,
                 remark=row.bemerkung,
-                classname=self.get_vl_code(
-                    self.model_classes_tww_vl.file_classname, row.klasse
-                ),
+                classname=self.get_vl_code(self.model_classes_tww_vl.file_classname, row.klasse),
             )
 
             self.session_tww.add(file_table_row)
@@ -2772,13 +2594,9 @@ class InterlisImporterToIntermediateSchema:
             self.model_classes_interlis.gebaeudegruppe_entsorgungassoc
         ):
             re_building_group_disposal = (
-                self.session_tww.query(
-                    self.model_classes_tww_od.re_building_group_disposal
-                )
+                self.session_tww.query(self.model_classes_tww_od.re_building_group_disposal)
                 .filter_by(
-                    fk_building_group=self.get_pk(
-                        row.gebaeudegruppe_entsorgungassocref__REL
-                    ),
+                    fk_building_group=self.get_pk(row.gebaeudegruppe_entsorgungassocref__REL),
                     fk_disposal=self.get_pk(row.entsorgungref__REL),
                 )
                 .first()
@@ -2787,13 +2605,9 @@ class InterlisImporterToIntermediateSchema:
                 # Already existing -> do nothing
                 continue
 
-            re_building_group_disposal = (
-                self.model_classes_tww_od.re_building_group_disposal(
-                    fk_building_group=self.get_pk(
-                        row.gebaeudegruppe_entsorgungassocref__REL
-                    ),
-                    fk_disposal=self.get_pk(row.entsorgungref__REL),
-                )
+            re_building_group_disposal = self.model_classes_tww_od.re_building_group_disposal(
+                fk_building_group=self.get_pk(row.gebaeudegruppe_entsorgungassocref__REL),
+                fk_disposal=self.get_pk(row.entsorgungref__REL),
             )
 
             self.session_tww.add(re_building_group_disposal)
@@ -2808,9 +2622,7 @@ class InterlisImporterToIntermediateSchema:
                     self.model_classes_tww_od.re_measuring_point_reference_station
                 )
                 .filter_by(
-                    fk_measuring_point=self.get_pk(
-                        row.messstelle_referenzstelleassocref__REL
-                    ),
+                    fk_measuring_point=self.get_pk(row.messstelle_referenzstelleassocref__REL),
                     fk_reference_station=self.get_pk(row.referenzstelleref__REL),
                 )
                 .first()
@@ -2821,9 +2633,7 @@ class InterlisImporterToIntermediateSchema:
 
             re_measuring_point_reference_station = (
                 self.model_classes_tww_od.re_measuring_point_reference_station(
-                    fk_measuring_point=self.get_pk(
-                        row.messstelle_referenzstelleassocref__REL
-                    ),
+                    fk_measuring_point=self.get_pk(row.messstelle_referenzstelleassocref__REL),
                     fk_reference_station=self.get_pk(row.referenzstelleref__REL),
                 )
             )
@@ -2884,9 +2694,7 @@ class InterlisImporterToIntermediateSchema:
         self._import_sbw_einzugsgebiet()
         self._check_for_stop()
 
-        logger.info(
-            "Importing ABWASSER.versickerungsbereichag -> TWW.versickerungsbereichag"
-        )
+        logger.info("Importing ABWASSER.versickerungsbereichag -> TWW.versickerungsbereichag")
         self._import_versickerungsbereichag()
         self._check_for_stop()
 
@@ -3016,9 +2824,7 @@ class InterlisImporterToIntermediateSchema:
         }
 
     def _import_gepmassnahme(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.gepmassnahme
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.gepmassnahme):
             gepmassnahme = self.create_or_update(
                 self.model_classes_tww_app.gepmassnahme,
                 **self.base_common_ag_xx(row),
@@ -3037,9 +2843,7 @@ class InterlisImporterToIntermediateSchema:
                 symbolpos=row.symbolpos,
                 verweis=row.verweis,
                 traegerschaft=self.get_pk(row.traegerschaft__REL),
-                verantwortlich_ausloesung=self.get_pk(
-                    row.verantwortlich_ausloesung__REL
-                ),
+                verantwortlich_ausloesung=self.get_pk(row.verantwortlich_ausloesung__REL),
             )
             self.session_tww.add(gepmassnahme)
             print(".", end="")
@@ -3061,9 +2865,7 @@ class InterlisImporterToIntermediateSchema:
 
     def _import_infrastrukturknoten(self):
         # abwasserbauwerk wegen Kompatibiltät bei Label-Export
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.abwasserbauwerk
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.abwasserbauwerk):
             gepknoten = self.create_or_update(
                 self.model_classes_tww_app.gepknoten,
                 **self.knoten_common_ag_xx(row),
@@ -3098,9 +2900,7 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_einzugsgebiet_ag96(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.einzugsgebiet
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.einzugsgebiet):
             einzugsgebiet = self.create_or_update(
                 self.model_classes_tww_app.einzugsgebiet,
                 **self.base_common_ag_xx(row),
@@ -3192,9 +2992,7 @@ class InterlisImporterToIntermediateSchema:
         logger.info("done")
 
     def _import_sbw_einzugsgebiet(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.sbw_einzugsgebiet
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.sbw_einzugsgebiet):
             sbw_einzugsgebiet = self.create_or_update(
                 self.model_classes_tww_app.sbw_einzugsgebiet,
                 **self.base_common_ag_xx(row),
@@ -3219,9 +3017,7 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_versickerungsbereichag(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.versickerungsbereichag
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.versickerungsbereichag):
             versickerungsbereichag = self.create_or_update(
                 self.model_classes_tww_app.versickerungsbereichag,
                 **self.base_common_ag_xx(row),

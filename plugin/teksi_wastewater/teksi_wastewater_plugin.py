@@ -218,11 +218,7 @@ class TeksiWastewaterPlugin:
         self.wizardAction.triggered.connect(self.wizard)
 
         self.connectNetworkElementsAction = QAction(
-            QIcon(
-                os.path.join(
-                    plugin_root_path(), "icons/link-wastewater-networkelement.svg"
-                )
-            ),
+            QIcon(os.path.join(plugin_root_path(), "icons/link-wastewater-networkelement.svg")),
             self.tr("Connect wastewater networkelements"),
             self.iface.mainWindow(),
         )
@@ -235,45 +231,33 @@ class TeksiWastewaterPlugin:
             self.tr("Refresh network topology"),
             self.iface.mainWindow(),
         )
-        self.refreshNetworkTopologyAction.setWhatsThis(
-            self.tr("Refresh network topology")
-        )
+        self.refreshNetworkTopologyAction.setWhatsThis(self.tr("Refresh network topology"))
         self.refreshNetworkTopologyAction.setEnabled(False)
         self.refreshNetworkTopologyAction.setCheckable(False)
         self.refreshNetworkTopologyAction.triggered.connect(
             self.refreshNetworkTopologyActionClicked
         )
 
-        self.updateSymbologyAction = QAction(
-            self.tr("Update symbology"), self.iface.mainWindow()
-        )
+        self.updateSymbologyAction = QAction(self.tr("Update symbology"), self.iface.mainWindow())
         self.updateSymbologyAction.triggered.connect(self.updateSymbology)
 
-        self.validityCheckAction = QAction(
-            self.tr("Validity check"), self.iface.mainWindow()
-        )
+        self.validityCheckAction = QAction(self.tr("Validity check"), self.iface.mainWindow())
         self.validityCheckAction.triggered.connect(self.tww_validity_check_action)
 
         self.enableSymbologyTriggersAction = QAction(
             self.tr("Enable symbology triggers"), self.iface.mainWindow()
         )
-        self.enableSymbologyTriggersAction.triggered.connect(
-            self.enable_symbology_triggers
-        )
+        self.enableSymbologyTriggersAction.triggered.connect(self.enable_symbology_triggers)
 
         self.disableSymbologyTriggersAction = QAction(
             self.tr("Disable symbology triggers"), self.iface.mainWindow()
         )
-        self.disableSymbologyTriggersAction.triggered.connect(
-            self.disable_symbology_triggers
-        )
+        self.disableSymbologyTriggersAction.triggered.connect(self.disable_symbology_triggers)
 
         self.refreshmaterializedViewsAction = QAction(
             self.tr("Refresh materialized views"), self.iface.mainWindow()
         )
-        self.refreshmaterializedViewsAction.triggered.connect(
-            self.refresh_materialized_views
-        )
+        self.refreshmaterializedViewsAction.triggered.connect(self.refresh_materialized_views)
 
         self.settingsAction = QAction(
             QIcon(QgsApplication.getThemeIcon("/mActionOptions.svg")),
@@ -326,15 +310,9 @@ class TeksiWastewaterPlugin:
         # self.iface.addPluginToMenu(self.menu, self.profileAction)
         self.iface.addPluginToMenu(self.main_menu_name, self.updateSymbologyAction)
         self.iface.addPluginToMenu(self.main_menu_name, self.validityCheckAction)
-        self.iface.addPluginToMenu(
-            self.main_menu_name, self.enableSymbologyTriggersAction
-        )
-        self.iface.addPluginToMenu(
-            self.main_menu_name, self.disableSymbologyTriggersAction
-        )
-        self.iface.addPluginToMenu(
-            self.main_menu_name, self.refreshmaterializedViewsAction
-        )
+        self.iface.addPluginToMenu(self.main_menu_name, self.enableSymbologyTriggersAction)
+        self.iface.addPluginToMenu(self.main_menu_name, self.disableSymbologyTriggersAction)
+        self.iface.addPluginToMenu(self.main_menu_name, self.refreshmaterializedViewsAction)
         self.iface.addPluginToMenu(self.main_menu_name, self.settingsAction)
         self.iface.addPluginToMenu(self.main_menu_name, self.aboutAction)
 
@@ -364,9 +342,7 @@ class TeksiWastewaterPlugin:
 
         # Init the object maintaining the network
         self.network_analyzer = TwwGraphManager()
-        self.network_analyzer.message_emitted.connect(
-            self.iface.messageBar().pushMessage
-        )
+        self.network_analyzer.message_emitted.connect(self.iface.messageBar().pushMessage)
         # Create the map tool for profile selection
         # self.profile_tool = TwwProfileMapTool(
         #    self.iface, self.profileAction, self.network_analyzer
@@ -413,8 +389,7 @@ class TeksiWastewaterPlugin:
             return
 
         if any(
-            any(layer.id().startswith(prefix) for prefix in REQUIRED_LAYERS)
-            for layer in layers
+            any(layer.id().startswith(prefix) for prefix in REQUIRED_LAYERS) for layer in layers
         ):
             self._check_tww_layers()
 
@@ -563,15 +538,9 @@ class TeksiWastewaterPlugin:
         self.iface.removePluginMenu(self.main_menu_name, self.validityCheckAction)
         self.iface.removePluginMenu(self.main_menu_name, self.settingsAction)
         self.iface.removePluginMenu(self.main_menu_name, self.aboutAction)
-        self.iface.removePluginMenu(
-            self.main_menu_name, self.enableSymbologyTriggersAction
-        )
-        self.iface.removePluginMenu(
-            self.main_menu_name, self.disableSymbologyTriggersAction
-        )
-        self.iface.removePluginMenu(
-            self.main_menu_name, self.refreshmaterializedViewsAction
-        )
+        self.iface.removePluginMenu(self.main_menu_name, self.enableSymbologyTriggersAction)
+        self.iface.removePluginMenu(self.main_menu_name, self.disableSymbologyTriggersAction)
+        self.iface.removePluginMenu(self.main_menu_name, self.refreshmaterializedViewsAction)
 
         QgsApplication.processingRegistry().removeProvider(self.processing_provider)
 
@@ -693,15 +662,9 @@ class TeksiWastewaterPlugin:
 
             self.plotWidget = None
             if TwwPlotSVGWidget is not None:
-                self.plotWidget = TwwPlotSVGWidget(
-                    self.profile_dock, self.network_analyzer
-                )
-                self.plotWidget.specialStructureMouseOver.connect(
-                    self.highlightProfileElement
-                )
-                self.plotWidget.specialStructureMouseOut.connect(
-                    self.unhighlightProfileElement
-                )
+                self.plotWidget = TwwPlotSVGWidget(self.profile_dock, self.network_analyzer)
+                self.plotWidget.specialStructureMouseOver.connect(self.highlightProfileElement)
+                self.plotWidget.specialStructureMouseOut.connect(self.unhighlightProfileElement)
                 self.plotWidget.reachMouseOver.connect(self.highlightProfileElement)
                 self.plotWidget.reachMouseOut.connect(self.unhighlightProfileElement)
                 self.profile_dock.addPlotWidget(self.plotWidget)
@@ -888,17 +851,13 @@ class TeksiWastewaterPlugin:
         DatabaseUtils.databaseConfig.PGSERVICE = pg_layer.dataProvider().uri().service()
         DatabaseUtils.databaseConfig.PGHOST = pg_layer.dataProvider().uri().host()
         DatabaseUtils.databaseConfig.PGPORT = pg_layer.dataProvider().uri().port()
-        DatabaseUtils.databaseConfig.PGDATABASE = (
-            pg_layer.dataProvider().uri().database()
-        )
+        DatabaseUtils.databaseConfig.PGDATABASE = pg_layer.dataProvider().uri().database()
         DatabaseUtils.databaseConfig.PGUSER = pg_layer.dataProvider().uri().username()
         DatabaseUtils.databaseConfig.PGPASS = pg_layer.dataProvider().uri().password()
 
     def _get_main_menu_action(self):
         actions = self.iface.pluginMenu().actions()
-        result_actions = [
-            action for action in actions if action.text() == self.main_menu_name
-        ]
+        result_actions = [action for action in actions if action.text() == self.main_menu_name]
 
         # OSX does not support & in the menu title
         if not result_actions:
@@ -936,9 +895,7 @@ class TeksiWastewaterPlugin:
                     self.iface,
                     self.iface.mainWindow(),
                 )
-                self.selectionExtenderWidget.setController(
-                    self.selectionExtenderController
-                )
+                self.selectionExtenderWidget.setController(self.selectionExtenderController)
 
                 self.iface.addDockWidget(
                     Qt.DockWidgetArea.RightDockWidgetArea, self.selectionExtenderWidget

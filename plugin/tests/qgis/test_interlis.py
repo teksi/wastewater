@@ -27,9 +27,7 @@ PG_PORT = os.getenv("PG_PORT", 5432)
 MINIMAL_DATASET_DSS = "minimal-dataset-DSS.xtf"
 MINIMAL_DATASET_ORGANISATION_ARBON_ONLY = "minimal-dataset-organisation-arbon-only.xtf"
 MINIMAL_DATASET_SIA405_ABWASSER = "minimal-dataset-SIA405-ABWASSER.xtf"
-MINIMAL_DATASET_SIA405_ABWASSER_MODIFIED = (
-    "minimal-dataset-SIA405-ABWASSER-modified.xtf"
-)
+MINIMAL_DATASET_SIA405_ABWASSER_MODIFIED = "minimal-dataset-SIA405-ABWASSER-modified.xtf"
 MINIMAL_DATASET_KEK_MANHOLE_DAMAGE = "minimal-dataset-VSA-KEK-manhole-damage.xtf"
 TEST_DATASET_DSS = "test-dataset-DSS.xtf"
 TEST_DATASET_ORGANISATIONS = "test-dataset-organisations.xtf"
@@ -141,9 +139,7 @@ class TestInterlis(unittest.TestCase):
         models = InterlisTools.get_xtf_models(xtf_file=xtf_file_input)
         self.assertCountEqual(models, [config.MODEL_NAME_SIA405_ABWASSER])
 
-        xtf_file_input = self._get_data_filename(
-            MINIMAL_DATASET_ORGANISATION_ARBON_ONLY
-        )
+        xtf_file_input = self._get_data_filename(MINIMAL_DATASET_ORGANISATION_ARBON_ONLY)
         models = InterlisTools.get_xtf_models(xtf_file=xtf_file_input)
         self.assertCountEqual(models, [config.MODEL_NAME_SIA405_BASE_ABWASSER])
 

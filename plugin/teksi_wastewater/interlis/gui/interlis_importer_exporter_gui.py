@@ -67,9 +67,7 @@ class InterlisImporterExporterGui(QObject):
         srid = settings.value("/TWW/SRID", 2056, type=int)
         import_orgs = settings.value("/TWW/OrgImportMode", False, type=bool)
 
-        QgsSettings().setValue(
-            "tww_plugin/last_interlis_path", os.path.dirname(xtf_file_input)
-        )
+        QgsSettings().setValue("tww_plugin/last_interlis_path", os.path.dirname(xtf_file_input))
 
         self.progress_dialog = QProgressDialog("", "", 0, 100)
         self.progress_dialog.setMinimumWidth(self._PROGRESS_DIALOG_MINIMUM_WIDTH)
@@ -91,9 +89,7 @@ class InterlisImporterExporterGui(QObject):
 
         except InterlisImporterExporterStopped:
             self._cleanup()
-            iface.messageBar().pushMessage(
-                "Warning", "Import was cancelled.", level=Qgis.Warning
-            )
+            iface.messageBar().pushMessage("Warning", "Import was cancelled.", level=Qgis.Warning)
 
         except InterlisImporterExporterError as exception:
             self._cleanup()
@@ -128,9 +124,7 @@ class InterlisImporterExporterGui(QObject):
         if not file_name:
             # Operation canceled
             return
-        QgsSettings().setValue(
-            "tww_plugin/last_interlis_path", os.path.dirname(file_name)
-        )
+        QgsSettings().setValue("tww_plugin/last_interlis_path", os.path.dirname(file_name))
         settings = QSettings()
         srid = settings.value("/TWW/SRID", 2056, type=int)
         import_orgs = settings.value("/TWW/OrgExportMode", False, type=bool)
@@ -164,9 +158,7 @@ class InterlisImporterExporterGui(QObject):
 
         except InterlisImporterExporterStopped:
             self._cleanup()
-            iface.messageBar().pushMessage(
-                "Warning", "Export was canceled.", level=Qgis.Warning
-            )
+            iface.messageBar().pushMessage("Warning", "Export was canceled.", level=Qgis.Warning)
 
         except InterlisImporterExporterError as exception:
             self._cleanup()

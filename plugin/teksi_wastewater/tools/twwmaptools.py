@@ -88,9 +88,7 @@ class TwwMapTool(QgsMapTool):
     logger = logging.getLogger(__name__)
     snapper = None
 
-    def __init__(
-        self, iface: QgisInterface, button, network_analyzer: TwwGraphManager = None
-    ):
+    def __init__(self, iface: QgisInterface, button, network_analyzer: TwwGraphManager = None):
         QgsMapTool.__init__(self, iface.mapCanvas())
         self.canvas = iface.mapCanvas()
         self.cursor = QCursor(Qt.CursorShape.CrossCursor)
@@ -229,10 +227,7 @@ class TwwMapTool(QgsMapTool):
             for fid, feature in filtered_features.items():
                 try:
                     title = (
-                        feature.attribute("description")
-                        + " ("
-                        + feature.attribute("obj_id")
-                        + ")"
+                        feature.attribute("description") + " (" + feature.attribute("obj_id") + ")"
                     )
                 except TypeError:
                     title = " (" + feature.attribute("obj_id") + ")"
@@ -354,12 +349,8 @@ class TwwProfileMapTool(TwwMapTool):
             edge_features.attrAsUnicode(feat, "to_obj_id_interpolate")
             for feat in list(edge_features.asDict().values())
         ]
-        additional_ids = [
-            self.network_analyzer.vertexIds[node] for node in interpolate_nodes_from
-        ]
-        additional_ids += [
-            self.network_analyzer.vertexIds[node] for node in interpolate_nodes_to
-        ]
+        additional_ids = [self.network_analyzer.vertexIds[node] for node in interpolate_nodes_from]
+        additional_ids += [self.network_analyzer.vertexIds[node] for node in interpolate_nodes_to]
 
         # Now, fetch the nodes we need
         node_layer = self.network_analyzer.getNodeLayer()
@@ -431,9 +422,7 @@ class TwwProfileMapTool(TwwMapTool):
             for feat_id in edge_ids:
                 self.pathPolyline.extend(edge_features[feat_id].geometry().asPolyline())
 
-            self.rubberBand.addGeometry(
-                QgsGeometry.fromPolylineXY(self.pathPolyline), node_layer
-            )
+            self.rubberBand.addGeometry(QgsGeometry.fromPolylineXY(self.pathPolyline), node_layer)
             self.profileChanged.emit(self.profile)
             return True
         else:
@@ -478,16 +467,12 @@ class TwwProfileMapTool(TwwMapTool):
             if self.selectedPathPoints:
                 pf = self.findPath(self.selectedPathPoints[-1][0], match.featureId())
                 if pf:
-                    self.selectedPathPoints.append(
-                        (match.featureId(), QgsPointXY(match.point()))
-                    )
+                    self.selectedPathPoints.append((match.featureId(), QgsPointXY(match.point())))
                 else:
                     msg = self.msgBar.createMessage("No path found")
                     self.msgBar.pushWidget(msg, Qgis.Info)
             else:
-                self.selectedPathPoints.append(
-                    (match.featureId(), QgsPointXY(match.point()))
-                )
+                self.selectedPathPoints.append((match.featureId(), QgsPointXY(match.point())))
 
 
 class TwwTreeMapTool(TwwMapTool):
@@ -521,9 +506,7 @@ class TwwTreeMapTool(TwwMapTool):
         self.rubberBand.reset()
 
         nodes, edges = self.network_analyzer.getTree(node_id, upstream)
-        polylines = self.network_analyzer.getEdgeGeometry(
-            [edge[2]["feature"] for edge in edges]
-        )
+        polylines = self.network_analyzer.getEdgeGeometry([edge[2]["feature"] for edge in edges])
 
         # Fix for QGIS < 2.0
         filtered_polylines = [pl for pl in polylines if pl]
@@ -661,9 +644,7 @@ class TwwMapToolConnectNetworkElements(QgsMapTool):
         self.rbline = QgsRubberBand(self.iface.mapCanvas(), QgsWkbTypes.LineGeometry)
         self.rbline.setColor(QColor("#f4530e"))
         self.rbline.setWidth(3)
-        self.rbmarkers = QgsRubberBand(
-            self.iface.mapCanvas(), QgsWkbTypes.PointGeometry
-        )
+        self.rbmarkers = QgsRubberBand(self.iface.mapCanvas(), QgsWkbTypes.PointGeometry)
         self.rbmarkers.setColor(QColor("#f4530e"))
         self.rbmarkers.setIconSize(6)
 
@@ -685,9 +666,7 @@ class TwwMapToolConnectNetworkElements(QgsMapTool):
         """
 
         def is_closer_to_start_of_edge(source, target):
-            feature = next(
-                source.layer().getFeatures(QgsFeatureRequest(source.featureId()))
-            )
+            feature = next(source.layer().getFeatures(QgsFeatureRequest(source.featureId())))
             distance_from_start = feature.geometry().lineLocatePoint(
                 QgsGeometry.fromPointXY(source.point())
             )
@@ -761,9 +740,7 @@ class TwwMapToolConnectNetworkElements(QgsMapTool):
             },
         }
 
-        self.setSnapLayers(
-            self.source_snapper, list(self.network_element_sources.keys())
-        )
+        self.setSnapLayers(self.source_snapper, list(self.network_element_sources.keys()))
 
         self.reset()
 
@@ -820,9 +797,7 @@ class TwwMapToolConnectNetworkElements(QgsMapTool):
                     )
                     self.setSnapLayers(
                         self.target_snapper,
-                        self.network_element_sources[snap_match.layer()][
-                            "target_layers"
-                        ],
+                        self.network_element_sources[snap_match.layer()]["target_layers"],
                     )
                 self.rb_source_feature.show()
                 self.rbmarkers.movePoint(pt, 0)
@@ -885,11 +860,7 @@ class TwwMapToolConnectNetworkElements(QgsMapTool):
         @param match: The QgsPointLocator.SnapMatch object
         @return: A feature
         """
-        return next(
-            match.layer().getFeatures(
-                QgsFeatureRequest().setFilterFid(match.featureId())
-            )
-        )
+        return next(match.layer().getFeatures(QgsFeatureRequest().setFilterFid(match.featureId())))
 
     def connect_features(self, source, target):
         """
