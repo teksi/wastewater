@@ -261,3 +261,69 @@ def test_hydraulic_flow_constraint(layers, prefix, minimum, maximum, expected):
         bool(evaluate(constraint.get("exp"), layer, {min_field: minimum, max_field: maximum}))
         == expected
     )
+
+
+@pytest.mark.qgis
+def test_field_edit_options(layers):
+    # Some AG-64/96 extension fields exist in the provider but not in the saved
+    # fieldConfiguration. Do not discard these valid extension options.
+    extensions = {
+        ("vw_tww_reach", "AG-64/96"): {"ws_ag96_fk_measure"},
+        ("vw_tww_wastewater_structure", "AG-64/96"): {
+            "co_ag64_fk_wastewater_node",
+            "wn_ag64_fk_provider",
+            "wn_ag64_function",
+            "wn_ag64_remark",
+            "wn_ag96_fk_provider",
+            "wn_ag96_is_gateway",
+            "wn_ag96_remark",
+        },
+    }
+    # The serialized fieldConfiguration can itself still contain retired names.
+    # Explicitly check those names rather than treating them as valid options.
+    reach_labels = {"ws__bottom_label", "ws__cover_label", "ws__input_label", "ws__output_label"}
+    retired = {
+        ("measuring_point", "default"): {"fk_reference_station"},
+        ("vw_tww_overflow", "AG-64/96"): {
+            "construction_type",
+            "hydraulic_overflow_length",
+            "length",
+            "level_max",
+            "level_min",
+            "opening_shape",
+            "operating_point",
+            "placement_of_actuation",
+            "placement_of_pump",
+            "pump_flow_max_single",
+            "pump_flow_min_single",
+            "start_level",
+            "stop_level",
+            "weir_edge",
+            "weir_kind",
+            "width",
+        },
+        ("vw_tww_reach", "AG-64/96"): reach_labels,
+        ("vw_tww_reach", "new style"): reach_labels,
+        ("vw_tww_wastewater_structure", "AG-64/96"): {
+            "_input_label",
+            "_label",
+            "_output_label",
+            "wn_fk_wastewater_structure",
+        },
+    }
+    for name, style, node in style_scopes(layers):
+        fields = {field.get("name") for field in node.findall("./fieldConfiguration/field")}
+        options = {
+            field.get("name")
+            for tag in ("editable", "labelOnTop", "reuseLastValue", "reuseLastValuePolicy")
+            for field in node.findall(f"./{tag}/field")
+        }
+        if fields:
+            assert not options - fields - extensions.get((name, style), set()), (name, style)
+        assert not options & retired.get((name, style), set()), (name, style)
+        if (name, style) in extensions:
+            assert extensions[name, style] <= options
+
+    channel = scope(layers, "mvw_tww_channel", "default")
+    for field in ("_from_ne", "_to_ne"):
+        assert channel.find(f"./editable/field[@name='{field}']").get("editable") == "0"
