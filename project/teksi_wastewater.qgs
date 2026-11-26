@@ -140753,7 +140753,7 @@ def my_form_open(dialog, layer, feature):
         <default applyOnUpdate="0" expression="" field="hc_c_fk_overflow_char"></default>
         <default applyOnUpdate="0" expression="" field="hc_c_fk_primary_direction"></default>
         <default applyOnUpdate="0" expression="" field="hc_c_fk_provider"></default>
-        <default applyOnUpdate="1" expression="Left(represent_value( &quot;fk_wastewater_node&quot;) ||'-'|| represent_value(&quot;status&quot; ),20)" field="hc_c_identifier"></default>
+        <default applyOnUpdate="1" expression="left(coalesce(attribute(get_feature('vw_tww_log_card','obj_id',&quot;fk_log_card&quot;),'identifier'),attribute(get_feature('vw_tww_wastewater_node','obj_id',&quot;wn_obj_id&quot;),'identifier')) || '-' || attribute(get_feature('hydraulic_char_data_status','code',6372),'value_en'),20)" field="hc_c_identifier"></default>
         <default applyOnUpdate="0" expression="" field="hc_c_is_overflowing"></default>
         <default applyOnUpdate="0" expression="" field="hc_c_last_modification"></default>
         <default applyOnUpdate="0" expression="" field="hc_c_main_weir_kind"></default>
@@ -140775,7 +140775,7 @@ def my_form_open(dialog, layer, feature):
         <default applyOnUpdate="0" expression="" field="hc_o_fk_overflow_char"></default>
         <default applyOnUpdate="0" expression="" field="hc_o_fk_primary_direction"></default>
         <default applyOnUpdate="0" expression="" field="hc_o_fk_provider"></default>
-        <default applyOnUpdate="1" expression="Left(represent_value( &quot;fk_wastewater_node&quot;) ||'-'|| represent_value(&quot;status&quot; ),20)" field="hc_o_identifier"></default>
+        <default applyOnUpdate="1" expression="left(coalesce(attribute(get_feature('vw_tww_log_card','obj_id',&quot;fk_log_card&quot;),'identifier'),attribute(get_feature('vw_tww_wastewater_node','obj_id',&quot;wn_obj_id&quot;),'identifier')) || '-' || attribute(get_feature('hydraulic_char_data_status','code',6373),'value_en'),20)" field="hc_o_identifier"></default>
         <default applyOnUpdate="0" expression="" field="hc_o_is_overflowing"></default>
         <default applyOnUpdate="0" expression="" field="hc_o_last_modification"></default>
         <default applyOnUpdate="0" expression="" field="hc_o_main_weir_kind"></default>
@@ -140797,7 +140797,7 @@ def my_form_open(dialog, layer, feature):
         <default applyOnUpdate="0" expression="" field="hc_p_fk_overflow_char"></default>
         <default applyOnUpdate="0" expression="" field="hc_p_fk_primary_direction"></default>
         <default applyOnUpdate="0" expression="" field="hc_p_fk_provider"></default>
-        <default applyOnUpdate="1" expression="Left(represent_value( &quot;fk_wastewater_node&quot;) ||'-'|| represent_value(&quot;status&quot; ),20)" field="hc_p_identifier"></default>
+        <default applyOnUpdate="1" expression="left(coalesce(attribute(get_feature('vw_tww_log_card','obj_id',&quot;fk_log_card&quot;),'identifier'),attribute(get_feature('vw_tww_wastewater_node','obj_id',&quot;wn_obj_id&quot;),'identifier')) || '-' || attribute(get_feature('hydraulic_char_data_status','code',6371),'value_en'),20)" field="hc_p_identifier"></default>
         <default applyOnUpdate="0" expression="" field="hc_p_is_overflowing"></default>
         <default applyOnUpdate="0" expression="" field="hc_p_last_modification"></default>
         <default applyOnUpdate="0" expression="" field="hc_p_main_weir_kind"></default>
