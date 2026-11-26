@@ -74186,11 +74186,6 @@ def my_form_open(dialog, layer, feature):
             <labelFont bold="0" description="MS Shell Dlg 2,8.3,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
           </labelStyle>
         </attributeEditorField>
-        <attributeEditorField horizontalStretch="0" index="9" name="fk_reference_station" showLabel="1" verticalStretch="0">
-          <labelStyle labelColor="" overrideLabelColor="0" overrideLabelFont="0">
-            <labelFont bold="0" description="MS Shell Dlg 2,8.3,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
-          </labelStyle>
-        </attributeEditorField>
         <attributeEditorField horizontalStretch="0" index="12" name="fk_wastewater_structure" showLabel="1" verticalStretch="0">
           <labelStyle labelColor="" overrideLabelColor="0" overrideLabelFont="0">
             <labelFont bold="0" description="MS Shell Dlg 2,8.3,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
@@ -76750,12 +76745,12 @@ def my_form_open(dialog, layer, feature):
             <labelStyle labelColor="0,0,0,255,rgb:0,0,0,1" overrideLabelColor="0" overrideLabelFont="0">
               <labelFont bold="0" description="MS Shell Dlg 2,8.3,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
             </labelStyle>
-            <attributeEditorField horizontalStretch="0" index="-1" name="_from_node" showLabel="1" verticalStretch="0">
+            <attributeEditorField horizontalStretch="0" index="42" name="_from_ne" showLabel="1" verticalStretch="0">
               <labelStyle labelColor="" overrideLabelColor="0" overrideLabelFont="0">
                 <labelFont bold="0" description="MS Shell Dlg 2,8.3,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
               </labelStyle>
             </attributeEditorField>
-            <attributeEditorField horizontalStretch="0" index="-1" name="_to_node" showLabel="1" verticalStretch="0">
+            <attributeEditorField horizontalStretch="0" index="45" name="_to_ne" showLabel="1" verticalStretch="0">
               <labelStyle labelColor="" overrideLabelColor="0" overrideLabelFont="0">
                 <labelFont bold="0" description="MS Shell Dlg 2,8.3,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
               </labelStyle>
@@ -144586,12 +144581,12 @@ def my_form_open(dialog, layer, feature):
             <labelStyle labelColor="" overrideLabelColor="0" overrideLabelFont="0">
               <labelFont bold="0" description="MS Shell Dlg 2,8.3,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
             </labelStyle>
-            <attributeEditorField horizontalStretch="0" index="-1" name="_from_node" showLabel="1" verticalStretch="0">
+            <attributeEditorField horizontalStretch="0" index="20" name="_from_ne" showLabel="1" verticalStretch="0">
               <labelStyle labelColor="" overrideLabelColor="0" overrideLabelFont="0">
                 <labelFont bold="0" description="MS Shell Dlg 2,8.3,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
               </labelStyle>
             </attributeEditorField>
-            <attributeEditorField horizontalStretch="0" index="-1" name="_to_node" showLabel="1" verticalStretch="0">
+            <attributeEditorField horizontalStretch="0" index="26" name="_to_ne" showLabel="1" verticalStretch="0">
               <labelStyle labelColor="" overrideLabelColor="0" overrideLabelFont="0">
                 <labelFont bold="0" description="MS Shell Dlg 2,8.3,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
               </labelStyle>
@@ -159084,42 +159079,42 @@ def my_form_open(dialog, layer, feature):
                 <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
                   <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                 </labelStyle>
-                <attributeEditorField horizontalStretch="0" index="29" name="construction_type" showLabel="1" verticalStretch="0">
+                <attributeEditorField horizontalStretch="0" index="-1" name="pu_construction_type" showLabel="1" verticalStretch="0">
                   <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
                     <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                   </labelStyle>
                 </attributeEditorField>
-                <attributeEditorField horizontalStretch="0" index="30" name="operating_point" showLabel="1" verticalStretch="0">
+                <attributeEditorField horizontalStretch="0" index="-1" name="pu_operating_point" showLabel="1" verticalStretch="0">
                   <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
                     <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                   </labelStyle>
                 </attributeEditorField>
-                <attributeEditorField horizontalStretch="0" index="36" name="stop_level" showLabel="1" verticalStretch="0">
+                <attributeEditorField horizontalStretch="0" index="-1" name="pu_stop_level" showLabel="1" verticalStretch="0">
                   <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
                     <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                   </labelStyle>
                 </attributeEditorField>
-                <attributeEditorField horizontalStretch="0" index="35" name="start_level" showLabel="1" verticalStretch="0">
+                <attributeEditorField horizontalStretch="0" index="-1" name="pu_start_level" showLabel="1" verticalStretch="0">
                   <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
                     <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                   </labelStyle>
                 </attributeEditorField>
-                <attributeEditorField horizontalStretch="0" index="34" name="pump_flow_min_single" showLabel="1" verticalStretch="0">
+                <attributeEditorField horizontalStretch="0" index="-1" name="pu_pump_flow_min_single" showLabel="1" verticalStretch="0">
                   <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
                     <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                   </labelStyle>
                 </attributeEditorField>
-                <attributeEditorField horizontalStretch="0" index="33" name="pump_flow_max_single" showLabel="1" verticalStretch="0">
+                <attributeEditorField horizontalStretch="0" index="-1" name="pu_pump_flow_max_single" showLabel="1" verticalStretch="0">
                   <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
                     <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                   </labelStyle>
                 </attributeEditorField>
-                <attributeEditorField horizontalStretch="0" index="32" name="placement_of_pump" showLabel="1" verticalStretch="0">
+                <attributeEditorField horizontalStretch="0" index="-1" name="pu_placement_of_pump" showLabel="1" verticalStretch="0">
                   <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
                     <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                   </labelStyle>
                 </attributeEditorField>
-                <attributeEditorField horizontalStretch="0" index="31" name="placement_of_actuation" showLabel="1" verticalStretch="0">
+                <attributeEditorField horizontalStretch="0" index="-1" name="pu_placement_of_actuation" showLabel="1" verticalStretch="0">
                   <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
                     <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                   </labelStyle>
@@ -159143,27 +159138,27 @@ def my_form_open(dialog, layer, feature):
                 <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
                   <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                 </labelStyle>
-                <attributeEditorField horizontalStretch="0" index="24" name="hydraulic_overflow_length" showLabel="1" verticalStretch="0">
+                <attributeEditorField horizontalStretch="0" index="-1" name="pw_hydraulic_overflow_length" showLabel="1" verticalStretch="0">
                   <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
                     <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                   </labelStyle>
                 </attributeEditorField>
-                <attributeEditorField horizontalStretch="0" index="25" name="level_max" showLabel="1" verticalStretch="0">
+                <attributeEditorField horizontalStretch="0" index="-1" name="pw_level_max" showLabel="1" verticalStretch="0">
                   <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
                     <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                   </labelStyle>
                 </attributeEditorField>
-                <attributeEditorField horizontalStretch="0" index="26" name="level_min" showLabel="1" verticalStretch="0">
+                <attributeEditorField horizontalStretch="0" index="-1" name="pw_level_min" showLabel="1" verticalStretch="0">
                   <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
                     <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                   </labelStyle>
                 </attributeEditorField>
-                <attributeEditorField horizontalStretch="0" index="27" name="weir_edge" showLabel="1" verticalStretch="0">
+                <attributeEditorField horizontalStretch="0" index="-1" name="pw_weir_edge" showLabel="1" verticalStretch="0">
                   <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
                     <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                   </labelStyle>
                 </attributeEditorField>
-                <attributeEditorField horizontalStretch="0" index="28" name="weir_kind" showLabel="1" verticalStretch="0">
+                <attributeEditorField horizontalStretch="0" index="-1" name="pw_weir_kind" showLabel="1" verticalStretch="0">
                   <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
                     <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                   </labelStyle>
@@ -159173,17 +159168,17 @@ def my_form_open(dialog, layer, feature):
                 <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
                   <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                 </labelStyle>
-                <attributeEditorField horizontalStretch="0" index="21" name="length" showLabel="1" verticalStretch="0">
+                <attributeEditorField horizontalStretch="0" index="-1" name="lw_length" showLabel="1" verticalStretch="0">
                   <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
                     <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                   </labelStyle>
                 </attributeEditorField>
-                <attributeEditorField horizontalStretch="0" index="23" name="width" showLabel="1" verticalStretch="0">
+                <attributeEditorField horizontalStretch="0" index="-1" name="lw_width" showLabel="1" verticalStretch="0">
                   <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
                     <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                   </labelStyle>
                 </attributeEditorField>
-                <attributeEditorField horizontalStretch="0" index="22" name="opening_shape" showLabel="1" verticalStretch="0">
+                <attributeEditorField horizontalStretch="0" index="-1" name="lw_opening_shape" showLabel="1" verticalStretch="0">
                   <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
                     <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                   </labelStyle>
@@ -159263,32 +159258,32 @@ def my_form_open(dialog, layer, feature):
                 <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
                   <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                 </labelStyle>
-                <attributeEditorField horizontalStretch="0" index="-1" name="ag64_remark" showLabel="1" verticalStretch="0">
+                <attributeEditorField horizontalStretch="0" index="-1" name="ov_ag64_remark" showLabel="1" verticalStretch="0">
                   <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
                     <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                   </labelStyle>
                 </attributeEditorField>
-                <attributeEditorField horizontalStretch="0" index="-1" name="ag96_remark" showLabel="1" verticalStretch="0">
+                <attributeEditorField horizontalStretch="0" index="-1" name="ov_ag96_remark" showLabel="1" verticalStretch="0">
                   <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
                     <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                   </labelStyle>
                 </attributeEditorField>
-                <attributeEditorField horizontalStretch="0" index="-1" name="ag64_fk_provider" showLabel="1" verticalStretch="0">
+                <attributeEditorField horizontalStretch="0" index="-1" name="ov_ag64_fk_provider" showLabel="1" verticalStretch="0">
                   <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
                     <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                   </labelStyle>
                 </attributeEditorField>
-                <attributeEditorField horizontalStretch="0" index="-1" name="ag96_fk_provider" showLabel="1" verticalStretch="0">
+                <attributeEditorField horizontalStretch="0" index="-1" name="ov_ag96_fk_provider" showLabel="1" verticalStretch="0">
                   <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
                     <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                   </labelStyle>
                 </attributeEditorField>
-                <attributeEditorField horizontalStretch="0" index="-1" name="ag64_last_modification" showLabel="1" verticalStretch="0">
+                <attributeEditorField horizontalStretch="0" index="-1" name="ov_ag64_last_modification" showLabel="1" verticalStretch="0">
                   <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
                     <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                   </labelStyle>
                 </attributeEditorField>
-                <attributeEditorField horizontalStretch="0" index="-1" name="ag96_last_modification" showLabel="1" verticalStretch="0">
+                <attributeEditorField horizontalStretch="0" index="-1" name="ov_ag96_last_modification" showLabel="1" verticalStretch="0">
                   <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
                     <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                   </labelStyle>
@@ -165160,32 +165155,32 @@ def my_form_open(dialog, layer, feature):
                 <labelStyle labelColor="0,0,0,255,rgb:0,0,0,1" overrideLabelColor="0" overrideLabelFont="0">
                   <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                 </labelStyle>
-                <attributeEditorField horizontalStretch="0" index="-1" name="ag64_remark" showLabel="1" verticalStretch="0">
+                <attributeEditorField horizontalStretch="0" index="-1" name="ne_ag64_remark" showLabel="1" verticalStretch="0">
                   <labelStyle labelColor="0,0,0,255,rgb:0,0,0,1" overrideLabelColor="0" overrideLabelFont="0">
                     <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                   </labelStyle>
                 </attributeEditorField>
-                <attributeEditorField horizontalStretch="0" index="-1" name="ag96_remark" showLabel="1" verticalStretch="0">
+                <attributeEditorField horizontalStretch="0" index="-1" name="ne_ag96_remark" showLabel="1" verticalStretch="0">
                   <labelStyle labelColor="0,0,0,255,rgb:0,0,0,1" overrideLabelColor="0" overrideLabelFont="0">
                     <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                   </labelStyle>
                 </attributeEditorField>
-                <attributeEditorField horizontalStretch="0" index="-1" name="ag64_fk_provider" showLabel="1" verticalStretch="0">
+                <attributeEditorField horizontalStretch="0" index="-1" name="ne_ag64_fk_provider" showLabel="1" verticalStretch="0">
                   <labelStyle labelColor="0,0,0,255,rgb:0,0,0,1" overrideLabelColor="0" overrideLabelFont="0">
                     <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                   </labelStyle>
                 </attributeEditorField>
-                <attributeEditorField horizontalStretch="0" index="-1" name="ag96_fk_provider" showLabel="1" verticalStretch="0">
+                <attributeEditorField horizontalStretch="0" index="-1" name="ne_ag96_fk_provider" showLabel="1" verticalStretch="0">
                   <labelStyle labelColor="0,0,0,255,rgb:0,0,0,1" overrideLabelColor="0" overrideLabelFont="0">
                     <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                   </labelStyle>
                 </attributeEditorField>
-                <attributeEditorField horizontalStretch="0" index="-1" name="ag64_last_modification" showLabel="1" verticalStretch="0">
+                <attributeEditorField horizontalStretch="0" index="-1" name="ne_ag64_last_modification" showLabel="1" verticalStretch="0">
                   <labelStyle labelColor="0,0,0,255,rgb:0,0,0,1" overrideLabelColor="0" overrideLabelFont="0">
                     <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                   </labelStyle>
                 </attributeEditorField>
-                <attributeEditorField horizontalStretch="0" index="-1" name="ag96_last_modification" showLabel="1" verticalStretch="0">
+                <attributeEditorField horizontalStretch="0" index="-1" name="ne_ag96_last_modification" showLabel="1" verticalStretch="0">
                   <labelStyle labelColor="0,0,0,255,rgb:0,0,0,1" overrideLabelColor="0" overrideLabelFont="0">
                     <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                   </labelStyle>
@@ -177918,11 +177913,6 @@ def my_form_open(dialog, layer, feature):
                   <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                 </labelStyle>
               </attributeEditorField>
-              <attributeEditorField index="-1" name="backflow_level" showLabel="1">
-                <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
-                  <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
-                </labelStyle>
-              </attributeEditorField>
               <attributeEditorField index="4" name="backflow_level_current" showLabel="1">
                 <labelStyle labelColor="0,0,0,255" overrideLabelColor="0" overrideLabelFont="0">
                   <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
@@ -183603,16 +183593,6 @@ def my_form_open(dialog, layer, feature):
                       <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                     </labelStyle>
                   </attributeEditorField>
-                  <attributeEditorField horizontalStretch="0" index="96" name="_input_label" showLabel="1" verticalStretch="0">
-                    <labelStyle labelColor="0,0,0,255,rgb:0,0,0,1" overrideLabelColor="0" overrideLabelFont="0">
-                      <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
-                    </labelStyle>
-                  </attributeEditorField>
-                  <attributeEditorField horizontalStretch="0" index="97" name="_output_label" showLabel="1" verticalStretch="0">
-                    <labelStyle labelColor="0,0,0,255,rgb:0,0,0,1" overrideLabelColor="0" overrideLabelFont="0">
-                      <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
-                    </labelStyle>
-                  </attributeEditorField>
                   <attributeEditorField horizontalStretch="0" index="13" name="fk_dataowner" showLabel="1" verticalStretch="0">
                     <labelStyle labelColor="0,0,0,255,rgb:0,0,0,1" overrideLabelColor="0" overrideLabelFont="0">
                       <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
@@ -184084,7 +184064,7 @@ def my_form_open(dialog, layer, feature):
                     <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                   </labelStyle>
                 </attributeEditorField>
-                <attributeEditorField horizontalStretch="0" index="-1" name="ag96_fk_measure" showLabel="1" verticalStretch="0">
+                <attributeEditorField horizontalStretch="0" index="-1" name="ws_ag96_fk_measure" showLabel="1" verticalStretch="0">
                   <labelStyle labelColor="0,0,0,255,rgb:0,0,0,1" overrideLabelColor="0" overrideLabelFont="0">
                     <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                   </labelStyle>
@@ -184109,12 +184089,12 @@ def my_form_open(dialog, layer, feature):
                     <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                   </labelStyle>
                 </attributeEditorField>
-                <attributeEditorField horizontalStretch="0" index="-1" name="wn_ag64_last_modification" showLabel="1" verticalStretch="0">
+                <attributeEditorField horizontalStretch="0" index="-1" name="ne_ag64_last_modification" showLabel="1" verticalStretch="0">
                   <labelStyle labelColor="0,0,0,255,rgb:0,0,0,1" overrideLabelColor="0" overrideLabelFont="0">
                     <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                   </labelStyle>
                 </attributeEditorField>
-                <attributeEditorField horizontalStretch="0" index="-1" name="wn_ag96_last_modification" showLabel="1" verticalStretch="0">
+                <attributeEditorField horizontalStretch="0" index="-1" name="ne_ag96_last_modification" showLabel="1" verticalStretch="0">
                   <labelStyle labelColor="0,0,0,255,rgb:0,0,0,1" overrideLabelColor="0" overrideLabelFont="0">
                     <labelFont bold="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" strikethrough="0" style="" underline="0"></labelFont>
                   </labelStyle>
