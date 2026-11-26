@@ -240,3 +240,24 @@ def test_hydraulic_identifier_default(
         )
         == f"{name}-{status}"[:20]
     )
+
+
+@pytest.mark.qgis
+@pytest.mark.parametrize("prefix", ["hc_c_", "hc_o_", "hc_p_"])
+@pytest.mark.parametrize(
+    "minimum,maximum,expected",
+    [(20, 10, False), (5, 10, True), (10, 10, True), (5, None, True)],
+)
+def test_hydraulic_flow_constraint(layers, prefix, minimum, maximum, expected):
+    node = catchment_layer(layers)
+    min_field = prefix + "pump_flow_min"
+    max_field = prefix + "pump_flow_max"
+    layer = QgsVectorLayer(
+        f"None?field={min_field}:double&field={max_field}:double", "catchment", "memory"
+    )
+    constraint = node.find(f"./constraintExpressions/constraint[@field='{min_field}']")
+    assert constraint is not None
+    assert (
+        bool(evaluate(constraint.get("exp"), layer, {min_field: minimum, max_field: maximum}))
+        == expected
+    )
