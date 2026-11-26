@@ -46,6 +46,10 @@ bio_ecol_assessment: "maintenance_event"
 examination: "maintenance_event"
 maintenance: "maintenance_event"
 
+# damage
+damage_channel: "damage"
+damage_manhole: "damage"
+
 # Zone
 infiltration_zone: "zone"
 drainage_system: "zone"
