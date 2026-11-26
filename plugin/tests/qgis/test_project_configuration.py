@@ -161,3 +161,82 @@ def test_form_fields(layers):
                 assert new in fields, (name, style, new)
         if name == "vw_tww_wastewater_structure":
             assert extensions <= fields
+
+
+def catchment_layer(layers):
+    # The polygon layer has the same name but no hydraulic edit expressions.
+    layer_id = "vw_tww_catchment_area_totals_fccd22f0_6775_46cf_8065_a8ecd98f82b3"
+    matches = [layer for layer in layers if layer.findtext("id") == layer_id]
+    assert len(matches) == 1, layer_id
+    return matches[0]
+
+
+@pytest.fixture
+def hydraulic_expression_layers():
+    from qgis.core import QgsProject
+
+    project = QgsProject.instance()
+    definitions = [
+        (
+            "vw_tww_log_card",
+            "None?field=obj_id:string&field=identifier:string",
+            [("log", "Log A")],
+        ),
+        (
+            "vw_tww_wastewater_node",
+            "None?field=obj_id:string&field=identifier:string",
+            [("node", "Node A")],
+        ),
+        (
+            "hydraulic_char_data_status",
+            "None?field=code:integer&field=value_en:string",
+            [(6372, "current"), (6373, "current_optimised"), (6371, "planned")],
+        ),
+    ]
+    added = []
+    try:
+        for name, uri, rows in definitions:
+            layer = QgsVectorLayer(uri, name, "memory")
+            assert layer.isValid()
+            features = []
+            for row in rows:
+                feature = QgsFeature(layer.fields())
+                feature.setAttributes(list(row))
+                features.append(feature)
+            assert layer.dataProvider().addFeatures(features)[0]
+            project.addMapLayer(layer, False)
+            added.append(layer.id())
+        yield QgsVectorLayer(
+            "None?field=fk_log_card:string&field=wn_obj_id:string",
+            "catchment",
+            "memory",
+        )
+    finally:
+        project.removeMapLayers(added)
+
+
+@pytest.mark.qgis
+@pytest.mark.parametrize(
+    "field,status",
+    [
+        ("hc_c_identifier", "current"),
+        ("hc_o_identifier", "current_optimised"),
+        ("hc_p_identifier", "planned"),
+    ],
+)
+@pytest.mark.parametrize("log_id,name", [("log", "Log A"), ("missing", "Node A")])
+def test_hydraulic_identifier_default(
+    layers, hydraulic_expression_layers, field, status, log_id, name
+):
+    node = catchment_layer(layers)
+    default = node.find(f"./defaults/default[@field='{field}']")
+    assert default is not None
+    assert default.get("applyOnUpdate") == "1"
+    assert (
+        evaluate(
+            default.get("expression"),
+            hydraulic_expression_layers,
+            {"fk_log_card": log_id, "wn_obj_id": "node"},
+        )
+        == f"{name}-{status}"[:20]
+    )
