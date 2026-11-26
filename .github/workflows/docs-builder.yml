@@ -1,26 +1,25 @@
 name: 📚 Documentation builder
 
 concurrency:
-  group: docs-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: ${{ github.event_name == 'pull_request' && format('docs-pr-{0}', github.event.pull_request.number) || 'docs-deployment' }}
   cancel-in-progress: true
 
 on:
   push:
     branches:
       - main
-    tags:
-      - '*'
     paths:
       - docs/**
       - '.github/workflows/docs-builder.yml'
   pull_request:
     branches:
       - main
-    tags:
-      - '*'
     paths:
       - docs/**
       - '.github/workflows/docs-builder.yml'
+  release:
+    types:
+      - published
   schedule:
     - cron: "30 04 * * *"
   workflow_dispatch:
@@ -28,52 +27,148 @@ on:
 
 
 jobs:
+  documentation-version:
+    name: Determine documentation version
+    runs-on: ubuntu-26.04
+
+    outputs:
+      build-docs: ${{ steps.version.outputs.build-docs }}
+      docs-version: ${{ steps.version.outputs.docs-version }}
+
+    steps:
+      - name: Determine documentation version
+        id: version
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          IS_PRERELEASE: ${{ github.event.release.prerelease }}
+        run: |
+          if [[ "$EVENT_NAME" != "release" ]]; then
+            echo "build-docs=true" >> "$GITHUB_OUTPUT"
+            echo "docs-version=latest" >> "$GITHUB_OUTPUT"
+            echo "Documentation version: latest"
+            exit 0
+          fi
+
+          if [[ "$IS_PRERELEASE" == "true" ]]; then
+            echo "build-docs=false" >> "$GITHUB_OUTPUT"
+            echo "Skipping prerelease: $RELEASE_TAG"
+            exit 0
+          fi
+
+          if [[ ! "$RELEASE_TAG" =~ ^[0-9]{4}\.[0-9]+\.[0-9]+$ ]]; then
+            echo "build-docs=false" >> "$GITHUB_OUTPUT"
+            echo "Skipping release with unsupported tag: $RELEASE_TAG"
+            echo "Expected a tag such as 2026.0.1"
+            exit 0
+          fi
+
+          echo "build-docs=true" >> "$GITHUB_OUTPUT"
+          echo "docs-version=$RELEASE_TAG" >> "$GITHUB_OUTPUT"
+          echo "Documentation version: $RELEASE_TAG"
+
   datamodel-documentation:
-    # Skip generating datamodel docs on PRs labeled PR-fast-doc
-    if: ${{ !(github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'PR-fast-doc')) }}
+    name: Generate datamodel documentation
+    needs:
+      - documentation-version
+
+    # Skip invalid releases and PRs labeled PR-fast-doc.
+    if: |
+      needs.documentation-version.outputs.build-docs == 'true' &&
+      !(
+        github.event_name == 'pull_request' &&
+        contains(github.event.pull_request.labels.*.name, 'PR-fast-doc')
+      )
+
     uses: ./.github/workflows/datamodel-dumps-documentation.yml
 
   build:
-    needs: datamodel-documentation
-    if: always() # Always run to build docs even if datamodel step is skipped
+    name: Build documentation
+    needs:
+      - documentation-version
+      - datamodel-documentation
+
+    # Run when datamodel generation succeeds, or when it was intentionally
+    # skipped for a PR labeled PR-fast-doc. Do not continue after a real
+    # datamodel failure or for an invalid release.
+    if: |
+      always() &&
+      needs.documentation-version.outputs.build-docs == 'true' &&
+      (
+        needs.datamodel-documentation.result == 'success' ||
+        (
+          needs.datamodel-documentation.result == 'skipped' &&
+          github.event_name == 'pull_request' &&
+          contains(github.event.pull_request.labels.*.name, 'PR-fast-doc')
+        )
+      )
+
     runs-on: ubuntu-26.04
+
     env:
       LANGUAGES: "en de fr it"
+      DOCS_VERSION: ${{ needs.documentation-version.outputs.docs-version }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
-
+          ref: ${{ github.event_name == 'release' && github.event.release.tag_name || github.ref }}
 
       - name: Restore existing site
+        shell: bash
         run: |
-          git clone --depth 1 --branch gh-pages https://github.com/${{ github.repository }} gh-pages || true
-          mkdir -p docs/build/html
-          rsync -a gh-pages/ docs/build/html/ || true
+          git clone \
+            --depth 1 \
+            --branch gh-pages \
+            "https://github.com/${{ github.repository }}" \
+            gh-pages || true
 
-      - name: install requirements
+          mkdir -p docs/build/html
+
+          if [[ -d gh-pages ]]; then
+            rsync -a \
+              --exclude='.git' \
+              gh-pages/ \
+              docs/build/html/
+          fi
+
+      - name: Install requirements
         working-directory: docs
         run: pip install -r requirements.txt
 
-      - name: install tx requirements
-        if: ${{ !(github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'PR-fast-doc')) }}
+      - name: Install translation requirements
+        if: |
+          !(
+            github.event_name == 'pull_request' &&
+            contains(github.event.pull_request.labels.*.name, 'PR-fast-doc')
+          )
         working-directory: docs
         run: |
           pip install -r requirements-tx.txt
+          sudo apt-get update
           sudo apt-get install -y gettext
-          curl -OL https://github.com/transifex/cli/releases/download/v1.6.10/tx-linux-amd64.tar.gz
+          curl -fL -O https://github.com/transifex/cli/releases/download/v1.6.10/tx-linux-amd64.tar.gz
           tar -xvzf tx-linux-amd64.tar.gz
           make gettext
 
       - name: Remove legacy root docs
+        shell: bash
         run: |
           cd docs/build/html
 
-          # Skip cleanup if first proper version exists
-          if ls | grep -Eq '^[0-9]{4}\.[0-9]+\.[0-9]+$'; then
-            echo "Version 2026.0.1 exists — skipping cleanup"
+          # Once at least one versioned documentation directory exists,
+          # the legacy cleanup has already been completed.
+          if find . \
+            -mindepth 1 \
+            -maxdepth 1 \
+            -type d \
+            -printf '%f\n' |
+            grep -Eq '^[0-9]{4}\.[0-9]+\.[0-9]+$'
+          then
+            echo "Versioned documentation exists. Skipping legacy cleanup."
             exit 0
           fi
 
@@ -82,7 +177,6 @@ jobs:
           for ITEM in *; do
             case "$ITEM" in
               latest|versions.json|versions.txt|index.html)
-                # keep
                 ;;
               *)
                 echo "Removing legacy item: $ITEM"
@@ -94,17 +188,35 @@ jobs:
       - name: Prepare datamodel static folder
         run: mkdir -p docs/_static/datamodel
 
-      - name: tx pull
-        if: ${{ ( github.event.pull_request.head.repo.full_name == 'teksi/wastewater' || github.event_name == 'push' && github.ref == 'refs/heads/main' || github.event_name == 'schedule') && !(github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'PR-fast-doc')) }}
+      - name: Pull translations
+        if: |
+          !(
+            github.event_name == 'pull_request' &&
+            contains(github.event.pull_request.labels.*.name, 'PR-fast-doc')
+          ) &&
+          (
+            (
+              github.event_name == 'pull_request' &&
+              github.event.pull_request.head.repo.full_name == 'teksi/wastewater'
+            ) ||
+            (
+              github.event_name == 'push' &&
+              github.ref == 'refs/heads/main'
+            ) ||
+            github.event_name == 'release' ||
+            github.event_name == 'schedule'
+          )
         env:
           TX_TOKEN: ${{ secrets.TX_TOKEN }}
         working-directory: docs
         run: make transifex_pull
 
-      - name: tx push
+      - name: Push translations
+        if: |
+          github.event_name == 'push' &&
+          github.ref == 'refs/heads/main'
         env:
           TX_TOKEN: ${{ secrets.TX_TOKEN }}
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         working-directory: docs
         run: make transifex_sync
 
@@ -112,89 +224,134 @@ jobs:
         working-directory: docs
         run: make compile_messages
 
-      - name: copy datamodel documentation
-        # Download artifact only if datamodel step ran (i.e., not a fast-doc PR)
-        if: ${{ !(github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'PR-fast-doc')) }}
+      - name: Copy datamodel documentation
+        if: |
+          !(
+            github.event_name == 'pull_request' &&
+            contains(github.event.pull_request.labels.*.name, 'PR-fast-doc')
+          )
         uses: actions/download-artifact@v8
         with:
           name: datamodel-schemaspy
           path: docs/_static/datamodel
 
-      - name: Set version
-        run: |
-          if [[ "${GITHUB_REF_TYPE}" == "tag" && "${GITHUB_REF_NAME}" =~ ^[0-9]{4}\.[0-9]+\.[0-9]+$ ]]; then
-            echo "DOCS_VERSION=${GITHUB_REF_NAME}" >> $GITHUB_ENV
-          else
-            echo "DOCS_VERSION=latest" >> $GITHUB_ENV
-          fi
-
+      - name: Show documentation version
+        run: echo "Building documentation version $DOCS_VERSION"
 
       - name: Setup locales
+        shell: bash
         run: |
           sudo apt-get update
           sudo apt-get install -y locales
 
-          for LANG in $LANGUAGES; do
-            case $LANG in
+          for LANGUAGE in $LANGUAGES; do
+            case "$LANGUAGE" in
               en) LOCALE="en_US.UTF-8" ;;
               de) LOCALE="de_CH.UTF-8" ;;
               fr) LOCALE="fr_CH.UTF-8" ;;
               it) LOCALE="it_CH.UTF-8" ;;
-              *) echo "Unsupported language $LANG"; exit 1 ;;
+              *)
+                echo "Unsupported language: $LANGUAGE"
+                exit 1
+                ;;
             esac
-            sudo locale-gen $LOCALE
+
+            sudo locale-gen "$LOCALE"
           done
 
-          echo "LANG=en_US.UTF-8" >> $GITHUB_ENV
-          echo "LC_ALL=en_US.UTF-8" >> $GITHUB_ENV
-
+          echo "LANG=en_US.UTF-8" >> "$GITHUB_ENV"
+          echo "LC_ALL=en_US.UTF-8" >> "$GITHUB_ENV"
 
       - name: Build documentation
         working-directory: docs
+        shell: bash
         run: |
           make html
 
-          for LANG in $LANGUAGES; do
-            test -f ./build/html/$DOCS_VERSION/$LANG/index.html || (echo "Missing index for $LANG" && exit 1)
+          for LANGUAGE in $LANGUAGES; do
+            INDEX_FILE="./build/html/$DOCS_VERSION/$LANGUAGE/index.html"
+
+            if [[ ! -f "$INDEX_FILE" ]]; then
+              echo "Missing index for $LANGUAGE: $INDEX_FILE"
+              exit 1
+            fi
           done
+
           touch ./build/html/.nojekyll
+
+      - name: Deduplicate static assets
+        working-directory: docs
+        shell: bash
+        run: |
+          cd "build/html/$DOCS_VERSION"
+
+          for LANGUAGE in $LANGUAGES; do
+            if [[ "$LANGUAGE" != "en" && -d "$LANGUAGE" ]]; then
+              rm -rf "$LANGUAGE/_static" "$LANGUAGE/_images"
+              ln -s "../en/_static" "$LANGUAGE/_static"
+              ln -s "../en/_images" "$LANGUAGE/_images"
+            fi
+          done
 
       - name: Add root redirect
         working-directory: docs
         run: |
-          echo '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0; url=latest/en/"></head></html>' > ./build/html/index.html
+          cat > ./build/html/index.html <<'HTML'
+          <!DOCTYPE html>
+          <html lang="en">
+            <head>
+              <meta charset="utf-8">
+              <meta http-equiv="refresh" content="0; url=latest/en/">
+              <link rel="canonical" href="latest/en/">
+              <title>Documentation</title>
+            </head>
+            <body>
+              <p><a href="latest/en/">Open the latest documentation</a></p>
+            </body>
+          </html>
+          HTML
 
       - name: Generate versions list
+        shell: bash
         run: |
           cd docs/build/html
-          ls -1 -d */ | sed 's#/##' > versions.txt
-          jq -R -s -c 'split("\n")[:-1]' versions.txt > versions.json
 
-
-      - name: Deduplicate static assets
-        working-directory: docs
-        run: |
-          cd build/html/$DOCS_VERSION
-
-          for LANG in $LANGUAGES; do
-            # skip base language
-            if [ "$LANG" != "en" ] && [ -d "$LANG" ]; then
-              rm -rf "$LANG/_static" "$LANG/_images"
-              ln -s "../en/_static" "$LANG/_static"
-              ln -s "../en/_images" "$LANG/_images"
+          {
+            if [[ -d latest ]]; then
+              echo "latest"
             fi
-          done
 
+            find . \
+              -mindepth 1 \
+              -maxdepth 1 \
+              -type d \
+              -printf '%f\n' |
+              grep -E '^[0-9]{4}\.[0-9]+\.[0-9]+$' |
+              sort -V -r || true
+          } > versions.txt
 
-      - uses: actions/upload-artifact@v7
+          jq -R -s -c 'split("\n") | map(select(length > 0))' \
+            versions.txt > versions.json
+
+          echo "Available documentation versions:"
+          cat versions.txt
+
+      - name: Upload documentation artifact
+        uses: actions/upload-artifact@v7
         with:
-          name: documentation
+          name: documentation-${{ needs.documentation-version.outputs.docs-version }}
           path: docs/build/html
           if-no-files-found: error
 
       - name: Deploy 🚀
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' || github.event_name == 'schedule' }}
+        if: |
+          (
+            github.event_name == 'push' &&
+            github.ref == 'refs/heads/main'
+          ) ||
+          github.event_name == 'release' ||
+          github.event_name == 'schedule'
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: docs/build/html
+          folder: docs/build/htm
