@@ -140978,7 +140978,7 @@ def my_form_open(dialog, layer, feature):
         <constraint desc="" exp="" field="hc_c_overflow_volume"></constraint>
         <constraint desc="" exp="" field="hc_c_pump_characteristics"></constraint>
         <constraint desc="" exp="" field="hc_c_pump_flow_max"></constraint>
-        <constraint desc="min is less or equal to max" exp="if( &quot;pump_flow_max&quot; is not NULL , &quot;pump_flow_min&quot;  &lt;= &quot;pump_flow_max&quot; , 1)" field="hc_c_pump_flow_min"></constraint>
+        <constraint desc="min is less or equal to max" exp="if( &quot;hc_c_pump_flow_max&quot; is not NULL , &quot;hc_c_pump_flow_min&quot;  &lt;= &quot;hc_c_pump_flow_max&quot; , 1)" field="hc_c_pump_flow_min"></constraint>
         <constraint desc="" exp="" field="hc_c_q_discharge"></constraint>
         <constraint desc="" exp="" field="hc_c_qon"></constraint>
         <constraint desc="" exp="" field="hc_c_remark"></constraint>
@@ -141000,7 +141000,7 @@ def my_form_open(dialog, layer, feature):
         <constraint desc="" exp="" field="hc_o_overflow_volume"></constraint>
         <constraint desc="" exp="" field="hc_o_pump_characteristics"></constraint>
         <constraint desc="" exp="" field="hc_o_pump_flow_max"></constraint>
-        <constraint desc="min is less or equal to max" exp="if( &quot;pump_flow_max&quot; is not NULL , &quot;pump_flow_min&quot;  &lt;= &quot;pump_flow_max&quot; , 1)" field="hc_o_pump_flow_min"></constraint>
+        <constraint desc="min is less or equal to max" exp="if( &quot;hc_o_pump_flow_max&quot; is not NULL , &quot;hc_o_pump_flow_min&quot;  &lt;= &quot;hc_o_pump_flow_max&quot; , 1)" field="hc_o_pump_flow_min"></constraint>
         <constraint desc="" exp="" field="hc_o_q_discharge"></constraint>
         <constraint desc="" exp="" field="hc_o_qon"></constraint>
         <constraint desc="" exp="" field="hc_o_remark"></constraint>
@@ -141022,7 +141022,7 @@ def my_form_open(dialog, layer, feature):
         <constraint desc="" exp="" field="hc_p_overflow_volume"></constraint>
         <constraint desc="" exp="" field="hc_p_pump_characteristics"></constraint>
         <constraint desc="" exp="" field="hc_p_pump_flow_max"></constraint>
-        <constraint desc="min is less or equal to max" exp="if( &quot;pump_flow_max&quot; is not NULL , &quot;pump_flow_min&quot;  &lt;= &quot;pump_flow_max&quot; , 1)" field="hc_p_pump_flow_min"></constraint>
+        <constraint desc="min is less or equal to max" exp="if( &quot;hc_p_pump_flow_max&quot; is not NULL , &quot;hc_p_pump_flow_min&quot;  &lt;= &quot;hc_p_pump_flow_max&quot; , 1)" field="hc_p_pump_flow_min"></constraint>
         <constraint desc="" exp="" field="hc_p_q_discharge"></constraint>
         <constraint desc="" exp="" field="hc_p_qon"></constraint>
         <constraint desc="" exp="" field="hc_p_remark"></constraint>
