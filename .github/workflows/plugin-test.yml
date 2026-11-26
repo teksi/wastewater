@@ -11,6 +11,7 @@ on:
     paths:
       - datamodel/**
       - plugin/**
+      - project/**
       - '.github/workflows/plugin-test.yml'
   pull_request:
     branches:
@@ -18,6 +19,7 @@ on:
     paths:
       - datamodel/**
       - plugin/**
+      - project/**
       - '.github/workflows/plugin-test.yml'
   workflow_dispatch:
 
@@ -69,6 +71,7 @@ jobs:
           docker compose exec qgis \
             sh -c "xvfb-run pytest \
               /usr/src/plugin/tests/qgis/test_interlis.py \
+              /usr/src/plugin/tests/qgis/test_project_configuration.py \
               /usr/src/plugin/tests/qgis/test_swmm_hydraulic_load.py \
               -k 'not test_dss_dataset_import_export' \
               -v -c /usr/src/plugin/pytest.ini"
