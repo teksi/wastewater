@@ -28,8 +28,24 @@ Bug fixes and performance improvements
 Extension improvements
 ----------------------
 
+
 Adaptions to project file
 ----------------------------------------
+
+
+ The following new views have been integrated in this release:
+
+
+ * xxx
+
+ Please export and use the corresponding :literal:`* \ .qml` files to integrate them into your existing TWW 2026 project files
+
+
+ The following views have been adapted and need an adaption of existing TWW 2026 project files:
+
+ - xxx
+
+ For Reference see
 
 Currently you can take a look at its pre-release here:
 
