@@ -3317,7 +3317,7 @@ class InterlisExporterToIntermediateSchema:
                 f"Exporting more than 999999 labels will generate invalid OIDs. Currently exporting {t_id} label of type '{t_type}'."
             )
 
-        return {
+        textpos = {
             "t_id": t_id,
             "t_type": t_type,
             "t_ili_tid": f"{oid_prefix}{shortcut_en}{t_id:06d}",
@@ -3340,9 +3340,18 @@ class InterlisExporterToIntermediateSchema:
             "textinhalt": row["properties"]["LabelText"],
             "bemerkung": None,
         }
+        if self.current_basket:
+            textpos["t_basket"] = self.current_basket.t_id
+
+        return textpos
 
     def _export_label_positions(self):
         logger.info(f"Exporting label positions from {self.labels_file}")
+
+        # SIA405 / DSS / KEK text classes belong to the SIA405_Abwasser topic
+        # (None when baskets are disabled). AG-64 / AG-96 keep their own basket.
+        if not self.is_ag_xx_model:
+            self.current_basket = self.basket_topic_sia405_abwasser
 
         # get oid prefix
         self.oid_prefix = self.get_oid_prefix(self.model_classes_tww_sys.oid_prefixes)
@@ -3394,15 +3403,16 @@ class InterlisExporterToIntermediateSchema:
 
             for label in labels["features"]:
                 layer_name = label["properties"]["Layer"]
-                obj_id = label["properties"]["tww_obj_id"]
+                obj_id = label["properties"].get("tww_obj_id")
 
-                print(f"label[properties]: {label['properties']}")
-
-                if self.subset_ids and obj_id not in self.subset_ids:
-                    logger.warning(
-                        f"Label for {layer_name} `{obj_id}` exists, but that object is not part of the subset export"
-                    )
+                # Labels of non-TWW layers are not annotated with a tww_obj_id
+                if obj_id is None:
+                    logger.debug(f"Label on non-TWW layer '{layer_name}' ignored")
                     continue
+
+                # No check against self.subset_ids here: it holds wastewater network element
+                # ids (reaches and wastewater nodes), while structure and catchment labels carry
+                # their own obj_id. The t_id lookup below already limits labels to exported objects.
 
                 if not label["properties"]["LabelText"]:
                     logger.warning(
@@ -3418,16 +3428,11 @@ class InterlisExporterToIntermediateSchema:
                     continue
 
                 # Adapt plantype if subtype of Werkplan as VSA-DSS does not yet supports subvalues.
-                plantyp = (label["properties"]["scale"],)
-                # ('Werkplan.500',)
-                plantyp_short = str(plantyp)
-                plantyp_short = plantyp_short[2:10]
-                logger.debug(f"Debug Plantyp_short: '{plantyp_short}'")
-                if plantyp_short == "Werkplan":
+                # e.g. 'Werkplan.500' -> 'Werkplan'; other values ('Leitungskataster',
+                # 'Uebersichtsplan.UeP10', ...) are kept as they are.
+                plantyp = label["properties"]["scale"]
+                if plantyp.startswith("Werkplan"):
                     plantyp = "Werkplan"
-                    logger.debug(f"Debug Plantyp adapted '{plantyp}'")
-                else:
-                    logger.debug(f"Debug Plantyp not adapted '{plantyp}'")
 
                 if not self.is_ag_xx_model:
                     if layer_name == "vw_tww_reach":
@@ -3606,10 +3611,10 @@ class InterlisExporterToIntermediateSchema:
                             )
                             continue
 
-                    self.abwasser_session.add(ili_label)
-                    print(".", end="")
-                logger.info("done")
-                self.abwasser_session.flush()
+                self.abwasser_session.add(ili_label)
+                print(".", end="")
+            logger.info("done")
+            self.abwasser_session.flush()
 
         else:
             logger.warning("No labels found - check if labels in tww-layers are activated!")

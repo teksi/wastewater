@@ -589,7 +589,6 @@ class TwwSwmm:
         self.feedback_push("info", "command: " + " ".join(map(str, command)))
         proc = subprocess.run(
             command,
-            shell=True,
             stdout=subprocess.PIPE,
             stdin=subprocess.PIPE,
             stderr=subprocess.STDOUT,
@@ -755,7 +754,7 @@ class TwwSwmm:
         """
 
         for ws in link_summary:
-            ws["max_over_full_flow"] = int(round(float(ws["max_over_full_flow"]))) * 100
+            ws["max_over_full_flow"] = round(float(ws["max_over_full_flow"]) * 100)
 
         return link_summary
 
@@ -781,7 +780,7 @@ class TwwSwmm:
         self.populate_attribute(
             link_summary,
             "reach",
-            "dss2020_hydraulic_load_current",
+            "hydraulic_load_current",
             "max_over_full_flow",
         )
 

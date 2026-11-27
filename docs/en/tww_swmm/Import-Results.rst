@@ -48,7 +48,7 @@ Launch ``SWMM Import results``:
 - ``Import summary``: Only the summary is imported.
 - ``Import full results``: The full time series will be imported. Attention, if the report step is small, the import can take a long time.
 - ``Import Max HGL in tww_od.wastewater_node.backflow_level``
-- ``Import Max/Full Flow in tww_od.reach.dss2020_hydraulic_load_current``
+- ``Import Max/Full Flow in tww_od.reach.hydraulic_load_current``
 
 .. warning::
     Attention, a report file created from the SWMM GUI don't contain the full time series but only the summary.
